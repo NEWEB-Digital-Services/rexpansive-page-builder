@@ -1076,6 +1076,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             $formData.attr("data-wpcf7-content-height", formData.content.height);
             $formData.attr("data-wpcf7-content-font-size", formData.content.font_size);
             $formData.attr("data-wpcf7-content-border-width", formData.content.border_width);
+            $formData.attr("data-wpcf7-content-border-radius", formData.content.border_radius);
             $formData.attr("data-wpcf7-content-text-color", formData.content.text_color);
             $formData.attr("data-wpcf7-content-text-color-hover", formData.content.text_color_hover);
             $formData.attr("data-wpcf7-content-background-color", formData.content.background_color);

@@ -267,6 +267,30 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 .addClass('active');
         }
 
+        // Input preview
+        wpcf7_form_editor_properties.$input_preview.css({
+            color: elementData.wpcf7_data.content.text_color,
+            'font-size': elementData.wpcf7_data.content.font_size,
+            'background-color': elementData.wpcf7_data.content.background_color,
+            'border-color': elementData.wpcf7_data.content.border_color,
+            'border-width': elementData.wpcf7_data.content.border_width,
+            'border-radius': elementData.wpcf7_data.content.border_radius
+        });
+
+        wpcf7_form_editor_properties.$input_preview.hover(function() {
+            $(this).css({
+                color: elementData.wpcf7_data.content.text_color_hover,
+                'background-color': elementData.wpcf7_data.content.background_color_hover,
+                'border-color': elementData.wpcf7_data.content.border_color_hover
+            });
+        }, function() {
+            $(this).css({
+                color: elementData.wpcf7_data.content.text_color,
+                'background-color': elementData.wpcf7_data.content.background_color,
+                'border-color': elementData.wpcf7_data.content.border_color
+            });
+        });
+
         // Background color
         wpcf7_form_editor_properties.$form_preview_background.css("background-color", elementData.wpcf7_data.background_color);
         wpcf7_form_editor_properties.$form_background_color_value.val(elementData.wpcf7_data.background_color);
@@ -341,13 +365,13 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         wpcf7_form_editor_properties.$content_set_border_radius.val(/[0-9]+/.exec(elementData.wpcf7_data.content.border_radius));
 
         // Content text color
-        wpcf7_form_editor_properties.$content_preview_text_color.css("background-color", elementData.wpcf7_data.content.text_color);
+        // wpcf7_form_editor_properties.$content_preview_text_color.css("background-color", elementData.wpcf7_data.content.text_color);
         wpcf7_form_editor_properties.$content_text_color_value.val(elementData.wpcf7_data.content.text_color);
         wpcf7_form_editor_properties.$content_text_color_preview.hide();
         wpcf7_form_editor_properties.$content_text_color_value.spectrum("set", elementData.wpcf7_data.content.text_color);
 
         // Content text color hover
-        wpcf7_form_editor_properties.$content_preview_text_color_hover.css("background-color", elementData.wpcf7_data.content.text_color_hover);
+        // wpcf7_form_editor_properties.$content_preview_text_color_hover.css("background-color", elementData.wpcf7_data.content.text_color_hover);
         wpcf7_form_editor_properties.$content_text_color_hover_value.val(elementData.wpcf7_data.content.text_color_hover);
         wpcf7_form_editor_properties.$content_text_color_hover_preview.hide();
         wpcf7_form_editor_properties.$content_text_color_hover_value.spectrum("set", elementData.wpcf7_data.content.text_color_hover);
@@ -427,7 +451,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         // Content border width
         elementData.wpcf7_data.content.border_width = wpcf7_form_editor_properties.$content_set_border_width.val() + "px";
 
-        // Content border width
+        // Content border radius
         elementData.wpcf7_data.content.border_radius = wpcf7_form_editor_properties.$content_set_border_radius.val() + "px";
     }
 
@@ -481,7 +505,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     var _linkNumberInputs = function () {
         var outputString = "";
 
-        // BORDER SIZE
+        // Border Width
         var _updateBorderWidth = function (newBorderSize) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             outputString = newBorderSize + "px";
@@ -494,7 +518,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$form_border_width, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$form_border_width, _updateBorderWidth, false);
 
-        // MARGIN TOP
+        // Margin Top
         var _updateMarginTop = function (newMarginTop) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             outputString = newMarginTop + "px";
@@ -507,7 +531,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$form_margin_top, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$form_margin_top, _updateMarginTop, false);
 
-        // MARGIN LEFT
+        // Margin Left
         var _updateMarginLeft = function (newMarginLeft) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             outputString = newMarginLeft + "px";
@@ -520,7 +544,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$form_margin_left, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$form_margin_left, _updateMarginLeft, false);
 
-        // MARGIN RIGHT
+        // Margin Right
         var _updateMarginRight = function (newMarginRight) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             outputString = newMarginRight + "px";
@@ -533,7 +557,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$form_margin_right, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$form_margin_right, _updateMarginRight, false);
 
-        // MARGIN BOTTOM
+        // Margin Bottom
         var _updateMarginBottom = function (newMarginBottom) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             outputString = newMarginBottom + "px";
@@ -546,7 +570,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$form_margin_bottom, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$form_margin_bottom, _updateMarginBottom, false);
 
-        // COLUMNS PADDING TOP
+        // Columns Padding Top
         var _updateColumnsPaddingTop = function (newColumnsPaddingTop) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             outputString = newColumnsPaddingTop + "px";
@@ -559,7 +583,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$form_columns_padding_top, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$form_columns_padding_top, _updateColumnsPaddingTop, false);
 
-        // COLUMNS PADDING LEFT
+        // Columns Padding Left
         var _updateColumnsPaddingLeft = function (newColumnsPaddingLeft) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             outputString = newColumnsPaddingLeft + "px";
@@ -572,7 +596,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$form_columns_padding_left, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$form_columns_padding_left, _updateColumnsPaddingLeft, false);
 
-        // COLUMNS PADDING RIGHT
+        // Columns Padding Right
         var _updateColumnsPaddingRight = function (newColumnsPaddingRight) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             outputString = newColumnsPaddingRight + "px";
@@ -585,7 +609,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$form_columns_padding_right, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$form_columns_padding_right, _updateColumnsPaddingRight, false);
 
-        // COLUMNS PADDING BOTTOM
+        // Columns Padding Bottom
         var _updateColumnsPaddingBottom = function (newColumnsPaddingBottom) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             outputString = newColumnsPaddingBottom + "px";
@@ -598,7 +622,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$form_columns_padding_bottom, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$form_columns_padding_bottom, _updateColumnsPaddingBottom, false);
 
-        // CONTENT WIDTH
+        // Content Width
         var _updateContentWidth = function (newContentWidth) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             var widthType = wpcf7_form_editor_properties.$content_width_type.filter(':checked').val();
@@ -621,7 +645,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$content_width, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$content_width, _updateContentWidth, false);
 
-        // CONTENT HEIGHT
+        // Content Height
         var _updateContentHeight = function (newContentHeight) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             var heightType = wpcf7_form_editor_properties.$content_height_type.filter(':checked').val();
@@ -644,7 +668,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$content_height, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$content_height, _updateContentHeight, false);
 
-        // CONTENT FONT SIZE
+        // Content Font Size
         var _updateContentFontSize = function (newContentFontSize) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             outputString = newContentFontSize + "px";
@@ -653,11 +677,15 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 name: "font-size",
                 value: outputString
             });
+
+            wpcf7_form_editor_properties.$input_preview.css({
+                'font-size': outputString
+            });
         };
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$content_set_font_size, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$content_set_font_size, _updateContentFontSize, false);
 
-        // CONTENT BORDER WIDTH
+        // Content Border Width
         var _updateContentBorderWidth = function (newContentBorderWidth) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             outputString = newContentBorderWidth + "px";
@@ -666,11 +694,15 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 name: "border-width",
                 value: outputString
             });
+
+            wpcf7_form_editor_properties.$input_preview.css({
+                'border-width': outputString
+            });
         };
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$content_set_border_width, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$content_set_border_width, _updateContentBorderWidth, false);
 
-        // CONTENT BORDER RADIUS
+        // Content Border Radius
         var _updateContentBorderRadius = function (newContentBorderRadius) {
             // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
             outputString = newContentBorderRadius + "px";
@@ -678,6 +710,10 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 type: "border-radius",
                 name: "border-radius",
                 value: outputString
+            });
+
+            wpcf7_form_editor_properties.$input_preview.css({
+                'border-radius': outputString
             });
         };
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$content_set_border_radius, false);
@@ -800,6 +836,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 colorTEXT = color.toRgbString();
                 wpcf7_form_editor_properties.$content_text_color_preview.hide();
                 wpcf7_form_editor_properties.$content_preview_text_color.css("background-color", colorTEXT);
+                wpcf7_form_editor_properties.$input_preview.css({
+                    color: colorTEXT
+                });
 
                 _updateFormContentLive({
                     type: "text-color",
@@ -849,6 +888,15 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 colorTEXT = color.toRgbString();
                 wpcf7_form_editor_properties.$content_text_color_hover_preview.hide();
                 wpcf7_form_editor_properties.$content_preview_text_color_hover.css("background-color", colorTEXT);
+                wpcf7_form_editor_properties.$input_preview.hover(function() {
+                    $(this).css({
+                        color: colorTEXT
+                    });
+                }, function() {
+                    $(this).css({
+                        color: elementData.wpcf7_data.content.text_color
+                    });
+                });
 
                 _updateFormContentLive({
                     type: "text-color-hover",
@@ -898,6 +946,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 colorTEXT = color.toRgbString();
                 wpcf7_form_editor_properties.$content_background_color_preview.hide();
                 wpcf7_form_editor_properties.$content_preview_background_color.css("background-color", colorTEXT);
+                wpcf7_form_editor_properties.$input_preview.css({
+                    'background-color': colorTEXT
+                });
 
                 _updateFormContentLive({
                     type: "background-color",
@@ -947,6 +998,15 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 colorTEXT = color.toRgbString();
                 wpcf7_form_editor_properties.$content_background_color_hover_preview.hide();
                 wpcf7_form_editor_properties.$content_preview_background_color_hover.css("background-color", colorTEXT);
+                wpcf7_form_editor_properties.$input_preview.hover(function() {
+                    $(this).css({
+                        'background-color': colorTEXT
+                    });
+                }, function() {
+                    $(this).css({
+                        'background-color': elementData.wpcf7_data.content.background_color
+                    });
+                });
 
                 _updateFormContentLive({
                     type: "background-color-hover",
@@ -996,6 +1056,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 colorTEXT = color.toRgbString();
                 wpcf7_form_editor_properties.$content_border_color_preview.hide();
                 wpcf7_form_editor_properties.$content_preview_border_color.css("background-color", colorTEXT);
+                wpcf7_form_editor_properties.$input_preview.css({
+                    'border-color': colorTEXT
+                });
 
                 _updateFormContentLive({
                     type: "border-color",
@@ -1045,6 +1108,15 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 colorTEXT = color.toRgbString();
                 wpcf7_form_editor_properties.$content_border_color_hover_preview.hide();
                 wpcf7_form_editor_properties.$content_preview_border_color_hover.css("background-color", colorTEXT);
+                wpcf7_form_editor_properties.$input_preview.hover(function() {
+                    $(this).css({
+                        'border-color': colorTEXT
+                    });
+                }, function() {
+                    $(this).css({
+                        'border-color': elementData.wpcf7_data.content.border_color
+                    });
+                });
 
                 _updateFormContentLive({
                     type: "border-color-hover",
@@ -1193,14 +1265,13 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
         wpcf7_form_editor_properties.$apply_changes_button.on("click", function () {
             _saveFormSettings();
-            _closeModal();
-        });
-
-        wpcf7_form_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
             _updateFormDataFromPanel();
             _saveElementSpanDataOnDB();
             _applyChanges();
+            _closeModal();
         });
+
+        wpcf7_form_editor_properties.$modal.on('rexlive:this_modal_closed', function() {});
 
         wpcf7_form_editor_properties.$content_width_type.on("click", function () {
             var widthValue = wpcf7_form_editor_properties.$content_width.val();
@@ -1253,6 +1324,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             $modal: $container.parent(".rex-modal-wrap"),
             $close_button: $container.find(".rex-cancel-button"),
             $apply_changes_button: $container.find(".rex-apply-button"),
+            $reset_button: $container.find(".rex-apply-button"),
+
+            $input_preview: $container.find('.rex-wpcf7-text-color-modal-preview'),
 
             $form_mail_to: $container.find("#rex-wpcf7-mail-to"),
             $form_error_message: $container.find("#rex-wpcf7-error-message"),
@@ -1289,12 +1363,12 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             $content_set_border_width: $container.find("#rex-wpcf7-set-content-border-width"),
             $content_set_border_radius: $container.find("#rex-wpcf7-set-content-border-radius"),
 
-            // $content_preview_text_color: $container.find("#rex-wpcf7-content-preview-text-color"),
+            $content_preview_text_color: $container.find("#rex-wpcf7-content-preview-text-color"),
             $content_text_color_value: $container.find("#rex-wpcf7-content-text-color"),
             $content_text_color_runtime: $container.find("#rex-wpcf7-content-text-color-runtime"),
             $content_text_color_preview: $container.find("#rex-wpcf7-content-text-color-preview-icon"),
 
-            // $content_preview_text_color_hover: $container.find("#rex-wpcf7-content-preview-text-color-hover"),
+            $content_preview_text_color_hover: $container.find("#rex-wpcf7-content-preview-text-color-hover"),
             $content_text_color_hover_value: $container.find("#rex-wpcf7-content-text-color-hover"),
             $content_text_color_hover_runtime: $container.find("#rex-wpcf7-content-text-color-hover-runtime"),
             $content_text_color_hover_preview: $container.find("#rex-wpcf7-content-text-color-hover-preview-icon"),

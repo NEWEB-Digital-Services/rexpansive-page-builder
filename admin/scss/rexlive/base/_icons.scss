@@ -23,11 +23,25 @@
 
 #rex-wpcf7-content-adder .rexwpcf7-cont_row .l-svg-icons > svg,
 #rex-wpcf7-form-editor .rexwpcf7-cont_row .l-svg-icons > svg {
-  cursor:pointer;
+  // cursor:pointer;
 }
 
 .l-icon--white {
   @include fill-icon(#fff);
+}
+
+.l-icon--dark-grey {
+  @include fill-icon($palette-color-4);
+}
+
+.l-icon--c-default {
+  .l-svg-icons > svg {
+    cursor: default;
+  }
+}
+
+.l-icon--rotate-90 {
+  transform: rotate(90deg);
 }
 
 .l-svg-icons {

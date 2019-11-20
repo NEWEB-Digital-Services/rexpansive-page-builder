@@ -650,12 +650,19 @@
           transform: rotate(45deg);
   cursor: pointer; }
 
-#rex-wpcf7-content-adder .rexwpcf7-cont_row .l-svg-icons > svg,
-#rex-wpcf7-form-editor .rexwpcf7-cont_row .l-svg-icons > svg {
-  cursor: pointer; }
-
 .l-icon--white .l-svg-icons > svg {
   fill: #fff; }
+
+.l-icon--dark-grey .l-svg-icons > svg {
+  fill: #424242; }
+
+.l-icon--c-default .l-svg-icons > svg {
+  cursor: default; }
+
+.l-icon--rotate-90 {
+  -webkit-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+          transform: rotate(90deg); }
 
 .l-svg-icons.drop-down-icon {
   -webkit-transform: rotate(180deg);
