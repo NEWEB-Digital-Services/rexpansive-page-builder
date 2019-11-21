@@ -109,6 +109,22 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         switch(inputType) {
             case "text":
                 wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_set_email.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_only_numbers.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_placeholder.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width_type.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height_type.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_font_size.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_placeholder_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_placeholder_hover_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                break;
+            case "email":
+                wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_set_email.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_only_numbers.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_placeholder.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal-row").removeClass("row-hidden");
@@ -123,6 +139,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 break;
             case "number":
                 wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_set_email.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_only_numbers.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_placeholder.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal-row").removeClass("row-hidden");
@@ -252,6 +269,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
     var _clearColumnContentData = function () {
         columnContentData = {
             wpcf7_required_field: "",
+            wpcf7_email: "",
             wpcf7_only_numbers: "",
             wpcf7_default_check: "",
             wpcf7_placeholder: "",
@@ -316,6 +334,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
     var _updatePanel = function () {
         // Required field
         wpcf7_content_editor_properties.$content_required_field.prop("checked", "true" == columnContentData.wpcf7_required_field);
+
+        // Email
+        wpcf7_content_editor_properties.$content_set_email.prop("checked", "true" == columnContentData.wpcf7_email);
 
         // Only numbers
         wpcf7_content_editor_properties.$content_only_numbers.prop("checked", "true" == columnContentData.wpcf7_only_numbers);
@@ -480,6 +501,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
     var _updateColumnContentDataFromPanel = function () {
         // Requried field
         columnContentData.wpcf7_required_field = "undefined" != typeof wpcf7_content_editor_properties.$content_required_field.attr("checked");
+
+        // E-Mail
+        columnContentData.wpcf7_email = "undefined" != typeof wpcf7_content_editor_properties.$content_set_email.attr("checked");
 
         // Only numbers
         columnContentData.wpcf7_only_numbers = "undefined" != typeof wpcf7_content_editor_properties.$content_only_numbers.attr("checked");
@@ -1614,8 +1638,25 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             });
         });
 
+        wpcf7_content_editor_properties.$content_set_email.on("click", function () {
+            var isSetEmail = "undefined" != typeof wpcf7_content_editor_properties.$content_set_email.attr("checked");
+
+            if (isSetEmail) {
+                wpcf7_content_editor_properties.$content_only_numbers.prop('checked', false);
+            }
+
+            _updateColumnContentLive({
+                type: "wpcf7-email",
+                value: isSetEmail
+            });
+        });
+
         wpcf7_content_editor_properties.$content_only_numbers.on("click", function () {
             var isSetOnlyNumbers = "undefined" != typeof wpcf7_content_editor_properties.$content_only_numbers.attr("checked");
+
+            if (isSetOnlyNumbers) {
+                wpcf7_content_editor_properties.$content_set_email.prop('checked', false);
+            }
 
             _updateColumnContentLive({
                 type: "wpcf7-only-numbers",
@@ -1741,6 +1782,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
             $content_required_field: $container.find("#wpcf7-required-field"),
             $content_only_numbers: $container.find("#wpcf7-only-numbers"),
+            $content_set_email: $container.find("#wpcf7-set-email"),
             $content_placeholder: $container.find("#wpcf7-placeholder"),
             $content_input_default_check: $container.find("#wpcf7-default-check"),
             $content_input_text_editor: $container.find("#wpcf7-text-editor"),
@@ -1857,6 +1899,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		columnContentData = {
             wpcf7_required_field: "",
+            wpcf7_email: "",
             wpcf7_only_numbers: "",
             wpcf7_default_check: "",
             wpcf7_placeholder: "",

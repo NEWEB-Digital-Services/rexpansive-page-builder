@@ -765,6 +765,10 @@ var Rexbuilder_Rexelement = (function ($) {
                 margin_left: "",
                 margin_right: "",
                 margin_bottom: "",
+                error_message_color: "",
+                error_message_font_size: "",
+                send_message_color: "",
+                send_message_font_size: "",
                 columns: {
                     padding_top: "",
                     padding_left: "",
@@ -826,6 +830,14 @@ var Rexbuilder_Rexelement = (function ($) {
         elementData.wpcf7_data.columns.padding_left = (elementDataEl.getAttribute("data-wpcf7-columns-padding-left") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-left").toString() : '');
         elementData.wpcf7_data.columns.padding_right = (elementDataEl.getAttribute("data-wpcf7-columns-padding-right") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-right").toString() : '');
         elementData.wpcf7_data.columns.padding_bottom = (elementDataEl.getAttribute("data-wpcf7-columns-padding-bottom") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-bottom").toString() : '');
+
+        // Error Message
+        elementData.wpcf7_data.error_message_color = (elementDataEl.getAttribute("data-wpcf7-error-message-color") ? elementDataEl.getAttribute("data-wpcf7-error-message-color").toString() : '');
+        elementData.wpcf7_data.error_message_font_size = (elementDataEl.getAttribute("data-wpcf7-error-message-font-size") ? elementDataEl.getAttribute("data-wpcf7-error-message-font-size").toString() : '');
+
+        // Send Message
+        elementData.wpcf7_data.send_message_color = (elementDataEl.getAttribute("data-wpcf7-send-message-color") ? elementDataEl.getAttribute("data-wpcf7-send-message-color").toString() : '');
+        elementData.wpcf7_data.send_message_font_size = (elementDataEl.getAttribute("data-wpcf7-send-message-font-size") ? elementDataEl.getAttribute("data-wpcf7-send-message-font-size").toString() : '');
 
         /* WPCF7 CONTENT */
         // Content width

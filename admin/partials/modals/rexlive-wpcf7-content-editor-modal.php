@@ -17,8 +17,7 @@ defined('ABSPATH') or exit;
         <!-- General wrap -->
         <div class="modal-content">
             <?php include 'rexlive-loader-modal.php'; ?>
-            <div class="bl_modal-row">
-                <!-- MODAL TITLE -->
+            <!-- <div class="bl_modal-row">
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_accord"></div>
                     <div class="rexwpcf7-count-column_1"></div>
@@ -26,7 +25,7 @@ defined('ABSPATH') or exit;
                         <span class="wpcf7-modal-title">TEXT FIELD</span>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="bl_modal-row">
                 <!-- REQUIRED FIELD -->
                 <div class="rexwpcf7-cont_row">
@@ -45,7 +44,24 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <div class="bl_modal-row">
-                <!-- ONLY NUMBERS -->
+                <!-- E-Mail Field -->
+                <div class="rexwpcf7-cont_row">
+                    <div class="rexwpcf7-count-column_accord"></div>
+                    <div class="rexwpcf7-count-column_1">
+                        <div class="tippy" data-tippy-content="<?php _e( 'E-Mail', 'rexpansive-builder' ); ?>">
+                            <label>
+                                <input type="checkbox" id="wpcf7-set-email" name="wpcf7-set-email" value="set-email">
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="rexwpcf7-count-column_2">
+                        <span class="">E-Mail</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <!-- Only Numbers -->
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_accord"></div>
                     <div class="rexwpcf7-count-column_1">

@@ -3,6 +3,40 @@
     display: none;
   }
 
+  .modal-accordion-title {
+    text-transform: uppercase;
+    font-size: 30px;
+    line-height: 25px;
+    letter-spacing: 2px;
+  }
+
+  .rexpansive-accordion-outer {
+    .rex-accordion-outer--toggle {
+      .l-svg-icons > svg {
+        transform: rotate(45deg);
+        cursor:pointer;
+      }
+    }
+
+    &.open {
+      .rex-accordion-outer--toggle {
+        .l-svg-icons > svg {
+          transform: rotate(90deg);
+          width:20px !important;
+          height:20px !important;
+        }
+      }
+    }
+
+    .rex-accordion-outer--content {
+      border-bottom: 1px solid #ddd;
+
+      .rex-accordion-outer--toggle:hover {
+        cursor:pointer;
+      }
+    }
+  }
+
   .rexpansive-accordion {
     .rex-accordion--toggle {
       .l-svg-icons > svg {
@@ -234,16 +268,23 @@
     padding-right: 12px;
   }
 
-  .lunghezza-50 {
-    width: 50px;
+  .rex-wpcf7-modal-column-w50,
+  .rex-wpcf7-modal-column-w70,
+  .rex-wpcf7-modal-column-w250 {
     text-align: center;
     margin: 0 0 0 10px;
   }
+  
+  .rex-wpcf7-modal-column-w50 {
+    width: 50px;
+  }
 
-  .lunghezza-70 {
+  .rex-wpcf7-modal-column-w70 {
     width: 70px;
-    text-align: center;
-    margin: 0 0 0 10px;
+  }
+
+  .rex-wpcf7-modal-column-w200 {
+    width: 200px;
   }
 
   .label-px {
@@ -261,6 +302,12 @@
     }
   }
 
+  .form-icon {
+    .l-svg-icons {
+      font-size: 39px;
+    }
+  }
+
   #rex-wpcf7-content-width,
   #rex-wpcf7-content-height {
     width: 35px;
@@ -269,6 +316,11 @@
   #rex-wpcf7-set-border-width,
   #rex-wpcf7-set-content-font-size {
     width: 25px;
+  }
+
+  #rex-wpcf7-error-message,
+  #rex-wpcf7-send-message {
+    width: 200px;
   }
 }
 
@@ -283,4 +335,3 @@
   background-color: black;
   border-radius: 20px;
 }
-

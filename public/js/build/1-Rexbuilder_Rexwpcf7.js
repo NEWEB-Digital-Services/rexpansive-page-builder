@@ -409,6 +409,15 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
     }
 
+    var _addFormMessageRule = function (formID, messageClass, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form ." + messageClass + "{" + property + "}", styleSheet.cssRules.length);
+        }
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form ." + messageClass + "{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
+
     var _addFormColumnsRule = function (formID, property) {
         if ("insertRule" in styleSheet) {
             styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form .wpcf7-column" + "{" + property + "}", styleSheet.cssRules.length);
@@ -547,6 +556,29 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                         break;
                     case "background-color":
                         styleSheet.cssRules[i].style.backgroundColor = value;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
+        }
+    }
+
+    var _updateFormMessageRule = function (formID, messageClass, rule, value) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (
+                //chrome firefox
+                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form ." + messageClass ||
+                // edge
+                styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper .wpcf7-form"
+            ) {
+                switch (rule) {
+                    case "text-color":
+                        styleSheet.cssRules[i].style.color = value;
+                        break;
+                    case "font-size":
+                        styleSheet.cssRules[i].style.fontSize = value;
                         break;
                     default:
                         break;
@@ -960,6 +992,20 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         formRule += "margin-bottom: " + formData.margin_bottom + ";";
         _addFormRule(formID, formRule);
 
+        var formValidationErrorRule = "";
+
+        formValidationErrorRule += "color:" + formData.error_message_color + ";";
+        formValidationErrorRule += "font-size:" + formData.error_message_font_size + ";";
+
+        _addFormMessageRule(formID, "wpcf7-validation-errors", formValidationErrorRule);
+
+        var formSendMessageRule = "";
+
+        formSendMessageRule += "color:" + formData.send_message_color + ";";
+        formSendMessageRule += "font-size:" + formData.send_message_font_size + ";";
+
+        _addFormMessageRule(formID, "wpcf7-mail-sent-ok", formSendMessageRule);
+
         var formColumnsRule = "";
 
         formColumnsRule += "padding-top: " + formData.columns.padding_top + ";";
@@ -982,6 +1028,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             case "border-width":
             case "margin":
                 _updateFormRule(formID, propertyName, newValue);
+                break;
+            case "validation-error":
+                _updateFormMessageRule(formID, "wpcf7-validation-errors", propertyName, newValue);
+                break;
+            case "send-message":
+                _updateFormMessageRule(formID, "wpcf7-mail-sent-ok", propertyName, newValue);
                 break;
             case "columns-padding":
                 _updateFormColumnsRule(formID, propertyName, newValue);
@@ -1038,6 +1090,11 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         _updateFormRule(formID, "margin-left", formData.margin_left);
         _updateFormRule(formID, "margin-right", formData.margin_right);
         _updateFormRule(formID, "margin-bottom", formData.margin_bottom);
+        
+        _updateFormMessageRule(formID, "wpcf7-validation-errors", "text-color", formData.error_message_color);
+        _updateFormMessageRule(formID, "wpcf7-validation-errors", "font-size", formData.error_message_font_size);
+        _updateFormMessageRule(formID, "wpcf7-mail-sent-ok ", "text-color", formData.send_message_color);
+        _updateFormMessageRule(formID, "wpcf7-mail-sent-ok ", "font-size", formData.send_message_font_size);
 
         _updateFormColumnsRule(formID, "padding-top", formData.columns.padding_top);
         _updateFormColumnsRule(formID, "padding-left", formData.columns.padding_left);
@@ -1068,6 +1125,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             $formData.attr("data-wpcf7-margin-left", formData.margin_left);
             $formData.attr("data-wpcf7-margin-right", formData.margin_right);
             $formData.attr("data-wpcf7-margin-bottom", formData.margin_bottom);
+            $formData.attr("data-wpcf7-error-message-color", formData.error_message_color);
+            $formData.attr("data-wpcf7-error-message-font-size", formData.error_message_font_size);
+            $formData.attr("data-wpcf7-send-message-color", formData.send_message_color);
+            $formData.attr("data-wpcf7-send-message-font-size", formData.send_message_font_size);
             $formData.attr("data-wpcf7-columns-padding-top", formData.columns.padding_top);
             $formData.attr("data-wpcf7-columns-padding-left", formData.columns.padding_left);
             $formData.attr("data-wpcf7-columns-padding-right", formData.columns.padding_right);
@@ -1259,14 +1320,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             var cssSelector;
             switch (inputType) {
                 case "text":
-                    // if ($formColumn.find(".rex-wpcf7-column-content-data").attr("data-wpcf7-only-numbers") == "true") {
-                    //     cssSelector = "wpcf7-number";
-                    // } else {
-                    //     cssSelector = "wpcf7-text";
-                    // }
-                    // break;
-                case "textarea":
+                case "email":
                 case "number":
+                case "textarea":
                 case "select":
                     cssSelector = "wpcf7-" + inputType;
                     break;
@@ -1302,12 +1358,15 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         var isSetRequiredField = String(data.content.wpcf7_required_field) == "true";
         var onlyNumbers = String(data.content.wpcf7_only_numbers) == "true";
+        var isSetEmail = String(data.content.wpcf7_email) == "true";
 
+        inputType = inputType == "text" ? (onlyNumbers ? "number" : (isSetEmail ? "email" : "text")) : inputType;
         var cssSelector;
         switch (inputType) {
             case "text":
-            case "textarea":
+            case "email":
             case "number":
+            case "textarea":
             case "select":
                 cssSelector = "wpcf7-" + inputType;
                 break;
@@ -1389,14 +1448,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 if (isSetRequiredField) {   // Setting required field in the DOM element
                     switch (inputType) {
                         case "text":
-                            if (onlyNumbers) {
-                                $formColumns.find(".wpcf7-number").addClass("wpcf7-validates-as-required");
-                                $formColumns.find(".wpcf7-number").attr("aria-required", "true");
-                            } else {
-                                $formColumns.find(".wpcf7-text").addClass("wpcf7-validates-as-required");
-                                $formColumns.find(".wpcf7-text").attr("aria-required", "true");
-                            }
-                            break;
+                        case "email":
                         case "number":
                         case "select":
                         case "file":
@@ -1413,14 +1465,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 } else {    // Unsetting required field in the DOM element
                     switch (inputType) {
                         case "text":
-                            if (onlyNumbers) {
-                                $formColumns.find(".wpcf7-number" ).removeClass("wpcf7-validates-as-required");
-                                $formColumns.find(".wpcf7-number").removeAttr("aria-required");
-                            } else {
-                                $formColumns.find(".wpcf7-text").removeClass("wpcf7-validates-as-required");
-                                $formColumns.find(".wpcf7-text").removeAttr("aria-required");
-                            }
-                            break;
+                        case "email":
                         case "number":
                         case "select":
                         case "file":
@@ -1436,33 +1481,87 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     }
                 }
                 break;
+            case "wpcf7-email":
+                if (isSetEmail) {  // Setting e-mail
+                    // if (inputType == "text" || inputType == "number") {
+                        // var oldFieldType = onlyNumbers ? "number" : "text";
+                        var $input = $formColumns.find(".wpcf7-form-control");
+                        var oldFieldType = $input.attr('type');
+
+                        $input.attr("type", "email");
+                        $input.attr("name", "email-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                        $input.removeClass(oldFieldType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                        $input.addClass("email-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                        $input.removeClass("wpcf7-" + oldFieldType);
+                        $input.addClass("wpcf7-email");
+                        $input.addClass("wpcf7-validates-as-email");
+
+                        if (oldFieldType == "number") {
+                            $input.removeClass("wpcf7-validates-as-number");
+                        }
+
+                        inputType = "email";
+                    // }
+                } else {    // Unsetting e-mail
+                    // if (inputType == "email") {
+                        var $input = $formColumns.find(".wpcf7-email");
+
+                        $input.attr("type", inputType);
+                        $input.attr("name", inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                        $input.removeClass("email-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                        $input.addClass(inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                        $input.removeClass("wpcf7-email");
+                        $input.addClass("wpcf7-" + inputType);
+                        $input.removeClass("wpcf7-validates-as-email");
+
+                        if (inputType == "number") {
+                            $input.addClass("wpcf7-validates-as-number");
+                        }
+                    // }
+                }
+
+                $formColumns.each(function() {
+                    _removeColumnContentStyle($(this));
+                    _addColumnContentStyle($(this));
+                });
+                break;
             case "wpcf7-only-numbers":
                 if (onlyNumbers) {  // Setting only numbers
-                    inputType = "text";
-                    if (inputType == "text") {
-                        var $input = $formColumns.find(".wpcf7-text");
+                    // if (inputType == "text" || inputType == "email") {
+                        var $input = $formColumns.find(".wpcf7-form-control");
+                        var oldFieldType = $input.attr('type');
 
                         $input.attr("type", "number");
                         $input.attr("name", "number-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.removeClass("text-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                        $input.removeClass(oldFieldType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
                         $input.addClass("number-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.removeClass("wpcf7-text");
+                        $input.removeClass("wpcf7-" + oldFieldType);
                         $input.addClass("wpcf7-number");
                         $input.addClass("wpcf7-validates-as-number");
-                    }
+
+                        if (oldFieldType == "email") {
+                            $input.removeClass("wpcf7-validates-as-email");
+                        }
+                    // }
                 } else {    // Unsetting only numbers
-                    inputType = "number";
-                    if (inputType == "number") {
+                    
+                    // if (inputType == "number") {
                         var $input = $formColumns.find(".wpcf7-number");
 
-                        $input.attr("type", "text");
-                        $input.attr("name", "text-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                        // var newFieldType = isSetEmail ? "email" : "text";
+
+                        $input.attr("type", inputType);
+                        $input.attr("name", inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
                         $input.removeClass("number-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.addClass("text-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                        $input.addClass(inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
                         $input.removeClass("wpcf7-number");
-                        $input.addClass("wpcf7-text");
+                        $input.addClass("wpcf7-" + inputType);
                         $input.removeClass("wpcf7-validates-as-number");
-                    }
+
+                        if (inputType == "email") {
+                            $input.addClass("wpcf7-validates-as-email");
+                        }
+                    // }
                 }
 
                 $formColumns.each(function() {
@@ -1473,6 +1572,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             case "wpcf7-placeholder":
                 switch (inputType) {
                     case "text":
+                    case "email":
                     case "number":
                     case "textarea":
                         $formColumns.find(".wpcf7-" + inputType).attr("placeholder", newValue);
@@ -1639,6 +1739,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     var _generateColumnContentData = function ($formColumn, spanDataExists) {
         var columnContentData = {
             wpcf7_required_field: "",
+            wpcf7_email: "",
             wpcf7_only_numbers: "",
             wpcf7_default_check: "",
             wpcf7_placeholder: "",
@@ -1751,6 +1852,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
             // Required field
             columnContentData.wpcf7_required_field = (columnContentDataEl.getAttribute("data-wpcf7-required-field") ? columnContentDataEl.getAttribute("data-wpcf7-required-field") : defaultColumnContentValues.wpcf7_required_field);
+
+            // E-Mail
+            columnContentData.wpcf7_email = (columnContentDataEl.getAttribute("data-wpcf7-email") ? columnContentDataEl.getAttribute("data-wpcf7-email").toString() : defaultColumnContentValues.wpcf7_email);
 
             // Only numbers
             columnContentData.wpcf7_only_numbers = (columnContentDataEl.getAttribute("data-wpcf7-only-numbers") ? columnContentDataEl.getAttribute("data-wpcf7-only-numbers").toString() : defaultColumnContentValues.wpcf7_only_numbers);
@@ -2198,8 +2302,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         switch (inputType) {
             case "text":
-            case "textarea":
+            case "email":
             case "number":
+            case "textarea":
             case "select":
                 cssSelector = "wpcf7-" + inputType;
                 break;
@@ -2285,7 +2390,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         } else { // Other fields
             var columnContentPlaceholderRule = "";
 
-            if (inputType == "text" || inputType == "number" || inputType == "textarea") {
+            if (inputType == "text" || inputType == "email" || inputType == "number" || inputType == "textarea") {
                 columnContentPlaceholderRule += "color:" + columnContentData.placeholder_color + ";";
             }
 
@@ -2317,7 +2422,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
             var columnContentPlaceholderHoverRule = "";
 
-            if (inputType == "text" || inputType == "number" || inputType == "textarea") {
+            if (inputType == "text" || inputType == "email" || inputType == "number" || inputType == "textarea") {
                 columnContentPlaceholderHoverRule += "color:" + columnContentData.placeholder_hover_color + ";";
             }
             
@@ -2367,8 +2472,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var cssSelector;
         switch (inputType) {
             case "text":
-            case "textarea":
+            case "email":
             case "number":
+            case "textarea":
             case "select":
                 cssSelector = "wpcf7-" + inputType;
                 break;
@@ -2388,7 +2494,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             _updateColumnContentRule(formID, row, column, cssSelector, "float", "left");
         }
 
-        if (inputType == "text" || inputType == "number" || inputType == "textarea") {
+        if (inputType == "text" || inputType == "email" || inputType == "number" || inputType == "textarea") {
             _updateColumnContentRule(formID, row, column, cssSelector + "::placeholder", "text-color", placeholderColor);
             _updateColumnContentPlaceholderHoverRule(formID, row, column, cssSelector, "text-color", placeholderColorHover);
         }
@@ -2468,6 +2574,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
 
         var isSetRequiredField = String(columnContentData.wpcf7_required_field) == "true";
+        var isSetEmail = String(columnContentData.wpcf7_email) == "true";
         var onlyNumbers = String(columnContentData.wpcf7_only_numbers) == "true";
         var isSetDefaultCheck = String(columnContentData.wpcf7_default_check) == "true";
         var placeholder = columnContentData.wpcf7_placeholder;
@@ -2476,7 +2583,14 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var fileMaxDim = columnContentData.wpcf7_file_max_dimensions;
         var buttonText = columnContentData.wpcf7_button.text;
 
-        if(inputType == "text" || inputType == "select" || inputType == "file" || inputType == "textarea") {   // Required field
+        if (
+            inputType == "text" || 
+            inputType == "email" || 
+            inputType == "number" || 
+            inputType == "select" || 
+            inputType == "file" || 
+            inputType == "textarea"
+            ) {   // Required field
             // Puts (or removes) the * after [(type)
             var isAlreadyRequiredField = /\[[a-z]+\*/.test(shortcode);
             if(isAlreadyRequiredField) {
@@ -2504,7 +2618,24 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         }
 
-        if(inputType == "text" || inputType == "number") {   // Only number
+        if(inputType == "text" || inputType == "email" || inputType == "number") {   // E-Mail
+            // Changes the shortcode in [number number-xxx ...] or vice versa
+            if (isSetEmail) {
+                shortcode = shortcode.replace(/\[[a-z]+\*? [a-z]+/, "[number" + (isSetRequiredField ? "*": "") + " number");
+                shortcode = shortcode.replace(/class:[a-z]+/, "class:number");
+
+                inputType = "number";
+            } else {
+                var newFieldType = onlyNumbers ? "number" : "text";
+
+                shortcode = shortcode.replace(/\[[a-z]+\*? [a-z]+/, "[" + newFieldType + (isSetRequiredField ? "*": "") + " " + newFieldType);
+                shortcode = shortcode.replace(/class:[a-z]+/, "class:" + newFieldType);
+
+                inputType = newFieldType;
+            }
+        }
+
+        if(inputType == "text" || inputType == "email" || inputType == "number") {   // Only number
             // Changes the shortcode in [number number-xxx ...] or vice versa
             if (onlyNumbers) {
                 shortcode = shortcode.replace(/\[[a-z]+\*? [a-z]+/, "[number" + (isSetRequiredField ? "*": "") + " number");
@@ -2512,10 +2643,17 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
                 inputType = "number";
             } else {
-                shortcode = shortcode.replace(/\[[a-z]+\*? [a-z]+/, "[text" + (isSetRequiredField ? "*": "") + " text");
-                shortcode = shortcode.replace(/class:[a-z]+/, "class:text");
+                var newFieldType = isSetEmail ? "email" : "text";
 
-                inputType = "text";
+                // shortcode = shortcode.replace(/\[[a-z]+\*? [a-z]+/, "[text" + (isSetRequiredField ? "*": "") + " text");
+                // shortcode = shortcode.replace(/class:[a-z]+/, "class:text");
+
+                // inputType = "text";
+
+                shortcode = shortcode.replace(/\[[a-z]+\*? [a-z]+/, "[" + newFieldType + (isSetRequiredField ? "*": "") + " " + newFieldType);
+                shortcode = shortcode.replace(/class:[a-z]+/, "class:" + newFieldType);
+
+                inputType = newFieldType;
             }
         }
 
@@ -2533,7 +2671,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         }
 
-        if (inputType == "text" || inputType == "number" || inputType == "textarea") {   // Placeholder
+        if (inputType == "text" || inputType == "email" || inputType == "number" || inputType == "textarea") {   // Placeholder
             /* Puts the "placeholder" string and the placeholder value at the end 
             of the shortcode or removes it */
             var valueIsEmpty = placeholder === "";
@@ -2811,6 +2949,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         defaultColumnContentValues = {
             wpcf7_required_field: false,
+            wpcf7_email: false,
             wpcf7_only_numbers: false,
             wpcf7_default_check: false,
             wpcf7_placeholder: "Write here...",
