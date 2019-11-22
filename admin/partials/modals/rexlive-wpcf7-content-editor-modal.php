@@ -17,15 +17,6 @@ defined('ABSPATH') or exit;
         <!-- General wrap -->
         <div class="modal-content">
             <?php include 'rexlive-loader-modal.php'; ?>
-            <!-- <div class="bl_modal-row">
-                <div class="rexwpcf7-cont_row">
-                    <div class="rexwpcf7-count-column_accord"></div>
-                    <div class="rexwpcf7-count-column_1"></div>
-                    <div class="rexwpcf7-count-column_2">
-                        <span class="wpcf7-modal-title">TEXT FIELD</span>
-                    </div>
-                </div>
-            </div> -->
             <div class="bl_modal-row">
                 <!-- REQUIRED FIELD -->
                 <div class="rexwpcf7-cont_row">
@@ -94,14 +85,13 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <div class="bl_modal-row">
-                <!-- PLACEHOLDER -->
+            <div class="bl_modal-row"> <!-- // Placeholder -->
                 <div class="rexwpcf7-cont_row">
-                    <div class="rexwpcf7-count-column_2">
-                        <input type="text" id="wpcf7-placeholder">
-                    </div>
-                    <div class="rexwpcf7-count-column_2">
-                        <p>Placeholder</p>
+                    <div class="rexwpcf7-count-column_2 input-field">
+                        <input type="text" id="wpcf7-placeholder" name="wpcf7-placeholder">
+                        <label for="wpcf7-placeholder">
+                            <?php _e('Placeholder', 'rexpansive-builder');?>
+                        </label>
                     </div>
                 </div>
             </div>

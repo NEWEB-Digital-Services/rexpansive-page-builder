@@ -17335,14 +17335,6 @@ input:disabled + .rex_edit_title_slider {
         -webkit-transition: 1s;
         -o-transition: 1s;
         transition: 1s; }
-  #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-count-new_line {
-    width: 381px;
-    height: 0.5px;
-    float: left; }
-  #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-count-whole_row {
-    width: 334px;
-    height: 42px;
-    float: left; }
   #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-count-column_1 {
     width: 42px;
     height: 42px;
@@ -17483,27 +17475,58 @@ input:disabled + .rex_edit_title_slider {
   line-height: 25px;
   letter-spacing: 2px; }
 
-#rex-wpcf7-form-editor .rexpansive-accordion .rex-accordion--toggle .l-svg-icons > svg,
-#rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion--toggle .l-svg-icons > svg {
-  -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-          transform: rotate(45deg);
+#rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion-outer--toggle {
   cursor: pointer; }
+  #rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion-outer--toggle .l-svg-icons > svg {
+    -webkit-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+            transform: rotate(45deg); }
 
-#rex-wpcf7-form-editor .rexpansive-accordion.open .rex-accordion--toggle .l-svg-icons > svg,
-#rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion--toggle .l-svg-icons > svg {
+#rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .l-svg-icons > svg {
   -webkit-transform: rotate(90deg);
       -ms-transform: rotate(90deg);
           transform: rotate(90deg);
   width: 20px !important;
   height: 20px !important; }
 
-#rex-wpcf7-form-editor .rexpansive-accordion .rex-accordion--content,
-#rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion--content {
+#rex-wpcf7-form-editor .rexpansive-accordion-outer.open .ml4 {
+  margin-left: 2px; }
+
+#rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion-outer--content .rex-accordion-outer--toggle:hover {
+  cursor: pointer; }
+
+#rex-wpcf7-form-editor .rexpansive-accordion .rex-accordion--toggle .l-svg-icons > svg {
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+  cursor: pointer; }
+
+#rex-wpcf7-form-editor .rexpansive-accordion.open .rex-accordion--toggle .l-svg-icons > svg {
+  -webkit-transform: rotate(90deg);
+      -ms-transform: rotate(90deg);
+          transform: rotate(90deg);
+  width: 20px !important;
+  height: 20px !important; }
+
+#rex-wpcf7-form-editor .rexpansive-accordion .rex-accordion--content {
   border-bottom: 1px solid #ddd; }
-  #rex-wpcf7-form-editor .rexpansive-accordion .rex-accordion--content .rex-accordion--toggle:hover,
-  #rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion--content .rex-accordion--toggle:hover {
+  #rex-wpcf7-form-editor .rexpansive-accordion .rex-accordion--content .rex-accordion--toggle:hover {
     cursor: pointer; }
+  #rex-wpcf7-form-editor .rexpansive-accordion .rex-accordion--content.modal-row-default {
+    background-color: #FFF; }
+    #rex-wpcf7-form-editor .rexpansive-accordion .rex-accordion--content.modal-row-default .l-svg-icons > svg {
+      background-color: #FFF; }
+
+#rex-wpcf7-form-editor .rex-input-prefixed label {
+  padding-left: 4px; }
+
+#rex-wpcf7-form-editor .modal-row-grey {
+  background-color: #f4f4f4; }
+  #rex-wpcf7-form-editor .modal-row-grey:last-child {
+    border-bottom: 1px solid #ddd; }
+  #rex-wpcf7-form-editor .modal-row-grey .active,
+  #rex-wpcf7-form-editor .modal-row-grey .l-svg-icons > svg {
+    background-color: #f4f4f4; }
 
 #rex-wpcf7-form-editor .bl_modal-row .rexwpcf7-cont_row {
   width: 381px;
@@ -17585,10 +17608,10 @@ input:disabled + .rex_edit_title_slider {
     font-size: 10px;
     letter-spacing: 2px;
     line-height: 25px;
-    font-weight: bold;
+    font-weight: 400;
     position: absolute;
     top: -22px;
-    left: 5px; }
+    left: -2px; }
 
 #rex-wpcf7-form-editor .modal-form-column-wrapper {
   margin: 0;
@@ -17611,7 +17634,7 @@ input:disabled + .rex_edit_title_slider {
       font-size: 10px;
       letter-spacing: 2px;
       line-height: 25px;
-      font-weight: bold;
+      font-weight: 400;
       text-align: center;
       position: absolute;
       top: -22px;
@@ -17644,6 +17667,15 @@ input:disabled + .rex_edit_title_slider {
   margin-top: 7px;
   text-align: center; }
 
+#rex-wpcf7-form-editor .with-text-left input[type=text] {
+  width: 25px;
+  font-size: 15px;
+  line-height: 15px;
+  height: 20px;
+  margin-bottom: 7px;
+  margin-top: 7px;
+  text-align: left; }
+
 #rex-wpcf7-form-editor .with-preview-text input[type=text] {
   width: 150px;
   height: 30px;
@@ -17651,14 +17683,74 @@ input:disabled + .rex_edit_title_slider {
   margin: 20px 10px;
   padding: 0 0 0 10px; }
 
+#rex-wpcf7-form-editor .w67 {
+  width: 67px; }
+
+#rex-wpcf7-form-editor .w115 {
+  width: 115px; }
+
+#rex-wpcf7-form-editor .pl3 {
+  padding-left: 3px; }
+
+#rex-wpcf7-form-editor .pl4 {
+  padding-left: 4px; }
+
+#rex-wpcf7-form-editor .pl12 {
+  padding-left: 12px; }
+
+#rex-wpcf7-form-editor .pl20 {
+  padding-left: 20px; }
+
+#rex-wpcf7-form-editor .pr4 {
+  padding-right: 4px; }
+
 #rex-wpcf7-form-editor .pr12 {
   padding-right: 12px; }
 
+#rex-wpcf7-form-editor .pr20 {
+  padding-right: 20px; }
+
+#rex-wpcf7-form-editor .ml3 {
+  margin-left: 3px; }
+
+#rex-wpcf7-form-editor .ml4,
+#rex-wpcf7-form-editor .ml4-2 {
+  margin-left: 4px; }
+
+#rex-wpcf7-form-editor .ml12 {
+  margin-left: 12px; }
+
+#rex-wpcf7-form-editor .ml17 {
+  margin-left: 17px; }
+
+#rex-wpcf7-form-editor .ml19 {
+  margin-left: 19px; }
+
+#rex-wpcf7-form-editor .ml20 {
+  margin-left: 20px; }
+
+#rex-wpcf7-form-editor .ml24 {
+  margin-left: 24px; }
+
+#rex-wpcf7-form-editor .ml26 {
+  margin-left: 26px; }
+
+#rex-wpcf7-form-editor .ml54 {
+  margin-left: 54px; }
+
+#rex-wpcf7-form-editor .mtb21 {
+  padding-top: 15px;
+  padding-bottom: 15px; }
+
+#rex-wpcf7-form-editor .rex-wpcf7-modal-column-w30,
 #rex-wpcf7-form-editor .rex-wpcf7-modal-column-w50,
 #rex-wpcf7-form-editor .rex-wpcf7-modal-column-w70,
-#rex-wpcf7-form-editor .rex-wpcf7-modal-column-w250 {
+#rex-wpcf7-form-editor .rex-wpcf7-modal-column-w200 {
   text-align: center;
   margin: 0 0 0 10px; }
+
+#rex-wpcf7-form-editor .rex-wpcf7-modal-column-w30 {
+  width: 30px; }
 
 #rex-wpcf7-form-editor .rex-wpcf7-modal-column-w50 {
   width: 50px; }
@@ -17669,6 +17761,9 @@ input:disabled + .rex_edit_title_slider {
 #rex-wpcf7-form-editor .rex-wpcf7-modal-column-w200 {
   width: 200px; }
 
+#rex-wpcf7-form-editor .rex-wpcf7-modal-column-w253 {
+  width: 253px; }
+
 #rex-wpcf7-form-editor .label-px {
   text-transform: uppercase; }
 
@@ -17676,11 +17771,17 @@ input:disabled + .rex_edit_title_slider {
   padding-left: 0;
   padding-right: 0; }
 
+#rex-wpcf7-form-editor .prova-icon .l-svg-icons {
+  font-size: 30px; }
+
 #rex-wpcf7-form-editor .big-icon .l-svg-icons {
   font-size: 30px; }
 
 #rex-wpcf7-form-editor .form-icon .l-svg-icons {
   font-size: 39px; }
+
+#rex-wpcf7-form-editor #rex-wpcf7-mail-to {
+  width: 341px; }
 
 #rex-wpcf7-form-editor #rex-wpcf7-content-width,
 #rex-wpcf7-form-editor #rex-wpcf7-content-height {
@@ -17692,7 +17793,7 @@ input:disabled + .rex_edit_title_slider {
 
 #rex-wpcf7-form-editor #rex-wpcf7-error-message,
 #rex-wpcf7-form-editor #rex-wpcf7-send-message {
-  width: 200px; }
+  width: 217px; }
 
 #rex-wpcf7-content-preview-text-color,
 #rex-wpcf7-content-preview-text-color-hover,

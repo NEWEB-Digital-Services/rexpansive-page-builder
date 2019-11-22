@@ -331,6 +331,12 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
         wpcf7_form_editor_properties.$form_error_message_font_size.val(/[0-9]+/.exec(elementData.wpcf7_data.error_message_font_size));
 
+        if (wpcf7_form_editor_properties.$form_error_message.val() != "") {
+            wpcf7_form_editor_properties.$form_error_message
+                .siblings("label, .prefix")
+                .addClass('active');
+        }
+
         // Send Message
         // wpcf7_form_editor_properties.$form_preview_border_color.css("background-color", elementData.send_message_color);
         wpcf7_form_editor_properties.$form_send_message_color_value.val(elementData.send_message_color);
@@ -338,6 +344,12 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         wpcf7_form_editor_properties.$form_send_message_color_value.spectrum("set", elementData.send_message_color);
 
         wpcf7_form_editor_properties.$form_send_message_font_size.val(/[0-9]+/.exec(elementData.wpcf7_data.send_message_font_size));
+
+        if (wpcf7_form_editor_properties.$form_send_message.val() != "") {
+            wpcf7_form_editor_properties.$form_send_message
+                .siblings("label, .prefix")
+                .addClass('active');
+        }
 
         /* CONTENT OPTIONS*/
         // Content width
@@ -1408,23 +1420,34 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
     
+    var needToSave = false;
+
     var _linkDocumentListeners = function () {
         wpcf7_form_editor_properties.$close_button.on("click", function () {
-            elementData = jQuery.extend(true, {}, resetData);
-            _updatePanel();
-            // @todo Apply old data but only some
+            needToSave = false;
             _closeModal();
         });
 
         wpcf7_form_editor_properties.$apply_changes_button.on("click", function () {
-            _saveFormSettings();
-            _updateFormDataFromPanel();
-            _saveElementSpanDataOnDB();
-            _applyChanges();
+            needToSave = true;
             _closeModal();
         });
 
-        wpcf7_form_editor_properties.$modal.on('rexlive:this_modal_closed', function() {});
+        wpcf7_form_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
+            /* This event is triggered also when clicking out of the modal. 
+            In that case it's considered like a "don't want to save" action */
+            if (needToSave) {
+                _saveFormSettings();
+                _updateFormDataFromPanel();
+                _saveElementSpanDataOnDB();
+                _applyChanges();
+            } else {
+                elementData = jQuery.extend(true, {}, resetData);
+                _updatePanel();
+                // @todo Apply old data but only some
+                console.log("resetData", elementData);
+            }
+        });
 
         wpcf7_form_editor_properties.$content_width_type.on("click", function () {
             var widthValue = wpcf7_form_editor_properties.$content_width.val();
@@ -1561,9 +1584,11 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         var $accordions = $self.find('.rexpansive-accordion');
         var $container = $self;
 
-        $outerAccordion.rexAccordion({open:{},close:{},});
+        $outerAccordion.rexAccordion({open:{},close:{}, selectors: {
+            toggle: '.rex-accordion-outer--toggle',
+            content: '.rex-accordion-outer--content'
+        },});
         $accordions.rexAccordion({open:{},close:{},});
-        console.log($accordions);
 
         wpcf7_form_editor_properties = {
             $self: $self,
@@ -1613,6 +1638,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             $content_text_color_value: $container.find("#rex-wpcf7-content-text-color"),
             $content_text_color_runtime: $container.find("#rex-wpcf7-content-text-color-runtime"),
             $content_text_color_preview: $container.find("#rex-wpcf7-content-text-color-preview-icon"),
+
+            $content_text_color_palette_buttons: $self.find("#text-color-palette .bg-palette-selector"),
 
             $content_preview_text_color_hover: $container.find("#rex-wpcf7-content-preview-text-color-hover"),
             $content_text_color_hover_value: $container.find("#rex-wpcf7-content-text-color-hover"),

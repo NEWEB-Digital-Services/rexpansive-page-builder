@@ -13,7 +13,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 
      * @param {jQuery} $target input field
      * @param {Boolean} negativeNumbers true if allow negative numbers
      */
@@ -346,6 +345,11 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
         // Placeholder
         wpcf7_content_editor_properties.$content_placeholder.val(columnContentData.wpcf7_placeholder);
+        if (wpcf7_content_editor_properties.$content_placeholder.val() != "") {
+            wpcf7_content_editor_properties.$content_placeholder
+                .siblings("label, .prefix")
+                .addClass('active');
+        }
 
         // Width & height
         wpcf7_content_editor_properties.$content_input_width.val(/[0-9]+/.exec(columnContentData.input_width));

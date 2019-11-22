@@ -12,9 +12,9 @@
 
   .rexpansive-accordion-outer {
     .rex-accordion-outer--toggle {
+      cursor: pointer;
       .l-svg-icons > svg {
         transform: rotate(45deg);
-        cursor:pointer;
       }
     }
 
@@ -26,15 +26,21 @@
           height:20px !important;
         }
       }
+
+      .ml4 {
+        margin-left: 2px;
+      }
     }
 
     .rex-accordion-outer--content {
-      border-bottom: 1px solid #ddd;
+      // border-bottom: 1px solid #ddd;
 
       .rex-accordion-outer--toggle:hover {
-        cursor:pointer;
+        cursor: pointer;
       }
     }
+
+
   }
 
   .rexpansive-accordion {
@@ -53,6 +59,10 @@
           height:20px !important;
         }
       }
+
+      .ml4-2 {
+        // margin-left: 2px;
+      }
     }
 
     .rex-accordion--content {
@@ -61,6 +71,37 @@
       .rex-accordion--toggle:hover {
         cursor:pointer;
       }
+
+      &.modal-row-default {
+        background-color: #FFF;
+
+        &:last-child {
+          // border-bottom: 1px solid #ddd;
+        }
+
+        .l-svg-icons > svg {
+          background-color: #FFF;
+        }
+      }
+    }
+  }
+
+  .rex-input-prefixed {
+    label {
+      padding-left: 4px;
+    }
+  }
+
+  .modal-row-grey {
+    background-color: $palette-color-6;
+
+    &:last-child {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .active,
+    .l-svg-icons > svg {
+      background-color: $palette-color-6;
     }
   }
 
@@ -163,10 +204,10 @@
       font-size: 10px;
       letter-spacing: 2px;
       line-height: 25px;
-      font-weight: bold;
+      font-weight: 400;
       position: absolute;
       top: -22px;
-      left: 5px;
+      left: -2px;
     }
   }
 
@@ -189,31 +230,14 @@
       padding: 5px;
 
       .modal-form-column-title {
-        // width: 50px;
-        // height: 25px;
-        // margin: 10px;
-        // border-color: $palette-color-2;
-        // border: 0px dotted;
-
-        // vertical-align: middle;
-        // text-transform: uppercase;
-        // font-size: 10px;
-        // letter-spacing: 2px;
-        // line-height: 25px;
-        // font-weight: bold;
-        // text-align: center;
-
         width: 54px;
         height: 25px;
-        // margin: 10px;
-        // border-color: #979797;
-        // border: 0px dotted;
         vertical-align: middle;
         text-transform: uppercase;
         font-size: 10px;
         letter-spacing: 2px;
         line-height: 25px;
-        font-weight: bold;
+        font-weight: 400;
         text-align: center;
         position: absolute;
         top: -22px;
@@ -254,6 +278,18 @@
     }
   }
 
+  .with-text-left {
+    input[type=text] {
+      width: 25px;
+      font-size: 15px;
+      line-height: 15px;
+      height: 20px;
+      margin-bottom: 7px;
+      margin-top: 7px;
+      text-align: left;
+    }
+  }
+
   .with-preview-text {
     input[type=text] {
       width: 150px;
@@ -264,15 +300,94 @@
     }
   }
 
+  .w67 {
+    width: 67px;
+  }
+  
+  .w115 {
+    width: 115px;
+  }
+
+  .pl3 {
+    padding-left: 3px;
+  }
+
+  .pl4 {
+    padding-left: 4px;
+  }
+
+  .pl12 {
+    padding-left: 12px;
+  }
+
+  .pl20 {
+    padding-left: 20px;
+  }
+
+  .pr4 {
+    padding-right: 4px;
+  }
+
   .pr12 {
     padding-right: 12px;
   }
 
+  .pr20 {
+    padding-right: 20px;
+  }
+
+  .ml3 {
+    margin-left: 3px;
+  }
+
+  .ml4,
+  .ml4-2 {
+    margin-left: 4px;
+  }
+
+  .ml12 {
+    margin-left: 12px;
+  }
+
+  .ml17 {
+    margin-left: 17px;
+  }
+
+  .ml19 {
+    margin-left: 19px;
+  }
+
+  .ml20 {
+    margin-left: 20px;
+  }
+
+  .ml24 {
+    margin-left: 24px;
+  }
+
+  .ml26 {
+    margin-left: 26px;
+  }
+
+  .ml54 {
+    margin-left: 54px;
+  }
+
+  .mtb21 {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .rex-wpcf7-modal-column-w30,
   .rex-wpcf7-modal-column-w50,
   .rex-wpcf7-modal-column-w70,
-  .rex-wpcf7-modal-column-w250 {
+  .rex-wpcf7-modal-column-w200 {
     text-align: center;
     margin: 0 0 0 10px;
+  }
+
+  .rex-wpcf7-modal-column-w30 {
+    width: 30px;
   }
   
   .rex-wpcf7-modal-column-w50 {
@@ -287,6 +402,10 @@
     width: 200px;
   }
 
+  .rex-wpcf7-modal-column-w253 {
+    width: 253px;
+  }
+
   .label-px {
     text-transform: uppercase;
   }
@@ -294,6 +413,12 @@
   .no_pad_lr {
     padding-left: 0;
     padding-right: 0;
+  }
+
+  .prova-icon {
+    .l-svg-icons {
+      font-size: 30px;
+    }
   }
 
   .big-icon {
@@ -308,6 +433,10 @@
     }
   }
 
+  #rex-wpcf7-mail-to {
+    width: 341px;
+  }
+
   #rex-wpcf7-content-width,
   #rex-wpcf7-content-height {
     width: 35px;
@@ -317,10 +446,10 @@
   #rex-wpcf7-set-content-font-size {
     width: 25px;
   }
-
+  
   #rex-wpcf7-error-message,
   #rex-wpcf7-send-message {
-    width: 200px;
+    width: 217px;
   }
 }
 
