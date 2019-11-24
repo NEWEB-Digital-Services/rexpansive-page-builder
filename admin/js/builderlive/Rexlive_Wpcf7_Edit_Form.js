@@ -1489,6 +1489,28 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             });
         });
 
+        // Text Color Palette
+        wpcf7_form_editor_properties.$content_text_color_palette_buttons.on("click", function(event) {
+            var color = $(event.currentTarget).find(".bg-palette-value").val();
+
+            $(event.currentTarget).addClass("palette-color-active");
+            wpcf7_form_editor_properties.$content_preview_text_color.hide();
+            wpcf7_form_editor_properties.$content_text_color_palette_buttons
+              .not(event.currentTarget)
+              .removeClass("palette-color-active");
+            wpcf7_form_editor_properties.$content_text_color_value.spectrum("set", color);
+            wpcf7_form_editor_properties.$content_text_color_runtime.val(color);
+
+            elementData.wpcf7_data.content.text_color = color;
+
+            _updateFormContentLive({
+                type: "text-color",
+                name: "text-color",
+                value: color
+            });
+          }
+        );
+
         // Hover Text Color Palette
         wpcf7_form_editor_properties.$content_hover_text_color_palette_buttons.on("click", function(event) {
             var color = $(event.currentTarget).find(".bg-palette-value").val();

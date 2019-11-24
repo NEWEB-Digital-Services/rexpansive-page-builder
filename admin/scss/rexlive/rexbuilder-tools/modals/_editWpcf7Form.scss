@@ -4,6 +4,7 @@
   }
 
   .modal-accordion-title {
+    margin-left: 12px;
     text-transform: uppercase;
     font-size: 30px;
     line-height: 25px;
@@ -25,11 +26,14 @@
           width:20px !important;
           height:20px !important;
         }
+
+        &.ml4 {
+          margin-left: 2px;
+          margin-right: 2px;
+        }
       }
 
-      .ml4 {
-        margin-left: 2px;
-      }
+      
     }
 
     .rex-accordion-outer--content {
@@ -39,8 +43,6 @@
         cursor: pointer;
       }
     }
-
-
   }
 
   .rexpansive-accordion {
@@ -308,32 +310,25 @@
     width: 115px;
   }
 
+  .w190 {
+    width: 190.5px;
+  }
+
   .pl3 {
     padding-left: 3px;
-  }
-
-  .pl4 {
-    padding-left: 4px;
-  }
-
-  .pl12 {
-    padding-left: 12px;
   }
 
   .pl20 {
     padding-left: 20px;
   }
 
+
   .pr4 {
     padding-right: 4px;
   }
-
-  .pr12 {
-    padding-right: 12px;
-  }
-
-  .pr20 {
-    padding-right: 20px;
+  
+  .ml2 {
+    margin-left: 2px;
   }
 
   .ml3 {
@@ -345,35 +340,27 @@
     margin-left: 4px;
   }
 
-  .ml12 {
-    margin-left: 12px;
+  .ml7 {
+    margin-left: 7px;
   }
 
-  .ml17 {
-    margin-left: 17px;
+  .ml12 {
+    margin-left: 12px;
   }
 
   .ml19 {
     margin-left: 19px;
   }
 
-  .ml20 {
-    margin-left: 20px;
-  }
-
   .ml24 {
     margin-left: 24px;
-  }
-
-  .ml26 {
-    margin-left: 26px;
   }
 
   .ml54 {
     margin-left: 54px;
   }
 
-  .mtb21 {
+  .rex-wpcf7-modal-row-tall {
     padding-top: 15px;
     padding-bottom: 15px;
   }

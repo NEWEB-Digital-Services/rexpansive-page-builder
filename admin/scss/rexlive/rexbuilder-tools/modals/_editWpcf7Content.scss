@@ -2,12 +2,16 @@
   .row-hidden {
     display: none;
   }
+
+  .label-px {
+    text-transform: uppercase;
+  }
   
   .rexpansive-accordion {
     .rex-accordion--toggle {
       .l-svg-icons > svg {
         transform: rotate(45deg);
-        cursor:pointer;
+        cursor: pointer;
       }
     }
 
@@ -15,8 +19,8 @@
       .rex-accordion--toggle {
         .l-svg-icons > svg {
           transform: rotate(90deg);
-          width:20px !important;
-          height:20px !important;
+          width: 20px !important;
+          height: 20px !important;
         }
       }
     }
@@ -25,36 +29,144 @@
       border-bottom: 1px solid #ddd;
 
       .rex-accordion--toggle:hover {
-        cursor:pointer;
+        cursor: pointer;
       }
     }
   }
 
+  #wpcf7-list-fields {
+    display: flex;
+    flex-wrap: wrap;
+    border-width: 0;
+
+    .rexwpcf7-sort,
+    .rex-wpcf7-delete-list-field {
+      cursor: pointer;
+    }
+
+    .wpcf7-select-field {
+      width: 250px;
+    }
+  }
+
+  #rex-wpcf7-required-icon,
+  #rex-wpcf7-email-icon,
+  #rex-wpcf7-numbers-icon {
+    .l-svg-icons {
+      font-size: 30px;
+    }
+  }
+
+  .rex-wpcf7-file-list {
+    .rexwpcf7-sort {
+      display: none;
+    }
+  }
+
+  .no-br {
+    border-width: 0px;
+  }
+
+  .w67 {
+    width: 67px;
+  }
+  
+  .w115 {
+    width: 115px;
+  }
+
+  .w190 {
+    width: 190.5px;
+  }
+
+  .pl3 {
+    padding-left: 3px;
+  }
+
+  .pl20 {
+    padding-left: 20px;
+  }
+
+
+  .pr4 {
+    padding-right: 4px;
+  }
+  
+  .ml2 {
+    margin-left: 2px;
+  }
+
+  .ml3 {
+    margin-left: 3px;
+  }
+
+  .ml4,
+  .ml4-2 {
+    margin-left: 4px;
+  }
+
+  .ml7 {
+    margin-left: 7px;
+  }
+
+  .ml12 {
+    margin-left: 12px;
+  }
+
+  .ml19 {
+    margin-left: 19px;
+  }
+
+  .ml24 {
+    margin-left: 24px;
+  }
+
+  .ml54 {
+    margin-left: 54px;
+  }
+
+  .rex-wpcf7-modal-row-tall {
+    padding-top: 15px;
+    padding-bottom: 15px;
+  }
+
+  .with-text {
+    input[type=text] {
+      width: 25px;
+      font-size: 15px;
+      line-height: 15px;
+      height: 20px;
+      margin-bottom: 7px;
+      margin-top: 7px;
+      text-align: center;
+    }
+  }
+
   .bl_modal-row .rexwpcf7-cont_row {
-    width:381px;
-    margin:12px auto;
+    width: 381px;
+    margin: 12px auto;
     
     .rexwpcf7-count-column_accord {
-      width:30px;
-      height:42px;
-      margin-right:12px;
-      float:left;
-      position:relative;
+      width: 30px;
+      height: 42px;
+      margin-right: 12px;
+      float: left;
+      position: relative;
 
       .rexwpcf7-upd-accord_button {
-        width:30px;
-        height:42px;
-        position:absolute;
-        top:0;
-        left:0;
-        text-align:center;
-        font-size:34px;
-        padding:7px 0px 0px 2px;
-        color:#979797;
+        width: 30px;
+        height: 42px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        text-align: center;
+        font-size: 34px;
+        padding: 7px 0px 0px 2px;
+        color: #979797;
 
         &:hover {
-          color:#00ACFF;
-          transition:1s;
+          color: #00ACFF;
+          transition: 1s;
         }
       }
     }
