@@ -199,8 +199,6 @@ var Rexbuilder_Rexelement = (function ($) {
                 $elementData = $.parseHTML(response.data.element_data_html[0]);
                 $elementWrapper.prepend($elementData);
 
-                console.log()
-
                 switch (dropType) {
                     case "inside-block":
                         $elementWrapper.wrap("<span class=\"rex-elements-paragraph\"></span>");
@@ -274,11 +272,13 @@ var Rexbuilder_Rexelement = (function ($) {
             var $firstElement = $form.children().first().detach();
             var $fields = $form.find(".wpcf7-form-control-wrap").detach();
             var $submits = $form.find("input[type=submit]").detach();
+            var $rows = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
+
             $fields = $fields.add($submits);
             $form.empty();
-            var $rows = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
             $form.append($rows);
             $fields.each(function (i) {
+                // Fare in modo che si capisca che input ci sono e che vengano sostituiti con input adeguati (classe giusta, name giusto)
                 var $newRow = $(document.createElement("div"))
                     .addClass("wpcf7-row wpcf7-row__1-column")
                     .attr("wpcf7-row-number", (i + 1));

@@ -2128,112 +2128,6 @@ var TextEditor = (function ($) {
       }
     },
 
-    hideAllRowToolsInsideRow: function () {
-      var $form = $(this.traceForm);
-      $form.find(".rexwpcf7-row-tools").hide();
-    },
-
-    putRowToolsInsideRow: function () {
-      var $formRow = $(this.traceFormRow);
-      var $formRowTools = $(this.formRowTools);
-      var $formRowToolsInsideRow = $formRow.find(".rexwpcf7-row-tools");
-
-      if ($formRowToolsInsideRow.length == 0) {
-        var $rowToolsCloned = $formRowTools.clone();
-        $rowToolsCloned.hide();
-        $rowToolsCloned.find(".rex-wpcf7-row-clone").remove();
-        $rowToolsCloned.find(".rex-wpcf7-row-delete").remove();
-        $formRow.prepend($rowToolsCloned);
-
-        // $formRowToolsInsideRow = $formRow.find(".rexwpcf7-row-tools");
-        // $formRowToolsInsideRow.show();
-      } else {
-        // $formRowToolsInsideRow.show();
-      }
-
-      // this.viewRowToolboxInsideRow();
-    },
-
-    /**
-     * Sets the outline of a DOM element
-     * @param {DOM Element} element
-     * @param {String} color The color of the outline
-     */
-    setOutline: function ($element, color) {
-      $element.css("outline", "2px solid " + color);
-      $element.css("outline-offset", "-1px");
-    },
-
-    /**
-     * @param  {String} element Can be "form", "rows" or "columns"
-     */
-    clearOutlines: function (element) {
-      switch (element) {
-        case "form":
-          $(this.traceForm)
-            .css("outline", "")
-            .css("outline-offset", "");
-          break;
-        case "rows":
-          $(this.traceForm).find(".wpcf7-row")
-            .css("outline", "")
-            .css("outline-offset", "");
-          break;
-        case "columns":
-          var that = this;
-          $(this.traceForm).find(".wpcf7-column").each(function () {
-            if ($(this).find(".wpcf7-add-new-form-content").length == 0 && $(this).find(".wpcf7-add-new-row").length == 0) {
-              $(that.findElementToOutline(this))
-              .css("outline", "")
-              .css("outline-offset", "");
-            }
-          });
-          break;
-        default:
-          break;
-      }
-    },
-
-    findElementToOutline: function (formColumn) {
-      var $formColumn = $(formColumn);
-      var elementToOutlineClass;
-
-      elementToOutlineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
-      if(null == elementToOutlineClass) {
-        elementToOutlineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList)[0];
-      } else {
-         elementToOutlineClass = elementToOutlineClass[0];
-      }
-
-      var elementToOutlineType = /[a-z]+/.exec(elementToOutlineClass)[0];
-      elementToOutlineType = (elementToOutlineType == "menu") ? "select" : elementToOutlineType;
-
-      switch (elementToOutlineType) {
-        case "text":
-          // elementToOutlineType = $formColumn.find(".wpcf7-text").length == 0 ? "number" : "text";
-          // return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
-          // break;
-        case "textarea":
-        case "number":
-        case "email":
-        case "submit":
-        case "select":
-          return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
-          break;
-        case "radio":
-        case "acceptance":
-        case "file":
-          return $formColumn.find("." + elementToOutlineClass).eq(0)[0];
-          break;
-        default:
-          break;
-      }
-    },
-
-    hidePlusButtons: function () {
-      $(this.traceForm).find(".wpcf7-add-new-form-content").css("display", "none");
-    },
-
     handleClickAddFormContent: function (event) {
       this.hideAllToolbars();
       var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
@@ -2266,7 +2160,7 @@ var TextEditor = (function ($) {
       };
       $elementWrapper.parents(".text-wrap").blur();
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-      Rexbuilder_Util_Editor.updateBlockContainerHeight($elementWrapper.parents('.text-wrap'));
+      this.updateHeight();
     },
 
     handleClickAddRow: function (event) {
@@ -2274,9 +2168,6 @@ var TextEditor = (function ($) {
 
       this.hideRowToolbox();
       this.hideColumnToolbox();
-
-      // var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
-      // Rexbuilder_Util_Editor.updateBlockContainerHeight($elementWrapper.parents('.text-wrap'));
     },
 
     handleClickFormSettings: function (event) {
@@ -2296,8 +2187,6 @@ var TextEditor = (function ($) {
       this.hideSelectColumnsToolbar();
       this.hideRowToolbox();
       this.hideColumnToolbox();
-
-      console.log("clickato");
 
       var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
 
@@ -2322,8 +2211,8 @@ var TextEditor = (function ($) {
       this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
       this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
 
-      // var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
-      // Rexbuilder_Util_Editor.updateBlockContainerHeight($elementWrapper.parents('.text-wrap'));
+      this.updateHeight();
+      this.focusBlock();
     },
 
     handleClickDragFormRow: function (event) {
@@ -2342,10 +2231,9 @@ var TextEditor = (function ($) {
       var numberRowBefore = parseInt($rowToClone.attr("wpcf7-row-number"));
 
       Rexbuilder_Rexwpcf7.addRow(formID, $rowToClone, numberRowBefore);
-      this.placeFormToolbox();
 
-      var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
-      Rexbuilder_Util_Editor.updateBlockContainerHeight($elementWrapper.parents('.text-wrap'));
+      this.updateHeight();
+      this.focusBlock();
     },
 
     handleClickDeleteFormRow: function (event) {
@@ -2356,11 +2244,11 @@ var TextEditor = (function ($) {
       var rowNumberToDelete = $(this.traceFormRow).attr("wpcf7-row-number");
       var blockIDToFocusAfterDelete = $(this.traceForm).parents(".grid-stack-item").attr("id");
 
-      this.placeFormToolbox();
+      // this.placeFormToolbox();
       Rexbuilder_Rexwpcf7.deleteRow(formID, rowNumberToDelete, blockIDToFocusAfterDelete);
 
-      var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
-      Rexbuilder_Util_Editor.updateBlockContainerHeight($elementWrapper.parents('.text-wrap'));
+      this.updateHeight();
+      this.focusBlock();
     },
 
     handleClickSettingsFormColumn: function (event) {
@@ -2393,13 +2281,14 @@ var TextEditor = (function ($) {
       var numberRowBefore = parseInt($(this.traceFormRow).attr("wpcf7-row-number"));
 
       Rexbuilder_Rexwpcf7.addClonedColumnRow(formID, clonedColumnNumber, numberRowBefore);
-      this.placeFormToolbox();
+      // this.placeFormToolbox();
 
-      var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
-      Rexbuilder_Util_Editor.updateBlockContainerHeight($elementWrapper.parents('.text-wrap'));
+      this.updateHeight();
+      this.focusBlock();
     },
 
     handleClickDeleteFormColumn: function (event) {
+      
       this.hideColumnToolbox();
 
       var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
@@ -2408,7 +2297,7 @@ var TextEditor = (function ($) {
       var columnNumberToDelete = $(this.traceFormColumn).attr("wpcf7-column-number");
       Rexbuilder_Rexwpcf7.deleteColumnContent(formID, rowNumberToDelete, columnNumberToDelete);
 
-      this.placeFormToolbox();
+      this.focusBlock();
     },
 
     handleBlur: function (event) {
@@ -2418,50 +2307,61 @@ var TextEditor = (function ($) {
       this.hidePlusButtons();
 
       var $target = $(event.target);
-      console.log(event.target)
 
-      if ($target.parents(".wpcf7").length == 0 && $target.parents("#rex-wpcf7-tools").length == 0 && $target.parents(".rexwpcf7-row-tools").length == 0 && $target.parents(".rexwpcf7-column-tools").length == 0 && $target.parents(".wpcf7-select-columns-number").length == 0) {
-        console.log("entra");
+      if ($target.parents(".wpcf7").length == 0 && $target.parents("#rex-wpcf7-tools").length == 0 && $target.parents(".rexwpcf7-row-tools").length == 0 && $target.parents(".rexwpcf7-column-tools").length == 0 && $target.parents("#wpcf7-select-columns-number").length == 0) {
         this.hideAllToolbars();
       }
 
-      var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
-      Rexbuilder_Util_Editor.updateBlockContainerHeight($elementWrapper.parents('.text-wrap'));
+      this.updateHeight();
     },
 
     //////////////////////////
     /* TOOLBOXES & TOOLBARS */
     //////////////////////////
+    
+    hideAllRowToolsInsideRow: function () {
+      var $form = $(this.traceForm);
+      $form.find(".rexwpcf7-row-tools").hide();
+    },
+
+    putRowToolsInsideRow: function () {
+      var $formRow = $(this.traceFormRow);
+      var $formRowTools = $(this.formRowTools);
+      var $formRowToolsInsideRow = $formRow.find(".rexwpcf7-row-tools");
+
+      if ($formRowToolsInsideRow.length == 0) {
+        var $rowToolsCloned = $formRowTools.clone();
+        $rowToolsCloned.hide();
+        $rowToolsCloned.find(".rex-wpcf7-row-clone").remove();
+        $rowToolsCloned.find(".rex-wpcf7-row-delete").remove();
+        $formRow.prepend($rowToolsCloned);
+
+        // $formRowToolsInsideRow = $formRow.find(".rexwpcf7-row-tools");
+        // $formRowToolsInsideRow.show();
+      } else {
+        // $formRowToolsInsideRow.show();
+      }
+
+      // this.viewRowToolboxInsideRow();
+    },
 
     placeFormToolbox: function (event) {
-      // this.formTools.style.display = "block";
-      // this.placeFormToolbox();
       var $traceForm = $(this.traceForm);
       var $formRows = $traceForm.find('.wpcf7-rows');
 
       if ($formRows.find('.wpcf7-row').length == 0) {
         var newRowNumber = 1;
       } else {
-        var newRowNumber = parseInt($formRows.find('.wpcf7-row').last().attr('wpcf7-row-number')) + 1;
+        var newRowNumber = parseInt($formRows.find('.wpcf7-row').not('#rex-wpcf7-tools').eq(-1).attr('wpcf7-row-number')) + 1;
       }
 
       $(this.formTools).attr('wpcf7-row-number', newRowNumber);
-
       $formRows.append(this.formTools);
-      var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
-      Rexbuilder_Util_Editor.updateBlockContainerHeight($elementWrapper.parents('.text-wrap'));
+      
+      this.updateHeight();
     },
 
-    // placeFormToolbox: function () {
-    //   var targetCoords = this.traceForm.getBoundingClientRect();
-    //   this.formTools.style.width = targetCoords.width + "px";
-    //   this.formTools.style.left = (targetCoords.left + ((targetCoords.width - this.formTools.offsetWidth) / 2)) + "px";
-    //   this.formTools.style.top = (window.scrollY + targetCoords.top - this.formTools.offsetHeight + targetCoords.height) + "px";
-    // },
-
     hideFormToolbox: function (event) {
-      // this.formTools.style.display = "none";
-      
       $(this.formTools).detach();
     },
     
@@ -2474,16 +2374,12 @@ var TextEditor = (function ($) {
     placeRowToolbox: function () {
       var formCoords = this.traceForm.getBoundingClientRect();
       var targetCoords = this.traceFormRow.getBoundingClientRect();
-
       var offsetFirstRow = (parseInt($(this.traceFormRow).attr("wpcf7-row-number")) == 1) ? 20 : 0;
 
       this.formRowTools.style.width = targetCoords.width/10 + "px";
       // this.formRowTools.style.left = (targetCoords.left + ((targetCoords.width - this.formRowTools.offsetWidth) / 2)) + "px";
       this.formRowTools.style.left = (targetCoords.left + targetCoords.width - targetCoords.width/10) + "px";
       this.formRowTools.style.top = (window.scrollY + targetCoords.top - this.formRowTools.offsetHeight / 2 + offsetFirstRow - 11) + "px";
-
-      // this.formRowTools.style.left = targetCoords.width - targetCoords.width/10 + 20 + "px";
-      // this.formRowTools.style.top = targetCoords.top - 5 + "px";
     },
 
     hideRowToolbox: function (event) {
@@ -2531,7 +2427,7 @@ var TextEditor = (function ($) {
 
     placeColumnToolbox: function () {
       var targetCoords = this.traceColumnContent.getBoundingClientRect();
-      // this.formColumnTools.style.height = targetCoords.height + "px";
+
       this.formColumnTools.style.width = targetCoords.width + "px";
       this.formColumnTools.style.left = (targetCoords.left + ((targetCoords.width - this.formColumnTools.offsetWidth) / 2)) + "px";
       this.formColumnTools.style.top = (window.scrollY + targetCoords.top - this.formColumnTools.offsetHeight / 2 - 11) + "px";
@@ -2544,12 +2440,11 @@ var TextEditor = (function ($) {
     viewSelectColumnsToolbar: function(target) {
       this.placeSelectColumnsToolbar();
       this.formSelectColumnsToolbar.classList.add("medium-editor-toolbar-active");
-
-      // this.on(this.formSelectColumnsToolbar, "click", this.handleSelectColumns.bind(this));
     },
 
     placeSelectColumnsToolbar: function() {
       var targetCoords = this.addRowBtn.getBoundingClientRect();
+
       this.formSelectColumnsToolbar.style.left = (targetCoords.left + ((targetCoords.width - this.formSelectColumnsToolbar.offsetWidth) / 2)) + "px";
       this.formSelectColumnsToolbar.style.top = (window.scrollY + targetCoords.top - this.formSelectColumnsToolbar.offsetHeight + 75) + "px";
     },
@@ -2563,6 +2458,108 @@ var TextEditor = (function ($) {
       this.hideRowToolbox();
       this.hideColumnToolbox();
       this.hideSelectColumnsToolbar();
+    },
+
+    /////////////////////
+    /* OTHER FUNCTIONS */
+    /////////////////////
+    
+    /**
+     * Sets the outline of a DOM element
+     * @param {DOM Element} element
+     * @param {String} color The color of the outline
+     */
+    setOutline: function ($element, color) {
+      $element.css("outline", "2px solid " + color);
+      $element.css("outline-offset", "-1px");
+    },
+
+    /**
+     * @param  {String} element Can be "form", "rows" or "columns"
+     */
+    clearOutlines: function (element) {
+      switch (element) {
+        case "form":
+          $(this.traceForm)
+            .css("outline", "")
+            .css("outline-offset", "");
+          break;
+        case "rows":
+          $(this.traceForm).find(".wpcf7-row")
+            .css("outline", "")
+            .css("outline-offset", "");
+          break;
+        case "columns":
+          var that = this;
+          $(this.traceForm).find(".wpcf7-column").each(function () {
+            if ($(this).find(".wpcf7-add-new-form-content").length == 0 && $(this).find(".wpcf7-add-new-row").length == 0) {
+              $(that.findElementToOutline(this))
+              .css("outline", "")
+              .css("outline-offset", "");
+            }
+          });
+          break;
+        default:
+          break;
+      }
+    },
+
+    updateHeight: function() {
+      var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
+      Rexbuilder_Util_Editor.updateBlockContainerHeight($elementWrapper.parents('.text-wrap'));
+    },
+
+    focusBlock: function() {
+      var blockIDToFocus = $(this.traceForm).parents(".grid-stack-item").attr('id');
+
+      setTimeout(function() { // Necessary!
+        $(document.getElementById(blockIDToFocus))
+          .dblclick()
+          .addClass('item--me-focus');
+        $(document.getElementById(blockIDToFocus)).parents('rexpansive_section')
+          .addClass('block-editing')
+          .addClass('focusedRow');
+      }, 1);
+    },
+
+    findElementToOutline: function (formColumn) {
+      var $formColumn = $(formColumn);
+      var elementToOutlineClass;
+
+      elementToOutlineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
+      if(null == elementToOutlineClass) {
+        elementToOutlineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList)[0];
+      } else {
+         elementToOutlineClass = elementToOutlineClass[0];
+      }
+
+      var elementToOutlineType = /[a-z]+/.exec(elementToOutlineClass)[0];
+      elementToOutlineType = (elementToOutlineType == "menu") ? "select" : elementToOutlineType;
+
+      switch (elementToOutlineType) {
+        case "text":
+          // elementToOutlineType = $formColumn.find(".wpcf7-text").length == 0 ? "number" : "text";
+          // return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
+          // break;
+        case "textarea":
+        case "number":
+        case "email":
+        case "submit":
+        case "select":
+          return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
+          break;
+        case "radio":
+        case "acceptance":
+        case "file":
+          return $formColumn.find("." + elementToOutlineClass).eq(0)[0];
+          break;
+        default:
+          break;
+      }
+    },
+
+    hidePlusButtons: function () {
+      $(this.traceForm).find(".wpcf7-add-new-form-content").css("display", "none");
     },
   });
 
@@ -2813,7 +2810,7 @@ var TextEditor = (function ($) {
           }
 
           // If the SVG clicked is the form button for adding new content
-          if($(target).parents(".wpcf7-add-new-form-content").length != 0 && $(target).parents("#rex-wpcf7-tools").length != 0) {
+          if($(target).parents(".wpcf7-add-new-form-content").length != 0 || $(target).parents("#rex-wpcf7-tools").length != 0) {
             target = "";
             this.hideAllToolbars();
           } else {

@@ -196,16 +196,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         $rowToDelete.remove();
 
-        // console.log(blockIDToFocusAfterDelete);
-        if ("undefined" != typeof blockIDToFocusAfterDelete) {
-            var dbClickEvent = new MouseEvent('dblclick', {
-              'view': window,
-              'bubbles': true,
-              'cancelable': true
-            });
-            document.getElementById(blockIDToFocusAfterDelete).dispatchEvent(dbClickEvent);
-        }
-
         _fixRowNumbersAndClasses($formToDeleteRow);
         _saveDeletingRow(formID, rowNumberToDelete);
     }
@@ -235,22 +225,26 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             $(this).find(".wpcf7-row").each(function(index) {
                 var $formRow = $(this);
 
-                // Removing all styles of the column
-                $formRow.find(".wpcf7-column").each(function () {
-                    var $formColumn = $(this);
-
-                    _removeColumnContentStyle($formColumn);
-                });
-
                 $formRow.attr("wpcf7-row-number", index + 1);
-
-                // Adding all styles of the column
-                $formRow.find(".wpcf7-column").each(function () {
-                    var $formColumn = $(this);
-                    _addColumnContentStyle($formColumn);
-                });
             });
         })
+
+        $forms.eq(0).find(".wpcf7-row").each(function(index) {
+            var $formRow = $(this);
+
+            // Removing all styles of the column
+            $formRow.find(".wpcf7-column").each(function () {
+                var $formColumn = $(this);
+
+                _removeColumnContentStyle($formColumn);
+            });
+
+            // Adding all styles of the column
+            $formRow.find(".wpcf7-column").each(function () {
+                var $formColumn = $(this);
+                _addColumnContentStyle($formColumn);
+            });
+        });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1303,7 +1297,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $formColumnInDB.append($span);
         $formColumnInDB.prepend($spanDataInDB);
 
-        // _updateFormInDB(formID);
     	_addColumnContentStyle($formColumn);
     }
 
@@ -1336,7 +1329,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var rowNumber = $formColumn.parents(".wpcf7-row").attr("wpcf7-row-number");
         var columnNumber = $formColumn.attr("wpcf7-column-number");
 
-        if ($formColumn.find(".wpcf7-add-new-form-content").length == 0) {
+        if ($formColumn.find(".wpcf7-add-new-form-content").length == 0 && $formColumn.parents("#rex-wpcf7-tools").length == 0) {
             var fieldClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
             if (null == fieldClass) {
                 fieldClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList)[0];
@@ -2418,14 +2411,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             _addColumnContentRule(formID, row, column, cssSelector, columnContentButtonRule);
             _addColumnContentHoverRule(formID, row, column, cssSelector, columnContentButtonHoverRule);
         } else { // Other fields
-            var columnContentPlaceholderRule = "";
-
-            if (inputType == "text" || inputType == "email" || inputType == "number" || inputType == "textarea") {
-                columnContentPlaceholderRule += "color:" + columnContentData.placeholder_color + ";";
-            }
-
-            _addColumnContentRule(formID, row, column, cssSelector + "::placeholder", columnContentPlaceholderRule);
-
             var columnContentRule = "";
 
             if (inputType == "acceptance" || inputType == "radio" || inputType == "file") {
@@ -2450,13 +2435,17 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             columnContentHoverRule += "border-color: " + columnContentData.border_color_hover + ";";
             _addColumnContentHoverRule(formID, row, column, cssSelector, columnContentHoverRule);
 
-            var columnContentPlaceholderHoverRule = "";
-
             if (inputType == "text" || inputType == "email" || inputType == "number" || inputType == "textarea") {
+                var columnContentPlaceholderRule = "";
+
+                columnContentPlaceholderRule += "color:" + columnContentData.placeholder_color + ";";
+                _addColumnContentRule(formID, row, column, cssSelector + "::placeholder", columnContentPlaceholderRule);
+
+                var columnContentPlaceholderHoverRule = "";
+
                 columnContentPlaceholderHoverRule += "color:" + columnContentData.placeholder_hover_color + ";";
+                _addColumnContentPlaceholderHoverRule(formID, row, column, cssSelector, columnContentPlaceholderHoverRule);
             }
-            
-            _addColumnContentPlaceholderHoverRule(formID, row, column, cssSelector, columnContentPlaceholderHoverRule);
         }
     }
 
