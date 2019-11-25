@@ -14,7 +14,13 @@
     .rex-edit-element {
       position: absolute;
       top: 0px;
-      left: calc(50% - 10px);
+      left: calc(50% - 13px);
+
+      .l-svg-icons {
+        font-size: 13px;
+        width: 13px;
+        height: 13px;
+      }
     }
 
     .rex-delete-element {

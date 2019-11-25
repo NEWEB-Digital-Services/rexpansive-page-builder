@@ -17498,12 +17498,25 @@ input:disabled + .rex_edit_title_slider {
   #rex-wpcf7-content-adder .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-upd-add_button {
     width: 30px;
     height: 42px;
+    position: absolute;
+    left: 16px;
+    right: 0;
     text-align: center;
     font-size: 34px;
     padding: 7px 0px 0px 2px;
-    color: #979797; }
+    color: #979797;
+    cursor: pointer; }
   #rex-wpcf7-content-adder .bl_modal-row .rexwpcf7-cont_row select {
     display: block; }
+
+#rex-wpcf7-content-adder .modal-field-name {
+  width: 155px;
+  margin-left: 12px;
+  text-transform: uppercase;
+  font-size: 17px;
+  line-height: 25px;
+  letter-spacing: 2px;
+  cursor: default; }
 
 #rex-wpcf7-content-adder #rex-wpcf7-add-text-field .l-svg-icons {
   font-size: 30px; }
@@ -17518,57 +17531,89 @@ input:disabled + .rex_edit_title_slider {
   font-size: 30px; }
 
 #rex-wpcf7-content-adder #rex-wpcf7-add-checkbox-field .l-svg-icons {
-  font-size: 30px; }
+  font-size: 20px;
+  margin-right: 5px;
+  margin-left: 5px; }
 
 #rex-wpcf7-content-adder #rex-wpcf7-add-file-field .l-svg-icons {
   font-size: 30px; }
 
 #rex-wpcf7-content-adder #rex-wpcf7-add-submit-field .l-svg-icons {
-  font-size: 30px; }
+  font-size: 22px;
+  margin-right: 4px;
+  margin-left: 4px; }
 
 #rex-wpcf7-form-editor .row-hidden {
   display: none; }
 
 #rex-wpcf7-form-editor .modal-accordion-title {
+  width: 71px;
   margin-left: 12px;
   text-transform: uppercase;
-  font-size: 30px;
+  font-size: 17px;
   line-height: 25px;
   letter-spacing: 2px; }
 
 #rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion-outer--toggle {
   cursor: pointer; }
-  #rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion-outer--toggle .l-svg-icons > svg {
+  #rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion-outer--toggle .rex-wpcf7-plus-accordion {
+    position: absolute;
+    left: 16px;
+    right: 0;
+    width: 20px;
+    height: 20px; }
+  #rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion-outer--toggle .rex-wpcf7-title-icon .l-svg-icons {
+    width: 30px;
+    height: 30px; }
+  #rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion-outer--toggle .rex-wpcf7-title-icon .l-svg-icons > svg {
+    -webkit-transform: rotate(0deg);
+        -ms-transform: rotate(0deg);
+            transform: rotate(0deg);
+    font-size: 30px; }
+
+#rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-plus-accordion {
+  position: absolute;
+  left: 14px;
+  right: 0;
+  width: 20px;
+  height: 20px; }
+  #rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-plus-accordion .l-svg-icons > svg {
     -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
-            transform: rotate(45deg); }
-
-#rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .l-svg-icons > svg {
-  -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotate(90deg);
-  width: 20px !important;
-  height: 20px !important; }
+            transform: rotate(45deg);
+    width: 20px !important;
+    height: 20px !important; }
 
 #rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle.ml4 {
   margin-left: 2px;
   margin-right: 2px; }
 
+#rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-title-icon .l-svg-icons {
+  width: 30px;
+  height: 30px; }
+
+#rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-title-icon .l-svg-icons > svg {
+  -webkit-transform: rotate(0deg);
+      -ms-transform: rotate(0deg);
+          transform: rotate(0deg);
+  font-size: 30px; }
+
 #rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion-outer--content .rex-accordion-outer--toggle:hover {
   cursor: pointer; }
 
 #rex-wpcf7-form-editor .rexpansive-accordion .rex-accordion--toggle .l-svg-icons > svg {
-  -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-          transform: rotate(45deg);
   cursor: pointer; }
 
 #rex-wpcf7-form-editor .rexpansive-accordion.open .rex-accordion--toggle .l-svg-icons > svg {
-  -webkit-transform: rotate(90deg);
-      -ms-transform: rotate(90deg);
-          transform: rotate(90deg);
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
   width: 20px !important;
   height: 20px !important; }
+
+#rex-wpcf7-form-editor .rexpansive-accordion.open .ml4-2 {
+  margin-left: 2px;
+  margin-right: 2px; }
 
 #rex-wpcf7-form-editor .rexpansive-accordion .rex-accordion--content {
   border-bottom: 1px solid #ddd; }
@@ -17757,6 +17802,12 @@ input:disabled + .rex_edit_title_slider {
 #rex-wpcf7-form-editor .pl3 {
   padding-left: 3px; }
 
+#rex-wpcf7-form-editor .pl4 {
+  padding-left: 4px; }
+
+#rex-wpcf7-form-editor .pl12 {
+  padding-left: 12px; }
+
 #rex-wpcf7-form-editor .pl20 {
   padding-left: 20px; }
 
@@ -17829,6 +17880,10 @@ input:disabled + .rex_edit_title_slider {
 
 #rex-wpcf7-form-editor .form-icon .l-svg-icons {
   font-size: 39px; }
+
+#rex-wpcf7-form-editor #rex-wpcf7-inputs-accordion {
+  padding-top: 15px;
+  padding-bottom: 30px; }
 
 #rex-wpcf7-form-editor #rex-wpcf7-mail-to {
   width: 341px; }

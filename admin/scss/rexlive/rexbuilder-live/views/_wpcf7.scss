@@ -2,6 +2,7 @@
   display: flex;
   flex-wrap: wrap;
   cursor: default;
+  padding-top: 13px;
 
   .wpcf7-rows {
     display: block;
@@ -24,7 +25,12 @@
         }
 
         .wpcf7-add-new-form-content {
+          margin: auto 0;
           display: none;
+        }
+
+        .wpcf7-add-new-row {
+          margin: auto 0;
         }
       }
 

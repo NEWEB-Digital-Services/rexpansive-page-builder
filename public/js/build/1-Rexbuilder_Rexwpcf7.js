@@ -119,6 +119,36 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         _saveNewRow(formID, $newRow);
     }
 
+    // var _addNewToolsRow = function (formID) {
+    //     var $formToAddRow = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").find(".wpcf7-form");
+    //     var $newRow = $(document.createElement("div"));
+
+    //     if ($formToAddRow.find(".wpcf7-row").length != 0) {
+    //         var newRowNumber = parseInt($formToAddRow.find(".wpcf7-row").last().attr("wpcf7-row-number")) + 1;
+    //     } else {
+    //         var newRowNumber = 1;
+    //     }
+
+    //     $newRow.attr("wpcf7-row-number", newRowNumber);
+
+    //     var $columnToInsert;
+    //     $columnToInsert = $(document.createElement("div"));
+    //     $columnToInsert.addClass("wpcf7-column");
+    //     $columnToInsert.attr("wpcf7-column-number", 1);
+
+    //     var plusButton = tmpl("tmpl-rexwpcf7-tools", {});
+    //     $columnToInsert.append(plusButton);
+
+    //     $newRow.append($columnToInsert);
+
+    //     $formToAddRow.each(function() {
+    //         var $newRowClone = $newRow.clone();
+    //         $(this).find(".wpcf7-rows").append($newRowClone);
+    //     })
+
+    //     _saveNewRow(formID, $newRow);
+    // }
+
     /**
      * Adds a new row in the form specified by the form ID.
      * @param formID

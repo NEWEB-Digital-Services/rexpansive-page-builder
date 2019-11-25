@@ -20,9 +20,12 @@ defined('ABSPATH') or exit;
         	<?php include 'rexlive-loader-modal.php'; ?>
             <div class="rexpansive-accordion-outer close"> <!-- // Form Accordion -->
                 <div class="bl_modal-row rex-wpcf7-modal-row-tall rex-accordion-outer--toggle">
-                    <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                        <div class="bl_d-iblock ml4">
-                            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                    <div class="rexwpcf7-cont_row bl_ai-c bl_jc-c valign-wrapper">
+                        <div class="rex-wpcf7-plus-accordion bl_d-iblock">
+                            <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+                        </div>
+                        <div class="rex-wpcf7-title-icon l-icon--dark-grey bl_d-iblock">
+                            <?php Rexbuilder_Utilities::get_icon('#B022-Form-Border'); ?>
                         </div>
                         <div class="bl_d-iblock modal-accordion-title">form</div>
                     </div>
@@ -31,7 +34,7 @@ defined('ABSPATH') or exit;
                     <div class="bl-modal-row"> <!-- Form Settings -->
                         <div class="bl_modal-row rex-wpcf7-modal-row-tall modal-row-grey"> <!-- // E-Mail -->
                             <div class="rexwpcf7-cont_row">
-                                <div class="input-field ml4 rex-input-prefixed tippy" data-tippy-content="<?php _e('E-Mail', 'rexpansive-builder');?>">
+                                <div class="input-field pl4 rex-input-prefixed tippy" data-tippy-content="<?php _e('E-Mail', 'rexpansive-builder');?>">
                                     <span class="prefix">
                                         <?php Rexbuilder_Utilities::get_icon('#B018-Mail'); ?>
                                     </span>
@@ -122,7 +125,7 @@ defined('ABSPATH') or exit;
                             <div class="bl_modal__option-wrap w190 pr4 pl20 valign-wrapper">
                                 <div id="" class="bl_modal__single-option valign-wrapper">
                                     <span class="valign-wrapper tippy" data-tippy-content="<?php _e('Border Color', 'rexpansive-builder');?>">
-                                        <div class="bl_d-iblock form-icon ml7 l-icon--dark-grey">
+                                        <div class="bl_d-iblock form-icon pl3 l-icon--dark-grey">
                                             <?php Rexbuilder_Utilities::get_icon('#B022-Form-Border'); ?>
                                         </div>
                                         <div class="bl_d-iblock ml19"  tabindex="0">
@@ -144,7 +147,7 @@ defined('ABSPATH') or exit;
                         </div>
                         <div class="bl_modal-row rex-wpcf7-modal-row-tall modal-row-grey"> <!-- // Error Message -->
                             <div class="rexwpcf7-cont_row valign-wrapper">
-                                <div class="bl_d-iblock input-field with-text-left ml4 rex-wpcf7-modal-column-w253 rex-input-prefixed">
+                                <div class="bl_d-iblock input-field with-text-left pl4 rex-wpcf7-modal-column-w253 rex-input-prefixed">
                                     <span class="prefix">
                                         <?php Rexbuilder_Utilities::get_icon('#B019-Error'); ?>
                                     </span>
@@ -168,7 +171,7 @@ defined('ABSPATH') or exit;
                         </div>
                         <div class="bl_modal-row rex-wpcf7-modal-row-tall modal-row-grey"> <!-- // Send Message -->
                             <div class="rexwpcf7-cont_row valign-wrapper">
-                                <div class="bl_d-iblock input-field with-text-left rex-wpcf7-modal-column-w253 ml4 rex-input-prefixed ">
+                                <div class="bl_d-iblock input-field with-text-left rex-wpcf7-modal-column-w253 pl4 rex-input-prefixed ">
                                     <span class="prefix">
                                         <?php Rexbuilder_Utilities::get_icon('#B020-Checked'); ?>
                                     </span>
@@ -194,10 +197,13 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <div class="rexpansive-accordion-outer close"> <!-- // Inputs Accordion -->
-                <div class="bl_modal-row rex-wpcf7-modal-row-tall rex-accordion-outer--toggle">
-                    <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                        <div class="bl_d-iblock ml4">
-                            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                <div id="rex-wpcf7-inputs-accordion" class="bl_modal-row rex-accordion-outer--toggle">
+                    <div class="rexwpcf7-cont_row bl_ai-c bl_jc-c valign-wrapper">
+                        <div class="rex-wpcf7-plus-accordion bl_d-iblock">
+                            <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+                        </div>
+                        <div class="rex-wpcf7-title-icon l-icon--dark-grey bl_d-iblock">
+                            <?php Rexbuilder_Utilities::get_icon('#B023-Input-Text'); ?>
                         </div>
                         <div class="bl_d-iblock modal-accordion-title">inputs</div>
                     </div>
@@ -266,7 +272,7 @@ defined('ABSPATH') or exit;
                                 <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
                                     <div class="bl_d-iblock ml4-2">
                                         <span class="rex-accordion--toggle">
-                                            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                                            <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                                         </span>
                                     </div>
                                     <div class="bl_d-iblock prova-icon ml12 l-icon--dark-grey">
@@ -352,7 +358,7 @@ defined('ABSPATH') or exit;
                                 <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
                                     <div class="bl_d-iblock ml4-2">
                                         <span class="rex-accordion--toggle">
-                                            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                                            <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                                         </span>
                                     </div>
                                     <div class="bl_d-iblock ml12 prova-icon l-icon--dark-grey">
@@ -434,7 +440,7 @@ defined('ABSPATH') or exit;
                                 <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
                                     <div class="bl_d-iblock ml4-2">
                                         <span class="rex-accordion--toggle">
-                                            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                                            <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                                         </span>
                                     </div>
                                     <div class="bl_d-iblock ml12 prova-icon l-icon--dark-grey">
