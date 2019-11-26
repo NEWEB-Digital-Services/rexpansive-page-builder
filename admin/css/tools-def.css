@@ -17296,6 +17296,11 @@ input:disabled + .rex_edit_title_slider {
 #rex-wpcf7-content-editor .label-px {
   text-transform: uppercase; }
 
+#rex-wpcf7-content-editor .rot45 {
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg); }
+
 #rex-wpcf7-content-editor .rex-input-prefixed label {
   padding-left: 4px; }
 
@@ -17350,7 +17355,7 @@ input:disabled + .rex_edit_title_slider {
   #rex-wpcf7-content-editor #wpcf7-list-fields .rex-wpcf7-delete-list-field {
     cursor: pointer; }
   #rex-wpcf7-content-editor #wpcf7-list-fields .wpcf7-select-field {
-    width: 250px; }
+    width: 219px; }
 
 #rex-wpcf7-content-editor #rex-wpcf7-required-icon .l-svg-icons,
 #rex-wpcf7-content-editor #rex-wpcf7-numbers-icon .l-svg-icons {
@@ -17359,14 +17364,30 @@ input:disabled + .rex_edit_title_slider {
 #rex-wpcf7-content-editor #rex-wpcf7-email-icon .l-svg-icons {
   font-size: 24px; }
 
+#rex-wpcf7-content-editor #rex-wpcf7-file-size-icon .l-svg-icons {
+  font-size: 45px; }
+
+#rex-wpcf7-content-editor #wpcf7-file-max-dimensions {
+  margin-left: 57px; }
+
+#rex-wpcf7-content-editor #wpcf7-file-max-dimensions-unit {
+  width: 60px;
+  height: 20px; }
+
 #rex-wpcf7-content-editor .rex-wpcf7-file-list .rexwpcf7-sort {
   display: none; }
+
+#rex-wpcf7-content-editor #rex-wpcf7-button-text {
+  width: 150px; }
 
 #rex-wpcf7-content-editor .prova-icon .l-svg-icons {
   font-size: 30px; }
 
 #rex-wpcf7-content-editor .no-br {
   border-width: 0px; }
+
+#rex-wpcf7-content-editor .w82 {
+  width: 82px; }
 
 #rex-wpcf7-content-editor .w67 {
   width: 67px; }
@@ -17392,6 +17413,9 @@ input:disabled + .rex_edit_title_slider {
 
 #rex-wpcf7-content-editor .pr4 {
   padding-right: 4px; }
+
+#rex-wpcf7-content-editor .mb36 {
+  margin-bottom: 36px; }
 
 #rex-wpcf7-content-editor .ml2 {
   margin-left: 2px; }
@@ -17431,9 +17455,20 @@ input:disabled + .rex_edit_title_slider {
   margin-top: 7px;
   text-align: center; }
 
+#rex-wpcf7-content-editor .with-text-left input[type=text] {
+  width: 25px;
+  font-size: 15px;
+  line-height: 15px;
+  height: 20px;
+  margin-bottom: 7px;
+  margin-top: 7px;
+  text-align: left; }
+
 #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row {
   width: 381px;
   margin: 12px auto; }
+  #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row.mb36 {
+    margin-bottom: 36px; }
   #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-count-column_accord {
     width: 30px;
     height: 42px;

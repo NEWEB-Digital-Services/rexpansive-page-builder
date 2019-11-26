@@ -135,11 +135,11 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 wpcf7_content_editor_properties.$content_only_numbers.parents(".bl_modal__option-wrap").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_placeholder.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal-row").removeClass("row-hidden");
-                wpcf7_content_editor_properties.$content_input_width_type.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal__option-wrap").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width_type.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_height.parents(".bl_modal-row").removeClass("row-hidden");
-                wpcf7_content_editor_properties.$content_input_height_type.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_height.parents(".bl_modal__option-wrap").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height_type.parents(".bl_modal-row").removeClass("row-hidden");
                 // wpcf7_content_editor_properties.$content_input_font_size.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_value.parents(".rexwpcf7-cont_row").append(fontSizeField);
@@ -154,11 +154,11 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 wpcf7_content_editor_properties.$content_only_numbers.parents(".bl_modal__option-wrap").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_placeholder.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal-row").removeClass("row-hidden");
-                wpcf7_content_editor_properties.$content_input_width_type.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal__option-wrap").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width_type.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_height.parents(".bl_modal-row").removeClass("row-hidden");
-                wpcf7_content_editor_properties.$content_input_height_type.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_height.parents(".bl_modal__option-wrap").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height_type.parents(".bl_modal-row").removeClass("row-hidden");
                 // wpcf7_content_editor_properties.$content_input_font_size.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_value.parents(".rexwpcf7-cont_row").append(fontSizeField);
@@ -454,6 +454,11 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 wpcf7_content_editor_properties.$content_file_max_dimensions_unit.val("kb")
                break;
         }
+        if (wpcf7_content_editor_properties.$content_file_max_dimensions.val() != "") {
+            wpcf7_content_editor_properties.$content_file_max_dimensions
+                .siblings("label, .prefix")
+                .addClass('active');
+        }
 
         // List fields
         wpcf7_content_editor_properties.$field_list.empty();
@@ -506,6 +511,12 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
         // Button
         wpcf7_content_editor_properties.$content_button_text.val(columnContentData.wpcf7_button.text);
+        if (wpcf7_content_editor_properties.$content_button_text.val() != "") {
+            wpcf7_content_editor_properties.$content_button_text
+                .siblings("label, .prefix")
+                .addClass('active');
+        }
+        
         wpcf7_content_editor_properties.$content_button_text_font_size.val(/[0-9]+/.exec(columnContentData.wpcf7_button.font_size));
         wpcf7_content_editor_properties.$content_button_height.val(/[0-9]+/.exec(columnContentData.wpcf7_button.height));
         wpcf7_content_editor_properties.$content_button_width.val(/[0-9]+/.exec(columnContentData.wpcf7_button.width));
@@ -2030,7 +2041,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
             $content_placeholder_hover_color_palette_buttons: $self.find("#hover-placeholder-color-palette .bg-palette-selector"),
             
-            $content_button_text: $container.find("#rex-wpcf7-button-text-label"),
+            $content_button_text: $container.find("#rex-wpcf7-button-text"),
             $content_button_text_font_size: $container.find("#wpcf7-button-text-font-size"),
             
             $content_button_height: $container.find("#wpcf7-button-height"),

@@ -49,54 +49,6 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <div class="bl_modal-row"> <!-- // Required Field -->
-                <div class="rexwpcf7-cont_row">
-                    <div class="rexwpcf7-count-column_accord"></div>
-                    <div class="rexwpcf7-count-column_1">
-                        <div class="tippy" data-tippy-content="<?php _e( 'Required', 'rexpansive-builder' ); ?>">
-                            <!-- <label>
-                                <input type="checkbox" id="wpcf7-required-field" name="wpcf7-required-field" value="required">
-                                <span></span>
-                            </label> -->
-                        </div>
-                    </div>
-                    <div class="rexwpcf7-count-column_2">
-                        <span class="">Required field?</span>
-                    </div>
-                </div>
-            </div>
-            <div class="bl_modal-row"> <!-- // E-Mail Field -->
-                <div class="rexwpcf7-cont_row">
-                    <div class="rexwpcf7-count-column_accord"></div>
-                    <div class="rexwpcf7-count-column_1">
-                        <div class="tippy" data-tippy-content="<?php _e( 'E-Mail', 'rexpansive-builder' ); ?>">
-                            <!-- <label>
-                                <input type="checkbox" id="wpcf7-set-email" name="wpcf7-set-email" value="set-email">
-                                <span></span>
-                            </label> -->
-                        </div>
-                    </div>
-                    <div class="rexwpcf7-count-column_2">
-                        <span class="">E-Mail</span>
-                    </div>
-                </div>
-            </div>
-            <div class="bl_modal-row"> <!-- // Only Numbers -->
-                <div class="rexwpcf7-cont_row">
-                    <div class="rexwpcf7-count-column_accord"></div>
-                    <div class="rexwpcf7-count-column_1">
-                        <div class="tippy" data-tippy-content="<?php _e( 'Only Numbers', 'rexpansive-builder' ); ?>">
-                            <!-- <label>
-                                <input type="checkbox" id="wpcf7-only-numbers" name="wpcf7-only-numbers" value="only-numbers">
-                                <span></span>
-                            </label> -->
-                        </div>
-                    </div>
-                    <div class="rexwpcf7-count-column_2">
-                        <span class="">Only numbers</span>
-                    </div>
-                </div>
-            </div>
             <div class="bl_modal-row"> <!-- // Default Check -->
                 <div class="rexwpcf7-cont_row">
                     <label>
@@ -133,54 +85,7 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <div class="bl_modal-row"> <!-- // Width & Height -->
-                <!-- <div class="bl_modal__option-wrap bl_modal__col-4">
-                    <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Width', 'rexpansive-builder');?>">
-                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
-                        <input type="text" id="wpcf7-input-width" class="rexwpcf7-set-width-input" name="" size="23">
-                        <span class="rex-material-bar"></span>
-                    </div>
-                    <div class="">
-                        <div class="rex-check-text percentage-width boxed-width-type-wrap" data-rex-section-width-type="%">
-                            <input id="wpcf7-input-width-percentage" type="radio" class="wpcf7-input-width-type with-gap" name="wpcf7-input-width-type" value="percentage" checked />
-                            <label for="wpcf7-input-width-percentage">
-                                <?php _e('%', 'rexpansive-builder');?>
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div>
-                        <div class="rex-check-text pixel-width boxed-width-type-wrap" data-rex-section-width-type="px">
-                            <input id="wpcf7-input-width-pixel" type="radio" class="wpcf7-input-width-type with-gap" name="wpcf7-input-width-type" value="pixel" />
-                            <label for="wpcf7-input-width-pixel">
-                                <?php _e('PX', 'rexpansive-builder');?>
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="bl_modal__option-wrap bl_modal__col-4">
-                    <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Height', 'rexpansive-builder');?>">
-                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?></span>
-                        <input type="text" id="wpcf7-input-height" class="rexwpcf7-set-height-input" name="">
-                        <span class="rex-material-bar"></span>
-                    </div>
-                    <div class="">
-                        <div class="" data-rex-section-width-type="%">
-                            <input id="wpcf7-input-height-percentage" type="radio" class="wpcf7-input-height-type with-gap" name="wpcf7-input-height-type" value="percentage" checked />
-                            <label for="wpcf7-input-height-percentage">
-                                <?php _e('%', 'rexpansive-builder');?>
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div>
-                        <div class="" data-rex-section-width-type="px">
-                            <input id="wpcf7-input-height-pixel" type="radio" class="wpcf7-input-height-type with-gap" name="wpcf7-input-height-type" value="pixel" />
-                            <label for="wpcf7-input-height-pixel">
-                                <?php _e('PX', 'rexpansive-builder');?>
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div> -->
-
-                <div class="bl_modal__option-wrap bl_jc-c tippy" data-tippy-content="<?php _e('Width', 'rexpansive-builder');?>">
+                <div class="bl_modal__option-wrap bl_jc-c rex-wpcf7-modal-row-tall tippy" data-tippy-content="<?php _e('Width', 'rexpansive-builder');?>">
                     <div class="rex-input-prefixed input-field w67 with-text">
                         <span class="prefix">
                             <?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?>
@@ -205,7 +110,7 @@ defined('ABSPATH') or exit;
                         </div>
                     </div>
                 </div>
-                <div class="bl_modal__option-wrap bl_jc-c tippy" data-tippy-content="<?php _e('Height', 'rexpansive-builder');?>">
+                <div class="bl_modal__option-wrap bl_jc-c rex-wpcf7-modal-row-tall tippy" data-tippy-content="<?php _e('Height', 'rexpansive-builder');?>">
                     <div class="rex-input-prefixed input-field w67 with-text">
                         <span class="prefix">
                             <?php Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?>  
@@ -508,31 +413,6 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <div class="rexpansive-accordion close"> <!-- // Placeholder Color -->
-                <!-- <div class="bl_modal-row">
-                    <div class="rexwpcf7-cont_row">
-                        <div class="rexwpcf7-count-column_accord">
-                            <span class="rex-accordion--toggle">
-                                <div class="rexwpcf7-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?></div>
-                            </span>
-                        </div>
-                        <div class="rexwpcf7-count-column_1">
-                            <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Placeholder Color', 'rexpansive-builder');?>" tabindex="0">
-                                <input type="hidden" id="rex-wpcf7-placeholder-color-runtime" name="rex-wpcf7-placeholder-color-runtime" value="" />
-                                <input id="rex-wpcf7-placeholder-color" type="text" name="rex-wpcf7-placeholder-color" value="" size="10" />
-                                <div id="rex-wpcf7-placeholder-color-preview-icon" class="preview-color-icon"></div>
-                            </div>
-                        </div>
-                        <div class="rexwpcf7-count-column_2">
-                            <div id="rex-wpcf7-placeholder-preview-wrap">
-                                <div id="rex-wpcf7-preview-placeholder"></div>
-                            </div>
-                        </div>
-                        <div class="rexwpcf7-count-column_3"></div>
-                        <div class="rexwpcf7-count-column_4"></div>
-                        <div class="rexwpcf7-count-column_5"></div>
-                    </div>
-                </div> -->
-
                 <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                     <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
                         <div class="bl_d-iblock ml4-2">
@@ -636,7 +516,7 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <div class="bl_modal-row"> <!-- // Text Editor -->
-                <div id="wpcf7-text-editor" class="modal-editor-editorarea">
+                <div id="wpcf7-text-editor" class="rexwpcf7-cont_row modal-editor-editorarea">
                     <?php wp_editor(
                         '',
                         'wpcf7_text_editor',
@@ -654,13 +534,15 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <div class="bl_modal-row"> <!-- // File Max Dimensions -->
-                <div class="rexwpcf7-cont_row">
-                    <div class="input-field rex-input-prefixed">
-                        <span class="prefix">
+                <div class="rexwpcf7-cont_row rex-wpcf7-modal-row-tall valign-wrapper bl_jc-c bl_d-flex tippy" data-tippy-content="<?php _e('File Max Size', 'rexpansive-builder')?>">
+                    <div class="input-field rex-input-prefixed with-text w82 bl_d-iblock">
+                        <span id="rex-wpcf7-file-size-icon" class="prefix">
                             <?php Rexbuilder_Utilities::get_icon('#B040-Input-Dimension-File'); ?>
                         </span>
-                        <input type="text" name="wpcf7-file-max-dimensions" id="wpcf7-file-max-dimensions">
-                        <select name="wpcf7-file-max-dimensions-unit" id="wpcf7-file-max-dimensions-unit">
+                        <input type="text" id="wpcf7-file-max-dimensions" name="wpcf7-file-max-dimensions">
+                    </div>
+                    <div class="bl_d-iblock ml12">
+                        <select id="wpcf7-file-max-dimensions-unit" name="wpcf7-file-max-dimensions-unit">
                             <option value="kb">KB</option>
                             <option value="mb">MB</option>
                             <option value="gb">GB</option>
@@ -670,8 +552,8 @@ defined('ABSPATH') or exit;
             </div>
             <div id="wpcf7-list-fields" class="bl_modal-row ui-sortable"></div> <!-- // List -->
             <div class="bl_modal-row"> <!-- // Add Field In List -->
-                <div class="rexwpcf7-cont_row bl_d-flex bl_jc-c">
-                    <button id="rex-wpcf7-add-list-field" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tippy" data-position="bottom" data-tippy-content="<?php _e('Add field', 'rexpansive-builder')?>">
+                <div class="rexwpcf7-cont_row bl_d-flex bl_jc-c mb36">
+                    <button id="rex-wpcf7-add-list-field" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tippy" data-position="bottom" data-tippy-content="<?php _e('Add Field', 'rexpansive-builder')?>">
                         <i class="material-icons text-white">&#xE145;</i>
                         <!-- <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?> -->
                     </button>
@@ -692,13 +574,15 @@ defined('ABSPATH') or exit;
                                 <div id="rex-wpcf7-button-text-color-preview-icon" class="preview-color-icon"></div>
                             </div>
                         </div>
-                        <div class="rexwpcf7-count-column_2">
-                            <div id="rex-button-label-wrap">
-                                <input type="text" id="rex-wpcf7-button-text-label" name="rex-wpcf7-button-text-label" class="rexbutton-upd-textbox">
-                            </div>
+                        <div class="input-field rex-input-prefixed with-text-left">
+                            <span class="prefix"></span>
+                            <input type="text" id="rex-wpcf7-button-text" name="rex-wpcf7-button-text" class="rexbutton-upd-textbox">
+                            <label id="rex-wpcf7-button-text-label" for="rex-wpcf7-button-text">
+                                <?php _e('Button Text', 'rexpansive-builder');?>
+                            </label>
                         </div>
                         <div class="rexwpcf7-count-column_3"></div>
-                        <div class="rexwpcf7-count-column_4">
+                        <div class="rexwpcf7-count-column_4 with-text">
                             <input type="text" id="wpcf7-button-text-font-size" name="" class="rexwpcf7-button-text-font-size">
                         </div>
                         <div class="rexwpcf7-count-column_5">
