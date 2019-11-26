@@ -1445,7 +1445,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 elementData = jQuery.extend(true, {}, resetData);
                 _updatePanel();
                 // @todo Apply old data but only some
-                console.log("resetData", elementData);
+                // console.log("resetData", elementData);
             }
         });
 

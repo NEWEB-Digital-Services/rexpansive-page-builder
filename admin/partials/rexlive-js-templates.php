@@ -224,7 +224,10 @@ defined('ABSPATH') or exit;
             <i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
         </div>
         <div class="bl_d-iflex">
-            <div class="rexwpcf7-upd-accord_button cross-icon rex-wpcf7-delete-list-field tippy" data-tippy-content="<?php _e('Delete', 'rexpansive-builder');?>"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+            <div class="rexwpcf7-upd-accord_button cross-icon rex-wpcf7-delete-list-field tippy" data-tippy-content="<?php _e('Delete', 'rexpansive-builder');?>">
+                <!-- <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?> -->
+                <i class="material-icons">&#xE145;</i>
+            </div>
         </div>
     </div>
 </script>

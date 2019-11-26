@@ -5483,6 +5483,28 @@ input.me-insert-embed__value[type=text] {
       top: 0px;
       right: -10px; }
 
+#wpcf7-select-columns-number.medium-toolbar-arrow-over:before {
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: #424242;
+  border-left-color: transparent; }
+
+#wpcf7-select-columns-number .l-svg-icons > svg {
+  background-color: #424242; }
+
+#wpcf7-select-columns-number li {
+  border-width: 0px; }
+  #wpcf7-select-columns-number li .medium-editor-action {
+    background-color: #424242; }
+  #wpcf7-select-columns-number li:first-child > .medium-editor-action {
+    border-top-left-radius: 17px;
+    border-bottom-left-radius: 17px;
+    padding-left: 20px; }
+  #wpcf7-select-columns-number li:last-child > .medium-editor-action {
+    border-top-right-radius: 17px;
+    border-bottom-right-radius: 17px;
+    padding-right: 20px; }
+
 @media screen and (max-width: 1024px) {
   body {
     -ms-overflow-style: none;

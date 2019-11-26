@@ -476,12 +476,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     // Style is changed to the column content, not to the whole column
-    var _addColumnContentFocusRule = function (formID, row, column, fieldClass, property) {
+    var _addColumnContentFocusRule = function (formID, row, column, selector, property) {
         if ("insertRule" in styleSheet) {
-            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + fieldClass + ":focus{" + property + "}", styleSheet.cssRules.length);
+            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + selector + ":focus{" + property + "}", styleSheet.cssRules.length);
         }
         else if ("addRule" in styleSheet) {
-            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + fieldClass + ":focus{" + property + "}", styleSheet.cssRules.length);
+            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + selector + ":focus{" + property + "}", styleSheet.cssRules.length);
         }
     }
 
@@ -1799,8 +1799,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             background_color_hover: "",
             border_color: "",
             border_color_hover: "",
-            placecholder_color: "",
-            placecholder_hover_color: "",
+            placeholder_color: "",
+            placeholder_hover_color: "",
             select_color_after_selection: "",
             text_color: "",
             text_color_hover: "",
@@ -2345,7 +2345,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         var columnContentFocusRule = "";
 
-        if (!inputType == "select") {
+        if (inputType != "select") {
             columnContentFocusRule += "color: " + columnContentData.text_color_focus + ";";
             _addColumnContentFocusRule(formID, row, column, cssSelector, columnContentFocusRule);
         }

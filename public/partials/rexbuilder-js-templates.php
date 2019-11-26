@@ -371,21 +371,22 @@ $tool_button_classes = 'tool-button';
 <ul id="" class="medium-editor-toolbar-actions">
     <li>
       <button class="medium-editor-action select-1-column">
-        <i>■</i>
+        <?php Rexbuilder_Utilities::get_icon('#B041-One-Column'); ?>
       </button>
     </li>
     <li>
       <button class="medium-editor-action select-2-columns">
-        <i>■ ■</i>
+        <?php Rexbuilder_Utilities::get_icon('#B042-Two-Columns'); ?>
       </button>
     </li>
     <li>
       <button class="medium-editor-action select-3-columns">
-        <i>■ ■ ■</i>
+        <?php Rexbuilder_Utilities::get_icon('#B043-Three-Columns'); ?>
       </button>
     </li>
+    <li>
       <button class="medium-editor-action select-4-columns">
-        <i>■ ■ ■ ■</i>
+        <?php Rexbuilder_Utilities::get_icon('#B044-Four-Columns'); ?>
       </button>
     </li>
 </ul>

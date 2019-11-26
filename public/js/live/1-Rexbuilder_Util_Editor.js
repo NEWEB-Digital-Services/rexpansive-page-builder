@@ -577,7 +577,7 @@ var Rexbuilder_Util_Editor = (function($) {
       _hideAllTools();
 
       var blockIDToFocusAfterClose = e.settings.blockID;
-      console.log(blockIDToFocusAfterClose);
+      
       if ("undefined" != typeof blockIDToFocusAfterClose) {
         setTimeout(function() { // Necessary!
           $(document.getElementById(blockIDToFocusAfterClose))

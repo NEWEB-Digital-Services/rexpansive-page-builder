@@ -1931,13 +1931,6 @@ var TextEditor = (function ($) {
       // Creating the form toolbox
       this.formTools = null;
       this.createFormTools();
-      // this.formTools = document.createElement("div");
-      // this.formTools.contentEditable = false;
-      // this.formTools.classList.add("rexwpcf7-tools");
-      // this.formTools.style.display = "none";
-      // this.formTools.innerHTML = tmpl("tmpl-rexwpcf7-tools", {});
-      // $(document.getElementsByTagName("body")[0]).append(this.formTools);
-      
 
       // Creating the tools displayed on a form row
       this.formRowTools = document.createElement("div");
@@ -2041,8 +2034,9 @@ var TextEditor = (function ($) {
             this.hideAllRowToolsInsideRow();
             this.putRowToolsInsideRow();
 
-            if ($target.parents('#rex-wpcf7-tools').length == 0 /*|| !$target.is('#rex-wpcf7-tools')*/) {
+            if ($target.parents('#rex-wpcf7-tools').length == 0 && !$target.is('#rex-wpcf7-tools')) {
               this.viewRowToolbox();
+              this.hideSelectColumnsToolbar();
             } else {
               this.hideRowToolbox();
             }

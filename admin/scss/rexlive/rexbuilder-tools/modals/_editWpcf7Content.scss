@@ -6,11 +6,23 @@
   .label-px {
     text-transform: uppercase;
   }
+
+  .rex-input-prefixed {
+    label {
+      padding-left: 4px;
+    }
+
+    #wpcf7-placeholder-label {
+      padding-left: 16px;
+    }
+  }
+
+
   
   .rexpansive-accordion {
     .rex-accordion--toggle {
       .l-svg-icons > svg {
-        transform: rotate(45deg);
+        // transform: rotate(45deg);
         cursor: pointer;
       }
     }
@@ -18,7 +30,7 @@
     &.open {
       .rex-accordion--toggle {
         .l-svg-icons > svg {
-          transform: rotate(90deg);
+          transform: rotate(45deg);
           width: 20px !important;
           height: 20px !important;
         }
@@ -31,6 +43,37 @@
       .rex-accordion--toggle:hover {
         cursor: pointer;
       }
+    }
+  }
+
+  #wpcf7-placeholder {
+    width: 329px;
+    margin-left: 44px;
+  }
+
+  #wpcf7-input-width,
+  #wpcf7-input-height {
+    width: 35px;
+  }
+
+  #wpcf7-set-email {
+    &[type="checkbox"] + span:not(.lever):before {
+      top: 0px;
+    }
+
+    &[type="checkbox"]:checked + span:not(.lever):before {
+      top: -5px;
+    }
+  }
+  
+  #wpcf7-required-field,
+  #wpcf7-only-numbers {
+    &[type="checkbox"] + span:not(.lever):before {
+      top: 3px;
+    }
+
+    &[type="checkbox"]:checked + span:not(.lever):before {
+      top: -2px;
     }
   }
 
@@ -50,16 +93,27 @@
   }
 
   #rex-wpcf7-required-icon,
-  #rex-wpcf7-email-icon,
   #rex-wpcf7-numbers-icon {
     .l-svg-icons {
       font-size: 30px;
     }
   }
 
+  #rex-wpcf7-email-icon {
+    .l-svg-icons {
+      font-size: 24px;
+    }
+  }
+
   .rex-wpcf7-file-list {
     .rexwpcf7-sort {
       display: none;
+    }
+  }
+
+  .prova-icon {
+    .l-svg-icons {
+      font-size: 30px;
     }
   }
 
@@ -78,9 +132,18 @@
   .w190 {
     width: 190.5px;
   }
+  
+  .ptb24 {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
 
   .pl3 {
     padding-left: 3px;
+  }
+
+  .pl4 {
+    padding-left: 4px;
   }
 
   .pl20 {
