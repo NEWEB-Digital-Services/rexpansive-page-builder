@@ -1508,6 +1508,10 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 name: "text-color",
                 value: color
             });
+
+            wpcf7_form_editor_properties.$input_preview.css({
+                color: color
+            });
           }
         );
 
@@ -1529,6 +1533,16 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 type: "text-color-hover",
                 name: "text-color",
                 value: color
+            });
+
+            wpcf7_form_editor_properties.$input_preview.hover(function() {
+                $(this).css({
+                    color: color
+                });
+            }, function() {
+                $(this).css({
+                    color: elementData.wpcf7_data.content.text_color
+                });
             });
           }
         );
@@ -1552,6 +1566,10 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 name: "background-color",
                 value: color
             });
+
+            wpcf7_form_editor_properties.$input_preview.css({
+                'background-color': color
+            });
           }
         );
 
@@ -1574,6 +1592,16 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 name: "background-color",
                 value: color
             });
+
+            wpcf7_form_editor_properties.$input_preview.hover(function() {
+                $(this).css({
+                    'background-color': color
+                });
+            }, function() {
+                $(this).css({
+                    'background-color': elementData.wpcf7_data.content.background_color
+                });
+            });
           }
         );
 
@@ -1595,6 +1623,16 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 type: "border-color-hover",
                 name: "border-color",
                 value: color
+            });
+
+            wpcf7_form_editor_properties.$input_preview.hover(function() {
+                $(this).css({
+                    'border-color': color
+                });
+            }, function() {
+                $(this).css({
+                    'border-color': elementData.wpcf7_data.content.border_color
+                });
             });
           }
         );
@@ -1619,7 +1657,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             $apply_changes_button: $container.find(".rex-apply-button"),
             $reset_button: $container.find(".rex-apply-button"),
 
-            $input_preview: $container.find('.rex-wpcf7-text-color-modal-preview'),
+            $input_preview: $container.find('.rex-wpcf7-text-modal-preview'),
 
             $form_mail_to: $container.find("#rex-wpcf7-mail-to"),
             $form_error_message: $container.find("#rex-wpcf7-error-message"),

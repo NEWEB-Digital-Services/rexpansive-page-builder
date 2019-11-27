@@ -216,17 +216,16 @@ defined('ABSPATH') or exit;
 </script>
 
 <script type="text/x-tmpl" id="tmpl-rex-wpcf7-edit-content-list">
-    <div class="rexwpcf7-cont_row bl_d-flex bl_jc-c valign-wrapper">
+    <div class="rexwpcf7-cont_row valign-wrapper">
         <div class="rexwpcf7-sort bl_d-iflex">
             <i class="material-icons">&#xE8D5;</i>
         </div>
-        <div class="bl_d-iflex with-text ml19">
+        <div class="bl_d-iflex with-text ml62">
             <input type="text" class="wpcf7-select-field field-{%=o.number%}">
         </div>
-        <div class="bl_d-iflex ml19">
-            <div class="rexwpcf7-upd-accord_button cross-icon rex-wpcf7-delete-list-field tippy" data-tippy-content="<?php _e('Delete', 'rexpansive-builder');?>">
-                <!-- <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?> -->
-                <i class="material-icons rot45">&#xE145;</i>
+        <div class="bl_d-iflex ml36">
+            <div class="rexwpcf7-upd-accord_button rot45 rex-wpcf7-delete-list-field tippy" data-tippy-content="<?php _e('Delete', 'rexpansive-builder');?>">
+                <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
             </div>
         </div>
     </div>

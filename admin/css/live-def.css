@@ -6271,7 +6271,8 @@ span.builderlive-editable-field[contenteditable=true] {
   -ms-flex-wrap: wrap;
       flex-wrap: wrap;
   cursor: default;
-  padding-top: 13px; }
+  padding-top: 13px;
+  margin-top: 10px; }
   .wpcf7-form .wpcf7-rows {
     display: block;
     width: 100%; }
@@ -6296,10 +6297,7 @@ span.builderlive-editable-field[contenteditable=true] {
           margin: auto 0; }
       .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__1-column .wpcf7-column, .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__2-columns .wpcf7-column, .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__3-columns .wpcf7-column, .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__4-columns .wpcf7-column {
         float: left;
-        padding: 10px;
-        -webkit-box-pack: center;
-            -ms-flex-pack: center;
-                justify-content: center; }
+        padding: 10px; }
       .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__1-column .wpcf7-column {
         width: 100%; }
       .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__2-columns .wpcf7-column {

@@ -11,6 +11,10 @@
     transform: rotate(45deg);
   }
 
+  .rot90 {
+    transform: rotate(90deg);
+  }
+
   .rex-input-prefixed {
     label {
       padding-left: 4px;
@@ -19,13 +23,109 @@
     #wpcf7-placeholder-label {
       padding-left: 16px;
     }
+
+    #rex-wpcf7-button-text-label {
+      left: 0;
+      margin-left: 0;
+      padding-left: 0;
+    }
+  }
+
+  .modal-accordion-title {
+    width: 71px;
+    margin-left: 12px;
+    text-transform: uppercase;
+    font-size: 17px;
+    line-height: 25px;
+    letter-spacing: 2px;
+  }
+
+  #rex-wpcf7-buttons-accordion {
+    padding-top: 15px;
+    padding-bottom: 30px;
+  }
+
+  #button-hover-text-color-palette,
+  #button-background-color-palette,
+  #button-hover-background-color-palette,
+  #button-border-color-palette,
+  #button-hover-border-color-palette {
+    .bg-palette-selector {
+      text-align: left;
+    }
+  }
+
+  .rexpansive-accordion-outer {
+    .rex-accordion-outer--toggle {
+      cursor: pointer;
+
+      .rex-wpcf7-plus-accordion {
+        position: absolute;
+        left: 16px;
+        right: 0;
+        width: 20px;
+        height: 20px;
+      }
+
+      .rex-wpcf7-title-icon {
+        .l-svg-icons {
+          width: 30px;
+          height: 30px;
+        }
+
+        .l-svg-icons > svg {
+          transform: rotate(0deg);
+          font-size: 30px;
+        }
+      }
+    }
+
+    &.open {
+      .rex-accordion-outer--toggle {
+        .rex-wpcf7-plus-accordion {
+          position: absolute;
+          left: 14px;
+          right: 0;
+          width: 20px;
+          height: 20px;
+
+          .l-svg-icons > svg {
+            transform: rotate(45deg);
+            width: 20px !important;
+            height: 20px !important;
+          }
+        }
+
+        &.ml4 {
+          margin-left: 2px;
+          margin-right: 2px;
+        }
+
+        .rex-wpcf7-title-icon {
+          .l-svg-icons {
+            width: 30px;
+            height: 30px;
+          }
+
+          .l-svg-icons > svg {
+            transform: rotate(0deg);
+            font-size: 30px;
+          }
+        }
+      }
+    }
+
+    .rex-accordion-outer--content {
+      .rex-accordion-outer--toggle:hover {
+        cursor: pointer;
+      }
+    }
   }
   
   .rexpansive-accordion {
     .rex-accordion--toggle {
       .l-svg-icons > svg {
-        // transform: rotate(45deg);
-        cursor: pointer;
+        cursor:pointer;
       }
     }
 
@@ -33,9 +133,14 @@
       .rex-accordion--toggle {
         .l-svg-icons > svg {
           transform: rotate(45deg);
-          width: 20px !important;
-          height: 20px !important;
+          width:20px !important;
+          height:20px !important;
         }
+      }
+
+      .ml4-2 {
+        margin-left: 2px;
+        margin-right: 2px;
       }
     }
 
@@ -44,6 +149,38 @@
 
       .rex-accordion--toggle:hover {
         cursor: pointer;
+      }
+
+      &.modal-row-default {
+        background-color: #FFF;
+
+        .l-svg-icons > svg {
+          background-color: #FFF;
+        }
+      }
+    }
+  }
+
+  #wpcf7-default-check-wrap {
+    .wpcf7-default-check-title {
+      margin-left: 12px;
+      text-transform: uppercase;
+      font-size: 17px;
+      line-height: 25px;
+      letter-spacing: 2px;
+    }
+
+    [type="checkbox"] + span {
+      .wpcf7-default-check-title {
+        color: $palette-color-4;
+        transition: color 600ms ease-out
+      }
+    }
+
+    [type="checkbox"]:checked + span {
+      .wpcf7-default-check-title {
+        color: $palette-color-1;
+        transition: color 600ms ease-out
       }
     }
   }
@@ -83,6 +220,7 @@
     display: flex;
     flex-wrap: wrap;
     border-width: 0;
+    padding-left: 10px;
 
     .rexwpcf7-sort,
     .rex-wpcf7-delete-list-field {
@@ -129,7 +267,31 @@
   }
 
   #rex-wpcf7-button-text {
-    width: 150px;
+    width: 214px;
+    margin-left: 0;
+  }
+
+  #rex-wpcf7-button-text-editor {
+    width: 214px;
+  }
+
+  #wpcf7-button-border-radius,
+  #wpcf7-button-height,
+  #wpcf7-button-width {
+    width: 37px;
+  }
+
+  .modal-row-grey {
+    background-color: $palette-color-6;
+
+    &:last-child {
+      border-bottom: 1px solid #ddd;
+    }
+
+    .active,
+    .l-svg-icons > svg {
+      background-color: $palette-color-6;
+    }
   }
 
   .prova-icon {
@@ -209,12 +371,28 @@
     margin-left: 19px;
   }
 
+  .ml22 {
+    margin-left: 22px;
+  }
+
   .ml24 {
     margin-left: 24px;
   }
 
+  .ml29 {
+    margin-left: 29px;
+  }
+
+  .ml36 {
+    margin-left: 36px;
+  }
+
   .ml54 {
     margin-left: 54px;
+  }
+
+  .ml62 {
+    margin-left: 62px;
   }
 
   .rex-wpcf7-modal-row-tall {
@@ -322,6 +500,19 @@
       display: block;
     }
   }
+
+  .rexbutton-count-column_6 {
+    width: 262px;
+    height: 210px;
+    padding-left: 4px;
+    box-sizing: content-box;
+  }
+
+  .rexbutton-count-column_7 {
+    height: 78.3px;
+    padding-top: 24.1px;
+    padding-bottom: 24.1px;
+  }
 }
 
 #rex-wpcf7-preview-background,
@@ -337,7 +528,7 @@
 #rex-wpcf7-preview-focus-hover,
 #rex-wpcf7-preview-button-text-color-hover,
 #rex-wpcf7-preview-button-background-color-hover {
-  width: 181px;
+  width: 214px;
   height: 42px;
   background-color: black;
   border-radius: 20px;
@@ -345,16 +536,11 @@
 
 #rex-wpcf7-preview-button-border-color,
 #rex-wpcf7-preview-button-border-color-hover {
-  width: 181px;
+  width: 214px;
   height: 42px;
   background-color: white;
   border-radius: 20px;
   border-style: solid;
-}
-
-.rexwpcf7-set-width-input,
-.rexwpcf7-set-height-input {
-  // width: 100%!important;
 }
 
 .wpcf7-set-font-size {

@@ -31,7 +31,7 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
                 <div class="rex-accordion-outer--content" style="display:none;" data-item-status="close">
-                    <div class="bl-modal-row"> <!-- Form Settings -->
+                    <div class="bl-modal-row"> <!-- // Form Settings -->
                         <div class="bl_modal-row rex-wpcf7-modal-row-tall modal-row-grey"> <!-- // E-Mail -->
                             <div class="rexwpcf7-cont_row">
                                 <div class="input-field pl4 rex-input-prefixed tippy" data-tippy-content="<?php _e('E-Mail', 'rexpansive-builder');?>">
@@ -212,7 +212,7 @@ defined('ABSPATH') or exit;
                     <div class="bl-modal-row"> <!-- // Inputs Settings -->
                         <div class="bl_modal-row bl_jc-c modal-row-grey rex-wpcf7-modal-row-tall"> <!-- // Content Preview -->
                             <div class="bl_d-iblock with-preview-text tippy" data-tippy-content="<?php _e('Preview', 'rexpansive-builder');?>">
-                                <input type="text" value="Your text" class="rex-wpcf7-text-color-modal-preview" readonly>
+                                <input type="text" value="Your text" class="rex-wpcf7-text-modal-preview" readonly>
                             </div>
                         </div>
                         <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall"> <!-- // Columns Width, Columns Height -->
@@ -316,8 +316,7 @@ defined('ABSPATH') or exit;
                             <div class="rex-accordion--content" style="display:none;" data-item-status="close"> <!-- // Content Text Color Hover -->
                                 <div class="bl_modal-row rex-wpcf7-modal-row-tall">
                                     <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                                        <div class="bl_d-iblock ml4-2" style="width:20px;"></div>
-                                        <div class="bl_d-iblock ml12 prova-icon l-icon--dark-grey">
+                                        <div class="bl_d-iblock ml36 prova-icon l-icon--dark-grey">
                                             <?php Rexbuilder_Utilities::get_icon('#B024-Input-Text-Hover'); ?>
                                         </div>
                                         <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Hover Text Color', 'rexpansive-builder');?>">
@@ -398,8 +397,7 @@ defined('ABSPATH') or exit;
                             <div class="rex-accordion--content" style="display:none;" data-item-status="close"> <!-- // Content Background Color Hover -->
                                 <div class="bl_modal-row rex-wpcf7-modal-row-tall">
                                     <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                                        <div class="bl_d-iblock ml4-2" style="width:20px;"></div>
-                                        <div class="bl_d-iblock ml12 prova-icon l-icon--dark-grey">
+                                        <div class="bl_d-iblock ml36 prova-icon l-icon--dark-grey">
                                             <?php Rexbuilder_Utilities::get_icon('#B026-Input-Background-Hover'); ?>
                                         </div>
                                         <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Hover Background Color', 'rexpansive-builder');?>">
@@ -466,8 +464,7 @@ defined('ABSPATH') or exit;
                             <div class="rex-accordion--content" style="display:none;" data-item-status="close"> <!-- // Content Border Color Hover -->
                                 <div class="bl_modal-row rex-wpcf7-modal-row-tall">
                                     <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                                        <div class="bl_d-iblock ml4-2" style="width:20px;"></div>
-                                        <div class="bl_d-iblock ml12 prova-icon l-icon--dark-grey">
+                                        <div class="bl_d-iblock ml36 prova-icon l-icon--dark-grey">
                                             <?php Rexbuilder_Utilities::get_icon('#B028-Input-Border-Hover'); ?>
                                         </div>
                                         <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Hover Border Color', 'rexpansive-builder');?>">
