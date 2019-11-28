@@ -540,15 +540,6 @@ $tool_button_classes = 'tool-button';
 -->
 
 <script type="text/x-tmpl" id="tmpl-rexwpcf7-tools">
-    <!-- <div class="rex-wpcf7-tools-container">
-        <div class="tool-button tool-button--inline wpcf7-add-new-row tippy" data-tippy-content="<?php _e('Add row', 'rexpansive'); ?>">
-            <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
-        </div>
-        <div class="tool-button tool-button--inline wpcf7-settings tippy" data-tippy-content="<?php _e('Settings', 'rexpansive'); ?>">
-            <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
-        </div>
-    </div> -->
-
     <div class="tool-button tool-button--flat tool-button--add-big wpcf7-add-new-row tippy" data-tippy-content="<?php _e('Add Row', 'rexpansive'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
     </div>

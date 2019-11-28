@@ -5772,7 +5772,7 @@ MediumEditor.extensions = {};
 
         updatePlaceholder: function (el, dontShow) {
             // If the element has content, hide the placeholder
-            if (el.querySelector('img, blockquote, ul, ol, table') || (el.textContent.replace(/^\s+|\s+$/g, '') !== '')) {
+            if (el.querySelector('img, blockquote, ul, ol, table, form') || (el.textContent.replace(/^\s+|\s+$/g, '') !== '')) {
                 return this.hidePlaceholder(el);
             }
 

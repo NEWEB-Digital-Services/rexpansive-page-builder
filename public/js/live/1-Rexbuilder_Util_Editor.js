@@ -586,7 +586,7 @@ var Rexbuilder_Util_Editor = (function($) {
           $(document.getElementById(blockIDToFocusAfterClose)).parents('rexpansive_section')
             .addClass('block-editing')
             .addClass('focusedRow');
-        }, 1);
+        }, 0);
       }
     });
 
@@ -641,10 +641,6 @@ var Rexbuilder_Util_Editor = (function($) {
       Rexbuilder_Rexelement.refreshSeparatedRexElement(e.settings.data_to_send);
     });
 
-    Rexbuilder_Util.$document.on("rexlive:refresh_rex_element", function (e) {
-      Rexbuilder_Rexelement.refreshRexElement(e.settings.data_to_send);
-    });
-
     // WPCF7
     Rexbuilder_Util.$document.on("rexlive:wpcf7_add_field", function (e) {
       Rexbuilder_Rexwpcf7.addField(e.settings.data_to_send);
@@ -660,10 +656,6 @@ var Rexbuilder_Util_Editor = (function($) {
 
     Rexbuilder_Util.$document.on("rexlive:updateFormLive", function(e){
       Rexbuilder_Rexwpcf7.updateFormLive(e.settings.data_to_send);
-    });
-
-    Rexbuilder_Util.$document.on("rexlive:updateFormInputsLive", function(e){
-      Rexbuilder_Rexwpcf7.updateFormInputsLive(e.settings.data_to_send);
     });
 
     Rexbuilder_Util.$document.on("rexlive:updateFormContentLive", function(e){

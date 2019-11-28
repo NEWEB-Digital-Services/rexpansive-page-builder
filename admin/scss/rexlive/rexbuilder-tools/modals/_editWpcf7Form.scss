@@ -105,15 +105,11 @@
       border-bottom: 1px solid #ddd;
 
       .rex-accordion--toggle:hover {
-        cursor:pointer;
+        cursor: pointer;
       }
 
       &.modal-row-default {
         background-color: #FFF;
-
-        &:last-child {
-          // border-bottom: 1px solid #ddd;
-        }
 
         .l-svg-icons > svg {
           background-color: #FFF;

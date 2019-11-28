@@ -512,19 +512,6 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(formDataToIframe);
     }
 
-    // var _updateFormInputsLive = function (data) {
-    //     var formDataToIframe = {
-    //         eventName: "rexlive:updateFormInputsLive",
-    //         data_to_send: {
-    //             target: formData.element_target,
-    //          propertyType: data.type,
-    //             propertyName: data.name,
-    //             newValue: data.value
-    //         }
-    //     };
-    //     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(formDataToIframe);
-    // }
-
     var _updateFormContentLive = function (data) {
         var formDataToIframe = {
             eventName: "rexlive:updateFormContentLive",

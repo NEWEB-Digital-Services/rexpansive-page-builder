@@ -17,6 +17,10 @@
       .wpcf7-column {
         display: flex;
 
+        &.with-button {
+          justify-content: center;
+        }
+
         .wpcf7-column-content {
           width: 100%;
         }
@@ -41,8 +45,6 @@
       &.wpcf7-row__4-columns {
         .wpcf7-column {
           float: left;
-          padding: 10px;
-          // justify-content: center;
         }
       }
       
@@ -62,14 +64,12 @@
       &.wpcf7-row__3-columns {
         .wpcf7-column {
           width: 33.3333%;
-          // max-width: 33.3333%;
         }
       }
 
       &.wpcf7-row__4-columns {
         .wpcf7-column {
           width: 25%;
-          // max-width: 25%;
         }
       }
     }
@@ -77,6 +77,11 @@
 
   .wpcf7-response-output {
     width: 100%;
+  }
+
+  .wpcf7-submit {
+    min-width: 150px;
+    min-height: 40px;
   }
 }
 

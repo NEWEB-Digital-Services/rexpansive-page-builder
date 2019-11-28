@@ -11,16 +11,16 @@ defined('ABSPATH') or exit;
 ?>
 <div class="rex-modal-wrap">
 	<div id="rex-wpcf7-content-adder" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable setting-edited">
-		<!-- Closing button -->
+		<!-- ClosIng Button -->
         <div class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="<?php esc_attr_e( 'Close', 'rexpansive-builder' ); ?>" value="" tabindex="0">
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
         </div>
-        <!-- General wrap -->
+        <!-- General Wrap -->
         <div class="modal-content">
         	<?php include 'rexlive-loader-modal.php'; ?> <!-- // Add text field -->
-            <div class="bl_modal-row">
+            <div id="rex-add-text-field" class="bl_modal-row">
                 <div class="rexwpcf7-cont_row bl_ai-c bl_jc-c valign-wrapper" >
-                    <div class="rexwpcf7-upd-add_button rex-add-text-field tippy" data-tippy-content="<?php esc_attr_e( 'Text', 'rexpansive-builder' ); ?>">
+                    <div class="rexwpcf7-upd-add_button  tippy" data-tippy-content="<?php esc_attr_e( 'Text', 'rexpansive-builder' ); ?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                     </div>
                     <div id="rex-wpcf7-add-text-field" class="l-icon--dark-grey bl_d-iblock">
@@ -29,10 +29,10 @@ defined('ABSPATH') or exit;
                     <div class="bl_d-iblock modal-field-name">text</div>
                 </div>
             </div>
-            <!-- Add textarea field -->
-            <div class="bl_modal-row">
+            <!-- // Add Textarea Field -->
+            <div id="rex-add-textarea-field" class="bl_modal-row">
                 <div class="rexwpcf7-cont_row bl_ai-c bl_jc-c valign-wrapper" >
-                    <div class="rexwpcf7-upd-add_button rex-add-textarea-field tippy" data-tippy-content="<?php esc_attr_e( 'Textarea', 'rexpansive-builder' ); ?>">
+                    <div class="rexwpcf7-upd-add_button  tippy" data-tippy-content="<?php esc_attr_e( 'Textarea', 'rexpansive-builder' ); ?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                     </div>
                     <div id="rex-wpcf7-add-textarea-field" class="l-icon--dark-grey bl_d-iblock">
@@ -41,10 +41,10 @@ defined('ABSPATH') or exit;
                     <div class="bl_d-iblock modal-field-name">textarea</div>
                 </div>
             </div>
-            <!-- Add menu field -->
-            <div class="bl_modal-row">
+            <!-- // Add Menu Field -->
+            <div id="rex-add-menu-field" class="bl_modal-row">
                 <div class="rexwpcf7-cont_row bl_ai-c bl_jc-c valign-wrapper" >
-                    <div class="rexwpcf7-upd-add_button rex-add-menu-field tippy" data-tippy-content="<?php esc_attr_e( 'Select', 'rexpansive-builder' ); ?>">
+                    <div class="rexwpcf7-upd-add_button  tippy" data-tippy-content="<?php esc_attr_e( 'Select', 'rexpansive-builder' ); ?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                     </div>
                     <div id="rex-wpcf7-add-select-field" class="l-icon--dark-grey bl_d-iblock">
@@ -53,10 +53,10 @@ defined('ABSPATH') or exit;
                     <div class="bl_d-iblock modal-field-name">select</div>
                 </div>
             </div>
-            <!-- Add radiobuttons -->
-            <div class="bl_modal-row">
+            <!-- // Add radiobuttons -->
+            <div id="rex-add-radiobuttons-field" class="bl_modal-row">
                 <div class="rexwpcf7-cont_row bl_ai-c bl_jc-c valign-wrapper" >
-                    <div class="rexwpcf7-upd-add_button rex-add-radiobuttons-field tippy" data-tippy-content="<?php esc_attr_e( 'Radio Buttons', 'rexpansive-builder' ); ?>">
+                    <div class="rexwpcf7-upd-add_button tippy" data-tippy-content="<?php esc_attr_e( 'Radio Buttons', 'rexpansive-builder' ); ?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                     </div>
                     <div id="rex-wpcf7-add-radio-field" class="l-icon--dark-grey bl_d-iblock">
@@ -66,9 +66,9 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <!-- // Add Checkbox -->
-            <div class="bl_modal-row">
+            <div id="rex-add-checkbox-field" class="bl_modal-row">
                 <div class="rexwpcf7-cont_row bl_ai-c bl_jc-c valign-wrapper" >
-                    <div class="rexwpcf7-upd-add_button rex-add-checkbox-field tippy" data-tippy-content="<?php esc_attr_e( 'Checkbox', 'rexpansive-builder' ); ?>">
+                    <div class="rexwpcf7-upd-add_button tippy" data-tippy-content="<?php esc_attr_e( 'Checkbox', 'rexpansive-builder' ); ?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                     </div>
                     <div id="rex-wpcf7-add-checkbox-field" class="l-icon--dark-grey bl_d-iblock">
@@ -78,9 +78,9 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <!-- // Add File -->
-            <div class="bl_modal-row">
+            <div id="rex-add-file-field" class="bl_modal-row">
                 <div class="rexwpcf7-cont_row bl_ai-c bl_jc-c valign-wrapper" >
-                    <div class="rexwpcf7-upd-add_button rex-add-file-field tippy" data-tippy-content="<?php esc_attr_e( 'Checkbox', 'rexpansive-builder' ); ?>">
+                    <div class="rexwpcf7-upd-add_button tippy" data-tippy-content="<?php esc_attr_e( 'Checkbox', 'rexpansive-builder' ); ?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                     </div>
                     <div id="rex-wpcf7-add-file-field" class="l-icon--dark-grey bl_d-iblock">
@@ -90,9 +90,9 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <!-- // Add Submit Button -->
-            <div class="bl_modal-row">
+            <div id="rex-add-submit-button" class="bl_modal-row">
                 <div class="rexwpcf7-cont_row bl_ai-c bl_jc-c valign-wrapper" >
-                    <div class="rexwpcf7-upd-add_button rex-add-submit-button tippy" data-tippy-content="<?php esc_attr_e( 'Button', 'rexpansive-builder' ); ?>">
+                    <div class="rexwpcf7-upd-add_button tippy" data-tippy-content="<?php esc_attr_e( 'Button', 'rexpansive-builder' ); ?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                     </div>
                     <div id="rex-wpcf7-add-submit-field" class="l-icon--dark-grey bl_d-iblock">

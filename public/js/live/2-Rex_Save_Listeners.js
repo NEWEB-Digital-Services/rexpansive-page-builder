@@ -10,9 +10,10 @@ var Rex_Save_Listeners = (function($) {
       var idPost = parseInt($("#id-post").attr("data-post-id"));
       var activeLayoutName = Rexbuilder_Util.activeLayout;
 
+      // WPCF7 Saving
       var formIDsInPage = Rexbuilder_Rexwpcf7.getIDsInPage();
       for (var id of formIDsInPage) {
-        Rexbuilder_Rexwpcf7.updateFormInDBNoRefresh(id);
+        Rexbuilder_Rexwpcf7.updateFormInDB(id);
       }
 
       //getting custom css set in page

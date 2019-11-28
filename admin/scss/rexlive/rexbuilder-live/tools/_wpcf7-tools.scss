@@ -106,9 +106,11 @@
 
     .medium-editor-action {
       background-color: $palette-color-4;
-      // box-sizing: content-box;
-      // width: 23px;
-      // height: 23px;
+
+      .l-svg-icons {
+        box-sizing: content-box;
+        font-size: 23px;
+      }
     }
 
     &:first-child > .medium-editor-action {

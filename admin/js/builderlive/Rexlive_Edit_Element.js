@@ -83,6 +83,7 @@ var Element_Edit_Modal = (function ($) {
         _updateElementEditorModal(data.elementData);
         if (alreadyChooseToSynchronize) {
             // Rexlive_Modals_Utils.openModal(element_editor_properties.$self.parent(".rex-modal-wrap"));
+            // Make an if if there are more kind of elements
             Wpcf7_Edit_Form_Modal.openFormEditorModal({
                 elementData: elementData,
                 blockID: blockID

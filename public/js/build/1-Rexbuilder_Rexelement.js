@@ -317,38 +317,6 @@ var Rexbuilder_Rexelement = (function ($) {
                     id: parseInt(elementID),
                     number: elementNumber
                 });
-
-                // var $menuInForm = $(element).find(".wpcf7").find(".wpcf7-select");
-                // $menuInForm.each(function () {
-                //     if ($(this).find("option").eq(0).val() == "") {
-                //         var $option = $(this).find("option").eq(0);
-                //         $option.attr("disabled", "");
-                //         $option.attr("selected", "");
-
-                //         var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
-                //         $option.text(placeholder);
-                //     }
-                // });
-
-                // Adding form span data
-                // if ($elementWrapper.find(".wpcf7").length != 0) {
-                //     var $formToAddData = $elementWrapper.find(".wpcf7");
-                //     _addFormData($formToAddData);
-                // }
-                
-                
-                // if ($elementWrapper.hasClass("rex-separate-element")) {
-                //     // We are not editing an element model, but a separate element
-                //     _addElementStyle($elementWrapper);
-                // } else {
-                //     // We are editing an element model. Add the style only if there's
-                //     // no existing style
-                //     if (i !== 0 && elementsInPage[i].id == elementsInPage[i-1].id) {
-                //         // Do nothing
-                //     } else {
-                //         _addElementStyle($elementWrapper);
-                //     }
-                // }
             }
             if (elementsInPage[j].number < elementNumber) {
                 elementsInPage[j].number = elementNumber;
@@ -364,12 +332,6 @@ var Rexbuilder_Rexelement = (function ($) {
         Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").each(function (i, element) {
             var $elementWrapper = $(element);
             var elementID = $elementWrapper.attr("data-rex-element-id");
-            // Adding form span data
-            // if ($elementWrapper.find(".wpcf7").length != 0) {
-                // var $formToAddData = $elementWrapper.find(".wpcf7");
-                // _addFormData($formToAddData);
-            // }
-            // _addElementData($elementWrapper, i);
             
             if ($elementWrapper.hasClass("rex-separate-element")) {
                 // We are not editing an element model, but a separate element
@@ -383,110 +345,6 @@ var Rexbuilder_Rexelement = (function ($) {
                     _addElementStyle($elementWrapper);
                 }
             }
-        });
-    }
-
-    var _fixWpcf7 = function () {
-        Rexbuilder_Rexwpcf7.setRowsSortable();
-        _addWpcf7MenuPlaceholders();
-        _fixWpcf7RadioButtons();
-        _fixWpcf7Files();
-    }
-
-    var _addColumnContentSpanDatas = function () {
-        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").each(function (i, element) {
-            var $columnsInForm = $(element).find(".wpcf7 .wpcf7-column");
-            $columnsInForm.each(function () {
-                var $column = $(this);
-                if ($column.children(".wpcf7-add-new-form-content").length == 0 && $column.children(".rex-wpcf7-column-content-data").length == 0) {
-                    var formID = $column.parents(".rex-element-wrapper").attr("data-rex-element-id");
-                    var row = $column.parents(".wpcf7-row").attr("wpcf7-row-number");
-                    var column = $column.attr("wpcf7-column-number");
-
-                    var data = {
-                        editPoint: {
-                            element_id: formID,
-                            row_number: row,
-                            column_number: column
-                        }
-                    }
-
-                    Rexbuilder_Rexwpcf7.createColumnContentSpanData(data);
-                    Rexbuilder_Rexwpcf7.updateFormInDB(formID);
-                }
-            });
-        });
-    }
-
-    /**
-     * Adding what wpcf7 can't do: set the menu placeholder
-     * @return {null}
-     */
-    var _addWpcf7MenuPlaceholders = function () {
-        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").each(function (i, element) {
-            var $menuInForm = $(element).find(".wpcf7").find(".wpcf7-select");
-            $menuInForm.each(function () {
-                if ($(this).find("option").eq(0).val() == "") {
-                    var $option = $(this).find("option").eq(0);
-                    $option.attr("disabled", "");
-                    $option.attr("selected", "");
-
-                    var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
-                    $option.text(placeholder);
-                }
-
-                $(this).on("change", function () {
-                    var color = $(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-select-color-after-selection");
-                    $(this).css("color", color);
-                })
-            });
-        });
-    }
-
-    /**
-     * Fixing radio buttons to make them clickable
-     * @return {null}
-     */
-    var _fixWpcf7RadioButtons = function () {
-        // @toedit Provvisorio. Lo span contenente il testo dovrebbe essere eliminato ma
-        // così facendo elimino i before e after che mostrano il radio. Come fare?
-        Rexbuilder_Util.$rexContainer.find(".wpcf7 input[type='radio']").each(function (i, element) {
-            var $element = $(element);
-
-            $element.addClass("with-gap");
-            $element.attr("id", "wpcf7-radio-" + (i + 1));
-            var text = $element.siblings(".wpcf7-list-item-label").text();
-            $element.siblings(".wpcf7-list-item-label").empty();
-            var $label = $(document.createElement("label"));
-            $label.addClass("wpcf7-list-item-label");
-            $label.attr("for",  $element.attr("id"));
-            $label.text(text);
-            $label.insertAfter($element.siblings(".wpcf7-list-item-label"));
-            $element.siblings("span.wpcf7-list-item-label").removeClass("wpcf7-list-item-label");
-        });
-    }
-
-    var _fixWpcf7Files = function () {
-        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").each(function (i, element) {
-            var $filesInForm = $(element).find(".wpcf7 .wpcf7-form-control-wrap").has(" .wpcf7-file");
-            $filesInForm.each(function (i) {
-                if ($(this).find(".wpcf7-file-caption").length == 0) {
-                    $(this).siblings(".wpcf7-file-caption").detach().appendTo($(this));
-                }
-
-                var $element = $(this).find("input[type='file']");
-                $element.attr("id", "wpcf7-file-" + (i + 1));
-                var $fileLabel = $(document.createElement("label"));
-                $fileLabel.attr("for",  $element.attr("id"));
-                $fileLabel.insertAfter($element);
-
-                if ($(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").length != 0) {
-                    var buttonText = $(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text");
-                    $fileLabel.text(buttonText);
-                } else {
-                    $fileLabel.text("Choose a file");
-                }
-            });
         });
     }
 
@@ -607,49 +465,6 @@ var Rexbuilder_Rexelement = (function ($) {
     }
 
     /**
-     * Refreshes the element from the shortcode
-     * @param  elementID
-     * @return {null}
-     */
-    var _refreshRexElement = function (elementID) {
-        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]");
-        Rexbuilder_Util_Editor.startLoading();
-        // Ajax call to get the html of the element
-        $.ajax({
-          type: "POST",
-          dataType: "json",
-          url: _plugin_frontend_settings.rexajax.ajaxurl,
-          data: {
-            action: "rex_transform_element_shortcode",
-            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-            elementID: elementID
-          },
-          success: function(response) {
-            if (response.success) {
-                // Deleting the old element
-                var $elementContainer = $elementWrapper.find(".rex-element-container");
-                $elementContainer.empty();
-
-                // If success get the element HTML and append it to the right div
-                var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
-                $elementContainer.append($shortcodeTransformed);
-
-                if ($elementWrapper.find(".wpcf7").length != 0) {
-                    var $formToAddData = $elementWrapper.find(".wpcf7");
-                    _addFormData($formToAddData);
-                    _fixWpcf7();
-                    _addColumnContentSpanDatas();
-                }
-            }
-          },
-          error: function(response) {},
-          complete: function (response) {
-            Rexbuilder_Util_Editor.endLoading();
-          }
-        });
-    }
-
-    /**
      * Refreshes the element from the shortcode. This happens when we 
      * have a separate element
      * @param  data
@@ -717,26 +532,7 @@ var Rexbuilder_Rexelement = (function ($) {
 
     var _addSeparateAttributes = function ($elementWrapper, elementData) {
         var $elementData = $elementWrapper.find(".rex-element-data").eq(0);
-        // $elementData.attr("data-text-color", elementData.text_color);
-        // $elementData.attr("data-text-size", elementData.font_size);
         $elementData.attr("data-background-color", elementData.background_color);
-        // $elementData.attr("data-background-color-hover", elementData.hover_color);
-        // $elementData.attr("data-border-color-hover", elementData.hover_border);
-        // $elementData.attr("data-text-color-hover", elementData.hover_text);
-        // $elementData.attr("data-border-width", elementData.border_width);
-        // $elementData.attr("data-border-color", elementData.border_color);
-        // $elementData.attr("data-border-radius", elementData.border_radius);
-        // $elementData.attr("data-button-height", elementData.button_height);
-        // $elementData.attr("data-button-width", elementData.button_width);
-        // $elementData.attr("data-margin-top", elementData.margin_top);
-        // $elementData.attr("data-margin-bottom", elementData.margin_bottom);
-        // $elementData.attr("data-margin-right", elementData.margin_right);
-        // $elementData.attr("data-margin-left", elementData.margin_left);
-        // $elementData.attr("data-padding-top", elementData.padding_top);
-        // $elementData.attr("data-padding-bottom", elementData.padding_bottom);
-        // $elementData.attr("data-padding-right", elementData.padding_right);
-        // $elementData.attr("data-padding-left", elementData.padding_left);
-        // $elementData.attr("data-button-name", elementData.element_target.element_name);
     }
 
     /**
@@ -883,26 +679,7 @@ var Rexbuilder_Rexelement = (function ($) {
 
     var _removeModelData = function ($elementWrapper) {
         var $elementData = $elementWrapper.find(".rex-element-data").eq(0);
-        // $elementData.removeAttr("data-text-color");
-        // $elementData.removeAttr("data-text-size");
         $elementData.removeAttr("data-background-color");
-        // $elementData.removeAttr("data-background-color-hover");
-        // $elementData.removeAttr("data-border-color-hover");
-        // $elementData.removeAttr("data-text-color-hover");
-        // $elementData.removeAttr("data-border-width");
-        // $elementData.removeAttr("data-border-color");
-        // $elementData.removeAttr("data-border-radius");
-        // $elementData.removeAttr("data-button-height");
-        // $elementData.removeAttr("data-button-width");
-        // $elementData.removeAttr("data-margin-top");
-        // $elementData.removeAttr("data-margin-bottom");
-        // $elementData.removeAttr("data-margin-left");
-        // $elementData.removeAttr("data-margin-right");
-        // $elementData.removeAttr("data-padding-top");
-        // $elementData.removeAttr("data-padding-bottom");
-        // $elementData.removeAttr("data-padding-left");
-        // $elementData.removeAttr("data-padding-right");
-        // $elementData.removeAttr("data-button-name");
     }
 
     var _addElementStyle = function ($elementWrapper) {
@@ -1005,7 +782,6 @@ var Rexbuilder_Rexelement = (function ($) {
         _fixCustomStyleElement();
         _updateElementListInPage();
         _addStyles();
-        _fixWpcf7();
 		_linkDocumentListeners();
 	}
 
@@ -1021,7 +797,6 @@ var Rexbuilder_Rexelement = (function ($) {
         getElementsInPage: _getElementsInPage,
         lockSynchronize: _lockSynchronize,
         separateRexElement: _separateRexElement,
-        refreshRexElement: _refreshRexElement,
         refreshSeparatedRexElement: _refreshSeparatedRexElement,
         updateElement: _updateElement,
         updateElementLive: _updateElementLive,

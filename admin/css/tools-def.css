@@ -13350,7 +13350,6 @@ select.rx__form-input {
   -o-transition: .28s ease;
   transition: .28s ease; }
 
-/* Unchecked styles */
 [type="radio"]:not(:checked) + span:before,
 [type="radio"]:not(:checked) + span:after,
 [type="radio"]:checked + span:before,
@@ -13359,6 +13358,7 @@ select.rx__form-input {
 [type="radio"].with-gap:checked + span:after {
   border-radius: 50%; }
 
+/* Unchecked styles */
 [type="radio"]:not(:checked) + span:before,
 [type="radio"]:not(:checked) + span:after {
   border: 2px solid #424242; }
@@ -17732,8 +17732,23 @@ input:disabled + .rex_edit_title_slider {
   text-transform: uppercase;
   font-size: 17px;
   line-height: 25px;
-  letter-spacing: 2px;
-  cursor: default; }
+  letter-spacing: 2px; }
+
+#rex-wpcf7-content-adder #rex-add-text-field,
+#rex-wpcf7-content-adder #rex-add-text-field:hover,
+#rex-wpcf7-content-adder #rex-add-textarea-field,
+#rex-wpcf7-content-adder #rex-add-textarea-field:hover,
+#rex-wpcf7-content-adder #rex-add-menu-field,
+#rex-wpcf7-content-adder #rex-add-menu-field:hover,
+#rex-wpcf7-content-adder #rex-add-checkbox-field,
+#rex-wpcf7-content-adder #rex-add-checkbox-field:hover,
+#rex-wpcf7-content-adder #rex-add-file-field,
+#rex-wpcf7-content-adder #rex-add-file-field:hover,
+#rex-wpcf7-content-adder #rex-add-radiobuttons-field,
+#rex-wpcf7-content-adder #rex-add-radiobuttons-field:hover,
+#rex-wpcf7-content-adder #rex-add-submit-button,
+#rex-wpcf7-content-adder #rex-add-submit-button:hover {
+  cursor: pointer; }
 
 #rex-wpcf7-content-adder #rex-wpcf7-add-text-field .l-svg-icons {
   font-size: 30px; }

@@ -2314,7 +2314,6 @@
   -o-transition: .28s ease;
   transition: .28s ease; }
 
-/* Unchecked styles */
 [type="radio"]:not(:checked) + span:before,
 [type="radio"]:not(:checked) + span:after,
 [type="radio"]:checked + span:before,
@@ -2323,6 +2322,7 @@
 [type="radio"].with-gap:checked + span:after {
   border-radius: 50%; }
 
+/* Unchecked styles */
 [type="radio"]:not(:checked) + span:before,
 [type="radio"]:not(:checked) + span:after {
   border: 2px solid #424242; }
@@ -5496,6 +5496,10 @@ input.me-insert-embed__value[type=text] {
   border-width: 0px; }
   #wpcf7-select-columns-number li .medium-editor-action {
     background-color: #424242; }
+    #wpcf7-select-columns-number li .medium-editor-action .l-svg-icons {
+      -webkit-box-sizing: content-box;
+              box-sizing: content-box;
+      font-size: 23px; }
   #wpcf7-select-columns-number li:first-child > .medium-editor-action {
     border-top-left-radius: 17px;
     border-bottom-left-radius: 17px;
@@ -6286,6 +6290,10 @@ span.builderlive-editable-field[contenteditable=true] {
         display: -webkit-box;
         display: -ms-flexbox;
         display: flex; }
+        .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column.with-button {
+          -webkit-box-pack: center;
+              -ms-flex-pack: center;
+                  justify-content: center; }
         .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .wpcf7-column-content {
           width: 100%; }
         .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .rex-wpcf7-column-content-data {
@@ -6296,8 +6304,7 @@ span.builderlive-editable-field[contenteditable=true] {
         .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .wpcf7-add-new-row {
           margin: auto 0; }
       .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__1-column .wpcf7-column, .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__2-columns .wpcf7-column, .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__3-columns .wpcf7-column, .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__4-columns .wpcf7-column {
-        float: left;
-        padding: 10px; }
+        float: left; }
       .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__1-column .wpcf7-column {
         width: 100%; }
       .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__2-columns .wpcf7-column {
@@ -6309,3 +6316,6 @@ span.builderlive-editable-field[contenteditable=true] {
         width: 25%; }
   .wpcf7-form .wpcf7-response-output {
     width: 100%; }
+  .wpcf7-form .wpcf7-submit {
+    min-width: 150px;
+    min-height: 40px; }

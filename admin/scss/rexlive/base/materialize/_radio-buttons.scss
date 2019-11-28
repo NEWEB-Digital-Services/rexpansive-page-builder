@@ -42,7 +42,6 @@ $radio-border: 2px solid $radio-fill-color;
   transition: .28s ease;
 }
 
-/* Unchecked styles */
 [type="radio"]:not(:checked) + span:before,
 [type="radio"]:not(:checked) + span:after,
 [type="radio"]:checked + span:before,
@@ -52,6 +51,7 @@ $radio-border: 2px solid $radio-fill-color;
   border-radius: 50%;
 }
 
+/* Unchecked styles */
 [type="radio"]:not(:checked) + span:before,
 [type="radio"]:not(:checked) + span:after {
   border: 2px solid $radio-empty-color;

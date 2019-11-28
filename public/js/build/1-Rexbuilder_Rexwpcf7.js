@@ -8,7 +8,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     var $fileCaption;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    /// REXWPCF7 GENERIC FUNCTIONS
+    /// Rexwpcf7 Generic Functions
     /////////////////////////////////////////////////////////////////////////////////////////////////
     
     /**
@@ -24,41 +24,47 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var row = insertionPoint.row_number;
         var column = insertionPoint.column_number;
         var $columnToAddField = Rexbuilder_Util.$rexContainer.find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
+        var $columnToAddFieldInDB = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
 
-        $columnToAddField.empty();
+        $columnToAddField.empty().removeClass('with-button');
+        $columnToAddFieldInDB.empty().removeClass('with-button');
+
+        var $span = $(document.createElement("span")).addClass("wpcf7-column-content");
+        $columnToAddField.append($span);
+        var $columnContent = $columnToAddField.find('.wpcf7-column-content');
 
         // Selecting the field
         switch (fieldType) {
             case "text":
                 fieldShortcode = "[text text-" + fieldNumber + " class:text-" + fieldNumber + "]";
-                $columnToAddField.prepend("<input type=\"text\" name=\"text-" + fieldNumber + "\" value=\"\" size=\"40\" class=\"wpcf7-form-control wpcf7-text text-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\">");
+                $columnContent.prepend("<input type=\"text\" name=\"text-" + fieldNumber + "\" value=\"\" size=\"40\" class=\"wpcf7-form-control wpcf7-text text-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\">");
                 break;
             case "textarea":
                 fieldShortcode = "[textarea textarea-" + fieldNumber + " class:textarea-" + fieldNumber + "]";
-                $columnToAddField.prepend("<textarea name=\"textarea-" + fieldNumber + "\" cols=\"40\" rows=\"10\" class=\"wpcf7-form-control wpcf7-textarea textarea-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\"></textarea>");
+                $columnContent.prepend("<textarea name=\"textarea-" + fieldNumber + "\" cols=\"40\" rows=\"10\" class=\"wpcf7-form-control wpcf7-textarea textarea-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\"></textarea>");
                 break;
             case "menu":
                 fieldShortcode = "[select menu-" + fieldNumber + " include_blank class:menu-" + fieldNumber + " 'Field 1' 'Field 2']";
-                $columnToAddField.prepend("<select name=\"menu-" + fieldNumber + "\" class=\"wpcf7-form-control wpcf7-select menu-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\"><option value=\"\" disabled=\"disabled\" selected=\"selected\">---</option><option value=\"Field 1\">Field 1</option><option value=\"Field 2\">Field 2</option></select>");
+                $columnContent.prepend("<select name=\"menu-" + fieldNumber + "\" class=\"wpcf7-form-control wpcf7-select menu-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\"><option value=\"\" disabled=\"disabled\" selected=\"selected\">---</option><option value=\"Field 1\">Field 1</option><option value=\"Field 2\">Field 2</option></select>");
                 break;
             case "radiobuttons":
                 fieldShortcode = "[radio radio-" + fieldNumber + " default:1 class:radio-" + fieldNumber + " \"Option 1\" \"Option 2\" ]";
-                $columnToAddField.prepend("<span class=\"wpcf7-form-control-wrap radio-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control wpcf7-radio radio-" + fieldNumber + "\"><span class=\"wpcf7-list-item first\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 1\" checked=\"checked\" class=\"with-gap\" id=\"wpcf7-radio-3\"><span class=\"\"></span><label class=\"wpcf7-list-item-label\" for=\"wpcf7-radio-3\">Option 1</label></span><span class=\"wpcf7-list-item last\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 2\" class=\"with-gap\" id=\"wpcf7-radio-4\"><span class=\"\"></span><label class=\"wpcf7-list-item-label\" for=\"wpcf7-radio-4\">Option 2</label></span></span></span>");
+                $columnContent.prepend("<span class=\"wpcf7-form-control-wrap radio-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control wpcf7-radio radio-" + fieldNumber + "\"><span class=\"wpcf7-list-item first\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 1\" checked=\"checked\" class=\"with-gap\" id=\"wpcf7-radio-3\"><span class=\"\"></span><label class=\"wpcf7-list-item-label\" for=\"wpcf7-radio-3\">Option 1</label></span><span class=\"wpcf7-list-item last\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 2\" class=\"with-gap\" id=\"wpcf7-radio-4\"><span class=\"\"></span><label class=\"wpcf7-list-item-label\" for=\"wpcf7-radio-4\">Option 2</label></span></span></span>");
                 break;
-            case "checkbox":
-                fieldShortcode = "[checkbox checkbox-" + fieldNumber + " class:checkbox-" + fieldNumber + " \"Checkbox text\"]";
-                break;
+            // case "checkbox":
+            //     fieldShortcode = "[checkbox checkbox-" + fieldNumber + " class:checkbox-" + fieldNumber + " \"Checkbox text\"]";
+            //     break;
             case "acceptance":
                 fieldShortcode = "[acceptance acceptance-" + fieldNumber + " optional] Your text [/acceptance]";
-                $columnToAddField.prepend("<span class=\"wpcf7-form-control-wrap acceptance-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control wpcf7-acceptance optional\"><span class=\"wpcf7-list-item\"><label><input type=\"checkbox\" name=\"acceptance-" + fieldNumber + "\" value=\"1\" aria-invalid=\"false\"><span class=\"wpcf7-list-item-label\">Your text</span></label></span></span></span>");
+                $columnContent.prepend("<span class=\"wpcf7-form-control-wrap acceptance-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control wpcf7-acceptance optional\"><span class=\"wpcf7-list-item\"><label><input type=\"checkbox\" name=\"acceptance-" + fieldNumber + "\" value=\"1\" aria-invalid=\"false\"><span class=\"wpcf7-list-item-label\">Your text</span></label></span></span></span>");
                 break;
             case "file":
                 fieldShortcode = "[file file-" + fieldNumber + " filetypes: limit:]<div class='wpcf7-file-caption'>Your text here</div>";
-                $columnToAddField.prepend("<span class=\"wpcf7-form-control-wrap file-" + fieldNumber + "\" style=\"\"><input type=\"file\" name=\"file-" + fieldNumber + "\" size=\"40\" class=\"wpcf7-form-control wpcf7-file\" accept=\".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.ppt,.pptx,.odt,.avi,.ogg,.m4a,.mov,.mp3,.mp4,.mpg,.wav,.wmv\" aria-invalid=\"false\" id=\"wpcf7-file-2\"><label for=\"wpcf7-file-2\"></label><div class=\"wpcf7-file-caption\">Your text here</div></span>");
+                $columnContent.prepend("<span class=\"wpcf7-form-control-wrap file-" + fieldNumber + "\" style=\"\"><input type=\"file\" name=\"file-" + fieldNumber + "\" size=\"40\" class=\"wpcf7-form-control wpcf7-file\" accept=\".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.ppt,.pptx,.odt,.avi,.ogg,.m4a,.mov,.mp3,.mp4,.mpg,.wav,.wmv\" aria-invalid=\"false\" id=\"wpcf7-file-2\"><label for=\"wpcf7-file-2\">Choose file</label><div class=\"wpcf7-file-caption\">Your text here</div></span>");
                 break;
             case "submit":
                 fieldShortcode = "[submit class:submit-" + fieldNumber + " 'Send']";
-                $columnToAddField.prepend("<input type=\"submit\" value=\"Send\" class=\"wpcf7-form-control wpcf7-submit submit-" + fieldNumber + "\" style=\"\">");
+                $columnContent.prepend("<input type=\"submit\" value=\"Send\" class=\"wpcf7-form-control wpcf7-submit submit-" + fieldNumber + "\" style=\"\">");
                 break;
         }
 
@@ -71,7 +77,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         });
 
         _addColumnContentStyle($columnToAddField);
-        
         _saveNewField(insertionPoint, fieldShortcode);
     }
 
@@ -101,7 +106,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         for(var i = 0; i < columnsSelected; i++) {
             $columnsToInsert[i] = $(document.createElement("div"));
-            $columnsToInsert[i].addClass("wpcf7-column");
+            $columnsToInsert[i].addClass("wpcf7-column with-button");
             $columnsToInsert[i].attr("wpcf7-column-number", (i+1));
 
             // Creating the + buttons for adding content
@@ -118,36 +123,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         _saveNewRow(formID, $newRow);
     }
-
-    // var _addNewToolsRow = function (formID) {
-    //     var $formToAddRow = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").find(".wpcf7-form");
-    //     var $newRow = $(document.createElement("div"));
-
-    //     if ($formToAddRow.find(".wpcf7-row").length != 0) {
-    //         var newRowNumber = parseInt($formToAddRow.find(".wpcf7-row").last().attr("wpcf7-row-number")) + 1;
-    //     } else {
-    //         var newRowNumber = 1;
-    //     }
-
-    //     $newRow.attr("wpcf7-row-number", newRowNumber);
-
-    //     var $columnToInsert;
-    //     $columnToInsert = $(document.createElement("div"));
-    //     $columnToInsert.addClass("wpcf7-column");
-    //     $columnToInsert.attr("wpcf7-column-number", 1);
-
-    //     var plusButton = tmpl("tmpl-rexwpcf7-tools", {});
-    //     $columnToInsert.append(plusButton);
-
-    //     $newRow.append($columnToInsert);
-
-    //     $formToAddRow.each(function() {
-    //         var $newRowClone = $newRow.clone();
-    //         $(this).find(".wpcf7-rows").append($newRowClone);
-    //     })
-
-    //     _saveNewRow(formID, $newRow);
-    // }
 
     /**
      * Adds a new row in the form specified by the form ID.
@@ -182,7 +157,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     $(this).empty();
 
                     var $plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
-                    $(this).append($plusButton);
+                    $(this)
+                        .append($plusButton)
+                        .addClass('with-button');
                 }
             });
         })
@@ -206,7 +183,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         $columnToDelete.empty();
         var $plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
-        $columnToDelete.append($plusButton);
+        $columnToDelete
+            .append($plusButton)
+            .addClass('with-button');
 
         _saveDeletingColumnContent(formID, rowNumberToDelete, columnNumberToDelete);
     }
@@ -248,7 +227,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    /// SAVING FUNCTIONS
+    /// Saving Functions
     //////////////////////////////////////////////////////////////////////////////////////////////// 
 
     var _saveNewField = function (insertionPoint, fieldShortcode) {
@@ -258,8 +237,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         var $columnToUpdateDB = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
 
-        $columnToUpdateDB.empty();
-        $columnToUpdateDB.append(fieldShortcode);
+        $columnToUpdateDB
+            .removeClass('with-button')
+            .find(".wpcf7-column-content").append(fieldShortcode);
 
         var data = {
             editPoint: {
@@ -268,9 +248,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 row_number: row
             }
         }
-
-        // _updateFormInDB(formID);
-        // _updateFormInDBNoRefresh(formID);
     }
 
     var _saveNewRow = function (formID, $newRow) {
@@ -278,8 +255,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var $lastRow = $formToAddRow.find(".wpcf7-row").last();
 
         $newRow.insertAfter($lastRow);
-
-        // _updateFormInDBNoRefresh(formID);
     }
 
     var _saveAddedRow = function (formID, rowNumber) {
@@ -289,7 +264,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         $rowToAdd.insertAfter($rowBefore);
         _fixRowNumbers($formToAddRow);
-        // _updateFormInDBNoRefresh(formID);
     }
 
     var _saveClonedColumnRow = function (formID, clonedColumnNumber, numberRowBefore) {
@@ -309,11 +283,11 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 $(this).empty();
 
                 var $plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
-                $(this).append($plusButton);
+                $(this)
+                    .append($plusButton)
+                    .addClass('with-button');
             }
         });
-
-        // _updateFormInDBNoRefresh(formID);
     }
 
     var _saveDeletingRow = function (formID, rowNumberToDelete) {
@@ -323,7 +297,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $rowToDelete.remove();
 
         _fixRowNumbers($formToDeleteRow);
-        // _updateFormInDBNoRefresh(formID);
+
     }
 
     var _saveDeletingColumnContent = function (formID, rowNumberToDelete, columnNumberToDelete) {
@@ -332,35 +306,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         $columnToDelete.empty();
         var $plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
-        $columnToDelete.append($plusButton);
-
-        // _updateFormInDBNoRefresh(formID);
+        $columnToDelete
+            .append($plusButton)
+            .addClass('with-button');
     }
 
     var _updateFormInDB = function (formID) {
-        var formToUpdateString = $formsInPage[formID][0].outerHTML; // Don't need to get the form in db before, already have it
-        
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: _plugin_frontend_settings.rexajax.ajaxurl,
-            data: {
-              action: "rex_wpcf7_save_changes",
-              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-              form_id: formID,
-              new_form_string: formToUpdateString
-            },
-            success: function(response) {
-              if (response.success) {
-                formToUpdateString = "";
-                Rexbuilder_Rexelement.refreshRexElement(formID);
-              }
-            },
-            error: function(response) {}
-        });
-    }
-
-    var _updateFormInDBNoRefresh = function (formID) {
         var formToUpdateString = $formsInPage[formID][0].outerHTML; // Don't need to get the form in db before, already have it
         
         $.ajax({
@@ -383,7 +334,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
-	/// CSS FUNCTIONS
+	/// CSS Functions
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	var formContentTypes = [
@@ -422,7 +373,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    // Adding rules
+    // Adding Rules
     
     var _addFormRule = function (formID, property) {
         if ("insertRule" in styleSheet) {
@@ -506,7 +457,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    // Updating rules
+    // UpdatiNg Rules
     
     var _updateFormRule = function (formID, rule, value) {
 		for (var i = 0; i < styleSheet.cssRules.length; i++) {
@@ -637,78 +588,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                         break;
                 }
                 break;
-            }
-        }
-    }
-
-    var _updateFormInputsRule = function (formID, rule, value) {
-        var contentType;
-        for (contentType of formContentTypes) {
-            for (var i = 0; i < styleSheet.cssRules.length; i++) {
-                if (
-                    //chrome firefox
-                    styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form " + contentType ||
-                    // edge
-                    styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper .wpcf7-form " + contentType
-                ) {
-                    switch (rule) {
-                        case "border-width":
-                            styleSheet.cssRules[i].style.borderWidth = value;
-
-                            styleSheet.cssRules[i].style.borderTopWidth = value;
-                            styleSheet.cssRules[i].style.borderLeftWidth = value;
-                            styleSheet.cssRules[i].style.borderRightWidth = value;
-                            styleSheet.cssRules[i].style.borderBottomWidth = value;
-
-                            styleSheet.cssRules[i].style.borderTop = value + " " + styleSheet.cssRules[i].style.borderTopStyle + " " + styleSheet.cssRules[i].style.borderTopColor;
-                            styleSheet.cssRules[i].style.borderLeft = value + " " + styleSheet.cssRules[i].style.borderLeftStyle + " " + styleSheet.cssRules[i].style.borderLeftColor;
-                            styleSheet.cssRules[i].style.borderRight = value + " " + styleSheet.cssRules[i].style.borderRightStyle + " " + styleSheet.cssRules[i].style.borderRightColor;
-                            styleSheet.cssRules[i].style.borderBottom = value + " " + styleSheet.cssRules[i].style.borderBottomStyle + " " + styleSheet.cssRules[i].style.borderBottomColor;
-                            break;
-                        case "border-color":
-                            styleSheet.cssRules[i].style.borderColor = value;
-
-                            styleSheet.cssRules[i].style.borderTopColor = value;
-                            styleSheet.cssRules[i].style.borderLeftColor = value;
-                            styleSheet.cssRules[i].style.borderRightColor = value;
-                            styleSheet.cssRules[i].style.borderBottomColor = value;
-
-                            break;
-                        case "border-style":
-                            styleSheet.cssRules[i].style.borderStyle = value;
-
-                            styleSheet.cssRules[i].style.borderTopStyle = value;
-                            styleSheet.cssRules[i].style.borderLeftStyle = value;
-                            styleSheet.cssRules[i].style.borderRightStyle = value;
-                            styleSheet.cssRules[i].style.borderBottomStyle = value;
-
-                            styleSheet.cssRules[i].style.borderTop = styleSheet.cssRules[i].style.borderTopWidth + " " + value + " " + styleSheet.cssRules[i].style.borderTopColor;
-                            styleSheet.cssRules[i].style.borderLeft = styleSheet.cssRules[i].style.borderLeftWidth + " " + value + " " + styleSheet.cssRules[i].style.borderLeftColor;
-                            styleSheet.cssRules[i].style.borderRight = styleSheet.cssRules[i].style.borderRightWidth + " " + value + " " + styleSheet.cssRules[i].style.borderRightColor;
-                            styleSheet.cssRules[i].style.borderBottom = styleSheet.cssRules[i].style.borderBottomWidth + " " + value + " " + styleSheet.cssRules[i].style.borderBottomColor;
-                            break;
-                        case "border-radius":
-                            styleSheet.cssRules[i].style.borderRadius = value;
-
-                            styleSheet.cssRules[i].style.borderTopLeftRadius = value;
-                            styleSheet.cssRules[i].style.borderTopRightRadius = value;
-                            styleSheet.cssRules[i].style.borderBottomLeftRadius = value;
-                            styleSheet.cssRules[i].style.borderBottomRightRadius = value;
-                            styleSheet.cssRules[i].style.webkitBorderRadius = value;
-
-                            styleSheet.cssRules[i].style.webkitBorderTopLeftRadius = value;
-                            styleSheet.cssRules[i].style.webkitBorderTopRightRadius = value;
-                            styleSheet.cssRules[i].style.webkitBorderBottomLeftRadius = value;
-                            styleSheet.cssRules[i].style.webkitBorderBottomRightRadius = value;
-                            break;
-                        case "background-color":
-                            styleSheet.cssRules[i].style.backgroundColor = value;
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                }
             }
         }
     }
@@ -922,7 +801,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    // Removing rules
+    // RemoviNg Rules
     
     var _removeFormRule = function (formID) {
         var contentType;
@@ -976,7 +855,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    // Form functions
+    // Form Functions
 
     var _addFormStyle = function ($form) {
         var $elementWrapper = $form.parents(".rex-element-wrapper");
@@ -1124,7 +1003,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         _updateFormColumnsRule(formID, "padding-left", formData.columns.padding_left);
         _updateFormColumnsRule(formID, "padding-right", formData.columns.padding_right);
         _updateFormColumnsRule(formID, "padding-bottom", formData.columns.padding_bottom);
-        // _updateFormInputsRule(formID, "background-color", formData.content.background_color);
         
         _updateFormContent(data.elementData);
 
@@ -1172,7 +1050,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    // Form content functions
+    // FoRm Content Functions
     
     var _updateFormContentLive = function (data) {
         var elementID = data.element_target.element_id;
@@ -1196,23 +1074,27 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     var _updateFormContent = function (data) {
         var formData = data;
         var elementID = data.element_target.element_id;
-        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .wpcf7-column").each( function () {
+        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .wpcf7-column").not('.with-button').each( function () {
             var $currentColumn = $(this);
             if ($currentColumn.find(".wpcf7-add-new-form-content").length == 0) {
                 var spanDataExists = $currentColumn.find(".rex-wpcf7-column-content-data").length != 0 ? true : false;
                 var currentColumnData = _generateColumnContentData($currentColumn, spanDataExists);
+                var inputType = currentColumnData.input_type;
+
+                if (inputType != "file" && inputType != "radio" && inputType != "acceptance") {
+                    currentColumnData.background_color = formData.wpcf7_data.content.background_color;
+                    currentColumnData.background_color_hover = formData.wpcf7_data.content.background_color_hover;
+                    currentColumnData.border_color = formData.wpcf7_data.content.border_color;
+                    currentColumnData.border_color_hover = formData.wpcf7_data.content.border_color_hover;
+                    currentColumnData.border_width = formData.wpcf7_data.content.border_width;
+                    currentColumnData.border_radius = formData.wpcf7_data.content.border_radius;
+                }
                 
                 currentColumnData.input_width = formData.wpcf7_data.content.width;
                 currentColumnData.input_height = formData.wpcf7_data.content.height;
                 currentColumnData.font_size = formData.wpcf7_data.content.font_size;
-                currentColumnData.border_width = formData.wpcf7_data.content.border_width;
-                currentColumnData.border_radius = formData.wpcf7_data.content.border_radius;
                 currentColumnData.text_color = formData.wpcf7_data.content.text_color;
                 currentColumnData.text_color_hover = formData.wpcf7_data.content.text_color_hover;
-                currentColumnData.background_color = formData.wpcf7_data.content.background_color;
-                currentColumnData.background_color_hover = formData.wpcf7_data.content.background_color_hover;
-                currentColumnData.border_color = formData.wpcf7_data.content.border_color;
-                currentColumnData.border_color_hover = formData.wpcf7_data.content.border_color_hover;
 
                 var updateData = {
                     columnContentData: currentColumnData
@@ -1223,40 +1105,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    // Form inputs functions
-
-    // Da aggiornare quando si sapranno le proprietà
-    var _addFormInputsCSSRules = function (formID, formData) {
-        var currentMargin = "";
-        var currentPadding = "";
-        var currentDimension = "";
-        var currentBorderDimension = "";
-        var currentTextSize = "";
-        var containerRule = "";
-
-        var backgroundRule = "";
-
-        backgroundRule += "background-color: " + formData.content.background_color + ";";
-        _addFormInputsRule(formID, backgroundRule);
-    }
-
-    var _updateFormInputsLive = function (data) {
-    	var formID = data.target.form_id;
-        var propertyType = data.propertyType;
-    	var propertyName = data.propertyName;
-    	var newValue = data.newValue;
-
-        switch (propertyType) {
-            case "background":
-                _updateFormInputsRule(formID, propertyName, newValue);
-                break;
-            default:
-                break;
-        }
-    }
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////
-    /// Column content functions
+    /// ColUmn Content Functions
 
     var _createColumnContentSpanData = function (data) {
     	var editPoint = data.editPoint;
@@ -1272,18 +1121,26 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     	var $spanData = $(document.createElement("span"));
     	$spanData.addClass("rex-wpcf7-column-content-data");
 
+        var columnHasRadio = $formColumn.find('.wpcf7-radio').length != 0;
+        var columnHasCheckbox = $formColumn.find('.wpcf7-acceptance').length != 0;
+        var columnHasFile = $formColumn.find('.wpcf7-file').length != 0;
+
         // Taking data form Rexelement span data
         var $rexelementSpanData = $formColumn.parents(".rex-element-wrapper").find(".rex-element-data");
-        $spanData.attr("data-background-color", $rexelementSpanData.attr("data-wpcf7-content-background-color"));
+
+        if (!columnHasRadio && !columnHasCheckbox && !columnHasFile) {
+            $spanData.attr("data-background-color", $rexelementSpanData.attr("data-wpcf7-content-background-color"));
+            $spanData.attr("data-border-color", $rexelementSpanData.attr("data-wpcf7-content-border-color"));
+            $spanData.attr("data-wpcf7-border-width", $rexelementSpanData.attr("data-wpcf7-content-border-width"));
+            $spanData.attr("data-background-color-hover", $rexelementSpanData.attr("data-wpcf7-content-background-color-hover"));
+            $spanData.attr("data-border-color-hover", $rexelementSpanData.attr("data-wpcf7-content-border-color-hover"));
+        }
+
         $spanData.attr("data-wpcf7-input-width", $rexelementSpanData.attr("data-wpcf7-content-width"));
         $spanData.attr("data-wpcf7-input-height", $rexelementSpanData.attr("data-wpcf7-content-height"));
         $spanData.attr("data-text-color", $rexelementSpanData.attr("data-wpcf7-content-text-color"));
-        $spanData.attr("data-border-color", $rexelementSpanData.attr("data-wpcf7-content-border-color"));
         $spanData.attr("data-wpcf7-font-size", $rexelementSpanData.attr("data-wpcf7-content-font-size"));
-        $spanData.attr("data-wpcf7-border-width", $rexelementSpanData.attr("data-wpcf7-content-border-width"));
         $spanData.attr("data-text-color-hover", $rexelementSpanData.attr("data-wpcf7-content-text-color-hover"));
-        $spanData.attr("data-background-color-hover", $rexelementSpanData.attr("data-wpcf7-content-background-color-hover"));
-        $spanData.attr("data-border-color-hover", $rexelementSpanData.attr("data-wpcf7-content-border-color-hover"));
 
         var $spanDataInDB = $spanData.clone();
 
@@ -1292,12 +1149,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var shortcode = $formColumnInDB.html();
         $formColumnInDB.empty();
         var $span = $(document.createElement("span"));
-        $span.addClass("wpcf7-column-content");
-        $span.append(shortcode);
-        $formColumnInDB.append($span);
-        $formColumnInDB.prepend($spanDataInDB);
-
-    	_addColumnContentStyle($formColumn);
+        $span.addClass("wpcf7-column-content").append(shortcode);
+        $formColumnInDB.append($span).prepend($spanDataInDB);
     }
 
     var _removeColumnContentSpanData = function (data) {
@@ -1407,13 +1260,17 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         switch (propertyType) {
             case "background-color":
+            case "border-width":
+            case "border-radius":
+            case "border-color":
+                if (inputType != "file" && inputType != "radio" && inputType != "acceptance") {
+                    _updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
+                }
+                break;
             case "width":
             case "height":
             case "font-size":
-            case "border-width":
-            case "border-radius":
             case "text-color":
-            case "border-color":
                 _updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
                 break;
             case "placeholder-color":
@@ -1423,7 +1280,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 if (/color\:/.test($formColumns.find(".wpcf7-select").attr("style"))) {
                     $formColumns.find(".wpcf7-select").css("color", newValue);
                 }
-                // console.log(/color\:/.test($formColumns.find(".wpcf7-select").attr("style")));
                 break;
             case "button-width":
             case "button-height":
@@ -1447,9 +1303,13 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     _updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
                 }
                 break;
-            case "text-color-hover":
             case "background-color-hover":
             case "border-color-hover":
+                if (inputType != "file" && inputType != "radio" && inputType != "acceptance") {
+                    _updateColumnContentHoverRule(formID, row, column, cssSelector, propertyName, newValue);
+                }
+                break;
+            case "text-color-hover":
                 _updateColumnContentHoverRule(formID, row, column, cssSelector, propertyName, newValue);
                 break;
             case "placeholder-color-hover":
@@ -1506,41 +1366,36 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 break;
             case "wpcf7-email":
                 if (isSetEmail) {  // Setting e-mail
-                    // if (inputType == "text" || inputType == "number") {
-                        // var oldFieldType = onlyNumbers ? "number" : "text";
-                        var $input = $formColumns.find(".wpcf7-form-control");
-                        var oldFieldType = $input.attr('type');
+                    var $input = $formColumns.find(".wpcf7-form-control");
+                    var oldFieldType = $input.attr('type');
 
-                        $input.attr("type", "email");
-                        $input.attr("name", "email-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.removeClass(oldFieldType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.addClass("email-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.removeClass("wpcf7-" + oldFieldType);
-                        $input.addClass("wpcf7-email");
-                        $input.addClass("wpcf7-validates-as-email");
+                    $input.attr("type", "email");
+                    $input.attr("name", "email-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                    $input.removeClass(oldFieldType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                    $input.addClass("email-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                    $input.removeClass("wpcf7-" + oldFieldType);
+                    $input.addClass("wpcf7-email");
+                    $input.addClass("wpcf7-validates-as-email");
 
-                        if (oldFieldType == "number") {
-                            $input.removeClass("wpcf7-validates-as-number");
-                        }
+                    if (oldFieldType == "number") {
+                        $input.removeClass("wpcf7-validates-as-number");
+                    }
 
-                        inputType = "email";
-                    // }
+                    inputType = "email";
                 } else {    // Unsetting e-mail
-                    // if (inputType == "email") {
-                        var $input = $formColumns.find(".wpcf7-email");
+                    var $input = $formColumns.find(".wpcf7-email");
 
-                        $input.attr("type", inputType);
-                        $input.attr("name", inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.removeClass("email-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.addClass(inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.removeClass("wpcf7-email");
-                        $input.addClass("wpcf7-" + inputType);
-                        $input.removeClass("wpcf7-validates-as-email");
+                    $input.attr("type", inputType);
+                    $input.attr("name", inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                    $input.removeClass("email-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                    $input.addClass(inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                    $input.removeClass("wpcf7-email");
+                    $input.addClass("wpcf7-" + inputType);
+                    $input.removeClass("wpcf7-validates-as-email");
 
-                        if (inputType == "number") {
-                            $input.addClass("wpcf7-validates-as-number");
-                        }
-                    // }
+                    if (inputType == "number") {
+                        $input.addClass("wpcf7-validates-as-number");
+                    }
                 }
 
                 $formColumns.each(function() {
@@ -1550,41 +1405,34 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 break;
             case "wpcf7-only-numbers":
                 if (onlyNumbers) {  // Setting only numbers
-                    // if (inputType == "text" || inputType == "email") {
-                        var $input = $formColumns.find(".wpcf7-form-control");
-                        var oldFieldType = $input.attr('type');
+                    var $input = $formColumns.find(".wpcf7-form-control");
+                    var oldFieldType = $input.attr('type');
 
-                        $input.attr("type", "number");
-                        $input.attr("name", "number-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.removeClass(oldFieldType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.addClass("number-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.removeClass("wpcf7-" + oldFieldType);
-                        $input.addClass("wpcf7-number");
-                        $input.addClass("wpcf7-validates-as-number");
+                    $input.attr("type", "number");
+                    $input.attr("name", "number-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                    $input.removeClass(oldFieldType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                    $input.addClass("number-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                    $input.removeClass("wpcf7-" + oldFieldType);
+                    $input.addClass("wpcf7-number");
+                    $input.addClass("wpcf7-validates-as-number");
 
-                        if (oldFieldType == "email") {
-                            $input.removeClass("wpcf7-validates-as-email");
-                        }
-                    // }
+                    if (oldFieldType == "email") {
+                        $input.removeClass("wpcf7-validates-as-email");
+                    }
                 } else {    // Unsetting only numbers
-                    
-                    // if (inputType == "number") {
-                        var $input = $formColumns.find(".wpcf7-number");
+                    var $input = $formColumns.find(".wpcf7-number");
 
-                        // var newFieldType = isSetEmail ? "email" : "text";
+                    $input.attr("type", inputType);
+                    $input.attr("name", inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                    $input.removeClass("number-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                    $input.addClass(inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
+                    $input.removeClass("wpcf7-number");
+                    $input.addClass("wpcf7-" + inputType);
+                    $input.removeClass("wpcf7-validates-as-number");
 
-                        $input.attr("type", inputType);
-                        $input.attr("name", inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.removeClass("number-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.addClass(inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                        $input.removeClass("wpcf7-number");
-                        $input.addClass("wpcf7-" + inputType);
-                        $input.removeClass("wpcf7-validates-as-number");
-
-                        if (inputType == "email") {
-                            $input.addClass("wpcf7-validates-as-email");
-                        }
-                    // }
+                    if (inputType == "email") {
+                        $input.addClass("wpcf7-validates-as-email");
+                    }
                 }
 
                 $formColumns.each(function() {
@@ -1624,7 +1472,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 }
                 break;
             case "wpcf7-file-dimensions":
-                // It's not possible to change it live, beacuse this data is processed by CF7.
                 break;
             case "wpcf7-list":
                 var formID = $formColumns.parents(".rex-element-wrapper").eq(0).attr("data-rex-element-id");
@@ -2412,27 +2259,28 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             _addColumnContentHoverRule(formID, row, column, cssSelector, columnContentButtonHoverRule);
         } else { // Other fields
             var columnContentRule = "";
+            var columnContentHoverRule = "";
 
             if (inputType == "acceptance" || inputType == "radio" || inputType == "file") {
                 columnContentRule += "float: left;";
+            } else {    // Text, Number, Email, Textarea, Select
+                columnContentRule += "background-color: " + columnContentData.background_color + ";";
+                columnContentRule += "border-color: " + columnContentData.border_color + ";";
+                columnContentRule += "border-style: solid;";
+                columnContentRule += "border-width: " + columnContentData.border_width + ";";
+                columnContentRule += "border-radius: " + columnContentData.border_radius + ";";
+
+                columnContentHoverRule += "background-color: " + columnContentData.background_color_hover + ";";
+                columnContentHoverRule += "border-color: " + columnContentData.border_color_hover + ";";
             }
 
-            columnContentRule += "background-color: " + columnContentData.background_color + ";";
             columnContentRule += "color: " + columnContentData.text_color + ";";
-            columnContentRule += "border-color: " + columnContentData.border_color + ";";
             columnContentRule += "width: " + columnContentData.input_width + ";";
             columnContentRule += "height: " + columnContentData.input_height + ";";
             columnContentRule += "font-size: " + columnContentData.font_size + ";";
-            columnContentRule += "border-style: solid;";
-            columnContentRule += "border-width: " + columnContentData.border_width + ";";
-            columnContentRule += "border-radius: " + columnContentData.border_radius + ";";
             _addColumnContentRule(formID, row, column, cssSelector, columnContentRule);
-
-            var columnContentHoverRule = "";
             
             columnContentHoverRule += "color: " + columnContentData.text_color_hover + ";";
-            columnContentHoverRule += "background-color: " + columnContentData.background_color_hover + ";";
-            columnContentHoverRule += "border-color: " + columnContentData.border_color_hover + ";";
             _addColumnContentHoverRule(formID, row, column, cssSelector, columnContentHoverRule);
 
             if (inputType == "text" || inputType == "email" || inputType == "number" || inputType == "textarea") {
@@ -2706,7 +2554,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         }
 
-        if(inputType == "acceptance") {    // Checkbox text
+        if (inputType == "acceptance") {    // Checkbox text
             shortcode = shortcode.replace(/\][\s\S]+\[/, ']' + fieldText + '[');
             shortcode = shortcode.replace(/<p>\s<\/p>/g, "");
         }
@@ -2749,8 +2597,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var $columnShortcode = $columnToUpdateDB.find(".wpcf7-column-content");
         $columnShortcode.empty();
         $columnShortcode.append(shortcode);
-
-        // _updateFormInDB(formID);
     }
 
     /**
@@ -2766,33 +2612,39 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     	var row = columnContentData.target.row_number;
         var column = columnContentData.target.column_number;
 
+        var inputType = columnContentData.input_type;
+
         $formToUpdate.each(function() {
             var $columnData = $(this).find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"]").find(".wpcf7-column[wpcf7-column-number=\"" + column + "\"]").find(".rex-wpcf7-column-content-data");
             $columnData.attr("data-wpcf7-required-field", columnContentData.wpcf7_required_field);
+            $columnData.attr("data-wpcf7-email", columnContentData.wpcf7_email);
             $columnData.attr("data-wpcf7-only-numbers", columnContentData.wpcf7_only_numbers);
             $columnData.attr("data-wpcf7-default-check", columnContentData.wpcf7_default_check);
             $columnData.attr("data-wpcf7-placeholder", columnContentData.wpcf7_placeholder);
             $columnData.attr("data-wpcf7-file-max-dimensions", columnContentData.wpcf7_file_max_dimensions);
 
-            if (columnContentData.input_type == "file") {
+            if (inputType == "file") {
                 $columnData.attr("data-wpcf7-file-types", columnContentData.wpcf7_list_fields);
+            }
+
+            if (inputType != "file" && inputType != "radio" && inputType != "acceptance") {
+                $columnData.attr("data-wpcf7-border-width", columnContentData.border_width);
+                $columnData.attr("data-wpcf7-border-radius", columnContentData.border_radius);
+                $columnData.attr("data-background-color", columnContentData.background_color);
+                $columnData.attr("data-background-color-hover", columnContentData.background_color_hover);
+                $columnData.attr("data-border-color", columnContentData.border_color);
+                $columnData.attr("data-border-color-hover", columnContentData.border_color_hover);
             }
 
             $columnData.attr("data-wpcf7-input-width", columnContentData.input_width);
             $columnData.attr("data-wpcf7-input-height", columnContentData.input_height);
             $columnData.attr("data-wpcf7-font-size", columnContentData.font_size);
-            $columnData.attr("data-wpcf7-border-width", columnContentData.border_width);
-            $columnData.attr("data-wpcf7-border-radius", columnContentData.border_radius);
-            $columnData.attr("data-background-color", columnContentData.background_color);
-            $columnData.attr("data-background-color-hover", columnContentData.background_color_hover);
             $columnData.attr("data-text-color", columnContentData.text_color);
             $columnData.attr("data-text-color-hover", columnContentData.text_color_hover);
             $columnData.attr("data-text-color-focus", columnContentData.text_color_focus);
             $columnData.attr("data-select-color-after-selection", columnContentData.select_color_after_selection);
             $columnData.attr("data-placeholder-color", columnContentData.placeholder_color);
             $columnData.attr("data-placeholder-hover-color", columnContentData.placeholder_hover_color);
-            $columnData.attr("data-border-color", columnContentData.border_color);
-            $columnData.attr("data-border-color-hover", columnContentData.border_color_hover);
 
             $columnData.attr("data-button-text", columnContentData.wpcf7_button.text);
             $columnData.attr("data-button-text-font-size", columnContentData.wpcf7_button.font_size);
@@ -2824,32 +2676,37 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var row = columnContentData.target.row_number;
         var column = columnContentData.target.column_number;
         var $columnDataInDB = $formInDB.find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"]").find(".wpcf7-column[wpcf7-column-number=\"" + column + "\"]").find(".rex-wpcf7-column-content-data");
+        var inputType = columnContentData.input_type;
 
         $columnDataInDB.attr("data-wpcf7-required-field", columnContentData.wpcf7_required_field);
+        $columnDataInDB.attr("data-wpcf7-email", columnContentData.wpcf7_email);
         $columnDataInDB.attr("data-wpcf7-only-numbers", columnContentData.wpcf7_only_numbers);
         $columnDataInDB.attr("data-wpcf7-default-check", columnContentData.wpcf7_default_check);
         $columnDataInDB.attr("data-wpcf7-placeholder", columnContentData.wpcf7_placeholder);
         $columnDataInDB.attr("data-wpcf7-file-max-dimensions", columnContentData.wpcf7_file_max_dimensions);
 
-        if (columnContentData.input_type == "file") {
+        if (inputType == "file") {
             $columnDataInDB.attr("data-wpcf7-file-types", columnContentData.wpcf7_list_fields);
+        }
+
+        if (inputType != "file" && inputType != "radio" && inputType != "acceptance") {
+            $columnDataInDB.attr("data-wpcf7-border-width", columnContentData.border_width);
+            $columnDataInDB.attr("data-wpcf7-border-radius", columnContentData.border_radius);
+            $columnDataInDB.attr("data-background-color", columnContentData.background_color);
+            $columnDataInDB.attr("data-background-color-hover", columnContentData.background_color_hover);
+            $columnDataInDB.attr("data-border-color", columnContentData.border_color);
+            $columnDataInDB.attr("data-border-color-hover", columnContentData.border_color_hover);
         }
 
         $columnDataInDB.attr("data-wpcf7-input-width", columnContentData.input_width);
         $columnDataInDB.attr("data-wpcf7-input-height", columnContentData.input_height);
         $columnDataInDB.attr("data-wpcf7-font-size", columnContentData.font_size);
-        $columnDataInDB.attr("data-wpcf7-border-width", columnContentData.border_width);
-        $columnDataInDB.attr("data-wpcf7-border-radius", columnContentData.border_radius);
-        $columnDataInDB.attr("data-background-color", columnContentData.background_color);
-        $columnDataInDB.attr("data-background-color-hover", columnContentData.background_color_hover);
         $columnDataInDB.attr("data-text-color", columnContentData.text_color);
         $columnDataInDB.attr("data-text-color-hover", columnContentData.text_color_hover);
         $columnDataInDB.attr("data-text-color-focus", columnContentData.text_color_focus);
         $columnDataInDB.attr("data-select-color-after-selection", columnContentData.select_color_after_selection);
         $columnDataInDB.attr("data-placeholder-color", columnContentData.placeholder_color);
         $columnDataInDB.attr("data-placeholder-hover-color", columnContentData.placeholder_hover_color);
-        $columnDataInDB.attr("data-border-color", columnContentData.border_color);
-        $columnDataInDB.attr("data-border-color-hover", columnContentData.border_color_hover);
 
         $columnDataInDB.attr("data-button-text", columnContentData.wpcf7_button.text);
         $columnDataInDB.attr("data-button-text-font-size", columnContentData.wpcf7_button.font_size);
@@ -2871,8 +2728,122 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $columnDataInDB.attr("data-button-background-color-hover", columnContentData.wpcf7_button.background_color_hover);
         $columnDataInDB.attr("data-button-border-color", columnContentData.wpcf7_button.border_color);
         $columnDataInDB.attr("data-button-border-color-hover", columnContentData.wpcf7_button.border_color_hover);
+    }
 
-        // _updateFormInDB(formID);
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    /// Fixing Functions
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    var _fixWpcf7 = function () {
+        _setRowsSortable();
+        _addWpcf7MenuPlaceholders();
+        _fixWpcf7RadioButtons();
+        _fixWpcf7Files();
+    }
+
+    var _setRowsSortable = function () {
+        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
+
+        if (!$elementWrappers.find(".wpcf7-rows").hasClass("ui-sortable")) {
+            $elementWrappers.find(".wpcf7-rows").addClass("ui-sortable");
+        }
+
+        $elementWrappers.find(".wpcf7-rows").sortable({
+            revert: true,
+            handle: ".rex-wpcf7-row-drag",
+            cursor: "pointer",
+            update: function(e, ui) {
+                var formID = ui.item.parents(".rex-element-wrapper").attr("data-rex-element-id");
+                
+                var startPosition = parseInt(ui.item.attr("wpcf7-row-number")); // Getting the old row position
+                _fixRowNumbersAndClasses($elementWrappers.find(".wpcf7-form"));
+                var endPosition = parseInt(ui.item.attr("wpcf7-row-number"));   // Getting the new row position
+
+                // Sorting rows in DB forms
+                var $rowInDBMoved = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number='" + startPosition +"']");
+                var $rowInDBAfter = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number='" + endPosition +"']");
+
+                if (startPosition < endPosition) {
+                    $rowInDBMoved.insertAfter($rowInDBAfter);
+                } else {
+                    $rowInDBMoved.insertBefore($rowInDBAfter);
+                }
+                
+                _fixRowNumbers($formsInPage[formID]);
+            }
+        });
+    }
+
+    /**
+     * Adding what wpcf7 can't do: set the menu placeholder
+     * @return {null}
+     */
+    var _addWpcf7MenuPlaceholders = function () {
+        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").each(function (i, element) {
+            var $menuInForm = $(element).find(".wpcf7").find(".wpcf7-select");
+            $menuInForm.each(function () {
+                if ($(this).find("option").eq(0).val() == "") {
+                    var $option = $(this).find("option").eq(0);
+                    $option.attr("disabled", "");
+                    $option.attr("selected", "");
+
+                    var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
+                    $option.text(placeholder);
+                }
+
+                $(this).on("change", function () {
+                    var color = $(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-select-color-after-selection");
+                    $(this).css("color", color);
+                })
+            });
+        });
+    }
+
+    /**
+     * Fixing radio buttons to make them clickable
+     * @return {null}
+     */
+    var _fixWpcf7RadioButtons = function () {
+        // @toedit Provvisorio. Lo span contenente il testo dovrebbe essere eliminato ma
+        // così facendo elimino i before e after che mostrano il radio. Come fare?
+        Rexbuilder_Util.$rexContainer.find(".wpcf7 input[type='radio']").each(function (i, element) {
+            var $element = $(element);
+
+            $element.addClass("with-gap");
+            $element.attr("id", "wpcf7-radio-" + (i + 1));
+            var text = $element.siblings(".wpcf7-list-item-label").text();
+            $element.siblings(".wpcf7-list-item-label").empty();
+            var $label = $(document.createElement("label"));
+            $label.addClass("wpcf7-list-item-label");
+            $label.attr("for",  $element.attr("id"));
+            $label.text(text);
+            $label.insertAfter($element.siblings(".wpcf7-list-item-label"));
+            $element.siblings("span.wpcf7-list-item-label").removeClass("wpcf7-list-item-label");
+        });
+    }
+
+    var _fixWpcf7Files = function () {
+        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").each(function (i, element) {
+            var $filesInForm = $(element).find(".wpcf7 .wpcf7-form-control-wrap").has(" .wpcf7-file");
+            $filesInForm.each(function (i) {
+                if ($(this).find(".wpcf7-file-caption").length == 0) {
+                    $(this).siblings(".wpcf7-file-caption").detach().appendTo($(this));
+                }
+
+                var $element = $(this).find("input[type='file']");
+                $element.attr("id", "wpcf7-file-" + (i + 1));
+                var $fileLabel = $(document.createElement("label"));
+                $fileLabel.attr("for",  $element.attr("id"));
+                $fileLabel.insertAfter($element);
+
+                if ('undefined' != typeof $(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text")) {
+                    var buttonText = $(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text");
+                    $fileLabel.text(buttonText);
+                } else {
+                    $fileLabel.text("Choose a file");
+                }
+            });
+        });
     }
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
@@ -2915,51 +2886,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     var _getIDsInPage = function () {
         return idsInPage;
-    }
-
-    var _setRowsSortable = function () {
-        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
-
-        if (!$elementWrappers.find(".wpcf7-rows").hasClass("ui-sortable")) {
-            $elementWrappers.find(".wpcf7-rows").addClass("ui-sortable");
-        }
-
-        $elementWrappers.find(".wpcf7-rows").sortable({
-            revert: true,
-            handle: ".rex-wpcf7-row-drag",
-            cursor: "pointer",
-            update: function(e, ui) {
-                var formID = ui.item.parents(".rex-element-wrapper").attr("data-rex-element-id");
-                
-                var startPosition = parseInt(ui.item.attr("wpcf7-row-number")); // Getting the old row position
-                _fixRowNumbersAndClasses($elementWrappers.find(".wpcf7-form"));
-                var endPosition = parseInt(ui.item.attr("wpcf7-row-number"));   // Getting the new row position
-
-                // Sorting rows in DB forms
-                var $rowInDBMoved = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number='" + startPosition +"']");
-                var $rowInDBAfter = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number='" + endPosition +"']");
-
-                if (startPosition < endPosition) {
-                    $rowInDBMoved.insertAfter($rowInDBAfter);
-                } else {
-                    $rowInDBMoved.insertBefore($rowInDBAfter);
-                }
-                
-                _fixRowNumbers($formsInPage[formID]);
-
-                // _updateFormInDBNoRefresh(formID);
-            }
-        });
-    }
-
-    var _fixColumnContentClasses = function (formID) {
-        // Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").each(function () {
-
-        // });
-        // Rexbuilder_Rexelement.addStyles();
-        // $elementWrapper.find(".wpcf7-column").each(function(){
-        //     Rexbuilder_Rexwpcf7.addColumnContentStyle($(this));
-        // })
     }
 
 	var _init = function () {
@@ -3010,6 +2936,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         _fixCustomStyleForm();
         _getDBFormsInPage();
+        _fixWpcf7();
 	}
 
 	return {
@@ -3032,10 +2959,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		// Form functions
 		generateFormData: _generateFormData,
         updateFormLive: _updateFormLive,
-		updateFormInputsLive: _updateFormInputsLive,
         updateForm: _updateForm,
         updateFormInDB: _updateFormInDB,
-        updateFormInDBNoRefresh: _updateFormInDBNoRefresh,
 
         // Rows function
         setRowsSortable: _setRowsSortable,

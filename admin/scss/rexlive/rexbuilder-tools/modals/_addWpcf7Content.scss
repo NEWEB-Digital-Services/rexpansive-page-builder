@@ -2,18 +2,8 @@
   .bl_modal-row .rexwpcf7-cont_row{ 
     width: 381px;
     margin: 12px auto;
-    
-    // .rexwpcf7-count-colum_accord{
-    //   width:30px;
-    //   height:42px;
-    //   margin-right:12px;
-    //   float:left;
-    //   position:relative;
 
-      
-    // }
-
-    .rexwpcf7-upd-add_button{
+    .rexwpcf7-upd-add_button {
       width: 30px;
       height: 42px;
       // width: 20px;
@@ -40,8 +30,25 @@
     font-size: 17px;
     line-height: 25px;
     letter-spacing: 2px;
-    cursor: default;
   }
+
+  #rex-add-text-field,
+  #rex-add-text-field:hover,
+  #rex-add-textarea-field,
+  #rex-add-textarea-field:hover,
+  #rex-add-menu-field,
+  #rex-add-menu-field:hover,
+  #rex-add-checkbox-field,
+  #rex-add-checkbox-field:hover,
+  #rex-add-file-field,
+  #rex-add-file-field:hover,
+  #rex-add-radiobuttons-field,
+  #rex-add-radiobuttons-field:hover,
+  #rex-add-submit-button,
+  #rex-add-submit-button:hover {
+    cursor: pointer;
+  }
+    
 
   #rex-wpcf7-add-text-field {
     .l-svg-icons {
@@ -88,6 +95,4 @@
       margin-left: 4px;
     }
   }
-
-
 }

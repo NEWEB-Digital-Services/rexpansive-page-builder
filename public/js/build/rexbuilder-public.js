@@ -40,6 +40,7 @@ var Rexbuilder_App = (function($) {
       // fixes for front end only
       fixRexButtons();
     }
+    
 
     Rex_Navigator.init();
     //Rexbuilder_FormFixes.init();

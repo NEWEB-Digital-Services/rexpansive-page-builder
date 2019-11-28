@@ -45,9 +45,6 @@ var Wpcf7_Add_Content_Modal = (function ($) {
     /////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	var _linkDocumentListeners = function () {
-    	/**
-         * Closes the modal
-         */
         wpcf7_content_adder_properties.$close_button.on("click", function () {
             _closeModal();
         });
@@ -81,13 +78,6 @@ var Wpcf7_Add_Content_Modal = (function ($) {
         });
 
         /**
-         * Adds a date field
-         */
-        wpcf7_content_adder_properties.$wpcf7_add_date_field.on("click", function () {
-            _addField("date");
-        });
-
-        /**
          * Adds a checkbox field
          */
         wpcf7_content_adder_properties.$wpcf7_add_checkbox_field.on("click", function () {
@@ -117,20 +107,14 @@ var Wpcf7_Add_Content_Modal = (function ($) {
 			$self: $self,
 			$modal: $container.parent(".rex-modal-wrap"),
             $close_button: $container.find(".rex-cancel-button"),
-            $wpcf7_add_text_field: $container.find(".rex-add-text-field"),
-            $wpcf7_add_email_field: "",
-            $wpcf7_add_url_field: "",
-            $wpcf7_add_tel_field: "",
-            $wpcf7_add_number_field: "",
-            $wpcf7_add_date_field: $container.find(".rex-add-date-field"),
-            $wpcf7_add_textarea_field: $container.find(".rex-add-textarea-field"),
-            $wpcf7_add_menu_field: $container.find(".rex-add-menu-field"),
-            $wpcf7_add_checkbox_field: $container.find(".rex-add-checkbox-field"),
-            $wpcf7_add_file_field: $container.find(".rex-add-file-field"),
-            $wpcf7_add_radio_buttons_field: $container.find(".rex-add-radiobuttons-field"),
-            $wpcf7_add_acceptance_field: $container.find(".rex-add-acceptance-field"),
-            $wpcf7_add_quiz_field: "",
-            $wpcf7_add_submit_button: $container.find(".rex-add-submit-button")
+
+            $wpcf7_add_text_field: $container.find("#rex-add-text-field"),
+            $wpcf7_add_textarea_field: $container.find("#rex-add-textarea-field"),
+            $wpcf7_add_menu_field: $container.find("#rex-add-menu-field"),
+            $wpcf7_add_checkbox_field: $container.find("#rex-add-checkbox-field"),
+            $wpcf7_add_file_field: $container.find("#rex-add-file-field"),
+            $wpcf7_add_radio_buttons_field: $container.find("#rex-add-radiobuttons-field"),
+            $wpcf7_add_submit_button: $container.find("#rex-add-submit-button")
 		}
 
 		_linkDocumentListeners();
