@@ -402,16 +402,16 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
     };
 
     var _updatePanel = function () {
-        // Required field
+        // Required Field
         wpcf7_content_editor_properties.$content_required_field.prop("checked", "true" == columnContentData.wpcf7_required_field);
 
         // Email
         wpcf7_content_editor_properties.$content_set_email.prop("checked", "true" == columnContentData.wpcf7_email);
 
-        // Only numbers
+        // Only Numbers
         wpcf7_content_editor_properties.$content_only_numbers.prop("checked", "true" == columnContentData.wpcf7_only_numbers);
 
-        // Default check
+        // Default Check
         wpcf7_content_editor_properties.$content_input_default_check.prop("checked", "true" == columnContentData.wpcf7_default_check);
 
         // Placeholder
@@ -422,10 +422,10 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 .addClass('active');
         }
 
-        // Width & height
+        // Width & Height
         wpcf7_content_editor_properties.$content_input_width.val(/[0-9]+/.exec(columnContentData.input_width));
         var widthType = (null != /[a-z]{2}|\%/.exec(columnContentData.input_width)) ? /[a-z]{2}|\%/.exec(columnContentData.input_width)[0] : "%";
-        switch(widthType) {
+        switch (widthType) {
             case "px":
                 wpcf7_content_editor_properties.$content_input_width_type.filter('[value=pixel]').prop("checked", true);
                break;
@@ -458,15 +458,15 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 .addClass('active');
         }
 
-        // Font size
+        // Font Size
         wpcf7_content_editor_properties.$content_input_font_size.val(/[0-9]+/.exec(columnContentData.font_size));
 
-        // Text editor
+        // Text Editor
         tinyMCE_editor = tinyMCE.get('wpcf7_text_editor');
         tinyMCE_editor.setContent(columnContentData.text);
         _linkTextEditorListeners();
 
-        // File max dimensions
+        // File Max Dimensions
         wpcf7_content_editor_properties.$content_file_max_dimensions.val(/[0-9]+/.exec(columnContentData.wpcf7_file_max_dimensions));
         var dimensionsUnit = (null != /[a-z]{2}/.exec(columnContentData.wpcf7_file_max_dimensions)) ? /[a-z]{2}/.exec(columnContentData.wpcf7_file_max_dimensions)[0] : "kb";
         switch(dimensionsUnit) {
@@ -487,8 +487,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 .addClass('active');
         }
 
-        // List fields
+        // List Fields
         wpcf7_content_editor_properties.$field_list.empty();
+        tmpl.arg = 'o';
         for (var i = 1; i <= columnContentData.wpcf7_list_fields.length; i++) {
             wpcf7_content_editor_properties.$field_list.append(tmpl('tmpl-rex-wpcf7-edit-content-list', {
                 number: i,
@@ -612,7 +613,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 .siblings("label, .prefix")
                 .addClass('active');
         }
-
 
         // Button Margins
         wpcf7_content_editor_properties.$content_button_margin_top.val(/[0-9]+/.exec(columnContentData.wpcf7_button.margin_top));
@@ -2201,6 +2201,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
         wpcf7_content_editor_properties.$add_list_field.on("click", function () {
             var newRowNumber = parseInt(wpcf7_content_editor_properties.$field_list.find(".wpcf7-select-field").length) + 1;
+            tmpl.arg = 'o';
             wpcf7_content_editor_properties.$field_list.append(tmpl('tmpl-rex-wpcf7-edit-content-list', {
                 number: newRowNumber,
             }));

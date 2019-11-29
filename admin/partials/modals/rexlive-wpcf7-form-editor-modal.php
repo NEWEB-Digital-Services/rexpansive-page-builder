@@ -278,7 +278,7 @@ defined('ABSPATH') or exit;
                                     <div class="bl_d-iblock prova-icon ml12 l-icon--dark-grey">
                                         <?php Rexbuilder_Utilities::get_icon('#B023-Input-Text'); ?>
                                     </div>
-                                    <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Text Color', 'rexpansive-builder');?>">
+                                    <div class="bl_d-iblock posrel ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Text Color', 'rexpansive-builder');?>">
                                         <input type="hidden" id="rex-wpcf7-content-text-color-runtime" name="rex-wpcf7-content-text-color-runtime" value="" />
                                         <input id="rex-wpcf7-content-text-color" type="text" name="rex-wpcf7-content-text-color" value="" size="10" />
                                         <div id="rex-wpcf7-content-text-color-preview-icon" class="preview-color-icon"></div>

@@ -6,7 +6,7 @@ var Rexbuilder_Rexelement = (function ($) {
     var defaultElementValues;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    /// CSS RULES EDITING
+    /// CSS Rules Editing
     /////////////////////////////////////////////////////////////////////////////////////////////////
     
     var _fixCustomStyleElement = function () {
@@ -583,6 +583,12 @@ var Rexbuilder_Rexelement = (function ($) {
                     font_size: "",
                     border_width: "",
                     border_radius: "",
+                },
+                options_different: {
+                    width: true,
+                    height: true,
+                    font_size: true,
+                    text_color: true
                 }
             },
             element_target: {
@@ -669,12 +675,50 @@ var Rexbuilder_Rexelement = (function ($) {
         // Content border color hover
         elementData.wpcf7_data.content.border_color_hover = (elementDataEl.getAttribute("data-wpcf7-content-border-color-hover") ? elementDataEl.getAttribute("data-wpcf7-content-border-color-hover").toString() : '');
 
+        // Options different
+        elementData.wpcf7_data.options_different = _scanOptionsDifferent(elementData.element_target.element_id, elementData.wpcf7_data.options_different);
+
         var data = {
             elementInfo: elementData,
             separateElement: separate
         }
 
         return data;
+    }
+
+    var _scanOptionsDifferent = function(elementID, optionsDifferent) {
+        var $elementWrapperToScan = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]").eq(0);
+        var $columnsSpanData = $elementWrapperToScan.find('.rex-wpcf7-column-content-data');
+
+        // Getting data from columns span data
+        var columnsWidths = $columnsSpanData.map( function(){
+            return $(this).attr("data-wpcf7-input-width");
+        }).get();
+        var columnsHeights = $columnsSpanData.map( function(){
+            return $(this).attr("data-wpcf7-input-height");
+        }).get();
+        var columnsTextColors = $columnsSpanData.map( function(){
+            return $(this).attr("data-text-color");
+        }).get();
+        var columnsFontSizes = $columnsSpanData.map( function(){
+            return $(this).attr("data-wpcf7-font-size");
+        }).get();
+
+        // Checking if there are different values
+        optionsDifferent.width = !columnsWidths.every(function (val, i, arr) {
+            return val === arr[0];
+        });
+        optionsDifferent.height = !columnsHeights.every(function (val, i, arr) {
+            return val === arr[0];
+        });
+        optionsDifferent.text_color = !columnsTextColors.every(function (val, i, arr) {
+            return val === arr[0];
+        });
+        optionsDifferent.font_size = !columnsFontSizes.every(function (val, i, arr) {
+            return val === arr[0];
+        });
+
+        return optionsDifferent;
     }
 
     var _removeModelData = function ($elementWrapper) {

@@ -3,6 +3,27 @@
     display: none;
   }
 
+  .posrel {
+    position: relative;
+  }
+
+  .wpcf7-modal-color-picker-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    cursor: pointer;
+    z-index: 10;
+
+    .l-svg-icons {
+      font-size: 42px;
+
+      & > svg {
+        background-color: transparent!important;
+        fill: $palette-color-4;
+      }
+    }
+  }
+
   .modal-accordion-title {
     width: 71px;
     margin-left: 12px;
@@ -499,4 +520,8 @@
   height: 42px;
   background-color: black;
   border-radius: 20px;
+}
+
+.rot45 {
+  transform: rotate(45deg);
 }

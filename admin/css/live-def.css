@@ -6303,6 +6303,13 @@ span.builderlive-editable-field[contenteditable=true] {
           display: none; }
         .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .wpcf7-add-new-row {
           margin: auto 0; }
+        .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .wpcf7-list-item {
+          display: -webkit-inline-box;
+          display: -ms-inline-flexbox;
+          display: inline-flex;
+          -webkit-box-align: center;
+              -ms-flex-align: center;
+                  align-items: center; }
       .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__1-column .wpcf7-column, .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__2-columns .wpcf7-column, .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__3-columns .wpcf7-column, .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__4-columns .wpcf7-column {
         float: left; }
       .wpcf7-form .wpcf7-rows .wpcf7-row.wpcf7-row__1-column .wpcf7-column {

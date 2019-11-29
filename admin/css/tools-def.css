@@ -17778,6 +17778,21 @@ input:disabled + .rex_edit_title_slider {
 #rex-wpcf7-form-editor .row-hidden {
   display: none; }
 
+#rex-wpcf7-form-editor .posrel {
+  position: relative; }
+
+#rex-wpcf7-form-editor .wpcf7-modal-color-picker-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+  z-index: 10; }
+  #rex-wpcf7-form-editor .wpcf7-modal-color-picker-overlay .l-svg-icons {
+    font-size: 42px; }
+    #rex-wpcf7-form-editor .wpcf7-modal-color-picker-overlay .l-svg-icons > svg {
+      background-color: transparent !important;
+      fill: #424242; }
+
 #rex-wpcf7-form-editor .modal-accordion-title {
   width: 71px;
   margin-left: 12px;
@@ -18145,6 +18160,11 @@ input:disabled + .rex_edit_title_slider {
   height: 42px;
   background-color: black;
   border-radius: 20px; }
+
+.rot45 {
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg); }
 
 .rexlive-toolbox__wrap {
   width: 100%;

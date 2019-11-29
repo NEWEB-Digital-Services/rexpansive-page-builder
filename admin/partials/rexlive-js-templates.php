@@ -231,6 +231,12 @@ defined('ABSPATH') or exit;
     </div>
 </script>
 
+<script type="text/x-tmpl" id="tmpl-color-picker-overlay">
+    <div class="wpcf7-modal-color-picker-overlay rot45" >
+        <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+    </div>
+</script>
+
 <script type="text/x-tmpl" id="tmpl-rex-button-delete">
 <div class="button-list__element__tools">
     <div class="tool-button tool-button--black tool-button--close rex-close-button button__element--delete">

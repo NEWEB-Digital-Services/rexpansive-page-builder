@@ -108,8 +108,40 @@ var Element_Edit_Modal = (function ($) {
             synchronize: "",
             wpcf7_data: {
                 background_color: "",
+                border_color: "",
+                border_width: "",
+                margin_top: "",
+                margin_left: "",
+                margin_right: "",
+                margin_bottom: "",
+                error_message_color: "",
+                error_message_font_size: "",
+                send_message_color: "",
+                send_message_font_size: "",
+                columns: {
+                    padding_top: "",
+                    padding_left: "",
+                    padding_right: "",
+                    padding_bottom: "",
+                },
                 content: {
                     background_color: "",
+                    background_color_hover: "",
+                    text_color: "",
+                    text_color_hover: "",
+                    border_color: "",
+                    border_color_hover: "",
+                    width: "",
+                    height: "",
+                    font_size: "",
+                    border_width: "",
+                    border_radius: "",
+                },
+                options_different: {
+                    width: true,
+                    height: true,
+                    font_size: true,
+                    text_color: true
                 }
             },
             element_target: {

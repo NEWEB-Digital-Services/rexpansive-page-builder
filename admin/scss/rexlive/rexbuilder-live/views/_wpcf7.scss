@@ -37,6 +37,11 @@
         .wpcf7-add-new-row {
           margin: auto 0;
         }
+
+        .wpcf7-list-item {
+          display: inline-flex;
+          align-items: center;
+        }
       }
 
       &.wpcf7-row__1-column,
