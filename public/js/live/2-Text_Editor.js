@@ -2473,8 +2473,8 @@ var TextEditor = (function ($) {
     },
 
     updateHeight: function() {
-      var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
-      Rexbuilder_Util_Editor.updateBlockContainerHeight($elementWrapper.parents('.text-wrap'));
+      var $elementWrapper = $(this.traceForm).parents('.text-wrap');
+      Rexbuilder_Util_Editor.updateBlockContainerHeight($elementWrapper/*.parents('.text-wrap')*/);
     },
 
     focusBlock: function() {
@@ -2503,6 +2503,8 @@ var TextEditor = (function ($) {
 
       var elementToOutlineType = /[a-z]+/.exec(elementToOutlineClass)[0];
       elementToOutlineType = (elementToOutlineType == "menu") ? "select" : elementToOutlineType;
+
+
 
       switch (elementToOutlineType) {
         case "text":

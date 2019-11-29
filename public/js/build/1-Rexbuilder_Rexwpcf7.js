@@ -48,8 +48,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 $columnContent.prepend("<select name=\"menu-" + fieldNumber + "\" class=\"wpcf7-form-control wpcf7-select menu-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\"><option value=\"\" disabled=\"disabled\" selected=\"selected\">---</option><option value=\"Field 1\">Field 1</option><option value=\"Field 2\">Field 2</option></select>");
                 break;
             case "radiobuttons":
-                fieldShortcode = "[radio radio-" + fieldNumber + " default:1 class:radio-" + fieldNumber + " \"Option 1\" \"Option 2\" ]";
-                $columnContent.prepend("<span class=\"wpcf7-form-control-wrap radio-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control wpcf7-radio radio-" + fieldNumber + "\"><span class=\"wpcf7-list-item first\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 1\" checked=\"checked\" class=\"with-gap\" id=\"wpcf7-radio-3\"><span class=\"\"></span><label class=\"wpcf7-list-item-label\" for=\"wpcf7-radio-3\">Option 1</label></span><span class=\"wpcf7-list-item last\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 2\" class=\"with-gap\" id=\"wpcf7-radio-4\"><span class=\"\"></span><label class=\"wpcf7-list-item-label\" for=\"wpcf7-radio-4\">Option 2</label></span></span></span>");
+            // class:radio-" + fieldNumber + " ---- wpcf7-radio radio-" + fieldNumber + "
+                fieldShortcode = "[radio radio-" + fieldNumber + " default:1  \"Option 1\" \"Option 2\" ]";
+                $columnContent.prepend("<span class=\"wpcf7-form-control-wrap radio-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control \"><span class=\"wpcf7-list-item first\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 1\" checked=\"checked\" class=\"with-gap\" id=\"wpcf7-radio-3\"><span class=\"\"></span><label class=\"wpcf7-list-item-label\" for=\"wpcf7-radio-3\">Option 1</label></span><span class=\"wpcf7-list-item last\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 2\" class=\"with-gap\" id=\"wpcf7-radio-4\"><span class=\"\"></span><label class=\"wpcf7-list-item-label\" for=\"wpcf7-radio-4\">Option 2</label></span></span></span>");
                 break;
             // case "checkbox":
             //     fieldShortcode = "[checkbox checkbox-" + fieldNumber + " class:checkbox-" + fieldNumber + " \"Checkbox text\"]";
@@ -924,6 +925,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var propertyType = data.propertyType;
         var propertyName = data.propertyName;
         var newValue = data.newValue;
+        var $textWraps = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").parents('.text-wrap');
 
         switch (propertyType) {
             case "background":
@@ -931,6 +933,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             case "border-width":
             case "margin":
                 _updateFormRule(formID, propertyName, newValue);
+                $textWraps.each(function() {
+                    Rexbuilder_Util_Editor.updateBlockContainerHeight($(this));
+                });
                 break;
             case "validation-error":
                 _updateFormMessageRule(formID, "wpcf7-validation-errors", propertyName, newValue);
@@ -940,6 +945,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 break;
             case "columns-padding":
                 _updateFormColumnsRule(formID, propertyName, newValue);
+                $textWraps.each(function() {
+                    Rexbuilder_Util_Editor.updateBlockContainerHeight($(this));
+                });
                 break;
             default:
                 break;
@@ -2424,7 +2432,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             _updateColumnContentHoverRule(formID, row, column, cssSelector, "background-color", buttonBackgroundColorHover);
             _updateColumnContentHoverRule(formID, row, column, cssSelector, "border-color", buttonBorderColorHover);
         }
-
+        
         _updateColumnContentFocusRule(formID, row, column, cssSelector, "text-color", textColorFocus);
 
         _updateColumnContentShortcode(formID, row, column, inputType, columnContentData);
