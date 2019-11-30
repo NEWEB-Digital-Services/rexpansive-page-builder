@@ -63,7 +63,7 @@ defined('ABSPATH') or exit;
             <div class="bl_modal-row modal-row-grey"> <!-- // Placeholder -->
                 <div class="rexwpcf7-cont_row">
                     <div class="input-field rex-input-prefixed pl4">
-                        <span class="prefix prova-icon">
+                        <span class="prefix big-icon">
                             <?php Rexbuilder_Utilities::get_icon('#B038-Input-Text-Placeholder'); ?>
                         </span>
                         <input type="text" id="wpcf7-placeholder" name="wpcf7-placeholder">
@@ -127,12 +127,6 @@ defined('ABSPATH') or exit;
             </div>
             <div id="rex-wpcf7-font-size-row" class="bl_modal-row row-hidden"> <!-- // Font Size -->
                 <div class="rexwpcf7-cont_row font-size-row">
-                    <!-- <div class="rexwpcf7-count-column_4 tippy" data-tippy-content="<?php _e('Font Size', 'rexpansive-builder');?>">
-                        <input type="text" id="wpcf7-set-font-size" name="" class="rexwpcf7-set-font-size">
-                    </div>
-                    <div class="rexwpcf7-count-column_5">
-                        <div class="label-px">px</div>
-                    </div> -->
                     <div id="rex-wpcf7-font-size-field" class="bl_d-iblock with-text ml24 tippy" data-tippy-content="<?php _e('Font Size', 'rexpansive-builder');?>">
                         <input type="text" id="wpcf7-set-font-size" name="" class="rexwpcf7-set-font-size">
                         <div class="bl_d-iblock label-px">px</div>
@@ -142,12 +136,12 @@ defined('ABSPATH') or exit;
             <div class="rexpansive-accordion close"> <!-- // Text -->
                 <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                     <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                        <div class="bl_d-iblock ml4-2">
+                        <div class="bl_d-iblock rex-wpcf7-accordion-plus-wrap">
                             <span class="rex-accordion--toggle">
                                 <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                             </span>
                         </div>
-                        <div class="bl_d-iblock prova-icon ml12 l-icon--dark-grey">
+                        <div class="bl_d-iblock big-icon ml12 l-icon--dark-grey">
                             <?php Rexbuilder_Utilities::get_icon('#B023-Input-Text'); ?>
                         </div>
                         <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Text Color', 'rexpansive-builder');?>">
@@ -208,7 +202,7 @@ defined('ABSPATH') or exit;
                     </div> -->
                     <div class="bl_modal-row rex-wpcf7-modal-row-tall">
                         <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                            <div class="bl_d-iblock ml36 prova-icon l-icon--dark-grey">
+                            <div class="bl_d-iblock ml36 big-icon l-icon--dark-grey">
                                 <?php Rexbuilder_Utilities::get_icon('#B037-Input-Text-Focus'); ?>
                             </div>
                             <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Focus Text Color', 'rexpansive-builder');?>">
@@ -247,12 +241,12 @@ defined('ABSPATH') or exit;
             <div class="rexpansive-accordion close"> <!-- // Select Text -->
                 <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                     <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                        <div class="bl_d-iblock ml4-2">
+                        <div class="bl_d-iblock rex-wpcf7-accordion-plus-wrap">
                             <span class="rex-accordion--toggle">
                                 <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                             </span>
                         </div>
-                        <div class="bl_d-iblock prova-icon ml12 l-icon--dark-grey">
+                        <div class="bl_d-iblock big-icon ml12 l-icon--dark-grey">
                             <?php Rexbuilder_Utilities::get_icon('#B023-Input-Text'); ?>
                         </div>
                         <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Text Color', 'rexpansive-builder');?>">
@@ -293,7 +287,7 @@ defined('ABSPATH') or exit;
                 <div class="rex-accordion--content" style="display:none;" data-item-status="close">
                     <div class="bl_modal-row rex-wpcf7-modal-row-tall">
                         <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                            <div class="bl_d-iblock ml36 prova-icon l-icon--dark-grey">
+                            <div class="bl_d-iblock ml36 big-icon l-icon--dark-grey">
                                 <?php Rexbuilder_Utilities::get_icon('#B023-Input-Text'); ?>
                             </div>
                             <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Text Color After Selection', 'rexpansive-builder');?>">
@@ -332,12 +326,12 @@ defined('ABSPATH') or exit;
             <div class="rexpansive-accordion close"> <!-- // Placeholder Color -->
                 <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                     <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                        <div class="bl_d-iblock ml4-2">
+                        <div class="bl_d-iblock rex-wpcf7-accordion-plus-wrap">
                             <span class="rex-accordion--toggle">
                                 <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                             </span>
                         </div>
-                        <div class="bl_d-iblock prova-icon ml12 l-icon--dark-grey">
+                        <div class="bl_d-iblock big-icon ml12 l-icon--dark-grey">
                             <?php Rexbuilder_Utilities::get_icon('#B038-Input-Text-Placeholder'); ?>
                         </div>
                         <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Placeholder Color', 'rexpansive-builder');?>">
@@ -374,7 +368,7 @@ defined('ABSPATH') or exit;
                 <div class="rex-accordion--content" style="display:none;" data-item-status="close">
                     <div class="bl_modal-row rex-wpcf7-modal-row-tall">
                         <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                            <div class="bl_d-iblock ml36 prova-icon l-icon--dark-grey">
+                            <div class="bl_d-iblock ml36 big-icon l-icon--dark-grey">
                                 <?php Rexbuilder_Utilities::get_icon('#B039-Input-Text-Placeholder-Hover'); ?>
                             </div>
                             <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Hover Placeholder Color', 'rexpansive-builder');?>">
@@ -457,7 +451,7 @@ defined('ABSPATH') or exit;
             <div class="rexpansive-accordion-outer close"> <!-- // Button Accordion -->
                 <div id="rex-wpcf7-buttons-accordion" class="bl_modal-row rex-wpcf7-modal-row-tall rex-accordion-outer--toggle">
                     <div class="rexwpcf7-cont_row bl_ai-c bl_jc-c valign-wrapper">
-                        <div class="rex-wpcf7-plus-accordion bl_d-iblock">
+                        <div class="rex-wpcf7-accordion-outer-plus-wrap bl_d-iblock">
                             <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                         </div>
                         <div class="rex-wpcf7-title-icon l-icon--dark-grey bl_d-iblock">
@@ -476,7 +470,7 @@ defined('ABSPATH') or exit;
                         <div class="rexpansive-accordion close"> <!-- // Button Text -->
                             <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                                 <div class="rexwpcf7-cont_row valign-wrapper">
-                                    <span class="rex-accordion--toggle ml4-2">
+                                    <span class="rex-accordion--toggle rex-wpcf7-accordion-plus-wrap">
                                         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                                     </span>
                                     <div class="ml12 tippy" data-tippy-content="<?php _e('Button Text Color', 'rexpansive-builder');?>" tabindex="0">
@@ -541,7 +535,7 @@ defined('ABSPATH') or exit;
                         <div class="rexpansive-accordion close"> <!-- // Button Background Color -->
                             <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                                 <div class="rexwpcf7-cont_row valign-wrapper">
-                                    <span class="rex-accordion--toggle ml4-2">
+                                    <span class="rex-accordion--toggle rex-wpcf7-accordion-plus-wrap">
                                         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                                     </span>
                                     <div class="ml12 tippy" data-tippy-content="<?php _e('Button Background Color', 'rexpansive-builder');?>" tabindex="0">
@@ -598,7 +592,7 @@ defined('ABSPATH') or exit;
                         <div class="rexpansive-accordion close"> <!-- // Button Border Color -->
                             <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                                 <div class="rexwpcf7-cont_row valign-wrapper">
-                                    <span class="rex-accordion--toggle ml4-2">
+                                    <span class="rex-accordion--toggle rex-wpcf7-accordion-plus-wrap">
                                         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                                     </span>
                                     <div class="ml12 tippy" data-tippy-content="<?php _e('Button Border Color', 'rexpansive-builder');?>" tabindex="0">

@@ -17338,7 +17338,7 @@ input:disabled + .rex_edit_title_slider {
 
 #rex-wpcf7-content-editor .rexpansive-accordion-outer .rex-accordion-outer--toggle {
   cursor: pointer; }
-  #rex-wpcf7-content-editor .rexpansive-accordion-outer .rex-accordion-outer--toggle .rex-wpcf7-plus-accordion {
+  #rex-wpcf7-content-editor .rexpansive-accordion-outer .rex-accordion-outer--toggle .rex-wpcf7-accordion-outer-plus-wrap {
     position: absolute;
     left: 16px;
     right: 0;
@@ -17353,22 +17353,18 @@ input:disabled + .rex_edit_title_slider {
             transform: rotate(0deg);
     font-size: 30px; }
 
-#rex-wpcf7-content-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-plus-accordion {
+#rex-wpcf7-content-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-accordion-outer-plus-wrap {
   position: absolute;
   left: 14px;
   right: 0;
   width: 20px;
   height: 20px; }
-  #rex-wpcf7-content-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-plus-accordion .l-svg-icons > svg {
+  #rex-wpcf7-content-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-accordion-outer-plus-wrap .l-svg-icons > svg {
     -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
             transform: rotate(45deg);
     width: 20px !important;
     height: 20px !important; }
-
-#rex-wpcf7-content-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle.ml4 {
-  margin-left: 2px;
-  margin-right: 2px; }
 
 #rex-wpcf7-content-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-title-icon .l-svg-icons {
   width: 30px;
@@ -17393,7 +17389,7 @@ input:disabled + .rex_edit_title_slider {
   width: 20px !important;
   height: 20px !important; }
 
-#rex-wpcf7-content-editor .rexpansive-accordion.open .ml4-2 {
+#rex-wpcf7-content-editor .rexpansive-accordion.open .rex-wpcf7-accordion-plus-wrap {
   margin-left: 2px;
   margin-right: 2px; }
 
@@ -17501,7 +17497,7 @@ input:disabled + .rex_edit_title_slider {
   #rex-wpcf7-content-editor .modal-row-grey .l-svg-icons > svg {
     background-color: #f4f4f4; }
 
-#rex-wpcf7-content-editor .prova-icon .l-svg-icons {
+#rex-wpcf7-content-editor .big-icon .l-svg-icons {
   font-size: 30px; }
 
 #rex-wpcf7-content-editor .no-br {
@@ -17545,7 +17541,7 @@ input:disabled + .rex_edit_title_slider {
   margin-left: 3px; }
 
 #rex-wpcf7-content-editor .ml4,
-#rex-wpcf7-content-editor .ml4-2 {
+#rex-wpcf7-content-editor .rex-wpcf7-accordion-plus-wrap {
   margin-left: 4px; }
 
 #rex-wpcf7-content-editor .ml7 {
@@ -17803,7 +17799,7 @@ input:disabled + .rex_edit_title_slider {
 
 #rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion-outer--toggle {
   cursor: pointer; }
-  #rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion-outer--toggle .rex-wpcf7-plus-accordion {
+  #rex-wpcf7-form-editor .rexpansive-accordion-outer .rex-accordion-outer--toggle .rex-wpcf7-accordion-outer-plus-wrap {
     position: absolute;
     left: 16px;
     right: 0;
@@ -17818,22 +17814,18 @@ input:disabled + .rex_edit_title_slider {
             transform: rotate(0deg);
     font-size: 30px; }
 
-#rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-plus-accordion {
+#rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-accordion-outer-plus-wrap {
   position: absolute;
   left: 14px;
   right: 0;
   width: 20px;
   height: 20px; }
-  #rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-plus-accordion .l-svg-icons > svg {
+  #rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-accordion-outer-plus-wrap .l-svg-icons > svg {
     -webkit-transform: rotate(45deg);
         -ms-transform: rotate(45deg);
             transform: rotate(45deg);
     width: 20px !important;
     height: 20px !important; }
-
-#rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle.ml4 {
-  margin-left: 2px;
-  margin-right: 2px; }
 
 #rex-wpcf7-form-editor .rexpansive-accordion-outer.open .rex-accordion-outer--toggle .rex-wpcf7-title-icon .l-svg-icons {
   width: 30px;
@@ -17858,7 +17850,7 @@ input:disabled + .rex_edit_title_slider {
   width: 20px !important;
   height: 20px !important; }
 
-#rex-wpcf7-form-editor .rexpansive-accordion.open .ml4-2 {
+#rex-wpcf7-form-editor .rexpansive-accordion.open .rex-wpcf7-accordion-plus-wrap {
   margin-left: 2px;
   margin-right: 2px; }
 
@@ -18067,8 +18059,7 @@ input:disabled + .rex_edit_title_slider {
 #rex-wpcf7-form-editor .ml3 {
   margin-left: 3px; }
 
-#rex-wpcf7-form-editor .ml4,
-#rex-wpcf7-form-editor .ml4-2 {
+#rex-wpcf7-form-editor .rex-wpcf7-accordion-plus-wrap {
   margin-left: 4px; }
 
 #rex-wpcf7-form-editor .ml7 {

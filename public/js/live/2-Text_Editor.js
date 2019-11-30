@@ -3854,7 +3854,6 @@ var TextEditor = (function ($) {
    * @param {JQuery} $textWrap 
    */
   var _removePlaceholder = function ($textWrap) {
-    console.log($textWrap);
     editorInstance.getExtensionByName("placeholder").hidePlaceholder($textWrap[0]);
   }
 

@@ -862,29 +862,25 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     var _addFormStyle = function ($form) {
         var $elementWrapper = $form.parents(".rex-element-wrapper");
-        if ($elementWrapper.find(".rex-element-data").eq(0).length != 0) {
+        if ($elementWrapper.find(".rex-element-data").length != 0) {
             var formData = Rexbuilder_Rexelement.generateElementData($elementWrapper);
             var formID = formData.elementInfo.element_target.element_id;
             formData = formData.elementInfo.wpcf7_data;
             _addFormCSSRules(formID, formData);
-            // _addFormInputsCSSRules(formID, formData);
         }
     }
 
     // If there will be more rules, they will have to be removed here
-    var _removeFormStyle = function (formID) {
-        _removeFormRule(formID);
-        _removeFormInputsRule(formID);
-    }
+    // var _removeFormStyle = function (formID) {
+    //     _removeFormRule(formID);
+    // }
 
-    // Da aggiornare quando si sapranno le proprietà
     var _addFormCSSRules = function (formID, formData) {
-        var currentMargin = "";
-        var currentPadding = "";
-        var currentDimension = "";
-        var currentBorderDimension = "";
-        var currentTextSize = "";
-        var containerRule = "";
+        // var currentMargin = "";
+        // var currentPadding = "";
+        // var currentDimension = "";
+        // var currentBorderDimension = "";
+        // var currentTextSize = "";
 
         var formRule = "";
 
@@ -1066,9 +1062,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var elementID = data.element_target.element_id;
         Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .wpcf7-column").each( function () {
             var $currentColumn = $(this);
-            if ($currentColumn.find('.wpcf7-add-new-form-content').length == 0 && $currentColumn.find('#rex-wpcf7-tools').length == 0) {
+            if (!$currentColumn.hasClass('with-button')) {
                 var spanDataExists = $currentColumn.find(".rex-wpcf7-column-content-data").length != 0;
-                
                 var currentColumnData = _generateColumnContentData($currentColumn, spanDataExists);
 
                 var updateData = {
@@ -1089,43 +1084,41 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var optionsDifferent = formData.wpcf7_data.options_different;
         Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .wpcf7-column").not('.with-button').each( function () {
             var $currentColumn = $(this);
-            if ($currentColumn.find(".wpcf7-add-new-form-content").length == 0) {
-                var spanDataExists = $currentColumn.find(".rex-wpcf7-column-content-data").length != 0 ? true : false;
-                var currentColumnData = _generateColumnContentData($currentColumn, spanDataExists);
-                var inputType = currentColumnData.input_type;
+            var spanDataExists = $currentColumn.find(".rex-wpcf7-column-content-data").length != 0 ? true : false;
+            var currentColumnData = _generateColumnContentData($currentColumn, spanDataExists);
+            var inputType = currentColumnData.input_type;
 
-                if (inputType != "file" && inputType != "radio" && inputType != "acceptance") {
-                    currentColumnData.background_color = formData.wpcf7_data.content.background_color;
-                    currentColumnData.background_color_hover = formData.wpcf7_data.content.background_color_hover;
-                    currentColumnData.border_color = formData.wpcf7_data.content.border_color;
-                    currentColumnData.border_color_hover = formData.wpcf7_data.content.border_color_hover;
-                    currentColumnData.border_width = formData.wpcf7_data.content.border_width;
-                    currentColumnData.border_radius = formData.wpcf7_data.content.border_radius;
-                }
-
-                if (!optionsDifferent.width) {
-                    currentColumnData.input_width = formData.wpcf7_data.content.width;
-                }
-
-                if (!optionsDifferent.height) {
-                    currentColumnData.input_height = formData.wpcf7_data.content.height;
-                }
-
-                if (!optionsDifferent.font_size) {
-                    currentColumnData.font_size = formData.wpcf7_data.content.font_size;
-                }
-
-                if (!optionsDifferent.text_color) {
-                    currentColumnData.text_color = formData.wpcf7_data.content.text_color;
-                }
-
-                currentColumnData.text_color_hover = formData.wpcf7_data.content.text_color_hover;
-
-                var updateData = {
-                    columnContentData: currentColumnData
-                }
-                _updateColumnContent(updateData);
+            if (inputType != "file" && inputType != "radio" && inputType != "acceptance") {
+                currentColumnData.background_color = formData.wpcf7_data.content.background_color;
+                currentColumnData.background_color_hover = formData.wpcf7_data.content.background_color_hover;
+                currentColumnData.border_color = formData.wpcf7_data.content.border_color;
+                currentColumnData.border_color_hover = formData.wpcf7_data.content.border_color_hover;
+                currentColumnData.border_width = formData.wpcf7_data.content.border_width;
+                currentColumnData.border_radius = formData.wpcf7_data.content.border_radius;
             }
+
+            if (!optionsDifferent.width) {
+                currentColumnData.input_width = formData.wpcf7_data.content.width;
+            }
+
+            if (!optionsDifferent.height) {
+                currentColumnData.input_height = formData.wpcf7_data.content.height;
+            }
+
+            if (!optionsDifferent.font_size) {
+                currentColumnData.font_size = formData.wpcf7_data.content.font_size;
+            }
+
+            if (!optionsDifferent.text_color) {
+                currentColumnData.text_color = formData.wpcf7_data.content.text_color;
+            }
+
+            currentColumnData.text_color_hover = formData.wpcf7_data.content.text_color_hover;
+
+            var updateData = {
+                columnContentData: currentColumnData
+            }
+            _updateColumnContent(updateData);
         })
     }
 

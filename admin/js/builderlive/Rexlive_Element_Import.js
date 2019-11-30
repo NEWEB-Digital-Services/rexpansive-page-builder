@@ -365,12 +365,12 @@ var Element_Import_Modal = (function ($) {
 
 		element.attr("data-rex-element-thumbnail-id", "");
 		element.attr("data-rex-element-thumbnail-size", "");
-		// removes the background of the element
+		// Removes The Background Of The Element
 		element.find(".element-list-preview").css('background-image', 'url("")').removeClass("element-list-preview--active");
-		// removes the background of the edit element thumbnail button
+		// Removes The Background Of The Edit Element Thumbnail Button
 		element.find(".tool-button--image-preview").css('background-image', 'url("")').removeClass("tool-button--image-preview");
 
-		// saves the changes
+		// Saves The Changes
 		_deleteElementThumbnail(element_id);
 	};
 
@@ -519,7 +519,7 @@ var Element_Import_Modal = (function ($) {
                     }
                     try {
                         var textData = "";
-                        if(isIE){
+                        if (isIE) {
                             textData = e.dataTransfer.getData("text");
                         } else {
                             textData = e.dataTransfer.getData("text/plain");
@@ -530,9 +530,11 @@ var Element_Import_Modal = (function ($) {
 
                         textData = textData.trim();
 
-                        var $divInsert = $(jQuery.parseHTML(textData));
-                        $divInsert.addClass("rex-loading-button");
+
+                        var $divInsert = $($.parseHTML(textData));
+                        $divInsert.addClass("rex-loading-element");
                         $divInsert.insertAfter($insertionPoint[0]);
+                        $divInsert.find('.rex-element-wrapper').hide();
                         $insertionPoint.remove();
                         var dataEndDrop = {
                             eventName: "rexlive:importElement",

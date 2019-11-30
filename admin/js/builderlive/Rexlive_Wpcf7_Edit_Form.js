@@ -13,7 +13,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     var formMessages;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
-    /// AJAX CALLS
+    /// AJAX Calls
     
     var _getFormSettings = function (formID) {
         $.ajax({
@@ -34,10 +34,23 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 formMessages = response.data.messages[0];
 
                 wpcf7_form_editor_properties.$form_mail_to.val(formMailSettings.recipient);
+                if (wpcf7_form_editor_properties.$form_mail_to.val() != "") {
+                    wpcf7_form_editor_properties.$form_mail_to
+                    .siblings("label, .prefix")
+                    .addClass('active');
+                }
                 wpcf7_form_editor_properties.$form_error_message.val(formMessages.validation_error);
+                if (wpcf7_form_editor_properties.$form_error_message.val() != "") {
+                    wpcf7_form_editor_properties.$form_error_message
+                    .siblings("label, .prefix")
+                    .addClass('active');
+                }
                 wpcf7_form_editor_properties.$form_send_message.val(formMessages.mail_sent_ok);
-
-                _updatePanel();
+                if (wpcf7_form_editor_properties.$form_send_message.val() != "") {
+                    wpcf7_form_editor_properties.$form_send_message
+                    .siblings("label, .prefix")
+                    .addClass('active');
+                }
               }
             },
             error: function(response) {},
@@ -162,12 +175,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
         var formID = elementData.element_target.element_id;
         _getFormSettings(formID);
-
-        var delayInMilliseconds = 0;
-
-        setTimeout(function() {
-          Rexlive_Modals_Utils.openModal(wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"), false);
-        }, delayInMilliseconds);
+        Rexlive_Modals_Utils.openModal(wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"), false);
     }
 
     var _closeModal = function () {
@@ -252,7 +260,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     };
 
     var _updatePanel = function () {
-        /* WHOLE FORM OPTIONS */
+        /* Whole Form Options */
         // E-Mail
         if (wpcf7_form_editor_properties.$form_mail_to.val() != "") {
             wpcf7_form_editor_properties.$form_mail_to
@@ -260,7 +268,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 .addClass('active');
         }
 
-        // Input preview
+        // Input Preview
         wpcf7_form_editor_properties.$input_preview.css({
             color: elementData.wpcf7_data.content.text_color,
             'font-size': elementData.wpcf7_data.content.font_size,
@@ -284,13 +292,13 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             });
         });
 
-        // Background color
+        // Background Color
         wpcf7_form_editor_properties.$form_preview_background.css("background-color", elementData.wpcf7_data.background_color);
         wpcf7_form_editor_properties.$form_background_color_value.val(elementData.wpcf7_data.background_color);
         wpcf7_form_editor_properties.$form_background_color_preview.hide();
         wpcf7_form_editor_properties.$form_background_color_value.spectrum("set", elementData.wpcf7_data.background_color);
 
-        // Border color
+        // Border Color
         wpcf7_form_editor_properties.$form_preview_border_color.css("background-color", elementData.wpcf7_data.border_color);
         wpcf7_form_editor_properties.$form_border_color_value.val(elementData.wpcf7_data.border_color);
         wpcf7_form_editor_properties.$form_border_color_preview.hide();
@@ -339,7 +347,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 .addClass('active');
         }
 
-        /* CONTENT OPTIONS*/
+        /* Content Options */
         // Content width
         if (elementData.wpcf7_data.options_different.width) {
             wpcf7_form_editor_properties.$content_width.val('');
@@ -347,14 +355,15 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         } else {
             wpcf7_form_editor_properties.$content_width.val(/[0-9]+/.exec(elementData.wpcf7_data.content.width));
             var widthType = (null != /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.width)) ? /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.width)[0] : "%";
+            console.log(widthType);
             switch (widthType) {
                 case "px":
-                wpcf7_form_editor_properties.$content_width.filter('[value=pixel]').prop("checked", true);
-                break;
+                    wpcf7_form_editor_properties.$content_width_type.filter('[value=pixel]').prop("checked", true);
+                    break;
                 case "%":
                 default:
-                wpcf7_form_editor_properties.$content_width.filter('[value=percentage]').prop("checked", true);
-                break;
+                    wpcf7_form_editor_properties.$content_width_type.filter('[value=percentage]').prop("checked", true);
+                    break;
             }
             if (wpcf7_form_editor_properties.$content_width.val() != "") {
                 wpcf7_form_editor_properties.$content_width
@@ -926,6 +935,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                     name: "text-color",
                     value: colorTEXT
                 });
+
+                elementData.wpcf7_data.options_different.text_color = false;
             },
             change: function (color) {},
             hide: function (color) {
@@ -1419,7 +1430,10 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
         wpcf7_form_editor_properties.$reset_button.on("click", function () {
             needToSave = false;
-            _closeModal();
+            elementData = jQuery.extend(true, {}, resetData);
+            console.log('resetData al click', elementData);
+            _updatePanel();
+            _applyChanges();
         });
 
         wpcf7_form_editor_properties.$apply_changes_button.on("click", function () {
@@ -1506,6 +1520,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             wpcf7_form_editor_properties.$input_preview.css({
                 color: color
             });
+
+            elementData.wpcf7_data.options_different.text_color = false;
+            wpcf7_form_editor_properties.$color_picker_overlay.remove();
           }
         );
 

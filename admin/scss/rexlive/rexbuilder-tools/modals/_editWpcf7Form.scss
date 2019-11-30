@@ -37,7 +37,7 @@
     .rex-accordion-outer--toggle {
       cursor: pointer;
 
-      .rex-wpcf7-plus-accordion {
+      .rex-wpcf7-accordion-outer-plus-wrap {
         position: absolute;
         left: 16px;
         right: 0;
@@ -60,7 +60,7 @@
 
     &.open {
       .rex-accordion-outer--toggle {
-        .rex-wpcf7-plus-accordion {
+        .rex-wpcf7-accordion-outer-plus-wrap {
           position: absolute;
           left: 14px;
           right: 0;
@@ -72,11 +72,6 @@
             width: 20px !important;
             height: 20px !important;
           }
-        }
-
-        &.ml4 {
-          margin-left: 2px;
-          margin-right: 2px;
         }
 
         .rex-wpcf7-title-icon {
@@ -116,7 +111,7 @@
         }
       }
 
-      .ml4-2 {
+      .rex-wpcf7-accordion-plus-wrap {
         margin-left: 2px;
         margin-right: 2px;
       }
@@ -395,9 +390,8 @@
   .ml3 {
     margin-left: 3px;
   }
-
-  .ml4,
-  .ml4-2 {
+  
+  .rex-wpcf7-accordion-plus-wrap {
     margin-left: 4px;
   }
 

@@ -135,7 +135,7 @@ var Rexbuilder_Rexelement = (function ($) {
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// REXELEMENT GENERIC FUNCTIONS
+    /// Rexelement Generic Functions
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
@@ -144,7 +144,7 @@ var Rexbuilder_Rexelement = (function ($) {
      * @since x.x.x
      */
 	var _fixImportedElement = function (data) {
-        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-loading-button .rex-element-wrapper");
+        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-loading-element .rex-element-wrapper");
         var elementID = $elementWrapper.attr("data-rex-element-id");
         var $elementsParagraph = $elementWrapper.parents(".rex-elements-paragraph").eq(0);
         var $textWrap = $elementWrapper.parents(".text-wrap").eq(0);
@@ -152,7 +152,8 @@ var Rexbuilder_Rexelement = (function ($) {
         var $section = $elementWrapper.parents(".rexpansive_section").eq(0);
 
         // Removing element unnecessary data
-        $elementWrapper.detach().appendTo($textWrap);
+        $elementWrapper.show();     // Was hided before calling this function
+        $elementWrapper.detach();
         $gridGallery.find('.element-list-preview').remove();
 
         var dropType;
@@ -168,7 +169,7 @@ var Rexbuilder_Rexelement = (function ($) {
             dropType = "inside-block";
         }
 
-        // Ajax call to get the html of the element
+        // Getting the html of the element
         $.ajax({
           type: "POST",
           dataType: "json",
@@ -179,25 +180,27 @@ var Rexbuilder_Rexelement = (function ($) {
             elementID: elementID
           },
           success: function(response) {
-            if (response.success) {
-                // If success get the element HTML and append it to the right div
+            if (response.success) {     // If success get the element HTML and append it to a new div
                 var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
-                var $divContainer = $(document.createElement("div"));
-                $divContainer.addClass("rex-element-container");
-                $elementWrapper.append($divContainer);
-                $divContainer.append($shortcodeTransformed);
 
-                // Get the shortcode and insert it in a new block inside $elementListHTML
+                var $elementContainer = $(document.createElement("div"));
+                $elementContainer.addClass("rex-element-container");
+                $elementWrapper.append($elementContainer);
+                $elementContainer.append($shortcodeTransformed);
+
+                // Get the shortcode and keep it as an attribute
                 var shortcode = response.data.shortcode;
                 var $spanShortcode = $(document.createElement("span"));
                 $spanShortcode.addClass("string-shortcode");
                 $spanShortcode.attr("shortcode", shortcode);
                 $elementWrapper.prepend($spanShortcode);
 
-                var $elementData = $elementWrapper.find(".rex-element-data").eq(0);
-                $elementData.remove();
-                $elementData = $.parseHTML(response.data.element_data_html[0]);
-                $elementWrapper.prepend($elementData);
+                var $elementData = $elementWrapper.find(".rex-element-data");
+                var $elementDataFromDB = $.parseHTML(response.data.element_data_html[0]);
+                if (null !== $elementDataFromDB) {
+                    $elementData.remove();
+                    $elementWrapper.prepend($elementDataFromDB);
+                }
 
                 switch (dropType) {
                     case "inside-block":
@@ -236,6 +239,9 @@ var Rexbuilder_Rexelement = (function ($) {
     var _endFixingElementImported = function ($elementWrapper) {
         var elementID = $elementWrapper.attr("data-rex-element-id");
         var flagElementFound = false;
+
+        // Adding element style and updating elements in page if the new element 
+        // is the first of the elements with that ID
         $elementWrapper.attr("data-rex-element-number", 1);
         for (var i = 0; i < elementsInPage.length; i++) {
             if (elementsInPage[i].id == elementID) {
@@ -252,6 +258,8 @@ var Rexbuilder_Rexelement = (function ($) {
                 number: 1
             });
         }
+        // console.log($elementWrapper[0].outerHTML);
+        // console.log(elementsInPage);
 
         // Setting the block height
         var $gridGallery = $elementWrapper.parents(".grid-stack-row").eq(0);
@@ -266,19 +274,50 @@ var Rexbuilder_Rexelement = (function ($) {
             TextEditor.removePlaceholder($textWrap.eq(0));
         }
 
-        // Adding form rows if element is wpcf7
-        if ($elementWrapper.find(".wpcf7").length != 0) {
+        // Adding form rows if element is wpcf7 (and first time adding?)
+        if ($elementWrapper.find(".wpcf7").length != 0 && $elementWrapper.find(".wpcf7-rows").length == 0) {
             var $form = $elementWrapper.find(".wpcf7-form");
+            var formID = elementID;
             var $firstElement = $form.children().first().detach();
-            var $fields = $form.find(".wpcf7-form-control-wrap").detach();
-            var $submits = $form.find("input[type=submit]").detach();
-            var $rows = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
 
-            $fields = $fields.add($submits);
+            var $formFields = $form.find('p').children().filter(function() {    // Getting only the form fields
+                var $field = $(this);
+                if (
+                        $field.find('.wpcf7-form-control-wrap').length != 0 ||
+                        $field.find('.wpcf7-form-control').length != 0 ||
+                        $field.is('.wpcf7-form-control-wrap') ||
+                        $field.is('.wpcf7-form-control')
+                    ) {
+                    return this;
+                } else {
+                    return null;
+                }
+            }).detach();
+            
+            $form.find('p').remove();
+
+            $formFields = $formFields.filter(function(index) {   // Fixing the fields
+                var $field = $(this);
+                if (
+                        $field.find('[type=url]').length != 0 ||
+                        $field.find('[type=tel]').length != 0 ||
+                        $field.find('[type=date]').length != 0 ||
+                        $field.find('.wpcf7-checkbox').length != 0 ||
+                        $field.find('.wpcf7-quiz-label').length != 0
+                    ) {
+                    return null;
+                } else {
+                    return this;
+                }
+            });
+
             $form.empty();
+            $form.prepend($firstElement);
+
+            var $rows = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
             $form.append($rows);
-            $fields.each(function (i) {
-                // Fare in modo che si capisca che input ci sono e che vengano sostituiti con input adeguati (classe giusta, name giusto)
+
+            $formFields.each(function (i) {
                 var $newRow = $(document.createElement("div"))
                     .addClass("wpcf7-row wpcf7-row__1-column")
                     .attr("wpcf7-row-number", (i + 1));
@@ -288,9 +327,18 @@ var Rexbuilder_Rexelement = (function ($) {
                     .append(this);
                 $newRow.append($newColumn);
                 $rows.append($newRow);
+
+                // Rexbuilder_Rexwpcf7.createColumnContentSpanData({
+                //     editPoint: {
+                //         element_id: formID,
+                //         row_number: (i + 1),
+                //         column_number: 1,
+                //     }
+                // });
             });
         }
 
+        /* Copied form Rexbuilder_Rexbutton */
         // locking grid to prevent errors on focus right text node
         // var $element = $textWrap.parents(".grid-stack-item");
         // var $section = $element.parents(".rexpansive_section");
@@ -600,7 +648,7 @@ var Rexbuilder_Rexelement = (function ($) {
         var $elementData = $elementWrapper.find(".rex-element-data").eq(0);
         var elementDataEl = $elementData[0];
 
-        /* ELEMENT GENERAL DATA */
+        // Element General Data 
         elementData.element_target.element_id = $elementWrapper.attr("data-rex-element-id");
         elementData.element_target.element_number = parseInt($elementWrapper.attr("data-rex-element-number"));
 
@@ -730,12 +778,16 @@ var Rexbuilder_Rexelement = (function ($) {
         if ($elementWrapper.find(".rex-element-data").eq(0).length != 0) {
             var elementData = _generateElementData($elementWrapper, true);
             var elementID = elementData.elementInfo.element_target.element_id;
-            // _addCSSRules(elementID, elementData.elementInfo);
-            Rexbuilder_Rexwpcf7.addFormStyle($elementWrapper.find(".wpcf7-form"));
+            _addCSSRules(elementID, elementData.elementInfo);
         }
-        $elementWrapper.find(".wpcf7-column").each(function(){
-            Rexbuilder_Rexwpcf7.addColumnContentStyle($(this));
-        })
+
+        // Adding form style if the element is a form
+        if ($elementWrapper.find('.wpcf7-form').length != 0) {
+            Rexbuilder_Rexwpcf7.addFormStyle($elementWrapper.find(".wpcf7-form"));
+            $elementWrapper.find(".wpcf7-column").each(function(){
+                Rexbuilder_Rexwpcf7.addColumnContentStyle($(this));
+            })
+        }
     }
 
     var _addCSSRules = function (elementID, elementData) {

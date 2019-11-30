@@ -21,7 +21,7 @@ defined('ABSPATH') or exit;
             <div class="rexpansive-accordion-outer close"> <!-- // Form Accordion -->
                 <div class="bl_modal-row rex-wpcf7-modal-row-tall rex-accordion-outer--toggle">
                     <div class="rexwpcf7-cont_row bl_ai-c bl_jc-c valign-wrapper">
-                        <div class="rex-wpcf7-plus-accordion bl_d-iblock">
+                        <div class="rex-wpcf7-accordion-outer-plus-wrap bl_d-iblock">
                             <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                         </div>
                         <div class="rex-wpcf7-title-icon l-icon--dark-grey bl_d-iblock">
@@ -199,7 +199,7 @@ defined('ABSPATH') or exit;
             <div class="rexpansive-accordion-outer close"> <!-- // Inputs Accordion -->
                 <div id="rex-wpcf7-inputs-accordion" class="bl_modal-row rex-accordion-outer--toggle">
                     <div class="rexwpcf7-cont_row bl_ai-c bl_jc-c valign-wrapper">
-                        <div class="rex-wpcf7-plus-accordion bl_d-iblock">
+                        <div class="rex-wpcf7-accordion-outer-plus-wrap bl_d-iblock">
                             <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                         </div>
                         <div class="rex-wpcf7-title-icon l-icon--dark-grey bl_d-iblock">
@@ -270,12 +270,12 @@ defined('ABSPATH') or exit;
                         <div class="rexpansive-accordion close"> <!-- // Content Text -->
                             <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                                 <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                                    <div class="bl_d-iblock ml4-2">
+                                    <div class="bl_d-iblock rex-wpcf7-accordion-plus-wrap">
                                         <span class="rex-accordion--toggle">
                                             <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                                         </span>
                                     </div>
-                                    <div class="bl_d-iblock prova-icon ml12 l-icon--dark-grey">
+                                    <div class="bl_d-iblock big-icon ml12 l-icon--dark-grey">
                                         <?php Rexbuilder_Utilities::get_icon('#B023-Input-Text'); ?>
                                     </div>
                                     <div class="bl_d-iblock posrel ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Text Color', 'rexpansive-builder');?>">
@@ -316,7 +316,7 @@ defined('ABSPATH') or exit;
                             <div class="rex-accordion--content" style="display:none;" data-item-status="close"> <!-- // Content Text Color Hover -->
                                 <div class="bl_modal-row rex-wpcf7-modal-row-tall">
                                     <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                                        <div class="bl_d-iblock ml36 prova-icon l-icon--dark-grey">
+                                        <div class="bl_d-iblock ml36 big-icon l-icon--dark-grey">
                                             <?php Rexbuilder_Utilities::get_icon('#B024-Input-Text-Hover'); ?>
                                         </div>
                                         <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Hover Text Color', 'rexpansive-builder');?>">
@@ -355,12 +355,12 @@ defined('ABSPATH') or exit;
                         <div class="rexpansive-accordion close"> <!-- // Content Background Color -->
                             <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                                 <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                                    <div class="bl_d-iblock ml4-2">
+                                    <div class="bl_d-iblock rex-wpcf7-accordion-plus-wrap">
                                         <span class="rex-accordion--toggle">
                                             <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                                         </span>
                                     </div>
-                                    <div class="bl_d-iblock ml12 prova-icon l-icon--dark-grey">
+                                    <div class="bl_d-iblock ml12 big-icon l-icon--dark-grey">
                                         <?php Rexbuilder_Utilities::get_icon('#B025-Input-Background'); ?>
                                     </div>
                                     <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Background Color', 'rexpansive-builder');?>">
@@ -397,7 +397,7 @@ defined('ABSPATH') or exit;
                             <div class="rex-accordion--content" style="display:none;" data-item-status="close"> <!-- // Content Background Color Hover -->
                                 <div class="bl_modal-row rex-wpcf7-modal-row-tall">
                                     <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                                        <div class="bl_d-iblock ml36 prova-icon l-icon--dark-grey">
+                                        <div class="bl_d-iblock ml36 big-icon l-icon--dark-grey">
                                             <?php Rexbuilder_Utilities::get_icon('#B026-Input-Background-Hover'); ?>
                                         </div>
                                         <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Hover Background Color', 'rexpansive-builder');?>">
@@ -436,12 +436,12 @@ defined('ABSPATH') or exit;
                         <div class="rexpansive-accordion close"> <!-- // Content Border -->
                             <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                                 <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                                    <div class="bl_d-iblock ml4-2">
+                                    <div class="bl_d-iblock rex-wpcf7-accordion-plus-wrap">
                                         <span class="rex-accordion--toggle">
                                             <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                                         </span>
                                     </div>
-                                    <div class="bl_d-iblock ml12 prova-icon l-icon--dark-grey">
+                                    <div class="bl_d-iblock ml12 big-icon l-icon--dark-grey">
                                         <?php Rexbuilder_Utilities::get_icon('#B027-Input-Border'); ?>
                                     </div>
                                     <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Border Color', 'rexpansive-builder');?>">
@@ -464,7 +464,7 @@ defined('ABSPATH') or exit;
                             <div class="rex-accordion--content" style="display:none;" data-item-status="close"> <!-- // Content Border Color Hover -->
                                 <div class="bl_modal-row rex-wpcf7-modal-row-tall">
                                     <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
-                                        <div class="bl_d-iblock ml36 prova-icon l-icon--dark-grey">
+                                        <div class="bl_d-iblock ml36 big-icon l-icon--dark-grey">
                                             <?php Rexbuilder_Utilities::get_icon('#B028-Input-Border-Hover'); ?>
                                         </div>
                                         <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Hover Border Color', 'rexpansive-builder');?>">
