@@ -37,7 +37,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         switch (fieldType) {
             case "text":
                 fieldShortcode = "[text text-" + fieldNumber + " class:text-" + fieldNumber + "]";
-                $columnContent.prepend("<input type=\"text\" name=\"text-" + fieldNumber + "\" value=\"\" size=\"40\" class=\"wpcf7-form-control wpcf7-text text-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\">");
+                $columnContent.prepend("<input type=\"text\" name=\"text-" + fieldNumber + "\" value=\"\" class=\"wpcf7-form-control wpcf7-text text-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\">");
                 break;
             case "textarea":
                 fieldShortcode = "[textarea textarea-" + fieldNumber + " class:textarea-" + fieldNumber + "]";
@@ -2855,6 +2855,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
                 var $element = $(this).find("input[type='file']");
                 $element.attr("id", "wpcf7-file-" + (i + 1));
+                $element.siblings('label').remove();
                 var $fileLabel = $(document.createElement("label"));
                 $fileLabel.attr("for",  $element.attr("id"));
                 $fileLabel.insertAfter($element);
@@ -2905,6 +2906,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             },
             error: function(response) {}
         });
+    }
+
+    var _addFormInPage = function (formID, $rows) {
+        $formsInPage[formID] = $rows;
     }
 
     var _getIDsInPage = function () {
@@ -2965,6 +2970,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	return {
 		init: _init,
 
+        addFormInPage: _addFormInPage,
         getIDsInPage: _getIDsInPage,
 
         // Rexwpcf7 generic functions
@@ -2989,6 +2995,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         setRowsSortable: _setRowsSortable,
 
 		// Column content functions
+        addWpcf7MenuPlaceholders: _addWpcf7MenuPlaceholders,
+        fixWpcf7RadioButtons: _fixWpcf7RadioButtons,
+        fixWpcf7Files: _fixWpcf7Files,
 		createColumnContentSpanData: _createColumnContentSpanData,
 		removeColumnContentSpanData: _removeColumnContentSpanData,
 		generateColumnContentData: _generateColumnContentData,

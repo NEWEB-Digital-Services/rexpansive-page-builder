@@ -355,7 +355,6 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         } else {
             wpcf7_form_editor_properties.$content_width.val(/[0-9]+/.exec(elementData.wpcf7_data.content.width));
             var widthType = (null != /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.width)) ? /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.width)[0] : "%";
-            console.log(widthType);
             switch (widthType) {
                 case "px":
                     wpcf7_form_editor_properties.$content_width_type.filter('[value=pixel]').prop("checked", true);

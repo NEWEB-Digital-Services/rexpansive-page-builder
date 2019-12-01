@@ -534,6 +534,30 @@ class Rexbuilder_Public
         wp_send_json_success($response);
     }
 
+    public function rex_wpcf7_get_form(){
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => ''
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $formID = $_POST['form_id'];
+        
+        $formHTML = get_post_meta($formID, "_form");
+        $response['html_form'] = $formHTML;
+
+        wp_send_json_success($response);
+    }
+
     public function rex_wpcf7_get_forms(){
         $nonce = $_POST['nonce_param'];
 
@@ -615,7 +639,7 @@ class Rexbuilder_Public
      * @return model with no image
      * @since  x.x.x
      */
-    public function rex_transform_element_shortcode(){
+    public function rex_transform_element_shortcode() {
         $nonce = $_POST['nonce_param'];
         $elementID = $_POST['elementID'];
 
