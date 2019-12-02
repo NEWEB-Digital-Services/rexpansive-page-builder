@@ -312,8 +312,7 @@ var Element_Edit_Modal = (function ($) {
     }
 
     /**
-     * Ends separtion of rexelement: tells iframe to change id of element and opens 
-     * panel to edit a separate element
+     * Ends separtion of rexelement: tells iframe to change id of element
      * @param {string} rexID new id of rexelement
      */
     var _endElementSeparation = function (rexID) {
@@ -324,10 +323,11 @@ var Element_Edit_Modal = (function ($) {
             number: 1
         });
         _refreshElement(rexID);
-        _updatePanel();
-        Rexlive_Modals_Utils.openModal(
-            element_editor_properties.$self.parent(".rex-modal-wrap")
-        );
+        // _updatePanel();
+        Wpcf7_Edit_Form_Modal.openFormEditorModal({
+            elementData: elementData,
+            blockID: blockID
+        });
     }
 
     /**

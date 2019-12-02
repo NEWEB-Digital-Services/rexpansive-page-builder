@@ -2473,8 +2473,8 @@ var TextEditor = (function ($) {
     },
 
     updateHeight: function() {
-      var $elementWrapper = $(this.traceForm).parents('.text-wrap');
-      Rexbuilder_Util_Editor.updateBlockContainerHeight($elementWrapper/*.parents('.text-wrap')*/);
+      var $textWrap = $(this.traceForm).parents('.text-wrap');
+      Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
     },
 
     focusBlock: function() {

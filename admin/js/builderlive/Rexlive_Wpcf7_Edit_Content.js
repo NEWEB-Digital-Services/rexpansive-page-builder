@@ -1853,16 +1853,12 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
    	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	var _linkDocumentListeners = function() {
+        var needToSave = false;
 		/**
          * Closes the modal
          */
         wpcf7_content_editor_properties.$close_button.on("click", function () {
-            // if (needToRemoveSpanData){
-            //     _removeSpanData();
-            // }
-            columnContentData = jQuery.extend(true, {}, resetData);
-            _updatePanel();
-            _applyData();
+            needToSave = false;
             _closeModal();
         });
 
@@ -1870,6 +1866,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
          * Applies changes
          */
         wpcf7_content_editor_properties.$apply_changes_button.on("click", function () {
+            needToSave = true;
             _closeModal();
         });
 
@@ -1878,11 +1875,29 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
          */
         wpcf7_content_editor_properties.$reset_button.on("click", function () {
             columnContentData = jQuery.extend(true, {}, resetData);
+            var isSetEmail = "undefined" != typeof wpcf7_content_editor_properties.$content_set_email.attr("checked");
+            if (isSetEmail) {
+                _updateColumnContentLive({
+                    type: "wpcf7-email",
+                    value: false
+                });
+            }
+            var isSetOnlyNumbers = "undefined" != typeof wpcf7_content_editor_properties.$content_only_numbers.attr("checked");
+            if (isSetOnlyNumbers) {
+                _updateColumnContentLive({
+                    type: "wpcf7-only-numbers",
+                    value: false
+                });
+            }
             _updatePanel();
             _applyData();
         });
 
         wpcf7_content_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
+            if (!needToSave) {
+                columnContentData = jQuery.extend(true, {}, resetData);
+                _updatePanel();
+            }
             _updateColumnContentDataFromPanel();
             _applyData();
         });

@@ -493,9 +493,13 @@ class Rexbuilder_Public
         $response['error'] = false;
         
         $formID = $_POST['form_id'];
+        // Updating the form fields
         $newFormString = $_POST['new_form_string'];
-
         update_post_meta($formID, "_form", $newFormString);
+
+        // Updating element data
+        $elementDataString = trim( $_POST["element_data_string"] );
+        update_post_meta($formID, '_rex_element_data_html', $elementDataString );
 
         wp_send_json_success($response);
     }

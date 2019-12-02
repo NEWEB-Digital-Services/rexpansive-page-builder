@@ -1343,33 +1343,33 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     /// Saving Functions
     ///////////////////////////////////////////////////////////////////////////////////////////////
     
-    var _saveElementSpanDataOnDB = function () {
-        var element_data_html = _createElementDataHTML();
-        var elementID = elementData.element_target.element_id;
+    // var _saveElementSpanDataOnDB = function () {
+    //     var element_data_html = _createElementDataHTML();
+    //     var elementID = elementData.element_target.element_id;
 
-        // element_editor_properties.$add_model_button.addClass("saving-rex-element");
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: live_editor_obj.ajaxurl,
-            data: {
-                action: "rex_update_element",
-                nonce_param: live_editor_obj.rexnonce,
-                element_id: elementID,
-                element_data_html: element_data_html
-            },
-            beforeSend: function() {
-                // element_editor_properties.$self.addClass('rex-modal--loading');
-            },
-            success: function (response) {
-                // element_editor_properties.$add_model_button.removeClass("saving-rex-element");
-            },
-            error: function () {},
-            complete: function (response) {
-                // element_editor_properties.$self.removeClass('rex-modal--loading');
-            }
-        });
-    }
+    //     // element_editor_properties.$add_model_button.addClass("saving-rex-element");
+    //     $.ajax({
+    //         type: "POST",
+    //         dataType: "json",
+    //         url: live_editor_obj.ajaxurl,
+    //         data: {
+    //             action: "rex_update_element",
+    //             nonce_param: live_editor_obj.rexnonce,
+    //             element_id: elementID,
+    //             element_data_html: element_data_html
+    //         },
+    //         beforeSend: function() {
+    //             // element_editor_properties.$self.addClass('rex-modal--loading');
+    //         },
+    //         success: function (response) {
+    //             // element_editor_properties.$add_model_button.removeClass("saving-rex-element");
+    //         },
+    //         error: function () {},
+    //         complete: function (response) {
+    //             // element_editor_properties.$self.removeClass('rex-modal--loading');
+    //         }
+    //     });
+    // }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     /// Other Functions
@@ -1430,7 +1430,6 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         wpcf7_form_editor_properties.$reset_button.on("click", function () {
             needToSave = false;
             elementData = jQuery.extend(true, {}, resetData);
-            console.log('resetData al click', elementData);
             _updatePanel();
             _applyChanges();
         });
@@ -1446,14 +1445,12 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             if (needToSave) {
                 _saveFormSettings();
                 _updateFormDataFromPanel();
-                _saveElementSpanDataOnDB();
                 _applyChanges();
             } else {
                 elementData = jQuery.extend(true, {}, resetData);
                 _updatePanel();
                 _applyChanges();
             }
-            
         });
 
         wpcf7_form_editor_properties.$content_width_type.on("click", function () {
@@ -1521,7 +1518,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             });
 
             elementData.wpcf7_data.options_different.text_color = false;
-            wpcf7_form_editor_properties.$color_picker_overlay.remove();
+            if ('undefined' != typeof wpcf7_form_editor_properties.$color_picker_overlay) {
+                wpcf7_form_editor_properties.$color_picker_overlay.remove();
+            }
           }
         );
 

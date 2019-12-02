@@ -145,7 +145,7 @@ defined('ABSPATH') or exit;
                                 </div>
                             </div>
                         </div>
-                        <div class="bl_modal-row rex-wpcf7-modal-row-tall modal-row-grey"> <!-- // Error Message -->
+                        <div class="bl_modal-row rex-wpcf7-modal-row-tall modal-row-grey"> <!-- // Warning Message -->
                             <div class="rexwpcf7-cont_row valign-wrapper">
                                 <div class="bl_d-iblock input-field with-text-left pl4 rex-wpcf7-modal-column-w253 rex-input-prefixed">
                                     <span class="prefix">
@@ -156,12 +156,12 @@ defined('ABSPATH') or exit;
                                         <?php _e('Warning Message', 'rexpansive-builder');?>
                                     </label>
                                 </div>
-                                <div class="bl_d-iblock ml19" tabindex="0">
+                                <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Warning Message Color', 'rexpansive-builder');?>">
                                     <input type="hidden" id="rex-wpcf7-error-message-color-runtime" name="rex-wpcf7-error-message-color-runtime" value="" />
                                     <input id="rex-wpcf7-error-message-color" type="text" name="rex-wpcf7-error-message-color" value="" size="10" />
                                     <div id="rex-wpcf7-error-message-color-preview-icon" class="rex-wpcf7-error-message-color-preview-icon"></div>
                                 </div>
-                                <div class="bl_d-iblock with-text ml19">
+                                <div class="bl_d-iblock with-text ml19 tippy" data-tippy-content="<?php _e('Warning Message Font Size', 'rexpansive-builder');?>">
                                     <input type="text" id="rex-wpcf7-set-error-message-font-size" name="" class="rex-wpcf7-set-error-message-font-size bl_d-iblock">
                                 </div>
                                 <div class="bl_d-iblock ml3">
@@ -180,12 +180,12 @@ defined('ABSPATH') or exit;
                                         <?php _e('Success Message', 'rexpansive-builder');?>
                                     </label>
                                 </div>
-                                <div class="bl_d-iblock ml19" tabindex="0">
+                                <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Success Message Color', 'rexpansive-builder');?>">
                                     <input type="hidden" id="rex-wpcf7-send-message-color-runtime" name="rex-wpcf7-send-message-color-runtime" value="" />
                                     <input id="rex-wpcf7-send-message-color" type="text" name="rex-wpcf7-send-message-color" value="" size="10" />
                                     <div id="rex-wpcf7-send-message-color-preview-icon" class="rex-wpcf7-send-message-color-preview-icon"></div>
                                 </div>
-                                <div class="bl_d-iblock with-text ml19">
+                                <div class="bl_d-iblock with-text ml19 tippy" data-tippy-content="<?php _e('Success Message Font Size', 'rexpansive-builder');?>">
                                     <input type="text" id="rex-wpcf7-set-send-message-font-size" name="" class="rex-wpcf7-set-send-message-font-size bl_d-iblock">
                                 </div>
                                 <div class="bl_d-iblock ml3">

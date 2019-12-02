@@ -3,7 +3,7 @@ var Rexbuilder_Rexelement = (function ($) {
 
     var styleSheet;
     var elementsInPage;
-    var defaultElementValues;
+    var elementDataDefaults;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
     /// CSS Rules Editing
@@ -253,7 +253,7 @@ var Rexbuilder_Rexelement = (function ($) {
         }
 
         if (!flagElementFound) {
-            _addElementStyle($elementWrapper);
+            // _addElementStyle($elementWrapper);
             elementsInPage.push({
                 id: elementID,
                 number: 1
@@ -325,8 +325,11 @@ var Rexbuilder_Rexelement = (function ($) {
                     .attr("wpcf7-row-number", (i + 1));
                 var $newColumn = $(document.createElement("div"))
                     .addClass("wpcf7-column")
-                    .attr("wpcf7-column-number", "1")
+                    .attr("wpcf7-column-number", "1");
+                var $newColumnContent = $(document.createElement("span"))
+                    .addClass("wpcf7-column-content")
                     .append(el);
+                $newColumn.append($newColumnContent);
                 $newRow.append($newColumn);
                 $rows.append($newRow);
 
@@ -418,13 +421,12 @@ var Rexbuilder_Rexelement = (function ($) {
 
                     var newName = "file-" + randomNumber;
                     $el.find('[type=file]').attr('name', newName);
+                    $el.append('<div class="wpcf7-file-caption">Your text here</div>');
                     $el.addClass(newName);
                 } else if (containsSubmit) {
                     var newName = "submit-" + randomNumber;
                     $el.addClass(newName);
                 }
-
-                
             });
 
             _fixFormInDB(formID, fieldsNumbers);
@@ -434,6 +436,7 @@ var Rexbuilder_Rexelement = (function ($) {
         Rexbuilder_Rexwpcf7.addWpcf7MenuPlaceholders();
         Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
         Rexbuilder_Rexwpcf7.fixWpcf7Files();
+        Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
 
         /* Copied form Rexbuilder_Rexbutton */
         // locking grid to prevent errors on focus right text node
@@ -455,12 +458,26 @@ var Rexbuilder_Rexelement = (function ($) {
             success: function(response) {
               if (response.success) {
                 var fieldsString = response.data.html_form.toString().trim();
-                fieldsString = fieldsString
-                    .replace(/\[url[^\]]+/.exec(fieldsString)[0] + ']', '')
-                    .replace(/\[tel[^\]]+/.exec(fieldsString)[0] + ']', '')
-                    .replace(/\[date[^\]]+/.exec(fieldsString)[0] + ']', '')
-                    .replace(/\[checkbox[^\]]+/.exec(fieldsString)[0] + ']', '')
-                    .replace(/\[quiz[^\]]+/.exec(fieldsString)[0] + ']', '');
+
+                if (/\[url\s/.test(fieldsString)) {
+                    fieldsString = fieldsString.replace(/\[url[^\]]+/.exec(fieldsString)[0] + ']', '')
+                }
+
+                if (/\[tel\s/.test(fieldsString)) {
+                    fieldsString = fieldsString.replace(/\[tel[^\]]+/.exec(fieldsString)[0] + ']', '');
+                }
+
+                if (/\[date\s/.test(fieldsString)) {
+                    fieldsString = fieldsString.replace(/\[date[^\]]+/.exec(fieldsString)[0] + ']', '');
+                }
+
+                if (/\[checkbox\s/.test(fieldsString)) {
+                    fieldsString = fieldsString.replace(/\[checkbox[^\]]+/.exec(fieldsString)[0] + ']', '');
+                }
+
+                if (/\[quiz\s/.test(fieldsString)) {
+                    fieldsString = fieldsString.replace(/\[quiz[^\]]+/.exec(fieldsString)[0] + ']', '');
+                }
 
                 var fieldsShortcodes = [];
                 var i = 0;
@@ -497,7 +514,7 @@ var Rexbuilder_Rexelement = (function ($) {
                         fieldsShortcodes[i] = fieldsShortcodes[i].replace(']', ']' + '<div class="wpcf7-file-caption">Your text here</div>');
                     } else if (/\[submit/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[submit[^\s]*/, '[submit submit-' + fieldsNumbers[i]);
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[text [^\s]+/, '[submit submit-' + fieldsNumbers[i] + ' class:submit-' + fieldsNumbers[i]);
 
                         if (!/\]/.test(fieldsShortcodes[i])) {
                             fieldsShortcodes[i] += ']';
@@ -527,11 +544,10 @@ var Rexbuilder_Rexelement = (function ($) {
                             column_number: 1,
                         }
                     });
-
-                    var $formColumn = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").find(".wpcf7-row[wpcf7-row-number='" + (i + 1) + "']").find(".wpcf7-column[wpcf7-column-number='1']");
-
-                    Rexbuilder_Rexwpcf7.addColumnContentStyle($formColumn);
                 });
+
+                var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").eq(0);
+                _addElementStyle($elementWrapper);
               }
             },
             error: function(response) {}
@@ -689,7 +705,7 @@ var Rexbuilder_Rexelement = (function ($) {
             }
         }
 
-        //if element was last of that model in page, remove it form elementsInPage array
+        // If element was last of that model in page, remove it form elementsInPage array
         if (Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]").length == 0) {
             var i;
             for (i = 0; i < elementsInPage.length; i++) {
@@ -702,7 +718,7 @@ var Rexbuilder_Rexelement = (function ($) {
             }
         }
 
-        _addElementStyle($elementWrapper);
+        // _addElementStyle($elementWrapper);
     }
 
     /**
@@ -747,9 +763,11 @@ var Rexbuilder_Rexelement = (function ($) {
                 $elementContainer.append($shortcodeTransformed);
 
                 // Updating element data
-                $elementData.remove();
-                $elementData = $.parseHTML(response.data.element_data_html[0]);
-                $elementWrapper.prepend($elementData);
+                // $elementData.remove();
+                // $elementData = $.parseHTML(response.data.element_data_html[0]);
+                // $elementWrapper.prepend($elementData);
+
+                _endFixingElementImported($elementWrapper);
 
                 _lockSynchronize(elementData);
             }
@@ -838,6 +856,8 @@ var Rexbuilder_Rexelement = (function ($) {
             }
         };
 
+        var $form = $elementWrapper.find('.wpcf7-form');
+
         var $elementData = $elementWrapper.find(".rex-element-data").eq(0);
         var elementDataEl = $elementData[0];
 
@@ -854,67 +874,67 @@ var Rexbuilder_Rexelement = (function ($) {
 
         /* WPCF7 */
         // Background color
-        elementData.wpcf7_data.background_color = (elementDataEl.getAttribute("data-wpcf7-background-color") ? elementDataEl.getAttribute("data-wpcf7-background-color").toString() : '');
+        elementData.wpcf7_data.background_color = (elementDataEl.getAttribute("data-wpcf7-background-color") ? elementDataEl.getAttribute("data-wpcf7-background-color").toString() : $form.css('background-color'));
 
         // Border color
-        elementData.wpcf7_data.border_color = (elementDataEl.getAttribute("data-wpcf7-border-color") ? elementDataEl.getAttribute("data-wpcf7-border-color").toString() : '');
+        elementData.wpcf7_data.border_color = (elementDataEl.getAttribute("data-wpcf7-border-color") ? elementDataEl.getAttribute("data-wpcf7-border-color").toString() : $form.css('border-color'));
 
         // Border width
-        elementData.wpcf7_data.border_width = (elementDataEl.getAttribute("data-wpcf7-border-width") ? elementDataEl.getAttribute("data-wpcf7-border-width").toString() : '');
+        elementData.wpcf7_data.border_width = (elementDataEl.getAttribute("data-wpcf7-border-width") ? elementDataEl.getAttribute("data-wpcf7-border-width").toString() : $form.css('border-width'));
 
         // Margins
-        elementData.wpcf7_data.margin_top = (elementDataEl.getAttribute("data-wpcf7-margin-top") ? elementDataEl.getAttribute("data-wpcf7-margin-top").toString() : '');
-        elementData.wpcf7_data.margin_left = (elementDataEl.getAttribute("data-wpcf7-margin-left") ? elementDataEl.getAttribute("data-wpcf7-margin-left").toString() : '');
-        elementData.wpcf7_data.margin_right = (elementDataEl.getAttribute("data-wpcf7-margin-right") ? elementDataEl.getAttribute("data-wpcf7-margin-right").toString() : '');
-        elementData.wpcf7_data.margin_bottom = (elementDataEl.getAttribute("data-wpcf7-margin-bottom") ? elementDataEl.getAttribute("data-wpcf7-margin-bottom").toString() : '');
+        elementData.wpcf7_data.margin_top = (elementDataEl.getAttribute("data-wpcf7-margin-top") ? elementDataEl.getAttribute("data-wpcf7-margin-top").toString() : $form.css('margin-top'));
+        elementData.wpcf7_data.margin_left = (elementDataEl.getAttribute("data-wpcf7-margin-left") ? elementDataEl.getAttribute("data-wpcf7-margin-left").toString() : $form.css('margin-left'));
+        elementData.wpcf7_data.margin_right = (elementDataEl.getAttribute("data-wpcf7-margin-right") ? elementDataEl.getAttribute("data-wpcf7-margin-right").toString() : $form.css('margin-right'));
+        elementData.wpcf7_data.margin_bottom = (elementDataEl.getAttribute("data-wpcf7-margin-bottom") ? elementDataEl.getAttribute("data-wpcf7-margin-bottom").toString() : $form.css('margin-bottom'));
 
         // Columns padding
-        elementData.wpcf7_data.columns.padding_top = (elementDataEl.getAttribute("data-wpcf7-columns-padding-top") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-top").toString() : '');
-        elementData.wpcf7_data.columns.padding_left = (elementDataEl.getAttribute("data-wpcf7-columns-padding-left") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-left").toString() : '');
-        elementData.wpcf7_data.columns.padding_right = (elementDataEl.getAttribute("data-wpcf7-columns-padding-right") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-right").toString() : '');
-        elementData.wpcf7_data.columns.padding_bottom = (elementDataEl.getAttribute("data-wpcf7-columns-padding-bottom") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-bottom").toString() : '');
+        elementData.wpcf7_data.columns.padding_top = (elementDataEl.getAttribute("data-wpcf7-columns-padding-top") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-top").toString() : elementDataDefaults.wpcf7_data.columns.padding_top);
+        elementData.wpcf7_data.columns.padding_left = (elementDataEl.getAttribute("data-wpcf7-columns-padding-left") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-left").toString() : elementDataDefaults.wpcf7_data.columns.padding_left);
+        elementData.wpcf7_data.columns.padding_right = (elementDataEl.getAttribute("data-wpcf7-columns-padding-right") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-right").toString() : elementDataDefaults.wpcf7_data.columns.padding_right);
+        elementData.wpcf7_data.columns.padding_bottom = (elementDataEl.getAttribute("data-wpcf7-columns-padding-bottom") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-bottom").toString() : elementDataDefaults.wpcf7_data.columns.padding_bottom);
 
         // Error Message
-        elementData.wpcf7_data.error_message_color = (elementDataEl.getAttribute("data-wpcf7-error-message-color") ? elementDataEl.getAttribute("data-wpcf7-error-message-color").toString() : '');
-        elementData.wpcf7_data.error_message_font_size = (elementDataEl.getAttribute("data-wpcf7-error-message-font-size") ? elementDataEl.getAttribute("data-wpcf7-error-message-font-size").toString() : '');
+        elementData.wpcf7_data.error_message_color = (elementDataEl.getAttribute("data-wpcf7-error-message-color") ? elementDataEl.getAttribute("data-wpcf7-error-message-color").toString() : elementDataDefaults.wpcf7_data.error_message_color);
+        elementData.wpcf7_data.error_message_font_size = (elementDataEl.getAttribute("data-wpcf7-error-message-font-size") ? elementDataEl.getAttribute("data-wpcf7-error-message-font-size").toString() : elementDataDefaults.wpcf7_data.error_message_font_size);
 
         // Send Message
-        elementData.wpcf7_data.send_message_color = (elementDataEl.getAttribute("data-wpcf7-send-message-color") ? elementDataEl.getAttribute("data-wpcf7-send-message-color").toString() : '');
-        elementData.wpcf7_data.send_message_font_size = (elementDataEl.getAttribute("data-wpcf7-send-message-font-size") ? elementDataEl.getAttribute("data-wpcf7-send-message-font-size").toString() : '');
+        elementData.wpcf7_data.send_message_color = (elementDataEl.getAttribute("data-wpcf7-send-message-color") ? elementDataEl.getAttribute("data-wpcf7-send-message-color").toString() : elementDataDefaults.wpcf7_data.send_message_color);
+        elementData.wpcf7_data.send_message_font_size = (elementDataEl.getAttribute("data-wpcf7-send-message-font-size") ? elementDataEl.getAttribute("data-wpcf7-send-message-font-size").toString() : elementDataDefaults.wpcf7_data.send_message_font_size);
 
         /* WPCF7 CONTENT */
         // Content width
-        elementData.wpcf7_data.content.width = (elementDataEl.getAttribute("data-wpcf7-content-width") ? elementDataEl.getAttribute("data-wpcf7-content-width").toString() : "");
+        elementData.wpcf7_data.content.width = (elementDataEl.getAttribute("data-wpcf7-content-width") ? elementDataEl.getAttribute("data-wpcf7-content-width").toString() : elementDataDefaults.wpcf7_data.content.width);
 
         // Content height
-        elementData.wpcf7_data.content.height = (elementDataEl.getAttribute("data-wpcf7-content-height") ? elementDataEl.getAttribute("data-wpcf7-content-height").toString() : "");
+        elementData.wpcf7_data.content.height = (elementDataEl.getAttribute("data-wpcf7-content-height") ? elementDataEl.getAttribute("data-wpcf7-content-height").toString() : elementDataDefaults.wpcf7_data.content.height);
 
         // Content font size
-        elementData.wpcf7_data.content.font_size = (elementDataEl.getAttribute("data-wpcf7-content-font-size") ? elementDataEl.getAttribute("data-wpcf7-content-font-size").toString() : "");
+        elementData.wpcf7_data.content.font_size = (elementDataEl.getAttribute("data-wpcf7-content-font-size") ? elementDataEl.getAttribute("data-wpcf7-content-font-size").toString() : elementDataDefaults.wpcf7_data.content.font_size);
 
         // Content border width
-        elementData.wpcf7_data.content.border_width = (elementDataEl.getAttribute("data-wpcf7-content-border-width") ? elementDataEl.getAttribute("data-wpcf7-content-border-width").toString() : "");
+        elementData.wpcf7_data.content.border_width = (elementDataEl.getAttribute("data-wpcf7-content-border-width") ? elementDataEl.getAttribute("data-wpcf7-content-border-width").toString() : elementDataDefaults.wpcf7_data.content.border_width);
 
         // Content border radius
-        elementData.wpcf7_data.content.border_radius = (elementDataEl.getAttribute("data-wpcf7-content-border-radius") ? elementDataEl.getAttribute("data-wpcf7-content-border-radius").toString() : "");
+        elementData.wpcf7_data.content.border_radius = (elementDataEl.getAttribute("data-wpcf7-content-border-radius") ? elementDataEl.getAttribute("data-wpcf7-content-border-radius").toString() : elementDataDefaults.wpcf7_data.content.border_radius);
 
         // Content text color
-        elementData.wpcf7_data.content.text_color = (elementDataEl.getAttribute("data-wpcf7-content-text-color") ? elementDataEl.getAttribute("data-wpcf7-content-text-color").toString() : '');
+        elementData.wpcf7_data.content.text_color = (elementDataEl.getAttribute("data-wpcf7-content-text-color") ? elementDataEl.getAttribute("data-wpcf7-content-text-color").toString() : elementDataDefaults.wpcf7_data.content.text_color);
 
         // Content background color
-        elementData.wpcf7_data.content.background_color = (elementDataEl.getAttribute("data-wpcf7-content-background-color") ? elementDataEl.getAttribute("data-wpcf7-content-background-color").toString() : '');
+        elementData.wpcf7_data.content.background_color = (elementDataEl.getAttribute("data-wpcf7-content-background-color") ? elementDataEl.getAttribute("data-wpcf7-content-background-color").toString() : elementDataDefaults.wpcf7_data.content.background_color);
 
         // Content border color
-        elementData.wpcf7_data.content.border_color = (elementDataEl.getAttribute("data-wpcf7-content-border-color") ? elementDataEl.getAttribute("data-wpcf7-content-border-color").toString() : '');
+        elementData.wpcf7_data.content.border_color = (elementDataEl.getAttribute("data-wpcf7-content-border-color") ? elementDataEl.getAttribute("data-wpcf7-content-border-color").toString() : elementDataDefaults.wpcf7_data.content.border_color);
 
         // Content text color hover
-        elementData.wpcf7_data.content.text_color_hover = (elementDataEl.getAttribute("data-wpcf7-content-text-color-hover") ? elementDataEl.getAttribute("data-wpcf7-content-text-color-hover").toString() : '');
+        elementData.wpcf7_data.content.text_color_hover = (elementDataEl.getAttribute("data-wpcf7-content-text-color-hover") ? elementDataEl.getAttribute("data-wpcf7-content-text-color-hover").toString() : elementDataDefaults.wpcf7_data.content.text_color_hover);
 
         // Content background color hover
-        elementData.wpcf7_data.content.background_color_hover = (elementDataEl.getAttribute("data-wpcf7-content-background-color-hover") ? elementDataEl.getAttribute("data-wpcf7-content-background-color-hover").toString() : '');
+        elementData.wpcf7_data.content.background_color_hover = (elementDataEl.getAttribute("data-wpcf7-content-background-color-hover") ? elementDataEl.getAttribute("data-wpcf7-content-background-color-hover").toString() : elementDataDefaults.wpcf7_data.content.background_color_hover);
 
         // Content border color hover
-        elementData.wpcf7_data.content.border_color_hover = (elementDataEl.getAttribute("data-wpcf7-content-border-color-hover") ? elementDataEl.getAttribute("data-wpcf7-content-border-color-hover").toString() : '');
+        elementData.wpcf7_data.content.border_color_hover = (elementDataEl.getAttribute("data-wpcf7-content-border-color-hover") ? elementDataEl.getAttribute("data-wpcf7-content-border-color-hover").toString() : elementDataDefaults.wpcf7_data.content.border_color_hover);
 
         // Options different
         elementData.wpcf7_data.options_different = _scanOptionsDifferent(elementData.element_target.element_id, elementData.wpcf7_data.options_different);
@@ -969,14 +989,14 @@ var Rexbuilder_Rexelement = (function ($) {
 
     var _addElementStyle = function ($elementWrapper) {
         if ($elementWrapper.find(".rex-element-data").eq(0).length != 0) {
-            var elementData = _generateElementData($elementWrapper, true);
-            var elementID = elementData.elementInfo.element_target.element_id;
-            _addCSSRules(elementID, elementData.elementInfo);
+            // var elementData = _generateElementData($elementWrapper, true);
+            // var elementID = elementData.elementInfo.element_target.element_id;
+            // _addCSSRules(elementID, elementData.elementInfo);
         }
 
         // Adding form style if the element is a form
         if ($elementWrapper.find('.wpcf7-form').length != 0) {
-            Rexbuilder_Rexwpcf7.addFormStyle($elementWrapper.find(".wpcf7-form"));
+            Rexbuilder_Rexwpcf7.addFormStyle($elementWrapper.find(".wpcf7-form"), true);
             $elementWrapper.find(".wpcf7-column").each(function(){
                 Rexbuilder_Rexwpcf7.addColumnContentStyle($(this));
             })
@@ -1023,11 +1043,8 @@ var Rexbuilder_Rexelement = (function ($) {
     }
 
     var _removeElementStyle = function (elementID) {
-        // _removeElementContainerRule(elementID);
+        // @todo
         _removeElementBackgroundRule(elementID);
-        // _removeElementBackgroundHoverRule(elementID);
-        // _removeElementTextRule(elementID);
-        // _removeElementContainerHoverRule(elementID);
     }
 
     var _removeSeparateElement = function (data) {
@@ -1057,20 +1074,56 @@ var Rexbuilder_Rexelement = (function ($) {
 	var init = function() {
         styleSheet = null;
         elementsInPage = [];
-        // Qua ci andranno i valori di default degli stili che verranno scelti
-        defaultElementValues = {
-            // Prova
-            input: {
-                text: {
-                    background_color: "",
+
+        elementDataDefaults = {
+            synchronize: "",
+            wpcf7_data: {
+                background_color: 'rgb(0, 0, 0, 0)',
+                border_color: 'rgb(0, 0, 0, 1)',
+                border_width: '2px',
+                margin_top: '5px',
+                margin_left: '5px',
+                margin_right: '5px',
+                margin_bottom: '5px',
+                error_message_color: 'rgb(0, 0, 0, 1)',
+                error_message_font_size: '15px',
+                send_message_color: 'rgb(0, 0, 0, 1)',
+                send_message_font_size: '15px',
+                columns: {
+                    padding_top: '15px',
+                    padding_left: '15px',
+                    padding_right: '15px',
+                    padding_bottom: '15px',
+                },
+                content: {
+                    background_color: 'rgb(0, 0, 0, 1)',
+                    background_color_hover: '',
+                    text_color: 'rgb(0, 0, 0, 1)',
+                    text_color_hover: 'rgb(0, 0, 0, 1)',
+                    border_color: 'rgb(0, 0, 0, 1)',
+                    border_color_hover: 'rgb(0, 0, 0, 1)',
+                    width: '100%',
+                    height: '100%',
+                    font_size: '15px',
+                    border_width: '0px',
+                    border_radius: '0px',
+                },
+                options_different: {
+                    width: true,
+                    height: true,
+                    font_size: true,
+                    text_color: true
                 }
+            },
+            element_target: {
+                element_id: "",
+                element_number: "",
             }
         };
         this.$rexelementsStyle = $("#rexpansive-builder-rexelement-style-inline-css");
 
         _fixCustomStyleElement();
         _updateElementListInPage();
-        _addStyles();
 		_linkDocumentListeners();
 	}
 
