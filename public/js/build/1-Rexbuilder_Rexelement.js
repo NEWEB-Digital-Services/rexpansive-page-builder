@@ -430,9 +430,10 @@ var Rexbuilder_Rexelement = (function ($) {
             });
 
             _fixFormInDB(formID, fieldsNumbers);
+        } else {    // If it's not a new element
+            Rexbuilder_Rexwpcf7.updateDBFormsInPage(elementID, !flagElementFound);
         }
 
-        // Just fixing radios and files
         Rexbuilder_Rexwpcf7.addWpcf7MenuPlaceholders();
         Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
         Rexbuilder_Rexwpcf7.fixWpcf7Files();
@@ -534,7 +535,7 @@ var Rexbuilder_Rexelement = (function ($) {
                     i++;
                 }
 
-                Rexbuilder_Rexwpcf7.addFormInPage(formID, $rows);
+                Rexbuilder_Rexwpcf7.addFormInPage(formID, $rows);   // Necessary for creating column content data
 
                 $rows.find('.wpcf7-column').each(function(i, el) {
                     Rexbuilder_Rexwpcf7.createColumnContentSpanData({
@@ -1076,7 +1077,7 @@ var Rexbuilder_Rexelement = (function ($) {
         elementsInPage = [];
 
         elementDataDefaults = {
-            synchronize: "",
+            synchronize: false,
             wpcf7_data: {
                 background_color: 'rgb(0, 0, 0, 0)',
                 border_color: 'rgb(0, 0, 0, 1)',
@@ -1135,6 +1136,7 @@ var Rexbuilder_Rexelement = (function ($) {
         addStyles: _addStyles,
 
         // Rexelement functions
+        addElementStyle: _addElementStyle,
 		fixImportedElement: _fixImportedElement,
         getElementsInPage: _getElementsInPage,
         lockSynchronize: _lockSynchronize,

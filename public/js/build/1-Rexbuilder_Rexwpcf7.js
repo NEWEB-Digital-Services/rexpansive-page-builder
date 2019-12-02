@@ -2953,8 +2953,46 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         });
     }
 
+    var _updateDBFormsInPage = function (formID, needToAddElementStyle) {
+        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
+
+        idsInPage = [];
+        $elementWrappers.each(function(){
+            idsInPage.push($(this).attr("data-rex-element-id"));
+        })
+        idsInPage = Array.from(new Set(idsInPage));
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            data: {
+              action: "rex_wpcf7_get_forms",
+              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+              form_id: idsInPage
+            },
+            success: function(response) {
+              if (response.success) {
+                var id, i = 0;
+                for (id of idsInPage) {
+                    $formsInPage[id] = $(response.data.html_forms[i].toString().trim());
+
+                    if (needToAddElementStyle && id == formID) {
+                        console.log($elementWrappers.filter('[data-rex-element-id="' + formID + '"]'));
+                        Rexbuilder_Rexelement.addElementStyle($elementWrappers.filter('[data-rex-element-id="' + formID + '"]'));
+                    }
+
+                    i++;
+                }
+              }
+            },
+            error: function(response) {}
+        });
+    }
+
     var _addFormInPage = function (formID, $rows) {
         $formsInPage[formID] = $rows;
+        console.log($formsInPage);
 
         var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
         
@@ -3026,6 +3064,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         addFormInPage: _addFormInPage,
         getIDsInPage: _getIDsInPage,
+        updateDBFormsInPage: _updateDBFormsInPage,
 
         // Rexwpcf7 generic functions
 		addField: _addField,
