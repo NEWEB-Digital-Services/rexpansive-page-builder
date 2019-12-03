@@ -460,24 +460,24 @@ var Rexbuilder_Rexelement = (function ($) {
               if (response.success) {
                 var fieldsString = response.data.html_form.toString().trim();
 
-                if (/\[url\s/.test(fieldsString)) {
-                    fieldsString = fieldsString.replace(/\[url[^\]]+/.exec(fieldsString)[0] + ']', '')
+                if (/\[url\*?\s/.test(fieldsString)) {
+                    fieldsString = fieldsString.replace(/\[url\*?[^\]]+/.exec(fieldsString)[0] + ']', '')
                 }
 
-                if (/\[tel\s/.test(fieldsString)) {
-                    fieldsString = fieldsString.replace(/\[tel[^\]]+/.exec(fieldsString)[0] + ']', '');
+                if (/\[tel\*?\s/.test(fieldsString)) {
+                    fieldsString = fieldsString.replace(/\[tel\*?[^\]]+/.exec(fieldsString)[0] + ']', '');
                 }
 
-                if (/\[date\s/.test(fieldsString)) {
-                    fieldsString = fieldsString.replace(/\[date[^\]]+/.exec(fieldsString)[0] + ']', '');
+                if (/\[date\*?\s/.test(fieldsString)) {
+                    fieldsString = fieldsString.replace(/\[date\*?[^\]]+/.exec(fieldsString)[0] + ']', '');
                 }
 
-                if (/\[checkbox\s/.test(fieldsString)) {
-                    fieldsString = fieldsString.replace(/\[checkbox[^\]]+/.exec(fieldsString)[0] + ']', '');
+                if (/\[checkbox\*?\s/.test(fieldsString)) {
+                    fieldsString = fieldsString.replace(/\[checkbox\*?[^\]]+/.exec(fieldsString)[0] + ']', '');
                 }
 
-                if (/\[quiz\s/.test(fieldsString)) {
-                    fieldsString = fieldsString.replace(/\[quiz[^\]]+/.exec(fieldsString)[0] + ']', '');
+                if (/\[quiz\*?\s/.test(fieldsString)) {
+                    fieldsString = fieldsString.replace(/\[quiz\*?[^\]]+/.exec(fieldsString)[0] + ']', '');
                 }
 
                 var fieldsShortcodes = [];
@@ -487,35 +487,36 @@ var Rexbuilder_Rexelement = (function ($) {
                     // Extracting and fixing wpcf7 shortcodes of the new form
                     fieldsShortcodes[i] = /\[[\w]+[^\]]+/.exec(fieldsString)[0] + ']';
 
-                    if (/\[text\s/.test(fieldsShortcodes[i])) {
+                    console.log(/\[text\*? [^\s]+/.exec(fieldsShortcodes[i]));
+                    if (/\[text\*?\s/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[text [^\s]+/, '[text text-' + fieldsNumbers[i] + ' class:text-' + fieldsNumbers[i]);
-                    } else if (/\[email/.test(fieldsShortcodes[i])) {
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[text\*? [^\s]+/, '[text text-' + fieldsNumbers[i] + ' class:text-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode   
+                    } else if (/\[email\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[email [^\s]+/, '[email email-' + fieldsNumbers[i] + ' class:email-' + fieldsNumbers[i]);
-                    } else if (/\[number/.test(fieldsShortcodes[i])) {
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[email\*? [^\s]+/, '[email email-' + fieldsNumbers[i] + ' class:email-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
+                    } else if (/\[number\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[number [^\s]+/, '[number number-' + fieldsNumbers[i] + ' class:number-' + fieldsNumbers[i]);
-                    } else if (/\[textarea/.test(fieldsShortcodes[i])) {
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[number\*? [^\s]+/, '[number number-' + fieldsNumbers[i] + ' class:number-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
+                    } else if (/\[textarea\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[textarea [^\s]+/, '[textarea textarea-' + fieldsNumbers[i] + ' class:textarea-' + fieldsNumbers[i]);
-                    } else if (/\[select/.test(fieldsShortcodes[i])) {
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[textarea\*? [^\s]+/, '[textarea textarea-' + fieldsNumbers[i] + ' class:textarea-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
+                    } else if (/\[select\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[select [^\s]+/, '[select menu-' + fieldsNumbers[i] + ' class:menu-' + fieldsNumbers[i]);
-                    } else if (/\[radio/.test(fieldsShortcodes[i])) {
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[select\*? [^\s]+/, '[select menu-' + fieldsNumbers[i] + ' class:menu-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
+                    } else if (/\[radio\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[radio [^\s]+/, '[radio radio-' + fieldsNumbers[i]);
-                    } else if (/\[acceptance/.test(fieldsShortcodes[i])) {
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[radio\*? [^\s]+/, '[radio radio-' + fieldsNumbers[i]); // Missing: adding * if it is present in the original shortcode
+                    } else if (/\[acceptance\*?/.test(fieldsShortcodes[i])) {
                         fieldsShortcodes[i] = /\[[\w]+[^\\/]+/.exec(fieldsString) + '/acceptance]';
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[acceptance [^\s]+/, '[acceptance acceptance-' + fieldsNumbers[i]);
-                    } else if (/\[file/.test(fieldsShortcodes[i])) {
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[acceptance\*? [^\s]+/, '[acceptance acceptance-' + fieldsNumbers[i]);  // Missing: adding * if it is present in the original shortcode
+                    } else if (/\[file\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[file [^\s]+/, '[file file-' + fieldsNumbers[i]);
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[file [^\s]+/, '[file file-' + fieldsNumbers[i]);   // Missing: adding * if it is present in the original shortcode
                         fieldsShortcodes[i] = fieldsShortcodes[i].replace(']', ']' + '<div class="wpcf7-file-caption">Your text here</div>');
-                    } else if (/\[submit/.test(fieldsShortcodes[i])) {
+                    } else if (/\[submit\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[text [^\s]+/, '[submit submit-' + fieldsNumbers[i] + ' class:submit-' + fieldsNumbers[i]);
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[submit\*? [^\s]+/, '[submit submit-' + fieldsNumbers[i] + ' class:submit-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
 
                         if (!/\]/.test(fieldsShortcodes[i])) {
                             fieldsShortcodes[i] += ']';
@@ -1097,14 +1098,14 @@ var Rexbuilder_Rexelement = (function ($) {
                     padding_bottom: '15px',
                 },
                 content: {
-                    background_color: 'rgb(0, 0, 0, 1)',
-                    background_color_hover: '',
+                    background_color: 'rgb(255, 255, 255, 1)',
+                    background_color_hover: 'rgb(255, 255, 255, 1)',
                     text_color: 'rgb(0, 0, 0, 1)',
                     text_color_hover: 'rgb(0, 0, 0, 1)',
                     border_color: 'rgb(0, 0, 0, 1)',
                     border_color_hover: 'rgb(0, 0, 0, 1)',
-                    width: '100%',
-                    height: '100%',
+                    width: '150px',
+                    height: '50px',
                     font_size: '15px',
                     border_width: '0px',
                     border_radius: '0px',

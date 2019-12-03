@@ -1100,7 +1100,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             var spanDataExists = $currentColumn.find(".rex-wpcf7-column-content-data").length != 0;
             var currentColumnData = _generateColumnContentData($currentColumn, spanDataExists);
             var inputType = currentColumnData.input_type;
-
             if (inputType != "file" && inputType != "radio" && inputType != "acceptance") {
                 currentColumnData.background_color = formData.wpcf7_data.content.background_color;
                 currentColumnData.background_color_hover = formData.wpcf7_data.content.background_color_hover;
@@ -2978,7 +2977,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     $formsInPage[id] = $(response.data.html_forms[i].toString().trim());
 
                     if (needToAddElementStyle && id == formID) {
-                        console.log($elementWrappers.filter('[data-rex-element-id="' + formID + '"]'));
                         Rexbuilder_Rexelement.addElementStyle($elementWrappers.filter('[data-rex-element-id="' + formID + '"]'));
                     }
 
