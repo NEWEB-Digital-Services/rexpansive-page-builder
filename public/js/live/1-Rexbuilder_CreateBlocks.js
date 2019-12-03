@@ -107,8 +107,12 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var blockWidth;
     var blockHeight;
     var addBlockButton = false;
+    var addBlockElement = false;
     if (typeof data.addBlockButton !== "undefined" && data.addBlockButton.toString() == "true") {
       addBlockButton = true;
+      $section = data.$section;
+    } else if (typeof data.addBlockElement !== "undefined" && data.addBlockElement.toString() == "true") {
+      addBlockElement = true;
       $section = data.$section;
     } else {
       if (data.sectionTarget.modelNumber != "") {
@@ -119,7 +123,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
 
     var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
-    if (addBlockButton) {
+    if (addBlockButton || addBlockElement) {
       blockWidth = 4;
       blockHeight = 100;
       blockHeight = Math.ceil(blockHeight / galleryInstance.properties.singleHeight);
@@ -145,6 +149,27 @@ var Rexbuilder_CreateBlocks = (function ($) {
       ev.settings = {
         $buttonWrapper: data.$buttonWrapper,
         $blockAdded: $el
+      }
+
+      var gridstackInstance = galleryInstance.properties.gridstackInstance;
+      var mouseCell = gridstackInstance.getCellFromPixel({
+        left: data.mousePosition.x,
+        top: data.mousePosition.y
+      }, true);
+
+      // infinity fix
+      var moveX = Math.max(0, mouseCell.x - Math.round(blockWidth / 2));
+      var moveY = Math.max(0, mouseCell.y - Math.round(blockHeight / 2));
+      moveX = ( Infinity !== moveX ? moveX : 0 );
+      moveY = ( Infinity !== moveY ? moveY : 0 );
+
+      gridstackInstance.move($el[0], moveX, moveY);
+      Rexbuilder_Util.$document.trigger(ev);
+    } else if (addBlockElement) {
+      var ev = jQuery.Event("rexlive:completeImportElement");
+      ev.settings = {
+        $elementWrapper: data.$elementWrapper,
+        $elementAdded: $el
       }
 
       var gridstackInstance = galleryInstance.properties.gridstackInstance;

@@ -10,6 +10,12 @@ var Rex_Save_Listeners = (function($) {
       var idPost = parseInt($("#id-post").attr("data-post-id"));
       var activeLayoutName = Rexbuilder_Util.activeLayout;
 
+      // WPCF7 Saving
+      var formIDsInPage = Rexbuilder_Rexwpcf7.getIDsInPage();
+      for (var id of formIDsInPage) {
+        Rexbuilder_Rexwpcf7.updateFormInDB(id);
+      }
+
       //getting custom css set in page
       var customCSS = $("#rexpansive-builder-style-inline-css")
         .text()
@@ -1029,12 +1035,25 @@ var Rex_Save_Listeners = (function($) {
         // retrieve the block content
         // if there is some, or there is an img, an iframe or an icon inline
         if ( savingBlock.textContent.trim() == '' ) {
-          if ( savingBlock.getElementsByTagName('iframe').length > 0 || savingBlock.getElementsByTagName('img').length > 0 || savingBlock.getElementsByTagName('i').length > 0 ) {
+          if ( savingBlock.getElementsByTagName('iframe').length > 0 || savingBlock.getElementsByTagName('img').length > 0 || savingBlock.getElementsByTagName('i').length > 0 || savingBlock.getElementsByTagName('form').length > 0 ) {
+            if( savingBlock.getElementsByTagName('form').length > 0 ) {
+              [].slice.call( savingBlock.getElementsByClassName('rex-element-container') ).forEach( function(el) {
+                $(el).empty();
+                var elementShortcode = $(el).siblings(".string-shortcode").attr("shortcode");
+                $(el).append(elementShortcode);
+              });
+            }
             content = savingBlock.innerHTML.trim();
           } else {
             content = '';
           }
         } else {
+          // Saves element shortcode so it remains updated
+          [].slice.call( savingBlock.getElementsByClassName('rex-element-container') ).forEach( function(el) {
+            $(el).empty();
+            var elementShortcode = $(el).siblings(".string-shortcode").attr("shortcode");
+            $(el).append(elementShortcode);
+          });
           content = savingBlock.innerHTML.trim();
           // why do this after the retrieving of the HTML?
           [].slice.call( savingBlock.getElementsByClassName('rex-button-data') ).forEach( function(el) {

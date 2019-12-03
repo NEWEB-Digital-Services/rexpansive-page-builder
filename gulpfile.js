@@ -431,9 +431,11 @@ var public_res = builderlive_public_editor;
 var public_editor_res = builderlive_public_editor_style;
 
 gulp.task('public-editor-css', function() {
-	sass('public/public-editor.scss',{
+	return gulp.src('public/public-editor.scss')
+	.pipe(sass({
+		sourcemap: false,
 		style:'compressed'
-	})
+	}))
 	.pipe(plumber())
 	.pipe(autoprefixer({
 		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
@@ -486,7 +488,9 @@ gulp.task('watch-live-production', ['builderlive-editor','builderlive'] ,functio
 
 gulp.task('public-css-build', function() {
 	return gulp.src('public/public.scss')
-	.pipe(sass({style:'compressed'}))
+	.pipe(sass({
+		style:'compressed'
+	}))
 	.pipe(plumber())
 	.pipe(autoprefixer({
 		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]

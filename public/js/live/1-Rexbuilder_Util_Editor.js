@@ -576,6 +576,19 @@ var Rexbuilder_Util_Editor = (function($) {
 
     Rexbuilder_Util.$document.on("rexlive:close_modal", function(e) {
       _hideAllTools();
+
+      var blockIDToFocusAfterClose = e.settings.blockID;
+      
+      if ("undefined" != typeof blockIDToFocusAfterClose) {
+        setTimeout(function() { // Necessary!
+          $(document.getElementById(blockIDToFocusAfterClose))
+            .dblclick()
+            .addClass('item--me-focus');
+          $(document.getElementById(blockIDToFocusAfterClose)).parents('rexpansive_section')
+            .addClass('block-editing')
+            .addClass('focusedRow');
+        }, 0);
+      }
     });
 
     Rexbuilder_Util.$document.on("rexlive:openCreateModelModal", function(e) {
@@ -583,6 +596,7 @@ var Rexbuilder_Util_Editor = (function($) {
       $('.rexpansive_section[data-rexlive-section-id=' + eventData.sectionTarget.sectionID + ']').find('.open-model').trigger('click');
     });
     
+    // BUTTONS
     Rexbuilder_Util.$document.on("rexlive:importButton", function (e) {
       Rexbuilder_Rexbutton.fixImportedButton(e.settings.data_to_send);
     });
@@ -602,7 +616,66 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util.$document.on("rexlive:lock_synchronize_on_button", function (e) {
       Rexbuilder_Rexbutton.lockSynchronize(e.settings.data_to_send);
     });
+
+    // ELEMENTS
+    Rexbuilder_Util.$document.on("rexlive:importElement", function (e) {
+      Rexbuilder_Rexelement.fixImportedElement(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:updateElementLive", function(e){
+      Rexbuilder_Rexelement.updateElementLive(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:remove_separate_element", function (e) {
+      Rexbuilder_Rexelement.removeSeparateElement(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:lock_synchronize_on_element", function (e) {
+      Rexbuilder_Rexelement.lockSynchronize(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:separate_rex_element", function (e) {
+      Rexbuilder_Rexelement.separateRexElement(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:refresh_separated_rex_element", function (e) {
+      Rexbuilder_Rexelement.refreshSeparatedRexElement(e.settings.data_to_send);
+    });
+
+    // WPCF7
+    Rexbuilder_Util.$document.on("rexlive:wpcf7_add_field", function (e) {
+      Rexbuilder_Rexwpcf7.addField(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:wpcf7_create_form_span_data", function (e) {
+      Rexbuilder_Rexwpcf7.createFormSpanData(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:wpcf7_remove_form_span_data", function (e) {
+      Rexbuilder_Rexwpcf7.removeFormSpanData(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:updateFormLive", function(e){
+      Rexbuilder_Rexwpcf7.updateFormLive(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:updateFormContentLive", function(e){
+      Rexbuilder_Rexwpcf7.updateFormContentLive(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:wpcf7_create_column_content_span_data", function (e) {
+      Rexbuilder_Rexwpcf7.createColumnContentSpanData(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:wpcf7_remove_column_content_span_data", function (e) {
+      Rexbuilder_Rexwpcf7.removeColumnContentSpanData(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:updateColumnContentLive", function(e){
+      Rexbuilder_Rexwpcf7.updateColumnContentLive(e.settings.data_to_send);
+    });
     
+    // DRAG & DROP
     Rexbuilder_Util.$document.on("rexlive:drag_drop_starded", function (e) {
       Rexbuilder_Util_Editor.dragAndDropFromParent = true;
     });
@@ -611,6 +684,7 @@ var Rexbuilder_Util_Editor = (function($) {
       Rexbuilder_Util_Editor.dragAndDropFromParent = false;
     });
 
+    // BUTTONS?
     Rexbuilder_Util.$document.on("rexlive:set_container_margins", function(e) {
       Rexbuilder_Util_Editor.updateContainerMargins(e.settings.data_to_send);
     });
@@ -1112,7 +1186,6 @@ var Rexbuilder_Util_Editor = (function($) {
       modelNumber: ( null !== Rexbuilder_Util_Editor.visibleRow ? ( typeof Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") != "undefined" ? Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") : "" ) : null ),
       modelEditing: ( null !== Rexbuilder_Util_Editor.visibleRow ? ( typeof Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-editing") != "undefined" ? Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-editing") : "" ) : null ),
     };
-
     var data = {
       eventName: "rexlive:traceVisibleRow",
       sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo,

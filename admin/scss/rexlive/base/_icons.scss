@@ -15,13 +15,33 @@
   vertical-align: -0.1em;
   transition: fill 600ms ease-out;
 }
-#rex-button-editor .rexbutton-cont_row10 .l-svg-icons > svg {
+#rex-button-editor .rexbutton-cont_row10 .l-svg-icons > svg,
+#rex-element-editor .rexelement-cont_row10 .l-svg-icons > svg {
   transform: rotate(45deg);
   cursor:pointer;
 }
 
+#rex-wpcf7-content-adder .rexwpcf7-cont_row .l-svg-icons > svg,
+#rex-wpcf7-form-editor .rexwpcf7-cont_row .l-svg-icons > svg {
+  // cursor:pointer;
+}
+
 .l-icon--white {
   @include fill-icon(#fff);
+}
+
+.l-icon--dark-grey {
+  @include fill-icon($palette-color-4);
+}
+
+.l-icon--c-default {
+  .l-svg-icons > svg {
+    cursor: default;
+  }
+}
+
+.l-icon--rotate-90 {
+  transform: rotate(90deg);
 }
 
 .l-svg-icons {

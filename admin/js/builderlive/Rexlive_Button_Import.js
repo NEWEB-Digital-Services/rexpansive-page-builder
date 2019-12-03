@@ -429,7 +429,7 @@ var Button_Import_Modal = (function ($) {
                         var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder
                             .contents()
                             .find(".drop-marker");
-
+                            
                         textData = textData.trim();
 
                         var $divInsert = $(jQuery.parseHTML(textData));

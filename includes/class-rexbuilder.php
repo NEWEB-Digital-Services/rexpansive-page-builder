@@ -310,10 +310,21 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_save_model_thumbnail', $plugin_admin, 'rex_save_model_thumbnail' );
 		$this->loader->add_action( 'wp_ajax_rex_delete_model_thumbnail', $plugin_admin, 'rex_delete_model_thumbnail' );
 		$this->loader->add_action( 'wp_ajax_rex_edit_model_name', $plugin_admin, 'rex_edit_model_name' );
+
+		// BUTTONS AJAX ACTIONS
 		$this->loader->add_action( 'wp_ajax_rex_update_buttons_ids', $plugin_admin, 'rex_update_buttons_ids' );
 		$this->loader->add_action( 'wp_ajax_rex_update_button', $plugin_admin, 'rex_update_button' );
 		$this->loader->add_action( 'wp_ajax_rex_update_container_margins', $plugin_admin, 'rex_update_container_margins' );
 		$this->loader->add_action( 'wp_ajax_rex_delete_rexbutton', $plugin_admin, 'rex_delete_rexbutton' );
+
+		// ELEMENTS AJAX ACTIONS
+		$this->loader->add_action( 'wp_ajax_rex_get_element_list', $plugin_admin, 'rex_get_element_list' );
+		$this->loader->add_action( 'wp_ajax_rex_save_element_thumbnail', $plugin_admin, 'rex_save_element_thumbnail' );
+		$this->loader->add_action( 'wp_ajax_rex_delete_element_thumbnail', $plugin_admin, 'rex_delete_element_thumbnail' );
+		$this->loader->add_action( 'wp_ajax_rex_delete_rexelement', $plugin_admin, 'rex_delete_rexelement' );
+		$this->loader->add_action( 'wp_ajax_rex_clone_element', $plugin_admin, 'rex_clone_element' );
+		$this->loader->add_action( 'wp_ajax_rex_update_element', $plugin_admin, 'rex_update_element' );
+		$this->loader->add_action( 'wp_ajax_rex_update_elements_ids', $plugin_admin, 'rex_update_elements_ids' );
 
 		// COLOR PALETTE APIs
 		$this->loader->add_action( 'wp_ajax_rex_save_palette_color', $plugin_admin, 'rex_save_palette_color' );
@@ -375,6 +386,17 @@ class Rexbuilder {
 		// for live builder
 		$this->loader->add_action( 'wp_ajax_rexlive_save_shortcode', $plugin_public, 'rexlive_save_shortcode' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_shortcode', $plugin_public, 'rexlive_save_shortcode' );
+		$this->loader->add_action( 'wp_ajax_rex_wpcf7_save_changes', $plugin_public, 'rex_wpcf7_save_changes' );
+		$this->loader->add_action( 'wp_ajax_rex_wpcf7_save_new_row', $plugin_public, 'rex_wpcf7_save_new_row' );
+		$this->loader->add_action( 'wp_ajax_rex_wpcf7_get_form', $plugin_public, 'rex_wpcf7_get_form' );
+		$this->loader->add_action( 'wp_ajax_rex_wpcf7_get_forms', $plugin_public, 'rex_wpcf7_get_forms' );
+		$this->loader->add_action( 'wp_ajax_rex_wpcf7_get_form_data', $plugin_public, 'rex_wpcf7_get_form_data' );
+		$this->loader->add_action( 'wp_ajax_rex_wpcf7_save_form_data', $plugin_public, 'rex_wpcf7_save_form_data' );
+		$this->loader->add_action( 'wp_ajax_rex_element_get_span_data', $plugin_public, 'rex_element_get_span_data' );
+		$this->loader->add_action( 'wp_ajax_rex_wpcf7_get_mail_settings', $plugin_public, 'rex_wpcf7_get_mail_settings' );
+		$this->loader->add_action( 'wp_ajax_rex_wpcf7_save_mail_settings', $plugin_public, 'rex_wpcf7_save_mail_settings' );
+
+		$this->loader->add_action( 'wp_ajax_rex_transform_element_shortcode', $plugin_public, 'rex_transform_element_shortcode' );
 
 		$this->loader->add_action( 'wp_ajax_rexlive_save_avaiable_layouts', $plugin_public, 'rexlive_save_avaiable_layouts' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_avaiable_layouts', $plugin_public, 'rexlive_save_avaiable_layouts' );

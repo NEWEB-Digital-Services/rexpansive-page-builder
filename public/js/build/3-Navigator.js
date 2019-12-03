@@ -13,7 +13,6 @@ var Rex_Navigator = (function ($) {
       var name = $section.attr("data-rexlive-section-name");
       if (name != "") {
         var newSafeName = name.replace(/ /gm, "");
-
         tmpl.arg = "navigator";
         var navItem = tmpl("tmpl-navigator-item", {
           sectionName: name,

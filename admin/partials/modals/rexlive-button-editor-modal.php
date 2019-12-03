@@ -38,7 +38,8 @@ defined('ABSPATH') or exit;
                         <div class="rexbutton-count-column_2CC">
                             <div id="rex-button-label-wrap">
                                 <input type="text" id="rex-button__label" name="rex-button__label" class="rexbutton-upd-textbox"/>
-                            </div></div>
+                            </div>
+                        </div>
                         <div class="rexbutton-count-column_3">
                             <!-- space for icons -->
                         </div>
@@ -52,34 +53,34 @@ defined('ABSPATH') or exit;
                         </div>
                     </div> 
                 </div>
-            <div class="rex-accordion--content" style="display:none;" data-item-status="close">
-                <!-- second row -->
-                <div class="bl_modal-row">
-                    <!--<div class="label">hover</div>-->
-                    <div class="rexbutton-cont_row10">
-                        <div class="rexbutton-count-colum_accord"></div>
-                        <div class="rexbutton-count-column_1">
-                            <div class="rex-relative-col tippy" data-tippy-content="Text Hover Color" tabindex="0">
-                            <input type="hidden" id="rex-button-text-hover-color-runtime" name="rex-button-text-hover-color-runtime" value="" />
-                            <input id="rex-button-text-hover-color" type="text" name="rex-button-text-hover-color" value="" size="10" />
-                            <div id="rex-button-text-hover-color-preview-icon" class="preview-color-icon"></div>
-                        </div>
-                        </div>
-                        <div class="rexbutton-count-column_2">
-                            <div id="rex-button-text-hover-preview-wrap">
-                                <div id="rex-button-preview-text-hover"></div>
+                <div class="rex-accordion--content" style="display:none;" data-item-status="close">
+                    <!-- second row -->
+                    <div class="bl_modal-row">
+                        <!--<div class="label">hover</div>-->
+                        <div class="rexbutton-cont_row10">
+                            <div class="rexbutton-count-colum_accord"></div>
+                            <div class="rexbutton-count-column_1">
+                                <div class="rex-relative-col tippy" data-tippy-content="Text Hover Color" tabindex="0">
+                                    <input type="hidden" id="rex-button-text-hover-color-runtime" name="rex-button-text-hover-color-runtime" value="" />
+                                    <input id="rex-button-text-hover-color" type="text" name="rex-button-text-hover-color" value="" size="10" />
+                                    <div id="rex-button-text-hover-color-preview-icon" class="preview-color-icon"></div>
+                                </div>
                             </div>
+                            <div class="rexbutton-count-column_2">
+                                <div id="rex-button-text-hover-preview-wrap">
+                                    <div id="rex-button-preview-text-hover"></div>
+                                </div>
+                            </div>
+                            <div class="rexbutton-count-column_3"><!-- space for icons --></div>
+                            <div class="rexbutton-count-column_4"><!-- space for dimensions --></div>
+                            <div class="rexbutton-count-column_5"><!-- space for unit measurement --></div>
                         </div>
-                        <div class="rexbutton-count-column_3"><!-- space for icons --></div>
-                        <div class="rexbutton-count-column_4"><!-- space for dimensions --></div>
-                        <div class="rexbutton-count-column_5"><!-- space for unit measurement --></div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- ACCORDION 2 -->
-        <div class="rexpansive-accordion close">
-                <!-- third row -->
+            <!-- ACCORDION 2 -->
+            <div class="rexpansive-accordion close">
+                <!-- third row -->  
                 <div class="bl_modal-row">
                     <div class="rexbutton-cont_row10">
                         <div class="rexbutton-count-colum_accord">
@@ -110,34 +111,34 @@ defined('ABSPATH') or exit;
                         </div>
                     </div>
                 </div>
-            <div class="rex-accordion--content" style="display:none;" data-item-status="close">
-                <!-- fourth row -->
-                <div class="bl_modal-row">
-                    <div class="rexbutton-cont_row10">
-                        <div class="rexbutton-count-colum_accord">
-                            <div class="rexbutton-count-colum_accord"></div>
-                        </div>
-                        <div class="rexbutton-count-column_1">
-                        <div class="rex-relative-col tippy" data-tippy-content="Background Hover Color" tabindex="0">
-                        <input type="hidden" id="rex-button-background-hover-color-runtime" name="rex-button-background-hover-color-runtime" value="" />
-                        <input id="rex-button-background-hover-color" type="text" name="rex-button-background-hover-color" value="" size="10" />
-                        <div id="rex-button-background-hover-color-preview-icon" class="preview-color-icon"></div>
-                    </div>
-                        </div>
-                        <div class="rexbutton-count-column_2">
-                            <div id="rex-button-background-hover-preview-wrap">
-                                <div id="rex-button-preview-background-hover"></div>
+                <div class="rex-accordion--content" style="display:none;" data-item-status="close">
+                    <!-- fourth row -->
+                    <div class="bl_modal-row">
+                        <div class="rexbutton-cont_row10">
+                            <div class="rexbutton-count-colum_accord">
+                                <div class="rexbutton-count-colum_accord"></div>
                             </div>
+                            <div class="rexbutton-count-column_1">
+                                <div class="rex-relative-col tippy" data-tippy-content="Background Hover Color" tabindex="0">
+                                    <input type="hidden" id="rex-button-background-hover-color-runtime" name="rex-button-background-hover-color-runtime" value="" />
+                                    <input id="rex-button-background-hover-color" type="text" name="rex-button-background-hover-color" value="" size="10" />
+                                    <div id="rex-button-background-hover-color-preview-icon" class="preview-color-icon"></div>
+                                </div>
+                            </div>
+                            <div class="rexbutton-count-column_2">
+                                <div id="rex-button-background-hover-preview-wrap">
+                                    <div id="rex-button-preview-background-hover"></div>
+                                </div>
+                            </div>
+                            <div class="rexbutton-count-column_3"><!-- space for icons --></div>
+                            <div class="rexbutton-count-column_4"><!-- space for dimensions --></div>
+                            <div class="rexbutton-count-column_5"><!-- space for unit measurement --></div>
                         </div>
-                        <div class="rexbutton-count-column_3"><!-- space for icons --></div>
-                        <div class="rexbutton-count-column_4"><!-- space for dimensions --></div>
-                        <div class="rexbutton-count-column_5"><!-- space for unit measurement --></div>
                     </div>
                 </div>
             </div>
-        </div>
-        <!-- ACCORDION 3 -->
-        <div class="rexpansive-accordion close">
+            <!-- ACCORDION 3 -->
+            <div class="rexpansive-accordion close">
                 <!-- fifth row -->
                 <div class="bl_modal-row">
                     <div class="rexbutton-cont_row10">
@@ -171,34 +172,33 @@ defined('ABSPATH') or exit;
                         </div>
                     </div>
                 </div>
-            <div class="rex-accordion--content" style="display:none;" data-item-status="close">
-                <!-- sixth row -->
-                <div class="bl_modal-row">
-                    <!--<div class="label">hover</div>-->
-                    <div class="rexbutton-cont_row10">
-                        <div class="rexbutton-count-colum_accord">
-                            <div class="rexbutton-count-colum_accord"></div>
-                        </div>
-                        <div class="rexbutton-count-column_1">
-                            <div class="rex-relative-col tippy" data-tippy-content="Border Hover Color" tabindex="0">
-                            <input type="hidden" id="rex-button-border-hover-color-runtime" name="rex-button-border-hover-color-runtime" value="" />
-                            <input id="rex-button-border-hover-color" type="text" name="rex-button-border-hover-color" value="" size="10" />
-                            <div id="rex-button-border-hover-color-preview-icon" class="preview-color-icon"></div>
-                        </div>
-                        </div>
-                        <div class="rexbutton-count-column_2">
-                            <div id="rex-button-border-hover-preview-wrap">
-                                <div id="rex-button-preview-border-hover"></div>
+                <div class="rex-accordion--content" style="display:none;" data-item-status="close">
+                    <!-- sixth row -->
+                    <div class="bl_modal-row">
+                        <!--<div class="label">hover</div>-->
+                        <div class="rexbutton-cont_row10">
+                            <div class="rexbutton-count-colum_accord">
+                                <div class="rexbutton-count-colum_accord"></div>
                             </div>
+                            <div class="rexbutton-count-column_1">
+                                <div class="rex-relative-col tippy" data-tippy-content="Border Hover Color" tabindex="0">
+                                <input type="hidden" id="rex-button-border-hover-color-runtime" name="rex-button-border-hover-color-runtime" value="" />
+                                <input id="rex-button-border-hover-color" type="text" name="rex-button-border-hover-color" value="" size="10" />
+                                <div id="rex-button-border-hover-color-preview-icon" class="preview-color-icon"></div>
+                            </div>
+                            </div>
+                            <div class="rexbutton-count-column_2">
+                                <div id="rex-button-border-hover-preview-wrap">
+                                    <div id="rex-button-preview-border-hover"></div>
+                                </div>
+                            </div>
+                            <div class="rexbutton-count-column_3"><!-- space for icons --></div>
+                            <div class="rexbutton-count-column_4"><!-- space for dimensions --></div>
+                            <div class="rexbutton-count-column_5"><!-- space for unit measurement --></div>
                         </div>
-                        <div class="rexbutton-count-column_3"><!-- space for icons --></div>
-                        <div class="rexbutton-count-column_4"><!-- space for dimensions --></div>
-                        <div class="rexbutton-count-column_5"><!-- space for unit measurement --></div>
                     </div>
                 </div>
             </div>
-
-        </div>
             <!-- seventh row -->
             <div class="bl_modal-row no12dx">
                 <div class="rexbutton-cont_row23">
@@ -324,7 +324,7 @@ defined('ABSPATH') or exit;
                     </div>  -->
                 </div>
             </div>
-            <!-- eighty ROW -->
+            <!-- eighth row -->
             <div class="bl_modal-row">
                 <div class="rexbutton-cont_row45">
                     <div class="rexbutton-count-column_9">

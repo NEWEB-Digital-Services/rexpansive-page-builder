@@ -1,0 +1,32 @@
+.rexelement-tools {
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+
+  .rex-element-tools-container {
+    // width: 100%;
+    width: 0px;
+    // height: 22px;
+    height: 0px;
+    font-size: 10px;
+    // opacity: 0;
+
+    .rex-edit-element {
+      position: absolute;
+      top: 0px;
+      left: calc(50% - 13px);
+
+      .l-svg-icons {
+        font-size: 13px;
+        width: 13px;
+        height: 13px;
+      }
+    }
+
+    .rex-delete-element {
+      position: absolute;
+      top: 0px;
+      right: -10px;
+    }
+  }
+}

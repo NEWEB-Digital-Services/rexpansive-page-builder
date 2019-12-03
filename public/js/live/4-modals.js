@@ -135,7 +135,7 @@
         //   var layout = ( e.target.checked ? 'fixed' : 'masonry' );
         //   $section.find('.edit-row-layout-checkbox').prop('checked',layout);
         // }
-        
+
       Rexbuilder_Dom_Util.updateGridLayoutDomProperties($gallery, data.layout);
       galleryInstance.updateGridLayout(data.layout, reverseData);
     });
@@ -1200,7 +1200,7 @@
       );
     });
 
-    $document.on("rexlive:apply_background_image_block", function(e) {  
+    $document.on("rexlive:apply_background_image_block", function(e) {
       var data = e.settings.data_to_send;
       Rexbuilder_Util_Editor.updatingImageBg = true;
       var target = data.target;
@@ -1981,6 +1981,61 @@
       Rexbuilder_Util_Editor.pushAction(
         "document",
         "updateRexButton",
+        actionData,
+        reverseData
+      );
+    });
+
+    $document.on("Elements: rexlive:update_element_page", function(e) {
+      var data = e.settings.data_to_send;
+      var reverseData = {
+        elementProperties: jQuery.extend(true, {}, data.reverseElementData)
+      };
+      var actionData = {
+        elementProperties: jQuery.extend(true, {}, data.actionElementData)
+      }
+      Rexbuilder_Rexelement.updateElement(actionData);
+
+      Rexbuilder_Util_Editor.pushAction(
+        "document",
+        "updateRexElement",
+        actionData,
+        reverseData
+      );
+    });
+
+    $document.on("rexlive:update_wcpf7_column_content_page", function(e) {
+      var data = e.settings.data_to_send;
+      var reverseData = {
+        columnContentData: jQuery.extend(true, {}, data.reverseColumnContentData)
+      };
+      var actionData = {
+        columnContentData: jQuery.extend(true, {}, data.actionColumnContentData)
+      }
+      
+      Rexbuilder_Rexwpcf7.updateColumnContent(actionData);
+
+      Rexbuilder_Util_Editor.pushAction(
+        "document",
+        "updateRexWpcf7ColumnContent",
+        actionData,
+        reverseData
+      );
+    });
+
+    $document.on("rexlive:update_wcpf7_page", function(e) {
+      var data = e.settings.data_to_send;
+      var reverseData = {
+        elementData: jQuery.extend(true, {}, data.reverseFormData)
+      };
+      var actionData = {
+        elementData: jQuery.extend(true, {}, data.actionFormData)
+      }
+      Rexbuilder_Rexwpcf7.updateForm(actionData);
+
+      Rexbuilder_Util_Editor.pushAction(
+        "document",
+        "updateRexWpcf7",
         actionData,
         reverseData
       );

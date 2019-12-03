@@ -106,6 +106,31 @@ defined('ABSPATH') or exit;
 </li>
 </script>
 
+<script type="text/x-tmpl" id="rexlive-tmpl-element-item-list">
+<li class="element-list__element bl_d-flex bl_ai-c" draggable="true" data-rex-element-id="{%=element.id%}">
+    <div class="element-list-preview bl_d-flex bl_jc-c bl_ai-c {% if ({%=element.preview%}) { %} element-list-preview--active {% } else { %}{% } %}" {% if ({%=element.preview%}) { %} style="background-image:url('{%=element.preview%}');" {% } else { %}{% } %} itemprop="contentUrl">
+        <span class="element-list-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
+        <div class="element-name bl_d-flex bl_jc-c bl_ai-fe"><div>{%=element.name%}</div></div>
+        <div class="rex-container">
+            <span class="rex-element-wrapper" data-rex-element-id="{%=element.id%}"></span>
+        </div>
+        <div class="element-tools">
+            <div class="tool-button--double-icon--wrap tool-button--edit-thumbnail tippy" data-tippy-content="<?php _e('Thumbnail','rexpansive-builder'); ?>">
+                <div class="tool-button tool-button--inline tool-button--black element-list__element--edit-thumbnail {% if ({%=element.preview%}) { %}tool-button--image-preview{% } else { %}  {% } %}" {% if ({%=element.preview%}) { %} style="background-image:url('{%=element.preview%}');" {% } else { %}{% } %}>
+                    <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                </div>
+                <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate tool-button--reset-thumbnail element-list__element--reset-thumbnail">
+                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                </div>
+            </div>
+            <div class="tool-button tool-button--black rex-close-button element-list__element--delete" >
+                <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+            </div>
+        </div>
+    </div>
+</li>
+</script>
+
 <script type="text/x-tmpl" id="rexlive-tmpl-insert-model-loader">
 <div class="import-model" data-rex-model-id="{%=o.model_id%}">
     <div class="rexlive-loader active">
@@ -180,8 +205,39 @@ defined('ABSPATH') or exit;
     </div>
 </div>
 </script>
+
 <script type="text/x-tmpl" id="tmpl-rex-button">
 <span class="rex-button-wrapper" data-rex-button-id="{%=button.id%}"><span class="rex-button-data" style="display:none;" data-text-color="{%=button.text_color%}" data-text-size="{%=button.font_size%}" data-background-color="{%=button.background_color%}" data-background-color-hover="{%=button.hover_color%}" data-border-color-hover="{%=button.hover_border%}" data-text-color-hover="{%=button.hover_text%}" data-border-width="{%=button.border_width%}" data-border-color="{%=button.border_color%}" data-border-radius="{%=button.border_radius%}" data-button-height="{%=button.button_height%}" data-button-width="{%=button.button_width%}" data-margin-top="{%=button.margin_top%}" data-margin-bottom="{%=button.margin_bottom%}" data-margin-left="{%=button.margin_left%}" data-margin-right="{%=button.margin_right%}" data-padding-left="{%=button.padding_left%}" data-padding-right="{%=button.padding_right%}" data-padding-top="{%=button.padding_top%}" data-padding-bottom="{%=button.padding_bottom%}" data-link-target="{%=button.link_target%}" data-link-type="{%=button.link_type%}" data-button-name="{%=button.button_name%}"></span><a href="{%=button.link_target%}" class="rex-button-container" target="{%=button.link_type%}"><span class="rex-button-background"><span class="rex-button-text">{%=button.text%}</span></span></a></span>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-rex-element-data">
+<span class="rex-element-data" style="display:none;"  data-wpcf7-background-color="{%=element.wpcf7_data.background_color%}" data-wpcf7-content-background-color="{%=element.wpcf7_data.content.background_color%}"></span>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-rex-wpcf7-form-data">
+<span class="rex-wpcf7-form-data" style="display:none;"  data-form-background-color="{%=form.background_color%}" data-content-background-color="{%=form.content.background_color%}"></span>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-rex-wpcf7-edit-content-list">
+    <div class="rexwpcf7-cont_row valign-wrapper">
+        <div class="rexwpcf7-sort bl_d-iflex">
+            <i class="material-icons">&#xE8D5;</i>
+        </div>
+        <div class="bl_d-iflex with-text ml62">
+            <input type="text" class="wpcf7-select-field field-{%=o.number%}">
+        </div>
+        <div class="bl_d-iflex ml36">
+            <div class="rexwpcf7-upd-accord_button rot45 rex-wpcf7-delete-list-field tippy" data-tippy-content="<?php _e('Delete', 'rexpansive-builder');?>">
+                <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-color-picker-overlay">
+    <div class="wpcf7-modal-color-picker-overlay rot45" >
+        <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+    </div>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-rex-button-delete">

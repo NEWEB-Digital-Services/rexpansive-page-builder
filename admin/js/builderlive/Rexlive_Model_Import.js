@@ -9,6 +9,14 @@ var Model_Import_Modal = (function($) {
   var rexmodel_import_props;
   var image_uploader_frame_direct;  //used for the media library opener
 
+  /**
+  * Saves the model thumbnail in the db using an AJAX call.
+  * @param model_selected
+  * @param selected_image_id Wordpress id of the new thumbnail image
+  * @param selected_image_size
+  * @return {null} 
+  * @since  x.x.x
+  */
   var _saveModelThumbnail = function(model_selected, selected_image_id, selected_image_size) {
     $.ajax({
       type: "GET",
@@ -30,7 +38,13 @@ var Model_Import_Modal = (function($) {
     });
   };
 
-  var _deleteModelThumbnail = function(model_selected) {
+  /**
+  * Deletes the model thumbnail from the db using an AJAX call.
+  * @param model_to_delete
+  * @return {null} 
+  * @since  x.x.x
+  */
+  var _deleteModelThumbnail = function(model_to_delete) {
     $.ajax({
       type: "GET",
       dataType: "json",
@@ -38,7 +52,7 @@ var Model_Import_Modal = (function($) {
       data: {
         action: "rex_delete_model_thumbnail",
         nonce_param: live_editor_obj.rexnonce,
-        model_target: model_selected,
+        model_target: model_to_delete,
         delete_post_thumbnail_result: null,
         delete_post_thumbnail_url_result: null
       },
@@ -246,7 +260,7 @@ var Model_Import_Modal = (function($) {
    */
   var _editModelThumbnail = function(model_id, thumbnail_id) {
       // sets default image size
-      // setUserSetting('imgsize', 'medium');
+      setUserSetting('imgsize', 'medium');  // before merge was comment. beware!
 
      // If the frame is already opened, return it
       if (image_uploader_frame_direct) {
@@ -364,7 +378,7 @@ var Model_Import_Modal = (function($) {
 
       image_uploader_frame_direct.on("close", function() {
         // resets the option for the image size
-        // setUserSetting('imgsize', "full");
+        setUserSetting('imgsize', 'medium'); // before merge was comment. beware!
       });
 
       //now open the popup
@@ -411,6 +425,92 @@ var Model_Import_Modal = (function($) {
 
     // saves the changes
     _deleteModelThumbnail(model_id);
+  };
+
+  /**
+  * Updates the model list using an AJAX call.
+  * @return {null} 
+  * @since  x.x.x
+  */
+  var _updateModelList = function() {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: live_editor_obj.ajaxurl,
+      data: {
+        action: "rex_get_model_list",
+        nonce_param: live_editor_obj.rexnonce
+      },
+      success: function(response) {
+        if (response.success) {
+          var currentList = [];
+          rexmodel_import_props.$self
+          .find(".model__element")
+          .each(function(i, model) {
+            var modelID = $(model).attr("data-rex-model-id");
+            var modelObj = {
+              id: modelID,
+              founded: false
+            };
+            currentList.push(modelObj);
+          });
+
+          var updatedList = response.data.updated_list;
+
+          var i, j;
+
+          for (i = 0; i < updatedList.length; i++) {
+            updatedList[i].founded = false;
+          }
+
+          for (i = 0; i < updatedList.length; i++) {
+            for (j = 0; j < currentList.length; j++) {
+              if (updatedList[i].id == currentList[j].id) {
+                updatedList[i].founded = true;
+                currentList[j].founded = true;
+                break;
+              }
+            }
+          }
+
+          tmpl.arg = "model";
+
+          for (i = 0; i < updatedList.length; i++) {
+            if (!updatedList[i].founded) {
+              rexmodel_import_props.$self.find(".model-list").prepend(
+                tmpl("rexlive-tmpl-model-item-list", {
+                  id: updatedList[i].id,
+                  name: updatedList[i].name,
+                  preview:
+                  updatedList[i].preview_image_url != ""
+                  ? updatedList[i].preview_image_url
+                  : ""
+                })
+                );
+            }
+          }
+
+          for (i = 0; i < currentList.length; i++) {
+            if (!currentList[i].founded) {
+              rexmodel_import_props.$self
+              .find(
+                '.model__element[data-rex-model-id="' +
+                currentList[i].id +
+                '"]'
+                )
+              .remove();
+            }
+          }
+          
+          var event = jQuery.Event("rexlive:lateralMenuReady");
+          $(document).trigger(event);
+        }
+      },
+      error: function(response) {},
+      complete: function(response) {
+        rexmodel_import_props.$self.removeClass("rex-modal--loading");
+      }
+    });
   };
 
   var _linkDocumentListeners = function() {

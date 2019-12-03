@@ -863,7 +863,6 @@ MediumEditor.extensions = {};
                     return doc.execCommand.apply(doc, ecArgs);
                 } catch (ignore) {}
             }
-
             selection = doc.getSelection();
             if (selection.rangeCount) {
                 range = selection.getRangeAt(0);
@@ -5773,7 +5772,7 @@ MediumEditor.extensions = {};
 
         updatePlaceholder: function (el, dontShow) {
             // If the element has content, hide the placeholder
-            if (el.querySelector('img, blockquote, ul, ol, table') || (el.textContent.replace(/^\s+|\s+$/g, '') !== '')) {
+            if (el.querySelector('img, blockquote, ul, ol, table, form') || (el.textContent.replace(/^\s+|\s+$/g, '') !== '')) {
                 return this.hidePlaceholder(el);
             }
 
@@ -7884,24 +7883,24 @@ MediumEditor.extensions = {};
         },
 
         addElements: function (selector) {
-            // Convert elements into an array
-            var elements = createElementsArray(selector, this.options.ownerDocument, true);
+          // Convert elements into an array
+          var elements = createElementsArray(selector, this.options.ownerDocument, true);
 
-            // Do we have elements to add now?
-            if (elements.length === 0) {
-                return false;
-            }
+          // Do we have elements to add now?
+          if (elements.length === 0) {
+              return false;
+          }
 
-            elements.forEach(function (element) {
-                // Initialize all new elements (we check that in those functions don't worry)
-                element = initElement.call(this, element, this.id);
+          elements.forEach(function (element) {
+              // Initialize all new elements (we check that in those functions don't worry)
+              element = initElement.call(this, element, this.id);
 
-                // Add new elements to our internal elements array
-                this.elements.push(element);
+              // Add new elements to our internal elements array
+              this.elements.push(element);
 
-                // Trigger event so extensions can know when an element has been added
-                this.trigger('addElement', { target: element, currentTarget: element }, element);
-            }, this);
+              // Trigger event so extensions can know when an element has been added
+              this.trigger('addElement', { target: element, currentTarget: element }, element);
+          }, this);
         },
 
         removeElements: function (selector) {

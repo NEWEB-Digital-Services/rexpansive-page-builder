@@ -15,9 +15,10 @@ defined('ABSPATH') or exit;
         <ul class="rex-lateral-tabs-list bl_d-flex" data-tabgroup="rex-lateral-tabs">
             <li><a href="#" data-rex-tab-target="rex-models-list" class="active"><?php _e( 'Models', '' ); ?></a></li>
             <li><a href="#" data-rex-tab-target="rex-buttons-list"><?php _e( 'Buttons', '' ); ?></a></li>
+            <li><a href="#" data-rex-tab-target="rex-elements-list"><?php _e( 'Elements', '' ); ?></a></li>
         </ul>
         <div class="tool-button tool-button--black tool-button--close rex-close-button rex-lateral-panel--close tippy" data-tippy-content="<?php _e('Close','rexpansive-builder'); ?>">
-            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+            <?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?>
         </div>
     </div>
     <div id="rex-lateral-tabs" class="tabgroup">
@@ -84,16 +85,16 @@ defined('ABSPATH') or exit;
             <?php include 'rexlive-loader-modal.php'; ?>
             <div class="buttons-list-wrapper rex-lateral-panel__list">
                 <ul class="button-list button-list--pswp">
-                        <?php 
+                    <?php 
                         // it's possibile to query like '_rex_button_%%_html0'?
-                    $defaultButtonsIDs = '[]';
-                    $buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
-                    $buttonsIDsJSON = stripslashes($buttonsIDsJSON);
-                    $buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
-                    foreach ($buttonsIDsUsed as $index => $id_button) {
-                        $buttonHTML = get_option('_rex_button_'.$id_button.'_html', "");
-                        if($buttonHTML != ""){
-                            $buttonHTML = stripslashes($buttonHTML);
+                        $defaultButtonsIDs = '[]';
+                        $buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
+                        $buttonsIDsJSON = stripslashes($buttonsIDsJSON);
+                        $buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
+                        foreach ($buttonsIDsUsed as $index => $id_button) {
+                            $buttonHTML = get_option('_rex_button_'.$id_button.'_html', "");
+                            if($buttonHTML != ""){
+                                $buttonHTML = stripslashes($buttonHTML);
                             ?>
                             <li class="button-list__element" draggable="true">
                                 <div class="rex-container"><?php echo $buttonHTML ?></div>
@@ -104,7 +105,66 @@ defined('ABSPATH') or exit;
                                 </div>
                             </li>
                             <?php
+                            }
                         }
+                    ?>
+                </ul>
+            </div>
+        </div>
+        <div id="rex-elements-list" class="rex-lateral-panel__content">
+            <?php include 'rexlive-loader-modal.php'; ?>
+            <div class="elements-list-wrapper rex-lateral-panel__list">
+                <ul class="element-list element-list--pswp" itemscope itemtype="http://schema.org/ImageGallery">
+                    <?php
+                    // WP_Query arguments
+                    $args = array(
+                        'post_type' => array('wpcf7_contact_form')
+                    );
+
+                    // The Query
+                    $query = new WP_Query($args);
+
+                    // The Loop
+                    if ( $query->have_posts() ) {
+                        while ( $query->have_posts() ) {
+                            // In this loop elements are CF7 forms
+                            $query->the_post();
+                            $element_id = get_the_ID();
+                            $element_title =  get_the_title();
+                            $image_size = get_post_meta($element_id, 'selected_image_size', true);
+                            $image_id = get_post_thumbnail_id();
+                            $element_thumbnail_url = get_the_post_thumbnail_url($element_id, $image_size);
+
+                            $shortcodeCF7 = "[contact-form-7 id=\"".$element_id."\" title=\"".$element_title."\"]";
+                            ?>
+                            <li class="element-list__element bl_d-flex bl_ai-c" draggable="true" data-rex-element-id="<?php echo $element_id;?>"data-rex-element-thumbnail-id="<?php echo $image_id;?>" data-rex-element-thumbnail-size="<?php echo $image_size;?>">
+                                    <div class="element-list-preview bl_d-flex bl_jc-c bl_ai-c<?php echo ( $element_thumbnail_url != "" ? ' element-list-preview--active' : '' ); ?>"<?php echo ( $element_thumbnail_url != "" ? 'style="background-image:url(' . $element_thumbnail_url . ');"' : '' ); ?> itemprop="contentUrl" data-href="<?php echo ( $element_thumbnail_url != "" ? esc_url($element_thumbnail_url) : "https://via.placeholder.com/640x480" ); ?>" data-size="640x480">
+                                        <span class="element-list-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
+                                        <div class="element-name bl_d-flex bl_jc-c bl_ai-fe"><div><?php echo $element_title;?></div></div>
+                                        <div class="rex-container">
+                                            <span class="rex-element-wrapper" data-rex-element-id="<?php echo $element_id;?>">
+                                                <span class="rex-element-data"></span>
+                                            </span>
+                                        </div>
+                                        <div class="element-tools">
+                                            <div class="tool-button--double-icon--wrap tool-button--edit-thumbnail tippy" data-tippy-content="<?php _e('Thumbnail','rexpansive-builder'); ?>">
+                                                <div class="tool-button tool-button--inline tool-button--black element-list__element--edit-thumbnail <?php echo ( $element_thumbnail_url != "" ? 'tool-button--image-preview' : '' ); ?>" <?php echo ( $element_thumbnail_url != "" ? 'style="background-image:url(' . $element_thumbnail_url . ');"' : '' ); ?>>
+                                                    <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                                                </div>
+                                                <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate tool-button--reset-thumbnail element-list__element--reset-thumbnail">
+                                                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                                                </div>
+                                            </div>
+                                            <div class="tool-button tool-button--black rex-close-button element-list__element--delete" >
+                                                <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </li>
+                            <?php
+                        }
+                    } else {
+                        // No forms
                     }
                     ?>
                 </ul>

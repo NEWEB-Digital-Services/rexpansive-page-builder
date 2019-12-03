@@ -53,6 +53,10 @@
     @include bl-btn--blue;
   }
 
+  &.tool-button--pink {
+    @include bl-btn--pink;
+  }
+
   &.tool-button--flat {
     box-shadow: none;
     padding: 0 5px;
@@ -120,6 +124,13 @@
 
   &.tool-button--add-big {
     @include bl-btn--add-big();
+    font-size: 16px;
+    // #{$icon-class} {
+    // }
+  }
+
+  &.tool-button--add-big-pink {
+    @include bl-btn--add-big-pink();
     font-size: 16px;
     // #{$icon-class} {
     // }
@@ -291,7 +302,8 @@
     // top: 0;
     // right: 35px;
     // transform: translate(50%,-50%);
-    .model__element--edit-thumbnail {
+    .model__element--edit-thumbnail,
+    .element-list__element--edit-thumbnail {
       width: 20px;
       height: 20px;
       font-size: 10px;

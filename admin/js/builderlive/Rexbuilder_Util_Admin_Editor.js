@@ -303,6 +303,22 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       if (event.data.eventName == "rexlive:openRexButtonEditor") {
         Button_Edit_Modal.openButtonEditorModal(event.data.buttonData);
       }
+
+      if (event.data.eventName == "rexlive:openRexElementEditor") {
+        Element_Edit_Modal.openElementEditorModal(event.data);
+      }
+
+      if (event.data.eventName == "rexlive:openRexWpcf7AddContent") {
+        Wpcf7_Add_Content_Modal.openContentAdder(event.data.insertionPoint);
+      }
+
+      if (event.data.eventName == "rexlive:openRexWpcf7EditContent") {
+        Wpcf7_Edit_Content_Modal.openColumnContentEditorModal(event.data);
+      }
+
+      if (event.data.eventName == "rexlive:openRexWpcf7EditForm") {
+        Wpcf7_Edit_Form_Modal.openFormEditorModal(event.data);
+      }
       
       if (event.data.eventName == "rexlive:editRemoveModal") {
         Model_Edit_Modal.openModal(event.data.modelData);
@@ -523,7 +539,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
      * Slide down the label
      * @since 2.0.0
      */
-    Rexlive_Base_Settings.$document.on("blur", input_selector, function(e) {      
+    Rexlive_Base_Settings.$document.on("blur", input_selector, function(e) {
       if ($(e.target).is(input_selector)) {
         if("" == e.target.value) {
           $(e.target)
@@ -1125,6 +1141,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       rexliveEvent: true
     };
     jQuery.extend(infos, data);
+    
     // console.log(infos);
     //console.log("sending message to iframe");
     frameBuilderWindow.postMessage(infos, "*");
@@ -1140,6 +1157,17 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     }
 
     return text;
+  };
+
+  var _createRandomNumericID = function(n) {
+    var number = "";
+    var possible = "0123456789";
+
+    for (var i = 0; i < n; i++) {
+      number += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+
+    return parseInt(number);
   };
 
   var _getActiveLayout = function() {
@@ -1804,7 +1832,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         }
       }
     );
-    
+
     this.$frameBuilder.load(function () {
       Rexbuilder_Util_Admin_Editor.$liveFrameRexContainer = $(Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow.document).find(".rex-container").eq(0);
     });
@@ -1817,6 +1845,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     init: init,
     pageSaved: pageSaved,
     createRandomID: _createRandomID,
+    createRandomNumericID: _createRandomNumericID,
     sendIframeBuilderMessage: _sendIframeBuilderMessage,
     updateLayoutPage: _updateLayoutPage,
     getActiveLayout: _getActiveLayout,

@@ -85,6 +85,13 @@
   @include fill-icon(#fff);
 }
 
+@mixin bl-btn--pink {
+  background-color: $palette-color-3;
+  color: #fff;
+
+  @include fill-icon(#fff);
+}
+
 @mixin bl-btn--hover-shadow {
   box-shadow: $shadow-1;
   transition: box-shadow 300ms;
@@ -101,6 +108,16 @@
   border: 2px solid $palette-color-1;
   &:hover {
     @include fill-icon($palette-color-1);
+  }
+}
+
+@mixin bl-btn--add-big-pink {
+  padding: 10px;
+  background-color: transparent;
+  @include fill-icon($palette-color-3);
+  border: 2px solid $palette-color-3;
+  &:hover {
+    @include fill-icon($palette-color-3);
   }
 }
 

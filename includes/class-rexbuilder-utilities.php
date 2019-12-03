@@ -337,4 +337,30 @@ class Rexbuilder_Utilities {
 			$shortcode = '[' . $result_shortcode[2][0] . $result_shortcode[3][0] . ' ' . $atts['attribute'] . ']' . ( $result_shortcode[5][0] ? $result_shortcode[5][0] . '[\\' . $result_shortcode[2][0] . ']' : '' );
 		}
 	}
+
+	/** 
+	* Duplicates a post & its meta and it returns the new duplicated Post ID
+	* (https://gist.github.com/eduwass/90c36565c41ac01cafe3)
+	* @param  [int] $post_id The Post you want to clone
+	* @return [int] The duplicated Post ID
+	*/
+	public function duplicate($post_id) {
+		$title   = get_the_title($post_id);
+		$oldpost = get_post($post_id);
+		$post    = array(
+		  'post_title' => $title,
+		  'post_status' => 'publish',
+		  'post_type' => $oldpost->post_type,
+		  'post_author' => 1
+		);
+		$new_post_id = wp_insert_post($post);
+		// Copy post metadata
+		$data = get_post_custom($post_id);
+		foreach ( $data as $key => $values) {
+		  foreach ($values as $value) {
+		    add_post_meta( $new_post_id, $key, $value );
+		  }
+		}
+		return $new_post_id;
+	}
 }

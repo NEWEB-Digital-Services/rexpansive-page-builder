@@ -9,11 +9,8 @@ var Rexlive_Modals_Utils = (function($) {
    * Open a modal dialog box
    *
    * @param {jQuery Object} $target modal to open
-   *
-   * @param {boolean}
-   *            target_only active only the modal not the overlay
-   * @param {Array}
-   *            additional_class Array of additional classes
+   * @param {boolean} target_only active only the modal not the overlay
+   * @param {Array} additional_class Array of additional classes
    */
   var _openModal = function($target, target_only, additional_class, set_position) {
     target_only = typeof target_only !== "undefined" ? target_only : false;
@@ -50,7 +47,7 @@ var Rexlive_Modals_Utils = (function($) {
    *
    * @param {jQuery Object} $target modal to close
    */
-  var _closeModal = function($target, target_only, additional_class) {
+  var _closeModal = function($target, target_only, additional_class, blockID) {
     target_only = typeof target_only !== "undefined" ? target_only : false;
     additional_class =
       typeof additional_class !== "undefined" ? additional_class : [];
@@ -87,6 +84,7 @@ var Rexlive_Modals_Utils = (function($) {
 
     var closeEvent = {
       eventName: "rexlive:close_modal",
+      blockID: blockID
     };
     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(closeEvent);
 

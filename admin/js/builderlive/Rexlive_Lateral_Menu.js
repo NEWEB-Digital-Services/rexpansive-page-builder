@@ -16,6 +16,7 @@ var Model_Lateral_Menu = (function ($) {
 
   var _openModal = function () {
     Model_Import_Modal.updateModelList();
+    Element_Import_Modal.updateElementList();
   };
 
   var _closeModal = function () {
@@ -71,7 +72,7 @@ var Model_Lateral_Menu = (function ($) {
     });
 
     /**
-     * Opens media library
+     * Handling model thumbnail change. Opens media library
      * @param  {MouseEvent} e) Click event
      * @return {null}
      */
@@ -104,6 +105,43 @@ var Model_Lateral_Menu = (function ($) {
 
       Model_Import_Modal.resetModelThumbnail(
         $model.attr("data-rex-model-id")
+      );
+    });
+
+    /**
+     * Handling element delete
+     * @param  {MouseEvent} e) Click event
+     * @return {null}
+     */
+    Rexlive_Base_Settings.$document.on('click', '.element-list__element--delete', function (e) {
+      var element = this.parentNode.parentNode.parentNode;
+      Element_Import_Modal.deleteElement( element );
+    });
+
+    /**
+     * Handling element thumbnail change. Opens media library
+     * @param  {MouseEvent} e) Click event
+     * @return {null}
+     */
+    Rexlive_Base_Settings.$document.on('click', '.element-list__element--edit-thumbnail', function (e) {
+      var $element = $(this).parents('.element-list__element');
+
+      Element_Import_Modal.editElementThumbnail(
+        $element.attr("data-rex-element-id"),
+        $element.attr("data-rex-element-thumbnail-id")
+      );
+    });
+
+    /**
+     * Deletes element thumbnail
+     * @param  {MouseEvent} e) Click event
+     * @return {null}
+     */
+    Rexlive_Base_Settings.$document.on('click', '.element-list__element--reset-thumbnail', function (e) {
+      var $element = $(this).parents('.element-list__element');
+
+      Element_Import_Modal.resetElementThumbnail(
+        $element.attr("data-rex-element-id")
       );
     });
   }

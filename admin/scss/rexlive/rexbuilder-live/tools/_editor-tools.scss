@@ -467,8 +467,11 @@ input.me-insert-embed__value[type=text] {
     display:block;
   }
 }
-.medium-editor-toolbar.medium-toolbar-hover-rexbutton{
-  .hide-tool-rexbutton{
+
+.medium-editor-toolbar.medium-toolbar-hover-rexbutton,
+.medium-editor-toolbar.medium-toolbar-hover-rexelement {
+  .hide-tool-rexbutton,
+  .hide-tool-rexelement {
     display: none;
   }
 }

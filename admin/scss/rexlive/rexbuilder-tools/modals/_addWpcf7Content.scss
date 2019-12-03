@@ -1,0 +1,98 @@
+#rex-wpcf7-content-adder {
+  .bl_modal-row .rexwpcf7-cont_row{ 
+    width: 381px;
+    margin: 12px auto;
+
+    .rexwpcf7-upd-add_button {
+      width: 30px;
+      height: 42px;
+      // width: 20px;
+      // height: 20px;
+      position: absolute;
+      left: 16px;
+      right: 0;
+      text-align: center;
+      font-size: 34px;
+      padding: 7px 0px 0px 2px;
+      color: $palette-color-2;
+      cursor: pointer;
+    }
+
+    select {
+      display: block;
+    }
+  }
+
+  .modal-field-name {
+    width: 155px;
+    margin-left: 12px;
+    text-transform: uppercase;
+    font-size: 17px;
+    line-height: 25px;
+    letter-spacing: 2px;
+  }
+
+  #rex-add-text-field,
+  #rex-add-text-field:hover,
+  #rex-add-textarea-field,
+  #rex-add-textarea-field:hover,
+  #rex-add-menu-field,
+  #rex-add-menu-field:hover,
+  #rex-add-checkbox-field,
+  #rex-add-checkbox-field:hover,
+  #rex-add-file-field,
+  #rex-add-file-field:hover,
+  #rex-add-radiobuttons-field,
+  #rex-add-radiobuttons-field:hover,
+  #rex-add-submit-button,
+  #rex-add-submit-button:hover {
+    cursor: pointer;
+  }
+    
+
+  #rex-wpcf7-add-text-field {
+    .l-svg-icons {
+      font-size: 30px;
+    }
+  }
+
+  #rex-wpcf7-add-textarea-field {
+    .l-svg-icons {
+      font-size: 30px;
+    }
+  }
+
+  #rex-wpcf7-add-select-field {
+    .l-svg-icons {
+      font-size: 30px;
+    }
+  }
+
+  #rex-wpcf7-add-radio-field {
+    .l-svg-icons {
+      font-size: 30px;
+    }
+  }
+
+  #rex-wpcf7-add-checkbox-field {
+    .l-svg-icons {
+      font-size: 20px;
+      margin-right: 5px;
+      margin-left: 5px;
+    }
+  }
+
+  #rex-wpcf7-add-file-field {
+    .l-svg-icons {
+      font-size: 30px;
+    }
+  }
+
+  #rex-wpcf7-add-submit-field {
+    .l-svg-icons {
+      font-size: 22px;
+      margin-right: 4px;
+      margin-left: 4px;
+    }
+  }
+}
