@@ -315,27 +315,29 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _updateFormInDB = function (formID) {
-        var formToUpdateString = $formsInPage[formID][0].outerHTML; // Don't need to get the form in db before, already have it
-        var elementDataString = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").eq(0).find('.rex-element-data')[0].outerHTML;
+        if( $formsInPage[formID].length > 0 ) {
+            var formToUpdateString = $formsInPage[formID][0].outerHTML; // Don't need to get the form in db before, already have it
+            var elementDataString = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").eq(0).find('.rex-element-data')[0].outerHTML;
 
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: _plugin_frontend_settings.rexajax.ajaxurl,
-            data: {
-              action: "rex_wpcf7_save_changes",
-              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-              form_id: formID,
-              new_form_string: formToUpdateString,
-              element_data_string: elementDataString
-            },
-            success: function(response) {
-              if (response.success) {
-                formToUpdateString = "";
-              }
-            },
-            error: function(response) {}
-        });
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: _plugin_frontend_settings.rexajax.ajaxurl,
+                data: {
+                  action: "rex_wpcf7_save_changes",
+                  nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                  form_id: formID,
+                  new_form_string: formToUpdateString,
+                  element_data_string: elementDataString
+                },
+                success: function(response) {
+                  if (response.success) {
+                    formToUpdateString = "";
+                  }
+                },
+                error: function(response) {}
+            });
+        }
     }
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1713,9 +1715,16 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         // columnContentData.type = $formColumn.find(".wpcf7-form-control").prop("nodeName").toLowerCase();
 
         // Field class
-        columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
+        if( $formColumn.find(".wpcf7-form-control").length > 0 ) {
+            columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
+        } else {
+            columnContentData.field_class = null;
+        }
+        
         if(null == columnContentData.field_class) {
-            columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList)[0];
+            if ( $formColumn.find(".wpcf7-form-control-wrap").length > 0 ) {
+                columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList)[0];
+            }
         } else {
             columnContentData.field_class = columnContentData.field_class[0];
         }
