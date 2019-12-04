@@ -183,6 +183,9 @@ var Rexbuilder_Rexelement = (function ($) {
             if (response.success) {     // If success get the element HTML and append it to a new div
                 var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
 
+                console.log(response.data)
+                console.log(dropType)
+
                 var $elementContainer = $(document.createElement("div"));
                 $elementContainer.addClass("rex-element-container");
                 $elementWrapper.append($elementContainer);
@@ -222,6 +225,7 @@ var Rexbuilder_Rexelement = (function ($) {
                                 mousePosition: data.mousePosition
                             }
                         };
+                        console.log(ev);
                         Rexbuilder_Util.$document.trigger(ev);
                         break;
                     case "inside-new-row":
@@ -352,7 +356,12 @@ var Rexbuilder_Rexelement = (function ($) {
                     var classToDelete = $input.attr('name');
                     $el.removeClass(classToDelete);
 
-                    var newName = "text-" + randomNumber;
+                    if( '' !== classToDelete ) {
+                        var newName = classToDelete;
+                    } else {
+                        var newName = "text-" + randomNumber;
+                    }
+
                     $input.attr('name', newName);
                     $input.addClass(newName);
                     $el.addClass(newName);
@@ -364,7 +373,12 @@ var Rexbuilder_Rexelement = (function ($) {
                     var classToDelete = $input.attr('name');
                     $el.removeClass(classToDelete);
 
-                    var newName = "email-" + randomNumber;
+                    if( '' !== classToDelete ) {
+                        var newName = classToDelete;
+                    } else {
+                        var newName = "email-" + randomNumber;
+                    }
+
                     $input.attr('name', newName);
                     $input.addClass(newName);
                     $el.addClass(newName);
@@ -375,7 +389,12 @@ var Rexbuilder_Rexelement = (function ($) {
                     var classToDelete = $input.attr('name');
                     $el.removeClass(classToDelete);
 
-                    var newName = "number-" + randomNumber;
+                    if( '' !== classToDelete ) {
+                        var newName = classToDelete;
+                    } else {
+                        var newName = "number-" + randomNumber;
+                    }
+
                     $input.attr('name', newName);
                     $input.addClass(newName);
                     $el.addClass(newName);
@@ -386,7 +405,12 @@ var Rexbuilder_Rexelement = (function ($) {
                     var classToDelete = $input.attr('name');
                     $el.removeClass(classToDelete);
 
-                    var newName = "textarea-" + randomNumber;
+                    if( '' !== classToDelete ) {
+                        var newName = classToDelete;
+                    } else {
+                        var newName = "textarea-" + randomNumber;
+                    }
+
                     $input.attr('name', newName);
                     $input.addClass(newName);
                     $el.addClass(newName);
@@ -396,7 +420,12 @@ var Rexbuilder_Rexelement = (function ($) {
                     var classToDelete = $input.attr('name');
                     $el.removeClass(classToDelete);
 
-                    var newName = "menu-" + randomNumber;
+                    if( '' !== classToDelete ) {
+                        var newName = classToDelete;
+                    } else {
+                        var newName = "menu-" + randomNumber;
+                    }
+
                     $input.attr('name', newName);
                     $input.addClass(newName);
                     $input.prepend('<option value="" disabled="disabled" selected="selected">Select something</option>');
@@ -405,21 +434,36 @@ var Rexbuilder_Rexelement = (function ($) {
                     var classToDelete = $el.find('[type=radio]').eq(0).attr('name');
                     $el.removeClass(classToDelete);
 
-                    var newName = "radio-" + randomNumber;
+                    if( '' !== classToDelete ) {
+                        var newName = classToDelete;
+                    } else {
+                        var newName = "radio-" + randomNumber;
+                    }
+
                     $el.find('[type=radio]').attr('name', newName);
                     $el.addClass(newName);
                 } else if (containsCheckbox) {
                     var classToDelete = $el.find('[type=checkbox]').eq(0).attr('name');
                     $el.removeClass(classToDelete);
 
-                    var newName = "acceptance-" + randomNumber;
+                    if( '' !== classToDelete ) {
+                        var newName = classToDelete;
+                    } else {
+                        var newName = "acceptance-" + randomNumber;
+                    }
+
                     $el.find('[type=checkbox]').attr('name', newName);
                     $el.addClass(newName);
                 } else if (containsFile) {
                     var classToDelete = $el.find('[type=file]').eq(0).attr('name');
                     $el.removeClass(classToDelete);
 
-                    var newName = "file-" + randomNumber;
+                    if( '' !== classToDelete ) {
+                        var newName = classToDelete;
+                    } else {
+                        var newName = "file-" + randomNumber;
+                    }
+
                     $el.find('[type=file]').attr('name', newName);
                     $el.append('<div class="wpcf7-file-caption">Your text here</div>');
                     $el.addClass(newName);
