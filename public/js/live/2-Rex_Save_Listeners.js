@@ -12,9 +12,9 @@ var Rex_Save_Listeners = (function($) {
 
       // WPCF7 Saving
       var formIDsInPage = Rexbuilder_Rexwpcf7.getIDsInPage();
-      for (var id of formIDsInPage) {
+      formIDsInPage.forEach(function(id) {
         Rexbuilder_Rexwpcf7.updateFormInDB(id);
-      }
+      })
 
       //getting custom css set in page
       var customCSS = $("#rexpansive-builder-style-inline-css")

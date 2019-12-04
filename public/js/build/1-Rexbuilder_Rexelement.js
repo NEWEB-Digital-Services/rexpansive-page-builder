@@ -517,10 +517,9 @@ var Rexbuilder_Rexelement = (function ($) {
                     } else if (/\[submit\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
                         fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[submit\*? [^\s]+/, '[submit submit-' + fieldsNumbers[i] + ' class:submit-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
-
-                        if (!/\]/.test(fieldsShortcodes[i])) {
-                            fieldsShortcodes[i] += ']';
-                        }
+                    }
+                    if (!/\]/.test(fieldsShortcodes[i])) {
+                        fieldsShortcodes[i] += ']';
                     }
 
                     var $newRow = $(document.createElement("div"))

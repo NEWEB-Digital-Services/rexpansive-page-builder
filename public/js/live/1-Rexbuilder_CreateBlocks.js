@@ -123,8 +123,11 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
 
     var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
-    if (addBlockButton || addBlockElement) {
+    if (addBlockButton) {
       blockWidth = 4;
+      blockHeight = 100;
+      blockHeight = Math.ceil(blockHeight / galleryInstance.properties.singleHeight);
+    } else if ( addBlockElement ) {
       blockHeight = 100;
       blockHeight = Math.ceil(blockHeight / galleryInstance.properties.singleHeight);
     }

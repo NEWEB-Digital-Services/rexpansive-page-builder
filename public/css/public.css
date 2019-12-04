@@ -4328,6 +4328,39 @@ a.pswp-item {
 .pswp__caption {
   display: none; }
 
+.pswp__button--close:hover,
+.pswp__button--share:hover,
+.pswp__button--fs:hover,
+.pswp__button--zoom:hover,
+.pswp--zoomed-in:hover {
+  background-image: url("../../public/Photoswipe/default-skin/default-skin.png");
+  background-color: #007acc; }
+
+.pswp__button--close:hover {
+  background-position: 0 -44px; }
+
+.pswp__button--share:hover {
+  background-position: -44px -44px; }
+
+.pswp__button--fs:hover {
+  display: none; }
+
+.pswp--supports-fs .pswp__button--fs:hover {
+  display: block; }
+
+.pswp--fs .pswp__button--fs:hover {
+  background-position: -44px 0; }
+
+.pswp--zoom-allowed .pswp__button--zoom:hover {
+  display: block; }
+
+.pswp__button--zoom:hover {
+  display: none;
+  background-position: -88px 0; }
+
+.pswp--zoomed-in .pswp__button--zoom:hover {
+  background-position: -132px 0; }
+
 /* --------- Vertical Navigation ------- */
 #rex-vertical-nav {
   position: fixed;
