@@ -1142,7 +1142,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     };
     jQuery.extend(infos, data);
     
-    // console.log(infos);
+    console.log(infos);
     //console.log("sending message to iframe");
     frameBuilderWindow.postMessage(infos, "*");
   };

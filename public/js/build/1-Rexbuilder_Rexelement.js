@@ -265,7 +265,7 @@ var Rexbuilder_Rexelement = (function ($) {
 		var galleryData = $gridGallery.data();
         var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
         var $block = $elementWrapper.parents(".grid-stack-item");
-        galleryEditorInstance.updateElementHeight($block);
+        // galleryEditorInstance.updateElementHeight($block);
 
         // Removing medium editor placeholder if there
         var $textWrap = $elementWrapper.parents(".text-wrap");

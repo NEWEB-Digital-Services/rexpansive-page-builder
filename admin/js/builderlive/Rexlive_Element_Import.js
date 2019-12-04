@@ -530,7 +530,6 @@ var Element_Import_Modal = (function ($) {
 
                         textData = textData.trim();
 
-
                         var $divInsert = $($.parseHTML(textData));
                         $divInsert.addClass("rex-loading-element");
                         $divInsert.insertAfter($insertionPoint[0]);
@@ -543,6 +542,7 @@ var Element_Import_Modal = (function ($) {
                                 mousePosition: mousePositionToIFrame
                             }
                         };
+                        console.log(dataEndDrop);
                         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
                     }
                     catch (e) {
@@ -1076,6 +1076,7 @@ var Element_Import_Modal = (function ($) {
     };
 
 	var _init = function () {
+		console.log('Rexlive_Element_Import');
 		var $self = $("#rex-elements-list");
 		element_import_props = {
 	      $self: $self,

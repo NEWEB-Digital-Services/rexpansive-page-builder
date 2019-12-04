@@ -3065,6 +3065,8 @@
         Rexbuilder_Util_Editor.elementIsResizing = true;
       }
 
+      console.trace(elem);
+
       var blockData = elem.querySelector('.rexbuilder-block-data');
       var startH;
       // this.properties.updatingSection seems always false !
