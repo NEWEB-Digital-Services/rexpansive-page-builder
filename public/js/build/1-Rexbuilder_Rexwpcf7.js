@@ -33,6 +33,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $columnToAddField.append($span);
         var $columnContent = $columnToAddField.find('.wpcf7-column-content');
 
+        console.log('ggiungi campo')
+
         // Selecting the field
         switch (fieldType) {
             case "text":
@@ -1189,6 +1191,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $formColumnInDB.empty();
         var $span = $(document.createElement("span"));
         $span.addClass("wpcf7-column-content").append(shortcode);
+        console.log($span[0].outerHTML);
         $formColumnInDB.append($span).prepend($spanDataInDB);
     }
 
@@ -1722,8 +1725,14 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
         
         if(null == columnContentData.field_class) {
-            if ( $formColumn.find(".wpcf7-form-control-wrap").length > 0 ) {
-                columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList)[0];
+            var $tempWrap = $formColumn.find(".wpcf7-form-control-wrap");
+            if ( $tempWrap.length > 0 ) {
+                var searchClass = /[a-z]+\-[0-9]+/.exec($tempWrap[0].classList);
+                if ( searchClass ) {
+                    columnContentData.field_class = searchClass[0];
+                } else {
+                    columnContentData.field_class = null;
+                }
             }
         } else {
             columnContentData.field_class = columnContentData.field_class[0];
@@ -2674,6 +2683,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
      * @return {null}
      */
     var _updateSpanData = function (formID, columnContentData) {
+        console.trace()
         // If editing a separate element, will always be length = 1
         // If editing a model element, will be length >= 1
         var $formToUpdate = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").find(".wpcf7-form");
@@ -2999,7 +3009,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     var _addFormInPage = function (formID, $rows) {
         $formsInPage[formID] = $rows;
-        console.log($formsInPage);
 
         var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
         

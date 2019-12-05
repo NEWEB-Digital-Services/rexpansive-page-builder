@@ -14,82 +14,82 @@ var Element_Import_Modal = (function ($) {
 	*/
     var _updateElementList = function() {
 		$.ajax({
-		  type: "GET",
-		  dataType: "json",
-		  url: live_editor_obj.ajaxurl,
-		  data: {
-		    action: "rex_get_element_list",
-		    nonce_param: live_editor_obj.rexnonce
-		  },
-		  success: function(response) {
-			if (response.success) {
-		    	var currentList = [];
-				element_import_props.$self
-				.find(".element-list__element")
-				.each(function(i, element) {
-					var elementID = $(element).attr("data-rex-element-id");
-					var elementObj = {
-					  id: elementID,
-					  founded: false
-					};
-					currentList.push(elementObj);
-				});
+			type: "GET",
+			dataType: "json",
+			url: live_editor_obj.ajaxurl,
+			data: {
+				action: "rex_get_element_list",
+				nonce_param: live_editor_obj.rexnonce
+			},
+			success: function(response) {
+				if (response.success) {
+					var currentList = [];
+					element_import_props.$self
+					.find(".element-list__element")
+					.each(function(i, element) {
+						var elementID = $(element).attr("data-rex-element-id");
+						var elementObj = {
+						  id: elementID,
+						  founded: false
+						};
+						currentList.push(elementObj);
+					});
 
-				var updatedList = response.data.updated_list;
+					var updatedList = response.data.updated_list;
 
-				var i, j;
+					var i, j;
 
-				for (i = 0; i < updatedList.length; i++) {
-					updatedList[i].founded = false;
-				}
-
-				for (i = 0; i < updatedList.length; i++) {
-					for (j = 0; j < currentList.length; j++) {
-					  if (updatedList[i].id == currentList[j].id) {
-					    updatedList[i].founded = true;
-					    currentList[j].founded = true;
-					    break;
-					  }
+					for (i = 0; i < updatedList.length; i++) {
+						updatedList[i].founded = false;
 					}
-				}
 
-				tmpl.arg = "element";
-
-				for (i = 0; i < updatedList.length; i++) {
-					if (!updatedList[i].founded) {
-					  element_import_props.$self.find(".element-list").prepend(
-					    tmpl("rexlive-tmpl-element-item-list", {
-					      id: updatedList[i].id,
-					      name: updatedList[i].name,
-					      preview:
-					      updatedList[i].preview_image_url != ""
-					      ? updatedList[i].preview_image_url
-					      : ""
-					    })
-					    ).find(".rex-element-wrapper").prepend(updatedList[i].element_data_html[0]);
+					for (i = 0; i < updatedList.length; i++) {
+						for (j = 0; j < currentList.length; j++) {
+						  if (updatedList[i].id == currentList[j].id) {
+						    updatedList[i].founded = true;
+						    currentList[j].founded = true;
+						    break;
+						  }
+						}
 					}
-				}
 
-				for (i = 0; i < currentList.length; i++) {
-					if (!currentList[i].founded) {
-					  element_import_props.$self
-					  .find(
-					    '.element-list__element[data-rex-element-id="' +
-					    currentList[i].id +
-					    '"]'
-					    )
-					  .remove();
+					tmpl.arg = "element";
+
+					for (i = 0; i < updatedList.length; i++) {
+						if (!updatedList[i].founded) {
+						  element_import_props.$self.find(".element-list").prepend(
+						    tmpl("rexlive-tmpl-element-item-list", {
+						      id: updatedList[i].id,
+						      name: updatedList[i].name,
+						      preview:
+						      updatedList[i].preview_image_url != ""
+						      ? updatedList[i].preview_image_url
+						      : ""
+						    })
+						    ).find(".rex-element-wrapper").prepend(updatedList[i].element_data_html[0]);
+						}
 					}
-				}
 
-				var event = jQuery.Event("rexlive:lateralMenuReady");
-				$(document).trigger(event);
+					for (i = 0; i < currentList.length; i++) {
+						if (!currentList[i].founded) {
+						  element_import_props.$self
+						  .find(
+						    '.element-list__element[data-rex-element-id="' +
+						    currentList[i].id +
+						    '"]'
+						    )
+						  .remove();
+						}
+					}
+
+					var event = jQuery.Event("rexlive:lateralMenuReady");
+					$(document).trigger(event);
+				}
+			},
+			error: function(response) {},
+			complete: function(response) {
+				element_import_props.$self.removeClass("rex-modal--loading");
 			}
-		  },
-		  error: function(response) {},
-		  complete: function(response) {
-		    element_import_props.$self.removeClass("rex-modal--loading");
-		  }
 		});
 	};
 
@@ -542,7 +542,6 @@ var Element_Import_Modal = (function ($) {
                                 mousePosition: mousePositionToIFrame
                             }
                         };
-                        console.log(dataEndDrop);
                         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
                     }
                     catch (e) {
@@ -1076,7 +1075,6 @@ var Element_Import_Modal = (function ($) {
     };
 
 	var _init = function () {
-		console.log('Rexlive_Element_Import');
 		var $self = $("#rex-elements-list");
 		element_import_props = {
 	      $self: $self,

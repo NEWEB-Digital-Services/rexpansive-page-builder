@@ -183,9 +183,6 @@ var Rexbuilder_Rexelement = (function ($) {
             if (response.success) {     // If success get the element HTML and append it to a new div
                 var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
 
-                console.log(response.data)
-                console.log(dropType)
-
                 var $elementContainer = $(document.createElement("div"));
                 $elementContainer.addClass("rex-element-container");
                 $elementWrapper.append($elementContainer);
@@ -225,7 +222,6 @@ var Rexbuilder_Rexelement = (function ($) {
                                 mousePosition: data.mousePosition
                             }
                         };
-                        console.log(ev);
                         Rexbuilder_Util.$document.trigger(ev);
                         break;
                     case "inside-new-row":
@@ -321,6 +317,7 @@ var Rexbuilder_Rexelement = (function ($) {
             $form.append($rows);
 
             var fieldsNumbers = [];
+            var fieldsNames = [];
             $formFields.each(function (i, el) {
                 var $el = $(el);
 
@@ -355,12 +352,13 @@ var Rexbuilder_Rexelement = (function ($) {
 
                     var classToDelete = $input.attr('name');
                     $el.removeClass(classToDelete);
+                    fieldsNames[i] = classToDelete;
 
-                    if( '' !== classToDelete ) {
-                        var newName = classToDelete;
-                    } else {
+                    // if( '' !== classToDelete ) {
+                    //     var newName = classToDelete;
+                    // } else {
                         var newName = "text-" + randomNumber;
-                    }
+                    // }
 
                     $input.attr('name', newName);
                     $input.addClass(newName);
@@ -372,12 +370,13 @@ var Rexbuilder_Rexelement = (function ($) {
 
                     var classToDelete = $input.attr('name');
                     $el.removeClass(classToDelete);
+                    fieldsNames[i] = classToDelete;
 
-                    if( '' !== classToDelete ) {
-                        var newName = classToDelete;
-                    } else {
+                    // if( '' !== classToDelete ) {
+                    //     var newName = classToDelete;
+                    // } else {
                         var newName = "email-" + randomNumber;
-                    }
+                    // }
 
                     $input.attr('name', newName);
                     $input.addClass(newName);
@@ -388,12 +387,13 @@ var Rexbuilder_Rexelement = (function ($) {
 
                     var classToDelete = $input.attr('name');
                     $el.removeClass(classToDelete);
+                    fieldsNames[i] = classToDelete;
 
-                    if( '' !== classToDelete ) {
-                        var newName = classToDelete;
-                    } else {
+                    // if( '' !== classToDelete ) {
+                    //     var newName = classToDelete;
+                    // } else {
                         var newName = "number-" + randomNumber;
-                    }
+                    // }
 
                     $input.attr('name', newName);
                     $input.addClass(newName);
@@ -404,12 +404,13 @@ var Rexbuilder_Rexelement = (function ($) {
 
                     var classToDelete = $input.attr('name');
                     $el.removeClass(classToDelete);
+                    fieldsNames[i] = classToDelete;
 
-                    if( '' !== classToDelete ) {
-                        var newName = classToDelete;
-                    } else {
+                    // if( '' !== classToDelete ) {
+                    //     var newName = classToDelete;
+                    // } else {
                         var newName = "textarea-" + randomNumber;
-                    }
+                    // }
 
                     $input.attr('name', newName);
                     $input.addClass(newName);
@@ -419,12 +420,13 @@ var Rexbuilder_Rexelement = (function ($) {
 
                     var classToDelete = $input.attr('name');
                     $el.removeClass(classToDelete);
+                    fieldsNames[i] = classToDelete;
 
-                    if( '' !== classToDelete ) {
-                        var newName = classToDelete;
-                    } else {
+                    // if( '' !== classToDelete ) {
+                    //     var newName = classToDelete;
+                    // } else {
                         var newName = "menu-" + randomNumber;
-                    }
+                    // }
 
                     $input.attr('name', newName);
                     $input.addClass(newName);
@@ -433,47 +435,51 @@ var Rexbuilder_Rexelement = (function ($) {
                 } else if (containsRadioButtons) {
                     var classToDelete = $el.find('[type=radio]').eq(0).attr('name');
                     $el.removeClass(classToDelete);
+                    fieldsNames[i] = classToDelete;
 
-                    if( '' !== classToDelete ) {
-                        var newName = classToDelete;
-                    } else {
+                    // if( '' !== classToDelete ) {
+                    //     var newName = classToDelete;
+                    // } else {
                         var newName = "radio-" + randomNumber;
-                    }
+                    // }
 
                     $el.find('[type=radio]').attr('name', newName);
                     $el.addClass(newName);
                 } else if (containsCheckbox) {
                     var classToDelete = $el.find('[type=checkbox]').eq(0).attr('name');
                     $el.removeClass(classToDelete);
+                    fieldsNames[i] = classToDelete;
 
-                    if( '' !== classToDelete ) {
-                        var newName = classToDelete;
-                    } else {
+                    // if( '' !== classToDelete ) {
+                    //     var newName = classToDelete;
+                    // } else {
                         var newName = "acceptance-" + randomNumber;
-                    }
+                    // }
 
                     $el.find('[type=checkbox]').attr('name', newName);
                     $el.addClass(newName);
                 } else if (containsFile) {
                     var classToDelete = $el.find('[type=file]').eq(0).attr('name');
                     $el.removeClass(classToDelete);
+                    fieldsNames[i] = classToDelete;
 
-                    if( '' !== classToDelete ) {
-                        var newName = classToDelete;
-                    } else {
+                    // if( '' !== classToDelete ) {
+                    //     var newName = classToDelete;
+                    // } else {
                         var newName = "file-" + randomNumber;
-                    }
+                    // }
 
                     $el.find('[type=file]').attr('name', newName);
                     $el.append('<div class="wpcf7-file-caption">Your text here</div>');
                     $el.addClass(newName);
                 } else if (containsSubmit) {
+                    fieldsNames[i] = '';
                     var newName = "submit-" + randomNumber;
                     $el.addClass(newName);
                 }
             });
 
-            _fixFormInDB(formID, fieldsNumbers);
+            _fixFormInDB(formID, fieldsNumbers, fieldsNames);
         } else {    // If it's not a new element
             Rexbuilder_Rexwpcf7.updateDBFormsInPage(elementID, !flagElementFound);
         }
@@ -490,7 +496,9 @@ var Rexbuilder_Rexelement = (function ($) {
         // Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
     }
 
-    var _fixFormInDB = function (formID, fieldsNumbers) {
+    var _fixFormInDB = function (formID, fieldsNumbers, fieldsNames) {
+        console.log(fieldsNumbers)
+        console.log(fieldsNames)
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -527,44 +535,49 @@ var Rexbuilder_Rexelement = (function ($) {
                 var fieldsShortcodes = [];
                 var i = 0;
                 var $rows = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
+                var isRequired = false;
                 while (/\[[\w]+[^\]]+/.test(fieldsString)) {
                     // Extracting and fixing wpcf7 shortcodes of the new form
                     fieldsShortcodes[i] = /\[[\w]+[^\]]+/.exec(fieldsString)[0] + ']';
 
-                    console.log(/\[text\*? [^\s]+/.exec(fieldsShortcodes[i]));
+                    // is field required
+                    isRequired = /\[(text|email|number|textarea|radio|acceptance|file|submit)\*/.test(fieldsShortcodes[i]);
+
                     if (/\[text\*?\s/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[text\*? [^\s]+/, '[text text-' + fieldsNumbers[i] + ' class:text-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode   
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[text\*? [^\s]+/, '[text' + ( isRequired ? '*' : '' ) + ' text-' + fieldsNumbers[i] + ' class:text-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode   
                     } else if (/\[email\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[email\*? [^\s]+/, '[email email-' + fieldsNumbers[i] + ' class:email-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[email\*? [^\s]+/, '[email' + ( isRequired ? '*' : '' ) + ' email-' + fieldsNumbers[i] + ' class:email-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
                     } else if (/\[number\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[number\*? [^\s]+/, '[number number-' + fieldsNumbers[i] + ' class:number-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[number\*? [^\s]+/, '[number' + ( isRequired ? '*' : '' ) + ' number-' + fieldsNumbers[i] + ' class:number-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
                     } else if (/\[textarea\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[textarea\*? [^\s]+/, '[textarea textarea-' + fieldsNumbers[i] + ' class:textarea-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[textarea\*? [^\s]+/, '[textarea' + ( isRequired ? '*' : '' ) + ' textarea-' + fieldsNumbers[i] + ' class:textarea-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
                     } else if (/\[select\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[select\*? [^\s]+/, '[select menu-' + fieldsNumbers[i] + ' class:menu-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[select\*? [^\s]+/, '[select' + ( isRequired ? '*' : '' ) + ' menu-' + fieldsNumbers[i] + ' class:menu-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
                     } else if (/\[radio\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[radio\*? [^\s]+/, '[radio radio-' + fieldsNumbers[i]); // Missing: adding * if it is present in the original shortcode
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[radio\*? [^\s]+/, '[radio' + ( isRequired ? '*' : '' ) + ' radio-' + fieldsNumbers[i]); // Missing: adding * if it is present in the original shortcode
                     } else if (/\[acceptance\*?/.test(fieldsShortcodes[i])) {
                         fieldsShortcodes[i] = /\[[\w]+[^\\/]+/.exec(fieldsString) + '/acceptance]';
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[acceptance\*? [^\s]+/, '[acceptance acceptance-' + fieldsNumbers[i]);  // Missing: adding * if it is present in the original shortcode
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[acceptance\*? [^\s]+/, '[acceptance' + ( isRequired ? '*' : '' ) + ' acceptance-' + fieldsNumbers[i]);  // Missing: adding * if it is present in the original shortcode
                     } else if (/\[file\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[file [^\s]+/, '[file file-' + fieldsNumbers[i]);   // Missing: adding * if it is present in the original shortcode
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[file [^\s]+/, '[file' + ( isRequired ? '*' : '' ) + ' file-' + fieldsNumbers[i]);   // Missing: adding * if it is present in the original shortcode
                         fieldsShortcodes[i] = fieldsShortcodes[i].replace(']', ']' + '<div class="wpcf7-file-caption">Your text here</div>');
                     } else if (/\[submit\*?/.test(fieldsShortcodes[i])) {
                         fieldsString = fieldsString.replace(fieldsShortcodes[i], '');
-                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[submit\*? [^\s]+/, '[submit submit-' + fieldsNumbers[i] + ' class:submit-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
+                        fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[submit\*? [^\s]+/, '[submit' + ( isRequired ? '*' : '' ) + ' submit-' + fieldsNumbers[i] + ' class:submit-' + fieldsNumbers[i]);    // Missing: adding * if it is present in the original shortcode
                     }
                     if (!/\]/.test(fieldsShortcodes[i])) {
                         fieldsShortcodes[i] += ']';
                     }
+
+                    console.log(fieldsShortcodes[i]);
 
                     var $newRow = $(document.createElement("div"))
                         .addClass("wpcf7-row wpcf7-row__1-column")
@@ -575,6 +588,8 @@ var Rexbuilder_Rexelement = (function ($) {
                         .append(fieldsShortcodes[i]);
                     $newRow.append($newColumn);
                     $rows.append($newRow);
+
+                    isRequired = false;
 
                     i++;
                 }

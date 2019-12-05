@@ -3681,18 +3681,22 @@ var TextEditor = (function ($) {
     findElementToOutline: function (formColumn) {
       var $formColumn = $(formColumn);
       var elementToOutlineClass;
+      var wrapToOultineClass = null;
 
       elementToOutlineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
-      if(null == elementToOutlineClass) {
-        elementToOutlineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList)[0];
+      if ( $formColumn.find(".wpcf7-form-control-wrap").length > 0 ) {
+        wrapToOultineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList);
+      }
+      if( null == elementToOutlineClass ) {
+        if ( null !== wrapToOultineClass ) {
+          elementToOutlineClass = wrapToOultineClass[0];
+        }
       } else {
          elementToOutlineClass = elementToOutlineClass[0];
       }
 
       var elementToOutlineType = /[a-z]+/.exec(elementToOutlineClass)[0];
       elementToOutlineType = (elementToOutlineType == "menu") ? "select" : elementToOutlineType;
-
-
 
       switch (elementToOutlineType) {
         case "text":
