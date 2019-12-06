@@ -301,6 +301,7 @@ var Rexbuilder_Rexelement = (function ($) {
                         $field.find('[type=url]').length != 0 ||
                         $field.find('[type=tel]').length != 0 ||
                         $field.find('[type=date]').length != 0 ||
+                        $field.find('[type=range]').length != 0 ||
                         $field.find('.wpcf7-checkbox').length != 0 ||
                         $field.find('.wpcf7-quiz-label').length != 0
                     ) {
@@ -530,6 +531,10 @@ var Rexbuilder_Rexelement = (function ($) {
 
                 if (/\[quiz\*?\s/.test(fieldsString)) {
                     fieldsString = fieldsString.replace(/\[quiz\*?[^\]]+/.exec(fieldsString)[0] + ']', '');
+                }
+
+                if (/\[range\*?\s/.test(fieldsString)) {
+                    fieldsString = fieldsString.replace(/\[range\*?[^\]]+/.exec(fieldsString)[0] + ']', '');
                 }
 
                 var fieldsShortcodes = [];
