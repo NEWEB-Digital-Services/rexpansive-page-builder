@@ -693,14 +693,8 @@ class Rexbuilder_Public
         wp_send_json_success($response);
     }
 
-    /**
-     * Transforms element shortcode to html
-     * @return model with no image
-     * @since  x.x.x
-     */
     public function rex_transform_element_shortcode() {
         $nonce = $_POST['nonce_param'];
-        $elementID = $_POST['elementID'];
 
         $response = array(
             'error' => false,
@@ -715,12 +709,19 @@ class Rexbuilder_Public
 
         $response['error'] = false;
 
+        $elementID = $_POST['elementID'];
+
         $elementTitle = get_the_title($elementID);
         $shortcode = "[contact-form-7 id=\"".$elementID."\" title=\"".$elementTitle."\"]";
 
         $response['shortcode'] = $shortcode;
         $response['shortcode_transformed'] = do_shortcode($shortcode);
         $response['element_data_html'] = get_post_meta($elementID, "_rex_element_data_html");
+        
+        $postType = get_post_type($elementID);
+        if ($postType == "wpcf7_contact_form") {
+            $response['form_content'] = get_post_meta($elementID, "_form");
+        }
 
         wp_send_json_success($response);
     }

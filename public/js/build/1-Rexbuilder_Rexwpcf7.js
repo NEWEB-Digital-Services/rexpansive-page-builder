@@ -2683,7 +2683,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
      * @return {null}
      */
     var _updateSpanData = function (formID, columnContentData) {
-        console.trace()
         // If editing a separate element, will always be length = 1
         // If editing a model element, will be length >= 1
         var $formToUpdate = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").find(".wpcf7-form");

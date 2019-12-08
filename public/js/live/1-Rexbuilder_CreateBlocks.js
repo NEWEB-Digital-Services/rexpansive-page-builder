@@ -172,7 +172,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
       var ev = jQuery.Event("rexlive:completeImportElement");
       ev.settings = {
         $elementWrapper: data.$elementWrapper,
-        $elementAdded: $el
+        $elementAdded: $el,
+        formFieldsString: data.formFieldsString
       }
 
       var gridstackInstance = galleryInstance.properties.gridstackInstance;
