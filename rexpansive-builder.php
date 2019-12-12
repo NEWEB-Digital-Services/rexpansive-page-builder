@@ -16,7 +16,7 @@
  * Plugin Name:       Rexpansive Builder
  * Plugin URI:        https://www.neweb.info/store/plugin/rexpansive-page-builder/
  * Description:       The new and awesome plugin to build a page in 1 minute! Expand your mind!
- * Version:           2.0.2
+ * Version:           2.0.3
  * Author:            NEWEB - Digital Agency
  * Author URI:        https://www.neweb.info/      
  * Text Domain:       rexpansive-builder
@@ -67,7 +67,7 @@ define( 'REXPANSIVE_BUILDER_UPLOADS_FOLDER', 'rexpansive-builder' );
  * Global variable to set the state of the release
  */
 define( 'REXPANSIVE_BUILDER_PRODUCTION_STYLES', true );
-define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', true );
+define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', false );
 
 /**
  * ACF inclusion definitions

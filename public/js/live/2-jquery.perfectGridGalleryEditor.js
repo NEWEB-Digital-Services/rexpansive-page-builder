@@ -121,6 +121,7 @@
       layoutBeforeCollapsing: {},
       initialStateGrid: null,
       mirrorStateGrid: null,
+      pushBackground: false
     };
 
     this.$section = this.$element.parents(this._defaults.gridParentWrap);
@@ -150,10 +151,15 @@
       this._setGutter();
       this._defineHalfSeparatorProperties();
       this._defineRowSeparator();
+      this._definePushBackground();
 
       this._setGridPadding();
 
       this._defineDynamicPrivateProperties();
+
+      if( !this.settings.editorMode && this.properties.pushBackground ) {
+        this._setPushHeight();
+      }
 
       this._prepareElements();
 
@@ -255,6 +261,8 @@
 
       this.triggerGalleryReady();
       this.properties.firstStartGrid = false;
+
+      console.log(this.properties)
     },
 
     /**
@@ -1598,6 +1606,24 @@
       return true;
     },
 
+    _setPushHeight: function() {
+      var w = this.section.getAttribute('data-background_image_width');
+      var h = this.section.getAttribute('data-background_image_height');
+      if( null === w || null === h || '' === w || '' === h ) {
+        return;
+      }
+      var pushH = Math.ceil( ( this.properties.gutter + this.properties.wrapWidth ) * parseInt(h) ) / parseInt(w);
+      // var pushH = Math.ceil( this.section.offsetWidth * parseInt(h) ) / parseInt(w);
+      this.section.style.minHeight = pushH + 'px';
+      // this.settings.fullHeight = 'true';
+
+      // if (this.settings.galleryLayout == "masonry") {
+      //   this.properties.singleHeight = pushH / 5;
+      // } else {
+      //   this.properties.singleHeight = pushH / 12;
+      // }
+    },
+
     _calculateGridHeight: function() {
       var heightTot = 0;
       var hTemp;
@@ -1656,6 +1682,12 @@
         this.element.getAttribute("data-row-separator-left")
           ? parseInt(this.element.getAttribute("data-row-separator-left"))
           : null;
+    },
+
+    _definePushBackground: function() {
+      if( hasClass(this.section,'background-push') ) {
+        this.properties.pushBackground = true;
+      }
     },
 
     _setGutter: function() {
@@ -2731,6 +2763,8 @@
 
     _launchGridStack: function() {
       var gallery = this;
+
+      console.log(gallery.properties.singleHeight);
 
       var floating;
       if (gallery.settings.galleryLayout == "masonry") {
