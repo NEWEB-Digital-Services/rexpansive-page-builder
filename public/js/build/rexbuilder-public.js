@@ -747,7 +747,7 @@ var Rexbuilder_App = (function($) {
     if ( 'undefined' !== typeof DistanceAccordion ) {
       var togglers = document.getElementsByClassName('distance-accordion-toggle');
       for ( var j=0, tot = togglers.length; j < tot; j++ ) {
-        new DistanceAccordion(togglers[j]);
+        var inst = new DistanceAccordion(togglers[j]);
       }
     }
   }
