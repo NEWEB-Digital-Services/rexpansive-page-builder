@@ -157,9 +157,7 @@
 
       this._defineDynamicPrivateProperties();
 
-      if( !this.settings.editorMode && this.properties.pushBackground ) {
-        this._setPushHeight();
-      }
+      // this.setBackgroundSectionPush();
 
       this._prepareElements();
 
@@ -1587,7 +1585,10 @@
       this.properties.wrapWidth = newWidth;
       this.properties.singleWidth = newWidth * this.settings.gridItemWidth;
 
-      if (this.settings.galleryLayout == "masonry") {
+      if( !this.settings.editorMode && this.properties.pushBackground ) {
+        this._setPushHeight();
+        this._setElementsToHeight("12");
+      } else if (this.settings.galleryLayout == "masonry") {
         this.properties.singleHeight = this.settings.cellHeightMasonry;
       } else {
         var oldSingleHeight = this.properties.singleHeight;
@@ -1606,6 +1607,13 @@
       return true;
     },
 
+    setBackgroundSectionPush: function() {
+      if( !this.settings.editorMode && this.properties.pushBackground ) {
+        this._setPushHeight();
+        this._setElementsToHeight("12");
+      }
+    },
+
     _setPushHeight: function() {
       var w = this.section.getAttribute('data-background_image_width');
       var h = this.section.getAttribute('data-background_image_height');
@@ -1617,11 +1625,17 @@
       this.section.style.minHeight = pushH + 'px';
       // this.settings.fullHeight = 'true';
 
-      // if (this.settings.galleryLayout == "masonry") {
-      //   this.properties.singleHeight = pushH / 5;
-      // } else {
-      //   this.properties.singleHeight = pushH / 12;
-      // }
+      if (this.settings.galleryLayout == "masonry") {
+        this.properties.singleHeight = ( pushH - this.properties.gutter ) / 5;
+      } else {
+        this.properties.singleHeight = ( pushH - this.properties.gutter ) / 12;
+      }
+    },
+
+    _setElementsToHeight: function(h) {
+      [].slice.call( this.element.getElementsByClassName('perfect-grid-item') ).forEach(function(e) {
+        e.setAttribute('data-gs-min-height', h);
+      });
     },
 
     _calculateGridHeight: function() {
@@ -2763,8 +2777,6 @@
 
     _launchGridStack: function() {
       var gallery = this;
-
-      console.log(gallery.properties.singleHeight);
 
       var floating;
       if (gallery.settings.galleryLayout == "masonry") {
