@@ -356,10 +356,8 @@ var Rexbuilder_Rexelement = (function ($) {
             $form.append($rows);
 
             var fieldsNumbers = [];
-            var fieldsNames = [];
             var fieldsShortcodes = [];
             var $rowsInDB = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
-            var isRequired = false;
             $formFields.each(function (i, el) {
                 var $el = $(el);
 
@@ -391,185 +389,114 @@ var Rexbuilder_Rexelement = (function ($) {
 
                 fieldsShortcodes[i] = /\[[\w]+[^\]]+/.exec(formFieldsString)[0] + ']';
 
-                // Is field required?
-                isRequired = /\[(text|email|number|textarea|radio|acceptance|file|submit)\*/.test(fieldsShortcodes[i]);
-
                 if (containsText) { // Fixing all the fields
+                    var newClass = "text-" + fieldsNumbers[i];
+
                     // DOM
                     var $input = $el.find('.wpcf7-text');
-
-                    var classToDelete = $input.attr('name');
-                    $el.removeClass(classToDelete);
-                    fieldsNames[i] = classToDelete;
-
-                    // if( '' !== classToDelete ) {
-                    //     var newName = classToDelete;
-                    // } else {
-                        var newName = "text-" + randomNumber;
-                    // }
-
-                    $input.attr('name', newName);
-                    $input.addClass(newName);
-                    $el.addClass(newName);
+                    $input.addClass(newClass);
+                    $el.addClass(newClass);     // Serve?
                     $input.attr('size', '');
 
                     // Shortcode
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[text\*? [^\s]+/, '[text' + ( isRequired ? '*' : '' ) + ' text-' + fieldsNumbers[i] + ' class:text-' + fieldsNumbers[i]); 
+                    var regexpToSearch = /\[text\*? [^(\s|\])]+/;
+                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
                 } else if (containsEmail) {
+                    var newClass = "email-" + fieldsNumbers[i];
+
                     // DOM
                     var $input = $el.find('.wpcf7-email');
-                    $input.removeClass('wpcf7-text');
-
-                    var classToDelete = $input.attr('name');
-                    $el.removeClass(classToDelete);
-                    fieldsNames[i] = classToDelete;
-
-                    // if( '' !== classToDelete ) {
-                    //     var newName = classToDelete;
-                    // } else {
-                        var newName = "email-" + randomNumber;
-                    // }
-
-                    $input.attr('name', newName);
-                    $input.addClass(newName);
-                    $el.addClass(newName);
+                    $input.addClass(newClass);
+                    $el.addClass(newClass);     // Serve?
                     $input.attr('size', '');
 
                     // Shortcode
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[email\*? [^\s]+/, '[email' + ( isRequired ? '*' : '' ) + ' email-' + fieldsNumbers[i] + ' class:email-' + fieldsNumbers[i]); 
+                    var regexpToSearch = /\[email\*? [^(\s|\])]+/;
+                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
                 } else if (containsNumber) {
+                    var newClass = "number-" + fieldsNumbers[i];
+
                     // DOM
                     var $input = $el.find('.wpcf7-number');
-
-                    var classToDelete = $input.attr('name');
-                    $el.removeClass(classToDelete);
-                    fieldsNames[i] = classToDelete;
-
-                    // if( '' !== classToDelete ) {
-                    //     var newName = classToDelete;
-                    // } else {
-                        var newName = "number-" + randomNumber;
-                    // }
-
-                    $input.attr('name', newName);
-                    $input.addClass(newName);
-                    $el.addClass(newName);
+                    $input.addClass(newClass);
+                    $el.addClass(newClass);     // Serve?
                     $input.attr('size', '');
 
                     // Shortcode
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[number\*? [^\s]+/, '[number' + ( isRequired ? '*' : '' ) + ' number-' + fieldsNumbers[i] + ' class:number-' + fieldsNumbers[i]);
+                    var regexpToSearch = /\[number\*? [^(\s|\])]+/;
+                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
                 } else if (containsTextarea) {
+                    var newClass = "textarea-" + fieldsNumbers[i];
+
                     // DOM
                     var $input = $el.find('.wpcf7-textarea');
-
-                    var classToDelete = $input.attr('name');
-                    $el.removeClass(classToDelete);
-                    fieldsNames[i] = classToDelete;
-
-                    // if( '' !== classToDelete ) {
-                    //     var newName = classToDelete;
-                    // } else {
-                        var newName = "textarea-" + randomNumber;
-                    // }
-
-                    $input.attr('name', newName);
-                    $input.addClass(newName);
-                    $el.addClass(newName);
+                    $input.addClass(newClass);
+                    $el.addClass(newClass);
+                    $input.attr('size', '');
 
                     // Shortcode
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[textarea\*? [^\s]+/, '[textarea' + ( isRequired ? '*' : '' ) + ' textarea-' + fieldsNumbers[i] + ' class:textarea-' + fieldsNumbers[i]);
+                    var regexpToSearch = /\[textarea\*? [^(\s|\])]+/;
+                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
                 } else if (containsSelect) {
+                    var newClass = "menu-" + fieldsNumbers[i];
+
                     // DOM
                     var $input = $el.find('.wpcf7-select');
-
-                    var classToDelete = $input.attr('name');
-                    $el.removeClass(classToDelete);
-                    fieldsNames[i] = classToDelete;
-
-                    // if( '' !== classToDelete ) {
-                    //     var newName = classToDelete;
-                    // } else {
-                        var newName = "menu-" + randomNumber;
-                    // }
-
-                    $input.attr('name', newName);
-                    $input.addClass(newName);
+                    $input.addClass(newClass);
+                    $el.addClass(newClass);
                     $input.prepend('<option value="" disabled="disabled" selected="selected">Select something</option>');
-                    $el.addClass(newName);
+                    $input.attr('size', '');
 
                     // Shortcode
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[select\*? [^\s]+/, '[select' + ( isRequired ? '*' : '' ) + ' menu-' + fieldsNumbers[i] + ' class:menu-' + fieldsNumbers[i]);   
+                    var regexpToSearch = /\[select\*? [^(\s|\])]+/;
+                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
                 } else if (containsRadioButtons) {
+                    var newClass = "radio-" + fieldsNumbers[i];
+
                     // DOM
-                    var classToDelete = $el.find('[type=radio]').eq(0).attr('name');
-                    $el.removeClass(classToDelete);
-                    fieldsNames[i] = classToDelete;
-
-                    // if( '' !== classToDelete ) {
-                    //     var newName = classToDelete;
-                    // } else {
-                        var newName = "radio-" + randomNumber;
-                    // }
-
-                    $el.find('[type=radio]').attr('name', newName);
-                    $el.addClass(newName);
+                    $el.addClass(newClass);
 
                     // Shortcode
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[radio\*? [^\s]+/, '[radio' + ( isRequired ? '*' : '' ) + ' radio-' + fieldsNumbers[i]);
+                    var regexpToSearch = /\[radio\*? [^(\s|\])]+/;
+                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
                 } else if (containsCheckbox) {
+                    var newClass = "acceptance-" + fieldsNumbers[i];
+
                     // DOM
-                    var classToDelete = $el.find('[type=checkbox]').eq(0).attr('name');
-                    $el.removeClass(classToDelete);
-                    fieldsNames[i] = classToDelete;
-
-                    // if( '' !== classToDelete ) {
-                    //     var newName = classToDelete;
-                    // } else {
-                        var newName = "acceptance-" + randomNumber;
-                    // }
-
-                    $el.find('[type=checkbox]').attr('name', newName);
-                    $el.addClass(newName);
+                    $el.addClass(newClass);
 
                     // Shortcode
                     fieldsShortcodes[i] = /\[[\w]+[^\\/]+/.exec(formFieldsString) + '/acceptance]';
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[acceptance\*? [^\s]+/, '[acceptance' + ( isRequired ? '*' : '' ) + ' acceptance-' + fieldsNumbers[i]);
+                    var regexpToSearch = /\[acceptance\*? [^(\s|\])]+/;
+                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
                 } else if (containsFile) {
+                    var newClass = "file-" + fieldsNumbers[i];
+
                     // DOM
-                    var classToDelete = $el.find('[type=file]').eq(0).attr('name');
-                    $el.removeClass(classToDelete);
-                    fieldsNames[i] = classToDelete;
-
-                    // if( '' !== classToDelete ) {
-                    //     var newName = classToDelete;
-                    // } else {
-                        var newName = "file-" + randomNumber;
-                    // }
-
-                    $el.find('[type=file]').attr('name', newName);
                     $el.append('<div class="wpcf7-file-caption">Your text here</div>');
-                    $el.addClass(newName);
+                    $el.addClass(newClass);
 
                     // Shortcode
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[file [^\s]+/, '[file' + ( isRequired ? '*' : '' ) + ' file-' + fieldsNumbers[i]);  
+                    var regexpToSearch = /\[file\*? [^(\s|\])]+/;
+                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(']', ']' + '<div class="wpcf7-file-caption">Your text here</div>');
                 } else if (containsSubmit) {
+                    var newClass = "submit-" + randomNumber;
+
                     // DOM
-                    fieldsNames[i] = '';
-                    var newName = "submit-" + randomNumber;
-                    $el.addClass(newName);
+                    $el.addClass(newClass);
 
                     // Shortcode
-                    formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[submit\*? [^\s]+/, '[submit' + ( isRequired ? '*' : '' ) + ' submit-' + fieldsNumbers[i] + ' class:submit-' + fieldsNumbers[i]); 
+                    var regexpToSearch = /\[submit\*? [^(\s|\])]+/;
+                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
                 }
 
                 if (!/\]/.test(fieldsShortcodes[i])) {
@@ -587,8 +514,6 @@ var Rexbuilder_Rexelement = (function ($) {
                     .append(fieldsShortcodes[i]);
                 $newRowInDB.append($newColumnInDB);
                 $rowsInDB.append($newRowInDB);
-
-                isRequired = false;
             });
             
 
@@ -668,7 +593,7 @@ var Rexbuilder_Rexelement = (function ($) {
 
             var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").eq(0);
             _addElementStyle($elementWrapper);
-            // _fixFormInDB(formID, fieldsNumbers, fieldsNames);
+            // _fixFormInDB(formID, fieldsNumbers);
         } else {    // If it's not a new element
             Rexbuilder_Rexwpcf7.updateDBFormsInPage(elementID, !flagElementFound);
         }
@@ -685,9 +610,8 @@ var Rexbuilder_Rexelement = (function ($) {
         // Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
     }
 
-    var _fixFormInDB = function (formID, fieldsNumbers, fieldsNames) {
+    var _fixFormInDB = function (formID, fieldsNumbers) {
         console.log(fieldsNumbers)
-        console.log(fieldsNames)
         $.ajax({
             type: "POST",
             dataType: "json",

@@ -33,21 +33,21 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $columnToAddField.append($span);
         var $columnContent = $columnToAddField.find('.wpcf7-column-content');
 
-        console.log('ggiungi campo')
+        console.log('Aggiungi campo')
 
         // Selecting the field
         switch (fieldType) {
             case "text":
-                fieldShortcode = "[text text-" + fieldNumber + " class:text-" + fieldNumber + "]";
-                $columnContent.prepend("<input type=\"text\" name=\"text-" + fieldNumber + "\" value=\"\" class=\"wpcf7-form-control wpcf7-text text-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\">");
+                fieldShortcode = '[text text-' + fieldNumber + ' class:text-' + fieldNumber + ']';
+                $columnContent.prepend('<input type="text" name="text-' + fieldNumber + '" value="" class="wpcf7-form-control wpcf7-text text-' + fieldNumber + '" aria-invalid="false" style="">');
                 break;
             case "textarea":
                 fieldShortcode = "[textarea textarea-" + fieldNumber + " class:textarea-" + fieldNumber + "]";
-                $columnContent.prepend("<textarea name=\"textarea-" + fieldNumber + "\" cols=\"40\" rows=\"10\" class=\"wpcf7-form-control wpcf7-textarea textarea-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\"></textarea>");
+                $columnContent.prepend('<textarea name="textarea-' + fieldNumber + '" cols="40" rows="10" class="wpcf7-form-control wpcf7-textarea textarea-' + fieldNumber + '" aria-invalid="false" style=""></textarea>');
                 break;
             case "menu":
-                fieldShortcode = "[select menu-" + fieldNumber + " include_blank class:menu-" + fieldNumber + " 'Field 1' 'Field 2']";
-                $columnContent.prepend("<select name=\"menu-" + fieldNumber + "\" class=\"wpcf7-form-control wpcf7-select menu-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\"><option value=\"\" disabled=\"disabled\" selected=\"selected\">Select something</option><option value=\"Field 1\">Field 1</option><option value=\"Field 2\">Field 2</option></select>");
+                fieldShortcode = '[select menu-' + fieldNumber + ' include_blank class:menu-' + fieldNumber + ' "Field 1" "Field 2"]';
+                $columnContent.prepend('<select name="menu-' + fieldNumber + '" class="wpcf7-form-control wpcf7-select menu-' + fieldNumber + '" aria-invalid="false" style=""><option value="" disabled="disabled" selected="selected">Select something</option><option value="Field 1">Field 1</option><option value="Field 2">Field 2</option></select>');
                 break;
             case "radiobuttons":
                 // class:radio-" + fieldNumber + " ---- wpcf7-radio radio-" + fieldNumber + "
@@ -66,8 +66,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 $columnContent.prepend("<span class=\"wpcf7-form-control-wrap file-" + fieldNumber + "\" style=\"\"><input type=\"file\" name=\"file-" + fieldNumber + "\" size=\"40\" class=\"wpcf7-form-control wpcf7-file\" accept=\".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.ppt,.pptx,.odt,.avi,.ogg,.m4a,.mov,.mp3,.mp4,.mpg,.wav,.wmv\" aria-invalid=\"false\" id=\"wpcf7-file-2\"><label for=\"wpcf7-file-2\">Choose file</label><div class=\"wpcf7-file-caption\">Your text here</div></span>");
                 break;
             case "submit":
-                fieldShortcode = "[submit class:submit-" + fieldNumber + " 'Send']";
-                $columnContent.prepend("<input type=\"submit\" value=\"Send\" class=\"wpcf7-form-control wpcf7-submit submit-" + fieldNumber + "\" style=\"\">");
+                fieldShortcode = '[submit class:submit-' + fieldNumber + ' "Send"]';
+                $columnContent.prepend('<input type="submit" value="Send" class="wpcf7-form-control wpcf7-submit submit-' + fieldNumber + '" style="">');
+                break;
+            default:
                 break;
         }
 
@@ -1191,7 +1193,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $formColumnInDB.empty();
         var $span = $(document.createElement("span"));
         $span.addClass("wpcf7-column-content").append(shortcode);
-        console.log($span[0].outerHTML);
         $formColumnInDB.append($span).prepend($spanDataInDB);
     }
 
@@ -1220,13 +1221,15 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _removeColumnContentStyle = function ($formColumn) {
+        // console.trace()
         var formID = $formColumn.parents(".rex-element-wrapper").attr("data-rex-element-id");
         var rowNumber = $formColumn.parents(".wpcf7-row").attr("wpcf7-row-number");
         var columnNumber = $formColumn.attr("wpcf7-column-number");
 
         if ($formColumn.find(".wpcf7-add-new-form-content").length == 0 && $formColumn.parents("#rex-wpcf7-tools").length == 0) {
             var fieldClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
-            if (null == fieldClass) {
+            if (null === fieldClass) {
+            console.log($formColumn[0].outerHTML)
                 fieldClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList)[0];
             } else {
                 fieldClass = fieldClass[0];
@@ -2813,6 +2816,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     
     var _fixWpcf7 = function () {
         _setRowsSortable();
+        _fixInputs();
         _addWpcf7MenuPlaceholders();
         _fixWpcf7RadioButtons();
         _fixWpcf7Files();
@@ -2847,6 +2851,43 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 }
                 
                 _fixRowNumbers($formsInPage[formID]);
+            }
+        });
+    }
+
+    var _fixInputs = function() {
+        Rexbuilder_Util.$rexContainer.find('.wpcf7-column').each(function(i, el) {
+            var $el = $(el);
+
+            var containsText = $el.find('[type=text]').length != 0;
+            var containsEmail = $el.find('.wpcf7-email').length != 0;
+            var containsNumber = $el.find('.wpcf7-number').length != 0;
+            var containsTextarea = $el.find('.wpcf7-textarea').length != 0;
+            var containsSelect = $el.find('.wpcf7-select').length != 0;
+            var containsRadioButtons = $el.find('.wpcf7-radio').length != 0;
+            var containsCheckbox = $el.find('.wpcf7-acceptance').length != 0;
+            var containsFile = $el.find('.wpcf7-file').length != 0;
+            var containsSubmit = $el.find('.wpcf7-submit');
+
+            if (containsText) {
+                var $input = $el.find('.wpcf7-text');
+                $input.attr('size', '');
+            } else if (containsEmail) {
+
+            } else if (containsNumber) {
+
+            } else if (containsTextarea) {
+
+            } else if (containsSelect) {
+
+            } else if (containsRadioButtons) {
+
+            } else if (containsCheckbox) {
+
+            } else if (containsFile) {
+
+            } else if (containsSubmit) {
+
             }
         });
     }
