@@ -279,81 +279,24 @@ var Rexbuilder_Rexelement = (function ($) {
         if ($elementWrapper.find(".wpcf7").length != 0 && $elementWrapper.find(".wpcf7-rows").length == 0) {
             var $form = $elementWrapper.find(".wpcf7-form");
             var formID = elementID;
-            var $firstElement = $form.children().first().detach();
+            var $formChilds = $form.children().not('.wpcf7-response-output').not($form.children().first());
+            console.log($formChilds)
+            // .wrapAll(rows)
 
-            var $formFields = $form.find('p').children().filter(function() {    // Getting only the form fields
-                var $field = $(this);
-                if (
-                        $field.find('.wpcf7-form-control-wrap').length != 0 ||
-                        $field.find('.wpcf7-form-control').length != 0 ||
-                        $field.is('.wpcf7-form-control-wrap') ||
-                        $field.is('.wpcf7-form-control')
-                    ) {
-                    return this;
-                } else {
-                    return null;
-                }
-            }).detach();
-            
-            $form.find('p').remove();
-
-            $formFields = $formFields.filter(function(index) {   // Filtering the fields in the DOM
-                var $field = $(this);
-                if (
-                        $field.find('[type=url]').length != 0 ||
-                        $field.find('[type=tel]').length != 0 ||
-                        $field.find('[type=date]').length != 0 ||
-                        $field.find('[type=range]').length != 0 ||
-                        $field.find('.wpcf7-checkbox').length != 0 ||
-                        $field.find('.wpcf7-quiz-label').length != 0
-                    ) {
-                    return null;
-                } else {
-                    return this;
-                }
-            });
+            // Removing unwanted elements
+            $form.find('[type=url]').remove();
+            $form.find('[type=tel]').remove();
+            $form.find('[type=date]').remove();
+            $form.find('[type=range]').remove();
+            $form.find('.wpcf7-checkbox').remove();
+            $form.find('.wpcf7-quiz-label').remove();
 
             if (/\[(url|tel|date|checkbox|quiz|range)\*?[^\]]+/.test(formFieldsString)) {
                 // Filtering the fields in the shortcode
                 formFieldsString = formFieldsString.replace(/\[(url|tel|date|checkbox|quiz|range)\*?[^\]]+/.exec(formFieldsString)[0] + ']', '');
             }
 
-
-            // if (/\[url\*?\s/.test(formFieldsString)) {
-            //     console.log("url", /\[url\*?\s/.test(formFieldsString))
-            //     formFieldsString = formFieldsString.replace(/\[url\*?[^\]]+/.exec(formFieldsString)[0] + ']', '');
-            // }
-
-            // if (/\[tel\*?\s/.test(formFieldsString)) {
-            //     console.log("tel", /\[tel\*?\s/.test(formFieldsString))
-            //     formFieldsString = formFieldsString.replace(/\[tel\*?[^\]]+/.exec(formFieldsString)[0] + ']', '');
-            // }
-
-            // if (/\[date\*?\s/.test(formFieldsString)) {
-            //     console.log("date", /\[date\*?\s/.test(formFieldsString))
-            //     formFieldsString = formFieldsString.replace(/\[date\*?[^\]]+/.exec(formFieldsString)[0] + ']', '');
-            // }
-
-            // if (/\[checkbox\*?\s/.test(formFieldsString)) {
-            //     console.log("checkbox", /\[checkbox\*?\s/.test(formFieldsString))
-            //     formFieldsString = formFieldsString.replace(/\[checkbox\*?[^\]]+/.exec(formFieldsString)[0] + ']', '');
-            // }
-
-            // if (/\[quiz\*?\s/.test(formFieldsString)) {
-            //     console.log("quiz", /\[quiz\*?\s/.test(formFieldsString))
-            //     formFieldsString = formFieldsString.replace(/\[quiz\*?[^\]]+/.exec(formFieldsString)[0] + ']', '');
-            // }
-
-            // if (/\[range\*?\s/.test(formFieldsString)) {
-            //     console.log("range", /\[range\*?\s/.test(formFieldsString))
-            //     formFieldsString = formFieldsString.replace(/\[range\*?[^\]]+/.exec(formFieldsString)[0] + ']', '');
-            // }
-
-            $form.empty();
-            $form.prepend($firstElement);
-
             var $rows = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
-            $form.append($rows);
 
             var fieldsNumbers = [];
             var fieldsShortcodes = [];
@@ -387,7 +330,7 @@ var Rexbuilder_Rexelement = (function ($) {
                 var randomNumber = Rexbuilder_Util.createRandomNumericID(3);
                 fieldsNumbers[i] = randomNumber;
 
-                fieldsShortcodes[i] = /\[[\w]+[^\]]+/.exec(formFieldsString)[0] + ']';
+                fieldsShortcodes[i] = /\[[\w]+[^\]]+\]/.exec(formFieldsString)[0];
 
                 if (containsText) { // Fixing all the fields
                     var newClass = "text-" + fieldsNumbers[i];
@@ -472,7 +415,7 @@ var Rexbuilder_Rexelement = (function ($) {
                     $el.addClass(newClass);
 
                     // Shortcode
-                    fieldsShortcodes[i] = /\[[\w]+[^\\/]+/.exec(formFieldsString) + '/acceptance]';
+                    fieldsShortcodes[i] = /\[acceptance\*?[^(\])]+\][^(\])]+\]/.exec(formFieldsString)[0];
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
                     var regexpToSearch = /\[acceptance\*? [^(\s|\])]+/;
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
@@ -495,15 +438,13 @@ var Rexbuilder_Rexelement = (function ($) {
                     $el.addClass(newClass);
 
                     // Shortcode
-                    var regexpToSearch = /\[submit\*? [^(\s|\])]+/;
+                    var regexpToSearch = /\[submit/;
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
                 }
 
                 if (!/\]/.test(fieldsShortcodes[i])) {
                     fieldsShortcodes[i] += ']';
                 }
-
-                console.log(fieldsShortcodes[i])
 
                 var $newRowInDB = $(document.createElement("div"))
                     .addClass("wpcf7-row wpcf7-row__1-column")
@@ -515,69 +456,6 @@ var Rexbuilder_Rexelement = (function ($) {
                 $newRowInDB.append($newColumnInDB);
                 $rowsInDB.append($newRowInDB);
             });
-            
-
-            
-            // New code
-            // var fieldsShortcodes = [];
-            // var i = 0;
-            // var $rowsInDB = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
-            // var isRequired = false;
-            // while (/\[[\w]+[^\]]+/.test(formFieldsString)) {
-            //     // Extracting and fixing wpcf7 shortcodes of the new form
-            //     fieldsShortcodes[i] = /\[[\w]+[^\]]+/.exec(formFieldsString)[0] + ']';
-
-            //     // Is field required?
-            //     isRequired = /\[(text|email|number|textarea|radio|acceptance|file|submit)\*/.test(fieldsShortcodes[i]);
-
-            //     if (/\[text\*?\s/.test(fieldsShortcodes[i])) {
-            //         formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-            //         fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[text\*? [^\s]+/, '[text' + ( isRequired ? '*' : '' ) + ' text-' + fieldsNumbers[i] + ' class:text-' + fieldsNumbers[i]);      
-            //     } else if (/\[email\*?/.test(fieldsShortcodes[i])) {
-            //         formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-            //         fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[email\*? [^\s]+/, '[email' + ( isRequired ? '*' : '' ) + ' email-' + fieldsNumbers[i] + ' class:email-' + fieldsNumbers[i]);   
-            //     } else if (/\[number\*?/.test(fieldsShortcodes[i])) {
-            //         formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-            //         fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[number\*? [^\s]+/, '[number' + ( isRequired ? '*' : '' ) + ' number-' + fieldsNumbers[i] + ' class:number-' + fieldsNumbers[i]);   
-            //     } else if (/\[textarea\*?/.test(fieldsShortcodes[i])) {
-            //         formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-            //         fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[textarea\*? [^\s]+/, '[textarea' + ( isRequired ? '*' : '' ) + ' textarea-' + fieldsNumbers[i] + ' class:textarea-' + fieldsNumbers[i]);   
-            //     } else if (/\[select\*?/.test(fieldsShortcodes[i])) {
-            //         formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-            //         fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[select\*? [^\s]+/, '[select' + ( isRequired ? '*' : '' ) + ' menu-' + fieldsNumbers[i] + ' class:menu-' + fieldsNumbers[i]);   
-            //     } else if (/\[radio\*?/.test(fieldsShortcodes[i])) {
-            //         formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-            //         fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[radio\*? [^\s]+/, '[radio' + ( isRequired ? '*' : '' ) + ' radio-' + fieldsNumbers[i]);
-            //     } else if (/\[acceptance\*?/.test(fieldsShortcodes[i])) {
-            //         fieldsShortcodes[i] = /\[[\w]+[^\\/]+/.exec(formFieldsString) + '/acceptance]';
-            //         formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-            //         fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[acceptance\*? [^\s]+/, '[acceptance' + ( isRequired ? '*' : '' ) + ' acceptance-' + fieldsNumbers[i]); 
-            //     } else if (/\[file\*?/.test(fieldsShortcodes[i])) {
-            //         formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-            //         fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[file [^\s]+/, '[file' + ( isRequired ? '*' : '' ) + ' file-' + fieldsNumbers[i]);  
-            //         fieldsShortcodes[i] = fieldsShortcodes[i].replace(']', ']' + '<div class="wpcf7-file-caption">Your text here</div>');
-            //     } else if (/\[submit\*?/.test(fieldsShortcodes[i])) {
-            //         formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-            //         fieldsShortcodes[i] = fieldsShortcodes[i].replace(/\[submit\*? [^\s]+/, '[submit' + ( isRequired ? '*' : '' ) + ' submit-' + fieldsNumbers[i] + ' class:submit-' + fieldsNumbers[i]);   
-            //     }
-            //     if (!/\]/.test(fieldsShortcodes[i])) {
-            //         fieldsShortcodes[i] += ']';
-            //     }
-
-            //     var $newRow = $(document.createElement("div"))
-            //     .addClass("wpcf7-row wpcf7-row__1-column")
-            //     .attr("wpcf7-row-number", (i + 1));
-            //     var $newColumn = $(document.createElement("div"))
-            //     .addClass("wpcf7-column")
-            //     .attr("wpcf7-column-number", "1")
-            //     .append(fieldsShortcodes[i]);
-            //     $newRow.append($newColumn);
-            //     $rowsInDB.append($newRow);
-
-            //     isRequired = false;
-
-            //     i++;
-            // }
 
             Rexbuilder_Rexwpcf7.addFormInPage(formID, $rowsInDB);   // Necessary for creating column content data
 
@@ -593,7 +471,6 @@ var Rexbuilder_Rexelement = (function ($) {
 
             var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").eq(0);
             _addElementStyle($elementWrapper);
-            // _fixFormInDB(formID, fieldsNumbers);
         } else {    // If it's not a new element
             Rexbuilder_Rexwpcf7.updateDBFormsInPage(elementID, !flagElementFound);
         }

@@ -145,9 +145,9 @@ defined('ABSPATH') or exit;
                             <?php Rexbuilder_Utilities::get_icon('#B023-Input-Text'); ?>
                         </div>
                         <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Text Color', 'rexpansive-builder');?>">
-                            <input type="hidden" id="rex-wpcf7-background-color-runtime" name="rex-wpcf7-background-color-runtime" value="" />
-                            <input id="rex-wpcf7-background-color" type="text" name="rex-wpcf7-background-color" value="" size="10" />
-                            <div id="rex-wpcf7-background-color-preview-icon" class="preview-color-icon"></div>
+                            <input type="hidden" id="rex-wpcf7-text-color-runtime" name="rex-wpcf7-text-color-runtime" value="" />
+                            <input id="rex-wpcf7-text-color" type="text" name="rex-wpcf7-text-color" value="" size="10" />
+                            <div id="rex-wpcf7-text-color-preview-icon" class="preview-color-icon"></div>
                         </div>
                         <div id="content-text-color-palette" class="ml12 clearfix">
                             <div class="bg-palette-selector">

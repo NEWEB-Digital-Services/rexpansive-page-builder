@@ -2308,10 +2308,10 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             $content_input_height_type: $container.find(".wpcf7-input-height-type"),
             $content_input_font_size: $container.find("#wpcf7-set-font-size"),
             
-            $content_preview_text: $container.find("#rex-wpcf7-preview-background"),
-            $content_text_color_value: $container.find("#rex-wpcf7-background-color"),
-            $content_text_color_runtime: $container.find("#rex-wpcf7-background-color-runtime"),
-            $content_text_color_preview: $container.find("#rex-wpcf7-background-color-preview-icon"),
+            $content_preview_text: $container.find("#rex-wpcf7-preview-text"),
+            $content_text_color_value: $container.find("#rex-wpcf7-text-color"),
+            $content_text_color_runtime: $container.find("#rex-wpcf7-text-color-runtime"),
+            $content_text_color_preview: $container.find("#rex-wpcf7-text-color-preview-icon"),
 
             $content_text_color_palette_buttons: $self.find("#content-text-color-palette .bg-palette-selector"),
 

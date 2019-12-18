@@ -1229,7 +1229,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         if ($formColumn.find(".wpcf7-add-new-form-content").length == 0 && $formColumn.parents("#rex-wpcf7-tools").length == 0) {
             var fieldClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
             if (null === fieldClass) {
-            console.log($formColumn[0].outerHTML)
+            // console.log($formColumn[0].outerHTML)
                 fieldClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList)[0];
             } else {
                 fieldClass = fieldClass[0];
