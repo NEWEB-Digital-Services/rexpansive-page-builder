@@ -280,27 +280,57 @@ var Rexbuilder_Rexelement = (function ($) {
             var $form = $elementWrapper.find(".wpcf7-form");
             var formID = elementID;
             var $formChilds = $form.children().not('.wpcf7-response-output').not($form.children().first());
-            console.log($formChilds)
-            // .wrapAll(rows)
+            $formChilds.wrapAll('<div class="wpcf7-rows ui-sortable"></div>');
+            var $rows = $form.find('.wpcf7-rows');
 
             // Removing unwanted elements
-            $form.find('[type=url]').remove();
-            $form.find('[type=tel]').remove();
-            $form.find('[type=date]').remove();
-            $form.find('[type=range]').remove();
-            $form.find('.wpcf7-checkbox').remove();
-            $form.find('.wpcf7-quiz-label').remove();
+            // CONTROLLARE CHE RIMUOVANO TUTTO, nel DOM
+            $form.find('[type=url]').parents('.wpcf7-form-control-wrap').remove();
+            $form.find('[type=tel]').parents('.wpcf7-form-control-wrap').remove();
+            $form.find('[type=date]').parents('.wpcf7-form-control-wrap').remove();
+            $form.find('[type=range]').parents('.wpcf7-form-control-wrap').remove();
+            $form.find('.wpcf7-checkbox').parents('.wpcf7-form-control-wrap').remove();
+            $form.find('.wpcf7-quiz-label').parents('.wpcf7-form-control-wrap').remove();
 
-            if (/\[(url|tel|date|checkbox|quiz|range)\*?[^\]]+/.test(formFieldsString)) {
-                // Filtering the fields in the shortcode
-                formFieldsString = formFieldsString.replace(/\[(url|tel|date|checkbox|quiz|range)\*?[^\]]+/.exec(formFieldsString)[0] + ']', '');
+            var regexToFind = /\[(url|tel|date|checkbox|quiz|range)\*?[^\]]+\]/g;
+            var result;
+            while ((result = regexToFind.exec(formFieldsString)) !== null) {
+              // This is necessary to avoid infinite loops with zero-width matches
+              if (result.index === regexToFind.lastIndex) {
+                regexToFind.lastIndex++;
+              } 
+              formFieldsString = formFieldsString.replace(result[0], '');
             }
 
-            var $rows = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
+            var $childrenWithInputs = $rows.children().filter(function() {      // Getting only the children containing the form fields
+                var $field = $(this);
+                return $field.find('.wpcf7-form-control-wrap').length != 0 || $field.find('.wpcf7-form-control').length != 0 ||  $field.is('.wpcf7-form-control-wrap') || $field.is('.wpcf7-form-control')
+            });
+
+            var $formFields = $();
+            $childrenWithInputs.each(function(i, el) {
+                var $el = $(el);
+
+                if (0 != $el.find('.wpcf7-form-control-wrap').length) {
+                    $el = $el.find('.wpcf7-form-control-wrap');
+                    if (0 != $el.parent('label').length) {
+                        $el = $el.parent('label');  // Searching only on the first parent because there may be a label containing more inputs, and this should not happen
+                    }
+                } else {
+                    if (0 != $el.find('.wpcf7-form-control').length) {
+                        $el = $el.find('.wpcf7-form-control');
+                    } else {}
+                }
+
+                $formFields = $formFields.add($el);
+            });
+
+            $rows.empty();
 
             var fieldsNumbers = [];
             var fieldsShortcodes = [];
-            var $rowsInDB = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
+            // var $rowsInDB = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
+            var $rowsInDB = doShallowCopy($rows);
             $formFields.each(function (i, el) {
                 var $el = $(el);
 
@@ -316,6 +346,16 @@ var Rexbuilder_Rexelement = (function ($) {
                 $newColumn.append($newColumnContent);
                 $newRow.append($newColumn);
                 $rows.append($newRow);
+                console.log(doShallowCopy($newRow))
+                $rowsInDB.append(doShallowCopy($newRow));
+
+                if ($el.is('label')) {
+                    if (undefined === $el.find('.wpcf7-form-control-wrap')) {
+                        $el = $el.find('.wpcf7-form-control');
+                    } else {
+                        $el = $el.find('.wpcf7-form-control-wrap');
+                    }
+                }
 
                 var containsText = $el.find('[type=text]').length != 0;
                 var containsEmail = $el.find('.wpcf7-email').length != 0;
@@ -329,7 +369,7 @@ var Rexbuilder_Rexelement = (function ($) {
 
                 var randomNumber = Rexbuilder_Util.createRandomNumericID(3);
                 fieldsNumbers[i] = randomNumber;
-
+                
                 fieldsShortcodes[i] = /\[[\w]+[^\]]+\]/.exec(formFieldsString)[0];
 
                 if (containsText) { // Fixing all the fields
@@ -337,6 +377,7 @@ var Rexbuilder_Rexelement = (function ($) {
 
                     // DOM
                     var $input = $el.find('.wpcf7-text');
+                    var $cloneInput = doShallowCopy($input);
                     $input.addClass(newClass);
                     $el.addClass(newClass);     // Serve?
                     $input.attr('size', '');
@@ -345,6 +386,9 @@ var Rexbuilder_Rexelement = (function ($) {
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
                     var regexpToSearch = /\[text\*? [^(\s|\])]+/;
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+                    console.log($rowsInDB[0])
+                    $rowsInDB.find($cloneInput).replaceWith(fieldsShortcodes[i]);
                 } else if (containsEmail) {
                     var newClass = "email-" + fieldsNumbers[i];
 
@@ -446,15 +490,15 @@ var Rexbuilder_Rexelement = (function ($) {
                     fieldsShortcodes[i] += ']';
                 }
 
-                var $newRowInDB = $(document.createElement("div"))
-                    .addClass("wpcf7-row wpcf7-row__1-column")
-                    .attr("wpcf7-row-number", (i + 1));
-                var $newColumnInDB = $(document.createElement("div"))
-                    .addClass("wpcf7-column")
-                    .attr("wpcf7-column-number", "1")
-                    .append(fieldsShortcodes[i]);
-                $newRowInDB.append($newColumnInDB);
-                $rowsInDB.append($newRowInDB);
+                // var $newRowInDB = $(document.createElement("div"))
+                //     .addClass("wpcf7-row wpcf7-row__1-column")
+                //     .attr("wpcf7-row-number", (i + 1));
+                // var $newColumnInDB = $(document.createElement("div"))
+                //     .addClass("wpcf7-column")
+                //     .attr("wpcf7-column-number", "1")
+                //     .append(fieldsShortcodes[i]);
+                // $newRowInDB.append($newColumnInDB);
+                // $rowsInDB.append($newRowInDB);
             });
 
             Rexbuilder_Rexwpcf7.addFormInPage(formID, $rowsInDB);   // Necessary for creating column content data
@@ -485,28 +529,6 @@ var Rexbuilder_Rexelement = (function ($) {
         // var $element = $textWrap.parents(".grid-stack-item");
         // var $section = $element.parents(".rexpansive_section");
         // Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
-    }
-
-    var _fixFormInDB = function (formID, fieldsNumbers) {
-        console.log(fieldsNumbers)
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: _plugin_frontend_settings.rexajax.ajaxurl,
-            data: {
-              action: "rex_wpcf7_get_form",
-              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-              form_id: formID
-            },
-            success: function(response) {
-                if (response.success) {
-                    var fieldsString = response.data.html_form.toString().trim();
-
-                    
-                }
-            },
-            error: function(response) {}
-        });
     }
 
     var _updateElementListInPage = function () {
@@ -1026,6 +1048,15 @@ var Rexbuilder_Rexelement = (function ($) {
 	        $elementWrapper.wrap("<span class=\"rex-elements-paragraph\"></span>");
 	        _endFixingElementImported($elementWrapper, formFieldsString);
 	    });
+    }
+
+    var doShallowCopy = function($jQueryObject) {
+        // Return a jQuery Object
+        var $jQueryObjectShallowCopied = $();
+        $jQueryObject.each(function(index, el) {
+            $jQueryObjectShallowCopied = $jQueryObjectShallowCopied.add($($(el)[index].cloneNode(false)));
+        });
+        return $jQueryObjectShallowCopied;
     }
 
 	var init = function() {

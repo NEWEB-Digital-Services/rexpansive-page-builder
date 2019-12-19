@@ -2,7 +2,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	"use strict";
 
 	var styleSheet;
-	var defaultFormValues;
     var columnContentDataDefaults;
 
     var $fileCaption;
@@ -28,13 +27,11 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         $columnToAddField.empty().removeClass('with-button');
         $columnToAddFieldInDB.empty().removeClass('with-button');
-
+        
         var $span = $(document.createElement("span")).addClass("wpcf7-column-content");
         $columnToAddField.append($span);
         var $columnContent = $columnToAddField.find('.wpcf7-column-content');
-
-        console.log('Aggiungi campo')
-
+        
         // Selecting the field
         switch (fieldType) {
             case "text":
@@ -1221,7 +1218,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _removeColumnContentStyle = function ($formColumn) {
-        // console.trace()
         var formID = $formColumn.parents(".rex-element-wrapper").attr("data-rex-element-id");
         var rowNumber = $formColumn.parents(".wpcf7-row").attr("wpcf7-row-number");
         var columnNumber = $formColumn.attr("wpcf7-column-number");
@@ -1229,7 +1225,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         if ($formColumn.find(".wpcf7-add-new-form-content").length == 0 && $formColumn.parents("#rex-wpcf7-tools").length == 0) {
             var fieldClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
             if (null === fieldClass) {
-            // console.log($formColumn[0].outerHTML)
                 fieldClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList)[0];
             } else {
                 fieldClass = fieldClass[0];
