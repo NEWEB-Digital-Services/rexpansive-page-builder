@@ -99,7 +99,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         blockID = data.blockID;
 
 		if (!spanDataExists) {
-			_createSpanData();
+            console.log('Avrei creato lo span data')
+			// _createSpanData();
 		}
 		
 		_updateColumnContentEditorModal(columnContentData);

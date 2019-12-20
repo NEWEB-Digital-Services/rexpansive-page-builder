@@ -329,10 +329,22 @@ var Rexbuilder_Rexelement = (function ($) {
 
             var fieldsNumbers = [];
             var fieldsShortcodes = [];
-            // var $rowsInDB = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
-            var $rowsInDB = doShallowCopy($rows);
+            var $rowsInDB = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
             $formFields.each(function (i, el) {
                 var $el = $(el);
+
+                var $newRowInDB = $(document.createElement("div"))
+                    .addClass("wpcf7-row wpcf7-row__1-column")
+                    .attr("wpcf7-row-number", (i + 1));
+                var $newColumnInDB = $(document.createElement("div"))
+                    .addClass("wpcf7-column")
+                    .attr("wpcf7-column-number", "1");
+                var $newColumnContentInDB = $(document.createElement("span"))
+                    .addClass("wpcf7-column-content")
+                    .append(el);
+                $newColumnInDB.append($newColumnContentInDB);
+                $newRowInDB.append($newColumnInDB);
+                $rowsInDB.append($newRowInDB);
 
                 var $newRow = $(document.createElement("div"))
                     .addClass("wpcf7-row wpcf7-row__1-column")
@@ -346,8 +358,7 @@ var Rexbuilder_Rexelement = (function ($) {
                 $newColumn.append($newColumnContent);
                 $newRow.append($newColumn);
                 $rows.append($newRow);
-                console.log(doShallowCopy($newRow))
-                $rowsInDB.append(doShallowCopy($newRow));
+                $newColumnContentInDB.append($el[0].outerHTML)
 
                 if ($el.is('label')) {
                     if (undefined === $el.find('.wpcf7-form-control-wrap')) {
@@ -377,7 +388,6 @@ var Rexbuilder_Rexelement = (function ($) {
 
                     // DOM
                     var $input = $el.find('.wpcf7-text');
-                    var $cloneInput = doShallowCopy($input);
                     $input.addClass(newClass);
                     $el.addClass(newClass);     // Serve?
                     $input.attr('size', '');
@@ -387,8 +397,7 @@ var Rexbuilder_Rexelement = (function ($) {
                     var regexpToSearch = /\[text\*? [^(\s|\])]+/;
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
 
-                    console.log($rowsInDB[0])
-                    $rowsInDB.find($cloneInput).replaceWith(fieldsShortcodes[i]);
+                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
                 } else if (containsEmail) {
                     var newClass = "email-" + fieldsNumbers[i];
 
@@ -397,11 +406,15 @@ var Rexbuilder_Rexelement = (function ($) {
                     $input.addClass(newClass);
                     $el.addClass(newClass);     // Serve?
                     $input.attr('size', '');
+                    // console.log('al drop', $input[0].outerHTML)
 
                     // Shortcode
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
                     var regexpToSearch = /\[email\*? [^(\s|\])]+/;
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
+                    // console.log('al drop', $newColumnContentInDB[0].outerHTML)
                 } else if (containsNumber) {
                     var newClass = "number-" + fieldsNumbers[i];
 
@@ -415,6 +428,8 @@ var Rexbuilder_Rexelement = (function ($) {
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
                     var regexpToSearch = /\[number\*? [^(\s|\])]+/;
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
                 } else if (containsTextarea) {
                     var newClass = "textarea-" + fieldsNumbers[i];
 
@@ -428,6 +443,8 @@ var Rexbuilder_Rexelement = (function ($) {
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
                     var regexpToSearch = /\[textarea\*? [^(\s|\])]+/;
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
                 } else if (containsSelect) {
                     var newClass = "menu-" + fieldsNumbers[i];
 
@@ -442,6 +459,8 @@ var Rexbuilder_Rexelement = (function ($) {
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
                     var regexpToSearch = /\[select\*? [^(\s|\])]+/;
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
                 } else if (containsRadioButtons) {
                     var newClass = "radio-" + fieldsNumbers[i];
 
@@ -452,6 +471,8 @@ var Rexbuilder_Rexelement = (function ($) {
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
                     var regexpToSearch = /\[radio\*? [^(\s|\])]+/;
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
                 } else if (containsCheckbox) {
                     var newClass = "acceptance-" + fieldsNumbers[i];
 
@@ -463,6 +484,8 @@ var Rexbuilder_Rexelement = (function ($) {
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
                     var regexpToSearch = /\[acceptance\*? [^(\s|\])]+/;
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
                 } else if (containsFile) {
                     var newClass = "file-" + fieldsNumbers[i];
 
@@ -475,6 +498,8 @@ var Rexbuilder_Rexelement = (function ($) {
                     var regexpToSearch = /\[file\*? [^(\s|\])]+/;
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(']', ']' + '<div class="wpcf7-file-caption">Your text here</div>');
+
+                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
                 } else if (containsSubmit) {
                     var newClass = "submit-" + randomNumber;
 
@@ -484,22 +509,16 @@ var Rexbuilder_Rexelement = (function ($) {
                     // Shortcode
                     var regexpToSearch = /\[submit/;
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+                    $newColumnContentInDB.find('.wpcf7-form-control').replaceWith(fieldsShortcodes[i]);
                 }
 
                 if (!/\]/.test(fieldsShortcodes[i])) {
                     fieldsShortcodes[i] += ']';
                 }
-
-                // var $newRowInDB = $(document.createElement("div"))
-                //     .addClass("wpcf7-row wpcf7-row__1-column")
-                //     .attr("wpcf7-row-number", (i + 1));
-                // var $newColumnInDB = $(document.createElement("div"))
-                //     .addClass("wpcf7-column")
-                //     .attr("wpcf7-column-number", "1")
-                //     .append(fieldsShortcodes[i]);
-                // $newRowInDB.append($newColumnInDB);
-                // $rowsInDB.append($newRowInDB);
             });
+
+            // console.log('al drop', $rowsInDB[0].outerHTML)
 
             Rexbuilder_Rexwpcf7.addFormInPage(formID, $rowsInDB);   // Necessary for creating column content data
 
@@ -1048,15 +1067,6 @@ var Rexbuilder_Rexelement = (function ($) {
 	        $elementWrapper.wrap("<span class=\"rex-elements-paragraph\"></span>");
 	        _endFixingElementImported($elementWrapper, formFieldsString);
 	    });
-    }
-
-    var doShallowCopy = function($jQueryObject) {
-        // Return a jQuery Object
-        var $jQueryObjectShallowCopied = $();
-        $jQueryObject.each(function(index, el) {
-            $jQueryObjectShallowCopied = $jQueryObjectShallowCopied.add($($(el)[index].cloneNode(false)));
-        });
-        return $jQueryObjectShallowCopied;
     }
 
 	var init = function() {

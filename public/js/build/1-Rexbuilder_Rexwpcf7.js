@@ -316,6 +316,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _updateFormInDB = function (formID) {
+        console.log(formToUpdateString)
         if( $formsInPage[formID].length > 0 ) {
             var formToUpdateString = $formsInPage[formID][0].outerHTML; // Don't need to get the form in db before, already have it
             var elementDataString = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").eq(0).find('.rex-element-data')[0].outerHTML;
@@ -1186,11 +1187,13 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     	$formColumn.prepend($spanData);
 
-        var shortcode = $formColumnInDB.html();
-        $formColumnInDB.empty();
-        var $span = $(document.createElement("span"));
-        $span.addClass("wpcf7-column-content").append(shortcode);
-        $formColumnInDB.append($span).prepend($spanDataInDB);
+        // var shortcode = $formColumnInDB.find('.wpcf7-column-content').html(); // Not .text() because some shortcodes have HTML too (e.g. file)
+        // console.log('shortcode', shortcode)
+        // $formColumnInDB.empty();
+        // var $span = $(document.createElement("span"));
+        // $span.addClass("wpcf7-column-content").append(shortcode);
+        $formColumnInDB/*.append($span)*/.prepend($spanDataInDB);
+        // console.log('column in db', $formColumnInDB[0].outerHTML)
     }
 
     var _removeColumnContentSpanData = function (data) {
@@ -1794,18 +1797,29 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             /* Extracting data from span in the DOM */
         	var $columnContentData = $formColumn.find(".rex-wpcf7-column-content-data").eq(0);
         	var columnContentDataEl = $columnContentData[0];
+            console.log("genero le varie cose")
 
             // Required field
-            columnContentData.wpcf7_required_field = (columnContentDataEl.getAttribute("data-wpcf7-required-field") ? columnContentDataEl.getAttribute("data-wpcf7-required-field") : columnContentDataDefaults.wpcf7_required_field);
+            var isRequiredField = $formColumn.find('.wpcf7-validates-as-required').length !== 0;
+            if (!isRequiredField) {
+                var isAcceptance = $formColumn.find('.wpcf7-acceptance').length !== 0;
+                if (isAcceptance) {
+                    isRequiredField = $formColumn.find('.wpcf7-acceptance.optional') === 0;
+                }
+            }
+            columnContentData.wpcf7_required_field = (columnContentDataEl.getAttribute("data-wpcf7-required-field") ? columnContentDataEl.getAttribute("data-wpcf7-required-field") : isRequiredField);
 
             // E-Mail
-            columnContentData.wpcf7_email = (columnContentDataEl.getAttribute("data-wpcf7-email") ? columnContentDataEl.getAttribute("data-wpcf7-email").toString() : columnContentDataDefaults.wpcf7_email);
+            var isEmail = $formColumn.find('.wpcf7-validates-as-email').length !== 0;
+            columnContentData.wpcf7_email = (columnContentDataEl.getAttribute("data-wpcf7-email") ? columnContentDataEl.getAttribute("data-wpcf7-email").toString() : isEmail);
 
             // Only numbers
-            columnContentData.wpcf7_only_numbers = (columnContentDataEl.getAttribute("data-wpcf7-only-numbers") ? columnContentDataEl.getAttribute("data-wpcf7-only-numbers").toString() : columnContentDataDefaults.wpcf7_only_numbers);
+            var isNumberInput = $formColumn.find('.wpcf7-validates-as-number').length !== 0;
+            columnContentData.wpcf7_only_numbers = (columnContentDataEl.getAttribute("data-wpcf7-only-numbers") ? columnContentDataEl.getAttribute("data-wpcf7-only-numbers").toString() : isNumberInput);
 
             // Default check
-            columnContentData.wpcf7_default_check = (columnContentDataEl.getAttribute("data-wpcf7-default-check") ? columnContentDataEl.getAttribute("data-wpcf7-default-check").toString() : columnContentDataDefaults.wpcf7_default_check);
+            var isDefaultChecked = $formColumn.find('.wpcf7-acceptance [type=checkbox]').prop('checked') !== undefined;
+            columnContentData.wpcf7_default_check = (columnContentDataEl.getAttribute("data-wpcf7-default-check") ? columnContentDataEl.getAttribute("data-wpcf7-default-check").toString() : isDefaultChecked);
 
             // Placeholder
             columnContentData.wpcf7_placeholder = (columnContentDataEl.getAttribute("data-wpcf7-placeholder") ? columnContentDataEl.getAttribute("data-wpcf7-placeholder").toString() : '');
@@ -2812,9 +2826,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     var _fixWpcf7 = function () {
         _setRowsSortable();
         _fixInputs();
-        _addWpcf7MenuPlaceholders();
-        _fixWpcf7RadioButtons();
-        _fixWpcf7Files();
+        // _addWpcf7MenuPlaceholders();
+        // _fixWpcf7RadioButtons();
+        // _fixWpcf7Files();
     }
 
     var _setRowsSortable = function () {
@@ -2851,6 +2865,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _fixInputs = function() {
+        console.log("_fixInputs")
         Rexbuilder_Util.$rexContainer.find('.wpcf7-column').each(function(i, el) {
             var $el = $(el);
 
@@ -2868,21 +2883,81 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 var $input = $el.find('.wpcf7-text');
                 $input.attr('size', '');
             } else if (containsEmail) {
-
+                var $input = $el.find('.wpcf7-email');
+                $input.attr('size', '');
             } else if (containsNumber) {
-
+                var $input = $el.find('.wpcf7-number');
+                $input.attr('size', '');
+                console.log('al load', $input[0].outerHTML)
             } else if (containsTextarea) {
-
+                var $input = $el.find('.wpcf7-textarea');
+                $input.attr('size', '');
             } else if (containsSelect) {
+                var $input = $el.find('.wpcf7-select');
+                // $menuInForm.each(function () {
+                    if ($input.find("option").eq(0).val() == "") {
+                        var $option = $input.find("option").eq(0);
+                        $option.attr("disabled", "");
+                        $option.attr("selected", "");
 
+                        var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
+                        $option.text(placeholder);
+                    }
+
+                    $input.on("change", function () {
+                        var color = $input.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-select-color-after-selection");
+                        $input.css("color", color);
+                    })
+                // });
             } else if (containsRadioButtons) {
+                var $radios = $el.find('input[type=radio]');
 
+                $radios.each(function(index, el) {
+                    var $element = $(el);
+
+                    $element.addClass("with-gap");
+                    $element.attr("id", "wpcf7-radio-" + (i + 1));
+                    var $spanLabel = $element.siblings('.wpcf7-list-item-label');
+
+                    if ($spanLabel.length != 0) {
+                        var text = $spanLabel.text();
+                        $spanLabel.empty();
+
+                        var $label = $(document.createElement("label"));
+                        $label.addClass('wpcf7-radio-label');
+                        $label.attr('for',  $element.attr('id'));
+                        $label.text(text);
+                        $label.insertAfter($spanLabel);
+                        $spanLabel.removeClass('wpcf7-list-item-label');
+                    } else {
+                        $element.siblings('.wpcf7-radio-label').attr('for', 'wpcf7-radio-' + (i + 1));
+                    }
+                });
             } else if (containsCheckbox) {
-
+                // Do nothing
             } else if (containsFile) {
+                var $inputWrap = $el.find(".wpcf7-form-control-wrap").has(" .wpcf7-file");
+                // $filesInForm.each(function (i) {
+                    if ($inputWrap.find(".wpcf7-file-caption").length == 0) {
+                        $inputWrap.siblings(".wpcf7-file-caption").detach().appendTo($inputWrap);
+                    }
 
+                    var $element = $inputWrap.find("input[type='file']");
+                    $element.attr("id", "wpcf7-file-" + (i + 1));
+                    $element.siblings('label').remove();
+                    var $fileLabel = $(document.createElement("label"));
+                    $fileLabel.attr("for",  $element.attr("id"));
+                    $fileLabel.insertAfter($element);
+
+                    if ('undefined' != typeof $inputWrap.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text")) {
+                        var buttonText = $inputWrap.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text");
+                        $fileLabel.text(buttonText);
+                    } else {
+                        $fileLabel.text("Choose a file");
+                    }
+                // });
             } else if (containsSubmit) {
-
+                // Do nothing
             }
         });
     }
