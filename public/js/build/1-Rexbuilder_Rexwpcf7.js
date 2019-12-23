@@ -316,7 +316,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _updateFormInDB = function (formID) {
-        console.log(formToUpdateString)
         if( $formsInPage[formID].length > 0 ) {
             var formToUpdateString = $formsInPage[formID][0].outerHTML; // Don't need to get the form in db before, already have it
             var elementDataString = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").eq(0).find('.rex-element-data')[0].outerHTML;
@@ -1324,6 +1323,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     $formColumns.find(".wpcf7-select").css("color", newValue);
                 }
                 break;
+            case "button-text":
+                console.log($formColumns[0].outerHTML)
+                break;
             case "button-width":
             case "button-height":
             case "button-border-width":
@@ -1797,7 +1799,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             /* Extracting data from span in the DOM */
         	var $columnContentData = $formColumn.find(".rex-wpcf7-column-content-data").eq(0);
         	var columnContentDataEl = $columnContentData[0];
-            console.log("genero le varie cose")
 
             // Required field
             var isRequiredField = $formColumn.find('.wpcf7-validates-as-required').length !== 0;
@@ -2395,6 +2396,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var inputType = columnContentData.input_type;
         var fieldClass = columnContentData.field_class;
 
+        var buttonText = columnContentData.wpcf7_button.text;
         var buttonHeight = columnContentData.wpcf7_button.height;
         var buttonWidth = columnContentData.wpcf7_button.width;
         var buttonBorderWidth = columnContentData.wpcf7_button.border_width;
@@ -2865,78 +2867,102 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _fixInputs = function() {
-        console.log("_fixInputs")
         Rexbuilder_Util.$rexContainer.find('.wpcf7-column').each(function(i, el) {
-            var $el = $(el);
+            var $formColumn = $(el);
 
-            var containsText = $el.find('[type=text]').length != 0;
-            var containsEmail = $el.find('.wpcf7-email').length != 0;
-            var containsNumber = $el.find('.wpcf7-number').length != 0;
-            var containsTextarea = $el.find('.wpcf7-textarea').length != 0;
-            var containsSelect = $el.find('.wpcf7-select').length != 0;
-            var containsRadioButtons = $el.find('.wpcf7-radio').length != 0;
-            var containsCheckbox = $el.find('.wpcf7-acceptance').length != 0;
-            var containsFile = $el.find('.wpcf7-file').length != 0;
-            var containsSubmit = $el.find('.wpcf7-submit');
+            // var containsText = $el.find('[type=text]').length != 0;
+            // var containsEmail = $el.find('.wpcf7-email').length != 0;
+            // var containsNumber = $el.find('.wpcf7-number').length != 0;
+            // var containsTextarea = $el.find('.wpcf7-textarea').length != 0;
+            // var containsSelect = $el.find('.wpcf7-select').length != 0;
+            // var containsRadioButtons = $el.find('.wpcf7-radio').length != 0;
+            // var containsCheckbox = $el.find('.wpcf7-acceptance').length != 0;
+            // var containsFile = $el.find('.wpcf7-file').length != 0;
+            // var containsSubmit = $el.find('.wpcf7-submit').length != 0;
 
-            if (containsText) {
-                var $input = $el.find('.wpcf7-text');
-                $input.attr('size', '');
-            } else if (containsEmail) {
-                var $input = $el.find('.wpcf7-email');
-                $input.attr('size', '');
-            } else if (containsNumber) {
-                var $input = $el.find('.wpcf7-number');
-                $input.attr('size', '');
-                console.log('al load', $input[0].outerHTML)
-            } else if (containsTextarea) {
-                var $input = $el.find('.wpcf7-textarea');
-                $input.attr('size', '');
-            } else if (containsSelect) {
-                var $input = $el.find('.wpcf7-select');
-                // $menuInForm.each(function () {
-                    if ($input.find("option").eq(0).val() == "") {
-                        var $option = $input.find("option").eq(0);
-                        $option.attr("disabled", "");
-                        $option.attr("selected", "");
+            var possibleFields = {
+                text: $formColumn.find('[type=text]').length != 0,
+                email: $formColumn.find('.wpcf7-email').length != 0,
+                number: $formColumn.find('.wpcf7-number').length != 0,
+                textarea: $formColumn.find('.wpcf7-textarea').length != 0,
+                select: $formColumn.find('.wpcf7-select').length != 0,
+                radio: $formColumn.find('.wpcf7-radio').length != 0,
+                acceptance:$formColumn.find('.wpcf7-acceptance').length != 0, 
+                file: $formColumn.find('.wpcf7-file').length != 0,
+                submit: $formColumn.find('.wpcf7-submit').length != 0
+            }
 
-                        var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
-                        $option.text(placeholder);
-                    }
+            for (var type in possibleFields) {
+                if (possibleFields[type] == true) {
+                    var elementToFix = type;
+                    break;
+                }
+            }
 
-                    $input.on("change", function () {
-                        var color = $input.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-select-color-after-selection");
-                        $input.css("color", color);
-                    })
-                // });
-            } else if (containsRadioButtons) {
-                var $radios = $el.find('input[type=radio]');
+            switch(elementToFix) {
+                case "text":
+                    var $input = $formColumn.find('.wpcf7-text');
+                    $input.attr('size', '');
+                    break;
+                case "email":
+                    var $input = $formColumn.find('.wpcf7-email');
+                    $input.attr('size', '');
+                    break;
+                case "number":
+                    var $input = $formColumn.find('.wpcf7-number');
+                    $input.attr('size', '');
+                    break;
+                case "textarea":
+                    var $input = $formColumn.find('.wpcf7-textarea');
+                    $input.attr('size', '');
+                    break;
+                case "select":
+                    var $input = $formColumn.find('.wpcf7-select');
+                    // $menuInForm.each(function () {
+                        if ($input.find("option").eq(0).val() == "") {
+                            var $option = $input.find("option").eq(0);
+                            $option.attr("disabled", "");
+                            $option.attr("selected", "");
 
-                $radios.each(function(index, el) {
-                    var $element = $(el);
+                            var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
+                            $option.text(placeholder);
+                        }
 
-                    $element.addClass("with-gap");
-                    $element.attr("id", "wpcf7-radio-" + (i + 1));
-                    var $spanLabel = $element.siblings('.wpcf7-list-item-label');
+                        $input.on("change", function () {
+                            var color = $input.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-select-color-after-selection");
+                            $input.css("color", color);
+                        })
+                    // });
+                    break;
+                case "radio":
+                    var $radios = $formColumn.find('input[type=radio]');
 
-                    if ($spanLabel.length != 0) {
-                        var text = $spanLabel.text();
-                        $spanLabel.empty();
+                    $radios.each(function(index, el) {
+                        var $element = $(el);
 
-                        var $label = $(document.createElement("label"));
-                        $label.addClass('wpcf7-radio-label');
-                        $label.attr('for',  $element.attr('id'));
-                        $label.text(text);
-                        $label.insertAfter($spanLabel);
-                        $spanLabel.removeClass('wpcf7-list-item-label');
-                    } else {
-                        $element.siblings('.wpcf7-radio-label').attr('for', 'wpcf7-radio-' + (i + 1));
-                    }
-                });
-            } else if (containsCheckbox) {
-                // Do nothing
-            } else if (containsFile) {
-                var $inputWrap = $el.find(".wpcf7-form-control-wrap").has(" .wpcf7-file");
+                        $element.addClass("with-gap");
+                        $element.attr("id", "wpcf7-radio-" + (i + 1));
+                        var $spanLabel = $element.siblings('.wpcf7-list-item-label');
+
+                        if ($spanLabel.length != 0) {
+                            var text = $spanLabel.text();
+                            $spanLabel.empty();
+
+                            var $label = $(document.createElement("label"));
+                            $label.addClass('wpcf7-radio-label');
+                            $label.attr('for',  $element.attr('id'));
+                            $label.text(text);
+                            $label.insertAfter($spanLabel);
+                            $spanLabel.removeClass('wpcf7-list-item-label');
+                        } else {
+                            $element.siblings('.wpcf7-radio-label').attr('for', 'wpcf7-radio-' + (i + 1));
+                        }
+                    });
+                    break;
+                case "acceptance":
+                    break;
+                case "file":
+                    var $inputWrap = $formColumn.find(".wpcf7-form-control-wrap").has(" .wpcf7-file");
                 // $filesInForm.each(function (i) {
                     if ($inputWrap.find(".wpcf7-file-caption").length == 0) {
                         $inputWrap.siblings(".wpcf7-file-caption").detach().appendTo($inputWrap);
@@ -2956,9 +2982,92 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                         $fileLabel.text("Choose a file");
                     }
                 // });
-            } else if (containsSubmit) {
-                // Do nothing
+                    break;
+                case "submit":
+                    break;
+                default:
+                    break;
             }
+
+            // if (containsText) {
+            //     var $input = $el.find('.wpcf7-text');
+            //     $input.attr('size', '');
+            // } else if (containsEmail) {
+            //     var $input = $el.find('.wpcf7-email');
+            //     $input.attr('size', '');
+            // } else if (containsNumber) {
+            //     var $input = $el.find('.wpcf7-number');
+            //     $input.attr('size', '');
+            // } else if (containsTextarea) {
+            //     var $input = $el.find('.wpcf7-textarea');
+            //     $input.attr('size', '');
+            // } else if (containsSelect) {
+            //     var $input = $el.find('.wpcf7-select');
+            //     // $menuInForm.each(function () {
+            //         if ($input.find("option").eq(0).val() == "") {
+            //             var $option = $input.find("option").eq(0);
+            //             $option.attr("disabled", "");
+            //             $option.attr("selected", "");
+
+            //             var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
+            //             $option.text(placeholder);
+            //         }
+
+            //         $input.on("change", function () {
+            //             var color = $input.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-select-color-after-selection");
+            //             $input.css("color", color);
+            //         })
+            //     // });
+            // } else if (containsRadioButtons) {
+            //     var $radios = $el.find('input[type=radio]');
+
+            //     $radios.each(function(index, el) {
+            //         var $element = $(el);
+
+            //         $element.addClass("with-gap");
+            //         $element.attr("id", "wpcf7-radio-" + (i + 1));
+            //         var $spanLabel = $element.siblings('.wpcf7-list-item-label');
+
+            //         if ($spanLabel.length != 0) {
+            //             var text = $spanLabel.text();
+            //             $spanLabel.empty();
+
+            //             var $label = $(document.createElement("label"));
+            //             $label.addClass('wpcf7-radio-label');
+            //             $label.attr('for',  $element.attr('id'));
+            //             $label.text(text);
+            //             $label.insertAfter($spanLabel);
+            //             $spanLabel.removeClass('wpcf7-list-item-label');
+            //         } else {
+            //             $element.siblings('.wpcf7-radio-label').attr('for', 'wpcf7-radio-' + (i + 1));
+            //         }
+            //     });
+            // } else if (containsCheckbox) {
+            //     // Do nothing
+            // } else if (containsFile) {
+            //     var $inputWrap = $el.find(".wpcf7-form-control-wrap").has(" .wpcf7-file");
+            //     // $filesInForm.each(function (i) {
+            //         if ($inputWrap.find(".wpcf7-file-caption").length == 0) {
+            //             $inputWrap.siblings(".wpcf7-file-caption").detach().appendTo($inputWrap);
+            //         }
+
+            //         var $element = $inputWrap.find("input[type='file']");
+            //         $element.attr("id", "wpcf7-file-" + (i + 1));
+            //         $element.siblings('label').remove();
+            //         var $fileLabel = $(document.createElement("label"));
+            //         $fileLabel.attr("for",  $element.attr("id"));
+            //         $fileLabel.insertAfter($element);
+
+            //         if ('undefined' != typeof $inputWrap.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text")) {
+            //             var buttonText = $inputWrap.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text");
+            //             $fileLabel.text(buttonText);
+            //         } else {
+            //             $fileLabel.text("Choose a file");
+            //         }
+            //     // });
+            // } else if (containsSubmit) {
+            //     // Do nothing
+            // }
         });
     }
 

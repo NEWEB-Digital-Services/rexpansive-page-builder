@@ -724,6 +724,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
         // Button
         columnContentData.wpcf7_button.text = wpcf7_content_editor_properties.$content_button_text.val();
+        console.log("update from panel", columnContentData.wpcf7_button.text)
         columnContentData.wpcf7_button.font_size = wpcf7_content_editor_properties.$content_button_text_font_size.val() + "px";
         columnContentData.wpcf7_button.height = wpcf7_content_editor_properties.$content_button_height.val() + "px";
         columnContentData.wpcf7_button.width = wpcf7_content_editor_properties.$content_button_width.val() + "px";

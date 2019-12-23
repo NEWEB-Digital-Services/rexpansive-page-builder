@@ -3647,6 +3647,8 @@ var TextEditor = (function ($) {
           break;
         case "columns":
           var that = this;
+          var $formColumns = $(this.traceForm).find(".wpcf7-column").not('.wpcf7-add-new-form-content').not('.wpcf7-add-new-row');
+
           $(this.traceForm).find(".wpcf7-column").each(function () {
             if ($(this).find(".wpcf7-add-new-form-content").length == 0 && $(this).find(".wpcf7-add-new-row").length == 0) {
               $(that.findElementToOutline(this))
@@ -3678,43 +3680,88 @@ var TextEditor = (function ($) {
       }, 0);
     },
 
+    // findElementToOutline: function (formColumn) {
+    //   var $formColumn = $(formColumn);
+    //   var elementToOutlineClass;
+    //   var wrapToOultineClass = null;
+
+    //   if ( $formColumn.find(".wpcf7-form-control").length != 0 ) {
+    //     elementToOutlineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
+    //   }
+    //   if ( $formColumn.find(".wpcf7-form-control-wrap").length != 0 ) {
+    //     wrapToOultineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList);
+    //   }
+    //   if( null == elementToOutlineClass ) {
+    //     if ( null !== wrapToOultineClass ) {
+    //       elementToOutlineClass = wrapToOultineClass[0];
+    //     }
+    //   } else {
+    //      elementToOutlineClass = elementToOutlineClass[0];
+    //   }
+
+    //   var elementToOutlineType = /[a-z]+/.exec(elementToOutlineClass)[0];
+    //   elementToOutlineType = (elementToOutlineType == "menu") ? "select" : elementToOutlineType;
+
+    //   switch (elementToOutlineType) {
+    //     case "text":
+    //     case "textarea":
+    //     case "number":
+    //     case "email":
+    //     case "submit":
+    //     case "select":
+    //     console.log("type .wpcf7-" + elementToOutlineType)
+    //       return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
+    //       break;
+    //     case "radio":
+    //     case "acceptance":
+    //     case "file":
+    //     console.log("class ." + elementToOutlineClass)
+    //       return $formColumn.find("." + elementToOutlineClass).eq(0)[0];
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // },
+
     findElementToOutline: function (formColumn) {
-      var $formColumn = $(formColumn);
-      var elementToOutlineClass;
-      var wrapToOultineClass = null;
+        var $formColumn = $(formColumn);
 
-      elementToOutlineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
-      if ( $formColumn.find(".wpcf7-form-control-wrap").length > 0 ) {
-        wrapToOultineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList);
-      }
-      if( null == elementToOutlineClass ) {
-        if ( null !== wrapToOultineClass ) {
-          elementToOutlineClass = wrapToOultineClass[0];
+        var possibleFields = {
+            text: $formColumn.find('[type=text]').length != 0,
+            email: $formColumn.find('.wpcf7-email').length != 0,
+            number: $formColumn.find('.wpcf7-number').length != 0,
+            textarea: $formColumn.find('.wpcf7-textarea').length != 0,
+            select: $formColumn.find('.wpcf7-select').length != 0,
+            radio: $formColumn.find('.wpcf7-radio').length != 0,
+            acceptance:$formColumn.find('.wpcf7-acceptance').length != 0, 
+            file: $formColumn.find('.wpcf7-file').length != 0,
+            submit: $formColumn.find('.wpcf7-submit').length != 0
         }
-      } else {
-         elementToOutlineClass = elementToOutlineClass[0];
-      }
 
-      var elementToOutlineType = /[a-z]+/.exec(elementToOutlineClass)[0];
-      elementToOutlineType = (elementToOutlineType == "menu") ? "select" : elementToOutlineType;
+        for (var type in possibleFields) {
+            if (possibleFields[type] == true) {
+                var elementToOutlineType = type;
+                break;
+            }
+        }
 
-      switch (elementToOutlineType) {
-        case "text":
-        case "textarea":
-        case "number":
-        case "email":
-        case "submit":
-        case "select":
-          return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
-          break;
-        case "radio":
-        case "acceptance":
-        case "file":
-          return $formColumn.find("." + elementToOutlineClass).eq(0)[0];
-          break;
-        default:
-          break;
-      }
+        switch (elementToOutlineType) {
+            case "text":
+            case "textarea":
+            case "number":
+            case "email":
+            case "submit":
+            case "select":
+                return $formColumn.find('.wpcf7-form-control')[0];
+                break;
+            case "radio":
+            case "acceptance":
+            case "file":
+                return $formColumn.find('.wpcf7-form-control-wrap')[0];
+                break;
+            default:
+                break;
+        }
     },
 
     updatePlusButtons: function() {
