@@ -43,11 +43,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 $columnContent.prepend('<textarea name="textarea-' + fieldNumber + '" cols="40" rows="10" class="wpcf7-form-control wpcf7-textarea textarea-' + fieldNumber + '" aria-invalid="false" style=""></textarea>');
                 break;
             case "menu":
-                fieldShortcode = '[select menu-' + fieldNumber + ' include_blank class:menu-' + fieldNumber + ' "Field 1" "Field 2"]';
-                $columnContent.prepend('<select name="menu-' + fieldNumber + '" class="wpcf7-form-control wpcf7-select menu-' + fieldNumber + '" aria-invalid="false" style=""><option value="" disabled="disabled" selected="selected">Select something</option><option value="Field 1">Field 1</option><option value="Field 2">Field 2</option></select>');
+                fieldShortcode = '[select menu-' + fieldNumber + ' class:menu-' + fieldNumber + ' "Field 1" "Field 2"]';
+                $columnContent.prepend('<select name="menu-' + fieldNumber + '" class="wpcf7-form-control wpcf7-select menu-' + fieldNumber + '" aria-invalid="false" style=""><option value="" disabled selected>Select something</option><option value="Field 1">Field 1</option><option value="Field 2">Field 2</option></select>');
                 break;
             case "radiobuttons":
-                // class:radio-" + fieldNumber + " ---- wpcf7-radio radio-" + fieldNumber + "
                 fieldShortcode = "[radio radio-" + fieldNumber + " default:1  \"Option 1\" \"Option 2\" ]";
                 $columnContent.prepend("<span class=\"wpcf7-form-control-wrap radio-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control wpcf7-radio\"><span class=\"wpcf7-list-item first\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 1\" checked=\"checked\" class=\"with-gap\" id=\"wpcf7-radio-1\"><span class=\"wpcf7-list-item-label\">Option 1</span></span><span class=\"wpcf7-list-item last\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 2\" class=\"with-gap\" id=\"wpcf7-radio-2\"><span class=\"wpcf7-list-item-label\">Option 2</span></span></span></span>");
                 break;
@@ -70,6 +69,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 break;
         }
 
+        _saveNewField(insertionPoint, fieldShortcode);
         _createColumnContentSpanData({
             editPoint: {
                 element_id: formID,
@@ -78,10 +78,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         });
 
-        _fixWpcf7RadioButtons();
-
+        // _fixWpcf7RadioButtons(); Mettere fixInputs?
         _addColumnContentStyle($columnToAddField);
-        _saveNewField(insertionPoint, fieldShortcode);
     }
 
     var _addNewRow = function (formID, columnsSelected) {
@@ -243,15 +241,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         $columnToUpdateDB
             .removeClass('with-button')
-            .find(".wpcf7-column-content").append(fieldShortcode);
-
-        var data = {
-            editPoint: {
-                element_id: formID,
-                column_number:column,
-                row_number: row
-            }
-        }
+            /*.find('.wpcf7-column-content')*/
+            .append(fieldShortcode);
+            console.log('save new field', $columnToUpdateDB[0].outerHTML)
     }
 
     var _saveNewRow = function (formID, $newRow) {
@@ -316,8 +308,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _updateFormInDB = function (formID) {
-        if( $formsInPage[formID].length > 0 ) {
-            var formToUpdateString = $formsInPage[formID][0].outerHTML; // Don't need to get the form in db before, already have it
+        console.log('update form in db', $formsInPage)
+        if( undefined !== $formsInPage[formID] ) {
+            var formToUpdateString = $formsInPage[formID][0].outerHTML;
             var elementDataString = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").eq(0).find('.rex-element-data')[0].outerHTML;
 
             $.ajax({
@@ -1183,16 +1176,15 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
 
         var $spanDataInDB = $spanData.clone();
-
     	$formColumn.prepend($spanData);
 
-        // var shortcode = $formColumnInDB.find('.wpcf7-column-content').html(); // Not .text() because some shortcodes have HTML too (e.g. file)
-        // console.log('shortcode', shortcode)
-        // $formColumnInDB.empty();
-        // var $span = $(document.createElement("span"));
-        // $span.addClass("wpcf7-column-content").append(shortcode);
-        $formColumnInDB/*.append($span)*/.prepend($spanDataInDB);
-        // console.log('column in db', $formColumnInDB[0].outerHTML)
+        if( 0 === $formColumnInDB.find('.wpcf7-column-content').length ) {
+            var shortcode = $formColumnInDB.html(); // Not .text() because some shortcodes have HTML too (e.g. file)
+            var $columnContent = $('<span class="wpcf7-column-content">' + shortcode + '</div>');
+            $formColumnInDB.empty().append($columnContent);
+        }
+
+        $formColumnInDB.prepend($spanDataInDB);
     }
 
     var _removeColumnContentSpanData = function (data) {
@@ -2830,7 +2822,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         _fixInputs();
         // _addWpcf7MenuPlaceholders();
         // _fixWpcf7RadioButtons();
-        // _fixWpcf7Files();
+        _fixWpcf7Files();
     }
 
     var _setRowsSortable = function () {
@@ -2870,16 +2862,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         Rexbuilder_Util.$rexContainer.find('.wpcf7-column').each(function(i, el) {
             var $formColumn = $(el);
 
-            // var containsText = $el.find('[type=text]').length != 0;
-            // var containsEmail = $el.find('.wpcf7-email').length != 0;
-            // var containsNumber = $el.find('.wpcf7-number').length != 0;
-            // var containsTextarea = $el.find('.wpcf7-textarea').length != 0;
-            // var containsSelect = $el.find('.wpcf7-select').length != 0;
-            // var containsRadioButtons = $el.find('.wpcf7-radio').length != 0;
-            // var containsCheckbox = $el.find('.wpcf7-acceptance').length != 0;
-            // var containsFile = $el.find('.wpcf7-file').length != 0;
-            // var containsSubmit = $el.find('.wpcf7-submit').length != 0;
-
             var possibleFields = {
                 text: $formColumn.find('[type=text]').length != 0,
                 email: $formColumn.find('.wpcf7-email').length != 0,
@@ -2918,21 +2900,36 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     break;
                 case "select":
                     var $input = $formColumn.find('.wpcf7-select');
-                    // $menuInForm.each(function () {
-                        if ($input.find("option").eq(0).val() == "") {
-                            var $option = $input.find("option").eq(0);
-                            $option.attr("disabled", "");
-                            $option.attr("selected", "");
 
-                            var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
-                            $option.text(placeholder);
+                    if ($input.find("option").eq(0).val() == "") {
+                        var $option = $input.find("option").eq(0);
+                        $option.attr("disabled", "");
+                        $option.attr("selected", "");
+
+                        var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
+                        $option.text(placeholder);
+
+                        if('' === $option.text()) {
+                            $option.text('Select something');
+                            $input.parents('.wpcf7-column').find('.rex-wpcf7-column-content-data').attr('data-wpcf7-placeholder', 'Select something');
                         }
+                    } else {
+                        var $disabledOption = $('<option value disabled selected></option>');
 
-                        $input.on("change", function () {
-                            var color = $input.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-select-color-after-selection");
-                            $input.css("color", color);
-                        })
-                    // });
+                        $input.prepend($disabledOption);
+                        var placeholder = $input.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
+                        $disabledOption.text(placeholder);
+
+                        if('' === $disabledOption.text()) {
+                            $disabledOption.text('Select something');
+                            $input.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder", 'Select something');
+                        }
+                    }
+
+                    $input.on("change", function () {
+                        var color = $input.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-select-color-after-selection");
+                        $input.css("color", color);
+                    })
                     break;
                 case "radio":
                     var $radios = $formColumn.find('input[type=radio]');
@@ -2962,26 +2959,25 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 case "acceptance":
                     break;
                 case "file":
-                    var $inputWrap = $formColumn.find(".wpcf7-form-control-wrap").has(" .wpcf7-file");
-                // $filesInForm.each(function (i) {
-                    if ($inputWrap.find(".wpcf7-file-caption").length == 0) {
-                        $inputWrap.siblings(".wpcf7-file-caption").detach().appendTo($inputWrap);
-                    }
+                    // var $inputWrap = $formColumn.find(".wpcf7-form-control-wrap");
 
-                    var $element = $inputWrap.find("input[type='file']");
-                    $element.attr("id", "wpcf7-file-" + (i + 1));
-                    $element.siblings('label').remove();
-                    var $fileLabel = $(document.createElement("label"));
-                    $fileLabel.attr("for",  $element.attr("id"));
-                    $fileLabel.insertAfter($element);
+                    // if ($inputWrap.find(".wpcf7-file-caption").length == 0) {
+                    //     $inputWrap.siblings(".wpcf7-file-caption").detach().appendTo($inputWrap);
+                    // }
 
-                    if ('undefined' != typeof $inputWrap.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text")) {
-                        var buttonText = $inputWrap.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text");
-                        $fileLabel.text(buttonText);
-                    } else {
-                        $fileLabel.text("Choose a file");
-                    }
-                // });
+                    // var $element = $inputWrap.find('[type=file]');
+                    // $element.attr("id", "wpcf7-file-" + (i + 1));
+                    // $element.siblings('label').remove();
+                    // var $fileLabel = $(document.createElement("label"));
+                    // $fileLabel.attr("for",  $element.attr("id"));
+                    // $fileLabel.insertAfter($element);
+
+                    // if ('undefined' != typeof $inputWrap.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text")) {
+                    //     var buttonText = $inputWrap.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text");
+                    //     $fileLabel.text(buttonText);
+                    // } else {
+                    //     $fileLabel.text("Choose a file");
+                    // }
                     break;
                 case "submit":
                     break;
@@ -3126,27 +3122,26 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _fixWpcf7Files = function () {
-        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").each(function (i, element) {
-            var $filesInForm = $(element).find(".wpcf7 .wpcf7-form-control-wrap").has(" .wpcf7-file");
-            $filesInForm.each(function (i) {
-                if ($(this).find(".wpcf7-file-caption").length == 0) {
-                    $(this).siblings(".wpcf7-file-caption").detach().appendTo($(this));
-                }
+        Rexbuilder_Util.$rexContainer.find(".wpcf7 .wpcf7-form-control-wrap").has(".wpcf7-file").each(function(index, el) {
+            if ( 0 === $(this).find(".wpcf7-file-caption").length ) {
+                $(this).siblings(".wpcf7-file-caption").detach().appendTo($(this));
+            }
 
-                var $element = $(this).find("input[type='file']");
-                $element.attr("id", "wpcf7-file-" + (i + 1));
-                $element.siblings('label').remove();
-                var $fileLabel = $(document.createElement("label"));
-                $fileLabel.attr("for",  $element.attr("id"));
-                $fileLabel.insertAfter($element);
+            var $element = $(this).find('[type=file]');
+            $element.attr("id", "wpcf7-file-" + (index + 1));
+            $element.siblings('label').remove();
+            var $fileLabel = $('<label for="' + $element.attr("id") + '"></label>')
+            // var $fileLabel = $(document.createElement("label"));
+            // $fileLabel.attr("for",  $element.attr("id"));
+            $fileLabel.insertAfter($element);
 
-                if ('undefined' != typeof $(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text")) {
-                    var buttonText = $(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text");
-                    $fileLabel.text(buttonText);
-                } else {
-                    $fileLabel.text("Choose a file");
-                }
-            });
+            if ( 'undefined' != typeof $(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data" ).attr("data-button-text")) {
+                var buttonText = $(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text");
+                $fileLabel.text(buttonText);
+            } else {
+                $fileLabel.text('Choose a file');
+                $(this).parents('.wpcf7-column').find('.rex-wpcf7-column-content-data').attr('data-button-text', 'Choose a file');
+            }
         });
     }
 
@@ -3155,14 +3150,22 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     
     var $formsInPage;   // JQuery Array of DB side of forms in page
     var idsInPage = [];
+    var formOccurencies = {};
 
     var _getDBFormsInPage = function () {
-        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
+        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").has(' .wpcf7-form');
 
         idsInPage = [];
-        $elementWrappers.each(function(){
-            idsInPage.push($(this).attr("data-rex-element-id"));
-        })
+        $elementWrappers.each(function() {
+            idsInPage.push($(this).attr('data-rex-element-id'));
+        });
+
+        formOccurencies = {};
+        for (var i = 0; i < idsInPage.length; i++) {
+            var id = idsInPage[i];
+            formOccurencies[id] = formOccurencies[id] ? formOccurencies[id] + 1 : 1;
+        }
+
         idsInPage = Array.from(new Set(idsInPage));
 
         $.ajax({
@@ -3170,33 +3173,40 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             dataType: "json",
             url: _plugin_frontend_settings.rexajax.ajaxurl,
             data: {
-              action: "rex_wpcf7_get_forms",
-              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-              form_id: idsInPage
+                action: "rex_wpcf7_get_forms",
+                nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                form_id: idsInPage
             },
             success: function(response) {
-              if (response.success) {
-                var id, i = 0;
-                for (id of idsInPage) {
-                    $formsInPage[id] = $(response.data.html_forms[i].toString().trim());
+                if (response.success) {
+                    var id, i = 0;
+                    for (id of idsInPage) {
+                        $formsInPage[id] = $(response.data.html_forms[i].toString().trim());
 
-                    i++;
+                        i++;
+                    }
+
+                    Rexbuilder_Rexelement.addStyles();
                 }
-
-                Rexbuilder_Rexelement.addStyles();
-              }
             },
             error: function(response) {}
         });
     }
 
     var _updateDBFormsInPage = function (formID, needToAddElementStyle) {
-        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
+        var $elementWrappers = Rexbuilder_Util.$rexContainer.find('.rex-element-wrapper').has(' .wpcf7-form');
 
         idsInPage = [];
         $elementWrappers.each(function(){
-            idsInPage.push($(this).attr("data-rex-element-id"));
+            idsInPage.push($(this).attr('data-rex-element-id'));
         })
+
+        formOccurencies = {};
+        for (var i = 0; i < idsInPage.length; i++) {
+            var id = idsInPage[i];
+            formOccurencies[id] = formOccurencies[id] ? formOccurencies[id] + 1 : 1;
+        }
+
         idsInPage = Array.from(new Set(idsInPage));
 
         $.ajax({
@@ -3213,8 +3223,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 var id, i = 0;
                 for (id of idsInPage) {
                     $formsInPage[id] = $(response.data.html_forms[i].toString().trim());
+                    console.log(id)
+                    console.log($formsInPage)
 
-                    if (needToAddElementStyle && id == formID) {
+                    if ( needToAddElementStyle && id == formID ) {
                         Rexbuilder_Rexelement.addElementStyle($elementWrappers.filter('[data-rex-element-id="' + formID + '"]'));
                     }
 
@@ -3229,13 +3241,19 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     var _addFormInPage = function (formID, $rows) {
         $formsInPage[formID] = $rows;
 
-        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
-        
-        idsInPage = [];
-        $elementWrappers.each(function(){
-            idsInPage.push($(this).attr("data-rex-element-id"));
-        })
+        idsInPage.push(formID);
+        formOccurencies[formID] = formOccurencies[formID] ? formOccurencies[formID] + 1 : 1;
         idsInPage = Array.from(new Set(idsInPage));
+    }
+
+    var _removeFormInPage = function (formID) {
+        if ( 1 === formOccurencies[formID] ) {
+            // Means that the one we are removing is the last one in page
+            delete $formsInPage[formID];
+            delete formOccurencies[formID]
+        } else {
+            formOccurencies[formID] -= 1;
+        }
     }
 
     var _getIDsInPage = function () {
@@ -3298,6 +3316,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		init: _init,
 
         addFormInPage: _addFormInPage,
+        removeFormInPage: _removeFormInPage,
         getIDsInPage: _getIDsInPage,
         updateDBFormsInPage: _updateDBFormsInPage,
 
@@ -3308,8 +3327,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         addClonedColumnRow: _addClonedColumnRow,
         deleteRow: _deleteRow,
         deleteColumnContent: _deleteColumnContent,
+        updateFormsData: _updateFormsData,
 
-		/* CSS functions */
+		// CSS functions
 		addFormStyle: _addFormStyle,
 		addColumnContentStyle: _addColumnContentStyle,
 

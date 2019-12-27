@@ -25,26 +25,24 @@ var Element_Import_Modal = (function ($) {
 				if (response.success) {
 					var currentList = [];
 					element_import_props.$self
-					.find(".element-list__element")
-					.each(function(i, element) {
-						var elementID = $(element).attr("data-rex-element-id");
-						var elementObj = {
-						  id: elementID,
-						  founded: false
-						};
-						currentList.push(elementObj);
-					});
+					   .find(".element-list__element")
+                       .each(function(i, element) {
+                            var elementID = $(element).attr("data-rex-element-id");
+                            var elementObj = {
+                              id: elementID,
+                              founded: false
+                            };
+                            currentList.push(elementObj);
+					   });
 
 					var updatedList = response.data.updated_list;
 
-					var i, j;
-
-					for (i = 0; i < updatedList.length; i++) {
+					for (var i = 0; i < updatedList.length; i++) {
 						updatedList[i].founded = false;
 					}
 
-					for (i = 0; i < updatedList.length; i++) {
-						for (j = 0; j < currentList.length; j++) {
+					for (var i = 0; i < updatedList.length; i++) {
+						for (var j = 0; j < currentList.length; j++) {
 						  if (updatedList[i].id == currentList[j].id) {
 						    updatedList[i].founded = true;
 						    currentList[j].founded = true;
@@ -53,24 +51,22 @@ var Element_Import_Modal = (function ($) {
 						}
 					}
 
+                    console.log(updatedList[0].preview_image_url)
 					tmpl.arg = "element";
-
-					for (i = 0; i < updatedList.length; i++) {
+					for (var i = 0; i < updatedList.length; i++) {
 						if (!updatedList[i].founded) {
 						  element_import_props.$self.find(".element-list").prepend(
-						    tmpl("rexlive-tmpl-element-item-list", {
-						      id: updatedList[i].id,
-						      name: updatedList[i].name,
-						      preview:
-						      updatedList[i].preview_image_url != ""
-						      ? updatedList[i].preview_image_url
-						      : ""
-						    })
+    						    tmpl("rexlive-tmpl-element-item-list", {
+    						      id: updatedList[i].id,
+    						      name: updatedList[i].name,
+    						      preview:
+    						      updatedList[i].preview_image_url != "" ? updatedList[i].preview_image_url : ""
+    						    })
 						    ).find(".rex-element-wrapper").prepend(updatedList[i].element_data_html[0]);
 						}
 					}
 
-					for (i = 0; i < currentList.length; i++) {
+					for (var i = 0; i < currentList.length; i++) {
 						if (!currentList[i].founded) {
 						  element_import_props.$self
 						  .find(
@@ -305,17 +301,19 @@ var Element_Import_Modal = (function ($) {
 	    var display;
 	    var obj_attachment;
 	    selection.each(function(attachment) {
-	      display = state.display(attachment).toJSON();
-	      obj_attachment = attachment.toJSON();
+            display = state.display(attachment).toJSON();
+            obj_attachment = attachment.toJSON();
 
-	      // If captions are disabled, clear the caption.
-	      if (!wp.media.view.settings.captions) delete obj_attachment.caption;
+            // If captions are disabled, clear the caption.
+            if (!wp.media.view.settings.captions) {
+                delete obj_attachment.caption;
+            }
 
-	      display = wp.media.string.props(display, obj_attachment);
+            display = wp.media.string.props(display, obj_attachment);
 
-	      // data.data_to_send.media.push(to_send);
-	      data.data_to_send.idImage = obj_attachment.id;
-	      data.data_to_send.urlImage = display.src;
+            // data.data_to_send.media.push(to_send);
+            data.data_to_send.idImage = obj_attachment.id;
+            data.data_to_send.urlImage = display.src;
 	    });
 
 	    _updateElementThumbnail(display.src, display.size, obj_attachment.id);

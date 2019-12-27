@@ -248,7 +248,7 @@ var Rexbuilder_Rexelement = (function ($) {
         for (var i = 0; i < elementsInPage.length; i++) {
             if (elementsInPage[i].id == elementID) {
                 elementsInPage[i].number += 1;
-                $elementWrapper.attr("data-rex-element-number", elementsInPage[i].number);
+                $elementWrapper.attr('data-rex-element-number', elementsInPage[i].number);
                 flagElementFound = true;
                 break;
             }
@@ -295,11 +295,11 @@ var Rexbuilder_Rexelement = (function ($) {
             var regexToFind = /\[(url|tel|date|checkbox|quiz|range)\*?[^\]]+\]/g;
             var result;
             while ((result = regexToFind.exec(formFieldsString)) !== null) {
-              // This is necessary to avoid infinite loops with zero-width matches
-              if (result.index === regexToFind.lastIndex) {
-                regexToFind.lastIndex++;
-              } 
-              formFieldsString = formFieldsString.replace(result[0], '');
+                // This is necessary to avoid infinite loops with zero-width matches
+                if (result.index === regexToFind.lastIndex) {
+                    regexToFind.lastIndex++;
+                } 
+                formFieldsString = formFieldsString.replace(result[0], '');
             }
 
             var $childrenWithInputs = $rows.children().filter(function() {      // Getting only the children containing the form fields
@@ -406,7 +406,6 @@ var Rexbuilder_Rexelement = (function ($) {
                     $input.addClass(newClass);
                     $el.addClass(newClass);     // Serve?
                     $input.attr('size', '');
-                    // console.log('al drop', $input[0].outerHTML)
 
                     // Shortcode
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
@@ -414,7 +413,6 @@ var Rexbuilder_Rexelement = (function ($) {
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
 
                     $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
-                    // console.log('al drop', $newColumnContentInDB[0].outerHTML)
                 } else if (containsNumber) {
                     var newClass = "number-" + fieldsNumbers[i];
 
@@ -518,8 +516,6 @@ var Rexbuilder_Rexelement = (function ($) {
                 }
             });
 
-            // console.log('al drop', $rowsInDB[0].outerHTML)
-
             Rexbuilder_Rexwpcf7.addFormInPage(formID, $rowsInDB);   // Necessary for creating column content data
 
             $rowsInDB.find('.wpcf7-column').each(function(i, el) {
@@ -538,6 +534,7 @@ var Rexbuilder_Rexelement = (function ($) {
             Rexbuilder_Rexwpcf7.updateDBFormsInPage(elementID, !flagElementFound);
         }
 
+        // Rexbuilder_Rexwpcf7.fixInputs();
         Rexbuilder_Rexwpcf7.addWpcf7MenuPlaceholders();
         Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
         Rexbuilder_Rexwpcf7.fixWpcf7Files();
@@ -683,25 +680,27 @@ var Rexbuilder_Rexelement = (function ($) {
         var newID = data.newID;
         var elementID = elementData.element_target.element_id;
         var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"][data-rex-element-number=\"" + elementData.element_target.element_number + "\"]");
-        $elementWrapper.addClass("rex-separate-element");
-        $elementWrapper.attr("data-rex-element-id", newID);
-        $elementWrapper.attr("data-rex-element-number", 1);
+
+        $elementWrapper.addClass('rex-separate-element');
+        $elementWrapper.attr('data-rex-element-id', newID);
+        $elementWrapper.attr('data-rex-element-number', 1);
         elementsInPage.push({
             id: newID,
             number: 1
         });
 
-        _updateElementsData($elementWrapper, elementData);
+        // Prenderlo da rexwpcf7
+        // _updateElementsData($elementWrapper, elementData);
         
         // Removes the element style if no other element is present in page
         for (i = 0; i < elementsInPage.length; i++) {
             if(!elementsInPage[i].id == elementID){
-                _removeElementStyle(elementID);
+                // _removeElementStyle(elementID);
             }
         }
 
         // If element was last of that model in page, remove it form elementsInPage array
-        if (Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]").length == 0) {
+        if ( 0 === Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]").length ) {
             var i;
             for (i = 0; i < elementsInPage.length; i++) {
                 if (elementsInPage[i].id == elementID) {
@@ -713,7 +712,7 @@ var Rexbuilder_Rexelement = (function ($) {
             }
         }
 
-        // _addElementStyle($elementWrapper);
+        Rexbuilder_Rexwpcf7.removeFormInPage(elementID);
     }
 
     /**
@@ -739,37 +738,30 @@ var Rexbuilder_Rexelement = (function ($) {
 
         // Ajax call to get the html of the element
         $.ajax({
-          type: "POST",
-          dataType: "json",
-          url: _plugin_frontend_settings.rexajax.ajaxurl,
-          data: {
-            action: "rex_transform_element_shortcode",
-            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-            elementID: elementID
-          },
-          success: function(response) {
-            if (response.success) {
-                // Deleting the old element
-                var $elementContainer = $elementWrapper.find(".rex-element-container");
-                $elementContainer.empty();
+            type: "POST",
+            dataType: "json",
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            data: {
+                action: "rex_transform_element_shortcode",
+                nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                elementID: elementID
+            },
+            success: function(response) {
+                if (response.success) {
+                    var formFieldsString = response.data.form_content.toString().trim();
+                    // Deleting the old element
+                    var $elementContainer = $elementWrapper.find(".rex-element-container");
+                    $elementContainer.empty();
 
+                    // If success get the element HTML and append it to the right div
+                    var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
+                    $elementContainer.append($shortcodeTransformed);
 
-
-                // If success get the element HTML and append it to the right div
-                var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
-                $elementContainer.append($shortcodeTransformed);
-
-                // Updating element data
-                // $elementData.remove();
-                // $elementData = $.parseHTML(response.data.element_data_html[0]);
-                // $elementWrapper.prepend($elementData);
-
-                _endFixingElementImported($elementWrapper);
-
-                _lockSynchronize(elementData);
-            }
-          },
-          error: function(response) {}
+                    _lockSynchronize(elementData);
+                    _endFixingElementImported($elementWrapper, formFieldsString);
+                }
+            },
+            error: function(response) {}
         });
     }
 

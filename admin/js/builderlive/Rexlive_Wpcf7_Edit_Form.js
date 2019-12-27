@@ -29,29 +29,30 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 wpcf7_form_editor_properties.$self.addClass('rex-modal--loading');
             },
             success: function(response) {
-              if (response.success) {
-                formMailSettings = response.data.mail_settings[0];
-                formMessages = response.data.messages[0];
+                if (response.success) {
+                    formMailSettings = response.data.mail_settings[0];
+                    console.log(formMailSettings)
+                    formMessages = response.data.messages[0];
 
-                wpcf7_form_editor_properties.$form_mail_to.val(formMailSettings.recipient);
-                if (wpcf7_form_editor_properties.$form_mail_to.val() != "") {
+                    wpcf7_form_editor_properties.$form_mail_to.val(formMailSettings.recipient);
+                    if (wpcf7_form_editor_properties.$form_mail_to.val() != "") {
                     wpcf7_form_editor_properties.$form_mail_to
-                    .siblings("label, .prefix")
-                    .addClass('active');
-                }
-                wpcf7_form_editor_properties.$form_error_message.val(formMessages.validation_error);
-                if (wpcf7_form_editor_properties.$form_error_message.val() != "") {
+                        .siblings("label, .prefix")
+                        .addClass('active');
+                    }
+                    wpcf7_form_editor_properties.$form_error_message.val(formMessages.validation_error);
+                    if (wpcf7_form_editor_properties.$form_error_message.val() != "") {
                     wpcf7_form_editor_properties.$form_error_message
-                    .siblings("label, .prefix")
-                    .addClass('active');
-                }
-                wpcf7_form_editor_properties.$form_send_message.val(formMessages.mail_sent_ok);
-                if (wpcf7_form_editor_properties.$form_send_message.val() != "") {
+                        .siblings("label, .prefix")
+                        .addClass('active');
+                    }
+                    wpcf7_form_editor_properties.$form_send_message.val(formMessages.mail_sent_ok);
+                    if (wpcf7_form_editor_properties.$form_send_message.val() != "") {
                     wpcf7_form_editor_properties.$form_send_message
-                    .siblings("label, .prefix")
-                    .addClass('active');
+                        .siblings("label, .prefix")
+                        .addClass('active');
+                    }
                 }
-              }
             },
             error: function(response) {},
             complete: function (response) {
@@ -75,11 +76,11 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             dataType: "json",
             url: live_editor_obj.ajaxurl,
             data: {
-              action: "rex_wpcf7_save_mail_settings",
-              nonce_param: live_editor_obj.rexnonce,
-              form_id: formID,
-              new_mail_settings: formMailSettings,
-              new_messages: formMessages
+                action: "rex_wpcf7_save_mail_settings",
+                nonce_param: live_editor_obj.rexnonce,
+                form_id: formID,
+                new_mail_settings: formMailSettings,
+                new_messages: formMessages
             },
             success: function(response) {
               if (response.success) {}

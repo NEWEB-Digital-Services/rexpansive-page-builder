@@ -397,6 +397,16 @@ var Rexbuilder_Section = (function($) {
         }
       }
 
+      var $elementsInSection = $section.find('.rex-element-wrapper').has(' .wpcf7-form');
+      $elementsInSection.each(function(index, el) {
+        var $elem = $(el);
+
+        if ( 0 !== $elem.find('.wpcf7-form').length ) {
+          var formID = $elem.attr('data-rex-element-id');
+          Rexbuilder_Rexwpcf7.removeFormInPage(formID);
+        }
+      });
+
       var reverseData = {
         show: true,
         layoutsOrder:

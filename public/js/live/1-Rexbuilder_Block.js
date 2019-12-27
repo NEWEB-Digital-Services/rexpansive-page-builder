@@ -14,6 +14,11 @@ var Rexbuilder_Block = (function ($) {
             $elem.attr("data-rexlive-element-edited", true);
             Rexbuilder_Util_Editor.removingBlocks = false;
 
+            if ( 0 !== $elem.find('.wpcf7-form').length ) {
+                var formID = $elem.find('.rex-element-wrapper').attr('data-rex-element-id');
+                Rexbuilder_Rexwpcf7.removeFormInPage(formID);
+            }
+
             if ( 0 === $section.find('.perfect-grid-item').not('.rex-hide-element').length )
             {
                 $section.addClass('empty-section');
@@ -78,6 +83,7 @@ var Rexbuilder_Block = (function ($) {
             Rexbuilder_Util_Editor.blockCopying = false;
         });
     }
+
     var init = function () {
         _addBlockToolboxListeners();
     }
