@@ -152,7 +152,7 @@ var Rexbuilder_Rexelement = (function ($) {
         var $section = $elementWrapper.parents(".rexpansive_section").eq(0);
 
         // Removing element unnecessary data
-        $elementWrapper.show();     // Was hided before calling this function
+        // $elementWrapper.show();     // Was hided before calling this function
         $elementWrapper.detach();
         $gridGallery.find('.element-list-preview').remove();
 
@@ -534,10 +534,10 @@ var Rexbuilder_Rexelement = (function ($) {
             Rexbuilder_Rexwpcf7.updateDBFormsInPage(elementID, !flagElementFound);
         }
 
-        // Rexbuilder_Rexwpcf7.fixInputs();
-        Rexbuilder_Rexwpcf7.addWpcf7MenuPlaceholders();
-        Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
-        Rexbuilder_Rexwpcf7.fixWpcf7Files();
+        Rexbuilder_Rexwpcf7.fixInputs();
+        // Rexbuilder_Rexwpcf7.addWpcf7MenuPlaceholders();
+        // Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
+        // Rexbuilder_Rexwpcf7.fixWpcf7Files();
         Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
 
         /* Copied form Rexbuilder_Rexbutton */
@@ -1095,7 +1095,7 @@ var Rexbuilder_Rexelement = (function ($) {
                     width: '150px',
                     height: '50px',
                     font_size: '15px',
-                    border_width: '0px',
+                    border_width: '1px',
                     border_radius: '0px',
                 },
                 options_different: {

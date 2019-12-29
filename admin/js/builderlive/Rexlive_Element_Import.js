@@ -50,19 +50,18 @@ var Element_Import_Modal = (function ($) {
 						  }
 						}
 					}
-
-                    console.log(updatedList[0].preview_image_url)
+                    
 					tmpl.arg = "element";
 					for (var i = 0; i < updatedList.length; i++) {
 						if (!updatedList[i].founded) {
-						  element_import_props.$self.find(".element-list").prepend(
-    						    tmpl("rexlive-tmpl-element-item-list", {
-    						      id: updatedList[i].id,
-    						      name: updatedList[i].name,
-    						      preview:
-    						      updatedList[i].preview_image_url != "" ? updatedList[i].preview_image_url : ""
-    						    })
-						    ).find(".rex-element-wrapper").prepend(updatedList[i].element_data_html[0]);
+                            element_import_props.$self.find(".element-list").prepend(
+                                tmpl("rexlive-tmpl-element-item-list", {
+                                  id: updatedList[i].id,
+                                  name: updatedList[i].name,
+                                  preview:
+                                  updatedList[i].preview_image_url != "" ? updatedList[i].preview_image_url : ""
+                                })
+                            ).find(".rex-element-wrapper").prepend(updatedList[i].element_data_html[0]);
 						}
 					}
 
@@ -531,7 +530,7 @@ var Element_Import_Modal = (function ($) {
                         var $divInsert = $($.parseHTML(textData));
                         $divInsert.addClass("rex-loading-element");
                         $divInsert.insertAfter($insertionPoint[0]);
-                        $divInsert.find('.rex-element-wrapper').hide();
+                        $divInsert.hide();
                         $insertionPoint.remove();
                         var dataEndDrop = {
                             eventName: "rexlive:importElement",

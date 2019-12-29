@@ -243,7 +243,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             .removeClass('with-button')
             /*.find('.wpcf7-column-content')*/
             .append(fieldShortcode);
-            console.log('save new field', $columnToUpdateDB[0].outerHTML)
+        console.log('save new field', $columnToUpdateDB[0].outerHTML)
     }
 
     var _saveNewRow = function (formID, $newRow) {
@@ -2822,7 +2822,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         _fixInputs();
         // _addWpcf7MenuPlaceholders();
         // _fixWpcf7RadioButtons();
-        _fixWpcf7Files();
+        // _fixWpcf7Files();
     }
 
     var _setRowsSortable = function () {
@@ -2859,6 +2859,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _fixInputs = function() {
+        console.log("fixInputs")
+        console.trace()
         Rexbuilder_Util.$rexContainer.find('.wpcf7-column').each(function(i, el) {
             var $formColumn = $(el);
 
@@ -2984,110 +2986,49 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 default:
                     break;
             }
-
-            // if (containsText) {
-            //     var $input = $el.find('.wpcf7-text');
-            //     $input.attr('size', '');
-            // } else if (containsEmail) {
-            //     var $input = $el.find('.wpcf7-email');
-            //     $input.attr('size', '');
-            // } else if (containsNumber) {
-            //     var $input = $el.find('.wpcf7-number');
-            //     $input.attr('size', '');
-            // } else if (containsTextarea) {
-            //     var $input = $el.find('.wpcf7-textarea');
-            //     $input.attr('size', '');
-            // } else if (containsSelect) {
-            //     var $input = $el.find('.wpcf7-select');
-            //     // $menuInForm.each(function () {
-            //         if ($input.find("option").eq(0).val() == "") {
-            //             var $option = $input.find("option").eq(0);
-            //             $option.attr("disabled", "");
-            //             $option.attr("selected", "");
-
-            //             var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
-            //             $option.text(placeholder);
-            //         }
-
-            //         $input.on("change", function () {
-            //             var color = $input.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-select-color-after-selection");
-            //             $input.css("color", color);
-            //         })
-            //     // });
-            // } else if (containsRadioButtons) {
-            //     var $radios = $el.find('input[type=radio]');
-
-            //     $radios.each(function(index, el) {
-            //         var $element = $(el);
-
-            //         $element.addClass("with-gap");
-            //         $element.attr("id", "wpcf7-radio-" + (i + 1));
-            //         var $spanLabel = $element.siblings('.wpcf7-list-item-label');
-
-            //         if ($spanLabel.length != 0) {
-            //             var text = $spanLabel.text();
-            //             $spanLabel.empty();
-
-            //             var $label = $(document.createElement("label"));
-            //             $label.addClass('wpcf7-radio-label');
-            //             $label.attr('for',  $element.attr('id'));
-            //             $label.text(text);
-            //             $label.insertAfter($spanLabel);
-            //             $spanLabel.removeClass('wpcf7-list-item-label');
-            //         } else {
-            //             $element.siblings('.wpcf7-radio-label').attr('for', 'wpcf7-radio-' + (i + 1));
-            //         }
-            //     });
-            // } else if (containsCheckbox) {
-            //     // Do nothing
-            // } else if (containsFile) {
-            //     var $inputWrap = $el.find(".wpcf7-form-control-wrap").has(" .wpcf7-file");
-            //     // $filesInForm.each(function (i) {
-            //         if ($inputWrap.find(".wpcf7-file-caption").length == 0) {
-            //             $inputWrap.siblings(".wpcf7-file-caption").detach().appendTo($inputWrap);
-            //         }
-
-            //         var $element = $inputWrap.find("input[type='file']");
-            //         $element.attr("id", "wpcf7-file-" + (i + 1));
-            //         $element.siblings('label').remove();
-            //         var $fileLabel = $(document.createElement("label"));
-            //         $fileLabel.attr("for",  $element.attr("id"));
-            //         $fileLabel.insertAfter($element);
-
-            //         if ('undefined' != typeof $inputWrap.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text")) {
-            //             var buttonText = $inputWrap.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text");
-            //             $fileLabel.text(buttonText);
-            //         } else {
-            //             $fileLabel.text("Choose a file");
-            //         }
-            //     // });
-            // } else if (containsSubmit) {
-            //     // Do nothing
-            // }
         });
+
+        _fixWpcf7Files();
     }
 
     /**
      * Adding what wpcf7 can't do: set the menu placeholder
      */
     var _addWpcf7MenuPlaceholders = function () {
-        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").each(function (i, element) {
-            var $menuInForm = $(element).find(".wpcf7").find(".wpcf7-select");
-            $menuInForm.each(function () {
-                if ($(this).find("option").eq(0).val() == "") {
-                    var $option = $(this).find("option").eq(0);
-                    $option.attr("disabled", "");
-                    $option.attr("selected", "");
+        console.log("_addWpcf7MenuPlaceholders")
+        console.trace()
+        Rexbuilder_Util.$rexContainer.find(".wpcf7-select").each(function (i, element) {
+            var $element = $(element);
+            if ($element.find("option").eq(0).val() == "") {
+                var $option = $element.find("option").eq(0);
+                $option.attr("disabled", "");
+                $option.attr("selected", "");
 
-                    var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
-                    $option.text(placeholder);
+                var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
+                $option.text(placeholder);
+
+                if('' === $option.text()) {
+                    $option.text('Select something');
+                    $element.parents('.wpcf7-column').find('.rex-wpcf7-column-content-data').attr('data-wpcf7-placeholder', 'Select something');
                 }
+            } else {
+                var $disabledOption = $('<option value disabled selected></option>');
 
-                $(this).on("change", function () {
-                    var color = $(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-select-color-after-selection");
-                    $(this).css("color", color);
-                })
-            });
+                $element.prepend($disabledOption);
+                var placeholder = $element.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
+                $disabledOption.text(placeholder);
+
+                if('' === $disabledOption.text()) {
+                    $disabledOption.text('Select something');
+                    $element.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder", 'Select something');
+                }
+            }
+            console.log(element)
+
+            $element.on("change", function () {
+                var color = $element.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-select-color-after-selection");
+                $element.css("color", color);
+            })
         });
     }
 
@@ -3223,8 +3164,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 var id, i = 0;
                 for (id of idsInPage) {
                     $formsInPage[id] = $(response.data.html_forms[i].toString().trim());
-                    console.log(id)
-                    console.log($formsInPage)
 
                     if ( needToAddElementStyle && id == formID ) {
                         Rexbuilder_Rexelement.addElementStyle($elementWrappers.filter('[data-rex-element-id="' + formID + '"]'));
@@ -3251,6 +3190,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             // Means that the one we are removing is the last one in page
             delete $formsInPage[formID];
             delete formOccurencies[formID]
+            idsInPage.splice(idsInPage.indexOf(formID), 1);
         } else {
             formOccurencies[formID] -= 1;
         }
