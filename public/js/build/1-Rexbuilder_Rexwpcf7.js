@@ -308,7 +308,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _updateFormInDB = function (formID) {
-        console.log('update form in db', $formsInPage)
         if( undefined !== $formsInPage[formID] ) {
             var formToUpdateString = $formsInPage[formID][0].outerHTML;
             var elementDataString = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").eq(0).find('.rex-element-data')[0].outerHTML;
@@ -866,7 +865,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             var formID = elementData.elementInfo.element_target.element_id;
             var formData = elementData.elementInfo.wpcf7_data;
             _addFormCSSRules(formID, formData);
-            
+            console.log('needToUpdateForm', needToUpdateForm)
             if (needToUpdateForm) {
                 _updateForm({
                     elementData : {
@@ -1204,7 +1203,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _addColumnContentStyle = function ($formColumn) {
-        if ($formColumn.find(".rex-wpcf7-column-content-data").eq(0).length != 0) {
+        console.log('addColumnContentStyle')
+        console.log( 0 !== $formColumn.find(".rex-wpcf7-column-content-data").eq(0).length )
+        if ( 0 !== $formColumn.find(".rex-wpcf7-column-content-data").eq(0).length ) {
             var columnContentData = _generateColumnContentData($formColumn, true);
             var formID = columnContentData.target.element_id;
             _addColumnContentCSSRules(formID, columnContentData);
@@ -1895,11 +1896,16 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
 
             // Button height
+            // console.log(columnContentData.input_type)
             if (columnContentDataEl.getAttribute("data-button-height")) {
                 columnContentData.wpcf7_button.height = columnContentDataEl.getAttribute("data-button-height").toString();
+                console.log('allora qua')
             } else {
                 if (columnContentData.input_type == "file") {
+                    // console.trace()
+                    console.log('sono file, entro')
                     columnContentData.wpcf7_button.height = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("height");
+                    console.log($formColumn[0].outerHTML)
                 } else if (columnContentData.input_type == "submit") {
                     columnContentData.wpcf7_button.height = $formColumn.find('.' + cssSelector).css("height");
                 }
@@ -2820,9 +2826,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     var _fixWpcf7 = function () {
         _setRowsSortable();
         _fixInputs();
-        // _addWpcf7MenuPlaceholders();
-        // _fixWpcf7RadioButtons();
-        // _fixWpcf7Files();
     }
 
     var _setRowsSortable = function () {
@@ -2859,8 +2862,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _fixInputs = function() {
-        console.log("fixInputs")
-        console.trace()
         Rexbuilder_Util.$rexContainer.find('.wpcf7-column').each(function(i, el) {
             var $formColumn = $(el);
 
@@ -2995,8 +2996,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
      * Adding what wpcf7 can't do: set the menu placeholder
      */
     var _addWpcf7MenuPlaceholders = function () {
-        console.log("_addWpcf7MenuPlaceholders")
-        console.trace()
         Rexbuilder_Util.$rexContainer.find(".wpcf7-select").each(function (i, element) {
             var $element = $(element);
             if ($element.find("option").eq(0).val() == "") {
@@ -3023,7 +3022,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     $element.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder", 'Select something');
                 }
             }
-            console.log(element)
 
             $element.on("change", function () {
                 var color = $element.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-select-color-after-selection");
@@ -3067,11 +3065,22 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             if ( 0 === $(this).find(".wpcf7-file-caption").length ) {
                 $(this).siblings(".wpcf7-file-caption").detach().appendTo($(this));
             }
-
             var $element = $(this).find('[type=file]');
+
+            var regexpToMove = /file-\w+/gm;
+            var elementClasses = $element[0].classList.toString();
+            var classToMove = regexpToMove.exec(elementClasses);
+
+            if ( null !== classToMove ) {
+                classToMove = classToMove[0];
+                $element.removeClass(classToMove);
+                $element.parents('.wpcf7-form-control-wrap').addClass(classToMove);      
+            }
+
+
             $element.attr("id", "wpcf7-file-" + (index + 1));
             $element.siblings('label').remove();
-            var $fileLabel = $('<label for="' + $element.attr("id") + '"></label>')
+            var $fileLabel = $('<label for="' + $element.attr("id") + '"></label>');
             // var $fileLabel = $(document.createElement("label"));
             // $fileLabel.attr("for",  $element.attr("id"));
             $fileLabel.insertAfter($element);
@@ -3278,6 +3287,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         updateFormLive: _updateFormLive,
         updateForm: _updateForm,
         updateFormInDB: _updateFormInDB,
+        fixInputs: _fixInputs,
 
         // Rows function
         setRowsSortable: _setRowsSortable,

@@ -31,7 +31,6 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             success: function(response) {
                 if (response.success) {
                     formMailSettings = response.data.mail_settings[0];
-                    console.log(formMailSettings)
                     formMessages = response.data.messages[0];
 
                     wpcf7_form_editor_properties.$form_mail_to.val(formMailSettings.recipient);

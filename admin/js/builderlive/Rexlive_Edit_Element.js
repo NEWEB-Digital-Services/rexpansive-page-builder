@@ -24,14 +24,14 @@ var Element_Edit_Modal = (function ($) {
         rex_edit_model_element_panel_properties.$button.on("click", function (e) {
             var optionSelected = this.getAttribute("data-rex-option");
             switch (optionSelected) {
-                case "remove": // Need to create a new element based on the current element
+                case "remove":      // Need to create a new element based on the current element
                     element_editor_properties.$self.addClass("editing-model");
                 	oldElementModelID = elementData.element_target.element_id;
 
                     // Saving the new element in the DB
                     _saveNewElementOnDB();
                     break;
-                case "edit": // Editing an existing element
+                case "edit":        // Editing an existing element
                     element_editor_properties.$self.addClass("editing-model");
                     
                     // Selezionare il modal in base al tipo di elemento che abbiamo
@@ -39,7 +39,7 @@ var Element_Edit_Modal = (function ($) {
                         elementData: elementData,
                         blockID: blockID
                     });
-                    // _staySynchronized();
+                    _staySynchronized();
                     break;
                 default:
                     break;

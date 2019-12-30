@@ -344,7 +344,7 @@ class Rexbuilder_Utilities {
 	* @param  [int] $post_id The Post you want to clone
 	* @return [int] The duplicated Post ID
 	*/
-	public function duplicate($post_id) {
+	public static function duplicate($post_id) {
 		$title   = get_the_title($post_id);
 		$oldpost = get_post($post_id);
 		$post    = array(
@@ -358,7 +358,8 @@ class Rexbuilder_Utilities {
 		$data = get_post_custom($post_id);
 		foreach ( $data as $key => $values) {
 		  foreach ($values as $value) {
-		    add_post_meta( $new_post_id, $key, $value );
+		  	$temp = maybe_unserialize($value);
+		    add_post_meta( $new_post_id, $key, $temp );
 		  }
 		}
 		return $new_post_id;
