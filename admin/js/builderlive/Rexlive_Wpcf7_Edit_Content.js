@@ -724,7 +724,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
         // Button
         columnContentData.wpcf7_button.text = wpcf7_content_editor_properties.$content_button_text.val();
-        console.log("update from panel", columnContentData.wpcf7_button.text)
         columnContentData.wpcf7_button.font_size = wpcf7_content_editor_properties.$content_button_text_font_size.val() + "px";
         columnContentData.wpcf7_button.height = wpcf7_content_editor_properties.$content_button_height.val() + "px";
         columnContentData.wpcf7_button.width = wpcf7_content_editor_properties.$content_button_width.val() + "px";
@@ -792,6 +791,31 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 value: wpcf7_content_editor_properties.$content_placeholder.val()
             });
         });
+
+        wpcf7_content_editor_properties.$content_button_text.on("keyup", function (e) {
+            var newText = wpcf7_content_editor_properties.$content_button_text.val();
+            _updateColumnContentLive({
+                type: "button-text",
+                name: "button-text",
+                value: newText
+            });
+
+            wpcf7_content_editor_properties.$button_preview.text(newText);
+        });
+
+        // BUTTON TEXT
+        // var _updateButtonText = function (newText) {
+        //     // outputString = isNaN(parseInt(newInputHeight)) ? defaultButtonValues.dimensions.height : newInputHeight + "px";
+        //     outputString = newText;
+
+        //     _updateColumnContentLive({
+        //         type: "button-text",
+        //         name: "button-text",
+        //         value: outputString
+        //     });
+
+        //     wpcf7_content_editor_properties.$button_preview.text(outputString);
+        // };
     }
 
     var _linkListListeners = function () {

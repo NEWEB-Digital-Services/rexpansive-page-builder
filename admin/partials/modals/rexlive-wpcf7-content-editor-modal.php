@@ -464,7 +464,7 @@ defined('ABSPATH') or exit;
                     <div class="bl-modal-row"> <!-- // Button Settings -->
                         <div class="bl_modal-row bl_jc-c modal-row-grey rex-wpcf7-modal-row-tall"> <!-- // Button Preview -->
                             <div class="bl_d-iblock with-preview-button tippy" data-tippy-content="<?php _e('Preview', 'rexpansive-builder');?>">
-                                <label id="rex-wpcf7-button-modal-preview">
+                                <label id="rex-wpcf7-button-modal-preview"></label>
                             </div>
                         </div>
                         <div class="rexpansive-accordion close"> <!-- // Button Text -->
