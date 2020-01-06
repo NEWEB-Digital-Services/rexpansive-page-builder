@@ -11,7 +11,13 @@ var Element_Edit_Modal = (function ($) {
     var rex_edit_model_element_panel_properties;
 
     var _openChooseElementEdit = function () {
-        Rexlive_Modals_Utils.openModal(rex_edit_model_element_panel_properties.$self.parent(".rex-modal-wrap"));
+        Rexlive_Modals_Utils.openModal(
+            rex_edit_model_element_panel_properties.$self.parent(".rex-modal-wrap"),    // $target
+            false,          // target_only
+            undefined,      // additional_class
+            undefined,      // set_position
+            blockID         // blockIDToFocusAfterClose
+        );
     };
 
     var _closeChooseElementEdit = function () {
@@ -80,7 +86,6 @@ var Element_Edit_Modal = (function ($) {
         blockID = data.blockID;
         _updateElementEditorModal(data.elementData);
         if (alreadyChooseToSynchronize) {
-            // Rexlive_Modals_Utils.openModal(element_editor_properties.$self.parent(".rex-modal-wrap"));
             // Make an if if there are more kind of elements
             Wpcf7_Edit_Form_Modal.openFormEditorModal({
                 elementData: elementData,

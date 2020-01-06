@@ -536,14 +536,11 @@ var Rexbuilder_Rexelement = (function ($) {
 
             var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").eq(0);
             _addElementStyle($elementWrapper);
+            Rexbuilder_Rexwpcf7.fixInputs();
         } else {    // If it's not a new element
             Rexbuilder_Rexwpcf7.updateDBFormsInPage(elementID, !flagElementFound);
         }
-
-        Rexbuilder_Rexwpcf7.fixInputs();
-        // Rexbuilder_Rexwpcf7.addWpcf7MenuPlaceholders();
-        // Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
-        // Rexbuilder_Rexwpcf7.fixWpcf7Files();
+        
         Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
 
         /* Copied form Rexbuilder_Rexbutton */
@@ -845,15 +842,11 @@ var Rexbuilder_Rexelement = (function ($) {
 
             var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").eq(0);
             _addElementStyle($elementWrapper);
-        } else {    // If it's not a new element
+            Rexbuilder_Rexwpcf7.fixInputs();
+        } else {
             Rexbuilder_Rexwpcf7.updateDBFormsInPage(elementID, true);
         }
 
-
-        Rexbuilder_Rexwpcf7.fixInputs();
-        // Rexbuilder_Rexwpcf7.addWpcf7MenuPlaceholders();
-        // Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
-        // Rexbuilder_Rexwpcf7.fixWpcf7Files();
         Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
 
         /* Copied form Rexbuilder_Rexbutton */

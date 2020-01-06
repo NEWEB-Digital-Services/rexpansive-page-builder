@@ -175,15 +175,20 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
         var formID = elementData.element_target.element_id;
         _getFormSettings(formID);
-        Rexlive_Modals_Utils.openModal(wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"), false);
+        Rexlive_Modals_Utils.openModal(
+            wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),
+            false,
+            ["wpcf7-editing-form"],
+            undefined,
+            blockID
+        );
     }
 
     var _closeModal = function () {
         Rexlive_Modals_Utils.closeModal(
             wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),
             false,
-            [],
-            blockID
+            ["wpcf7-editing-form"]
         );
     };
 

@@ -36,23 +36,20 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         switch (fieldType) {
             case "text":
                 fieldShortcode = '[text text-' + fieldNumber + ' class:text-' + fieldNumber + ']';
-                $columnContent.prepend('<input type="text" name="text-' + fieldNumber + '" value="" class="wpcf7-form-control wpcf7-text text-' + fieldNumber + '" aria-invalid="false" style="">');
+                $columnContent.prepend('<span class="wpcf7-form-control-wrap your-name text-' + fieldNumber + '"><input type="text" name="text-' + fieldNumber + '" value="" class="wpcf7-form-control wpcf7-text text-' + fieldNumber + '" aria-invalid="false" style=""></span>');
                 break;
             case "textarea":
                 fieldShortcode = "[textarea textarea-" + fieldNumber + " class:textarea-" + fieldNumber + "]";
-                $columnContent.prepend('<textarea name="textarea-' + fieldNumber + '" cols="40" rows="10" class="wpcf7-form-control wpcf7-textarea textarea-' + fieldNumber + '" aria-invalid="false" style=""></textarea>');
+                $columnContent.prepend('<span class="wpcf7-form-control-wrap textarea-' + fieldNumber + '"><textarea name="textarea-' + fieldNumber + '" class="wpcf7-form-control wpcf7-textarea textarea-' + fieldNumber + '" aria-invalid="false" style=""></textarea></span>');
                 break;
             case "menu":
                 fieldShortcode = '[select menu-' + fieldNumber + ' class:menu-' + fieldNumber + ' "Field 1" "Field 2"]';
-                $columnContent.prepend('<select name="menu-' + fieldNumber + '" class="wpcf7-form-control wpcf7-select menu-' + fieldNumber + '" aria-invalid="false" style=""><option value="" disabled selected>Select something</option><option value="Field 1">Field 1</option><option value="Field 2">Field 2</option></select>');
+                $columnContent.prepend('<span class="wpcf7-form-control-wrap menu-' + fieldNumber + '"><select name="menu-' + fieldNumber + '" class="wpcf7-form-control wpcf7-select menu-' + fieldNumber + '" aria-invalid="false" style=""><option value="" disabled selected>Select something</option><option value="Field 1">Field 1</option><option value="Field 2">Field 2</option></select></span>');
                 break;
             case "radiobuttons":
                 fieldShortcode = "[radio radio-" + fieldNumber + " default:1  \"Option 1\" \"Option 2\" ]";
                 $columnContent.prepend("<span class=\"wpcf7-form-control-wrap radio-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control wpcf7-radio\"><span class=\"wpcf7-list-item first\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 1\" checked=\"checked\" class=\"with-gap\" id=\"wpcf7-radio-1\"><span class=\"wpcf7-list-item-label\">Option 1</span></span><span class=\"wpcf7-list-item last\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 2\" class=\"with-gap\" id=\"wpcf7-radio-2\"><span class=\"wpcf7-list-item-label\">Option 2</span></span></span></span>");
                 break;
-            // case "checkbox":
-            //     fieldShortcode = "[checkbox checkbox-" + fieldNumber + " class:checkbox-" + fieldNumber + " \"Checkbox text\"]";
-            //     break;
             case "acceptance":
                 fieldShortcode = "[acceptance acceptance-" + fieldNumber + " optional] Your text [/acceptance]";
                 $columnContent.prepend("<span class=\"wpcf7-form-control-wrap acceptance-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control wpcf7-acceptance optional\"><span class=\"wpcf7-list-item\"><label><input type=\"checkbox\" name=\"acceptance-" + fieldNumber + "\" value=\"1\" aria-invalid=\"false\"><span class=\"wpcf7-list-item-label\">Your text</span></label></span></span></span>");
@@ -237,7 +234,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             .removeClass('with-button')
             /*.find('.wpcf7-column-content')*/
             .append(fieldShortcode);
-        console.log('save new field', $columnToUpdateDB[0].outerHTML)
     }
 
     var _saveNewRow = function (formID, $newRow) {
@@ -3182,6 +3178,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
                     i++;
                 }
+
+                _fixInputs();
               }
             },
             error: function(response) {}
