@@ -3177,7 +3177,6 @@ var TextEditor = (function ($) {
 
       // Trace the cursor position
       this.subscribe("editableMouseover", this.handleMouseOver.bind(this));
-      // this.subscribe("editableClick", this.traceInputForm.bind(this));
 
       this.subscribe("blur", this.handleBlur.bind(this));
 
@@ -3212,10 +3211,13 @@ var TextEditor = (function ($) {
     handleMouseOver: function (event) {
       var $target = $(event.target);
 
+      // if ( $target.is(".wpcf7-add-new-row") || $target.parents(".wpcf7-add-new-row").length !== 0 ) console.log('sono su + add row')
+      // if ( $target.is(".wpcf7-add-new-form-content") || $target.parents(".wpcf7-add-new-form-content").length !== 0 ) console.log('+ add content')
+
       if ("mouseover" == event.type && $target.parents(".grid-stack-item").hasClass("item--me-focus")) {
         var needToAddPlusButtonsListener = ("undefined" == typeof this.addFormContentBtns);
 
-        if ($target.is(".wpcf7-form")) {
+        if ( $target.is(".wpcf7-form") ) {
           this.traceForm = $target[0];
           this.setOutline($(this.traceForm), "#00ACFF");
         }
@@ -3232,6 +3234,7 @@ var TextEditor = (function ($) {
           } else {
             this.off(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
           }
+
           this.placeFormToolbox();
           this.hideColumnToolbox();
           // this.clearOutlines("form");
@@ -3288,8 +3291,6 @@ var TextEditor = (function ($) {
         }
       }
     },
-
-    traceInputForm: function (event) {},
 
     handleClickAddFormContent: function (event) {
       this.hideAllToolbars();
@@ -3502,6 +3503,7 @@ var TextEditor = (function ($) {
     },
 
     placeFormToolbox: function (event) {
+      this.hideFormToolbox();
       var $traceForm = $(this.traceForm);
       var $formRows = $traceForm.find('.wpcf7-rows');
 
@@ -3561,6 +3563,8 @@ var TextEditor = (function ($) {
       $formRowToolsInsideRow[0].style.width = rowCoords.width/10 + "px";
       $formRowToolsInsideRow[0].style.left = (rowCoords.left + rowCoords.width - rowCoords.width/10 - blockCoords.left) + "px";
       $formRowToolsInsideRow[0].style.top = rowCoords.top - blockCoords.top + offsetFirstRow - 11 + "px";
+      // console.log(rowCoords.top + '-' + blockCoords.top)
+      // console.log($formRowToolsInsideRow[0].style.top)
       
       Rexbuilder_Rexwpcf7.setRowsSortable();
     },
