@@ -259,8 +259,6 @@
 
       this.triggerGalleryReady();
       this.properties.firstStartGrid = false;
-
-      console.log(this.properties)
     },
 
     /**

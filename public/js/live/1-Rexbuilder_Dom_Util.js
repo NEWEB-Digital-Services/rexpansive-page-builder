@@ -216,6 +216,7 @@ var Rexbuilder_Dom_Util = (function($) {
     // $section.css("background-image", "url(" + data.urlImage + ")");
     $section.attr("data-background_image_width", data.width);
     $section.attr("data-background_image_height", data.height);
+    $sectionData.attr("data-image_size", data.image_size);
     $sectionData.attr("data-id_image_bg_section", data.idImage);
     $sectionData.attr("data-image_bg_section", data.urlImage);
     $sectionData.attr("data-image_bg_section_active", data.active);
@@ -304,7 +305,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var section = $section[0];
     $sectionData.attr("data-image_bg_section", "");
     $sectionData.attr("data-id_image_bg_section", "");
-    $sectionData.data("image_size", "");
+    $sectionData.data("data-image_size", "");
     section.setAttribute( "data-background_image_width", "" );
     section.setAttribute( "data-background_image_height", "" );
     section.style.backgroundImage = '';
