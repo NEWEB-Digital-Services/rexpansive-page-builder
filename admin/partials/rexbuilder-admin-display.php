@@ -62,7 +62,7 @@
 					</p>
 				</td>
 			</tr>
-			<tr class="hide-all">
+			<tr class="-hide-all">
 				<th><?php _e( 'Fast Load', $this->plugin_name ); ?></th>
 				<td>
 					<label for="rex-enable-fast_load">

@@ -564,7 +564,7 @@ gulp.task('dev-live', ['live-builder-style'] ,function() {
 });
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
-var live_zip_name = 'Premium-202-Rexpansive-Builder.zip';
+var live_zip_name = 'Premium-203-Rexpansive-Builder.zip';
 // var live_folder_name = 'rexpansive-builder';		// old folder name
 var live_folder_name = 'rexpansive-page-builder';
 

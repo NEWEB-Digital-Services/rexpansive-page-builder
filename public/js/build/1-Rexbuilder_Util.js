@@ -3316,7 +3316,8 @@ var Rexbuilder_Util = (function($) {
           galleryEditorInstance.batchGridstack();
           galleryEditorInstance._defineDynamicPrivateProperties();
           galleryEditorInstance.updateGridstackStyles();
-          galleryEditorInstance.setBackgroundSectionPush();
+          galleryEditorInstance.setFullWidthNaturalBackground();
+          galleryEditorInstance.setNaturalBackground();
           galleryEditorInstance.updateBlocksHeight();
           galleryEditorInstance.fixVideoProportion();
           galleryEditorInstance.commitGridstack();

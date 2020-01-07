@@ -3741,6 +3741,20 @@ div.wpcf7 .rxcf7-custom-style p:last-of-type {
         max-width: 100% !important; } }
   .rexpansive_section.removing_section {
     display: none; }
+  .rexpansive_section.full-width-natural-background, .rexpansive_section.natural-background {
+    background-size: contain; }
+    .rexpansive_section.full-width-natural-background.align-top, .rexpansive_section.natural-background.align-top {
+      background-position-y: top; }
+    .rexpansive_section.full-width-natural-background.align-center, .rexpansive_section.natural-background.align-center {
+      background-position-y: center; }
+    .rexpansive_section.full-width-natural-background.align-bottom, .rexpansive_section.natural-background.align-bottom {
+      background-position-y: bottom; }
+    .rexpansive_section.full-width-natural-background.align-left, .rexpansive_section.natural-background.align-left {
+      background-position-x: left; }
+    .rexpansive_section.full-width-natural-background.align-middle, .rexpansive_section.natural-background.align-middle {
+      background-position-x: center; }
+    .rexpansive_section.full-width-natural-background.align-right, .rexpansive_section.natural-background.align-right {
+      background-position-x: right; }
 
 /** section background alignement **/
 .rexpansive_section.background--contain {

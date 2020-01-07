@@ -33,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'REXPANSIVE_BUILDER_VERSION', '2.0.2' );
+define( 'REXPANSIVE_BUILDER_VERSION', '2.0.3' );
 
 /**
  * Constant for the plugin main PATH
@@ -67,7 +67,7 @@ define( 'REXPANSIVE_BUILDER_UPLOADS_FOLDER', 'rexpansive-builder' );
  * Global variable to set the state of the release
  */
 define( 'REXPANSIVE_BUILDER_PRODUCTION_STYLES', true );
-define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', false );
+define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', true );
 
 /**
  * ACF inclusion definitions

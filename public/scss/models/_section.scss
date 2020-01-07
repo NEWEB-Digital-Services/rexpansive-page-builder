@@ -30,6 +30,29 @@
 		display: none;
 	}
 
+	&.full-width-natural-background,
+	&.natural-background {
+	    background-size:contain;
+	    &.align-top {
+	    	background-position-y: top;
+	    }
+	    &.align-center {
+	    	background-position-y: center;
+	    }
+	    &.align-bottom {
+	    	background-position-y: bottom;
+	    }
+	    &.align-left {
+	    	background-position-x: left;
+	    }
+	    &.align-middle {
+	    	background-position-x: center;
+	    }
+	    &.align-right {
+	    	background-position-x: right;
+	    }
+	}
+
 	// &.full-height-section {
 	// 	min-height: 100vh;
 	// 	.perfect-grid-gallery {

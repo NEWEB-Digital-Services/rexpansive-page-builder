@@ -121,7 +121,8 @@
       layoutBeforeCollapsing: {},
       initialStateGrid: null,
       mirrorStateGrid: null,
-      pushBackground: false
+      fullWidthNaturalBackground: false,
+      naturalBackground: false
     };
 
     this.$section = this.$element.parents(this._defaults.gridParentWrap);
@@ -151,13 +152,14 @@
       this._setGutter();
       this._defineHalfSeparatorProperties();
       this._defineRowSeparator();
-      this._definePushBackground();
+      this._defineFullWidthNaturalBackground();
+      this._defineNaturalBackground();
 
       this._setGridPadding();
 
       this._defineDynamicPrivateProperties();
 
-      // this.setBackgroundSectionPush();
+      // this.setFullWidthNaturalBackground();
 
       this._prepareElements();
 
@@ -1583,8 +1585,11 @@
       this.properties.wrapWidth = newWidth;
       this.properties.singleWidth = newWidth * this.settings.gridItemWidth;
 
-      if( !this.settings.editorMode && this.properties.pushBackground ) {
-        this._setPushHeight();
+      if( !this.settings.editorMode && this.properties.fullWidthNaturalBackground ) {
+        this._setFullWidthNaturalBackground();
+        this._setElementsToHeight("12");
+      } else if( !this.settings.editorMode && this.properties.naturalBackground ) {
+        this._setNaturalBackground();
         this._setElementsToHeight("12");
       } else if (this.settings.galleryLayout == "masonry") {
         this.properties.singleHeight = this.settings.cellHeightMasonry;
@@ -1605,14 +1610,14 @@
       return true;
     },
 
-    setBackgroundSectionPush: function() {
-      if( !this.settings.editorMode && this.properties.pushBackground ) {
-        this._setPushHeight();
+    setFullWidthNaturalBackground: function() {
+      if( !this.settings.editorMode && this.properties.fullWidthNaturalBackground ) {
+        this._setFullWidthNaturalBackground();
         this._setElementsToHeight("12");
       }
     },
 
-    _setPushHeight: function() {
+    _setFullWidthNaturalBackground: function() {
       var w = this.section.getAttribute('data-background_image_width');
       var h = this.section.getAttribute('data-background_image_height');
       if( null === w || null === h || '' === w || '' === h ) {
@@ -1620,6 +1625,35 @@
       }
       var pushH = Math.ceil( ( this.properties.gutter + this.properties.wrapWidth ) * parseInt(h) ) / parseInt(w);
       // var pushH = Math.ceil( this.section.offsetWidth * parseInt(h) ) / parseInt(w);
+      this.section.style.minHeight = pushH + 'px';
+      // this.settings.fullHeight = 'true';
+
+      if (this.settings.galleryLayout == "masonry") {
+        this.properties.singleHeight = ( pushH - this.properties.gutter ) / 5;
+      } else {
+        this.properties.singleHeight = ( pushH - this.properties.gutter ) / 12;
+      }
+    },
+
+    setNaturalBackground: function() {
+      if( !this.settings.editorMode && this.properties.naturalBackground ) {
+        this._setNaturalBackground();
+        this._setElementsToHeight("12");
+      }
+    },
+
+    _setNaturalBackground: function() {
+      var w = this.section.getAttribute('data-background_image_width');
+      var h = this.section.getAttribute('data-background_image_height');
+      if( null === w || null === h || '' === w || '' === h ) {
+        return;
+      }
+      var pushH = Math.ceil( ( this.properties.gutter + this.properties.wrapWidth ) * parseInt(h) ) / parseInt(w);
+      // var pushH = Math.ceil( this.section.offsetWidth * parseInt(h) ) / parseInt(w);
+      if( pushH > h ) {
+        pushH = h;
+      }
+
       this.section.style.minHeight = pushH + 'px';
       // this.settings.fullHeight = 'true';
 
@@ -1696,9 +1730,15 @@
           : null;
     },
 
-    _definePushBackground: function() {
-      if( hasClass(this.section,'background-push') ) {
-        this.properties.pushBackground = true;
+    _defineFullWidthNaturalBackground: function() {
+      if( hasClass(this.section,'full-width-natural-background') ) {
+        this.properties.fullWidthNaturalBackground = true;
+      }
+    },
+
+    _defineNaturalBackground: function() {
+      if( hasClass(this.section,'natural-background') ) {
+        this.properties.naturalBackground = true;
       }
     },
 
