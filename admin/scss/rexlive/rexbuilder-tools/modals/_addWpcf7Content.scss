@@ -6,8 +6,6 @@
     .rexwpcf7-upd-add_button {
       width: 30px;
       height: 42px;
-      // width: 20px;
-      // height: 20px;
       position: absolute;
       left: 16px;
       right: 0;
@@ -16,6 +14,21 @@
       padding: 7px 0px 0px 2px;
       color: $palette-color-2;
       cursor: pointer;
+    }
+
+    .rexwpcf7-add-content {
+      width: 29px;
+      height: 29px;
+      position: absolute;
+      left: 22px;
+      right: 0;
+      // text-align: center;
+      padding: 3px 0px 0px 6px;
+      cursor: pointer;
+
+      .l-svg-icons {
+        font-size: 13px;
+      }
     }
 
     select {

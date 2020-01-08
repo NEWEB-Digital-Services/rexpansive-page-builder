@@ -136,6 +136,13 @@
     // }
   }
 
+  &.tool-button--add-big-grey {
+    @include bl-btn--add-big-grey();
+    font-size: 16px;
+    // #{$icon-class} {
+    // }
+  }
+
   &.tool-button--add-mdm {
     @include bl-btn--add-mdm();
     #{$icon-class} {

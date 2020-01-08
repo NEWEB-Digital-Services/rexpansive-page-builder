@@ -111,6 +111,16 @@
   }
 }
 
+@mixin bl-btn--add-big-grey {
+  padding: 10px;
+  background-color: transparent;
+  @include fill-icon($palette-color-2);
+  border: 2px solid $palette-color-2;
+  &:hover {
+    @include fill-icon($palette-color-2);
+  }
+}
+
 @mixin bl-btn--add-big-pink {
   padding: 10px;
   background-color: transparent;

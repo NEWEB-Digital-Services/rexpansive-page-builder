@@ -75,7 +75,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         });
 
-        // _fixWpcf7RadioButtons(); Mettere fixInputs?
+        _fixWpcf7RadioButtons(); // Mettere fixInputs?
         _addColumnContentStyle($columnToAddField);
     }
 
@@ -229,7 +229,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var column = insertionPoint.column_number;
 
         var $columnToUpdateDB = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
-
         $columnToUpdateDB
             .removeClass('with-button')
             /*.find('.wpcf7-column-content')*/
@@ -1780,8 +1779,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
 
         // Radio fields
-        var $listFields2 = $formColumn.find(".wpcf7-radio").eq(0).find(".wpcf7-radio-label");
-        if ($listFields2.length != 0) {
+        if ( 0 !== $formColumn.find('.wpcf7-radio').length ) {
+            var $listFields2 = $formColumn.find('.wpcf7-radio').eq(0).find('.wpcf7-radio-label');
+            if ( 0 === $listFields2.length ) {
+                $listFields2 = $formColumn.find('.wpcf7-radio').eq(0).find('.wpcf7-list-item-label');
+            }
+
             for (var field of $listFields2) {
                 columnContentData.wpcf7_list_fields.push($(field).text());
             }
@@ -2518,7 +2521,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var $formToUpdateDB = $formsInPage[formID];
         var $columnToUpdateDB = $formToUpdateDB.find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
         var shortcode = $columnToUpdateDB.find(".wpcf7-column-content").html();
-
         if ("undefined" == typeof shortcode) {
             shortcode = $columnToUpdateDB.html();
         }
@@ -2929,29 +2931,29 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     })
                     break;
                 case "radio":
-                    var $radios = $formColumn.find('input[type=radio]');
+                    // var $radios = $formColumn.find('input[type=radio]');
 
-                    $radios.each(function(index, el) {
-                        var $element = $(el);
+                    // $radios.each(function(index, el) {
+                    //     var $element = $(el);
 
-                        $element.addClass("with-gap");
-                        $element.attr("id", "wpcf7-radio-" + (i + 1));
-                        var $spanLabel = $element.siblings('.wpcf7-list-item-label');
+                    //     $element.addClass("with-gap");
+                    //     $element.attr("id", "wpcf7-radio-" + (i + 1));
+                    //     var $spanLabel = $element.siblings('.wpcf7-list-item-label');
 
-                        if ($spanLabel.length != 0) {
-                            var text = $spanLabel.text();
-                            $spanLabel.empty();
+                    //     if ($spanLabel.length != 0) {
+                    //         var text = $spanLabel.text();
+                    //         $spanLabel.empty();
 
-                            var $label = $(document.createElement("label"));
-                            $label.addClass('wpcf7-radio-label');
-                            $label.attr('for',  $element.attr('id'));
-                            $label.text(text);
-                            $label.insertAfter($spanLabel);
-                            $spanLabel.removeClass('wpcf7-list-item-label');
-                        } else {
-                            $element.siblings('.wpcf7-radio-label').attr('for', 'wpcf7-radio-' + (i + 1));
-                        }
-                    });
+                    //         var $label = $(document.createElement("label"));
+                    //         $label.addClass('wpcf7-radio-label');
+                    //         $label.attr('for',  $element.attr('id'));
+                    //         $label.text(text);
+                    //         $label.insertAfter($spanLabel);
+                    //         $spanLabel.removeClass('wpcf7-list-item-label');
+                    //     } else {
+                    //         $element.siblings('.wpcf7-radio-label').attr('for', 'wpcf7-radio-' + (i + 1));
+                    //     }
+                    // });
                     break;
                 case "acceptance":
                     break;
@@ -2982,7 +2984,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     break;
             }
         });
-
+        
+        _fixWpcf7RadioButtons();
         _fixWpcf7Files();
     }
 
