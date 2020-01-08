@@ -332,6 +332,10 @@ class Rexbuilder_Public
                 if ( false !== strpos( $customEffects, 'distance-accordion-toggle' ) ) {
                     wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.js', array(), $ver, true);
                 }
+
+                if ( false !== strpos( $customEffects, 'popup-content-button' ) ) {
+                    wp_enqueue_script('popup-content-button', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.js', array(), $ver, true);
+                }
             }
 
 
@@ -410,6 +414,10 @@ class Rexbuilder_Public
 
                 if ( false !== strpos( $customEffects, 'distance-accordion-toggle' ) ) {
                     wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.min.js', array(), false, true);
+                }
+
+                if ( false !== strpos( $customEffects, 'popup-content-button' ) ) {
+                    wp_enqueue_script('popup-content-button', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.min.js', array(), $ver, true);
                 }
 
                 wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-public.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
@@ -1025,6 +1033,36 @@ class Rexbuilder_Public
 
         update_post_meta($post_id_to_update, '_rexbuilder_buttons_ids_in_page', $ids_in_page);
         $response['backIDS'] = $ids_in_page;
+        wp_send_json_success($response);
+    }
+
+    /**
+     * Get the content of a page to display inside a popup
+     * @return JSON response
+     * @since  2.0.3
+     */
+    public function rex_get_popup_content() {
+        $nonce = $_REQUEST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if( !wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) {
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        }
+
+        $maybe_id = url_to_postid( $_REQUEST['target'] );
+
+        $response['error'] = false;
+        $response['ID'] = $maybe_id;
+        $content_post = get_post( $maybe_id );
+        $response['t'] = $content_post;
+        $response['data'] = get_the_content( $content_post->post_content );
+
         wp_send_json_success($response);
     }
 

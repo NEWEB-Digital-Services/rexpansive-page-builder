@@ -1612,6 +1612,10 @@ var Rex_Save_Listeners = (function($) {
       {
         condition: 'rex-indicator__',
         active: false
+      },
+      {
+        condition: 'popup-content-button',
+        active: false
       }
     ];
 

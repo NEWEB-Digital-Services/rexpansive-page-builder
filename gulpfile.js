@@ -241,7 +241,8 @@ var effects_js_src = [
 	'public/js/vendor/6-jquery.rexSlideshow.js',
 	'public/js/vendor/sticky-section.js',
 	'public/js/vendor/scroll-css-animation.js',
-	'public/js/vendor/distance-accordion.js'
+	'public/js/vendor/distance-accordion.js',
+	'public/js/vendor/popup-content.js',
 ];
 
 gulp.task('prepare-effects', function() {

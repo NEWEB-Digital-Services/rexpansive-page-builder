@@ -407,6 +407,11 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_get_embed_code', $plugin_public, 'rexlive_get_embed_code' );
 		$this->loader->add_action( 'wp_ajax_rexlive_save_buttons_in_page', $plugin_public, 'rexlive_save_buttons_in_page' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_buttons_in_page', $plugin_public, 'rexlive_save_buttons_in_page' );
+
+		// ajax logic
+		// for frontend effects
+		$this->loader->add_action( 'wp_ajax_rex_get_popup_content', $plugin_public, 'rex_get_popup_content' );
+		$this->loader->add_action( 'wp_ajax_nopriv_rex_get_popup_content', $plugin_public, 'rex_get_popup_content' );
 	}
 
 	/**

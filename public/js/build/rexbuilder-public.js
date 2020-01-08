@@ -685,6 +685,8 @@ var Rexbuilder_App = (function($) {
       launchScrollCSSAnimations();
       // launch distance accordions
       launchDistanceAccordion();
+      // launch popUpContent
+      launchPopUpContent();
     }
 
     Rexbuilder_Util.galleryPluginActive = true;
@@ -749,6 +751,42 @@ var Rexbuilder_App = (function($) {
       for ( var j=0, tot = togglers.length; j < tot; j++ ) {
         var inst = new DistanceAccordion(togglers[j]);
       }
+    }
+  }
+
+  var launchAllAfterLoading = function() {
+    $grids = $(this.target).find(".grid-stack-row");
+    // $accordions = Rexbuilder_Util.$rexContainer.find('.rex-accordion');
+
+    /* -- Launching the grid -- */
+    if( $grids ) {
+      $grids.perfectGridGalleryEditor({
+        editorMode: Rexbuilder_Util.editorMode
+      });
+    }
+  }
+
+  var launchPopUpContent = function() {
+    if ( 'undefined' !== typeof PopUpContent ) {
+      var popUpContentSettings = {
+        getPopUpContentComplete: launchAllAfterLoading,
+        ajaxSettings: {
+          type: "GET",
+          dataType: "json",
+          url: _plugin_frontend_settings.rexajax.ajaxurl,
+          data: {
+            action: "rex_get_popup_content",
+            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+          },
+        }
+      };
+      
+      var btns = [].slice.call( document.getElementsByClassName('popup-content-button') );
+
+      btns.forEach(function(b) {
+        var ist = new PopUpContent(b, popUpContentSettings);
+        console.log(ist)
+      });
     }
   }
 
