@@ -24,12 +24,14 @@
 
 		var defaults = {
 			// classes
+			bodyPopUpViewClass: 'popup-content--active',
 			popUpWrapper: 'popup-content',
 			popupViewClass: 'popup-content--view',
 			popUpCloseWrapper: 'popup-content-close-wrapper',
 			popUpCloseClass: 'popup-content-close',
 			popUpContent: 'popup-content-content',
 			contentInjectorPoint: 'rexpansive_section',
+			// ajax
 			getPopUpContentComplete: null,
 			ajaxSettings: null
 		};
@@ -68,7 +70,7 @@
         		this.options.ajaxSettings.data.target = this.urlTarget;
 				this.options.ajaxSettings.success = function( response ) {
 					if ( response.success ) {
-						onGetPopUpContentComplete.call( that, response.data );
+						onGetPopUpContentComplete.call( that, response.data.data );
 					}
 				};
 
@@ -100,8 +102,9 @@
 	}
 
 	function togglePopUp(ev) {
-		ev.preventDefault()
-		toggleClass(this.target, this.options.popupViewClass)
+		ev.preventDefault();
+		toggleClass(this.target, this.options.popupViewClass);
+		toggleClass(document.body, this.options.bodyPopUpViewClass);
 	}
 
 	function getPopUpContent() {

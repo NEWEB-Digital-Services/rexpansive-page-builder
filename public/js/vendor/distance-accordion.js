@@ -15,6 +15,7 @@
     this.$wrapToggler = [];
     // this.wrapContent = null;
     this.targetsChildAccordions = null;
+    this.context = document;
 
     if (arguments[0]) {
       this.element = arguments[0];
@@ -31,7 +32,8 @@
       accordionElementClassName: 'da-element',
       accordionTogglerClass: 'distance-accordion-toggle',
       scrollTo: false,
-      closeChilds: true
+      closeChilds: true,
+      context: null
     };
 
     // Create options by extending defaults with the passed in arugments
@@ -47,17 +49,19 @@
     this.options.scrollTo = ( this.element.getAttribute('data-scroll-to' ) ? ( 'true' === this.element.getAttribute('data-scroll-to' ) ) : this.options.scrollTo );
     this.options.closeChilds = ( this.element.getAttribute('data-close-childs' ) ? ( 'true' === this.element.getAttribute('data-close-childs' ) ) : this.options.closeChilds );
 
+    this.context = ( this.options.context ? this.options.context : this.context );
+
     if ( this.element )
     {
       this.hashTarget = this.element.hash.substr(1);
       if ( '' !== this.hashTarget ) {
-        var target = document.getElementById( this.hashTarget );
+        var target = this.context.getElementById( this.hashTarget );
         if ( target ) {
           this.targets.push( target );
         }
       } else {
         this.classTarget = this.element.getAttribute('data-target');
-        this.targets = [].slice.call( document.getElementsByClassName(this.classTarget) );
+        this.targets = [].slice.call( this.context.getElementsByClassName( this.classTarget ) );
       }
 
       if ( this.targets.length > 0 ) {

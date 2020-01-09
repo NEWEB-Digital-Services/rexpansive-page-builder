@@ -11,6 +11,7 @@ var Rexbuilder_App = (function($) {
   var $grids = null;
   var $accordions = null;
   var odometers = [];
+  var accordionSettings = {};
 
   var init = function() {
     Rexbuilder_Util.init();
@@ -59,8 +60,8 @@ var Rexbuilder_App = (function($) {
       // prevent pswp errors
       $sections.each(function(i, e) {
         var pswchilds = e.getElementsByClassName("pswp-figure");
-        if (pswchilds.length === 0) {
-          $(e).removeClass("photoswipe-gallery");
+        if ( pswchilds.length === 0 ) {
+          Rexbuilder_Util.removeClass(e,'photoswipe-gallery');
         }
       });
       initPhotoSwipeFromDOM(".photoswipe-gallery");
@@ -136,7 +137,7 @@ var Rexbuilder_App = (function($) {
 
     Rexbuilder_Util.playAllVideos();
 
-    var accordionSettings = {
+    accordionSettings = {
       durationOpen: 10,
       durationClose: 300
     };
@@ -754,18 +755,57 @@ var Rexbuilder_App = (function($) {
     }
   }
 
+  /**
+   * Callback after load the pop up content
+   * @return {void}
+   */
   var launchAllAfterLoading = function() {
-    $grids = $(this.target).find(".grid-stack-row");
-    // $accordions = Rexbuilder_Util.$rexContainer.find('.rex-accordion');
+    var $popUpContent = $(this.target);
+    $sections = $popUpContent.find(".rexpansive_section");
+    $grids = $popUpContent.find(".grid-stack-row");
+    $accordions = $popUpContent.find('.rex-accordion');
 
-    /* -- Launching the grid -- */
-    if( $grids ) {
+    // main grid
+    if( $grids.length > 0 ) {
       $grids.perfectGridGalleryEditor({
         editorMode: Rexbuilder_Util.editorMode
       });
     }
+
+    // launch photoswipe
+    if ( $sections.length > 0 ) {
+      $sections.each(function(i, e) {
+        var pswchilds = e.getElementsByClassName("pswp-figure");
+        if (pswchilds.length === 0) {
+          Rexbuilder_Util.removeClass(e,'photoswipe-gallery');
+        }
+      });
+      initPhotoSwipeFromDOM(".photoswipe-gallery");
+    }
+
+    // accordions
+    if( $accordions.length > 0 ) {
+      $accordions.rexAccordion(accordionSettings);
+    }
+
+    // sliders
+    RexSlider.init();
+
+    // distance accordions
+    if ( 'undefined' !== typeof DistanceAccordion ) {
+      var togglers = this.target.getElementsByClassName('distance-accordion-toggle');
+      for ( var j=0, tot = togglers.length; j < tot; j++ ) {
+        var inst = new DistanceAccordion(togglers[j], {
+          context: this.target
+        });
+      }
+    }
   }
 
+  /**
+   * Launch popupcontent plugin on found launchers
+   * @return {void}
+   */
   var launchPopUpContent = function() {
     if ( 'undefined' !== typeof PopUpContent ) {
       var popUpContentSettings = {
@@ -785,7 +825,6 @@ var Rexbuilder_App = (function($) {
 
       btns.forEach(function(b) {
         var ist = new PopUpContent(b, popUpContentSettings);
-        console.log(ist)
       });
     }
   }
@@ -854,7 +893,8 @@ var Rexbuilder_App = (function($) {
   };
 
   // Launch Photoswipe
-  var initPhotoSwipeFromDOM = function(gallerySelector) {
+  var initPhotoSwipeFromDOM = function(gallerySelector, context) {
+    context = 'undefined' === typeof context ? document : context;
     // parse slide data (url, title, size ...) from DOM elements
     // (children of gallerySelector)
     var parseThumbnailElements = function(el) {
@@ -1097,7 +1137,7 @@ var Rexbuilder_App = (function($) {
     };
 
     // loop through all gallery elements and bind events
-    var galleryElements = document.querySelectorAll(gallerySelector);
+    var galleryElements = context.querySelectorAll(gallerySelector);
 
     for (var i = 0, l = galleryElements.length; i < l; i++) {
       galleryElements[i].setAttribute("data-pswp-uid", i + 1);

@@ -1059,9 +1059,23 @@ class Rexbuilder_Public
 
         $response['error'] = false;
         $response['ID'] = $maybe_id;
-        $content_post = get_post( $maybe_id );
-        $response['t'] = $content_post;
-        $response['data'] = get_the_content( $content_post->post_content );
+        $argsQuery = array(
+            'p' => $maybe_id,
+            'post_type' => 'any'
+        );
+
+        $query = new WP_Query( $argsQuery );
+        if ( $query->have_posts() ) {
+            add_filter( 'rexbuilder_fast_load', function() { return 0; } );
+            while ( $query->have_posts() ) {
+                $query->the_post();
+                $post = $query->post;
+                ob_start();
+                the_content();
+                $response['data'] = ob_get_clean();
+            }
+        }
+        wp_reset_postdata();
 
         wp_send_json_success($response);
     }

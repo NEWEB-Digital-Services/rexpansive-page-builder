@@ -95,7 +95,7 @@ class Rexbuilder_Block
 
         $options = get_option( $this->plugin_name . '_options' );
         $animation = apply_filters('rexbuilder_animation_enabled', $options['animation']);
-        $fast_load = ( isset( $options['fast_load'] ) ? $options['fast_load'] : 0 );
+        $fast_load = ( isset( $options['fast_load'] ) ? apply_filters( 'rexbuilder_fast_load', $options['fast_load'] ) : 0 );
 
         $element_link_cc = apply_filters('rexpansive_block_element_link_custom_class', '');
         $grid_item_content_cc = apply_filters('rexpansive_block_grid_item_content_custom_class', '');
