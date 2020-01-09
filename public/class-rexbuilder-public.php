@@ -334,7 +334,11 @@ class Rexbuilder_Public
                 }
 
                 if ( false !== strpos( $customEffects, 'popup-content-button' ) ) {
-                    wp_enqueue_script('popup-content-button', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.js', array(), $ver, true);
+                    wp_enqueue_script('popup-content', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.js', array(), $ver, true);
+                }
+
+                if ( false !== strpos( $customEffects, 'split-scrollable' ) ) {
+                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.js', array(), $ver, true);
                 }
             }
 
@@ -417,7 +421,11 @@ class Rexbuilder_Public
                 }
 
                 if ( false !== strpos( $customEffects, 'popup-content-button' ) ) {
-                    wp_enqueue_script('popup-content-button', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.min.js', array(), $ver, true);
+                    wp_enqueue_script('popup-content', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.min.js', array(), $ver, true);
+                }
+
+                if ( false !== strpos( $customEffects, 'split-scrollable' ) ) {
+                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.min.js', array(), $ver, true);
                 }
 
                 wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-public.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );

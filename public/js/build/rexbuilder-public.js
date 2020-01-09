@@ -688,6 +688,8 @@ var Rexbuilder_App = (function($) {
       launchDistanceAccordion();
       // launch popUpContent
       launchPopUpContent();
+      // launch splitScrollable
+      launchSplitScollable();
     }
 
     Rexbuilder_Util.galleryPluginActive = true;
@@ -825,6 +827,36 @@ var Rexbuilder_App = (function($) {
 
       btns.forEach(function(b) {
         var ist = new PopUpContent(b, popUpContentSettings);
+      });
+    }
+  }
+
+  function fixScrollableGridGallery() {
+    // destroyGridGallery
+    var grid = this.element.querySelector('.perfect-grid-gallery');
+    var $grid = $(grid);
+
+    this.opacityEls.forEach( function(element, index) {
+      element.style.height = element.offsetHeight + 'px';
+      // statements
+    });
+
+    // destroy tha grid
+    $grid.data('plugin_perfectGridGalleryEditor').destroyGridGallery();
+    grid.style.height = '';
+  }
+
+  var launchSplitScollable = function() {
+    if ( 'undefined' !== typeof SplitScrollable ) {
+      var splitScrollableSettings = {
+        initializeComplete: fixScrollableGridGallery
+      };
+
+      var scrbls = [].slice.call( document.getElementsByClassName('split-scrollable') );
+      scrbls.forEach( function(element, index) {
+        // statements
+        var inst = new SplitScrollable(element, splitScrollableSettings);
+        console.log(inst)
       });
     }
   }

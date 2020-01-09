@@ -1616,6 +1616,10 @@ var Rex_Save_Listeners = (function($) {
       {
         condition: 'popup-content-button',
         active: false
+      },
+      {
+        condition: 'split-scrollable',
+        active: false
       }
     ];
 
