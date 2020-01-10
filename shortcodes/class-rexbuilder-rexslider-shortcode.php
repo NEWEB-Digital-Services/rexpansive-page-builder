@@ -47,8 +47,11 @@ class Rexbuilder_RexSlider {
 
 		ob_start();
 
-		if( Rexbuilder_Utilities::check_post_exists( $slider_id ) ) :
-			
+		if( Rexbuilder_Utilities::check_post_exists( $slider_id ) ) {
+			// $editor = Rexbuilder_Utilities::isBuilderLive();
+			// $options = get_option( $this->plugin_name . '_options' );
+			// $fast_load = ( isset( $options['fast_load'] ) ? apply_filters( 'rexbuilder_fast_load', $options['fast_load'] ) : 0 );
+
 			$slider_animation = get_field( '_rex_enable_banner_animation', $slider_id );
 			$slider_prev_next = get_field( '_rex_enable_banner_prev_next', $slider_id );
 			$slider_dots = get_field( '_rex_enable_banner_dots', $slider_id );
@@ -63,7 +66,7 @@ class Rexbuilder_RexSlider {
 
 			$re = '/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
 
-			if( !empty( $slider_gallery ) ) :
+			if( !empty( $slider_gallery ) ) {
 				$num_slides = count( $slider_gallery );
 			?>
 			<div data-slider-id="<?php echo $slider_id;?>" class="rex-slider-wrap<?php echo ( 1 == $nav_previewed ? ' rex-slider--bottom-interface' . ( 1 !== $num_slides ? ' rex-slider--bottom-interface--active' : '' ) : '' ); ?><?php echo ' rex-slider--' . $num_slides . '-slides'; ?>" data-rex-slider-animation="<?php echo ( is_array( $slider_animation ) ? 'true': ( "0" == $slider_animation ? 'true' : 'false' ) ); ?>" data-rex-slider-prev-next="<?php echo ( is_array( $slider_prev_next ) ? '1': ( "0" == $slider_prev_next ? 'true' : 'false' ) ); ?>" data-rex-slider-dots="<?php echo ( is_array( $slider_dots ) ? '1': ( "0" == $slider_dots ? 'true' : 'false' ) ); ?>" data-set-gallery-size="<?php echo esc_attr( ( 1 == $nav_previewed || 1 == $set_gallery_size ) ? 'true' : 'false' ); ?>"<?php echo ( '' !== $wrap_around ? ' data-wrap-around="' . $wrap_around . '"' : '' ); ?>>
@@ -80,7 +83,11 @@ class Rexbuilder_RexSlider {
 				$slideHasImage = false;
 				if( isset( $slide['_rex_banner_gallery_image']['url'] ) ) {
 					$slideHasImage = true;
-					$slider_el_style = ' style="background-image:url(' . $slide['_rex_banner_gallery_image']['url'] . ')"';
+					// if ( 1 == $fast_load && ! $editor ) {
+					// 	$background_img_style = ' data-src="' . $slide['_rex_banner_gallery_image']['url'] . '"';
+					// } else {
+						$slider_el_style = ' style="background-image:url(' . $slide['_rex_banner_gallery_image']['url'] . ')"';
+					// }
 					$slideImageIdAttr = " data-rex-slide-image-id=\"". $slide['_rex_banner_gallery_image']['id'] ."\"";
 				}
 
@@ -201,8 +208,8 @@ class Rexbuilder_RexSlider {
 			</div>
 			<?php
 			do_action( 'rex_slider_after_gallery_render', $slider_id );
-			endif;
-		endif;
+			}
+		}
 		return ob_get_clean();
 	}
 }

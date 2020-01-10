@@ -52,6 +52,58 @@
     }
   }
 
+  // Calculate the viewport of the window
+  function viewport () {
+    var e = window,
+      a = "inner";
+    if (!("innerWidth" in window)) {
+      a = "client";
+      e = document.documentElement || document.body;
+    }
+    return { width: e[a + "Width"], height: e[a + "Height"] };
+  }
+
+  /**
+   * Util function to print the blocks infos of this row
+   * @since 2.0.0
+   */
+  function log_block_infos() {
+    var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
+    items.forEach(function(el,i) {
+      console.table({
+        id: el.getAttribute('id'),
+        x: el.getAttribute('data-gs-x'),
+        y: el.getAttribute('data-gs-y'),
+        w: el.getAttribute('data-gs-width'),
+        h: el.getAttribute('data-gs-height')
+      });
+    })
+  }
+
+  /**
+   * Util function to get the blocks infos of this row
+   * @since 2.0.0
+   */
+  function get_block_infos() {
+    var nodes = [];
+    var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
+    items.forEach(function(el,i) {
+      nodes.push({
+        id: el.getAttribute('id'),
+        rexId: el.getAttribute('data-rexbuilder-block-id'),
+        x: parseInt( el.getAttribute('data-gs-x') ),
+        y: parseInt( el.getAttribute('data-gs-y') ),
+        w: parseInt( el.getAttribute('data-gs-width') ),
+        h: parseInt( el.getAttribute('data-gs-height') )
+      });
+    });
+    return nodes;
+  }
+
+  function isEven(number) {
+    return number % 2 == 0;
+  };
+
   // The actual plugin constructor
   function perfectGridGalleryEditor(element, options) {
     this.element = element;
@@ -245,7 +297,7 @@
 
       // we are under the collapse width and the grid hasn't set a layout
       // collaps all
-      if ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+      if ( Rexbuilder_Util.activeLayout == "default" && viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
         if ( null === collapseGrid ) {
           this.collapseElements();
         } else {
@@ -261,6 +313,113 @@
 
       this.triggerGalleryReady();
       this.properties.firstStartGrid = false;
+    },
+
+    _launchGridStack: function() {
+      var gallery = this;
+
+      var floating;
+      if (gallery.settings.galleryLayout == "masonry") {
+        floating = false;
+      } else {
+        floating = true;
+      }
+      if (gallery.settings.editorMode) {
+        //console.log("launching gridstack backend");
+
+        gallery.$element.gridstack({
+          auto: true,
+          autoHide: false,
+          animate: true,
+          acceptWidgets: false,
+          alwaysShowResizeHandle: true,
+          disableOneColumnMode: true,
+          cellHeight: gallery.properties.singleHeight,
+          draggable: {
+            containment: gallery.element,
+            handle: ".rexlive-block-drag-handle",
+            scroll: false
+          },
+          float: floating,
+          resizable: {
+            minWidth: gallery.properties.singleWidth,
+            minHeight: gallery.properties.singleHeight,
+            handles: {
+              e: ".ui-resizable-e",
+              s: ".ui-resizable-s",
+              w: ".ui-resizable-w",
+              se: ".ui-resizable-se",
+              sw: ".ui-resizable-sw"
+            }
+          },
+          verticalMargin: 0,
+          width: gallery.settings.numberCol
+        });
+
+        gallery.$element.addClass("gridActive");
+
+      } else {
+        gallery.$element.gridstack({
+          auto: true,
+          disableOneColumnMode: true,
+          cellHeight: gallery.properties.singleHeight,
+          disableDrag: true,
+          draggable: {
+            handle: ".rexlive-block-drag-handle"
+          },
+          disableResize: true,
+          resizable: {
+            disabled: true
+          },
+          float: floating,
+          verticalMargin: 0,
+          staticGrid: true,
+          width: gallery.settings.numberCol
+        });
+      }
+
+      this.setGridstackIstanceNumber();
+      this.properties.gridstackInstance = this.$element.data("gridstack");
+
+      // Remove elements to hide
+      var gridstack = this.properties.gridstackInstance;
+      var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
+      items.forEach( function(el) {
+        if ( -1 !== el.className.indexOf('rex-hide-element') ) {
+          gridstack.removeWidget(el, false);
+        }
+      });
+
+      /*
+      this.$element.children(".grid-stack-item").each(function(i, elem) {
+        if ($(elem).hasClass("rex-hide-element")) {
+          gridstack.removeWidget(elem, false);
+        }
+      });
+      */
+
+      // if (!Rexbuilder_Util.domUpdaiting) {
+      if (!Rexbuilder_Util.domUpdaiting && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying )) {
+        this.updateBlocksHeight();
+      }
+
+      items.forEach( function(el) {
+        var blockData = el.querySelector('.rexbuilder-block-data');
+        gallery.updateElementDataHeightProperties( blockData, parseInt( el.getAttribute('data-gs-height') ) );
+      });
+
+      this.fixVideoProportion();
+
+      /*
+      this.$element.children(".grid-stack-item").each(function(i, el) {
+        var $el = $(el);
+        var $blockData = $el.children(".rexbuilder-block-data");
+        gallery.updateElementDataHeightProperties(
+          $blockData,
+          parseInt($el.attr("data-gs-height"))
+        );
+      });
+      */
     },
 
     /**
@@ -296,7 +455,7 @@
         singleHeight: this.properties.singleHeight
       };
 
-      if ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+      if ( Rexbuilder_Util.activeLayout == "default" && viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
         if (typeof collapseGrid == "undefined") {
           this.collapseElements();
         } else {
@@ -616,10 +775,6 @@
       }
     },
 
-    updateGrid: function() {
-      //console.log("update grid");
-    },
-
     /**
      * @deprecated
      * @version 2.0.0
@@ -829,193 +984,193 @@
     /**
      * @deprecated
      */
-    updateSrollbars: function() {
-      this.$element
-        .find(this.settings.scrollbarWrapClass)
-        .each(function(i, rexScrollbar) {
-          var scrollbarInstance = $(rexScrollbar).overlayScrollbars();
-          if (typeof scrollbarInstance !== "undefined") {
-            scrollbarInstance.update();
-          }
-        });
-    },
+    // updateSrollbars: function() {
+    //   this.$element
+    //     .find(this.settings.scrollbarWrapClass)
+    //     .each(function(i, rexScrollbar) {
+    //       var scrollbarInstance = $(rexScrollbar).overlayScrollbars();
+    //       if (typeof scrollbarInstance !== "undefined") {
+    //         scrollbarInstance.update();
+    //       }
+    //     });
+    // },
 
     /**
      * Fix block text size
      * @deprecated  08/08/2019: scrollbars no longer present on builder
      */
-    fixElementTextSize: function(block, $handler, event) {
-      var $block = $(block);
+    // fixElementTextSize: function(block, $handler, event) {
+    //   var $block = $(block);
 
-      if ( ! hasClass( block, "block-has-slider" ) ) {
-        var $rexScrollbar = $block.find(this.settings.scrollbarWrapClass);
-        if ($rexScrollbar.length == 0) {
-          return;
-        }
-        // if ($handler !== null) {
-          // var scrollbarInstance = $rexScrollbar.overlayScrollbars();
-          // if (typeof scrollbarInstance !== "undefined") {
-          //   var textHeight = 0;
-          //   var $blockContent = $block.find(".grid-item-content");
-          //   var maxBlockHeight = $blockContent.height();
-          //   var $textWrap = $blockContent.find(".text-wrap");
-          //   if ($textWrap.length != 0) {
-          //     textHeight = this.calculateTextWrapHeight($textWrap);
-          //   }
-          //   if (textHeight < maxBlockHeight) {
-          //     scrollbarInstance.sleep();
-          //   } else {
-          //     scrollbarInstance.update();
-          //   }
-          // }
-        // } else {
-        if($handler === null) {
-          if ( $block.find("." + Rexbuilder_Util.scrollbarProperties.className).length === 0 ) {
-          } else {
-            // subsequent changes due to the change in content
-            // var scrollbarInstance = $rexScrollbar.overlayScrollbars();
-            if ( !$rexScrollbar.hasClass( Rexbuilder_Util.scrollbarProperties.className ) || $rexScrollbar.hasClass("os-host-scrollbar-vertical-hidden") ) {
-              var maxBlockHeight = $rexScrollbar.parents(".grid-item-content").height();
-              var textHeight = $block.find(".text-wrap").innerHeight();
-              var w = parseInt($block.attr("data-gs-width"));
-              var h = this.properties.elementStartingH;
-              var $dataBlock = $block.children(".rexbuilder-block-data");
+    //   if ( ! hasClass( block, "block-has-slider" ) ) {
+    //     var $rexScrollbar = $block.find(this.settings.scrollbarWrapClass);
+    //     if ($rexScrollbar.length == 0) {
+    //       return;
+    //     }
+    //     // if ($handler !== null) {
+    //       // var scrollbarInstance = $rexScrollbar.overlayScrollbars();
+    //       // if (typeof scrollbarInstance !== "undefined") {
+    //       //   var textHeight = 0;
+    //       //   var $blockContent = $block.find(".grid-item-content");
+    //       //   var maxBlockHeight = $blockContent.height();
+    //       //   var $textWrap = $blockContent.find(".text-wrap");
+    //       //   if ($textWrap.length != 0) {
+    //       //     textHeight = this.calculateTextWrapHeight($textWrap);
+    //       //   }
+    //       //   if (textHeight < maxBlockHeight) {
+    //       //     scrollbarInstance.sleep();
+    //       //   } else {
+    //       //     scrollbarInstance.update();
+    //       //   }
+    //       // }
+    //     // } else {
+    //     if($handler === null) {
+    //       if ( $block.find("." + Rexbuilder_Util.scrollbarProperties.className).length === 0 ) {
+    //       } else {
+    //         // subsequent changes due to the change in content
+    //         // var scrollbarInstance = $rexScrollbar.overlayScrollbars();
+    //         if ( !$rexScrollbar.hasClass( Rexbuilder_Util.scrollbarProperties.className ) || $rexScrollbar.hasClass("os-host-scrollbar-vertical-hidden") ) {
+    //           var maxBlockHeight = $rexScrollbar.parents(".grid-item-content").height();
+    //           var textHeight = $block.find(".text-wrap").innerHeight();
+    //           var w = parseInt($block.attr("data-gs-width"));
+    //           var h = this.properties.elementStartingH;
+    //           var $dataBlock = $block.children(".rexbuilder-block-data");
 
-              if (this.settings.galleryLayout == "masonry") {
-                if (textHeight >= maxBlockHeight) {
-                  h = h + Math.ceil( (textHeight - maxBlockHeight) / this.properties.singleHeight );
-                } else {
-                  h = Math.max( h - Math.floor( (maxBlockHeight - textHeight) / this.properties.singleHeight ),
-                    isNaN( parseInt($dataBlock.attr("data-block_height_calculated")) ) ? 0 : parseInt( $dataBlock.attr("data-block_height_calculated") )
-                  );
-                }
-              } else {
-                if (textHeight >= maxBlockHeight) {
-                  h = h + Math.ceil( (textHeight - maxBlockHeight) / this.properties.singleHeight );
-                } else {
-                  h = Math.max(
-                    h - Math.floor( (maxBlockHeight - textHeight) / this.properties.singleHeight ),
-                    isNaN( parseInt($dataBlock.attr("data-block_height_calculated")) ) ? 0 : parseInt( $dataBlock.attr("data-block_height_calculated") )
-                  );
-                }
-              }
+    //           if (this.settings.galleryLayout == "masonry") {
+    //             if (textHeight >= maxBlockHeight) {
+    //               h = h + Math.ceil( (textHeight - maxBlockHeight) / this.properties.singleHeight );
+    //             } else {
+    //               h = Math.max( h - Math.floor( (maxBlockHeight - textHeight) / this.properties.singleHeight ),
+    //                 isNaN( parseInt($dataBlock.attr("data-block_height_calculated")) ) ? 0 : parseInt( $dataBlock.attr("data-block_height_calculated") )
+    //               );
+    //             }
+    //           } else {
+    //             if (textHeight >= maxBlockHeight) {
+    //               h = h + Math.ceil( (textHeight - maxBlockHeight) / this.properties.singleHeight );
+    //             } else {
+    //               h = Math.max(
+    //                 h - Math.floor( (maxBlockHeight - textHeight) / this.properties.singleHeight ),
+    //                 isNaN( parseInt($dataBlock.attr("data-block_height_calculated")) ) ? 0 : parseInt( $dataBlock.attr("data-block_height_calculated") )
+    //               );
+    //             }
+    //           }
 
-              if (this.properties.elementStartingH != h) {
-                if (!Rexbuilder_Util_Editor.updatingPaddingBlock) {
-                  var gridstack = this.properties.gridstackInstance;
-                  gridstack.update(block, null, null, w, h);
-                  this.updateSizeViewerSizes(block);
-                  this.properties.elementStartingH = h;
-                }
-              }
-              // scrollbarInstance.scroll({ y: "50%" }, 100);
-              // scrollbarInstance.update();
-            } else {
-              // scrollbarInstance.scroll({ y: "100%" }, 100);
-              // scrollbarInstance.update();
-            }
-          }
-        }
-      }
-      $block = undefined;
-    },
-
-    /**
-     * @deprecated
-     */
-    disableTextScrollbars: function() {
-      this.$element.children(".grid-stack-item").each(function() {
-        var $block = $(this);
-        if (!$block.hasClass("block-has-slider")) {
-          var scrollbarInstance = $block
-            .find(this.settings.scrollbarWrapClass)
-            .overlayScrollbars();
-          if (scrollbarInstance !== undefined) {
-            scrollbarInstance.sleep();
-          }
-        }
-      });
-    },
+    //           if (this.properties.elementStartingH != h) {
+    //             if (!Rexbuilder_Util_Editor.updatingPaddingBlock) {
+    //               var gridstack = this.properties.gridstackInstance;
+    //               gridstack.update(block, null, null, w, h);
+    //               this.updateSizeViewerSizes(block);
+    //               this.properties.elementStartingH = h;
+    //             }
+    //           }
+    //           // scrollbarInstance.scroll({ y: "50%" }, 100);
+    //           // scrollbarInstance.update();
+    //         } else {
+    //           // scrollbarInstance.scroll({ y: "100%" }, 100);
+    //           // scrollbarInstance.update();
+    //         }
+    //       }
+    //     }
+    //   }
+    //   $block = undefined;
+    // },
 
     /**
      * @deprecated
      */
-    enableTextScrollbars: function() {
-      this.$element.children(".grid-stack-item").each(function() {
-        var $block = $(this);
-        if (!$block.hasClass("block-has-slider")) {
-          var scrollbarInstance = $block
-            .find(this.settings.scrollbarWrapClass)
-            .overlayScrollbars();
-          if (scrollbarInstance !== undefined) {
-            scrollbarInstance.update();
-          }
-        }
-      });
-    },
+    // disableTextScrollbars: function() {
+    //   this.$element.children(".grid-stack-item").each(function() {
+    //     var $block = $(this);
+    //     if (!$block.hasClass("block-has-slider")) {
+    //       var scrollbarInstance = $block
+    //         .find(this.settings.scrollbarWrapClass)
+    //         .overlayScrollbars();
+    //       if (scrollbarInstance !== undefined) {
+    //         scrollbarInstance.sleep();
+    //       }
+    //     }
+    //   });
+    // },
+
+    /**
+     * @deprecated
+     */
+    // enableTextScrollbars: function() {
+    //   this.$element.children(".grid-stack-item").each(function() {
+    //     var $block = $(this);
+    //     if (!$block.hasClass("block-has-slider")) {
+    //       var scrollbarInstance = $block
+    //         .find(this.settings.scrollbarWrapClass)
+    //         .overlayScrollbars();
+    //       if (scrollbarInstance !== undefined) {
+    //         scrollbarInstance.update();
+    //       }
+    //     }
+    //   });
+    // },
 
     /**
      * Function that removes scrollbar from blocks
      * @deprecated
      */
-    removeScrollbars: function() {
-      var $elem;
-      var gallery = this;
-      this.$element.children(".grid-stack-item").each(function() {
-        $elem = $(this);
-        var $blockContent = $elem.find(".grid-item-content");
-        if (
-          !$elem.hasClass("block-has-slider") &&
-          !$blockContent.hasClass("block-has-slider") &&
-          !$blockContent.hasClass("youtube-player")
-        ) {
-          var scrollbarInstance = $elem
-            .find(gallery.settings.scrollbarWrapClass)
-            .overlayScrollbars();
-          if (scrollbarInstance !== undefined) {
-            scrollbarInstance.destroy();
-          }
-        }
-      });
-    },
+    // removeScrollbars: function() {
+    //   var $elem;
+    //   var gallery = this;
+    //   this.$element.children(".grid-stack-item").each(function() {
+    //     $elem = $(this);
+    //     var $blockContent = $elem.find(".grid-item-content");
+    //     if (
+    //       !$elem.hasClass("block-has-slider") &&
+    //       !$blockContent.hasClass("block-has-slider") &&
+    //       !$blockContent.hasClass("youtube-player")
+    //     ) {
+    //       var scrollbarInstance = $elem
+    //         .find(gallery.settings.scrollbarWrapClass)
+    //         .overlayScrollbars();
+    //       if (scrollbarInstance !== undefined) {
+    //         scrollbarInstance.destroy();
+    //       }
+    //     }
+    //   });
+    // },
 
     /**
      * @deprecated
      */
-    createScrollbars: function() {
-      var $elem;
-      var gallery = this;
-      this.$element.children(".grid-stack-item").each(function() {
-        $elem = $(this);
-        var $rexScrollbar = $elem.find(gallery.settings.scrollbarWrapClass);
-        if ($rexScrollbar.length == 0) {
-          return;
-        }
-        var $blockContent = $elem.find(".grid-item-content");
-        if ($elem.find(".rex-slider-wrap").length === 0) {
-          var maxBlockHeight = $blockContent.height();
-          var textHeight = 0;
-          var $textWrap = $elem.find(".text-wrap");
-          // if ($textWrap.length != 0) {
-            textHeight = gallery.calculateTextWrapHeightNew($textWrap);
-          // }
-          if (gallery.settings.editorMode) {
-            var instanceScrollbar = $rexScrollbar
-              .overlayScrollbars(Rexbuilder_Util.scrollbarProperties)
-              .overlayScrollbars();
-            if (textHeight < maxBlockHeight) {
-              instanceScrollbar.sleep();
-            }
-          } else {
-            if (textHeight > maxBlockHeight) {
-              $rexScrollbar.overlayScrollbars(
-                Rexbuilder_Util.scrollbarProperties
-              );
-            }
-          }
-        }
-      });
-    },
+    // createScrollbars: function() {
+    //   var $elem;
+    //   var gallery = this;
+    //   this.$element.children(".grid-stack-item").each(function() {
+    //     $elem = $(this);
+    //     var $rexScrollbar = $elem.find(gallery.settings.scrollbarWrapClass);
+    //     if ($rexScrollbar.length == 0) {
+    //       return;
+    //     }
+    //     var $blockContent = $elem.find(".grid-item-content");
+    //     if ($elem.find(".rex-slider-wrap").length === 0) {
+    //       var maxBlockHeight = $blockContent.height();
+    //       var textHeight = 0;
+    //       var $textWrap = $elem.find(".text-wrap");
+    //       // if ($textWrap.length != 0) {
+    //         textHeight = gallery.calculateTextWrapHeightNew($textWrap);
+    //       // }
+    //       if (gallery.settings.editorMode) {
+    //         var instanceScrollbar = $rexScrollbar
+    //           .overlayScrollbars(Rexbuilder_Util.scrollbarProperties)
+    //           .overlayScrollbars();
+    //         if (textHeight < maxBlockHeight) {
+    //           instanceScrollbar.sleep();
+    //         }
+    //       } else {
+    //         if (textHeight > maxBlockHeight) {
+    //           $rexScrollbar.overlayScrollbars(
+    //             Rexbuilder_Util.scrollbarProperties
+    //           );
+    //         }
+    //       }
+    //     }
+    //   });
+    // },
 
     batchGridstack: function() {
       // if (!this.properties.gridstackBatchMode) {
@@ -1044,7 +1199,7 @@
       var cellHeight;
       if (active) {
         if( this.settings.galleryLayout == "fixed" ) {
-          cellHeight = this._viewport().height / this.properties.gridBlocksHeight;
+          cellHeight = viewport().height / this.properties.gridBlocksHeight;
         }
       } else {
         cellHeight = this.properties.singleWidth;
@@ -1396,13 +1551,13 @@
      * @param {Object} $newEL element to add scrollbar
      * @deprecated
      */
-    addScrollbar: function($newEL) {
-      var instanceScrollbar = $newEL
-        .find(this.settings.scrollbarWrapClass)
-        .overlayScrollbars(Rexbuilder_Util.scrollbarProperties)
-        .overlayScrollbars();
-      instanceScrollbar.sleep();
-    },
+    // addScrollbar: function($newEL) {
+    //   var instanceScrollbar = $newEL
+    //     .find(this.settings.scrollbarWrapClass)
+    //     .overlayScrollbars(Rexbuilder_Util.scrollbarProperties)
+    //     .overlayScrollbars();
+    //   instanceScrollbar.sleep();
+    // },
 
     // Function that creates a new empty block and returns it. The block is
     // added to gridstack and gallery
@@ -1449,10 +1604,6 @@
       this.updateSizeViewerText(newEl, w, h);
 
       return $newEl;
-    },
-
-    isEven: function(number) {
-      return number % 2 == 0;
     },
 
     // Updating elements properties
@@ -1570,13 +1721,13 @@
       var collapseGrid = this.section.getAttribute("data-rex-collapse-grid");
 
       // if ( collapseGrid ) {
-      //   if ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+      //   if ( Rexbuilder_Util.activeLayout == "default" && viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
       //     this.properties.oneColumModeActive = true;
       //   } else {
       //     this.properties.oneColumModeActive = false;
       //   }
       // } else 
-      if ( collapseGrid && ( ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth && collapseGrid.toString() == "true") || collapseGrid.toString() == "true" ) ) {
+      if ( collapseGrid && ( ( Rexbuilder_Util.activeLayout == "default" && viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth && collapseGrid.toString() == "true") || collapseGrid.toString() == "true" ) ) {
         this.properties.oneColumModeActive = true;
       } else {
         this.properties.oneColumModeActive = false;
@@ -1598,7 +1749,7 @@
         var newSingleHeight;
         if (this.settings.fullHeight.toString() == "true") {
           this.properties.gridBlocksHeight = this._calculateGridHeight();
-          newSingleHeight = this._viewport().height / this.properties.gridBlocksHeight;
+          newSingleHeight = viewport().height / this.properties.gridBlocksHeight;
         } else {
           newSingleHeight = this.properties.singleWidth;
         }
@@ -1687,7 +1838,7 @@
     },
 
     _defineHalfSeparatorProperties: function() {
-      if (this.isEven(this.properties.gutter)) {
+      if (isEven(this.properties.gutter)) {
         this.properties.halfSeparatorTop = this.properties.gutter / 2;
         this.properties.halfSeparatorRight = this.properties.gutter / 2;
         this.properties.halfSeparatorBottom = this.properties.gutter / 2;
@@ -1743,7 +1894,7 @@
     },
 
     _setGutter: function() {
-      if (this.isEven(this.properties.gutter)) {
+      if (isEven(this.properties.gutter)) {
         this.properties.halfSeparatorElementTop = this.properties.gutter / 2;
         this.properties.halfSeparatorElementRight = this.properties.gutter / 2;
         this.properties.halfSeparatorElementBottom = this.properties.gutter / 2;
@@ -2334,21 +2485,21 @@
       });
     },
 
-    showBlockToolBox: function($elem) {
-      $elem.children(".rexlive-block-toolbox").addClass("focused");
-    },
+    // showBlockToolBox: function($elem) {
+    //   $elem.children(".rexlive-block-toolbox").addClass("focused");
+    // },
 
-    hideBlockToolBox: function($elem) {
-      $elem.children(".rexlive-block-toolbox").removeClass("focused");
-    },
+    // hideBlockToolBox: function($elem) {
+    //   $elem.children(".rexlive-block-toolbox").removeClass("focused");
+    // },
 
-    disableDragHandle: function($elem) {
-      //$elem.children(".rexlive-block-drag-handle").addClass("hide-drag");
-    },
+    // disableDragHandle: function($elem) {
+    //   //$elem.children(".rexlive-block-drag-handle").addClass("hide-drag");
+    // },
 
-    enableDragHandle: function($elem) {
-      //$elem.children(".rexlive-block-drag-handle").removeClass("hide-drag");
-    },
+    // enableDragHandle: function($elem) {
+    //   //$elem.children(".rexlive-block-drag-handle").removeClass("hide-drag");
+    // },
 
     unFocusElementEditing: function($elem) {
       // this.hideBlockToolBox($elem);
@@ -2813,113 +2964,6 @@
       });
     },
 
-    _launchGridStack: function() {
-      var gallery = this;
-
-      var floating;
-      if (gallery.settings.galleryLayout == "masonry") {
-        floating = false;
-      } else {
-        floating = true;
-      }
-      if (gallery.settings.editorMode) {
-        //console.log("launching gridstack backend");
-
-        gallery.$element.gridstack({
-          auto: true,
-          autoHide: false,
-          animate: true,
-          acceptWidgets: false,
-          alwaysShowResizeHandle: true,
-          disableOneColumnMode: true,
-          cellHeight: gallery.properties.singleHeight,
-          draggable: {
-            containment: gallery.element,
-            handle: ".rexlive-block-drag-handle",
-            scroll: false
-          },
-          float: floating,
-          resizable: {
-            minWidth: gallery.properties.singleWidth,
-            minHeight: gallery.properties.singleHeight,
-            handles: {
-              e: ".ui-resizable-e",
-              s: ".ui-resizable-s",
-              w: ".ui-resizable-w",
-              se: ".ui-resizable-se",
-              sw: ".ui-resizable-sw"
-            }
-          },
-          verticalMargin: 0,
-          width: gallery.settings.numberCol
-        });
-
-        gallery.$element.addClass("gridActive");
-
-      } else {
-        gallery.$element.gridstack({
-          auto: true,
-          disableOneColumnMode: true,
-          cellHeight: gallery.properties.singleHeight,
-          disableDrag: true,
-          draggable: {
-            handle: ".rexlive-block-drag-handle"
-          },
-          disableResize: true,
-          resizable: {
-            disabled: true
-          },
-          float: floating,
-          verticalMargin: 0,
-          staticGrid: true,
-          width: gallery.settings.numberCol
-        });
-      }
-
-      this.setGridstackIstanceNumber();
-      this.properties.gridstackInstance = this.$element.data("gridstack");
-
-      // Remove elements to hide
-      var gridstack = this.properties.gridstackInstance;
-      var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
-      items.forEach( function(el) {
-        if ( -1 !== el.className.indexOf('rex-hide-element') ) {
-          gridstack.removeWidget(el, false);
-        }
-      });
-
-      /*
-      this.$element.children(".grid-stack-item").each(function(i, elem) {
-        if ($(elem).hasClass("rex-hide-element")) {
-          gridstack.removeWidget(elem, false);
-        }
-      });
-      */
-
-      // if (!Rexbuilder_Util.domUpdaiting) {
-      if (!Rexbuilder_Util.domUpdaiting && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying )) {
-        this.updateBlocksHeight();
-      }
-
-      items.forEach( function(el) {
-        var blockData = el.querySelector('.rexbuilder-block-data');
-        gallery.updateElementDataHeightProperties( blockData, parseInt( el.getAttribute('data-gs-height') ) );
-      });
-
-      this.fixVideoProportion();
-
-      /*
-      this.$element.children(".grid-stack-item").each(function(i, el) {
-        var $el = $(el);
-        var $blockData = $el.children(".rexbuilder-block-data");
-        gallery.updateElementDataHeightProperties(
-          $blockData,
-          parseInt($el.attr("data-gs-height"))
-        );
-      });
-      */
-    },
-
     setGridstackIstanceNumber: function() {
       var gallery = this;
       var classList = this.$element.attr("class").split(/\s+/);
@@ -3238,7 +3282,7 @@
         // @todo check me to prevent video auto ratio-resize 
         if ( blockHasYoutube || blockHasVideo || blockHasVimeo ) {
           // videoHeight = Math.round( w * sw * defaultRatio );
-          // if ( this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+          // if ( viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
           //   videoHeight = Math.round( w * sw * defaultRatio );
           // } else {
             videoHeight = originalH * this.properties.singleHeight;
@@ -3248,7 +3292,7 @@
         // calculate slider height
         // var sliderRatio = parseFloat( blockData.getAttribute( 'data-slider_ratio' ) );
         // if ( blockHasSlider && !isNaN( sliderRatio ) ) {
-        //   if ( this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+        //   if ( viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
         //     sliderHeight = w * sw * defaultRatio;
         //   } else {
         //     sliderHeight = w * sw * sliderRatio;
@@ -3504,7 +3548,7 @@
     _setParentGridPadding: function() {
       var $parent = this.$element.parent();
       if (
-        (this._viewport().width >=
+        (viewport().width >=
           _plugin_frontend_settings.defaultSettings.collapseWidth &&
           !this.properties.setDesktopPadding) ||
         (!this.properties.setDesktopPadding &&
@@ -3618,7 +3662,7 @@
         * this.properties.halfSeparator); } else {
         * this.$element.find(this.settings.itemSelector).css('padding',
         * this.properties.halfSeparator); } } } else if
-        * (this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth &&
+        * (viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth &&
         * !this.properties.setMobilePadding &&
         * this.$section.attr("data-rex-collapse-grid") == "true") {
         * this.properties.setMobilePadding = true;
@@ -4187,9 +4231,9 @@
       }
     },
   
-    _getIndex: function(coord, maxWidth) {
-      return coord[0] + ( coord[1] * maxWidth );
-    },
+    // _getIndex: function(coord, maxWidth) {
+    //   return coord[0] + ( coord[1] * maxWidth );
+    // },
 
     destroyGridGallery: function() {
       this.destroyGridstack();
@@ -4198,58 +4242,10 @@
       this.$element.removeClass("grid-number-" + this.properties.sectionNumber);
     },
 
-    // Calculate the viewport of the window
-    _viewport: function() {
-      var e = window,
-        a = "inner";
-      if (!("innerWidth" in window)) {
-        a = "client";
-        e = document.documentElement || document.body;
-      }
-      return { width: e[a + "Width"], height: e[a + "Height"] };
-    },
-
     // check if the parent wrap of the grd has a particular class
     _check_parent_class: function(c) {
       return this.$element.parents(this.settings.gridParentWrap).hasClass(c);
     },
-
-    /**
-     * Util function to print the blocks infos of this row
-     * @since 2.0.0
-     */
-    _log_block_infos: function() {
-      var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
-      items.forEach(function(el,i) {
-        console.table({
-          id: el.getAttribute('id'),
-          x: el.getAttribute('data-gs-x'),
-          y: el.getAttribute('data-gs-y'),
-          w: el.getAttribute('data-gs-width'),
-          h: el.getAttribute('data-gs-height')
-        });
-      })
-    },
-
-    /**
-     * Util function to get the blocks infos of this row
-     * @since 2.0.0
-     */
-    _get_block_infos: function() {
-      var nodes = [];
-      var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
-      items.forEach(function(el,i) {
-        nodes.push({
-          id: el.getAttribute('id'),
-          rexId: el.getAttribute('data-rexbuilder-block-id'),
-          x: parseInt( el.getAttribute('data-gs-x') ),
-          y: parseInt( el.getAttribute('data-gs-y') ),
-          w: parseInt( el.getAttribute('data-gs-width') ),
-          h: parseInt( el.getAttribute('data-gs-height') )
-        });
-      });
-      return nodes;
-    }
   });
 
   // A really lightweight plugin wrapper around the constructor,
