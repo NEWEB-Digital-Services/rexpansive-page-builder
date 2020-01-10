@@ -1235,6 +1235,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     break;
                 case "radio":
                     cssSelector =  "wpcf7-form-control-wrap."+ fieldClass;
+                    // _removeColumnContentRule(formID, rowNumber, columnNumber, cssSelector + ' label');
                     break;
                 default:
                   break;
@@ -1298,9 +1299,13 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     _updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
                 }
                 break;
+            case "font-size":
+                _updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
+                _updateColumnContentRule(formID, row, column, cssSelector + ' .wpcf7-radio-label', propertyName, newValue);
+                _updateColumnContentRule(formID, row, column, cssSelector + ' .wpcf7-list-item-label', propertyName, newValue);
+                break;
             case "width":
             case "height":
-            case "font-size":
             case "text-color":
                 _updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
                 break;
@@ -1522,8 +1527,31 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                         }
                         break;
                     case "radio":
+                        var listLength = newValue.length;
+                        var numberOfInputs = $formColumns.find(".wpcf7-radio .wpcf7-list-item").length / numberOfFormsInPage;
+                        if ( numberOfInputs < listLength ) {
+                            for (var i = 0; i < listLength - numberOfInputs; i++) {
+                                _updateColumnContentLive({
+                                    target: data.target,
+                                    content: data.content,
+                                    propertyType: 'wpcf7-list-add',
+                                    propertyName: undefined,
+                                    newValue: undefined
+                                })
+                            }
+                        } else if ( numberOfInputs > listLength ) {
+                            for (var i = 0; i < numberOfInputs - listLength; i++) {
+                                _updateColumnContentLive({
+                                    target: data.target,
+                                    content: data.content,
+                                    propertyType: 'wpcf7-list-remove',
+                                    propertyName: undefined,
+                                    newValue: listLength - 1 - i
+                                })
+                            }
+                        }
                         for (var i = 0; i < numberOfFormsInPage; i++) {
-                            for (var j = 0; j < newValue.length; j++) {
+                            for (var j = 0; j < listLength; j++) {
                                 $formColumns.find(".wpcf7-radio .wpcf7-list-item").removeClass("first");
                                 $formColumns.find(".wpcf7-radio .wpcf7-list-item").removeClass("last");
                                 $formColumns.find(".wpcf7-radio .wpcf7-list-item").eq(j).find("input").val(newValue[j]);
@@ -1531,10 +1559,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                             }
                         }
                         $formColumns.find(".wpcf7-radio .wpcf7-list-item").eq(0).addClass("first");
-                        $formColumns.find(".wpcf7-radio .wpcf7-list-item").eq(newValue.length - 1).addClass("last");
+                        $formColumns.find(".wpcf7-radio .wpcf7-list-item").eq(listLength - 1).addClass("last");
                         break;
                     case "file":
-                        for (var i = 0; i < newValue.length; i++) {
+                        for (var i = 0; i < listLength; i++) {
                             newValue[i] = "." + newValue[i];
                         }
                         $formColumns.find(".wpcf7-file").attr("accept", newValue);
@@ -1560,14 +1588,13 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                             var $newRadio = $formColumns.find(".wpcf7-radio .wpcf7-list-item.last").eq(0).clone();
 
                             $formColumns.find(".wpcf7-radio .wpcf7-list-item.last").removeClass("last");
-                            $newRadio.find("[type='radio']").attr("id", "wpcf7-radio-" + (numberOfRadios + 1));
-                            $newRadio.find(".wpcf7-radio-label").attr("for", "wpcf7-radio-" + (numberOfRadios + 1));
                             $newRadio.find(".wpcf7-radio-label").text("");
                             $newRadio.find("[type='radio']").val("");
                             $newRadio.addClass("last");
                             $newRadio.removeClass("first");
                             $formColumns.find(".wpcf7-radio").append($newRadio);
                         }
+                        Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
                         break;
                     case "file":
                         $formColumns.find(".wpcf7-file").attr("accept", $formColumns.find(".wpcf7-file").attr("accept") + ",");
@@ -1612,10 +1639,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                             for (var i = 0; i < $radios.length; i++) {
                                 var classToRemove = /wpcf7-radio\-[0-9]+/.exec($radios.find("[type='radio']")[i].id)[0];
                                 $($radios.find("[type='radio']")[i]).removeClass(classToRemove);
-                                $($radios.find("[type='radio']")[i]).addClass("wpcf7-radio-" + (i + 1));
-                                $($radios.find(".wpcf7-radio-label")[i]).attr("for", "wpcf7-radio-" + (i + 1));
                             }
                         }
+                        Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
                         break;
                     case "file":
                         var fileTypesArray = $formColumns.find(".wpcf7-file").attr("accept").split(",");
@@ -2359,6 +2385,24 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 columnContentHoverRule += "border-color: " + columnContentData.border_color_hover + ";";
             }
 
+            if ( 'radio' === inputType ) {
+                var labelRule = '';
+
+                labelRule += 'font-size: ' + columnContentData.font_size + ';';
+                labelRule += 'cursor:pointer;';
+
+                _addColumnContentRule(formID, row, column, cssSelector + ' .wpcf7-radio-label', labelRule);
+            }
+
+            if ( 'acceptance' === inputType ) {
+                var labelRule = '';
+
+                labelRule += 'font-size: ' + columnContentData.font_size + ';';
+                labelRule += 'cursor:pointer;';
+
+                _addColumnContentRule(formID, row, column, cssSelector + ' .wpcf7-list-item-label', labelRule);
+            }
+
             columnContentRule += "color: " + columnContentData.text_color + ";";
             columnContentRule += "width: " + columnContentData.input_width + ";";
             columnContentRule += "height: " + columnContentData.input_height + ";";
@@ -2445,6 +2489,22 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         if (inputType == "acceptance" || inputType == "radio") {
             _updateColumnContentRule(formID, row, column, cssSelector, "float", "left");
+        }
+
+        if ( 'radio' === inputType ) {
+            var labelRule = "";
+
+            labelRule += "font-size: " + columnContentData.font_size + ";";
+
+            _updateColumnContentRule(formID, row, column, cssSelector + ' .wpcf7-radio-label', "font-size", columnContentData.font_size);
+        }
+
+        if ( 'acceptance' === inputType ) {
+            var labelRule = "";
+
+            labelRule += "font-size: " + columnContentData.font_size + ";";
+
+            _updateColumnContentRule(formID, row, column, cssSelector + ' .wpcf7-list-item-label', "font-size", columnContentData.font_size);
         }
 
         if (inputType == "text" || inputType == "email" || inputType == "number" || inputType == "textarea") {
@@ -2833,6 +2893,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         $elementWrappers.find(".wpcf7-rows").sortable({
             revert: true,
+            direction: 'vertical',
             handle: ".rex-wpcf7-row-drag",
             cursor: "pointer",
             update: function(e, ui) {
@@ -3212,6 +3273,23 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         return idsInPage;
     }
 
+    var _linkDocumentListeners = function() {
+        Rexbuilder_Util.$rexContainer.find(".wpcf7-radio").each(function(i, el) {
+            $(el).find('.wpcf7-list-item').click(function(e) {
+                e.preventDefault();
+                var $listItem = $(e.target).parents(".wpcf7-list-item");
+                if ( !$listItem.hasClass("selected") ) {
+                    $(el).find('.wpcf7-list-item').each(function(i, element) {
+                        $(element).removeClass("selected");
+                        $(el).find("input").attr("checked", false);
+                    });
+                    $listItem.addClass("selected");
+                    $listItem.find("input").attr("checked", true);                
+                }
+            });
+        });
+    }
+
 	var _init = function () {
 		styleSheet = null;
         $formsInPage = {};
@@ -3260,6 +3338,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         _fixCustomStyleForm();
         _getDBFormsInPage();
+        _linkDocumentListeners();
 	}
 
 	return {

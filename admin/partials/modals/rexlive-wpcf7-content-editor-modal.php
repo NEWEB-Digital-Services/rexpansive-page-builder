@@ -180,26 +180,6 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
                 <div class="rex-accordion--content" style="display:none;" data-item-status="close">
-                    <!-- <div class="bl_modal-row">
-                        <div class="rexwpcf7-cont_row">
-                            <div class="rexwpcf7-count-column_accord"></div>
-                            <div class="rexwpcf7-count-column_1">
-                                <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Focus Color', 'rexpansive-builder');?>" tabindex="0">
-                                    <input type="hidden" id="rex-wpcf7-focus-color-runtime" name="rex-wpcf7-focus-color-runtime" value="" />
-                                    <input id="rex-wpcf7-focus-color" type="text" name="rex-wpcf7-focus-color" value="" size="10" />
-                                    <div id="rex-wpcf7-focus-color-preview-icon" class="preview-color-icon"></div>
-                                </div>
-                            </div>
-                            <div class="rexwpcf7-count-column_2">
-                                <div id="rex-wpcf7-focus-preview-wrap">
-                                    <div id="rex-wpcf7-preview-focus"></div>
-                                </div>
-                            </div>
-                            <div class="rexwpcf7-count-column_3"></div>
-                            <div class="rexwpcf7-count-column_4"></div>
-                            <div class="rexwpcf7-count-column_5"></div>
-                        </div>
-                    </div> -->
                     <div class="bl_modal-row rex-wpcf7-modal-row-tall">
                         <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
                             <div class="bl_d-iblock ml36 big-icon l-icon--dark-grey">

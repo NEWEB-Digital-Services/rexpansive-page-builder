@@ -3558,6 +3558,15 @@ var TextEditor = (function ($) {
       var rowCoords = this.traceFormRow.getBoundingClientRect();
       var blockCoords = $(this.traceForm).parents(".grid-stack-item").find(".ui-focused-element-highlight")[0].getBoundingClientRect();
 
+      // console.log({
+      //   blockCoordsTop: blockCoords.top,
+      //   rowCoordsTop: rowCoords.top,
+      //   rowToolstop: $formRowToolsInsideRow[0].style.top,
+      //   // width: $formRowToolsInsideRow[0].style.width,
+      //   // left: $formRowToolsInsideRow[0].style.left,
+      // })
+      console.log('blockCoordsTop', blockCoords.top, 'rowCoordsTop', rowCoords.top, 'rowToolstop', $formRowToolsInsideRow[0].style.top)
+
       var offsetFirstRow = (parseInt($(this.traceFormRow).attr("wpcf7-row-number")) == 1) ? 20 : 0;
 
       $formRowToolsInsideRow[0].style.width = rowCoords.width/10 + "px";
