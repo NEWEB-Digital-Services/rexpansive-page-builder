@@ -802,6 +802,19 @@ var Rexbuilder_App = (function($) {
         });
       }
     }
+
+    // split scrolls
+    if ( 'undefined' !== typeof SplitScrollable ) {
+      var splitScrollableSettings = {
+        initializeComplete: fixScrollableGridGallery
+      };
+
+      var scrbls = [].slice.call( this.target.getElementsByClassName('split-scrollable') );
+      scrbls.forEach( function(element, index) {
+        // statements
+        var inst = new SplitScrollable(element, splitScrollableSettings);
+      });
+    }
   }
 
   /**
@@ -844,7 +857,7 @@ var Rexbuilder_App = (function($) {
     // destroy tha grid
     $grid.data('plugin_perfectGridGalleryEditor').destroyGridGallery();
     grid.style.height = '';
-  }
+  };
 
   var launchSplitScollable = function() {
     if ( 'undefined' !== typeof SplitScrollable ) {
@@ -856,10 +869,9 @@ var Rexbuilder_App = (function($) {
       scrbls.forEach( function(element, index) {
         // statements
         var inst = new SplitScrollable(element, splitScrollableSettings);
-        console.log(inst)
       });
     }
-  }
+  };
 
   /**
    * Launching odometer with some options
@@ -868,8 +880,7 @@ var Rexbuilder_App = (function($) {
    * @since 2.0.0
    * @date 26-02-2019
    */
-  var launch_odometer = function( target )
-  {
+  var launch_odometer = function( target ) {
     if ( 'undefined' !== Odometer )
     {
       var fval = target.innerText;

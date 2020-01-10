@@ -243,7 +243,7 @@ var effects_js_src = [
 	'public/js/vendor/scroll-css-animation.js',
 	'public/js/vendor/distance-accordion.js',
 	'public/js/vendor/popup-content.js',
-	'public/js/vendor/split-scrollable.js'
+	'public/js/vendor/split-scrollable.js',
 ];
 
 gulp.task('prepare-effects', function() {
@@ -591,6 +591,7 @@ var live_file_map = [
 	'includes/**/*',
 	'languages/**/*',
 	'Licensing/**/*',
+	'public/css/images',
 	'public/css/animate.css',
 	'public/css/builderlive-public.css',
 	'public/css/default-skin.png',

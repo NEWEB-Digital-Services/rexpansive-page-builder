@@ -1,3 +1,10 @@
+.split-scrollable {
+  .rex-row__dimension,
+  .perfect-grid-gallery {
+    overflow: visible;
+  }
+}
+
 .split-scrollable-container {
   display: -webkit-flex;
   display: -moz-flex;
@@ -23,14 +30,14 @@
 .scroll-block {
   // margin-top: 30vh;
   // color: #c8cacb;
-  opacity: 0.1;
+  opacity: 0.1!important;
   transition: opacity .24s;
 }
 
 .scroll-block{
   &.scroll-block-active {
     // color: #000;
-    opacity: 1;
+    opacity: 1!important;
   }
 }
 
@@ -52,9 +59,9 @@
 .opacity-block {
   width: 100%;
   position: absolute;
-  // top: 30vh;
+  top: 10vh;
   right: 0;
-  opacity: 0;
+  opacity: 0!important;
   transition: opacity .24s;
   z-index: 1;
 
@@ -65,11 +72,11 @@
 }
 
 .opacity-block-fake {
-  opacity: 1;
+  opacity: 1!important;
 }
 
 .opacity-block {
   &.opacity-block-active {
-    opacity: 1;
+    opacity: 1!important;
   }
 }

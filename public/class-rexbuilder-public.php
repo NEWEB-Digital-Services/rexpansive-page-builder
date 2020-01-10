@@ -335,6 +335,9 @@ class Rexbuilder_Public
 
                 if ( false !== strpos( $customEffects, 'popup-content-button' ) ) {
                     wp_enqueue_script('popup-content', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.js', array(), $ver, true);
+                    // @todo fix me
+                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.js', array(), $ver, true);
+                    wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.js', array(), $ver, true);
                 }
 
                 if ( false !== strpos( $customEffects, 'split-scrollable' ) ) {
@@ -421,11 +424,14 @@ class Rexbuilder_Public
                 }
 
                 if ( false !== strpos( $customEffects, 'popup-content-button' ) ) {
-                    wp_enqueue_script('popup-content', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.min.js', array(), $ver, true);
+                    wp_enqueue_script('popup-content', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.min.js', array(), false, true);
+                    // @todo: fix me
+                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.min.js', array(), false, true);
+                    wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.min.js', array(), false, true);
                 }
 
                 if ( false !== strpos( $customEffects, 'split-scrollable' ) ) {
-                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.min.js', array(), $ver, true);
+                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.min.js', array(), false, true);
                 }
 
                 wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-public.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
@@ -1075,6 +1081,7 @@ class Rexbuilder_Public
         $query = new WP_Query( $argsQuery );
         if ( $query->have_posts() ) {
             add_filter( 'rexbuilder_fast_load', function() { return 0; } );
+            add_filter( 'rexbuilder_animation_enabled', function() { return false; } );
             while ( $query->have_posts() ) {
                 $query->the_post();
                 $post = $query->post;
