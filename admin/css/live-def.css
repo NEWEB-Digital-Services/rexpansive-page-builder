@@ -5450,6 +5450,9 @@ input.me-insert-embed__value[type=text] {
   position: absolute;
   z-index: 10;
   cursor: pointer; }
+  .rexwpcf7-row-tools.rexwpcf7-row-tools-inside-row {
+    position: relative;
+    width: 0; }
   .rexwpcf7-row-tools .rex-wpcf7-row-tools-container {
     width: 0px;
     height: 0px;

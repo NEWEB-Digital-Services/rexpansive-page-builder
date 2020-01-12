@@ -2373,7 +2373,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             var columnContentHoverRule = "";
 
             if (inputType == "acceptance" || inputType == "radio" || inputType == "file") {
-                columnContentRule += "float: left;";
+                // columnContentRule += "float: left;";
+                columnContentRule += "display: inline-flex;";
             } else {    // Text, Number, Email, Textarea, Select
                 columnContentRule += "background-color: " + columnContentData.background_color + ";";
                 columnContentRule += "border-color: " + columnContentData.border_color + ";";
@@ -2488,7 +2489,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
 
         if (inputType == "acceptance" || inputType == "radio") {
-            _updateColumnContentRule(formID, row, column, cssSelector, "float", "left");
+            // _updateColumnContentRule(formID, row, column, cssSelector, "float", "left");
+            _updateColumnContentRule(formID, row, column, cssSelector, "display", "inline-flex");
         }
 
         if ( 'radio' === inputType ) {
@@ -2887,35 +2889,33 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     var _setRowsSortable = function () {
         var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
 
-        if (!$elementWrappers.find(".wpcf7-rows").hasClass("ui-sortable")) {
-            $elementWrappers.find(".wpcf7-rows").addClass("ui-sortable");
-        }
+        $elementWrappers.find(".wpcf7-rows")
+            .addClass("ui-sortable")
+            .sortable({
+                // revert: true,
+                direction: 'vertical',
+                handle: ".rex-wpcf7-row-drag",
+                cursor: "pointer",
+                update: function(e, ui) {
+                    var formID = ui.item.parents(".rex-element-wrapper").attr("data-rex-element-id");
+                    
+                    var startPosition = parseInt(ui.item.attr("wpcf7-row-number")); // Getting the old row position
+                    _fixRowNumbersAndClasses($elementWrappers.find(".wpcf7-form"));
+                    var endPosition = parseInt(ui.item.attr("wpcf7-row-number"));   // Getting the new row position
 
-        $elementWrappers.find(".wpcf7-rows").sortable({
-            revert: true,
-            direction: 'vertical',
-            handle: ".rex-wpcf7-row-drag",
-            cursor: "pointer",
-            update: function(e, ui) {
-                var formID = ui.item.parents(".rex-element-wrapper").attr("data-rex-element-id");
-                
-                var startPosition = parseInt(ui.item.attr("wpcf7-row-number")); // Getting the old row position
-                _fixRowNumbersAndClasses($elementWrappers.find(".wpcf7-form"));
-                var endPosition = parseInt(ui.item.attr("wpcf7-row-number"));   // Getting the new row position
+                    // Sorting rows in DB forms
+                    var $rowInDBMoved = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number='" + startPosition +"']");
+                    var $rowInDBAfter = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number='" + endPosition +"']");
 
-                // Sorting rows in DB forms
-                var $rowInDBMoved = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number='" + startPosition +"']");
-                var $rowInDBAfter = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number='" + endPosition +"']");
-
-                if (startPosition < endPosition) {
-                    $rowInDBMoved.insertAfter($rowInDBAfter);
-                } else {
-                    $rowInDBMoved.insertBefore($rowInDBAfter);
+                    if (startPosition < endPosition) {
+                        $rowInDBMoved.insertAfter($rowInDBAfter);
+                    } else {
+                        $rowInDBMoved.insertBefore($rowInDBAfter);
+                    }
+                    
+                    _fixRowNumbers($formsInPage[formID]);
                 }
-                
-                _fixRowNumbers($formsInPage[formID]);
-            }
-        });
+            });
     }
 
     var _fixInputs = function() {
