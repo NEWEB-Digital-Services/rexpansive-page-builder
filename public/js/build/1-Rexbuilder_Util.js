@@ -153,16 +153,15 @@ var Rexbuilder_Util = (function($) {
     if ( Rexbuilder_Util.rexContainer ) {
       var id;
       var $sec;
-      if ( Rexbuilder_Util.rexContainer ) {
-        var sections = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName( 'rexpansive_section' ) );
-        sections.forEach( function( section ) {
-          var sectionId = section.getAttribute( 'data-rexlive-section-id' );    
-          if ( null === sectionId || '' === sectionId ) {
-            id = _createSectionID();
-            section.setAttribute( 'data-rexlive-section-id', id );
-            _fix_tools_ids( section, id );
-          }
-        });
+      var sections = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName( 'rexpansive_section' ) );
+      var tot_sections = sections.length, i;
+      for( i=0; i < tot_sections; i++ ) {
+        var sectionId = sections[i].getAttribute( 'data-rexlive-section-id' );    
+        if ( null === sectionId || '' === sectionId ) {
+          id = _createSectionID();
+          sections[i].setAttribute( 'data-rexlive-section-id', id );
+          _fix_tools_ids( sections[i], id );
+        }
       }
     }
   };
@@ -177,24 +176,27 @@ var Rexbuilder_Util = (function($) {
   var _fix_tools_ids = function( section, id ) {
     if ( section ) {
       var left_tools = [].slice.call( section.getElementsByClassName('tool-area--side tool-area--left') );
-      var editRowWidth;
-      var editRowLayout;
+      var tot_left_tools = left_tools.length, i, j;
+      var editRowWidth, tot_editRowWidth;
+      var editRowLayout, tot_editRowLayout;
 
-      left_tools.forEach( function( elTools ) {
-        editRowWidth = [].slice.call( elTools.getElementsByClassName('edit-row-width') );
-        editRowWidth.forEach( function( el ) {
-          el.setAttribute('id', el.getAttribute('id') + id );
-          el.setAttribute('name', el.getAttribute('name') + id );
-          el.nextElementSibling.setAttribute('for', el.nextElementSibling.getAttribute('for') + id );
-        });
+      for( i=0; i < tot_left_tools; i++ ) {
+        editRowWidth = [].slice.call( left_tools[i].getElementsByClassName('edit-row-width') );
+        tot_editRowWidth = editRowWidth.length;
+        for( j=0; j < tot_editRowWidth; j++ ) {
+          editRowWidth[j].setAttribute('id', editRowWidth[j].getAttribute('id') + id );
+          editRowWidth[j].setAttribute('name', editRowWidth[j].getAttribute('name') + id );
+          editRowWidth[j].nextElementSibling.setAttribute('for', editRowWidth[j].nextElementSibling.getAttribute('for') + id );
+        }
 
-        editRowLayout = [].slice.call( elTools.getElementsByClassName('edit-row-layout') );
-        editRowWidth.forEach( function( el ) {
-          el.setAttribute('id', el.getAttribute('id') + id );
-          el.setAttribute('name', el.getAttribute('name') + id );
-          el.nextElementSibling.setAttribute('for', el.nextElementSibling.getAttribute('for') + id );
-        });
-      });
+        editRowLayout = [].slice.call( left_tools[i].getElementsByClassName('edit-row-layout') );
+        tot_editRowLayout = editRowLayout.length;
+        for( j=0; j < tot_editRowLayout; j++ ) {
+          editRowLayout[j].setAttribute('id', editRowLayout[j].getAttribute('id') + id );
+          editRowLayout[j].setAttribute('name', editRowLayout[j].getAttribute('name') + id );
+          editRowLayout[j].nextElementSibling.setAttribute('for', editRowLayout[j].nextElementSibling.getAttribute('for') + id );
+        }
+      }
     }
   }
 
@@ -202,10 +204,11 @@ var Rexbuilder_Util = (function($) {
     var last = -1;
     if ( Rexbuilder_Util.rexContainer ) {
       var sections = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName( 'rexpansive_section' ) );
-      sections.forEach( function( section, i ) {
-        section.setAttribute( 'data-rexlive-section-number', i);
+      var tot_sections = sections.length, i;
+      for( i=0; i < tot_sections; i++ ) {
+        sections[i].setAttribute( 'data-rexlive-section-number', i);
         last = i;
-      });
+      }
     }
     Rexbuilder_Util.lastSectionNumber = last;
   };
@@ -2056,14 +2059,17 @@ var Rexbuilder_Util = (function($) {
     if ( hasClass( section, 'rex-model-section' ) ) {
       var modelID = section.getAttribute('data-rexlive-model-id');
       var modelNumber = section.getAttribute('data-rexlive-section-number');
-      [].slice.call( $defaultLayoutState[0].getElementsByClassName( 'section-targets' ) ).forEach( function(el) {
-        if ( modelID == el.getAttribute( 'data-model-id' ) ) {
-          el.textContent = JSON.stringify( layoutData );
-          if ( modelNumber == el.getAttribute( 'data-model-number' ) ) {
+      var sectionTargets = [].slice.call( $defaultLayoutState[0].getElementsByClassName( 'section-targets' ) );
+      var tot_sectionTargets = sectionTargets.length, i;
+      for( i=0; i < tot_sectionTargets; i++ ) {
+      // [].slice.call( $defaultLayoutState[0].getElementsByClassName( 'section-targets' ) ).forEach( function(el) {
+        if ( modelID == sectionTargets[i].getAttribute( 'data-model-id' ) ) {
+          sectionTargets[i].textContent = JSON.stringify( layoutData );
+          if ( modelNumber == sectionTargets[i].getAttribute( 'data-model-number' ) ) {
             sectionAdded = true;
           }
         }
-      });
+      }
 
       // $defaultLayoutState.children(".section-targets").each(function(i, sec) {
       //   var $sec = $(sec);
@@ -2076,12 +2082,15 @@ var Rexbuilder_Util = (function($) {
       // });
     } else {
       var rexID = section.getAttribute( 'data-rexlive-section-id' );
-      [].slice.call( $defaultLayoutState[0].getElementsByClassName( 'section-targets' ) ).forEach( function(el) {
-        if ( rexID == el.getAttribute( 'data-section-rex-id' ) ) {
-          el.textContent = JSON.stringify( layoutData );
+      var sectionTargets = [].slice.call( $defaultLayoutState[0].getElementsByClassName( 'section-targets' ) );
+      var tot_sectionTargets = sectionTargets.length, i;
+      for( i=0; i < tot_sectionTargets; i++ ) {
+      // [].slice.call( $defaultLayoutState[0].getElementsByClassName( 'section-targets' ) ).forEach( function(el) {
+        if ( rexID == sectionTargets[i].getAttribute( 'data-section-rex-id' ) ) {
+          sectionTargets[i].textContent = JSON.stringify( layoutData );
           sectionAdded = true;
         }
-      });
+      }
 
       // $defaultLayoutState.children(".section-targets").each(function(i, sec) {
       //   var $sec = $(sec);
@@ -3258,11 +3267,12 @@ var Rexbuilder_Util = (function($) {
     layout = "undefined" !== typeof layout ? layout : "default";
     if( Rexbuilder_Util.rexContainer ) {
       var rows = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section') );
-      rows.forEach(function( row, index ) {
-        var $row = $(row);
+      var tot_rows = rows.length, j;
+      for( j=0; j < tot_rows; j++ ) {
+        var $row = $(rows[j]);
         var $grid = $row.find('.grid-stack-row');
         var galleryEditorInstance = $grid.data().plugin_perfectGridGalleryEditor;
-        var rowCustomizations = Rexbuilder_Util.getSectionCustomLayouts( row.getAttribute('data-rexlive-section-id') );
+        var rowCustomizations = Rexbuilder_Util.getSectionCustomLayouts( rows[j].getAttribute('data-rexlive-section-id') );
         var index = null;
         var tempIndex = null;
 
@@ -3295,7 +3305,7 @@ var Rexbuilder_Util = (function($) {
         }
 
         galleryEditorInstance.set_grid_initial_state(state);
-      });
+      }
     }
   };
 
@@ -3308,9 +3318,10 @@ var Rexbuilder_Util = (function($) {
   var _updateGridsHeights = function() {
     if ( Rexbuilder_Util.rexContainer ) {
       var rows = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('grid-stack-row') );
+      var tot_rows = rows.length, i;
       var $row, galleryEditorInstance;
-      rows.forEach(function(row) {
-        $row = $(row);
+      for( i=0; i < tot_rows; i++ ) {
+        $row = $(rows[i]);
         galleryEditorInstance = $row.data().plugin_perfectGridGalleryEditor;
         if ( galleryEditorInstance !== undefined ) {
           galleryEditorInstance.batchGridstack();
@@ -3329,7 +3340,7 @@ var Rexbuilder_Util = (function($) {
           $row: $row,
         };
         Rexbuilder_Util.$document.trigger(ev);
-      });
+      }
     }
   };
 
@@ -3645,9 +3656,10 @@ var Rexbuilder_Util = (function($) {
   var removeCollapsedGrids = function() {
     if ( Rexbuilder_Util.rexContainer ) {
       var rows = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section') );
-      rows.forEach(function(el) {
+      var tot_rows = rows.length, i;
+      for( i=0; i < tot_rows; i++ ) {
         if (Rexbuilder_Util.galleryPluginActive) {
-          var galleryInstance = _getGalleryInstance($(el));
+          var galleryInstance = _getGalleryInstance($(rows[i]));
           Rexbuilder_Dom_Util.collapseGrid(
             galleryInstance,
             false,
@@ -3655,23 +3667,21 @@ var Rexbuilder_Util = (function($) {
             galleryInstance.properties.layoutBeforeCollapsing
           );
         }
-      });
+      }
     }
   };
 
   var collapseAllGrids = function() {
     if ( Rexbuilder_Util.rexContainer ) {
       var rows = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section') );
-      rows.forEach(function(el) {
-      // Rexbuilder_Util.$rexContainer
-      //   .children(".rexpansive_section")
-      //   .each(function(i) {
+      var tot_rows = rows.length, i;
+      for( i=0; i < tot_rows; i++ ) {
         if (Rexbuilder_Util.galleryPluginActive) {
-          var galleryInstance = _getGalleryInstance($(el));
+          var galleryInstance = _getGalleryInstance($(rows[i]));
           galleryInstance._defineDynamicPrivateProperties();
           galleryInstance.collapseElements();
         }
-      });
+      }
     }
   };
 

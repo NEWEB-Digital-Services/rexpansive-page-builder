@@ -379,16 +379,17 @@ var Rexbuilder_App = (function($) {
    */
   var fixRexButtons = function() {
     var buttons = [].slice.call( document.getElementsByClassName('rex-button-wrapper') );
-    buttons.forEach(function( btn ) {
-      var container = btn.querySelector( '.rex-button-container' );
+    var tot_buttons = buttons.length, i = 0;
+    for( i = 0; i < tot_buttons; i++ ) {
+      var container = buttons[i].querySelector( '.rex-button-container' );
       if ( ! container ) {
         var newContainer = document.createElement('span');
         newContainer.className = 'rex-button-container';
-        var toWrap = btn.querySelector('.rex-button-background');
+        var toWrap = buttons[i].querySelector('.rex-button-background');
         toWrap.parentNode.insertBefore( newContainer, toWrap );
         newContainer.appendChild( toWrap );
       }
-    });
+    }
   }
 
   var _linkDocumentListeners = function() {
@@ -702,31 +703,32 @@ var Rexbuilder_App = (function($) {
     if ( 'undefined' !== typeof StickySection ) {
       var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
       var stickySections = [].slice.call( document.getElementsByClassName( 'sticky-section' ) );
+      var tot_stickySections = stickySections.length, i = 0;
 
-      stickySections.forEach(function (el, index) {
+      for( i = 0; i < tot_stickySections; i++ ) {
         var stickyElementSelector = '';
-        if ( Rexbuilder_Util.has_class( el, 'mp4-player' ) ) {
+        if ( Rexbuilder_Util.has_class( stickySections[i], 'mp4-player' ) ) {
           stickyElementSelector = '.rex-video-wrap';
-        } else if ( '' !== el.style.backgroundImage ) {
+        } else if ( '' !== stickySections[i].style.backgroundImage ) {
           stickyElementSelector = '.sticky-background-simulator';
-          var adjacent = el.querySelector('.responsive-overlay');
+          var adjacent = stickySections[i].querySelector('.responsive-overlay');
           adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
-          var backgroundSimulator = el.querySelector('.sticky-background-simulator');
-          backgroundSimulator.style.backgroundImage = el.style.backgroundImage;
-        } else if ( Rexbuilder_Util.has_class( el, 'section-w-image' ) ) {
+          var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
+          backgroundSimulator.style.backgroundImage = stickySections[i].style.backgroundImage;
+        } else if ( Rexbuilder_Util.has_class( stickySections[i], 'section-w-image' ) ) {
           stickyElementSelector = '.sticky-background-simulator';
-          var adjacent = el.querySelector('.responsive-overlay');
+          var adjacent = stickySections[i].querySelector('.responsive-overlay');
           adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
-          var backgroundSimulator = el.querySelector('.sticky-background-simulator');
-          backgroundSimulator.style.backgroundImage = 'url(' + el.querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
+          var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
+          backgroundSimulator.style.backgroundImage = 'url(' + stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
         }
 
-        var stickySection = new StickySection(el, {
+        var stickySection = new StickySection(stickySections[i], {
           borderAnimation: true,
           stickyJS: stickyJS,
           stickyElementSelector: stickyElementSelector
         });
-      });
+      }
     }
   };
 
@@ -736,11 +738,12 @@ var Rexbuilder_App = (function($) {
   var launchScrollCSSAnimations = function() {
     if ( 'undefined' !== typeof ScrollCSSAnimation ) {
       var fadesUps = [].slice.call(document.getElementsByClassName('fadeUpTextCSS'));
-      fadesUps.forEach(function(el) {
-        var fu = new ScrollCSSAnimation(el,{
+      var tot_fadesUps = fadesUps.length, i = 0;
+      for( i = 0; i < tot_fadesUps; i++ ) {
+        var fu = new ScrollCSSAnimation(fadesUps[i],{
           offset: 0.75
         });
-      });
+      }
     }
   }
 
@@ -810,10 +813,10 @@ var Rexbuilder_App = (function($) {
       };
 
       var scrbls = [].slice.call( this.target.getElementsByClassName('split-scrollable') );
-      scrbls.forEach( function(element, index) {
-        // statements
-        var inst = new SplitScrollable(element, splitScrollableSettings);
-      });
+      var tot_scrbls = scrbls.length, i = 0;
+      for( i=0; i < tot_scrbls; i++ ) {
+        var inst = new SplitScrollable(tot_scrbls[i], splitScrollableSettings);
+      }
     }
   }
 
@@ -837,10 +840,11 @@ var Rexbuilder_App = (function($) {
       };
       
       var btns = [].slice.call( document.getElementsByClassName('popup-content-button') );
+      var tot_btns = btns.length, i = 0;
 
-      btns.forEach(function(b) {
-        var ist = new PopUpContent(b, popUpContentSettings);
-      });
+      for( i=0; i < tot_btns; i++ ) {
+        var ist = new PopUpContent(btns[i], popUpContentSettings);
+      }
     }
   }
 
@@ -848,11 +852,11 @@ var Rexbuilder_App = (function($) {
     // destroyGridGallery
     var grid = this.element.querySelector('.perfect-grid-gallery');
     var $grid = $(grid);
+    var i;
 
-    this.opacityEls.forEach( function(element, index) {
-      element.style.height = element.offsetHeight + 'px';
-      // statements
-    });
+    for( i=0; i < this.totOpacityEls; i++ ) {    
+      this.opacityEls[i].style.height = this.opacityEls[i].offsetHeight + 'px';
+    }
 
     // destroy tha grid
     $grid.data('plugin_perfectGridGalleryEditor').destroyGridGallery();
@@ -866,10 +870,10 @@ var Rexbuilder_App = (function($) {
       };
 
       var scrbls = [].slice.call( document.getElementsByClassName('split-scrollable') );
-      scrbls.forEach( function(element, index) {
-        // statements
-        var inst = new SplitScrollable(element, splitScrollableSettings);
-      });
+      var tot_scrbls = scrbls.length, i;
+      for( i=0; i < tot_scrbls; i++ ) {
+        var inst = new SplitScrollable(scrbls[i], splitScrollableSettings);
+      }
     }
   };
 
