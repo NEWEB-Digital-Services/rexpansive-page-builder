@@ -384,11 +384,12 @@
       // Remove elements to hide
       var gridstack = this.properties.gridstackInstance;
       var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
-      items.forEach( function(el) {
-        if ( -1 !== el.className.indexOf('rex-hide-element') ) {
-          gridstack.removeWidget(el, false);
+      var tot_items = items.length, i = 0;
+      for( i=0; i<tot_items; i++ ) {
+        if ( -1 !== items[i].className.indexOf('rex-hide-element') ) {
+          gridstack.removeWidget(items[i], false);
         }
-      });
+      }
 
       /*
       this.$element.children(".grid-stack-item").each(function(i, elem) {
@@ -403,10 +404,10 @@
         this.updateBlocksHeight();
       }
 
-      items.forEach( function(el) {
-        var blockData = el.querySelector('.rexbuilder-block-data');
-        gallery.updateElementDataHeightProperties( blockData, parseInt( el.getAttribute('data-gs-height') ) );
-      });
+      for( i=0; i<tot_items; i++ ) {
+        var blockData = items[i].querySelector('.rexbuilder-block-data');
+        gallery.updateElementDataHeightProperties( blockData, parseInt( items[i].getAttribute('data-gs-height') ) );
+      }
 
       this.fixVideoProportion();
 
@@ -475,25 +476,27 @@
     createActionDataMoveBlocksGrid: function() {
       var blocksDimensions = [];
       var rexID;
+      var items = [].slice.call( this.element.querySelectorAll( '.grid-stack-item:not(.grid-stack-placeholder), .grid-stack-item:not(.removing_block)' ) );
+      var tot_items = items.length, i = 0;
 
-      [].slice.call( this.element.querySelectorAll( '.grid-stack-item:not(.grid-stack-placeholder), .grid-stack-item:not(.removing_block)' ) ).forEach( function(el) {
-        rexID = el.getAttribute("data-rexbuilder-block-id");
+      for( i = 0; i < tot_items; i++ ) {
+        rexID = items[i].getAttribute("data-rexbuilder-block-id");
         var x, y, w, h;
 
-        x = parseInt( el.getAttribute("data-gs-x") );
-        y = parseInt( el.getAttribute("data-gs-y") );
-        w = parseInt( el.getAttribute("data-gs-width") );
-        h = parseInt( el.getAttribute("data-gs-height") );
+        x = parseInt( items[i].getAttribute("data-gs-x") );
+        y = parseInt( items[i].getAttribute("data-gs-y") );
+        w = parseInt( items[i].getAttribute("data-gs-width") );
+        h = parseInt( items[i].getAttribute("data-gs-height") );
         var blockObj = {
           rexID: rexID,
-          elem: el,
+          elem: items[i],
           x: x,
           y: y,
           w: w,
           h: h
         };
         blocksDimensions.push(blockObj);
-      });
+      }
 
       var actionData = {
         gridstackInstance: this.properties.gridstackInstance,
@@ -510,25 +513,27 @@
     clearStateGrid: function() {
       var rexID;
       var items = [].slice.call(this.element.getElementsByClassName('grid-stack-item'));
-      items.forEach(function(el) {
-        rexID = el.getAttribute('data-rexbuilder-block-id');
+      var tot_items = items.length, i = 0;
+      for( i=0; i<tot_items; i++ ) {
+        rexID = items[i].getAttribute('data-rexbuilder-block-id');
         store.remove(rexID);
         store.remove(rexID + "_noEdits");
-      });
+      }
     },
 
     saveStateGrid: function() {
       var rexID;
       var $elem;
-      this.$element.children(".grid-stack-item").each(function(i, el) {
-        $elem = $(el);
-        rexID = $elem.attr("data-rexbuilder-block-id");
+      var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
+      var tot_items = items.length, i = 0;
+      for( i = 0; i < tot_items; i++ ) {
+        rexID = items[i].getAttribute("data-rexbuilder-block-id");
         var x, y, w, h;
 
-        x = parseInt($elem.attr("data-gs-x"));
-        y = parseInt($elem.attr("data-gs-y"));
-        w = parseInt($elem.attr("data-gs-width"));
-        h = parseInt($elem.attr("data-gs-height"));
+        x = parseInt(items[i].getAttribute("data-gs-x"));
+        y = parseInt(items[i].getAttribute("data-gs-y"));
+        w = parseInt(items[i].getAttribute("data-gs-width"));
+        h = parseInt(items[i].getAttribute("data-gs-height"));
 
         store.set(rexID, {
           properties: [{ x: x }, { y: y }, { w: w }, { h: h }]
@@ -536,7 +541,7 @@
         store.set(rexID + "_noEdits", {
           properties: [{ x: x }, { y: y }, { w: w }, { h: h }]
         });
-      });
+      }
     },
 
     updateGridSettingsChangeLayout: function(newSettings) {
@@ -759,17 +764,16 @@
       this.properties.setDesktopPadding = false;
       this._setGridPadding();
 
-      var that = this;
       var $el;
       var items = [].slice.call(this.element.getElementsByClassName('grid-stack-item'));
-      // this.$element.find(".grid-stack-item").each(function(i, el) {
-      items.forEach(function(el) {
-        $el = $(el);
-        that._updateElementPadding($el.find(".grid-stack-item-content"));
-        if (that.settings.editorMode) {
-          that._updateHandlersPosition($el);
+      var tot_items = items.length, i = 0;
+      for( i=0; i < tot_items; i++ ) {
+        $el = $(items[i]);
+        this._updateElementPadding($el.find(".grid-stack-item-content"));
+        if (this.settings.editorMode) {
+          this._updateHandlersPosition($el);
         }
-      });
+      }
       if (this.settings.editorMode) {
         this._updatePlaceholderPosition();
       }
@@ -797,26 +801,27 @@
       var numberBlock = 0;
 
       var gsItems = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
-      gsItems.forEach( function( el, index ) {
-        number = index;
+      var tot_items = gsItems.length, i = 0;
+      for( i=0; i < tot_items; i++ ) {
+        number = i;
         var regex = /\d+$/gm;
-        var str = el.getAttribute("id");
+        var str = gsItems[i].getAttribute("id");
         var m;
         while ((m = regex.exec(str)) !== null) {
           // This is necessary to avoid infinite loops with zero-width matches
-          if (m.index === regex.lastIndex) {
+          if (m.i === regex.lastIndex) {
             regex.lastIndex++;
           }
 
           // The result can be accessed through the `m`-variable.
-          $.each(m, function(i, match) {
+          $.each(m, function(j, match) {
             numberBlock = parseInt(match);
           });
         }
         if (numberBlock > number) {
           number = numberBlock;
         }
-      });
+      }
 
       // this.$element.find(".grid-stack-item").each(function(i, e) {
       //   number = i;
@@ -871,16 +876,17 @@
       var $elem;
       var elem;
       var gsItems = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
-      gsItems.forEach( function(el) {
-        if ( el.getAttribute("data-rexbuilder-block-id") === undefined || el.getAttribute("data-rexbuilder-block-id") == "" ) {
+      var tot_items = gsItems.length, i = 0;
+      for( i=0; i < tot_items; i++ ) {
+        if ( gsItems[i].getAttribute("data-rexbuilder-block-id") === undefined || gsItems[i].getAttribute("data-rexbuilder-block-id") == "" ) {
           id = Rexbuilder_Util.createBlockID();
-          el.setAttribute("data-rexbuilder-block-id", id);
-          var elBlockData = el.querySelector('.rexbuilder-block-data');
+          gsItems[i].setAttribute("data-rexbuilder-block-id", id);
+          var elBlockData = gsItems[i].querySelector('.rexbuilder-block-data');
           if ( elBlockData ) {
             elBlockData.setAttribute('data-rexbuilder_block_id', id);
           }
         }
-      });
+      }
       // this.$element.find(".grid-stack-item").each(function(i, e) {
       //   $elem = $(e);
       //   if (
@@ -932,20 +938,21 @@
     getElementBottomTop: function() {
       var nodes = [];
       var gs_items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
+      var tot_items = gs_items.length, i = 0;
       var el;
 
-      gs_items.forEach( function(e) {
-        if (! hasClass(e, "removing_block") ) {
-          el = e;
-          el.x = parseInt(e["attributes"]["data-gs-x"].value);
-          el.y = parseInt(e["attributes"]["data-gs-y"].value);
-          el.w = parseInt(e["attributes"]["data-gs-width"].value);
-          el.h = parseInt(e["attributes"]["data-gs-height"].value);
+      for( i = 0; i < tot_items; i++ ) {
+        if (! hasClass(gs_items[i], "removing_block") ) {
+          el = gs_items[i];
+          el.x = parseInt(gs_items[i]["attributes"]["data-gs-x"].value);
+          el.y = parseInt(gs_items[i]["attributes"]["data-gs-y"].value);
+          el.w = parseInt(gs_items[i]["attributes"]["data-gs-width"].value);
+          el.h = parseInt(gs_items[i]["attributes"]["data-gs-height"].value);
           el.xw = el.x + el.w;
           el.yh = el.y + el.h;
           nodes.push(el);
         }
-      });
+      }
       return _
         .sortBy(nodes, [
           function(o) {
@@ -961,16 +968,17 @@
     getElementsTopBottom: function() {
       var nodes = [];
       var gs_items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
+      var tot_items = gs_items.length, i = 0;
       var el;
 
-      gs_items.forEach( function(e) {
-        if (! hasClass(e, "removing_block") ) {
-          el = e;
-          el.x = parseInt( e.getAttribute('data-gs-x') );
-          el.y = parseInt( e.getAttribute('data-gs-y') );
+      for( i=0; i < tot_items; i++ ) {
+        if (! hasClass(gs_items[i], "removing_block") ) {
+          el = gs_items[i];
+          el.x = parseInt( gs_items[i].getAttribute('data-gs-x') );
+          el.y = parseInt( gs_items[i].getAttribute('data-gs-y') );
           nodes.push(el);
         }
-      });
+      }
       return _.sortBy(nodes, [
         function(o) {
           return o.y;
@@ -1608,14 +1616,14 @@
 
     // Updating elements properties
     updateAllElementsProperties: function() {
-      var gallery = this;
       this.properties.editedFromBackend = false;
       this.properties.startingLayout = this.settings.galleryLayout;
       var $elem;
       var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item:not(.grid-stack-placeholder)') );
+      var tot_items = items.length, i = 0;
       if (this.properties.updatingSectionSameGrid) {
         this.properties.updatingSectionSameGrid = false;
-        items.forEach(function(el) {
+        for( i=0; i < tot_items; i++ ) {
         // this.$element
         //   .children(".grid-stack-item:not(.grid-stack-placeholder)")
         //   .each(function() {
@@ -1624,20 +1632,20 @@
           // if ( typeof store.get( $elem.attr("data-rexbuilder-block-id") + "_noEdits" ) !== "undefined" ) {
           //   store.remove($elem.attr("data-rexbuilder-block-id") + "_noEdits");
           // }
-          gallery.updateElementAllProperties(el);
-          if ( typeof store.get( el.getAttribute("data-rexbuilder-block-id") + "_noEdits" ) !== "undefined" ) {
-            store.remove( el.getAttribute("data-rexbuilder-block-id") + "_noEdits" );
+          this.updateElementAllProperties(items[i]);
+          if ( typeof store.get( items[i].getAttribute("data-rexbuilder-block-id") + "_noEdits" ) !== "undefined" ) {
+            store.remove( items[i].getAttribute("data-rexbuilder-block-id") + "_noEdits" );
           }
-        });
+        }
       }
       // this.$element
       //   .children(".grid-stack-item:not(.grid-stack-placeholder)")
       //   .each(function() {
       //     gallery.updateElementAllProperties(this);
       //   });
-      items.forEach(function(el) {
-        gallery.updateElementAllProperties(el);
-      });
+      for( i=0; i < tot_items; i++ ) {
+        this.updateElementAllProperties(items[i]);
+      }
     },
 
     updateElementAllProperties: function(elem) {
@@ -1816,9 +1824,11 @@
     },
 
     _setElementsToHeight: function(h) {
-      [].slice.call( this.element.getElementsByClassName('perfect-grid-item') ).forEach(function(e) {
-        e.setAttribute('data-gs-min-height', h);
-      });
+      var gs_items = [].slice.call( this.element.getElementsByClassName('perfect-grid-item') );
+      var tot_items = gs_items.length, i = 0;
+      for( i=0; i < tot_items; i++ ) {
+        gs_items[i].setAttribute('data-gs-min-height', h);
+      }
     },
 
     _calculateGridHeight: function() {
@@ -1826,14 +1836,15 @@
       var hTemp;
       var $gridItem;
       var gsItems = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
-      gsItems.forEach( function( el ) {
-        if ( -1 === el.className.indexOf('removing_block') ) {
-          hTemp = parseInt( el.getAttribute('data-gs-height') ) + parseInt( el.getAttribute('data-gs-y') );
+      var tot_items = gsItems.length, i = 0;
+      for( i=0; i < tot_items; i++ ) {
+        if ( -1 === gsItems[i].className.indexOf('removing_block') ) {
+          hTemp = parseInt( gsItems[i].getAttribute('data-gs-height') ) + parseInt( gsItems[i].getAttribute('data-gs-y') );
           if (hTemp > heightTot) {
             heightTot = hTemp;
           }
         }
-      });
+      }
       return heightTot;
     },
 
@@ -2073,27 +2084,27 @@
     },
 
     _prepareElements: function() {
-      var gallery = this;
-      var items = [].slice.call( gallery.element.getElementsByClassName('grid-stack-item') );
+      var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
+      var tot_items = items.length, i = 0;
 
       if (this.properties.editedFromBackend && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying ) ) {
-        items.forEach( function(el) {
-          el.setAttribute('data-gs-x', parseInt( el.getAttribute('data-col') ) - 1);
-          el.setAttribute('data-gs-y', parseInt( el.getAttribute('data-row') ) - 1);
-          el.setAttribute('data-gs-width', el.getAttribute('data-width'));
-          el.setAttribute('data-gs-height', el.getAttribute('data-height'));
-          // el.setAttribute('data-gs-min-height', el.getAttribute('data-height'));
-        });
+        for( i=0; i < tot_items; i++ ) {
+          items[i].setAttribute('data-gs-x', parseInt( items[i].getAttribute('data-col') ) - 1);
+          items[i].setAttribute('data-gs-y', parseInt( items[i].getAttribute('data-row') ) - 1);
+          items[i].setAttribute('data-gs-width', items[i].getAttribute('data-width'));
+          items[i].setAttribute('data-gs-height', items[i].getAttribute('data-height'));
+          // items[i].setAttribute('data-gs-min-height', items[i].getAttribute('data-height'));
+        }
       }
 
       var blockData;
-      items.forEach(function(el) {
-        gallery._prepareElement(el);
-        blockData = el.querySelector('.rexbuilder-block-data');
+      for( i=0; i < tot_items; i++ ) {
+        this._prepareElement(items[i]);
+        blockData = items[i].querySelector('.rexbuilder-block-data');
         if ( null === blockData.getAttribute('data-gs_start_h') ) {
-          blockData.setAttribute( 'data-gs_start_h', parseInt( el.getAttribute('data-gs-height') ) );
+          blockData.setAttribute( 'data-gs_start_h', parseInt( items[i].getAttribute('data-gs-height') ) );
         }
-      });
+      }
     },
 
     /**
@@ -2160,11 +2171,11 @@
     },
 
     _fixImagesDimension: function() {
-      var that = this;
       var gsItems = [].slice.call(this.element.getElementsByClassName('grid-stack-item'));
-      gsItems.forEach( function( el ) {
-        that._fixImageSize(el);
-      });
+      var tot_items = gsItems.length, i=0;
+      for( i = 0; i < tot_items; i++ ) {
+        this._fixImageSize(gsItems[i]);
+      }
     },
 
     _fixImageSize: function(elem) {
@@ -2535,14 +2546,13 @@
      * @since 2.0.0
      */
     _updateElementsSizeViewers: function() {
-      var gallery = this;
       var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
-      var $block;
-      items.forEach(function(el) {
-        $block = $(el);
-        gallery.updateSizeViewerSizes(el);
-        gallery.checkBlockDimension( el );
-      });
+      var tot_items = items.length, i=0;
+
+      for( i=0; i < tot_items; i++ ) {
+        this.updateSizeViewerSizes( items[i] );
+        this.checkBlockDimension( items[i] );
+      }
     },
 
     /**
@@ -2984,7 +2994,6 @@
      * @since  2.0.1
      */
     updateLayoutBlocksHeight: function() {
-      var gallery = this;
       var gridstack = this.properties.gridstackInstance;
 
       if ( typeof gridstack !== "null" ) {
@@ -2992,19 +3001,21 @@
         if ( !this.properties.updatingSectionSameGrid || Rexbuilder_Util.windowIsResizing ) {
           this.batchGridstack();
 
-          [].slice.call( this.properties.blocksBottomTop ).forEach( function( elem, i ) {
-            var elemData = elem.querySelector('.rexbuilder-block-data');
+          var items = [].slice.call( this.properties.blocksBottomTop );
+          var tot_items = items.length, i = 0;
+          for( i=0; i < tot_items; i++ ) {
+            var elemData = items[i].querySelector('.rexbuilder-block-data');
             // get the size
-            var size = gallery.getBlockSizeOnLayoutChange( elem );
+            var size = this.getBlockSizeOnLayoutChange( items[i] );
 
             Rexbuilder_Util_Editor.elementIsResizing = true;
 
             // resize the block
-            gallery.updateElementDataHeightProperties( elemData, size.height );
-            gallery.resizeBlock( elem, size.width, size.height );
+            this.updateElementDataHeightProperties( elemData, size.height );
+            this.resizeBlock( items[i], size.width, size.height );
 
             Rexbuilder_Util_Editor.elementIsResizing = false;
-          });
+          }
 
           if ( !Rexbuilder_Util.windowIsResizing ) {
             this.commitGridstack();
@@ -3020,7 +3031,6 @@
      * @version 2.0.1   Height calc general review
      */
     updateBlocksHeight: function () {
-      var gallery = this;
       var $elem;    
       var gridstack = this.properties.gridstackInstance;
       if ( typeof gridstack !== "null" ) {
@@ -3028,15 +3038,17 @@
         if ( !this.properties.updatingSectionSameGrid || Rexbuilder_Util.windowIsResizing ) {
           this.batchGridstack();
 
-          [].slice.call( this.properties.blocksBottomTop ).forEach( function( elem, i ) {
-            if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid || gallery.properties.firstStartGrid) {
-              if (!( hasClass(elem, "rex-hide-element") || hasClass(elem, "removing_block"))) {
-                gallery.updateElementHeight( elem );
+          var items = [].slice.call( this.properties.blocksBottomTop );
+          var tot_items = items.length, i = 0;
+          for( i=0; i < tot_items; i++ ) {
+            if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid || this.properties.firstStartGrid) {
+              if (!( hasClass(items[i], "rex-hide-element") || hasClass(items[i], "removing_block"))) {
+                this.updateElementHeight( items[i] );
               }
-            } else if ( ! gallery.properties.collapsingElements ) {
-              gallery.updateElementHeight( elem );
+            } else if ( ! this.properties.collapsingElements ) {
+              this.updateElementHeight( items[i] );
             }
-          });
+          }
           // end foreach of boxes
 
           // if ( !Rexbuilder_Util.windowIsResizing && !this.properties.updatingSection )
@@ -3530,15 +3542,16 @@
      */
     _launchTextEditor: function() {
       var editors = [].slice.call( this.element.getElementsByClassName('rex-text-editable') );
+      var tot_editors = editors.length, i = 0;
       var hasPswp, hasSlider, textWrap;
-      editors.forEach( function(el) {
-        hasPswp = el.getElementsByClassName('pswp-figure');
-        hasSlider = el.getElementsByClassName('rex-slider-wrap');
+      for( i=0; i < tot_editors; i++ ) {
+        hasPswp = editors[i].getElementsByClassName('pswp-figure');
+        hasSlider = editors[i].getElementsByClassName('rex-slider-wrap');
         if ( 0 === hasPswp.length && 0 === hasSlider.length ) {
-          textWrap = el.querySelector('.text-wrap');
+          textWrap = editors[i].querySelector('.text-wrap');
           TextEditor.addElementToTextEditor( textWrap );
         }
-      });
+      }
     },
 
     /**
@@ -3802,22 +3815,23 @@
     },
 
     updateCollapsedBlocksHeight: function() {
-      var that = this;
       var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
-      items.reverse().forEach(function(el,i) {
-        var sizes = that.getBlockSizeOnCollapse( el );
-        that.properties.gridstackInstance.resize(el, sizes.width, sizes.height);
+      var tot_items = items.length, i = 0;
+      var reverse_items = items.reverse();
+      for( i=0; i < tot_items; i++ ) {
+        var sizes = this.getBlockSizeOnCollapse( reverse_items[i] );
+        this.properties.gridstackInstance.resize(reverse_items[i], sizes.width, sizes.height);
 
-        // var $el = $(el);
-        // var blockHeight = that.updateElementHeight($el);
+        // var $el = $(reverse_items[i]);
+        // var blockHeight = this.updateElementHeight($el);
 
         // if ('undefined' !== typeof blockHeight && !blockHeight.empty) {
-        //   var height = Math.ceil( blockHeight.height / that.settings.cellHeightMasonry );
-        //   that.properties.gridstackInstance.resize(el, 12, height);
+        //   var height = Math.ceil( blockHeight.height / this.settings.cellHeightMasonry );
+        //   this.properties.gridstackInstance.resize(reverse_items[i], 12, height);
         // } else {
-        //   that.properties.gridstackInstance.resize(el, 12, 0);
+        //   this.properties.gridstackInstance.resize(reverse_items[i], 12, 0);
         // }
-      });
+      }
     },
 
     /**
@@ -3828,18 +3842,19 @@
      */
     fixVideoProportion: function() {
       var videos = [].slice.call( this.section.getElementsByClassName('rex-video-wrap') );
+      var tot_videos = videos.length, i = 0;
       var rules = [];
 
       // first, find max width rules, based on video and container dimension
-      videos.forEach(function(el) {
-        rules.push( this.findVideoMaxWidth(el) );
-      }.bind(this));
+      for( i=0; i < tot_videos; i++ ) {
+        rules.push( this.findVideoMaxWidth(videos[i]) );
+      }
 
       // apply the founded rules
       // much fast this way
-      videos.forEach(function(el, index) {
-        el.children[0].style.maxWidth = rules[index];
-      });
+      for( i=0; i < tot_videos; i++ ) {
+        videos[i].children[0].style.maxWidth = rules[i];
+      }
     },
 
     /**
@@ -3896,16 +3911,17 @@
       }
 
       var items = [].slice.call(this.element.getElementsByClassName('grid-stack-item'));
+      var tot_items = items.length, i = 0;
       var elemObj;
 
       // this.$element.children(".grid-stack-item").each(function() {
-      items.forEach(function(el,i) {
+      for( i = 0; i < tot_items; i++ ) {
         elemObj = {
-          rexID: el.getAttribute("data-rexbuilder-block-id"),
-          element: $(el).detach()
+          rexID: items[i].getAttribute("data-rexbuilder-block-id"),
+          element: $(items[i]).detach()
         };
         nodes.push(elemObj);
-      });
+      }
 
       for (i = 0, tot_rexIDS = rexIDS.length; i < tot_rexIDS; i++) {
         for (j = 0, tot_nodes = nodes.length; j < tot_nodes; j++) {
@@ -4194,16 +4210,17 @@
      */
     fix_natural_image_blocks: function() {
       var imageWrappers = [].slice.call( this.element.getElementsByClassName('rex-image-wrapper') );
+      var tot_imageWrappers = imageWrappers.length, i = 0;
       var $el;
-      imageWrappers.forEach(function(el,i) {
-        $el = $(el);
-        if ( hasClass( el, 'natural-image-background' ) ) {
+      for( i=0; i < tot_imageWrappers; i++ ) {
+        if ( hasClass( imageWrappers[i], 'natural-image-background' ) ) {
+          $el = $(imageWrappers[i]);
           var width = parseInt( $el.parents(".grid-item-content").attr("data-background_image_width") );
-          if ( width > el.offsetWidth ) {
-            addClass( el, 'small-width' );
+          if ( width > imageWrappers[i].offsetWidth ) {
+            addClass( imageWrappers[i], 'small-width' );
           }
         }
-      });
+      }
     },
 
     /**

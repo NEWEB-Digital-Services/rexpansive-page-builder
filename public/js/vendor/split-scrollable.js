@@ -59,11 +59,11 @@
 		this.opacityEls = [].slice.call( this.element.getElementsByClassName(this.options.opacityElsClass) );
 		this.totScrollEls = this.scrollEls.length;
 		this.totOpacityEls = this.opacityEls.length;
-
-		this.scrollEls.forEach( function( element, index ) {
-			element.setAttribute('data-scroll-el-index', index);
-			that.scrollElsState.push(null)
-		});
+		var i=0;
+		for( i=0; i < this.totScrollEls; i++ ) {
+			this.scrollEls[i].setAttribute('data-scroll-el-index', i);
+			this.scrollElsState.push(null)
+		}
 	}
 
 	function addWrappers() {
@@ -105,17 +105,19 @@
 	function watchScroll() {
 		var that = this;
 		this.scrollObserver = new IntersectionObserver( function( entries, observer ) {
-			entries.forEach( function( entry ) {
-				handleEntityObserve.call(that, entry);
-				// newHandleEntityObserve.call(that, entry);
-			})
+			var tot_entries = entries.length, i = 0;
+			for( i=0; i < tot_entries; i++ ) {
+				handleEntityObserve.call(that, entries[i]);
+				// newHandleEntityObserve.call(that, entries[i]);
+			}
 		}, {
 			threshold: [0, 0.2, 0.4, 0.6, 0.8, 1]
 		});
 
-		this.scrollEls.forEach( function( el ) {
-			that.scrollObserver.observe( el );
-		});
+		var j = 0;
+		for( j=0; j < this.totScrollEls; j++ ) {
+			this.scrollObserver.observe( this.scrollEls[j] );
+		}
 	}
 
 	function handleEntityObserve(entry) {
