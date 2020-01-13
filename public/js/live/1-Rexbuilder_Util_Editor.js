@@ -12,8 +12,14 @@ var Rexbuilder_Util_Editor = (function($) {
   /**
    * @param {jQuery} $textWrap Text-wrap whose container block height has to be update
    */
-  var _updateBlockContainerHeight = function($textWrap){
+  var _updateBlockContainerHeight = function($textWrap, needToSave){
+    needToSave = undefined === needToSave ? true : needToSave;
+    this.needToSave = needToSave;
     var galleryInstance = Rexbuilder_Util.getGalleryInstance($textWrap.parents(".rexpansive_section").eq(0));
+    if ( null === galleryInstance ) {
+      console.log('text wrap', $textWrap)
+      console.log('section', $textWrap.parents(".rexpansive_section"))
+    }
     galleryInstance.updateElementHeight($textWrap.parents(".grid-stack-item")[0]);
     // updating insertButton position
     var insertButton = TextEditor.getEditorInstance().getExtensionByName('insert-media');
@@ -21,6 +27,7 @@ var Rexbuilder_Util_Editor = (function($) {
       var $wrapper = $textWrap.parents(".grid-item-content-wrap");
       insertButton.placeMediaBtn($wrapper);
     }
+    this.needToSave = true;
   }
 
   var setEndOfContenteditable = function(contentEditableElement) {
@@ -1699,6 +1706,8 @@ var Rexbuilder_Util_Editor = (function($) {
     this.dragAndDropFromParent = false;
     undoStackArray = [];
     redoStackArray = [];
+
+    this.needToSave = true;
 
     this.$styleElement = $("#rexpansive-builder-style-inline-css");
     // _synchGradient();

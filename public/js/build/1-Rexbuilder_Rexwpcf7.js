@@ -51,8 +51,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 $columnContent.prepend("<span class=\"wpcf7-form-control-wrap radio-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control wpcf7-radio\"><span class=\"wpcf7-list-item first\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 1\" checked=\"checked\" class=\"with-gap\" id=\"wpcf7-radio-1\"><span class=\"wpcf7-list-item-label\">Option 1</span></span><span class=\"wpcf7-list-item last\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 2\" class=\"with-gap\" id=\"wpcf7-radio-2\"><span class=\"wpcf7-list-item-label\">Option 2</span></span></span></span>");
                 break;
             case "acceptance":
-                fieldShortcode = "[acceptance acceptance-" + fieldNumber + " optional] Your text [/acceptance]";
-                $columnContent.prepend("<span class=\"wpcf7-form-control-wrap acceptance-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control wpcf7-acceptance optional\"><span class=\"wpcf7-list-item\"><label><input type=\"checkbox\" name=\"acceptance-" + fieldNumber + "\" value=\"1\" aria-invalid=\"false\"><span class=\"wpcf7-list-item-label\">Your text</span></label></span></span></span>");
+                fieldShortcode = "[acceptance acceptance-" + fieldNumber + " optional]<p>Your text</p>[/acceptance]";
+                $columnContent.prepend("<span class=\"wpcf7-form-control-wrap acceptance-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control wpcf7-acceptance optional\"><span class=\"wpcf7-list-item\"><label><input type=\"checkbox\" name=\"acceptance-" + fieldNumber + "\" value=\"1\" aria-invalid=\"false\"><span class=\"wpcf7-list-item-label\"><p>Your text</p></span></label></span></span></span>");
                 break;
             case "file":
                 fieldShortcode = "[file file-" + fieldNumber + " filetypes: limit:]<div class='wpcf7-file-caption'>Your text here</div>";
@@ -1411,6 +1411,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 if (isSetEmail) {  // Setting e-mail
                     var $input = $formColumns.find(".wpcf7-form-control");
                     var oldFieldType = $input.attr('type');
+                    console.log($input[0])
 
                     $input.attr("type", "email");
                     $input.attr("name", "email-" + /[0-9]+/.exec($input.attr("name"))[0]);
@@ -1500,7 +1501,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 $formColumns.find(".wpcf7-acceptance input[type='checkbox']").prop("checked", newValue);
                 break;
             case "wpcf7-text-editor":
-                newValue = newValue.replace(/<p>\s<\/p>/g, "");
+                newValue = newValue.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, '');  // Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
                 switch (inputType) {
                     case "acceptance":
                         $formColumns.find(".wpcf7-list-item-label").html(newValue);
@@ -2372,9 +2373,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             var columnContentRule = "";
             var columnContentHoverRule = "";
 
-            if (inputType == "acceptance" || inputType == "radio" || inputType == "file") {
-                // columnContentRule += "float: left;";
+            if ( inputType == "acceptance" || inputType == "radio" /*|| inputType == "file"*/ ) {
                 columnContentRule += "display: inline-flex;";
+            } else if ( 'file' === inputType ) {
+                columnContentRule += 'display: block;';
             } else {    // Text, Number, Email, Textarea, Select
                 columnContentRule += "background-color: " + columnContentData.background_color + ";";
                 columnContentRule += "border-color: " + columnContentData.border_color + ";";

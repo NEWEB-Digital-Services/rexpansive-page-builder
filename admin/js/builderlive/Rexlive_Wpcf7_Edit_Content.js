@@ -8,8 +8,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
     var columnContentData;
     var reverseData;
     var resetData;
-    var needToRemoveSpanData = true; // Needs to be set false the first time an edit happens
+    var needToRemoveSpanData = true;  // Needs to be set false the first time an edit happens
     var tinyMCE_editor;
+    var needToSave = false;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     /**
@@ -317,7 +318,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             eventName: "rexlive:update_wcpf7_column_content_page",
             data_to_send: {
                 reverseColumnContentData: jQuery.extend(true, {}, reverseData),
-                actionColumnContentData: jQuery.extend(true, {}, columnContentData)
+                actionColumnContentData: jQuery.extend(true, {}, columnContentData),
+                needToSave: needToSave
             }
         };
         reverseData = jQuery.extend(true, {}, columnContentDataToIframe.data_to_send.actionColumnContentData);
@@ -457,6 +459,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
         // Text Editor
         tinyMCE_editor = tinyMCE.get('wpcf7_text_editor');
+        columnContentData.text = columnContentData.text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, ""); // Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
         tinyMCE_editor.setContent(columnContentData.text);
         _linkTextEditorListeners();
 
@@ -702,6 +705,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
         // Text editor
         columnContentData.text = tinyMCE_editor.getContent();
+        columnContentData.text = columnContentData.text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, ""); // Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
 
         // File max dimensions
         columnContentData.wpcf7_file_max_dimensions = wpcf7_content_editor_properties.$content_file_max_dimensions.val();
@@ -1870,10 +1874,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////
-
     var _linkDocumentListeners = function() {
-        var needToSave = false;
-
         wpcf7_content_editor_properties.$modal.click( function(e) {
             if ( $(e.target).is('.rex-modal-wrap') ) {
                 needToSave = false;
@@ -1893,6 +1894,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
          */
         wpcf7_content_editor_properties.$apply_changes_button.on("click", function () {
             needToSave = true;
+            
             _closeModal();
         });
 
@@ -1900,6 +1902,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
          * Reset Panel with data when was opened, updates button in page
          */
         wpcf7_content_editor_properties.$reset_button.on("click", function () {
+            needToSave = false;
             columnContentData = jQuery.extend(true, {}, resetData);
             var isSetEmail = "undefined" != typeof wpcf7_content_editor_properties.$content_set_email.attr("checked");
             if (isSetEmail) {

@@ -6317,6 +6317,12 @@ span.builderlive-editable-field[contenteditable=true] {
                   justify-content: center; }
         .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .wpcf7-column-content {
           width: 100%; }
+          .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .wpcf7-column-content .wpcf7-form-control-wrap {
+            max-width: 100%;
+            max-height: 100%; }
+          .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .wpcf7-column-content .wpcf7-radio,
+          .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .wpcf7-column-content .wpcf7-acceptance {
+            overflow: hidden; }
         .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .rex-wpcf7-column-content-data {
           display: none; }
         .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .wpcf7-add-new-form-content {

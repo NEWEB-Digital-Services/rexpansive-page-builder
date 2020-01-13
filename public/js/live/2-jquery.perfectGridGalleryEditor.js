@@ -184,7 +184,8 @@
             !Rexbuilder_Util_Editor.openingModel &&
             !Rexbuilder_Util_Editor.blockCopying &&
             !Rexbuilder_Util_Editor.savingPage &&
-            !Rexbuilder_Util_Editor.savingModel
+            !Rexbuilder_Util_Editor.savingModel &&
+            Rexbuilder_Util_Editor.needToSave
           ) {
             var data = {
               eventName: "rexlive:edited",

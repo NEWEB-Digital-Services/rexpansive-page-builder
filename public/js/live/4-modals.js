@@ -2012,9 +2012,12 @@
       var actionData = {
         columnContentData: jQuery.extend(true, {}, data.actionColumnContentData)
       }
+      console.log('bisogno di salvare', data.needToSave)
+      if ( data.needToSave ) {
+        Rexbuilder_Util_Editor.builderEdited(false);
+      }
       
       Rexbuilder_Rexwpcf7.updateColumnContent(actionData);
-
       Rexbuilder_Util_Editor.pushAction(
         "document",
         "updateRexWpcf7ColumnContent",

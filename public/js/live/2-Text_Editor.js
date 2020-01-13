@@ -3213,8 +3213,9 @@ var TextEditor = (function ($) {
 
       // if ( $target.is(".wpcf7-add-new-row") || $target.parents(".wpcf7-add-new-row").length !== 0 ) console.log('sono su + add row')
       // if ( $target.is(".wpcf7-add-new-form-content") || $target.parents(".wpcf7-add-new-form-content").length !== 0 ) console.log('+ add content')
-
-      if ("mouseover" == event.type && $target.parents(".grid-stack-item").hasClass("item--me-focus")) {
+      
+      // console.log($target.parents(".grid-stack-item").hasClass("item--me-focus"))
+      if ( "mouseover" == event.type && $target.parents(".grid-stack-item").hasClass("item--me-focus") ) {
         var needToAddPlusButtonsListener = ("undefined" == typeof this.addFormContentBtns);
 
         if ( $target.is(".wpcf7-form") ) {
@@ -3660,7 +3661,7 @@ var TextEditor = (function ($) {
 
     updateHeight: function() {
       var $textWrap = $(this.traceForm).parents('.text-wrap');
-      Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
+      Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap, false);
     },
 
     focusBlock: function() {
