@@ -28,6 +28,7 @@
       stagger: 0,
       mobile: true,
       force_launch: false,
+      context: null
     };
 
   // window height shared var
@@ -72,6 +73,47 @@
     return { width: e[a + 'Width'], height: e[a + 'Height'] };
   }
 
+  function launchScrollingAnimation() {
+    if (viewport().width <= 767 && !this.settings.mobile) {
+
+      this.$element.css( 'opacity', 1 );
+      this.properties.launched = true;
+      this.removeScrollHandler();
+
+    } else {
+      if ( ! this.properties.launched ) {
+
+        var win_height = windowInnerHeight,
+          win_height_padded_bottom,
+          win_height_padded_top,
+          scrolled = scrollDocumentPositionTop(),
+          blockPosition = offsetTop(this.element, scrolled),
+          blockHeight = this.element.offsetHeight;
+
+        if (this.settings.offset === 0) {
+          win_height_padded_bottom = win_height * 0.7;
+          win_height_padded_top = win_height * 0.2;
+        } else if (this.settings.offset > 0) {
+          win_height_padded_bottom = win_height - this.settings.offset;
+          win_height_padded_top = win_height * 0.2;
+        } else if (this.settings.offset < 0) {
+          win_height_padded_bottom = win_height * 0.7;
+          win_height_padded_top = win_height + this.settings.offset;
+        }
+
+        if (((blockPosition - win_height_padded_bottom < scrolled) && ((blockPosition + blockHeight) - win_height_padded_top > scrolled)) || this.settings.force_launch) {
+
+          // Fix to prevent loop animation on delay
+          if (this.settings.delay) {
+            this.properties.launched = true;
+          }
+
+          this.launchAnimation();
+        }
+      }
+    }
+  }
+
   // The actual plugin constructor
   function rexScrollify(element, options) {
     this.element = element;
@@ -97,6 +139,8 @@
     this.settings.stagger = parseInt(this.element.getAttribute('data-rs-animation-stagger') || this.settings.stagger);
     this.settings.force_launch = this.element.getAttribute('data-rs-animation-force-launch') || this.settings.force_launch;
 
+    this.bindedScrollHandler = null;
+
     this.init();
   }
 
@@ -111,50 +155,17 @@
       // you can add more functions like the one below and
       // call them like the example bellow
 
-      this.launchScrollingAnimation();
+      launchScrollingAnimation.call(this);
 
       // vanilla binding
-      window.addEventListener('scroll', this.launchScrollingAnimation.bind(this));
-    },
-    launchScrollingAnimation: function () {
-      if (viewport().width <= 767 && !this.settings.mobile) {
-
-        this.$element.css('opacity', 1);
-        this.properties.launched = true;
-
+      this.bindedScrollHandler = launchScrollingAnimation.bind(this);
+      if( this.settings.context ) {
+        this.settings.context.addEventListener('scroll',  this.bindedScrollHandler);
       } else {
-        if (!this.properties.launched) {
-
-          var win_height = windowInnerHeight,
-            win_height_padded_bottom,
-            win_height_padded_top,
-            scrolled = scrollDocumentPositionTop(),
-            blockPosition = offsetTop(this.element, scrolled),
-            blockHeight = this.element.offsetHeight;
-
-          if (this.settings.offset === 0) {
-            win_height_padded_bottom = win_height * 0.7;
-            win_height_padded_top = win_height * 0.2;
-          } else if (this.settings.offset > 0) {
-            win_height_padded_bottom = win_height - this.settings.offset;
-            win_height_padded_top = win_height * 0.2;
-          } else if (this.settings.offset < 0) {
-            win_height_padded_bottom = win_height * 0.7;
-            win_height_padded_top = win_height + this.settings.offset;
-          }
-
-          if (((blockPosition - win_height_padded_bottom < scrolled) && ((blockPosition + blockHeight) - win_height_padded_top > scrolled)) || this.settings.force_launch) {
-
-            // Fix to prevent loop animation on delay
-            if (this.settings.delay) {
-              this.properties.launched = true;
-            }
-
-            this.launchAnimation();
-          }
-        }
+        window.addEventListener('scroll',  this.bindedScrollHandler);
       }
     },
+    
     launchAnimation: function() {
       var that = this;
       this.$element.velocity(
@@ -168,9 +179,18 @@
           },
           complete: function (elements) {
             that.$element.trigger('rs-animation-complete');
+            that.removeScrollHandler();
           }
         }
       );
+    },
+
+    removeScrollHandler: function() {
+      if( this.settings.context ) {
+        this.settings.context.removeEventListener( 'scroll', this.bindedScrollHandler );
+      } else {
+        window.removeEventListener( 'scroll', this.bindedScrollHandler );
+      }
     }
   });
 

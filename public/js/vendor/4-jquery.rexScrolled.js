@@ -90,6 +90,8 @@
     this.settings.offset = parseInt(this.element.getAttribute('data-rs-animation-offset') || this.settings.offset);
     this.settings.force_launch = this.element.getAttribute('data-rs-animation-force-launch') || this.settings.force_launch;
 
+    this.bindedScrollHandler = null;
+
     this.init();
   }
 
@@ -106,12 +108,14 @@
       this.has_scrolled();
 
       // vanilla binding
-      window.addEventListener('scroll', this.has_scrolled.bind(this));
+      this.bindedScrollHandler = this.has_scrolled.bind(this);
+      window.addEventListener( 'scroll', this.bindedScrollHandler );
     },
     has_scrolled: function () {
       if (viewport().width <= 767 && !this.settings.mobile) {
 
         this.properties.launched = true;
+        this.removeScrollHandler();
 
       } else {
         var that = this;
@@ -140,9 +144,13 @@
             if( this.settings.callback && 'function' === typeof this.settings.callback ) {
               this.settings.callback( this.element );
             }
+            this.removeScrollHandler();
           }
         }
       }
+    },
+    removeScrollHandler: function() {
+      window.removeEventListener( 'scroll', this.bindedScrollHandler );
     }
   });
 
