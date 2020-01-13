@@ -1069,7 +1069,10 @@ class Rexbuilder_Public
             wp_send_json_error($response);
         }
 
+        // $t1 = microtime(true);
         $maybe_id = url_to_postid( $_REQUEST['target'] );
+        // $t2 = microtime(true);
+        // $response['utp_T'] = $t2 - $t1;
 
         $response['error'] = false;
         $response['ID'] = $maybe_id;
@@ -1079,6 +1082,7 @@ class Rexbuilder_Public
         );
 
         $query = new WP_Query( $argsQuery );
+
         if ( $query->have_posts() ) {
             add_filter( 'rexbuilder_fast_load', function() { return 0; } );
             add_filter( 'rexbuilder_animation_enabled', function() { return false; } );

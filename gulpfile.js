@@ -479,9 +479,10 @@ gulp.task('builderlive-style', function() {
 
 gulp.task('live-production', ['prepare-effects','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style']);
 
-gulp.task('watch-live-production', ['builderlive-editor','builderlive'] ,function() {
+gulp.task('watch-live-production', ['prepare-effects','builderlive-editor','builderlive'] ,function() {
 	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive-editor']);
 	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive']);
+	gulp.watch(effects_js_src, ['prepare-effects']);
 });
 
 /* --- BUILD PUBLIC SCRIPTS AND STYLES ------ */

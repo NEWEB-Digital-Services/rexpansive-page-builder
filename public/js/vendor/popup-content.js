@@ -32,6 +32,7 @@
 			popUpContent: 'popup-content-content',
 			contentInjectorPoint: 'rexpansive_section',
 			// ajax
+			loadTiming: 'hover',		// hover | load | scroll(?)
 			getPopUpContentComplete: null,
 			ajaxSettings: null
 		};
@@ -69,9 +70,11 @@
         		var that = this;
         		this.options.ajaxSettings.data.target = this.urlTarget;
 				this.options.ajaxSettings.success = function( response ) {
+					console.time('load_content')
 					if ( response.success ) {
 						onGetPopUpContentComplete.call( that, response.data.data );
 					}
+					console.timeEnd('load_content')
 				};
 
 				this.options.ajaxSettings.error = function( response ) {
@@ -81,7 +84,9 @@
 
         	var thisParent = foundParents( this.element, this.options.contentInjectorPoint );
 			thisParent.insertAdjacentElement('afterend', this.target);
-        	getPopUpContent.call(this);
+			if ( 'load' === this.options.loadTiming ) {
+        		getPopUpContent.call(this);
+			}
         }
 
         if ( null === this.target ) {
@@ -98,6 +103,9 @@
 		this.element.addEventListener('click', togglePopUp.bind(this));
 		if ( this.closeBtn ) {
 			this.closeBtn.addEventListener('click', togglePopUp.bind(this));
+		}
+		if ( 'hover' === this.options.loadTiming ) {
+			this.element.addEventListener('mouseover', getPopUpContent.bind(this), {once: true});
 		}
 	}
 
@@ -135,11 +143,11 @@
 	}
 
 	function onGetPopUpContentComplete( content ) {
-		this.contentLoaded = true;
 		addPopUpContent.call( this, content )
 		if ( 'function' === typeof this.options.getPopUpContentComplete ) {
 			this.options.getPopUpContentComplete.call(this)
 		}
+		this.contentLoaded = true;
 	}
 
 	function addPopUpContent(content) {

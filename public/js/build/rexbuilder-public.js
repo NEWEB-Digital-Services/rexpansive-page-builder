@@ -766,31 +766,34 @@ var Rexbuilder_App = (function($) {
    */
   var launchAllAfterLoading = function() {
     var $popUpContent = $(this.target);
-    $sections = $popUpContent.find(".rexpansive_section");
-    $grids = $popUpContent.find(".grid-stack-row");
-    $accordions = $popUpContent.find('.rex-accordion');
+    var $newGrids = $popUpContent.find(".grid-stack-row");
+    var $newSections = $popUpContent.find(".rexpansive_section");
+    var $newAccordions = $popUpContent.find('.rex-accordion');
+    var pageGrids = $grids.length;
+
+    // launch photoswipe
+    if ( $newSections.length > 0 ) {
+      var tot_newSections = $newSections.length, i;
+      for( i=0; i < tot_newSections; i++ ) {
+        $newSections[i].setAttribute( 'data-rexlive-section-number', pageGrids + i );
+        var pswchilds = $newSections[i].getElementsByClassName( "pswp-figure" );
+        if ( pswchilds.length === 0 ) {
+          Rexbuilder_Util.removeClass( $newSections[i], 'photoswipe-gallery' );
+        }
+      }
+      initPhotoSwipeFromDOM(".photoswipe-gallery");
+    }
 
     // main grid
-    if( $grids.length > 0 ) {
-      $grids.perfectGridGalleryEditor({
+    if( $newGrids.length > 0 ) {
+      $newGrids.perfectGridGalleryEditor({
         editorMode: Rexbuilder_Util.editorMode
       });
     }
 
-    // launch photoswipe
-    if ( $sections.length > 0 ) {
-      $sections.each(function(i, e) {
-        var pswchilds = e.getElementsByClassName("pswp-figure");
-        if (pswchilds.length === 0) {
-          Rexbuilder_Util.removeClass(e,'photoswipe-gallery');
-        }
-      });
-      initPhotoSwipeFromDOM(".photoswipe-gallery");
-    }
-
     // accordions
-    if( $accordions.length > 0 ) {
-      $accordions.rexAccordion(accordionSettings);
+    if( $newAccordions.length > 0 ) {
+      $newAccordions.rexAccordion(accordionSettings);
     }
 
     // sliders
@@ -815,9 +818,11 @@ var Rexbuilder_App = (function($) {
       var scrbls = [].slice.call( this.target.getElementsByClassName('split-scrollable') );
       var tot_scrbls = scrbls.length, i = 0;
       for( i=0; i < tot_scrbls; i++ ) {
-        var inst = new SplitScrollable(tot_scrbls[i], splitScrollableSettings);
+        var inst = new SplitScrollable(scrbls[i], splitScrollableSettings);
       }
     }
+
+    this.element.style.color = 'red';
   }
 
   /**
