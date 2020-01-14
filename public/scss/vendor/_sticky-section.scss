@@ -26,8 +26,8 @@
     @media screen and (min-width: 768px) {
       .perfect-grid-gallery {
         // min-height: 100vh;
-        margin-top: 50vh!important;
-        margin-bottom: 40vh!important;
+        margin-top: 100vh!important;
+        margin-bottom: 20vh!important;
       }
     }
   }
@@ -41,6 +41,26 @@
 //   left: 0;
 //   z-index: 40;
 // }
+
+.sticky-element__wrapper {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: 0;
+}
+
+.sticky__overlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity ease-out .3s;
+}
 
 .sticky__border-animation__top,
 .sticky__border-animation__right,

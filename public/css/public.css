@@ -5124,10 +5124,30 @@ a.pswp-item {
 
 @media screen and (min-width: 768px) {
   .rexpansive_section.sticky-section .perfect-grid-gallery {
-    margin-top: 50vh !important;
-    margin-bottom: 40vh !important; } }
+    margin-top: 100vh !important;
+    margin-bottom: 20vh !important; } }
 
 /** sticky border animation **/
+.sticky-element__wrapper {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: 0; }
+
+.sticky__overlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 10;
+  opacity: 0;
+  -webkit-transition: opacity ease-out .3s;
+  -o-transition: opacity ease-out .3s;
+  transition: opacity ease-out .3s; }
+
 .sticky__border-animation__top,
 .sticky__border-animation__right,
 .sticky__border-animation__bottom,

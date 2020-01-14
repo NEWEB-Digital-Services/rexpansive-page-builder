@@ -204,9 +204,10 @@ var Rexbuilder_App = (function($) {
       var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
       var stickySections = [].slice.call( document.getElementsByClassName( 'sticky-section' ) );
       var tot_stickySections = stickySections.length, i = 0;
+      var stickyElementSelector = '';
+      var overlayAnimation = false;
 
       for( i = 0; i < tot_stickySections; i++ ) {
-        var stickyElementSelector = '';
         if ( Rexbuilder_Util.has_class( stickySections[i], 'mp4-player' ) ) {
           stickyElementSelector = '.rex-video-wrap';
         } else if ( '' !== stickySections[i].style.backgroundImage ) {
@@ -223,10 +224,13 @@ var Rexbuilder_App = (function($) {
           backgroundSimulator.style.backgroundImage = 'url(' + stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
         }
 
+        overlayAnimation = ( 'true' === stickySections[i].querySelector('.section-data').getAttribute('data-row_overlay_active') ? true : false );
+
         var stickySection = new StickySection(stickySections[i], {
           borderAnimation: true,
           stickyJS: stickyJS,
-          stickyElementSelector: stickyElementSelector
+          stickyElementSelector: stickyElementSelector,
+          overlayAnimation: overlayAnimation
         });
       }
     }
@@ -311,14 +315,12 @@ var Rexbuilder_App = (function($) {
 
     // split scrolls
     if ( 'undefined' !== typeof SplitScrollable ) {
-      var splitScrollableSettings = {
-        initializeComplete: fixScrollableGridGallery
-      };
-
       var scrbls = [].slice.call( this.target.getElementsByClassName('split-scrollable') );
       var tot_scrbls = scrbls.length, i = 0;
       for( i=0; i < tot_scrbls; i++ ) {
-        var inst = new SplitScrollable(scrbls[i], splitScrollableSettings);
+        var inst = new SplitScrollable(scrbls[i], {
+          initializeComplete: fixScrollableGridGallery
+        });
       }
     }
 
@@ -368,14 +370,12 @@ var Rexbuilder_App = (function($) {
 
   var launchSplitScollable = function() {
     if ( 'undefined' !== typeof SplitScrollable ) {
-      var splitScrollableSettings = {
-        initializeComplete: fixScrollableGridGallery
-      };
-
       var scrbls = [].slice.call( document.getElementsByClassName('split-scrollable') );
       var tot_scrbls = scrbls.length, i;
       for( i=0; i < tot_scrbls; i++ ) {
-        var inst = new SplitScrollable(scrbls[i], splitScrollableSettings);
+        var inst = new SplitScrollable(scrbls[i], {
+          initializeComplete: fixScrollableGridGallery
+        });
       }
     }
   };
