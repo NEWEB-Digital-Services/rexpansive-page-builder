@@ -181,7 +181,8 @@
 		var fakeFirst = lastEl.cloneNode(true);
 		removeClass(fakeFirst, this.options.opacityElsClass);
 		addClass(fakeFirst, this.options.opacityFakeElClass);
-		this.opacityEls[0].parentNode.insertBefore(fakeFirst, this.opacityEls[0]);
+		this.opacityEls[0].parentNode.append(fakeFirst);
+		// this.opacityEls[0].parentNode.insertBefore(fakeFirst, this.opacityEls[0]);
 	}
 
 	function fixStickyHeight() {

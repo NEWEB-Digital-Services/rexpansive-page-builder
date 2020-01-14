@@ -78,5 +78,8 @@
 .opacity-block {
   &.opacity-block-active {
     opacity: 1!important;
+    ~ .opacity-block-fake {
+      opacity: 0!important;
+    }
   }
 }

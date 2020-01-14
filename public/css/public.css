@@ -4908,6 +4908,8 @@ a.pswp-item {
 
 .opacity-block.opacity-block-active {
   opacity: 1 !important; }
+  .opacity-block.opacity-block-active ~ .opacity-block-fake {
+    opacity: 0 !important; }
 
 .rex-indicator__placeholder {
   visibility: hidden; }
