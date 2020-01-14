@@ -2012,7 +2012,6 @@
       var actionData = {
         columnContentData: jQuery.extend(true, {}, data.actionColumnContentData)
       }
-      console.log('bisogno di salvare', data.needToSave)
       if ( data.needToSave ) {
         Rexbuilder_Util_Editor.builderEdited(false);
       }
@@ -2034,6 +2033,11 @@
       var actionData = {
         elementData: jQuery.extend(true, {}, data.actionFormData)
       }
+      console.log('bisogno di salvare', data.needToSave)
+      if ( data.needToSave ) {
+        Rexbuilder_Util_Editor.builderEdited(false);
+      }
+      
       Rexbuilder_Rexwpcf7.updateForm(actionData);
 
       Rexbuilder_Util_Editor.pushAction(

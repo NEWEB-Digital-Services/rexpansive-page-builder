@@ -6,7 +6,6 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     "use strict";
     var wpcf7_form_editor_properties;
     var elementData;
-    var formData;
     var reverseData;
     var resetData;
     var formMailSettings;
@@ -197,7 +196,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             eventName: "rexlive:update_wcpf7_page",
             data_to_send: {
                 reverseFormData: jQuery.extend(true, {}, reverseData),
-                actionFormData: jQuery.extend(true, {}, elementData)
+                actionFormData: jQuery.extend(true, {}, elementData),
+                needToSave: needToSave
             }
         };
         reverseData = jQuery.extend(true, {}, formDataToIframe.data_to_send.actionFormData);
@@ -378,7 +378,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
 
         // Content Height
-        if (elementData.wpcf7_data.options_different.height) {
+        if ( elementData.wpcf7_data.options_different.height ) {
             wpcf7_form_editor_properties.$content_height.val('');
             wpcf7_form_editor_properties.$content_height.attr('placeholder', /[0-9]+/.exec(elementData.wpcf7_data.content.height));
         } else {
@@ -386,12 +386,12 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             var heightType = (null != /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.height)) ? /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.height)[0] : "%";
             switch (heightType) {
                 case "px":
-                wpcf7_form_editor_properties.$content_height.filter('[value=pixel]').prop("checked", true);
-                break;
+                    wpcf7_form_editor_properties.$content_height_type.filter('[value=pixel]').prop("checked", true);
+                    break;
                 case "%":
                 default:
-                wpcf7_form_editor_properties.$content_height.filter('[value=percentage]').prop("checked", true);
-                break;
+                    wpcf7_form_editor_properties.$content_height_type.filter('[value=percentage]').prop("checked", true);
+                    break;
             }
             if (wpcf7_form_editor_properties.$content_height.val() != "") {
                 wpcf7_form_editor_properties.$content_height
@@ -519,7 +519,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         
         // Content Font Size
         elementData.wpcf7_data.content.font_size = wpcf7_form_editor_properties.$content_set_font_size.val() + "px";
-        if (elementData.wpcf7_data.content.font_size == 'px') {
+        if ( elementData.wpcf7_data.content.font_size == 'px' ) {
             elementData.wpcf7_data.content.font_size = wpcf7_form_editor_properties.$content_set_font_size.attr('placeholder') + 'px';
         }
 
@@ -548,6 +548,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     }
 
     var _updateFormContentLive = function (data) {
+        _updateFormDataFromPanel();
         var formDataToIframe = {
             eventName: "rexlive:updateFormContentLive",
             data_to_send: {
@@ -1427,6 +1428,12 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     var needToSave = false;
 
     var _linkDocumentListeners = function () {
+        wpcf7_form_editor_properties.$modal.click( function(e) {
+            if ( $(e.target).is('.rex-modal-wrap') ) {
+                needToSave = false;
+            }
+        });
+
         wpcf7_form_editor_properties.$close_button.on("click", function () {
             needToSave = false;
             _closeModal();
@@ -1440,22 +1447,21 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         });
 
         wpcf7_form_editor_properties.$apply_changes_button.on("click", function () {
-            needToSave = true;
+            needToSave = !_.isEqual(elementData, resetData);
             _closeModal();
         });
 
         wpcf7_form_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
             /* This event is triggered also when clicking out of the modal. 
             In that case it's considered like a "don't want to save" action */
-            if (needToSave) {
-                _saveFormSettings();
-                _updateFormDataFromPanel();
-                _applyChanges();
-            } else {
+            if ( !needToSave ) {
                 elementData = jQuery.extend(true, {}, resetData);
                 _updatePanel();
-                _applyChanges();
             }
+
+            _saveFormSettings();
+            _updateFormDataFromPanel();
+            _applyChanges();
         });
 
         wpcf7_form_editor_properties.$content_width_type.on("click", function () {
@@ -1470,6 +1476,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                     widthValue = widthValue + "px";
                     break;
             }
+
+            // elementData.wpcf7_data.content.width = widthValue;
 
             _updateFormContentLive({
                 type: "width",
@@ -1490,6 +1498,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                     heightValue = heightValue + "px";
                     break;
             }
+
+            // elementData.wpcf7_data.content.height = heightValue;
 
             _updateFormContentLive({
                 type: "height",

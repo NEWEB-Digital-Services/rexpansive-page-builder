@@ -1264,9 +1264,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var propertyType = data.propertyType;
         var newValue = data.newValue;
 
-        var isSetRequiredField = String(data.content.wpcf7_required_field) == "true";
-        var onlyNumbers = String(data.content.wpcf7_only_numbers) == "true";
-        var isSetEmail = String(data.content.wpcf7_email) == "true";
+        var isSetRequiredField = data.content.wpcf7_required_field;
+        var onlyNumbers = data.content.wpcf7_only_numbers;
+        var isSetEmail = data.content.wpcf7_email;
 
         inputType = inputType == "text" ? (onlyNumbers ? "number" : (isSetEmail ? "email" : "text")) : inputType;
         var cssSelector;
@@ -1371,7 +1371,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 }
                 break;
             case "wpcf7-required":
-                if (isSetRequiredField) {   // Setting required field in the DOM element
+                if ( isSetRequiredField ) {   // Setting required field in the DOM element
                     switch (inputType) {
                         case "text":
                         case "email":
@@ -1408,36 +1408,36 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 }
                 break;
             case "wpcf7-email":
-                if (isSetEmail) {  // Setting e-mail
+                if ( isSetEmail ) {  // Setting e-mail
                     var $input = $formColumns.find(".wpcf7-form-control");
                     var oldFieldType = $input.attr('type');
-                    console.log($input[0])
+                    var classRegexp = new RegExp(oldFieldType + '-[\\d]+');
+                    var classToRemove = classRegexp.exec($input[0].classList)[0];
+                    var classToAdd = "email-" + /[0-9]+/.exec(classToRemove)[0];
 
                     $input.attr("type", "email");
-                    $input.attr("name", "email-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                    $input.removeClass(oldFieldType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                    $input.addClass("email-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                    $input.removeClass("wpcf7-" + oldFieldType);
-                    $input.addClass("wpcf7-email");
-                    $input.addClass("wpcf7-validates-as-email");
-
-                    if (oldFieldType == "number") {
-                        $input.removeClass("wpcf7-validates-as-number");
-                    }
+                    $input.removeClass(classToRemove)
+                        .removeClass("wpcf7-" + oldFieldType)
+                        .removeClass("wpcf7-validates-as-number");
+                    $input.addClass(classToAdd)
+                        .addClass("wpcf7-email")
+                        .addClass("wpcf7-validates-as-email");
 
                     inputType = "email";
                 } else {    // Unsetting e-mail
+                    inputType = onlyNumbers ? "number" : "text";
                     var $input = $formColumns.find(".wpcf7-email");
+                    var classToRemove = /email-[\d]+/.exec($input[0].classList)[0];
+                    var classToAdd = inputType + "-" + /[0-9]+/.exec(classToRemove)[0];
 
                     $input.attr("type", inputType);
-                    $input.attr("name", inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                    $input.removeClass("email-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                    $input.addClass(inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                    $input.removeClass("wpcf7-email");
-                    $input.addClass("wpcf7-" + inputType);
-                    $input.removeClass("wpcf7-validates-as-email");
+                    $input.removeClass(classToRemove)
+                        .removeClass("wpcf7-email")
+                        .removeClass("wpcf7-validates-as-email");
+                    $input.addClass(classToAdd)
+                        .addClass("wpcf7-" + inputType);
 
-                    if (inputType == "number") {
+                    if ( 'number' === inputType ) {
                         $input.addClass("wpcf7-validates-as-number");
                     }
                 }
@@ -1447,33 +1447,36 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 });
                 break;
             case "wpcf7-only-numbers":
-                if (onlyNumbers) {  // Setting only numbers
+                if ( onlyNumbers ) {  // Setting only numbers
                     var $input = $formColumns.find(".wpcf7-form-control");
                     var oldFieldType = $input.attr('type');
+                    var classRegexp = new RegExp(oldFieldType + '-[\\d]+');
+                    var classToRemove = classRegexp.exec($input[0].classList)[0];
+                    var classToAdd = "number-" + /[0-9]+/.exec(classToRemove)[0];
 
-                    $input.attr("type", "number");
-                    $input.attr("name", "number-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                    $input.removeClass(oldFieldType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                    $input.addClass("number-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                    $input.removeClass("wpcf7-" + oldFieldType);
-                    $input.addClass("wpcf7-number");
-                    $input.addClass("wpcf7-validates-as-number");
+                    $input.attr('type', 'number');
+                    $input.removeClass(classToRemove)
+                        .removeClass("wpcf7-" + oldFieldType)
+                        .removeClass("wpcf7-validates-as-email");
+                    $input.addClass(classToAdd)
+                        .addClass("wpcf7-number")
+                        .addClass("wpcf7-validates-as-number");
 
-                    if (oldFieldType == "email") {
-                        $input.removeClass("wpcf7-validates-as-email");
-                    }
+                    inputType = "number";
                 } else {    // Unsetting only numbers
-                    var $input = $formColumns.find(".wpcf7-number");
+                    inputType = isSetEmail ? 'email' : 'text';
+                    var $input = $formColumns.find('.wpcf7-number');
+                    var classToRemove = /number-[\d]+/.exec($input[0].classList)[0];
+                    var classToAdd = inputType + "-" + /[0-9]+/.exec(classToRemove)[0];
 
                     $input.attr("type", inputType);
-                    $input.attr("name", inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                    $input.removeClass("number-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                    $input.addClass(inputType + "-" + /[0-9]+/.exec($input.attr("name"))[0]);
-                    $input.removeClass("wpcf7-number");
-                    $input.addClass("wpcf7-" + inputType);
-                    $input.removeClass("wpcf7-validates-as-number");
+                    $input.removeClass(classToRemove)
+                        .removeClass("wpcf7-number")
+                        .removeClass("wpcf7-validates-as-number");
+                    $input.addClass(classToAdd)
+                        .addClass("wpcf7-" + inputType);
 
-                    if (inputType == "email") {
+                    if ( 'email' === inputType ) {
                         $input.addClass("wpcf7-validates-as-email");
                     }
                 }
@@ -1830,19 +1833,19 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     isRequiredField = $formColumn.find('.wpcf7-acceptance.optional') === 0;
                 }
             }
-            columnContentData.wpcf7_required_field = (columnContentDataEl.getAttribute("data-wpcf7-required-field") ? columnContentDataEl.getAttribute("data-wpcf7-required-field") : isRequiredField);
+            columnContentData.wpcf7_required_field = (columnContentDataEl.getAttribute("data-wpcf7-required-field") ? 'true' === columnContentDataEl.getAttribute("data-wpcf7-required-field") : isRequiredField);
 
             // E-Mail
             var isEmail = $formColumn.find('.wpcf7-validates-as-email').length !== 0;
-            columnContentData.wpcf7_email = (columnContentDataEl.getAttribute("data-wpcf7-email") ? columnContentDataEl.getAttribute("data-wpcf7-email").toString() : isEmail);
+            columnContentData.wpcf7_email = (columnContentDataEl.getAttribute("data-wpcf7-email") ? 'true' === columnContentDataEl.getAttribute("data-wpcf7-email").toString() : isEmail);
 
             // Only numbers
             var isNumberInput = $formColumn.find('.wpcf7-validates-as-number').length !== 0;
-            columnContentData.wpcf7_only_numbers = (columnContentDataEl.getAttribute("data-wpcf7-only-numbers") ? columnContentDataEl.getAttribute("data-wpcf7-only-numbers").toString() : isNumberInput);
+            columnContentData.wpcf7_only_numbers = (columnContentDataEl.getAttribute("data-wpcf7-only-numbers") ? 'true' === columnContentDataEl.getAttribute("data-wpcf7-only-numbers").toString() : isNumberInput);
 
             // Default check
             var isDefaultChecked = $formColumn.find('.wpcf7-acceptance [type=checkbox]').prop('checked') !== undefined;
-            columnContentData.wpcf7_default_check = (columnContentDataEl.getAttribute("data-wpcf7-default-check") ? columnContentDataEl.getAttribute("data-wpcf7-default-check").toString() : isDefaultChecked);
+            columnContentData.wpcf7_default_check = (columnContentDataEl.getAttribute("data-wpcf7-default-check") ? 'true' === columnContentDataEl.getAttribute("data-wpcf7-default-check").toString() : isDefaultChecked);
 
             // Placeholder
             columnContentData.wpcf7_placeholder = (columnContentDataEl.getAttribute("data-wpcf7-placeholder") ? columnContentDataEl.getAttribute("data-wpcf7-placeholder").toString() : '');
@@ -1851,8 +1854,16 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             columnContentData.wpcf7_file_max_dimensions = (columnContentDataEl.getAttribute("data-wpcf7-file-max-dimensions") ? columnContentDataEl.getAttribute("data-wpcf7-file-max-dimensions").toString() : columnContentDataDefaults.wpcf7_file_max_dimensions);
 
             // File types
-            if (columnContentData.input_type == "file") {
-                columnContentData.wpcf7_list_fields = (columnContentDataEl.getAttribute("data-wpcf7-file-types") ? columnContentDataEl.getAttribute("data-wpcf7-file-types").toString().split(",") : ["png", "jpg", "jpeg", "pdf"]);
+            if ( 'file' === columnContentData.input_type ) {
+                if ( columnContentDataEl.getAttribute("data-wpcf7-file-types") ) {
+                    columnContentData.wpcf7_list_fields = columnContentDataEl.getAttribute("data-wpcf7-file-types").toString().split(',');
+                } else {
+                    var customFileTypes = $formColumn.find('[type=file]').attr('accept').toString().split(',');
+                    for (var i = 0; i < customFileTypes.length; i++) {
+                        customFileTypes[i] = customFileTypes[i].replace('.', '');
+                    }
+                    columnContentData.wpcf7_list_fields = customFileTypes;
+                }
             }
 
         	// Width & height
@@ -1903,13 +1914,13 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
             /* BUTTON */
             // Button Text
-            if (columnContentDataEl.getAttribute("data-button-text")) {
+            if ( columnContentDataEl.getAttribute("data-button-text") ) {
                 columnContentData.wpcf7_button.text = columnContentDataEl.getAttribute("data-button-text").toString()
             } else {
                 if (columnContentData.input_type == "file") {
                     columnContentData.wpcf7_button.text = "Choose a file";
                 } else if (columnContentData.input_type == "submit") {
-                    columnContentData.wpcf7_button.text = "Send";
+                    columnContentData.wpcf7_button.text = $formColumn.find('[type=submit]').val()
                 }
             }
 
@@ -2093,15 +2104,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             columnContentData.wpcf7_button.border_color_hover = (columnContentDataEl.getAttribute("data-button-border-color-hover") ? columnContentDataEl.getAttribute("data-button-border-color-hover").toString() : columnContentDataDefaults.wpcf7_button.border_color_hover);
             
         } else {
-            /* Extracting data from the element in the DOM */
-            // var $field = $formColumn.find("[name='" + columnContentData.field_class + "']");
-
-            // if (columnContentData.input_type == "radio" || columnContentData.input_type == "acceptance") {
-            //     $field = $field.parents(".wpcf7-form-control");
-            // }
-
-            ///////
-            
             // Required field
             columnContentData.wpcf7_required_field = columnContentDataDefaults.wpcf7_required_field;
 
@@ -2118,7 +2120,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             columnContentData.wpcf7_file_max_dimensions = columnContentDataDefaults.wpcf7_file_max_dimensions;
 
             // File types
-            if (columnContentData.input_type == "file") {
+            if ( columnContentData.input_type == 'file' ) {
                 columnContentData.wpcf7_list_fields = ["png", "jpg", "jpeg", "pdf"];
             }
 
@@ -2377,6 +2379,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 columnContentRule += "display: inline-flex;";
             } else if ( 'file' === inputType ) {
                 columnContentRule += 'display: block;';
+                columnContentRule += 'overflow: hidden;';
             } else {    // Text, Number, Email, Textarea, Select
                 columnContentRule += "background-color: " + columnContentData.background_color + ";";
                 columnContentRule += "border-color: " + columnContentData.border_color + ";";
@@ -2491,7 +2494,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
 
         if (inputType == "acceptance" || inputType == "radio") {
-            // _updateColumnContentRule(formID, row, column, cssSelector, "float", "left");
             _updateColumnContentRule(formID, row, column, cssSelector, "display", "inline-flex");
         }
 
@@ -2661,11 +2663,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             } else {
                 var newFieldType = isSetEmail ? "email" : "text";
 
-                // shortcode = shortcode.replace(/\[[a-z]+\*? [a-z]+/, "[text" + (isSetRequiredField ? "*": "") + " text");
-                // shortcode = shortcode.replace(/class:[a-z]+/, "class:text");
-
-                // inputType = "text";
-
                 shortcode = shortcode.replace(/\[[a-z]+\*? [a-z]+/, "[" + newFieldType + (isSetRequiredField ? "*": "") + " " + newFieldType);
                 shortcode = shortcode.replace(/class:[a-z]+/, "class:" + newFieldType);
 
@@ -2716,7 +2713,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
 
         if (inputType == "file") {  // File max dimensions
-            shortcode = shortcode.replace(/limit\:[\w]*/, "limit:" + fileMaxDim);
+            shortcode = shortcode.replace(/limit\:[\w]*/, "limit:" + fileMaxDim);   // A intuito da problemi se non ho impostato un limite dal backend
         }
 
         if (inputType == "file") {  // File types
@@ -2729,7 +2726,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     fileTypesString += "|";
                 }
             }
-            shortcode = shortcode.replace(/filetypes\:[\S]*/, fileTypesString);
+            shortcode = shortcode.replace(/filetypes\:[\S]*\]/, fileTypesString);
         }
 
         if (inputType == "file") {  // File caption
@@ -3301,7 +3298,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             wpcf7_email: false,
             wpcf7_only_numbers: false,
             wpcf7_default_check: false,
-            wpcf7_placeholder: "Write here...",
+            wpcf7_placeholder: "Placeholder",
             // wpcf7_list_fields: [],
             wpcf7_file_max_dimensions: "25mb",
             wpcf7_button: {
@@ -3319,21 +3316,37 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 // padding_right: "15px",
                 // padding_bottom: "5px",
                 // padding_left: "15px",
-                // text_color: "rgb(86, 86, 86)",
-                text_color_hover: "rgb(255, 255, 255)",
+                // text_color: "rgba(86, 86, 86)",
+                text_color_hover: "rgba(255,255,255,1)",
                 // background_color: "rgb(255, 255, 255)",
-                background_color_hover: "rgb(86, 86, 86)",
+                background_color_hover: "rgba(86,86,86,1)",
                 // border_color: "rgb(86, 86, 86)",
-                border_color_hover: "rgb(255, 255, 255)",
+                border_color_hover: "rgba(255,255,255,1)",
             },
             // input_width: "",
             // input_height: "",
             // font_size: "",
+            // border_width: "",
+            // border_radius: "",
             // background_color: "",
+            // background_color_hover: "",
+            // border_color: "",
+            // border_color_hover: "",
+            placeholder_color: "rgba(0,0,0,1)",
+            placeholder_hover_color: "rgba(0,0,0,1)",
+            // select_color_after_selection: "",
             // text_color: "", 
-            text_color_focus: "rgb(0, 0, 0)",
+            // text_color_hover: "",
+            text_color_focus: "rgba(0,0,0,1)",
             // text: "",
             // type: "",
+            // field_class: "",
+            // input_type: "",
+            // target: {
+            //     element_id: "",
+            //     row_number: "",
+            //     column_number: "",
+            // }
         }
 
         this.$rexformsStyle = $("#rexpansive-builder-rexwpcf7-style-inline-css");

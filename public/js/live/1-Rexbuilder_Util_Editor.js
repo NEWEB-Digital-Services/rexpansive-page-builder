@@ -17,6 +17,7 @@ var Rexbuilder_Util_Editor = (function($) {
     this.needToSave = needToSave;
     var galleryInstance = Rexbuilder_Util.getGalleryInstance($textWrap.parents(".rexpansive_section").eq(0));
     if ( null === galleryInstance ) {
+      console.trace()
       console.log('text wrap', $textWrap)
       console.log('section', $textWrap.parents(".rexpansive_section"))
     }

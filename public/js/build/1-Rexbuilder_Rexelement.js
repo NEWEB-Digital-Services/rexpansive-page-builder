@@ -388,7 +388,7 @@ var Rexbuilder_Rexelement = (function ($) {
                 fieldsNumbers[i] = randomNumber;
                 
                 fieldsShortcodes[i] = /\[[\w]+[^\]]+\]/.exec(formFieldsString)[0];
-
+                
                 if (containsText) { // Fixing all the fields
                     var newClass = "text-" + fieldsNumbers[i];
 
@@ -511,6 +511,7 @@ var Rexbuilder_Rexelement = (function ($) {
                     $el.addClass(newClass);
 
                     // Shortcode
+                    formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
                     var regexpToSearch = /\[submit/;
                     fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
 

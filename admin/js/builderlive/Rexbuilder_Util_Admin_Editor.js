@@ -98,7 +98,6 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       //fare come sul live, con lo switch sui nomi degli eventi
       var eventData = event.data;
       if (event.data.eventName == "rexlive:edited") {
-        console.log('ricevo edited')
         if (event.data.modelEdited) {
           modelSaved = false;
         } else {

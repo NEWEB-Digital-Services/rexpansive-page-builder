@@ -399,16 +399,16 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
     var _updatePanel = function () {
         // Required Field
-        wpcf7_content_editor_properties.$content_required_field.prop("checked", "true" == columnContentData.wpcf7_required_field);
+        wpcf7_content_editor_properties.$content_required_field.prop("checked", columnContentData.wpcf7_required_field);
 
         // Email
-        wpcf7_content_editor_properties.$content_set_email.prop("checked", "true" == columnContentData.wpcf7_email);
+        wpcf7_content_editor_properties.$content_set_email.prop("checked", columnContentData.wpcf7_email);
 
         // Only Numbers
-        wpcf7_content_editor_properties.$content_only_numbers.prop("checked", "true" == columnContentData.wpcf7_only_numbers);
+        wpcf7_content_editor_properties.$content_only_numbers.prop("checked", columnContentData.wpcf7_only_numbers);
 
         // Default Check
-        wpcf7_content_editor_properties.$content_input_default_check.prop("checked", "true" == columnContentData.wpcf7_default_check);
+        wpcf7_content_editor_properties.$content_input_default_check.prop("checked", columnContentData.wpcf7_default_check);
 
         // Placeholder
         wpcf7_content_editor_properties.$content_placeholder.val(columnContentData.wpcf7_placeholder);
@@ -661,16 +661,16 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
     var _updateColumnContentDataFromPanel = function () {
         // Requried field
-        columnContentData.wpcf7_required_field = "undefined" != typeof wpcf7_content_editor_properties.$content_required_field.attr("checked");
+        columnContentData.wpcf7_required_field = undefined !== wpcf7_content_editor_properties.$content_required_field.attr('checked');
 
         // E-Mail
-        columnContentData.wpcf7_email = "undefined" != typeof wpcf7_content_editor_properties.$content_set_email.attr("checked");
+        columnContentData.wpcf7_email = undefined !== wpcf7_content_editor_properties.$content_set_email.attr('checked');
 
         // Only numbers
-        columnContentData.wpcf7_only_numbers = "undefined" != typeof wpcf7_content_editor_properties.$content_only_numbers.attr("checked");
+        columnContentData.wpcf7_only_numbers = undefined !== wpcf7_content_editor_properties.$content_only_numbers.attr('checked');
 
         // Default check
-        columnContentData.wpcf7_default_check = "undefined" != typeof wpcf7_content_editor_properties.$content_input_default_check.attr("checked");
+        columnContentData.wpcf7_default_check = undefined !== wpcf7_content_editor_properties.$content_input_default_check.attr('checked');
 
         // Placeholder
         columnContentData.wpcf7_placeholder = wpcf7_content_editor_properties.$content_placeholder.val();
@@ -799,20 +799,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
             wpcf7_content_editor_properties.$button_preview.text(newText);
         });
-
-        // BUTTON TEXT
-        // var _updateButtonText = function (newText) {
-        //     // outputString = isNaN(parseInt(newInputHeight)) ? defaultButtonValues.dimensions.height : newInputHeight + "px";
-        //     outputString = newText;
-
-        //     _updateColumnContentLive({
-        //         type: "button-text",
-        //         name: "button-text",
-        //         value: outputString
-        //     });
-
-        //     wpcf7_content_editor_properties.$button_preview.text(outputString);
-        // };
     }
 
     var _linkListListeners = function () {
@@ -1890,36 +1876,45 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         });
 
         /**
-         * Applies changes
-         */
-        wpcf7_content_editor_properties.$apply_changes_button.on("click", function () {
-            needToSave = true;
-            
-            _closeModal();
-        });
-
-        /**
          * Reset Panel with data when was opened, updates button in page
          */
         wpcf7_content_editor_properties.$reset_button.on("click", function () {
             needToSave = false;
             columnContentData = jQuery.extend(true, {}, resetData);
-            var isSetEmail = "undefined" != typeof wpcf7_content_editor_properties.$content_set_email.attr("checked");
-            if (isSetEmail) {
+            var wasSetRequiredField = undefined !== wpcf7_content_editor_properties.$content_required_field.attr("checked");
+            var wasSetEmail = undefined !== wpcf7_content_editor_properties.$content_set_email.attr("checked");
+            var wasSetOnlyNumbers = undefined !== wpcf7_content_editor_properties.$content_only_numbers.attr("checked");
+
+            _updatePanel();
+            _applyData();
+
+            /* Resetting the DOM */
+            if ( wasSetRequiredField ) {
+                _updateColumnContentLive({
+                    type: "wpcf7-required",
+                    value: false
+                });
+            }
+
+            if ( wasSetEmail ) {
                 _updateColumnContentLive({
                     type: "wpcf7-email",
                     value: false
                 });
             }
-            var isSetOnlyNumbers = "undefined" != typeof wpcf7_content_editor_properties.$content_only_numbers.attr("checked");
-            if (isSetOnlyNumbers) {
+
+            if ( wasSetOnlyNumbers ) {
                 _updateColumnContentLive({
                     type: "wpcf7-only-numbers",
                     value: false
                 });
             }
-            _updatePanel();
-            _applyData();
+
+            _updateColumnContentLive({
+                type: "button-text",
+                name: "button-text",
+                value: columnContentData.wpcf7_button.text
+            });
 
             var $listFields = wpcf7_content_editor_properties.$field_list.find(".wpcf7-select-field");
             if ( 0 !== $listFields.length ) {
@@ -1936,17 +1931,70 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             }
         });
 
+        /**
+         * Applies changes
+         */
+        wpcf7_content_editor_properties.$apply_changes_button.on("click", function () {
+            needToSave = !_.isEqual(columnContentData, resetData);
+            _closeModal();
+        });
+
+
         wpcf7_content_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
-            if (!needToSave) {
+            /* This event is triggered also when clicking out of the modal. 
+            In that case it's considered like a "don't want to save" action */
+            var wasSetEmail = undefined !== wpcf7_content_editor_properties.$content_set_email.attr("checked");
+            var wasSetOnlyNumbers = undefined !== wpcf7_content_editor_properties.$content_only_numbers.attr("checked");
+
+            if ( !needToSave ) {
                 columnContentData = jQuery.extend(true, {}, resetData);
                 _updatePanel();
             }
+
             _updateColumnContentDataFromPanel();
             _applyData();
+
+            var isSetRequiredField = columnContentData.wpcf7_required_field;
+            var isSetEmail = columnContentData.wpcf7_email;
+            var isSetOnlyNumbers = columnContentData.wpcf7_only_numbers;
+
+            /* Resetting the DOM */
+            _updateColumnContentLive({
+                type: "wpcf7-required",
+                value: isSetRequiredField
+            });
+
+            if ( isSetEmail ) {
+                _updateColumnContentLive({
+                    type: "wpcf7-email",
+                    value: true
+                });
+            } else if ( isSetOnlyNumbers ) {
+                _updateColumnContentLive({
+                    type: "wpcf7-only-numbers",
+                    value: true
+                });
+            } else if ( !isSetEmail && wasSetEmail ) {
+                _updateColumnContentLive({
+                    type: "wpcf7-email",
+                    value: false
+                });
+            } else if ( !isSetOnlyNumbers && wasSetOnlyNumbers ) {
+                _updateColumnContentLive({
+                    type: "wpcf7-only-numbers",
+                    value: false
+                });
+            }
+
+            _updateColumnContentLive({
+                type: "button-text",
+                name: "button-text",
+                value: columnContentData.wpcf7_button.text
+            });
         });
 
         wpcf7_content_editor_properties.$content_required_field.on("click", function () {
-            var isSetRequiredField = "undefined" != typeof wpcf7_content_editor_properties.$content_required_field.attr("checked");
+            var isSetRequiredField = undefined !== wpcf7_content_editor_properties.$content_required_field.attr("checked");
 
             _updateColumnContentLive({
                 type: "wpcf7-required",
@@ -1955,9 +2003,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         });
 
         wpcf7_content_editor_properties.$content_set_email.on("click", function () {
-            var isSetEmail = "undefined" != typeof wpcf7_content_editor_properties.$content_set_email.attr("checked");
+            var isSetEmail = undefined !== wpcf7_content_editor_properties.$content_set_email.attr("checked");
 
-            if (isSetEmail) {
+            if ( isSetEmail ) {
                 wpcf7_content_editor_properties.$content_only_numbers.prop('checked', false);
             }
 
@@ -1968,7 +2016,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         });
 
         wpcf7_content_editor_properties.$content_only_numbers.on("click", function () {
-            var isSetOnlyNumbers = "undefined" != typeof wpcf7_content_editor_properties.$content_only_numbers.attr("checked");
+            var isSetOnlyNumbers = undefined !== wpcf7_content_editor_properties.$content_only_numbers.attr("checked");
 
             if (isSetOnlyNumbers) {
                 wpcf7_content_editor_properties.$content_set_email.prop('checked', false);
@@ -1981,7 +2029,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         });
 
         wpcf7_content_editor_properties.$content_input_default_check.on("click", function () {
-            var isSetDefaultCheck = "undefined" != typeof wpcf7_content_editor_properties.$content_input_default_check.attr("checked");
+            var isSetDefaultCheck = undefined !== wpcf7_content_editor_properties.$content_input_default_check.attr("checked");
 
             _updateColumnContentLive({
                 type: "wpcf7-default-check",
