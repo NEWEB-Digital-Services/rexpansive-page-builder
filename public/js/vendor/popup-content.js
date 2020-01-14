@@ -34,7 +34,7 @@
 			// ajax
 			loadTiming: 'hover',		// hover | load | scroll(?)
 			getPopUpContentComplete: null,
-			ajaxSettings: null
+			ajaxSettings: null,
 		};
 
 		// Create options by extending defaults with the passed in arugments
@@ -63,19 +63,12 @@
         	this.target = document.getElementById( this.hashTarget );
         } else {
         	this.urlTarget = this.element.href;
-        	this.target = generatePopUpContainer.call(this);
+        	this.target = generatePopUpContainer(this.options);
 
         	// initialize ajax settings
         	if ( null !== this.options.ajaxSettings ) {
-        		var that = this;
         		this.options.ajaxSettings.data.target = this.urlTarget;
-				this.options.ajaxSettings.success = function( response ) {
-					console.time('load_content')
-					if ( response.success ) {
-						onGetPopUpContentComplete.call( that, response.data.data );
-					}
-					console.timeEnd('load_content')
-				};
+				this.options.ajaxSettings.success = ajaxSuccessWrapper.bind(this);
 
 				this.options.ajaxSettings.error = function( response ) {
 					console.log('There was an error');
@@ -115,7 +108,20 @@
 		toggleClass(document.body, this.options.bodyPopUpViewClass);
 	}
 
-	function getPopUpContent() {
+	function ajaxSuccessWrapper( response ) {
+		console.time('load_content')
+		if ( response.success ) {
+			onGetPopUpContentComplete.call( this, response.data.data );
+		}
+		console.timeEnd('load_content')
+	}
+
+	function getPopUpContent(ev) {
+		if ( this.contentLoaded ) {
+			return;
+		}
+
+		ev.preventDefault()
 		var that = this;
 
 		if ( null !== this.options.ajaxSettings ) {
@@ -154,16 +160,16 @@
 		this.target.querySelector('.'+this.options.popUpContent).innerHTML = content;
 	}
 
-	function generatePopUpContainer() {
+	function generatePopUpContainer( options ) {
 		var popUpContainer = document.createElement('div');
-		addClass( popUpContainer,this.options.popUpWrapper );
+		addClass( popUpContainer,options.popUpWrapper );
 		var closeWrapper = document.createElement('div');
-		addClass( closeWrapper,this.options.popUpCloseWrapper );
+		addClass( closeWrapper,options.popUpCloseWrapper );
 		var closeBtn = document.createElement('div');
 		closeBtn.innerText = 'X';
-		addClass( closeBtn, this.options.popUpCloseClass );
+		addClass( closeBtn, options.popUpCloseClass );
 		var popUpContent = document.createElement('div');
-		addClass( popUpContent, this.options.popUpContent );
+		addClass( popUpContent, options.popUpContent );
 
 		closeWrapper.appendChild(closeBtn);
 		popUpContainer.appendChild(closeWrapper);

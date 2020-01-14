@@ -330,25 +330,23 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   var launchPopUpContent = function() {
-    if ( 'undefined' !== typeof PopUpContent ) {
-      var popUpContentSettings = {
-        getPopUpContentComplete: launchAllAfterLoading,
-        ajaxSettings: {
-          type: "GET",
-          dataType: "json",
-          url: _plugin_frontend_settings.rexajax.ajaxurl,
-          data: {
-            action: "rex_get_popup_content",
-            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-          },
-        }
-      };
-      
+    if ( 'undefined' !== typeof PopUpContent ) {     
       var btns = [].slice.call( document.getElementsByClassName('popup-content-button') );
       var tot_btns = btns.length, i = 0;
 
       for( i=0; i < tot_btns; i++ ) {
-        var ist = new PopUpContent(btns[i], popUpContentSettings);
+        new PopUpContent(btns[i], {
+          getPopUpContentComplete: launchAllAfterLoading,
+          ajaxSettings: {
+            type: "GET",
+            dataType: "json",
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            data: {
+              action: "rex_get_popup_content",
+              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+            },
+          }
+        });
       }
     }
   }
