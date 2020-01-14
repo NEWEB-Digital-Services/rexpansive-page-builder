@@ -591,6 +591,10 @@ var Rexbuilder_Rexbutton = (function ($) {
                     case "button_label":
                         $buttonWrapper.find(".rex-button-text").eq(0).text(data.newValue);
                         break;
+                    case "button_class":
+                        console.log(data.newValue)
+                        $buttonWrapper.find("a.rex-button-container").eq(0).attr('class','').addClass('rex-button-container').addClass(data.newValue);
+                        break;
                     case "button_name":
                         $buttonWrapper.find(".rex-button-data").eq(0).attr("data-button-name", data.newValue);
                         break;
@@ -800,6 +804,7 @@ var Rexbuilder_Rexbutton = (function ($) {
             padding_left: "",
             link_target: "",
             link_type: "",
+            classes: "",
             buttonTarget: {
                 button_name: "",
                 button_id: "",
@@ -845,6 +850,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         buttonProperties.text = $buttonContainer.find(".rex-button-text").eq(0).text();
         buttonProperties.link_target = $buttonData.attr("data-link-target");
         buttonProperties.link_type = $buttonData.attr("data-link-type");
+        buttonProperties.classes = $buttonContainer.find("a.rex-button-container").eq(0).attr('class').replace('rex-button-container','').replace(/\s/,'');
 
         var data = {
             separateButton: separate,

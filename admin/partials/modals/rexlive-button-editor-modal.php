@@ -24,7 +24,7 @@ defined('ABSPATH') or exit;
                 <div class="bl_modal-row">
                     <div class="rexbutton-cont_row10">
                         <div class="rexbutton-count-colum_accord">
-                            <span class="rex-accordion--toggle">                                
+                            <span class="rex-accordion--toggle">
                                 <div class="rexbutton-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
                             </span>
                         </div>
@@ -142,7 +142,7 @@ defined('ABSPATH') or exit;
                 <div class="bl_modal-row">
                     <div class="rexbutton-cont_row10">
                         <div class="rexbutton-count-colum_accord">
-                            <span class="rex-accordion--toggle">                                
+                            <span class="rex-accordion--toggle">
                                 <div class="rexbutton-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
                             </span>
                         </div>
@@ -274,7 +274,7 @@ defined('ABSPATH') or exit;
                                 <input type="text" id="rex-button-border-radius" name="rex-button-border-radius" placeholder="10" class="rexbutton-upd-textbox"/>
                             </div>  
                             <div class="subRow7_3">PX</div>
-                        </div>                     
+                        </div>
                     </div>
                     <div class="rexbutton-count-column_7"><!-- HEIGHT -->
                         <div class="rexbutton-count-column_container">
@@ -285,7 +285,7 @@ defined('ABSPATH') or exit;
                                 <input type="text" id="rex-button-height" name="rex-button-height" placeholder="70" class="rexbutton-upd-textbox"/>
                             </div>  
                             <div class="subRow7_3">PX</div>
-                        </div>                     
+                        </div>
                     </div>
                     <div class="rexbutton-count-column_7"><!-- WIDTH -->
                         <div class="rexbutton-count-column_container">
@@ -350,6 +350,18 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
+            <div class="bl_modal-row">
+                <div class="rexbutton-cont_row77" style="margin-bottom:12px">
+                    <div class="rexbutton-count-column_11">
+                        <div id="rex-button-name-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
+                            <span class="prefix"></span>
+                            <input type="text" id="rex-button__class" name="rex-button__class" class="rexbutton-upd-actiontextbox">
+                            <label for="rex-button__class" id="rex-button__class-label" class=""><?php _e('Custom classes', 'rexpansive-builder');?></label>
+                            <span class="rex-material-bar"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <!-- ninth row -->
             <div class="bl_modal-row">
                 <div class="rexbutton-cont_row77">
@@ -361,11 +373,11 @@ defined('ABSPATH') or exit;
                             <span class="rex-material-bar"></span>
                         </div>
                     </div>
-                    <div class="rexbutton-count-column_12 add-rex-button-model__wrap">                        
+                    <div class="rexbutton-count-column_12 add-rex-button-model__wrap">
                         <div id="rex-button-add-model-wrap" class="add-rex-button-model tippy" data-tippy-content="<?php _e('Create new model','rexpansive-builder'); ?>">
                             <div class="add-label">+</div>
-                        </div>                                
-                    </div>             
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

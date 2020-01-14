@@ -13,365 +13,6 @@ var Rexbuilder_App = (function($) {
   var odometers = [];
   var accordionSettings = {};
 
-  var init = function() {
-    Rexbuilder_Util.init();
-    Rexbuilder_Dom_Util.init();
-    
-    Rexbuilder_Rexbutton.init();
-    
-    if (Rexbuilder_Util.editorMode) {
-      Rexbuilder_Util_Editor.init();
-      Rexbuilder_Color_Palette.init();
-      Rexbuilder_Overlay_Palette.init();
-      Rexbuilder_Section.init();
-      Rexbuilder_Section_Editor.init();
-      Rexbuilder_Block.init();
-      Rexbuilder_Block_Editor.init();
-      Rexbuilder_Util_Editor.addDocumentListeners();
-      Rexbuilder_Util_Editor.addWindowListeners();
-      Rexbuilder_Util_Editor.addDnDEvents();
-      TextEditor.init();
-      Rexbuilder_Section_Editor.triggerRowDataChange();
-    } else {
-      // fixes for front end only
-      fixRexButtons();
-    }
-
-    Rex_Navigator.init();
-    //Rexbuilder_FormFixes.init();
-
-    Rexbuilder_Util.addWindowListeners();
-
-    $sections = Rexbuilder_Util.$rexContainer.find(".rexpansive_section");
-    $grids = Rexbuilder_Util.$rexContainer.find(".grid-stack-row");
-    $accordions = Rexbuilder_Util.$rexContainer.find('.rex-accordion');
-
-    /* -- Launching the grid -- */
-    // $grids.find(".wrapper-expand-effect").expandEffect();
-    if( $grids ) {
-      $grids.perfectGridGalleryEditor({
-        editorMode: Rexbuilder_Util.editorMode
-      });
-    }
-
-    /** -- Launching plugins only on "real" frontend */
-    if (!Rexbuilder_Util.editorMode) {
-      /* -- Launching Photoswipe -- */
-      // prevent pswp errors
-      $sections.each(function(i, e) {
-        var pswchilds = e.getElementsByClassName("pswp-figure");
-        if ( pswchilds.length === 0 ) {
-          Rexbuilder_Util.removeClass(e,'photoswipe-gallery');
-        }
-      });
-      initPhotoSwipeFromDOM(".photoswipe-gallery");
-
-      /** -- Launching Odomter -- */
-      Rexbuilder_Util.$body.find('.rex-num-spin').each(function(i,el) {
-        var oElement = launch_odometer(el);
-        odometers.push(oElement);
-        $(el).rexScrolled({
-          callback: function(el)
-          {
-            el.innerHTML = el.getAttribute('data-final-value');
-          }
-        })
-      });
-
-      /** -- Launching slideshow -- **/
-      var $slideshow = Rexbuilder_Util.$body.find('.rex-slideshow');
-      if ( $slideshow.length > 0 )
-      {
-        $slideshow.rexSlideshow();
-      }
-    }
-
-    if (true == _plugin_frontend_settings.native_scroll_animation) {
-      var excluded_links = [
-        '[href="#"]',
-        ".no-smoothing",
-        ".vertical-nav-link",
-        ".rex-vertical-nav-link",
-        ".woocommerce-review-link"
-      ];
-
-      // Smooth scroll on all internal links
-      var $linksToSmooth = Rexbuilder_Util.$body.find('a[href*="#"]');
-      for (var i = 0, tot_excluded_links = excluded_links.length; i < tot_excluded_links; i++) {
-        $linksToSmooth = $linksToSmooth.not(excluded_links[i]);
-      }
-
-      $linksToSmooth = $linksToSmooth.not(_filterLinksToSmooth);
-
-      $linksToSmooth.click(function() {
-        if ( location.pathname.replace(/^\//, "") == this.pathname.replace(/^\//, "") && location.hostname == this.hostname ) {
-          var target = $(this.hash);
-          target = target.length
-            ? target
-            : Rexbuilder_Util.$rexContainer.find(
-                "[name=" + this.hash.slice(1) + "]"
-              );
-          if (target.length) {
-            Rexbuilder_Util.smoothScroll(target);
-            return false;
-          }
-        }
-      });
-
-      // advanced check to exclude woocommerce tabs
-      var _filterLinksToSmooth = function(index) {
-        if ($(this).parents(".woocommerce-tabs").length != 0) {
-          return true;
-        } else {
-          return false;
-        }
-      };
-    }
-
-    _linkDocumentListeners();
-
-    // Starting slider
-    RexSlider.init();
-
-    Rexbuilder_Util.launchVideoPlugins();
-
-    Rexbuilder_Util.playAllVideos();
-
-    accordionSettings = {
-      durationOpen: 10,
-      durationClose: 300
-    };
-
-    if( Rexbuilder_Util.editorMode ) {
-      accordionSettings.open = {
-        progressClbk: function(data) {
-          // var content = data.properties.$content[0];
-          var block = data.properties.$content.parents('.grid-stack-item')[0];
-          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
-          // grid.resize(block,null,Math.round(content.offsetHeight/grid.opts.cellHeight) + data.properties.$toggle[0].offsetHeight);
-          // grid.resize(block,null,Math.round( ( content.offsetHeight + data.properties.$toggle[0].offsetHeight ) / grid.opts.cellHeight ));
-          grid.resize(block,null,Math.round( data.element.parentElement.offsetHeight / grid.opts.cellHeight ));
-        }
-      };
-      accordionSettings.close = {
-        progressClbk: function(data) {
-          // var content = data.properties.$content[0];
-          var block = data.properties.$content.parents('.grid-stack-item')[0];
-          var start_h = block.children[0].getAttribute('data-gs_start_h');
-          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
-          grid.resize(block,null,Math.round( parseInt(start_h) ));
-        }
-      };
-    } else {
-      accordionSettings.open = {
-        // startClbk: function(data) {
-          // data.element.setAttribute('data-toggle-height', data.properties.$toggle[0].offsetHeight + parseInt(data.element.parentElement.style.paddingTop) + parseInt(data.element.parentElement.style.paddingBottom) );
-          // data.$element.parents('.grid-stack-item-content').css('position','relative');
-
-          // var $grid = data.properties.$content.parents('.grid-stack');
-          // var pgge = $grid.data("plugin_perfectGridGalleryEditor");
-          // var grid = pgge.properties.gridstackInstance;
-          // grid.batchUpdate();
-        // },
-        // progressClbk: function(data, step) {
-        //   // var content = data.properties.$content[0];
-        //   var block = data.properties.$content.parents('.grid-stack-item')[0];
-        //   var start_h = parseInt( block.children[0].getAttribute('data-gs_start_h') );
-        //   var $grid = data.properties.$content.parents('.grid-stack');
-        //   var pgge = $grid.data("plugin_perfectGridGalleryEditor");
-        //   var grid = pgge.properties.gridstackInstance;
-        //   var toggleHeight = parseInt( data.element.getAttribute('data-toggle-height') ) + parseInt( data.properties.$content[0].style.height );
-
-        //   var base_h = ( 0 !== step ? toggleHeight + pgge.properties.gutter : 0 );
-        //   var fstart_h = ( 0 === step ? start_h : 0 );
-        //   var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
-        //   temp = temp < start_h ? start_h : temp;
-
-        //   if( temp > parseInt(block.getAttribute('data-gs-height')) ) {
-        //     // grid.batchUpdate();
-        //     grid.resize(block,null,temp);
-        //     // grid.commit();
-        //   }
-        // },
-        completeClbk: function(data) {
-          var block_height = data.$element.parents('.text-wrap')[0].offsetHeight;
-
-          var block = data.properties.$content.parents('.grid-stack-item')[0];
-          var pgge = data.properties.$content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
-          if(pgge) {
-            var grid = pgge.properties.gridstackInstance;
-  
-            var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
-            grid.batchUpdate();
-            grid.resize(block,null,temp);
-            grid.commit();
-          }
-
-          data.properties.$content.addClass('rSlideInTop').one(Rexbuilder_Util._animationEvent, function() {
-            $(this).removeClass('rSlideInTop');
-          });
-          
-        //   var $grid = data.properties.$content.parents('.grid-stack');
-        //   var pgge = $grid.data("plugin_perfectGridGalleryEditor");
-        //   var grid = pgge.properties.gridstackInstance;
-        //   grid.commit();
-        }
-      };
-      accordionSettings.close = {
-        startClbk: function(data) {
-          data.properties.$content.addClass('rSlideOutTop').one(Rexbuilder_Util._animationEvent, function() {
-            $(this).removeClass('rSlideOutTop');
-          });
-          // data.element.setAttribute('data-toggle-height', data.properties.$toggle[0].offsetHeight + parseInt(data.element.parentElement.style.paddingTop) + parseInt(data.element.parentElement.style.paddingBottom) );
-          
-          // var $grid = data.properties.$content.parents('.grid-stack');
-          // var pgge = $grid.data("plugin_perfectGridGalleryEditor");
-          // var grid = pgge.properties.gridstackInstance;
-          // grid.batchUpdate();
-        },
-        // progressClbk: function(data, step) {
-        //   // var content = data.properties.$content[0];
-        //   var block = data.properties.$content.parents('.grid-stack-item')[0];
-        //   var start_h = parseInt( block.children[0].getAttribute('data-gs_start_h') );
-        //   var $grid = data.properties.$content.parents('.grid-stack');
-        //   var pgge = $grid.data("plugin_perfectGridGalleryEditor");
-        //   var grid = pgge.properties.gridstackInstance;
-        //   var toggleHeight = parseInt( data.element.getAttribute('data-toggle-height') ) + parseInt( data.properties.$content[0].style.height );
-
-        //   var base_h = ( 1 !== step ? toggleHeight + pgge.properties.gutter : 0 );
-        //   var fstart_h = ( 1 === step ? start_h : 0 );
-        //   var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
-        //   temp = temp > start_h ? temp : start_h;
-
-        //   if( temp < parseInt(block.getAttribute('data-gs-height')) ) {
-        //     // grid.batchUpdate();
-        //     grid.resize( block,null,temp );
-        //     // grid.commit();
-        //   }
-        // },
-        completeClbk: function(data) {
-          var block_height = data.$element.parents('.text-wrap')[0].offsetHeight;
-
-          var block = data.properties.$content.parents('.grid-stack-item')[0];
-          var pgge = data.properties.$content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
-          if(pgge) {
-            var grid = pgge.properties.gridstackInstance;
-  
-            var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
-            grid.batchUpdate();
-            grid.resize(block,null,temp);
-            grid.commit();
-          }
-        //   data.$element.parents('.grid-stack-item-content').css('position','');
-        //   var $grid = data.properties.$content.parents('.grid-stack');
-        //   var pgge = $grid.data("plugin_perfectGridGalleryEditor");
-        //   var grid = pgge.properties.gridstackInstance;
-        //   grid.commit();
-        }
-      };
-    }
-    
-    $accordions.rexAccordion(accordionSettings);
-
-    // Other accordion plugin
-    // var collapseSettings = {
-    //   duration: 500,
-    //   open: function() {
-    //     var $content = $(this);
-    //     $content.css('display','block');
-    //     $content.imagesLoaded(function() {
-    //       console.log('magini garicatre');
-    //       var block_height = $content.parents('.text-wrap')[0].offsetHeight;
-  
-    //       var block = $content.parents('.grid-stack-item')[0];
-    //       var pgge = $content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
-    //       if(pgge) {
-    //         var grid = pgge.properties.gridstackInstance;
-  
-    //         var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
-    //         grid.batchUpdate();
-    //         grid.resize(block,null,temp);
-    //         grid.commit();
-    //       }
-  
-    //       $content.addClass('rSlideInTop').one(Rexbuilder_Util._animationEvent, function() {
-    //         $(this).removeClass('rSlideInTop');
-    //       });
-    //     });
-    //   },
-    //   close: function() {
-    //     var $content = $(this);
-    //     $content.addClass('rSlideOutTop').one(Rexbuilder_Util._animationEvent, function() {
-    //       $content.removeClass('rSlideOutTop').css('display','none');
-    //       var block_height = $content.parents('.text-wrap')[0].offsetHeight;
-  
-    //       var block = $content.parents('.grid-stack-item')[0];
-    //       var pgge = $content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
-    //       if(pgge) {
-    //         var grid = pgge.properties.gridstackInstance;
-  
-    //         var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
-    //         grid.batchUpdate();
-    //         grid.resize(block,null,temp);
-    //         grid.commit();
-    //       }
-    //     });        
-    //   }
-    // };
-
-    // $accordions.collapse(collapseSettings);
-
-    // Another accordion plugin
-
-    // $accordions.dumbAccordion({
-    //   controlElement: '.rex-accordion--toggle',
-    //   contentElement: '.rex-accordion--content'
-    // }).on('open', function() {
-    //   var $content = $(this);
-    //   $content.css('display','block');
-    //   $content.imagesLoaded(function() {
-    //     console.log('magini garicatre');
-    //     var block_height = $content.parents('.text-wrap')[0].offsetHeight;
-
-    //     var block = $content.parents('.grid-stack-item')[0];
-    //     var pgge = $content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
-    //     if(pgge) {
-    //       var grid = pgge.properties.gridstackInstance;
-
-    //       var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
-    //       grid.batchUpdate();
-    //       grid.resize(block,null,temp);
-    //       grid.commit();
-    //     }
-
-    //     $content.addClass('rSlideInTop').one(Rexbuilder_Util._animationEvent, function() {
-    //       $(this).removeClass('rSlideInTop');
-    //     });
-    //   });
-    // }).on('close',function() {
-    //   var $content = $(this);
-    //   $content.addClass('rSlideOutTop').one(Rexbuilder_Util._animationEvent, function() {
-    //     $content.removeClass('rSlideOutTop').css('display','none');
-    //     var block_height = $content.parents('.text-wrap')[0].offsetHeight;
-
-    //     var block = $content.parents('.grid-stack-item')[0];
-    //     var pgge = $content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
-    //     if(pgge) {
-    //       var grid = pgge.properties.gridstackInstance;
-
-    //       var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
-    //       grid.batchUpdate();
-    //       grid.resize(block,null,temp);
-    //       grid.commit();
-    //     }
-    //   });
-    // });
-
-    /* $accordions.rexAccordion();
-    console.log("init - rexAccordion()"); */
-
-  };
-
   /**
    * In case of RexButtons inside a block that is a link
    * we must fix the buttons to re-wrap them with the correct class
@@ -393,7 +34,7 @@ var Rexbuilder_App = (function($) {
   }
 
   var _linkDocumentListeners = function() {
-    $(document).on("YTPStart", function(e) {
+    Rexbuilder_Util.$document.on("YTPStart", function(e) {
       var ytContainer = $(e.target);
       var $toggle = ytContainer
         .parents(".youtube-player")
@@ -413,7 +54,7 @@ var Rexbuilder_App = (function($) {
     });
 
     // Pause/Play video on block click
-    $(document).on("click", ".YTPOverlay", function(e) {
+    Rexbuilder_Util.$document.on("click", ".YTPOverlay", function(e) {
       var $ytvideo = $(e.target).parents(".rex-youtube-wrap");
       if ($ytvideo.length > 0) {
         var video_state = $ytvideo[0].state;
@@ -425,7 +66,7 @@ var Rexbuilder_App = (function($) {
       }
     });
 
-    $(document).on("click", ".perfect-grid-item", function() {
+    Rexbuilder_Util.$document.on("click", ".perfect-grid-item", function() {
       if (!$(this).hasClass("block-has-slider")) {
         var $itemContent = $(this).find(".grid-item-content");
         var $ytvideo = $itemContent.children(".rex-youtube-wrap");
@@ -471,7 +112,7 @@ var Rexbuilder_App = (function($) {
     });
 
     // Adding audio functionallity
-    $(document).on("click", ".rex-video-toggle-audio", function(e) {
+    Rexbuilder_Util.$document.on("click", ".rex-video-toggle-audio", function(e) {
       e.stopPropagation();
       var $toggle = $(this);
       var $ytvideo = $toggle
@@ -535,7 +176,7 @@ var Rexbuilder_App = (function($) {
 
     // video controller tools
     // play video
-    $(document).on('click', '.rex-video__controls .pause', function(ev) {
+    Rexbuilder_Util.$document.on('click', '.rex-video__controls .pause', function(ev) {
       var $tool = $(ev.currentTarget);
       var $play_tool = $tool.parent().children('.play');
       var $target = $tool.parents('.rexpansive_section');
@@ -545,7 +186,7 @@ var Rexbuilder_App = (function($) {
     });
 
     // pause video
-    $(document).on('click', '.rex-video__controls .play', function(ev) {
+    Rexbuilder_Util.$document.on('click', '.rex-video__controls .play', function(ev) {
       var $tool = $(ev.currentTarget);
       var $pause_tool = $tool.parent().children('.pause');
       var $target = $tool.parents('.rexpansive_section');
@@ -553,147 +194,6 @@ var Rexbuilder_App = (function($) {
       $pause_tool.addClass('video-tool--view');
       Rexbuilder_Util.playVideo( $target );
     });
-  };
-
-  var load = function() {
-    if (Rexbuilder_Util.editorMode) {
-      Rexbuilder_Util_Editor.load();
-    }
-    /* -- Launching the textfill -- */
-    var $textFillContainer = $(".text-fill-container-canvas");
-    if ($textFillContainer.length > 0) {
-      $textFillContainer.textFill({
-        relative: true,
-        relativeWrap: ".perfect-grid-item",
-        fontFamily: _plugin_frontend_settings.textFill.font_family,
-        fontWeight: _plugin_frontend_settings.textFill.font_weight
-      });
-      $textFillContainer.on("textfill-render-complete", function() {
-        Rexbuilder_Util.$window.resize();
-      });
-    }
-
-    // autoplay sliders
-    RexSlider.startAutoPlay();    
-
-    /* -- Launching TextResize ------ */
-    //$grids.textResize();
-
-    if( $grids ) {
-      if ( 'undefined' !== typeof rexIndicator ) {
-        $grids.find(".rex-indicator__placeholder").rexIndicator();
-      }
-    }
-
-    if( false == _plugin_frontend_settings.user.editing ) {
-      $(".rex-effect-distortion").each(function(i,el) {
-        var $el = $(el);
-        if (1 == _plugin_frontend_settings.animations ) {
-          $el.one("rs-animation-complete", function() {
-            $el.rexEffect({
-              effect: { 
-                name: 'distortion',
-                properties: { startDelay: 2500 }
-              }
-            });
-          });
-        } else {
-          $el.rexEffect({
-            effect: { 
-              name: 'distortion',
-              properties: { startDelay: 2500 }
-            }
-          });
-        }
-      });
-
-      $(".rex-effect-distortion-section").each(function(i,el) {
-        var $el = $(el);
-        if (1 == _plugin_frontend_settings.animations ) {
-          $el.one("rs-scrolled-complete", function() {
-            $el.rexEffect({
-              effect: { 
-                name: 'distortion-section',
-                properties: { startDelay: 2500 }
-              }
-            });
-          });
-        } else {
-          $el.rexEffect({
-            effect: { 
-              name: 'distortion-section',
-              properties: { startDelay: 2500 }
-            }
-          });
-        }
-      });
-    }
-
-    if( false == _plugin_frontend_settings.user.editing ) {
-      $('[class*=border-space-animated-]').each(function(i,el) {
-        var $el = $(el);
-        $el.addClass("border-space-animated");
-        if (1 == _plugin_frontend_settings.animations ) {
-          if( Rexbuilder_Util.viewport().width > 768 ) {
-            $el.one("rs-animation-complete", function() {
-              $el.addClass("border-active");
-            });
-          } else {
-            $el.parents(".rexpansive_section").one("rs-scrolled-complete", function() {
-              $el.addClass("border-active");
-            });
-          }
-        } else {
-          $el.parents(".rexpansive_section").one("rs-scrolled-complete", function() {
-            $el.addClass("border-active");
-          });
-        }
-      });
-    }
-
-    // launch rexScrolled
-    if( false == _plugin_frontend_settings.user.editing ) {
-      $sections.rexScrolled({
-        callback: function(el) {
-          if (Rexbuilder_Util.has_class(el, "rex-element--animated")) {
-            var $el = $(el);
-            $el
-              .addClass("run-animation")
-              .on(Rexbuilder_Util.transitionEvent, function(e) {});
-          }
-        }
-      });
-    }
-
-    // launch rexScrollify
-    if (typeof _plugin_frontend_settings !== "undefined") {
-      if (1 == _plugin_frontend_settings.animations ) {
-        if( false == _plugin_frontend_settings.user.editing ) {
-          // Activate animations
-          $(".rs-animation").rexScrollify({
-            mobile: false
-          });
-        } else {
-          $(".rs-animation").removeClass("has-rs-animation");
-          // $(".has-rs-animation").removeClass("has-rs-animation");
-        }
-      }
-    }
-
-    if( false == _plugin_frontend_settings.user.editing ) {
-      // sticky sections
-      launchStickySections();    
-      // launch scrollCSSAnimations
-      launchScrollCSSAnimations();
-      // launch distance accordions
-      launchDistanceAccordion();
-      // launch popUpContent
-      launchPopUpContent();
-      // launch splitScrollable
-      launchSplitScollable();
-    }
-
-    Rexbuilder_Util.galleryPluginActive = true;
   };
 
   /**
@@ -822,7 +322,7 @@ var Rexbuilder_App = (function($) {
       }
     }
 
-    this.element.style.color = 'red';
+    // this.element.style.color = 'red';
   }
 
   /**
@@ -1208,45 +708,518 @@ var Rexbuilder_App = (function($) {
     }
   };
 
+  var init = function() {
+    Rexbuilder_Util.init();
+    Rexbuilder_Dom_Util.init();
+    
+    Rexbuilder_Rexbutton.init();
+    
+    if (Rexbuilder_Util.editorMode) {
+      Rexbuilder_Util_Editor.init();
+      Rexbuilder_Color_Palette.init();
+      Rexbuilder_Overlay_Palette.init();
+      Rexbuilder_Section.init();
+      Rexbuilder_Section_Editor.init();
+      Rexbuilder_Block.init();
+      Rexbuilder_Block_Editor.init();
+      Rexbuilder_Util_Editor.addDocumentListeners();
+      Rexbuilder_Util_Editor.addWindowListeners();
+      Rexbuilder_Util_Editor.addDnDEvents();
+      TextEditor.init();
+      Rexbuilder_Section_Editor.triggerRowDataChange();
+    } else {
+      // fixes for front end only
+      fixRexButtons();
+    }
+
+    Rex_Navigator.init();
+    //Rexbuilder_FormFixes.init();
+
+    Rexbuilder_Util.addWindowListeners();
+
+    $sections = Rexbuilder_Util.$rexContainer.find(".rexpansive_section");
+    $grids = Rexbuilder_Util.$rexContainer.find(".grid-stack-row");
+    $accordions = Rexbuilder_Util.$rexContainer.find('.rex-accordion');
+
+    /* -- Launching the grid -- */
+    // $grids.find(".wrapper-expand-effect").expandEffect();
+    if( $grids ) {
+      $grids.perfectGridGalleryEditor({
+        editorMode: Rexbuilder_Util.editorMode
+      });
+    }
+
+    /** -- Launching plugins only on "real" frontend */
+    if (!Rexbuilder_Util.editorMode) {
+      /* -- Launching Photoswipe -- */
+      // prevent pswp errors
+      $sections.each(function(i, e) {
+        var pswchilds = e.getElementsByClassName("pswp-figure");
+        if ( pswchilds.length === 0 ) {
+          Rexbuilder_Util.removeClass(e,'photoswipe-gallery');
+        }
+      });
+      initPhotoSwipeFromDOM(".photoswipe-gallery");
+
+      /** -- Launching Odomter -- */
+      Rexbuilder_Util.$body.find('.rex-num-spin').each(function(i,el) {
+        var oElement = launch_odometer(el);
+        odometers.push(oElement);
+        $(el).rexScrolled({
+          callback: function(el)
+          {
+            el.innerHTML = el.getAttribute('data-final-value');
+          }
+        })
+      });
+
+      /** -- Launching slideshow -- **/
+      var $slideshow = Rexbuilder_Util.$body.find('.rex-slideshow');
+      if ( $slideshow.length > 0 )
+      {
+        $slideshow.rexSlideshow();
+      }
+    }
+
+    if (true == _plugin_frontend_settings.native_scroll_animation) {
+      var excluded_links = [
+        '[href="#"]',
+        ".no-smoothing",
+        ".vertical-nav-link",
+        ".rex-vertical-nav-link",
+        ".woocommerce-review-link"
+      ];
+
+      // Smooth scroll on all internal links
+      var $linksToSmooth = Rexbuilder_Util.$body.find('a[href*="#"]');
+      for (var i = 0, tot_excluded_links = excluded_links.length; i < tot_excluded_links; i++) {
+        $linksToSmooth = $linksToSmooth.not(excluded_links[i]);
+      }
+
+      $linksToSmooth = $linksToSmooth.not(_filterLinksToSmooth);
+
+      $linksToSmooth.click(function() {
+        if ( location.pathname.replace(/^\//, "") == this.pathname.replace(/^\//, "") && location.hostname == this.hostname ) {
+          var target = $(this.hash);
+          target = target.length
+            ? target
+            : Rexbuilder_Util.$rexContainer.find(
+                "[name=" + this.hash.slice(1) + "]"
+              );
+          if (target.length) {
+            Rexbuilder_Util.smoothScroll(target);
+            return false;
+          }
+        }
+      });
+
+      // advanced check to exclude woocommerce tabs
+      var _filterLinksToSmooth = function(index) {
+        if ($(this).parents(".woocommerce-tabs").length != 0) {
+          return true;
+        } else {
+          return false;
+        }
+      };
+    }
+
+    _linkDocumentListeners();
+
+    // Starting slider
+    RexSlider.init();
+
+    Rexbuilder_Util.launchVideoPlugins();
+
+    Rexbuilder_Util.playAllVideos();
+
+    accordionSettings = {
+      durationOpen: 10,
+      durationClose: 300
+    };
+
+    if( Rexbuilder_Util.editorMode ) {
+      accordionSettings.open = {
+        progressClbk: function(data) {
+          // var content = data.properties.$content[0];
+          var block = data.properties.$content.parents('.grid-stack-item')[0];
+          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
+          // grid.resize(block,null,Math.round(content.offsetHeight/grid.opts.cellHeight) + data.properties.$toggle[0].offsetHeight);
+          // grid.resize(block,null,Math.round( ( content.offsetHeight + data.properties.$toggle[0].offsetHeight ) / grid.opts.cellHeight ));
+          grid.resize(block,null,Math.round( data.element.parentElement.offsetHeight / grid.opts.cellHeight ));
+        }
+      };
+      accordionSettings.close = {
+        progressClbk: function(data) {
+          // var content = data.properties.$content[0];
+          var block = data.properties.$content.parents('.grid-stack-item')[0];
+          var start_h = block.children[0].getAttribute('data-gs_start_h');
+          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
+          grid.resize(block,null,Math.round( parseInt(start_h) ));
+        }
+      };
+    } else {
+      accordionSettings.open = {
+        // startClbk: function(data) {
+          // data.element.setAttribute('data-toggle-height', data.properties.$toggle[0].offsetHeight + parseInt(data.element.parentElement.style.paddingTop) + parseInt(data.element.parentElement.style.paddingBottom) );
+          // data.$element.parents('.grid-stack-item-content').css('position','relative');
+
+          // var $grid = data.properties.$content.parents('.grid-stack');
+          // var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+          // var grid = pgge.properties.gridstackInstance;
+          // grid.batchUpdate();
+        // },
+        // progressClbk: function(data, step) {
+        //   // var content = data.properties.$content[0];
+        //   var block = data.properties.$content.parents('.grid-stack-item')[0];
+        //   var start_h = parseInt( block.children[0].getAttribute('data-gs_start_h') );
+        //   var $grid = data.properties.$content.parents('.grid-stack');
+        //   var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+        //   var grid = pgge.properties.gridstackInstance;
+        //   var toggleHeight = parseInt( data.element.getAttribute('data-toggle-height') ) + parseInt( data.properties.$content[0].style.height );
+
+        //   var base_h = ( 0 !== step ? toggleHeight + pgge.properties.gutter : 0 );
+        //   var fstart_h = ( 0 === step ? start_h : 0 );
+        //   var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
+        //   temp = temp < start_h ? start_h : temp;
+
+        //   if( temp > parseInt(block.getAttribute('data-gs-height')) ) {
+        //     // grid.batchUpdate();
+        //     grid.resize(block,null,temp);
+        //     // grid.commit();
+        //   }
+        // },
+        completeClbk: function(data) {
+          var block_height = data.$element.parents('.text-wrap')[0].offsetHeight;
+
+          var block = data.properties.$content.parents('.grid-stack-item')[0];
+          var pgge = data.properties.$content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
+          if(pgge) {
+            var grid = pgge.properties.gridstackInstance;
+  
+            var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
+            grid.batchUpdate();
+            grid.resize(block,null,temp);
+            grid.commit();
+          }
+
+          data.properties.$content.addClass('rSlideInTop').one(Rexbuilder_Util._animationEvent, function() {
+            $(this).removeClass('rSlideInTop');
+          });
+          
+        //   var $grid = data.properties.$content.parents('.grid-stack');
+        //   var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+        //   var grid = pgge.properties.gridstackInstance;
+        //   grid.commit();
+        }
+      };
+      accordionSettings.close = {
+        startClbk: function(data) {
+          data.properties.$content.addClass('rSlideOutTop').one(Rexbuilder_Util._animationEvent, function() {
+            $(this).removeClass('rSlideOutTop');
+          });
+          // data.element.setAttribute('data-toggle-height', data.properties.$toggle[0].offsetHeight + parseInt(data.element.parentElement.style.paddingTop) + parseInt(data.element.parentElement.style.paddingBottom) );
+          
+          // var $grid = data.properties.$content.parents('.grid-stack');
+          // var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+          // var grid = pgge.properties.gridstackInstance;
+          // grid.batchUpdate();
+        },
+        // progressClbk: function(data, step) {
+        //   // var content = data.properties.$content[0];
+        //   var block = data.properties.$content.parents('.grid-stack-item')[0];
+        //   var start_h = parseInt( block.children[0].getAttribute('data-gs_start_h') );
+        //   var $grid = data.properties.$content.parents('.grid-stack');
+        //   var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+        //   var grid = pgge.properties.gridstackInstance;
+        //   var toggleHeight = parseInt( data.element.getAttribute('data-toggle-height') ) + parseInt( data.properties.$content[0].style.height );
+
+        //   var base_h = ( 1 !== step ? toggleHeight + pgge.properties.gutter : 0 );
+        //   var fstart_h = ( 1 === step ? start_h : 0 );
+        //   var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
+        //   temp = temp > start_h ? temp : start_h;
+
+        //   if( temp < parseInt(block.getAttribute('data-gs-height')) ) {
+        //     // grid.batchUpdate();
+        //     grid.resize( block,null,temp );
+        //     // grid.commit();
+        //   }
+        // },
+        completeClbk: function(data) {
+          var block_height = data.$element.parents('.text-wrap')[0].offsetHeight;
+
+          var block = data.properties.$content.parents('.grid-stack-item')[0];
+          var pgge = data.properties.$content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
+          if(pgge) {
+            var grid = pgge.properties.gridstackInstance;
+  
+            var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
+            grid.batchUpdate();
+            grid.resize(block,null,temp);
+            grid.commit();
+          }
+        //   data.$element.parents('.grid-stack-item-content').css('position','');
+        //   var $grid = data.properties.$content.parents('.grid-stack');
+        //   var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+        //   var grid = pgge.properties.gridstackInstance;
+        //   grid.commit();
+        }
+      };
+    }
+    
+    $accordions.rexAccordion(accordionSettings);
+
+    // Other accordion plugin
+    // var collapseSettings = {
+    //   duration: 500,
+    //   open: function() {
+    //     var $content = $(this);
+    //     $content.css('display','block');
+    //     $content.imagesLoaded(function() {
+    //       console.log('magini garicatre');
+    //       var block_height = $content.parents('.text-wrap')[0].offsetHeight;
+  
+    //       var block = $content.parents('.grid-stack-item')[0];
+    //       var pgge = $content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
+    //       if(pgge) {
+    //         var grid = pgge.properties.gridstackInstance;
+  
+    //         var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
+    //         grid.batchUpdate();
+    //         grid.resize(block,null,temp);
+    //         grid.commit();
+    //       }
+  
+    //       $content.addClass('rSlideInTop').one(Rexbuilder_Util._animationEvent, function() {
+    //         $(this).removeClass('rSlideInTop');
+    //       });
+    //     });
+    //   },
+    //   close: function() {
+    //     var $content = $(this);
+    //     $content.addClass('rSlideOutTop').one(Rexbuilder_Util._animationEvent, function() {
+    //       $content.removeClass('rSlideOutTop').css('display','none');
+    //       var block_height = $content.parents('.text-wrap')[0].offsetHeight;
+  
+    //       var block = $content.parents('.grid-stack-item')[0];
+    //       var pgge = $content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
+    //       if(pgge) {
+    //         var grid = pgge.properties.gridstackInstance;
+  
+    //         var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
+    //         grid.batchUpdate();
+    //         grid.resize(block,null,temp);
+    //         grid.commit();
+    //       }
+    //     });        
+    //   }
+    // };
+
+    // $accordions.collapse(collapseSettings);
+
+    // Another accordion plugin
+
+    // $accordions.dumbAccordion({
+    //   controlElement: '.rex-accordion--toggle',
+    //   contentElement: '.rex-accordion--content'
+    // }).on('open', function() {
+    //   var $content = $(this);
+    //   $content.css('display','block');
+    //   $content.imagesLoaded(function() {
+    //     console.log('magini garicatre');
+    //     var block_height = $content.parents('.text-wrap')[0].offsetHeight;
+
+    //     var block = $content.parents('.grid-stack-item')[0];
+    //     var pgge = $content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
+    //     if(pgge) {
+    //       var grid = pgge.properties.gridstackInstance;
+
+    //       var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
+    //       grid.batchUpdate();
+    //       grid.resize(block,null,temp);
+    //       grid.commit();
+    //     }
+
+    //     $content.addClass('rSlideInTop').one(Rexbuilder_Util._animationEvent, function() {
+    //       $(this).removeClass('rSlideInTop');
+    //     });
+    //   });
+    // }).on('close',function() {
+    //   var $content = $(this);
+    //   $content.addClass('rSlideOutTop').one(Rexbuilder_Util._animationEvent, function() {
+    //     $content.removeClass('rSlideOutTop').css('display','none');
+    //     var block_height = $content.parents('.text-wrap')[0].offsetHeight;
+
+    //     var block = $content.parents('.grid-stack-item')[0];
+    //     var pgge = $content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
+    //     if(pgge) {
+    //       var grid = pgge.properties.gridstackInstance;
+
+    //       var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
+    //       grid.batchUpdate();
+    //       grid.resize(block,null,temp);
+    //       grid.commit();
+    //     }
+    //   });
+    // });
+
+    /* $accordions.rexAccordion();
+    console.log("init - rexAccordion()"); */
+
+  };
+
+  var load = function() {
+    if (Rexbuilder_Util.editorMode) {
+      Rexbuilder_Util_Editor.load();
+    }
+    /* -- Launching the textfill -- */
+    var $textFillContainer = $(".text-fill-container-canvas");
+    if ($textFillContainer.length > 0) {
+      $textFillContainer.textFill({
+        relative: true,
+        relativeWrap: ".perfect-grid-item",
+        fontFamily: _plugin_frontend_settings.textFill.font_family,
+        fontWeight: _plugin_frontend_settings.textFill.font_weight
+      });
+      $textFillContainer.on("textfill-render-complete", function() {
+        Rexbuilder_Util.$window.resize();
+      });
+    }
+
+    // autoplay sliders
+    RexSlider.startAutoPlay();    
+
+    /* -- Launching TextResize ------ */
+    //$grids.textResize();
+
+    if( $grids ) {
+      if ( 'undefined' !== typeof rexIndicator ) {
+        $grids.find(".rex-indicator__placeholder").rexIndicator();
+      }
+    }
+
+    if( false == _plugin_frontend_settings.user.editing ) {
+      $(".rex-effect-distortion").each(function(i,el) {
+        var $el = $(el);
+        if (1 == _plugin_frontend_settings.animations ) {
+          $el.one("rs-animation-complete", function() {
+            $el.rexEffect({
+              effect: { 
+                name: 'distortion',
+                properties: { startDelay: 2500 }
+              }
+            });
+          });
+        } else {
+          $el.rexEffect({
+            effect: { 
+              name: 'distortion',
+              properties: { startDelay: 2500 }
+            }
+          });
+        }
+      });
+
+      $(".rex-effect-distortion-section").each(function(i,el) {
+        var $el = $(el);
+        if (1 == _plugin_frontend_settings.animations ) {
+          $el.one("rs-scrolled-complete", function() {
+            $el.rexEffect({
+              effect: { 
+                name: 'distortion-section',
+                properties: { startDelay: 2500 }
+              }
+            });
+          });
+        } else {
+          $el.rexEffect({
+            effect: { 
+              name: 'distortion-section',
+              properties: { startDelay: 2500 }
+            }
+          });
+        }
+      });
+    }
+
+    if( false == _plugin_frontend_settings.user.editing ) {
+      $('[class*=border-space-animated-]').each(function(i,el) {
+        var $el = $(el);
+        $el.addClass("border-space-animated");
+        if (1 == _plugin_frontend_settings.animations ) {
+          if( Rexbuilder_Util.viewport().width > 768 ) {
+            $el.one("rs-animation-complete", function() {
+              $el.addClass("border-active");
+            });
+          } else {
+            $el.parents(".rexpansive_section").one("rs-scrolled-complete", function() {
+              $el.addClass("border-active");
+            });
+          }
+        } else {
+          $el.parents(".rexpansive_section").one("rs-scrolled-complete", function() {
+            $el.addClass("border-active");
+          });
+        }
+      });
+    }
+
+    // launch rexScrolled
+    if( false == _plugin_frontend_settings.user.editing ) {
+      $sections.rexScrolled({
+        callback: function(el) {
+          if (Rexbuilder_Util.has_class(el, "rex-element--animated")) {
+            var $el = $(el);
+            $el
+              .addClass("run-animation")
+              .on(Rexbuilder_Util.transitionEvent, function(e) {});
+          }
+        }
+      });
+    }
+
+    // launch rexScrollify
+    if (typeof _plugin_frontend_settings !== "undefined") {
+      if (1 == _plugin_frontend_settings.animations ) {
+        if( false == _plugin_frontend_settings.user.editing ) {
+          // Activate animations
+          $(".rs-animation").rexScrollify({
+            mobile: false
+          });
+        } else {
+          $(".rs-animation").removeClass("has-rs-animation");
+          // $(".has-rs-animation").removeClass("has-rs-animation");
+        }
+      }
+    }
+
+    if( false == _plugin_frontend_settings.user.editing ) {
+      // sticky sections
+      launchStickySections();    
+      // launch scrollCSSAnimations
+      launchScrollCSSAnimations();
+      // launch distance accordions
+      launchDistanceAccordion();
+      // launch popUpContent
+      launchPopUpContent();
+      // launch splitScrollable
+      launchSplitScollable();
+    }
+
+    Rexbuilder_Util.galleryPluginActive = true;
+  };
+
   return {
     init: init,
     load: load
   };
 })(jQuery);
 
-(function($) {
+;(function() {
   "use strict";
 
-  /**
-   * All of the code for your public-facing JavaScript source
-   * should reside in this file.
-   *
-   * Note that this assume you're going to use jQuery, so it prepares
-   * the $ function reference to be used within the scope of this
-   * function.
-   *
-   * From here, you're able to define handlers for when the DOM is
-   * ready:
-   *
-   * $(function() {
-   *
-   * });
-   *
-   * Or when the window is loaded:
-   *
-   * $( window ).load(function() {
-   *
-   * });
-   *
-   * ...and so on.
-   *
-   * Remember that ideally, we should not attach any more than a single DOM-ready or window-load handler
-   * for any particular page. Though other scripts in WordPress core, other plugins, and other themes may
-   * be doing this, we should try to minimize doing that in our own work.
-   */
   // Waiting until the ready of the DOM
   document.addEventListener('DOMContentLoaded', Rexbuilder_App.init );
 
   // Waiting for the complete load of the window
   window.addEventListener('load', Rexbuilder_App.load );
-})(jQuery);
+})();

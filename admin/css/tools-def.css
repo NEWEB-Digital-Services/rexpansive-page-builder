@@ -7955,6 +7955,21 @@ padding-left: 4px;
 .rex-modal [type="checkbox"]:checked + label i {
   color: #039be5; }
 
+.rex-modal input[type=date],
+.rex-modal input[type=datetime-local],
+.rex-modal input[type=datetime],
+.rex-modal input[type=email],
+.rex-modal input[type=month],
+.rex-modal input[type=number],
+.rex-modal input[type=password],
+.rex-modal input[type=search],
+.rex-modal input[type=tel],
+.rex-modal input[type=text],
+.rex-modal input[type=time],
+.rex-modal input[type=url],
+.rex-modal input[type=week] {
+  min-height: auto; }
+
 .rex-modal label {
   color: #757575; }
 
