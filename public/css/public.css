@@ -3157,23 +3157,6 @@ http://flickity.metafizzy.co
   -webkit-animation: rSlideOutTop 0.25s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
           animation: rSlideOutTop 0.25s cubic-bezier(0.55, 0.085, 0.68, 0.53) both; }
 
-.l-svg-icons {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  vertical-align: -0.1em;
-  line-height: 1; }
-
-.l-svg-icons > svg {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  fill: #000;
-  vertical-align: -0.1em;
-  -webkit-transition: fill 600ms ease-out;
-  -o-transition: fill 600ms ease-out;
-  transition: fill 600ms ease-out; }
-
 .sk-double-bounce {
   width: 40px;
   height: 40px;

@@ -5,19 +5,25 @@
   // fill: $icon-base-color;
   vertical-align: -0.1em;
   line-height: 1;
-}
 
-.l-svg-icons > svg {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  fill: $icon-base-color;
-  vertical-align: -0.1em;
-  transition: fill 600ms ease-out;
-}
-#rex-button-editor .rexbutton-cont_row10 .l-svg-icons > svg {
-  transform: rotate(45deg);
-  cursor:pointer;
+  > svg {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    fill: $icon-base-color;
+    vertical-align: -0.1em;
+    transition: fill 600ms ease-out;
+  }
+
+  &.inline-icon {
+    height: auto;
+    line-height: 0;
+    vertical-align: baseline;
+    > svg {
+      height: auto;
+      vertical-align: baseline;
+    }
+  }
 }
 
 .l-icon--white {
