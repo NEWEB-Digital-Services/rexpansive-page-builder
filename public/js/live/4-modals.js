@@ -2033,7 +2033,7 @@
       var actionData = {
         elementData: jQuery.extend(true, {}, data.actionFormData)
       }
-      console.log('bisogno di salvare', data.needToSave)
+
       if ( data.needToSave ) {
         Rexbuilder_Util_Editor.builderEdited(false);
       }

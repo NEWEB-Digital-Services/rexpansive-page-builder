@@ -535,7 +535,7 @@ var Element_Import_Modal = (function ($) {
                         var dataEndDrop = {
                             eventName: "rexlive:importElement",
                             data_to_send: {
-                            	elementDimensions: elementDimensions,
+                            	// elementDimensions: elementDimensions,
                                 mousePosition: mousePositionToIFrame
                             }
                         };

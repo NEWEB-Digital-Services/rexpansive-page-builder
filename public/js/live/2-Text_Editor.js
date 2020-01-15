@@ -3660,11 +3660,10 @@ var TextEditor = (function ($) {
     },
 
     updateHeight: function() {
-      var $textWrap = $(this.traceForm).parents('.text-wrap');
-      if ( 0 === $textWrap.length ) {
-        console.log('trace form', this.traceForm)
+      if ( null !== this.traceForm ) {
+        var $textWrap = $(this.traceForm).parents('.text-wrap');
+        Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap, false);
       }
-      Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap, false);
     },
 
     focusBlock: function() {

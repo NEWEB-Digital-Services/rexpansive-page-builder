@@ -201,7 +201,7 @@ var Rexbuilder_Rexelement = (function ($) {
 
                 $elementData.attr('data-synchronize', false);
 
-                if (null !== elementDataFromDB) {
+                if ( null !== elementDataFromDB ) {
                     $elementData.remove();
 
                     var $elementDataFromDB = $(elementDataFromDB);
@@ -277,6 +277,7 @@ var Rexbuilder_Rexelement = (function ($) {
 
         // Removing medium editor placeholder if there
         var $textWrap = $elementWrapper.parents(".text-wrap");
+        // console.log($textWrap[0].outerHTML)
         if ($textWrap.length != 0) {
             TextEditor.removePlaceholder($textWrap.eq(0));
         }
@@ -317,19 +318,20 @@ var Rexbuilder_Rexelement = (function ($) {
             $childrenWithInputs.each(function(i, el) {
                 var $el = $(el);
 
-                if (0 != $el.find('.wpcf7-form-control-wrap').length) {
+                if ( 0 !== $el.find('.wpcf7-form-control-wrap').length ) {
                     $el = $el.find('.wpcf7-form-control-wrap');
-                    if (0 != $el.parent('label').length) {
+                    if ( 0 != $el.parent('label').length ) {
                         $el = $el.parent('label');  // Searching only on the first parent because there may be a label containing more inputs, and this should not happen
                     }
                 } else {
-                    if (0 != $el.find('.wpcf7-form-control').length) {
+                    if ( 0 !== $el.find('.wpcf7-form-control').length ) {
                         $el = $el.find('.wpcf7-form-control');
-                    } else {}
+                    }
                 }
 
                 $formFields = $formFields.add($el);
             });
+
 
             $rows.empty();
 
@@ -467,9 +469,11 @@ var Rexbuilder_Rexelement = (function ($) {
                     $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
                 } else if (containsRadioButtons) {
                     var newClass = "radio-" + fieldsNumbers[i];
+                    var fieldName = $el.find('[type=radio]').attr('name');
 
                     // DOM
                     $el.addClass(newClass);
+                    $el.removeClass(fieldName);
 
                     // Shortcode
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
@@ -479,9 +483,11 @@ var Rexbuilder_Rexelement = (function ($) {
                     $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
                 } else if (containsCheckbox) {
                     var newClass = "acceptance-" + fieldsNumbers[i];
+                    var fieldName = $el.find('[type=checkbox]').attr('name');
 
                     // DOM
                     $el.addClass(newClass);
+                    $el.removeClass(fieldName);
 
                     // Shortcode
                     fieldsShortcodes[i] = /\[acceptance\*?[^(\])]+\][^(\])]+\]/.exec(formFieldsString)[0];
@@ -492,10 +498,12 @@ var Rexbuilder_Rexelement = (function ($) {
                     $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
                 } else if (containsFile) {
                     var newClass = "file-" + fieldsNumbers[i];
+                    var fieldName = $el.find('[type=file]').attr('name');
 
                     // DOM
                     $el.append('<div class="wpcf7-file-caption">Your text here</div>');
                     $el.addClass(newClass);
+                    $el.removeClass(fieldName);
 
                     // Shortcode
                     formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
@@ -1402,8 +1410,8 @@ var Rexbuilder_Rexelement = (function ($) {
                     text_color_hover: 'rgb(0, 0, 0, 1)',
                     border_color: 'rgb(0, 0, 0, 1)',
                     border_color_hover: 'rgb(0, 0, 0, 1)',
-                    width: '150px',
-                    height: '50px',
+                    width: '200px',
+                    height: '100%',
                     font_size: '15px',
                     border_width: '1px',
                     border_radius: '0px',
