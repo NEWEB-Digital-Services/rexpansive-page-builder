@@ -2,7 +2,6 @@
   display: inline-block;
   width: 1em;
   height: 1em;
-  // fill: $icon-base-color;
   vertical-align: -0.1em;
   line-height: 1;
 
@@ -18,10 +17,20 @@
   &.inline-icon {
     height: auto;
     line-height: 0;
-    vertical-align: baseline;
     > svg {
       height: auto;
       vertical-align: baseline;
+      max-height: 1em;
+    }
+  }
+
+  &.block-icon {
+    height: 1em;
+    line-height: 1;
+    > svg {
+      height: 1em;
+      vertical-align: -0.1em;
+      max-height: none;
     }
   }
 }

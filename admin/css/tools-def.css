@@ -11694,11 +11694,18 @@ select.rx__form-input {
     transition: fill 600ms ease-out; }
   .l-svg-icons.inline-icon {
     height: auto;
-    line-height: 0;
-    vertical-align: baseline; }
+    line-height: 0; }
     .l-svg-icons.inline-icon > svg {
       height: auto;
-      vertical-align: baseline; }
+      vertical-align: baseline;
+      max-height: 1em; }
+  .l-svg-icons.block-icon {
+    height: 1em;
+    line-height: 1; }
+    .l-svg-icons.block-icon > svg {
+      height: 1em;
+      vertical-align: -0.1em;
+      max-height: none; }
 
 .l-icon--white .l-svg-icons > svg {
   fill: #fff; }

@@ -198,6 +198,7 @@
 
     // x = windowScrollTop - elScrollTop
     // m = 100 / ( elHeight - windowInnerHeight )
+    // y = m * x + q
     // y' = 2 * m * x - 100
     // percentage of the section height reached during the scroll
     var percentage = ( windowScrollTop - elScrollTop ) * 100 / ( elHeight - windowInnerHeight );
