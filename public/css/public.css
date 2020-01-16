@@ -4877,14 +4877,19 @@ a.pswp-item {
   top: 10vh;
   right: 0;
   opacity: 0 !important;
-  -webkit-transition: opacity .24s;
-  -o-transition: opacity .24s;
-  transition: opacity .24s;
   z-index: 1; }
   .opacity-block-fake img,
   .opacity-block img {
     max-width: 100%;
     height: auto; }
+
+/**
+ * forcing transition
+ */
+.perfect-grid-item.opacity-block {
+  -webkit-transition: opacity .24s;
+  -o-transition: opacity .24s;
+  transition: opacity .24s; }
 
 .opacity-block-fake {
   opacity: 1 !important; }

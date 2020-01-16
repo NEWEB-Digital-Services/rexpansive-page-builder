@@ -62,12 +62,20 @@
   top: 10vh;
   right: 0;
   opacity: 0!important;
-  transition: opacity .24s;
   z-index: 1;
 
   img {
     max-width: 100%;
     height: auto;
+  }
+}
+
+/**
+ * forcing transition
+ */
+.perfect-grid-item {
+  &.opacity-block {
+    transition: opacity .24s;
   }
 }
 

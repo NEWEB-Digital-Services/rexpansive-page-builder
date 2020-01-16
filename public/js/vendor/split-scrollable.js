@@ -105,6 +105,7 @@
 	function watchScroll() {
 		var that = this;
 		this.scrollObserver = new IntersectionObserver( function( entries, observer ) {
+			console.log('scrollingz')
 			var tot_entries = entries.length, i = 0;
 			for( i=0; i < tot_entries; i++ ) {
 				handleEntityObserve.call(that, entries[i]);
