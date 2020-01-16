@@ -508,7 +508,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
         var heightType = wpcf7_form_editor_properties.$content_height_type.filter(':checked').val();
 
-        switch(widthType) {
+        switch(heightType) {
             case "percentage":
                 elementData.wpcf7_data.content.height = elementData.wpcf7_data.content.height + "%";
                 break;
@@ -1477,8 +1477,6 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                     break;
             }
 
-            // elementData.wpcf7_data.content.width = widthValue;
-
             _updateFormContentLive({
                 type: "width",
                 name: "width",
@@ -1498,8 +1496,6 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                     heightValue = heightValue + "px";
                     break;
             }
-
-            // elementData.wpcf7_data.content.height = heightValue;
 
             _updateFormContentLive({
                 type: "height",

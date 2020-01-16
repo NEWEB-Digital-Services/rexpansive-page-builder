@@ -17744,7 +17744,7 @@ input:disabled + .rex_edit_title_slider {
     right: 0;
     padding: 3px 0px 0px 6px;
     cursor: pointer; }
-    #rex-wpcf7-content-adder .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-add-content .l-svg-icons {
+    #rex-wpcf7-content-adder .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-add-content .l-svg-icons > svg {
       font-size: 13px; }
 
 #rex-wpcf7-content-adder .modal-field-name {

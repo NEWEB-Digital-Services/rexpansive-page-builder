@@ -3355,6 +3355,7 @@
      * @todo To be fixed by putting a single return
      */
     calculateTextWrapHeight: function( $textWrap ) {
+      console.log('qua mai?')
       var textWrap = $textWrap[0];
       var textHeight = 0;
       if ( hasClass( textWrap, "medium-editor-element" ) ) {
@@ -3387,9 +3388,10 @@
           if ( ! blockHasSlider && ( 0 !== textWrapClone.textContent.trim().length || 0 !== textWrapClone.childElementCount ) ) {
             if ( ( ! hasClass( textWrap, "medium-editor-placeholder" ) || textWrapClone.childElementCount > 0 ) || $textWrap.parents(".pswp-item").length != 0 ) {
               textHeight = textWrap.offsetHeight;
-
-              if ( 0 !== $(textWrapClone).find('#rex-wpcf7-tools').length ) {
+              console.log('giusto fuori dal nuovo calcolo')
+              if ( 0 !== $(textWrap).find('#rex-wpcf7-tools').length ) {
                 textHeight -= $textWrap.find('#rex-wpcf7-tools')[0].offsetHeight;
+                console.log('nuovo calcolo')
               }
             }
           }
