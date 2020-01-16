@@ -460,7 +460,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'Rexlive-Button-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Button_Import.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Element-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Element_Import.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Button-Edit', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Edit_Button.js', array( 'jquery' ), null, true );
-				wp_enqueue_script( 'Rexlive-Element-Edit', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Edit_Element.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'Rexlive-Element-Choose', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Element_Choose.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Wpcf7-Add-Content', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Wpcf7_Add_Content.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Wpcf7-Edit-Content', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Wpcf7_Edit_Content.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Wpcf7-Edit-Form', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Wpcf7_Edit_Form.js', array( 'jquery' ), null, true );
@@ -3230,62 +3230,6 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$newID = Rexbuilder_Utilities::duplicate($oldID);
 		$response['new_id'] = $newID;
 
-		wp_send_json_success( $response );
-	}
-
-	/**
-	 * Updating an element definition
-	 * @return JSON operation result
-	 * @since  2.0.0
-	 */
-	public function rex_update_element() {
-		$nonce = $_POST['nonce_param'];
-		
-        $response = array(
-			'error' => false,
-            'msg' => '',
-        );
-		
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
-		
-		$response['error'] = false;
-		
-		$element_id = $_POST["element_id"];
-		$element_data_html = trim( $_POST["element_data_html"] );
-		update_post_meta($element_id, '_rex_element_data_html', $element_data_html );
-		$response['elementId'] = $element_id;
-
-		wp_send_json_success( $response );
-	}
-
-	/**
-	 * Update RexElement ids list
-	 * @return JSON update response
-	 * @since  2.0.0
-	 */
-	public function	rex_update_elements_ids(){
-		$nonce = $_POST['nonce_param'];
-		
-        $response = array(
-			'error' => false,
-            'msg' => '',
-        );
-		
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
-		
-		$response['error'] = false;
-		
-		$elements_ids = $_POST["ids_used"];
-		update_option( '_rex_elements_ids', $elements_ids );
-		$response['backIDS'] = $elements_ids;
 		wp_send_json_success( $response );
 	}
 

@@ -1,7 +1,4 @@
 #rex-wpcf7-content-adder {
-  .bl_modal-row {
-    height: 55px;
-  }
   .bl_modal-row .rexwpcf7-cont_row{ 
     width: 381px;
     margin: 12px auto;
@@ -25,8 +22,7 @@
       position: absolute;
       left: 22px;
       right: 0;
-      // text-align: center;
-      padding: 3px 0px 0px 6px;
+      padding: 1px 0px 0px 6px;
       cursor: pointer;
 
       .l-svg-icons > svg {

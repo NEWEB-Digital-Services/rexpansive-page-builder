@@ -1289,11 +1289,6 @@ var Rexbuilder_Rexelement = (function ($) {
         return optionsDifferent;
     }
 
-    var _removeModelData = function ($elementWrapper) {
-        var $elementData = $elementWrapper.find(".rex-element-data").eq(0);
-        $elementData.removeAttr("data-background-color");
-    }
-
     var _addElementStyle = function ($elementWrapper) {
         if ($elementWrapper.find(".rex-element-data").eq(0).length != 0) {
             // var elementData = _generateElementData($elementWrapper, true);
@@ -1352,13 +1347,6 @@ var Rexbuilder_Rexelement = (function ($) {
     var _removeElementStyle = function (elementID) {
         // @todo
         _removeElementBackgroundRule(elementID);
-    }
-
-    var _removeSeparateElement = function (data) {
-        var elementID = data.element_target.element_id;
-        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]");
-        $elementWrapper.removeClass("rex-separate-element");
-        _removeModelData($elementWrapper);
     }
 
     var _lockSynchronize = function (data) {
@@ -1450,7 +1438,6 @@ var Rexbuilder_Rexelement = (function ($) {
         separateRexElement: _separateRexElement,
         refreshSeparatedRexElement: _refreshSeparatedRexElement,
         updateElement: _updateElement,
-        updateElementLive: _updateElementLive,
-        removeSeparateElement: _removeSeparateElement
+        updateElementLive: _updateElementLive
 	}
 })(jQuery);

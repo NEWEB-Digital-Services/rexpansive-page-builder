@@ -621,12 +621,8 @@ var Rexbuilder_Util_Editor = (function($) {
     });
 
     // ELEMENTS
-    Rexbuilder_Util.$document.on("rexlive:importElement", function (e) {
+    Rexbuilder_Util.$document.on("rexlive:import_element", function (e) {
       Rexbuilder_Rexelement.fixImportedElement(e.settings.data_to_send);
-    });
-
-    Rexbuilder_Util.$document.on("rexlive:updateElementLive", function(e){
-      Rexbuilder_Rexelement.updateElementLive(e.settings.data_to_send);
     });
 
     Rexbuilder_Util.$document.on("rexlive:remove_separate_element", function (e) {
@@ -1412,7 +1408,7 @@ var Rexbuilder_Util_Editor = (function($) {
   }
 
   /**
-   * Tell the parent that the user edit the builder
+   * Tell the parent that the user edited the builder
    * @param {bool} isModelEdited have we edited a model
    */
   var _builderEdited = function( isModelEdited ) {

@@ -6,19 +6,19 @@ var Rexlive_Modals = (function ($) {
         // Top Tools
         Rexlive_Top_Tools.init();
         
-        // section
+        // Section
         Section_Modal.init();
 
-        // new blocks video
+        // New blocks video
         Insert_Video_Modal.init();
 
-        // custom css
+        // Custom css
         CssEditor_Modal.init();
 
-        // html editor
+        // HTML editor
         HtmlEditor_Modal.init();
 
-        // background row
+        // Background row
         SectionBackground_Modal.init();
 
         // Section background gradient
@@ -93,8 +93,8 @@ var Rexlive_Modals = (function ($) {
         Element_Import_Modal.init();
         
         // Element editor
-        Element_Edit_Modal.init();
-
+        Element_Choose_Modal.init();
+        
         // Wpcf7 Content Adder
         Wpcf7_Add_Content_Modal.init();
 

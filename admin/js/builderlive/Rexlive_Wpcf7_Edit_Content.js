@@ -812,7 +812,10 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             
             _updateColumnContentLive({
                 type: "wpcf7-list",
-                value: listFieldsArray
+                value: {
+                    fields: listFieldsArray,
+                    type: 'writing'
+                }
             });
         });
     }
@@ -1926,7 +1929,10 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
                 _updateColumnContentLive({
                     type: "wpcf7-list",
-                    value: listFieldsArray
+                    value: {
+                        fields: listFieldsArray,
+                        type: 'resetting'
+                    }
                 });
             }
         });
@@ -2514,7 +2520,10 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
                 _updateColumnContentLive({
                     type: "wpcf7-list",
-                    value: listFieldsArray
+                    value: {
+                        fields: listFieldsArray,
+                        type: 'sorting'
+                    }
                 });
             }
         });

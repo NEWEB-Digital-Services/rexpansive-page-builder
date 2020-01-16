@@ -1066,8 +1066,7 @@ defined('ABSPATH') or exit;
 <?php include_once( 'modals/rexlive-lateral-panel.php' ); ?>
 <?php include_once( 'modals/rexlive-button-editor-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-button-edit-model-modal.php' ); ?>
-<?php include_once( 'modals/rexlive-element-editor-modal.php' ); ?>
-<?php include_once( 'modals/rexlive-element-edit-model-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-element-choose-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-wpcf7-content-adder-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-wpcf7-content-editor-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-wpcf7-form-editor-modal.php' ); ?>

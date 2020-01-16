@@ -83,20 +83,6 @@ $elementsIDsUsed = json_decode($elementsIDsJSON, true);
                 echo json_encode($buttonsIDsUsed);
             }
 		?></div>
-		<!-- <div id="rex-elements-json-css" style="display: none;"><?php
-			if ($elementsStylesArray == null) {
-                echo "[]";
-            } else {
-                echo json_encode($elementsStylesArray);
-            }
-		?></div> -->
-		<div id="rex-elements-ids-used" style="display: none;"><?php 
-		    if ($buttonsIDsUsed == null) {
-                echo "[]";
-            } else {
-                echo json_encode($elementsIDsUsed);
-            }
-		?></div>
 	</div>
 	<div id="rexbuilder-layout-data-backend" style="display: none;">
 		<div class = "available-layouts"><?php echo json_encode($layoutsAvaiable);?></div>

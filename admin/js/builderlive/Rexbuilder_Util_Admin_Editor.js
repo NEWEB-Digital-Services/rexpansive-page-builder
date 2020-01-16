@@ -303,8 +303,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Button_Edit_Modal.openButtonEditorModal(event.data.buttonData);
       }
 
-      if (event.data.eventName == "rexlive:openRexElementEditor") {
-        Element_Edit_Modal.openElementEditorModal(event.data);
+      if (event.data.eventName == "rexlive:openRexElementChoose") {
+        Element_Choose_Modal.selectModalToOpen(event.data);
       }
 
       if (event.data.eventName == "rexlive:openRexWpcf7AddContent") {

@@ -11,7 +11,7 @@
 defined('ABSPATH') or exit;
 ?>
 <div class="rex-modal-wrap">
-    <div id="rex-element-model-choose" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+    <div id="rex-element-choose" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content modal-content--text">
             <div class="edit-element-model-choose">

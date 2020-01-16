@@ -3388,10 +3388,8 @@
           if ( ! blockHasSlider && ( 0 !== textWrapClone.textContent.trim().length || 0 !== textWrapClone.childElementCount ) ) {
             if ( ( ! hasClass( textWrap, "medium-editor-placeholder" ) || textWrapClone.childElementCount > 0 ) || $textWrap.parents(".pswp-item").length != 0 ) {
               textHeight = textWrap.offsetHeight;
-              console.log('giusto fuori dal nuovo calcolo')
               if ( 0 !== $(textWrap).find('#rex-wpcf7-tools').length ) {
                 textHeight -= $textWrap.find('#rex-wpcf7-tools')[0].offsetHeight;
-                console.log('nuovo calcolo')
               }
             }
           }

@@ -175,11 +175,11 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         var formID = elementData.element_target.element_id;
         _getFormSettings(formID);
         Rexlive_Modals_Utils.openModal(
-            wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),
-            false,
-            ["wpcf7-editing-form"],
-            undefined,
-            blockID
+            wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),   // $target
+            false,                      // target_only
+            ["wpcf7-editing-form"],     // additional_class
+            undefined,                  // set_position
+            blockID                     // blockIDToFocusAfterClose
         );
     }
 
@@ -1344,38 +1344,6 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             }
         );
     }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    /// Saving Functions
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    
-    // var _saveElementSpanDataOnDB = function () {
-    //     var element_data_html = _createElementDataHTML();
-    //     var elementID = elementData.element_target.element_id;
-
-    //     // element_editor_properties.$add_model_button.addClass("saving-rex-element");
-    //     $.ajax({
-    //         type: "POST",
-    //         dataType: "json",
-    //         url: live_editor_obj.ajaxurl,
-    //         data: {
-    //             action: "rex_update_element",
-    //             nonce_param: live_editor_obj.rexnonce,
-    //             element_id: elementID,
-    //             element_data_html: element_data_html
-    //         },
-    //         beforeSend: function() {
-    //             // element_editor_properties.$self.addClass('rex-modal--loading');
-    //         },
-    //         success: function (response) {
-    //             // element_editor_properties.$add_model_button.removeClass("saving-rex-element");
-    //         },
-    //         error: function () {},
-    //         complete: function (response) {
-    //             // element_editor_properties.$self.removeClass('rex-modal--loading');
-    //         }
-    //     });
-    // }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     /// Other Functions

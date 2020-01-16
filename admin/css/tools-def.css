@@ -17719,9 +17719,6 @@ input:disabled + .rex_edit_title_slider {
   /*box-sizing:border-box;*/
   margin-bottom: 0; }
 
-#rex-wpcf7-content-adder .bl_modal-row {
-  height: 55px; }
-
 #rex-wpcf7-content-adder .bl_modal-row .rexwpcf7-cont_row {
   width: 381px;
   margin: 12px auto; }
@@ -17742,7 +17739,7 @@ input:disabled + .rex_edit_title_slider {
     position: absolute;
     left: 22px;
     right: 0;
-    padding: 3px 0px 0px 6px;
+    padding: 1px 0px 0px 6px;
     cursor: pointer; }
     #rex-wpcf7-content-adder .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-add-content .l-svg-icons > svg {
       font-size: 13px; }

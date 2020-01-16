@@ -2824,7 +2824,7 @@ var TextEditor = (function ($) {
 
       // Link click listeners
       this.on(this.deleteRexelementBtn, "click", this.handleClickDeleteRexelement.bind(this));
-      this.on(this.editRexelementBtn, "click", this.handleClickEditRexelement.bind(this)); // Different for every kind of element?
+      this.on(this.editRexelementBtn, "click", this.handleClickEditRexelement.bind(this));
 
       // Hiding anchor preview of text editor when mouse is over a rexelement
       // Timeout is needed because anchor will stay under element for about 500-600 ms
@@ -2883,14 +2883,14 @@ var TextEditor = (function ($) {
       this.hideRexelementToolbox();
       var $elementWrapper = $(this.traceELMNT).parents(".rex-element-wrapper");
 
-      if (this.containsWpcf7) {
+      if ( this.containsWpcf7 ) {
         this.setOutline($(this.traceELMNT).find('.wpcf7-form'), '#00ACFF');
       }
 
       var blockID = $(this.traceELMNT).parents(".grid-stack-item").attr("id");
 
       var data = {
-        eventName: "rexlive:openRexElementEditor",
+        eventName: "rexlive:openRexElementChoose",
         elementData: Rexbuilder_Rexelement.generateElementData($elementWrapper),
         blockID: blockID
       };
@@ -3348,6 +3348,7 @@ var TextEditor = (function ($) {
     },
 
     handleSelectColumns: function (event) {
+      Rexbuilder_Util_Editor.builderEdited(false);
       this.hideSelectColumnsToolbar();
       this.hideRowToolbox();
       this.hideColumnToolbox();
@@ -3379,6 +3380,7 @@ var TextEditor = (function ($) {
     },
 
     handleClickCloneFormRow: function (event) {
+      Rexbuilder_Util_Editor.builderEdited(false);
       this.hideSelectColumnsToolbar();
       this.hideRowToolbox();
       this.hideColumnToolbox();
@@ -3395,6 +3397,7 @@ var TextEditor = (function ($) {
     },
 
     handleClickDeleteFormRow: function (event) {
+      Rexbuilder_Util_Editor.builderEdited(false);
       this.hideColumnToolbox();
       this.hideRowToolbox();
 
@@ -3429,6 +3432,7 @@ var TextEditor = (function ($) {
     },
 
     handleClickCloneFormColumn: function (event) {
+      Rexbuilder_Util_Editor.builderEdited(false);
       this.hideSelectColumnsToolbar();
       this.hideRowToolbox();
       this.hideColumnToolbox();
@@ -3445,6 +3449,7 @@ var TextEditor = (function ($) {
     },
 
     handleClickDeleteFormColumn: function (event) {
+      Rexbuilder_Util_Editor.builderEdited(false);
       this.hideColumnToolbox();
 
       var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
