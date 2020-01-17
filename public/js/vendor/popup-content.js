@@ -166,7 +166,7 @@
 		var closeWrapper = document.createElement('div');
 		addClass( closeWrapper,options.popUpCloseWrapper );
 		var closeBtn = document.createElement('div');
-		closeBtn.innerText = 'X';
+		closeBtn.innerHTML = '<i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i>';
 		addClass( closeBtn, options.popUpCloseClass );
 		var popUpContent = document.createElement('div');
 		addClass( popUpContent, options.popUpContent );

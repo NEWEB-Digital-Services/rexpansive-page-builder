@@ -4782,7 +4782,6 @@ a.pswp-item {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  background-color: #191f22;
   color: #fff;
   cursor: pointer;
   display: -webkit-inline-box;
@@ -4802,8 +4801,10 @@ a.pswp-item {
   -o-transition: all .24s;
   transition: all .24s;
   width: 50px;
-  background-color: #00b0f4;
+  background-color: #ff0055;
   color: #fff; }
+  .popup-content-close .l-svg-icons > svg {
+    fill: #fff; }
 
 .popup-content--view.popup-content {
   opacity: 1;

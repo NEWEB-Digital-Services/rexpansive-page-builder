@@ -51,7 +51,6 @@
 .popup-content-close {
 	box-shadow: 0 5px 5px -2.5px rgba(0,0,0,.2);
 	align-items: center;
-	background-color: #191f22;
 	color: #fff;
 	cursor: pointer;
 	display: inline-flex;
@@ -65,8 +64,11 @@
 	right: 30px;
 	transition: all .24s;
 	width: 50px;
-	background-color: #00b0f4;
+	background-color: #ff0055;
 	color: #fff;
+	.l-svg-icons > svg {
+		fill: #fff;
+	}
 }
 
 .popup-content--view {
