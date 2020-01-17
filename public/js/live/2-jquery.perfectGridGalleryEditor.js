@@ -3478,7 +3478,7 @@
 
       // check if resize really needed
       // fix occurs on first start and not in editor mode
-      if ( this.properties.firstStartGrid || ! this.settings.editorMode ) {
+      // if ( this.properties.firstStartGrid || ! this.settings.editorMode ) {
         if ( textHeight !== 0 ) {
           if ( 'fixed' === this.settings.galleryLayout || ( 1 !== elRealFluid && 'masonry' === this.settings.galleryLayout ) ) {
             if ( newH < spaceAvailable ) {
@@ -3496,7 +3496,7 @@
             }
           }
         }
-      }
+      // }
 
       if ( resizeNotNeeded ) {
         if ( this.settings.editorMode ) {
