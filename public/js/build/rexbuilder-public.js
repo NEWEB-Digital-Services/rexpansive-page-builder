@@ -319,6 +319,7 @@ var Rexbuilder_App = (function($) {
       var tot_scrbls = scrbls.length, i = 0;
       for( i=0; i < tot_scrbls; i++ ) {
         var inst = new SplitScrollable(scrbls[i], {
+          scrollElsToWatchClass: 'text-wrap',
           initializeComplete: fixScrollableGridGallery
         });
       }
@@ -359,7 +360,11 @@ var Rexbuilder_App = (function($) {
     var $grid = $(grid);
     var i;
 
-    for( i=0; i < this.totOpacityEls; i++ ) {    
+    for( i=0; i < this.totScrollEls; i++ ) {
+      this.scrollEls[i].style.height = this.scrollEls[i].offsetHeight + 'px';
+    }
+
+    for( i=0; i < this.totOpacityEls; i++ ) {
       this.opacityEls[i].style.height = this.opacityEls[i].offsetHeight + 'px';
     }
 
@@ -374,6 +379,7 @@ var Rexbuilder_App = (function($) {
       var tot_scrbls = scrbls.length, i;
       for( i=0; i < tot_scrbls; i++ ) {
         var inst = new SplitScrollable(scrbls[i], {
+          scrollElsToWatchClass: 'text-wrap',
           initializeComplete: fixScrollableGridGallery
         });
       }

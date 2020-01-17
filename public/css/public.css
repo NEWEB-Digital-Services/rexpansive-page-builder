@@ -4748,7 +4748,6 @@ a.pswp-item {
 
 .popup-content-content {
   opacity: 0;
-  max-width: 120em;
   margin: 0 auto;
   -webkit-transition: opacity .24s;
   -o-transition: opacity .24s;
@@ -4874,7 +4873,7 @@ a.pswp-item {
 .opacity-block {
   width: 100%;
   position: absolute;
-  top: 10vh;
+  top: 20vh;
   right: 0;
   opacity: 0 !important;
   z-index: 1; }
@@ -4895,7 +4894,8 @@ a.pswp-item {
   opacity: 1 !important; }
 
 .opacity-block.opacity-block-active {
-  opacity: 1 !important; }
+  opacity: 1 !important;
+  z-index: 2; }
   .opacity-block.opacity-block-active ~ .opacity-block-fake {
     opacity: 0 !important; }
 

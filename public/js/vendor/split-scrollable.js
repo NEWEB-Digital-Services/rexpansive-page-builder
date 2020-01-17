@@ -1,12 +1,17 @@
 ;(function() {
 	this.SplitScrollable = function() {
 		this.element = null;
+
 		this.splitScrollWrapper = null;
+
 		this.scrollElsWrapper = null;
-		this.scrollEls = null;
-		this.opacityElsWrapper = null;
-		this.opacityEls = null;
+		this.scrollEls = [];
+		this.scrollElsToWatch = [];
 		this.totScrollEls = 0;
+		this.totScrollElsToWatch = 0;
+
+		this.opacityElsWrapper = null;
+		this.opacityEls = [];
 		this.totOpacityEls = 0;
 
 		this.scrollElsState = [];
@@ -21,6 +26,7 @@
 			splitScrollElClass: 'split-scrollable-container',
 			scrollElsWrapClass: 'scroll-block-wrapper',
 			scrollElsClass: 'scroll-block',
+			scrollElsToWatchClass: 'scroll-block',
 			scrollElActiveClass: 'scroll-block-active',
 			opacityElsWrapClass: 'opacity-block-wrapper',
 			opacityElsClass: 'opacity-block',
@@ -47,7 +53,7 @@
 
 		watchScroll.call(this);
 
-		simulateLast.call(this);
+		// simulateLast.call(this);
 
 		// attach plugin instance to dom element
 		this.element.DistanceAccordionInstance = this;
@@ -56,12 +62,22 @@
 	function initialize() {
 		var that = this;
 		this.scrollEls = [].slice.call( this.element.getElementsByClassName(this.options.scrollElsClass) );
-		this.opacityEls = [].slice.call( this.element.getElementsByClassName(this.options.opacityElsClass) );
 		this.totScrollEls = this.scrollEls.length;
+		if ( this.options.scrollElsClass === this.options.scrollElsToWatchClass ) {
+			this.scrollElsToWatch = this.scrollEls;
+		} else {
+			for( var j=0; j < this.totScrollEls; j++ ) {
+				this.scrollElsToWatch.push( this.scrollEls[j].querySelector('.' + this.options.scrollElsToWatchClass ) );
+			}
+		}
+		this.totScrollElsToWatch = this.scrollElsToWatch.length;
+
+		this.opacityEls = [].slice.call( this.element.getElementsByClassName(this.options.opacityElsClass) );
 		this.totOpacityEls = this.opacityEls.length;
+
 		var i=0;
 		for( i=0; i < this.totScrollEls; i++ ) {
-			this.scrollEls[i].setAttribute('data-scroll-el-index', i);
+			this.scrollElsToWatch[i].setAttribute('data-scroll-el-index', i);
 			this.scrollElsState.push(null)
 		}
 	}
@@ -105,11 +121,10 @@
 	function watchScroll() {
 		var that = this;
 		this.scrollObserver = new IntersectionObserver( function( entries, observer ) {
-			console.log('scrollingz')
 			var tot_entries = entries.length, i = 0;
 			for( i=0; i < tot_entries; i++ ) {
-				handleEntityObserve.call(that, entries[i]);
-				// newHandleEntityObserve.call(that, entries[i]);
+				// handleEntityObserve.call(that, entries[i]);
+				newHandleEntityObserve.call(that, entries[i]);
 			}
 		}, {
 			threshold: [0, 0.2, 0.4, 0.6, 0.8, 1]
@@ -117,7 +132,7 @@
 
 		var j = 0;
 		for( j=0; j < this.totScrollEls; j++ ) {
-			this.scrollObserver.observe( this.scrollEls[j] );
+			this.scrollObserver.observe( this.scrollElsToWatch[j] );
 		}
 	}
 
@@ -125,20 +140,25 @@
 		var entryIndex = parseInt( entry.target.getAttribute('data-scroll-el-index') );
 		this.scrollElsState[entryIndex] = entry;
 		if( entry.isIntersecting ) {
-			if ( entry.boundingClientRect.top > 0 && ( null === entry.target.previousElementSibling || ! hasClass( entry.target.previousElementSibling, this.options.scrollElActiveClass ) ) ) {
-				// console.log('a')
-				addClass( entry.target, this.options.scrollElActiveClass );
-				addClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
+
+			console.log(entryIndex)
+			console.log(this.scrollEls[entryIndex].previousElementSibling)
+
+			if ( entry.boundingClientRect.top > 0 && ( null === this.scrollEls[entryIndex].previousElementSibling || ! hasClass( this.scrollEls[entryIndex].previousElementSibling, this.options.scrollElActiveClass ) ) ) {
+				addClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
+				if ( this.opacityEls[entryIndex] ) {
+					addClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
+				}
 			} else {
-				// console.log('b')
-				removeClass( entry.target, this.options.scrollElActiveClass );
+				removeClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
 				// if ( i+1 !== this.totOpacityEls ) {
+				if ( this.opacityEls[entryIndex] ) {
 					removeClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
+				}
 				// }
 
-				if ( entry.target.nextElementSibling ) {
-					// console.log('c')
-					addClass( entry.target.nextElementSibling, this.options.scrollElActiveClass );
+				if ( this.scrollEls[entryIndex].nextElementSibling ) {
+					addClass( this.scrollEls[entryIndex].nextElementSibling, this.options.scrollElActiveClass );
 					// var i = parseInt( entry.target.nextElementSibling.getAttribute('data-scroll-el-index') );
 					// if( i+1 === this.totOpacityEls ) {
 					// 	removeClass( this.opacityEls[i], this.options.opacityElActiveClass );
@@ -146,10 +166,11 @@
 				}
 			}
 		} else {
-			// console.log('d')
-			removeClass( entry.target, this.options.scrollElActiveClass );
+			removeClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
 			// if ( i+1 !== this.totOpacityEls ) {
-			removeClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
+			if( this.opacityEls[entryIndex] ) {
+				removeClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
+			}
 			// }
 		}
 	}
@@ -159,12 +180,41 @@
 		this.scrollElsState[entryIndex] = entry;
 
 		if( entry.isIntersecting ) {
+			if ( entry.intersectionRatio > 0.8  ) {
+				activeElementOnScroll.call(this, entryIndex)
+			}
+		}
+	}
+
+	function activeElementOnScroll( index ) {
+		for( var i=0; i < this.totScrollEls; i++ ) {
+			if ( index === i ) {
+				addClass( this.scrollEls[i], this.options.scrollElActiveClass );
+			} else {
+				removeClass( this.scrollEls[i], this.options.scrollElActiveClass );
+			}
+		}
+
+		for( var i=0; i < this.totOpacityEls; i++ ) {
+			if ( index === i ) {
+				addClass( this.opacityEls[i], this.options.opacityElActiveClass );
+			} else {
+				removeClass( this.opacityEls[i], this.options.opacityElActiveClass );
+			}
+		}
+	}
+
+	function otherHandleEntityObserve(entry) {
+		var entryIndex = parseInt( entry.target.getAttribute('data-scroll-el-index') );
+		this.scrollElsState[entryIndex] = entry;
+
+		if( entry.isIntersecting ) {
 			// if( 0 === entryIndex ) {
 			// 	addClass( entry.target, this.options.scrollElActiveClass );
 			// 	addClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
 			// } else {
 				if ( this.scrollElsState[entryIndex].boundingClientRect.top > 0  ) {
-					addClass( entry.target, this.options.scrollElActiveClass );
+					addClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
 					addClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
 
 					// removeClass( this.scrollElsState[entryIndex-1].target, this.options.scrollElActiveClass );
@@ -172,7 +222,7 @@
 				}
 			// }
 		} else {
-			removeClass( entry.target, this.options.scrollElActiveClass );
+			removeClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
 			removeClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
 		}
 	}

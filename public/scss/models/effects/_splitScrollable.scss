@@ -59,7 +59,7 @@
 .opacity-block {
   width: 100%;
   position: absolute;
-  top: 10vh;
+  top: 20vh;
   right: 0;
   opacity: 0!important;
   z-index: 1;
@@ -86,6 +86,7 @@
 .opacity-block {
   &.opacity-block-active {
     opacity: 1!important;
+    z-index: 2;
     ~ .opacity-block-fake {
       opacity: 0!important;
     }
