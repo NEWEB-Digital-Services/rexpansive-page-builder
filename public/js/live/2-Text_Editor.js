@@ -1188,12 +1188,12 @@ var TextEditor = (function ($) {
 
     handleBlur: function(event,editable) {
       $(editable).parents('.grid-stack-item').removeClass('item--me-focus');
-      $(editable).parents(".rexpansive_section").removeClass("block-editing");
+      $(editable).parents('.rexpansive_section').removeClass('block-editing');
     },
 
     handleFocus: function(event,editable) {
       $(editable).parents('.grid-stack-item').addClass('item--me-focus');
-      $(editable).parents(".rexpansive_section").addClass("block-editing");
+      $(editable).parents('.rexpansive_section').addClass('block-editing');
     }
   });
 
@@ -2845,7 +2845,14 @@ var TextEditor = (function ($) {
 
     handleMouseOver: function (event) {
       var $target = $(event.target);
-      if ("mouseover" == event.type && $target.parents(".grid-stack-item").hasClass("item--me-focus")) {
+      var $gridStackItem = $target.parents(".grid-stack-item");
+      var $section = $target.parents(".rexpansive_section");
+
+      if ( "mouseover" == event.type
+          && $gridStackItem[0].classList.contains('item--me-focus')
+          && $section[0].classList.contains('focusedRow')
+          && $section[0].classList.contains('block-editing') 
+        ) {
         if ($target.parents(".rex-element-container").length != 0) {
           this.traceELMNT = $target.parents(".rex-element-container")[0];
           this.containsWpcf7 = $(this.traceELMNT).find(".wpcf7").length != 0;
@@ -3179,8 +3186,6 @@ var TextEditor = (function ($) {
       this.subscribe("editableMouseover", this.handleMouseOver.bind(this));
 
       this.subscribe("blur", this.handleBlur.bind(this));
-
-      // this.removeMEPlaceholder();
     },
 
     createFormTools: function () {
@@ -3200,30 +3205,33 @@ var TextEditor = (function ($) {
       this.formTools = $formTools[0];
     },
 
-    removeMEPlaceholder: function() {
-      _removePlaceholder($(document.getElementsByTagName("body")[0]).find('.wpcf7-form').parents('.text-wrap'));
-    },
-
     ///////////////
     /* HANDLERS */
     ///////////////
     
     handleMouseOver: function (event) {
       var $target = $(event.target);
+      var $gridStackItem = $target.parents(".grid-stack-item");
+      var $section = $target.parents(".rexpansive_section");
 
       // if ( $target.is(".wpcf7-add-new-row") || $target.parents(".wpcf7-add-new-row").length !== 0 ) console.log('sono su + add row')
       // if ( $target.is(".wpcf7-add-new-form-content") || $target.parents(".wpcf7-add-new-form-content").length !== 0 ) console.log('+ add content')
       
-      // console.log($target.parents(".grid-stack-item").hasClass("item--me-focus"))
-      if ( "mouseover" == event.type && $target.parents(".grid-stack-item").hasClass("item--me-focus") ) {
+      // if( $target.parents(".grid-stack-item").hasClass("item--me-focus") ) console.log('la grid ha il focus');
+      if ( "mouseover" == event.type
+          && $gridStackItem[0].classList.contains('item--me-focus')
+          && $section[0].classList.contains('focusedRow')
+          && $section[0].classList.contains('block-editing') 
+        ) {
         var needToAddPlusButtonsListener = ("undefined" == typeof this.addFormContentBtns);
 
-        if ( $target.is(".wpcf7-form") ) {
+        // if ( $target.is(".wpcf7-form") ) {
+        if ( $target[0].classList.contains('wpcf7-form') ) {
           this.traceForm = $target[0];
           this.setOutline($(this.traceForm), "#00ACFF");
         }
 
-        if ($target.parents(".wpcf7-form").length != 0) {
+        if ( $target.parents(".wpcf7-form").length != 0 ) {
           this.traceForm = $target.parents(".wpcf7-form")[0];
           this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
 
@@ -3285,7 +3293,7 @@ var TextEditor = (function ($) {
             }
           }
         } else {
-          if (!$target.is(".wpcf7-form")) {
+          if ( !$target.is(".wpcf7-form") ) {
             this.handleBlur(event);
           }
         }
@@ -3470,7 +3478,11 @@ var TextEditor = (function ($) {
 
       var $target = $(event.target);
 
-      if ($target.parents(".wpcf7").length == 0 && $target.parents("#rex-wpcf7-tools").length == 0 && $target.parents(".rexwpcf7-row-tools").length == 0 && $target.parents(".rexwpcf7-column-tools").length == 0 && $target.parents("#wpcf7-select-columns-number").length == 0) {
+      if ( $target.parents(".wpcf7").length == 0 && 
+            $target.parents("#rex-wpcf7-tools").length == 0 && 
+            $target.parents(".rexwpcf7-row-tools").length == 0 && 
+            $target.parents(".rexwpcf7-column-tools").length == 0 && 
+            $target.parents("#wpcf7-select-columns-number").length == 0 ) {
         this.hideAllToolbars();
       }
 
@@ -3674,58 +3686,14 @@ var TextEditor = (function ($) {
     focusBlock: function() {
       var blockIDToFocus = $(this.traceForm).parents(".grid-stack-item").attr('id');
 
-      setTimeout(function() { // Necessary!
-        $(document.getElementById(blockIDToFocus))
+      setTimeout(function() {   // Necessary!
+        $('#' + blockIDToFocus)
           .dblclick()
-          .addClass('item--me-focus');
-        $(document.getElementById(blockIDToFocus)).parents('rexpansive_section')
-          .addClass('block-editing')
-          .addClass('focusedRow');
+          .addClass('item--me-focus')
+        .parents('.rexpansive_section')
+          .addClass('focusedRow block-editing');
       }, 0);
     },
-
-    // findElementToOutline: function (formColumn) {
-    //   var $formColumn = $(formColumn);
-    //   var elementToOutlineClass;
-    //   var wrapToOultineClass = null;
-
-    //   if ( $formColumn.find(".wpcf7-form-control").length != 0 ) {
-    //     elementToOutlineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
-    //   }
-    //   if ( $formColumn.find(".wpcf7-form-control-wrap").length != 0 ) {
-    //     wrapToOultineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList);
-    //   }
-    //   if( null == elementToOutlineClass ) {
-    //     if ( null !== wrapToOultineClass ) {
-    //       elementToOutlineClass = wrapToOultineClass[0];
-    //     }
-    //   } else {
-    //      elementToOutlineClass = elementToOutlineClass[0];
-    //   }
-
-    //   var elementToOutlineType = /[a-z]+/.exec(elementToOutlineClass)[0];
-    //   elementToOutlineType = (elementToOutlineType == "menu") ? "select" : elementToOutlineType;
-
-    //   switch (elementToOutlineType) {
-    //     case "text":
-    //     case "textarea":
-    //     case "number":
-    //     case "email":
-    //     case "submit":
-    //     case "select":
-    //     console.log("type .wpcf7-" + elementToOutlineType)
-    //       return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
-    //       break;
-    //     case "radio":
-    //     case "acceptance":
-    //     case "file":
-    //     console.log("class ." + elementToOutlineClass)
-    //       return $formColumn.find("." + elementToOutlineClass).eq(0)[0];
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // },
 
     findElementToOutline: function (formColumn) {
         var $formColumn = $(formColumn);

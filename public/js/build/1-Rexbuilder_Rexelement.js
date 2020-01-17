@@ -368,8 +368,8 @@ var Rexbuilder_Rexelement = (function ($) {
                 $rows.append($newRow);
                 $newColumnContentInDB.append($el[0].outerHTML)
 
-                if ($el.is('label')) {
-                    if (undefined === $el.find('.wpcf7-form-control-wrap')) {
+                if ( $el.is('label') ) {
+                    if ( undefined === $el.find('.wpcf7-form-control-wrap') ) {
                         $el = $el.find('.wpcf7-form-control');
                     } else {
                         $el = $el.find('.wpcf7-form-control-wrap');
@@ -470,7 +470,7 @@ var Rexbuilder_Rexelement = (function ($) {
                 } else if (containsRadioButtons) {
                     var newClass = "radio-" + fieldsNumbers[i];
                     var fieldName = $el.find('[type=radio]').attr('name');
-
+                    
                     // DOM
                     $el.addClass(newClass);
                     $el.removeClass(fieldName);

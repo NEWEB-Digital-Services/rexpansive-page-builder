@@ -15,6 +15,9 @@ var Rex_Save_Listeners = (function($) {
       formIDsInPage.forEach(function(id) {
         Rexbuilder_Rexwpcf7.updateFormInDB(id);
       })
+      if ( 0 !== formIDsInPage.length ) {
+        Rexbuilder_Rexwpcf7.fixBlocksHeight();
+      }
 
       //getting custom css set in page
       var customCSS = $("#rexpansive-builder-style-inline-css")

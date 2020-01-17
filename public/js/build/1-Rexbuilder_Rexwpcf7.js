@@ -1538,7 +1538,13 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
                         switch(editingType) {
                             case 'resetting':
-                                var numberOfInputs = $formColumns.find(".wpcf7-radio .wpcf7-list-item").length / numberOfFormsInPage;
+                                var numberOfInputs = $formColumns[0].querySelectorAll('.wpcf7-list-item').length;
+                                // console.log({
+                                //     numberOfInputs: numberOfInputs,
+                                //     listLength: listLength,
+                                //     list: list.toString()
+                                // })
+
                                 if ( numberOfInputs < listLength ) {
                                     for (var i = 0; i < listLength - numberOfInputs; i++) {
                                         _updateColumnContentLive({
@@ -1556,11 +1562,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                                             content: data.content,
                                             propertyType: 'wpcf7-list-remove',
                                             propertyName: undefined,
-                                            newValue: listLength - 1 - i
+                                            newValue: numberOfInputs - 1 - i
                                         })
                                     }
                                 }
-                                // break;
                             case 'sorting':
                                 for (var i = 0; i < numberOfFormsInPage; i++) {
                                     var $listItems = $formColumns.eq(i).find('.wpcf7-radio .wpcf7-list-item');
@@ -1571,7 +1576,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                                     $listItems.first().addClass('first');
                                     $listItems.last().addClass('last');
                                 }
-                                // break;
                             case 'writing':
                                 for (var i = 0; i < numberOfFormsInPage; i++) {
                                     for (var j = 0; j < listLength; j++) {
@@ -3234,8 +3238,22 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
      * @return {null}
      */
     var _fixWpcf7RadioButtons = function () {
-        // @toedit Provvisorio. Lo span contenente il testo dovrebbe essere eliminato ma
-        // così facendo elimino i before e after che mostrano il radio. Modificare CSS
+        var radiosInPage = Rexbuilder_Util.$rexContainer[0].querySelectorAll('.wpcf7-radio');   // Has wpcf7-form-control class too
+        for (var field of radiosInPage) {
+            // Fixing the radio-xxx class because at page reload it is in the .wpcf7-form-control element
+            var radioClass = /radio-\d+/.exec(field.className);
+
+            if ( null !== radioClass ) {
+                radioClass = radioClass[0];
+                field.classList.remove(radioClass);
+                var fieldName = field.querySelector('[type=radio]').name;
+
+                var fieldParent = field.parentNode;     // .wpcf7-form-control-wrap Element
+                fieldParent.classList.add(radioClass);
+                fieldParent.classList.remove(fieldName);
+            }
+        }
+
         Rexbuilder_Util.$rexContainer.find(".wpcf7 input[type='radio']").each(function (i, element) {
             var $element = $(element);
 
@@ -3338,8 +3356,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                         i++;
                     }
 
-                    Rexbuilder_Rexelement.addStyles();
                     _fixWpcf7();
+                    Rexbuilder_Rexelement.addStyles();
                 }
             },
             error: function(response) {}
@@ -3412,6 +3430,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     var _getIDsInPage = function () {
         return idsInPage;
+    }
+
+    var _fixBlocksHeight = function () {
+        // var blocksInPage = Rexbuilder_Util.$rexContainer[0].querySelectorAll('.grid-stack-item');
+
+        console.log(document.getElementById('rex-wpcf7-tools'))
     }
 
     var _linkDocumentListeners = function() {
@@ -3505,6 +3529,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         removeFormInPage: _removeFormInPage,
         getIDsInPage: _getIDsInPage,
         updateDBFormsInPage: _updateDBFormsInPage,
+        fixBlocksHeight: _fixBlocksHeight,
 
         // Rexwpcf7 generic functions
 		addField: _addField,

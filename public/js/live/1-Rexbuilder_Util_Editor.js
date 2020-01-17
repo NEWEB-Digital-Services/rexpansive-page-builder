@@ -582,14 +582,13 @@ var Rexbuilder_Util_Editor = (function($) {
 
       var blockIDToFocusAfterClose = e.settings.blockID;
       
-      if ("undefined" != typeof blockIDToFocusAfterClose) {
-        setTimeout(function() { // Necessary!
-          $(document.getElementById(blockIDToFocusAfterClose))
+      if ( "undefined" != typeof blockIDToFocusAfterClose ) {
+        setTimeout(function() {   // Necessary!
+          $('#' + blockIDToFocusAfterClose)
             .dblclick()
-            .addClass('item--me-focus');
-          $(document.getElementById(blockIDToFocusAfterClose)).parents('rexpansive_section')
-            .addClass('block-editing')
-            .addClass('focusedRow');
+            .addClass('item--me-focus')
+          .parents('.rexpansive_section')
+            .addClass('focusedRow block-editing');
         }, 0);
       }
     });
