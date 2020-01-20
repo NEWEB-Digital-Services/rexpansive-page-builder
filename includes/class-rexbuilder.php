@@ -158,6 +158,7 @@ class Rexbuilder {
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-model-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-button-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-accordion-shortcode.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-icon-shortcode.php';
 
 		$this->loader = new Rexbuilder_Loader();
 
@@ -443,6 +444,7 @@ class Rexbuilder {
         $this->loader->add_shortcode( 'RexAccordionHeader', $accordion, 'render_accordion_header' );
         $this->loader->add_shortcode( 'RexAccordionContent', $accordion, 'render_accordion_content' );
         $this->loader->add_shortcode( 'RexAccordionFooter', $accordion, 'render_accordion_footer' );
+        $this->loader->add_shortcode( 'RexliveIcon', 'Rexbuilder_Icon_Shortcode', 'render' );
 	}
 
 	/**

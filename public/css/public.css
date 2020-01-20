@@ -5241,11 +5241,11 @@ a.pswp-item {
 .perfect-grid-item.forward-animation .text-wrap > *,
 .rexpansive_section.forward-animation .text-wrap > * {
   opacity: 1;
-  -webkit-transition: opacity 3000ms cubic-bezier(0.39, 0.575, 0.565, 1), -webkit-transform 2500ms cubic-bezier(0.075, 0.82, 0.165, 1);
-  transition: opacity 3000ms cubic-bezier(0.39, 0.575, 0.565, 1), -webkit-transform 2500ms cubic-bezier(0.075, 0.82, 0.165, 1);
-  -o-transition: opacity 3000ms cubic-bezier(0.39, 0.575, 0.565, 1), transform 2500ms cubic-bezier(0.075, 0.82, 0.165, 1);
-  transition: opacity 3000ms cubic-bezier(0.39, 0.575, 0.565, 1), transform 2500ms cubic-bezier(0.075, 0.82, 0.165, 1);
-  transition: opacity 3000ms cubic-bezier(0.39, 0.575, 0.565, 1), transform 2500ms cubic-bezier(0.075, 0.82, 0.165, 1), -webkit-transform 2500ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  -webkit-transition: opacity 1500ms cubic-bezier(0.39, 0.575, 0.565, 1), -webkit-transform 1000ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: opacity 1500ms cubic-bezier(0.39, 0.575, 0.565, 1), -webkit-transform 1000ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  -o-transition: opacity 1500ms cubic-bezier(0.39, 0.575, 0.565, 1), transform 1000ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: opacity 1500ms cubic-bezier(0.39, 0.575, 0.565, 1), transform 1000ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  transition: opacity 1500ms cubic-bezier(0.39, 0.575, 0.565, 1), transform 1000ms cubic-bezier(0.075, 0.82, 0.165, 1), -webkit-transform 1000ms cubic-bezier(0.075, 0.82, 0.165, 1);
   -webkit-transform: translateY(0);
       -ms-transform: translateY(0);
           transform: translateY(0); }
