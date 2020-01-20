@@ -3308,7 +3308,6 @@
       } else {
         newH = Math.ceil((newH+gutter) / this.properties.singleHeight);
       }
-      console.log(newH)
 
       this.updateElementDataHeightProperties( blockData, newH );
 
@@ -3356,7 +3355,6 @@
      * @todo To be fixed by putting a single return
      */
     calculateTextWrapHeight: function( $textWrap ) {
-      console.log('qua mai?')
       var textWrap = $textWrap[0];
       var textHeight = 0;
       if ( hasClass( textWrap, "medium-editor-element" ) ) {

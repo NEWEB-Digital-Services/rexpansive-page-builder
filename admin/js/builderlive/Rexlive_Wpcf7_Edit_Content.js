@@ -68,10 +68,10 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
      * @param {function} callbackFunction  function to call when a valid input is insered. Function will be called with new value as argument
      * @param {Boolean} negativeNumbers true if allow negative numbers
      */
-    var _linkKeyUpListenerInputNumber = function ($target, callbackFunction, negativeNumbers) {
+    var _linkKeyUpListenerInputNumber = function($target, callbackFunction, negativeNumbers) {
         negativeNumbers = typeof negativeNumbers === "undefined" ? false : negativeNumbers.toString() == "true";
-        $target.keyup(function (e) {
-            if (//Numbers
+        $target.keyup(function(e) {
+            if ( //Numbers
                 (e.keyCode >= 48 && e.keyCode <= 57) ||
                 (e.keyCode >= 96 && e.keyCode <= 105) ||
                 // arrow up, arrow down, back, -
@@ -98,16 +98,16 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         needToRemoveSpanData = !data.spanDataExists; // If the span data already exists, we don't have to remove it
         var inputType = columnContentData.input_type;
         blockID = data.blockID;
-        
+
         _updateColumnContentEditorModal(columnContentData);
 
         wpcf7_content_editor_properties.$self.find(".bl_modal-row").not(".row-hidden").addClass("row-hidden");
-        wpcf7_content_editor_properties.$self.find(".bl_modal__option-wrap").not(".row-hidden").addClass("row-hidden");  // Hiding all modal rows
+        wpcf7_content_editor_properties.$self.find(".bl_modal__option-wrap").not(".row-hidden").addClass("row-hidden"); // Hiding all modal rows
         wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal__option-wrap").removeClass('no-br');
         var fontSizeField = wpcf7_content_editor_properties.$content_input_font_size.parents('#rex-wpcf7-font-size-field').detach();
         wpcf7_content_editor_properties.$button_preview.parents(".rex-accordion-outer--content").css('display', 'none');
         wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").find('.rex-wpcf7-accordion-plus-wrap').css('visibility', 'visible');
-        
+
         wpcf7_content_editor_properties.$button_preview.css({
             display: '',
             'font-weight': '',
@@ -306,10 +306,10 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         );
     };
 
-    var _resetModal = function () {
+    var _resetModal = function() {
         var fontSizeField = wpcf7_content_editor_properties.$content_input_font_size.parents('#rex-wpcf7-font-size-field').detach();
         wpcf7_content_editor_properties.$self.find('.rex-wpcf7-font-size-row').append(fontSizeField);
-        
+
         wpcf7_content_editor_properties.$field_list.removeClass('rex-wpcf7-file-list');
     }
 
@@ -743,16 +743,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
     var _createSpanData = function () {
         var columnContentDataToIframe = {
             eventName: "rexlive:wpcf7_create_column_content_span_data",
-            data_to_send: {
-                editPoint: editPoint
-            }
-        };
-        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(columnContentDataToIframe);
-    }
-
-    var _removeSpanData = function () {
-        var columnContentDataToIframe = {
-            eventName: "rexlive:wpcf7_remove_column_content_span_data",
             data_to_send: {
                 editPoint: editPoint
             }

@@ -212,11 +212,11 @@ var Rexbuilder_Rexelement = (function ($) {
                 switch (dropType) {
                     case "inside-block":
                         $elementWrapper.wrap("<span class=\"rex-elements-paragraph\"></span>");
-                        _endFixingElementImported($elementWrapper, formFieldsString);
+                        _endFixingImportedElement($elementWrapper, formFieldsString);
                         Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
                         break;
                     case "inside-paragraph":
-                        _endFixingElementImported($elementWrapper, formFieldsString);
+                        _endFixingImportedElement($elementWrapper, formFieldsString);
                         Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
                         break;
                     case "inside-row":
@@ -244,7 +244,7 @@ var Rexbuilder_Rexelement = (function ($) {
         });
     };
 
-    var _endFixingElementImported = function ($elementWrapper, formFieldsString) {
+    var _endFixingImportedElement = function ($elementWrapper, formFieldsString) {
         var elementID = $elementWrapper.attr("data-rex-element-id");
         var flagElementFound = false;
 
@@ -261,7 +261,6 @@ var Rexbuilder_Rexelement = (function ($) {
         }
 
         if (!flagElementFound) {
-            // _addElementStyle($elementWrapper);
             elementsInPage.push({
                 id: elementID,
                 number: 1
@@ -273,7 +272,6 @@ var Rexbuilder_Rexelement = (function ($) {
 		var galleryData = $gridGallery.data();
         var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
         var $block = $elementWrapper.parents(".grid-stack-item");
-        // galleryEditorInstance.updateElementHeight($block);
 
         // Removing medium editor placeholder if there
         var $textWrap = $elementWrapper.parents(".text-wrap");
@@ -559,7 +557,7 @@ var Rexbuilder_Rexelement = (function ($) {
         // Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
     }
 
-    var _endFixingElementSeparated = function ($elementWrapper, formFieldsString) {
+    var _endFixingSeparatedElement = function ($elementWrapper, formFieldsString) {
         var elementID = $elementWrapper.attr("data-rex-element-id");
         var flagElementFound = false;
 
@@ -576,7 +574,6 @@ var Rexbuilder_Rexelement = (function ($) {
         }
 
         if (!flagElementFound) {
-            // _addElementStyle($elementWrapper);
             elementsInPage.push({
                 id: elementID,
                 number: 1
@@ -1076,7 +1073,7 @@ var Rexbuilder_Rexelement = (function ($) {
                     $elementContainer.append($shortcodeTransformed);
 
                     _lockSynchronize(elementData);
-                    _endFixingElementSeparated($elementWrapper, formFieldsString);
+                    _endFixingSeparatedElement($elementWrapper, formFieldsString);
                 }
             },
             error: function(response) {}
@@ -1290,17 +1287,11 @@ var Rexbuilder_Rexelement = (function ($) {
     }
 
     var _addElementStyle = function ($elementWrapper) {
-        if ($elementWrapper.find(".rex-element-data").eq(0).length != 0) {
-            // var elementData = _generateElementData($elementWrapper, true);
-            // var elementID = elementData.elementInfo.element_target.element_id;
-            // _addCSSRules(elementID, elementData.elementInfo);
-        }
-
         // Adding form style if the element is a form
         if ( 0 !== $elementWrapper.find('.wpcf7-form').length ) {
-            Rexbuilder_Rexwpcf7.addFormStyle($elementWrapper.find(".wpcf7-form"), true);
+            Rexbuilder_Rexwpcf7.refreshFormStyle($elementWrapper.find(".wpcf7-form"), true);
             $elementWrapper.find(".wpcf7-column").each(function(){
-                Rexbuilder_Rexwpcf7.addColumnContentStyle($(this));
+                Rexbuilder_Rexwpcf7.refreshColumnContentStyle($(this));
             })
         }
     }
@@ -1363,7 +1354,7 @@ var Rexbuilder_Rexelement = (function ($) {
             var formFieldsString = data.formFieldsString;
 	        $elementWrapper.detach().prependTo($newDOMElement.find(".text-wrap").eq(0));
 	        $elementWrapper.wrap("<span class=\"rex-elements-paragraph\"></span>");
-	        _endFixingElementImported($elementWrapper, formFieldsString);
+	        _endFixingImportedElement($elementWrapper, formFieldsString);
 	    });
     }
 
