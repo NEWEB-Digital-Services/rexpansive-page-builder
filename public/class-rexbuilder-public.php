@@ -1261,6 +1261,11 @@ class Rexbuilder_Public
         }
     }
     
+    /**
+     * Printing the custom buttons style
+     * @return void
+     * @since  2.0.0
+     */
     public function print_rex_buttons_style()
     {
         if ($this->builder_active_on_this_post_type()) {
@@ -1281,6 +1286,7 @@ class Rexbuilder_Public
             }
         }
     }
+    
     /**
      *    Prepare the html template for the vertical internal navigation (dots)
      *
