@@ -5133,6 +5133,14 @@ a.pswp-item {
     margin-top: 100vh !important;
     margin-bottom: 20vh !important; } }
 
+@media screen and (max-width: 767px) {
+  .rexpansive_section.sticky-section .perfect-grid-gallery {
+    margin-top: 50vh !important;
+    margin-bottom: 20vh !important; } }
+
+.rexpansive_section.sticky-section .responsive-overlay.rex-active-overlay {
+  visibility: hidden; }
+
 /** sticky border animation **/
 .sticky-element__wrapper {
   position: absolute;

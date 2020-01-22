@@ -4,7 +4,7 @@
  * @version 1.0.0
  */
 ; (function () {
-  this.StickySection = function () { 
+  this.StickySection = function () {
     this.element = null;
     this.stickyElement = null;
     this.borderAnimationEl = {};
@@ -105,6 +105,9 @@
       // classic method
       window.addEventListener('scroll', handleSticky.bind(this));
     }
+
+    // attach the plugin instance to the dom element
+    this.element.StickySectionInstance = this;
   }
 
   // private shared vars
@@ -247,6 +250,11 @@
         }
       }
     }
+  };
+
+  // public methods
+  StickySection.prototype.hideBorder = function() {
+    scaleBorder.call(this, 0);
   };
 
   /**

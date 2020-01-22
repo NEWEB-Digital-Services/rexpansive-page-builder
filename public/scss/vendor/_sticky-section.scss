@@ -15,6 +15,7 @@
         background-repeat: no-repeat;
       }
     }
+
     &.will-change-rule {
       .rex-video-wrap {
         will-change: transform;
@@ -23,6 +24,7 @@
     .rex-video-wrap {
       max-height: 100vh;
     }
+
     @media screen and (min-width: 768px) {
       .perfect-grid-gallery {
         // min-height: 100vh;
@@ -30,7 +32,21 @@
         margin-bottom: 20vh!important;
       }
     }
+
+    @media screen and (max-width: 767px) {
+      .perfect-grid-gallery {
+        margin-top: 50vh!important;
+        margin-bottom: 20vh!important;
+      }
+    }
+
+    .responsive-overlay {
+      &.rex-active-overlay {
+        visibility: hidden;
+      }
+    }
   }
+
 }
 /** sticky border animation **/
 // .sticky__border-animation__wrap {

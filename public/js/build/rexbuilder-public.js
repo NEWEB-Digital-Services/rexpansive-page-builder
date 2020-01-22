@@ -232,6 +232,8 @@ var Rexbuilder_App = (function($) {
           stickyElementSelector: stickyElementSelector,
           overlayAnimation: overlayAnimation
         });
+
+        console.log(stickySection)
       }
     }
   };
