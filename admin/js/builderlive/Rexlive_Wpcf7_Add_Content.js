@@ -11,15 +11,23 @@ var Wpcf7_Add_Content_Modal = (function ($) {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	var _openContentAdder = function (data) {
-		insertionPoint = data;
+        var blockID = data.blockID;
+		insertionPoint = data.insertionPoint;
+
 		Rexlive_Modals_Utils.openModal(
-            wpcf7_content_adder_properties.$self.parent(".rex-modal-wrap"),
+            wpcf7_content_adder_properties.$self.parent(".rex-modal-wrap"),     // $target
+            false,                      // target_only
+            ["wpcf7-adding-content"],   // additional_class
+            undefined,                  // set_position
+            blockID                     // blockIDToFocusAfterClose
         );
 	}
 
 	var _closeModal = function () {
         Rexlive_Modals_Utils.closeModal(
-        	wpcf7_content_adder_properties.$self.parent(".rex-modal-wrap")
+        	wpcf7_content_adder_properties.$self.parent(".rex-modal-wrap"),    // $target
+            false,                      // target_only
+            ["wpcf7-adding-content"]    // additional_class
         );
     };
 

@@ -199,8 +199,8 @@ var Element_Choose_Modal = (function ($) {
     var _openChooseModal = function () {
         Rexlive_Modals_Utils.openModal(
             rex_element_choose_panel.$self.parent(".rex-modal-wrap"),    // $target
-            false,          // target_only
-            undefined,      // additional_class
+            false,                          // target_only
+            ["wpcf7-choose-element"],      // additional_class
             undefined,      // set_position
             blockID         // blockIDToFocusAfterClose
         );
@@ -208,7 +208,9 @@ var Element_Choose_Modal = (function ($) {
 
     var _closeChooseModal = function () {
         Rexlive_Modals_Utils.closeModal(
-            rex_element_choose_panel.$self.parent(".rex-modal-wrap")
+            rex_element_choose_panel.$self.parent(".rex-modal-wrap"),   // $target
+            false,                      // target_only
+            ["wpcf7-choose-element"]    // additional_class
         );
     };
 
@@ -217,6 +219,7 @@ var Element_Choose_Modal = (function ($) {
     var _linkDocumentListeners = function () {
         rex_element_choose_panel.$button.on("click", function (e) {
             var optionSelected = this.getAttribute("data-rex-option");
+            _closeChooseModal();
             switch (optionSelected) {
                 case "remove":      // Need to create a new element based on the current element
                     oldElementID = elementData.element_target.element_id;
@@ -236,7 +239,6 @@ var Element_Choose_Modal = (function ($) {
                 default:
                     break;
             }
-            _closeChooseModal();
         });
 
         rex_element_choose_panel.$close_button.on("click", function () {

@@ -185,9 +185,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
     var _closeModal = function () {
         Rexlive_Modals_Utils.closeModal(
-            wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),
-            false,
-            ["wpcf7-editing-form"]
+            wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),   // $target
+            false,                  // target_only
+            ["wpcf7-editing-form"]  // additional_class
         );
     };
 

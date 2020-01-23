@@ -308,7 +308,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
 
       if (event.data.eventName == "rexlive:openRexWpcf7AddContent") {
-        Wpcf7_Add_Content_Modal.openContentAdder(event.data.insertionPoint);
+        Wpcf7_Add_Content_Modal.openContentAdder(event.data);
       }
 
       if (event.data.eventName == "rexlive:openRexWpcf7EditContent") {

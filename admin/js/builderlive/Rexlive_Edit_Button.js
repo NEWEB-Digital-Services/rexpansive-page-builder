@@ -101,6 +101,7 @@ var Button_Edit_Modal = (function ($) {
     var _linkDocumentPanelChooseListeners = function () {
         rex_edit_model_button_panel_properties.$button.on("click", function (e) {
             var optionSelected = this.getAttribute("data-rex-option");
+            _closeChooseButtonEdit();
             switch (optionSelected) {
                 case "remove":
                     _separateRexButton();
@@ -116,7 +117,6 @@ var Button_Edit_Modal = (function ($) {
                 default:
                     break;
             }
-            _closeChooseButtonEdit();
         });
 
         rex_edit_model_button_panel_properties.$close_button.on("click", function () {
