@@ -34,7 +34,7 @@ var Rexbuilder_App = (function($) {
   }
 
   var _linkDocumentListeners = function() {
-    Rexbuilder_Util.$document.on("YTPStart", function(e) {
+    function handleYTPStart(e) {
       var ytContainer = $(e.target);
       var $toggle = ytContainer
         .parents(".youtube-player")
@@ -51,10 +51,11 @@ var Rexbuilder_App = (function($) {
           ytpPlayer.setVolume(0);
         }
       }
-    });
+    }
+    Rexbuilder_Util.$document.on("YTPStart", handleYTPStart);
 
     // Pause/Play video on block click
-    Rexbuilder_Util.$document.on("click", ".YTPOverlay", function(e) {
+    function handleClickYTPOverlay(e) {
       var $ytvideo = $(e.target).parents(".rex-youtube-wrap");
       if ($ytvideo.length > 0) {
         var video_state = $ytvideo[0].state;
@@ -64,10 +65,11 @@ var Rexbuilder_App = (function($) {
           $ytvideo.YTPPlay();
         }
       }
-    });
+    }
+    Rexbuilder_Util.$document.on("click", ".YTPOverlay", handleClickYTPOverlay);
 
-    Rexbuilder_Util.$document.on("click", ".perfect-grid-item", function() {
-      if (!$(this).hasClass("block-has-slider")) {
+    function handleClickBlockHasSlider(e) {
+      // if (!$(this).hasClass("block-has-slider")) {
         var $itemContent = $(this).find(".grid-item-content");
         var $ytvideo = $itemContent.children(".rex-youtube-wrap");
         var $vimvideo = $itemContent.children(".rex-video-vimeo-wrap--block");
@@ -108,11 +110,13 @@ var Rexbuilder_App = (function($) {
             videoMp4.pause();
           }
         }
-      }
-    });
+      // }
+    }
+
+    Rexbuilder_Util.$document.on("click", ".block-has-slider", handleClickBlockHasSlider);
 
     // Adding audio functionallity
-    Rexbuilder_Util.$document.on("click", ".rex-video-toggle-audio", function(e) {
+    function handleClickVideoToggleAudio(e) {
       e.stopPropagation();
       var $toggle = $(this);
       var $ytvideo = $toggle
@@ -172,28 +176,31 @@ var Rexbuilder_App = (function($) {
             });
         }
       }
-    });
+    }
+    Rexbuilder_Util.$document.on("click", ".rex-video-toggle-audio", handleClickVideoToggleAudio);
 
     // video controller tools
     // play video
-    Rexbuilder_Util.$document.on('click', '.rex-video__controls .pause', function(ev) {
+    function handleClickPlayVideo(ev) {
       var $tool = $(ev.currentTarget);
       var $play_tool = $tool.parent().children('.play');
       var $target = $tool.parents('.rexpansive_section');
       $tool.removeClass('video-tool--view');
       $play_tool.addClass('video-tool--view');
       Rexbuilder_Util.pauseVideo( $target );
-    });
+    }
+    Rexbuilder_Util.$document.on('click', '.rex-video__controls .pause', handleClickPlayVideo);
 
     // pause video
-    Rexbuilder_Util.$document.on('click', '.rex-video__controls .play', function(ev) {
+    function handleClickPauseVideo(ev) {
       var $tool = $(ev.currentTarget);
       var $pause_tool = $tool.parent().children('.pause');
       var $target = $tool.parents('.rexpansive_section');
       $tool.removeClass('video-tool--view');
       $pause_tool.addClass('video-tool--view');
       Rexbuilder_Util.playVideo( $target );
-    });
+    }
+    Rexbuilder_Util.$document.on('click', '.rex-video__controls .play', handleClickPauseVideo);
   };
 
   /**
@@ -232,8 +239,6 @@ var Rexbuilder_App = (function($) {
           stickyElementSelector: stickyElementSelector,
           overlayAnimation: overlayAnimation
         });
-
-        console.log(stickySection)
       }
     }
   };
