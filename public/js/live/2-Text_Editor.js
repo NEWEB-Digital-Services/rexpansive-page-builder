@@ -3221,7 +3221,6 @@ var TextEditor = (function ($) {
       var $target = $(event.target);
       var $gridStackItem = $target.parents(".grid-stack-item");
       var $section = $target.parents(".rexpansive_section");
-      console.time('test')
       if ( "mouseover" == event.type &&
           $gridStackItem[0].classList.contains('item--me-focus') &&
           $section[0].classList.contains('focusedRow') &&
@@ -3310,7 +3309,6 @@ var TextEditor = (function ($) {
           }
         }
       }
-      console.timeEnd('test')
     },
 
     handleClickAddFormContent: function (event) {
