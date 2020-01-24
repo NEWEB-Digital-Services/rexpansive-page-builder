@@ -3362,7 +3362,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         if ( 1 === formOccurencies[formID] ) {
             // Means that the one we are removing is the last one in page
             delete $formsInPage[formID];
-            delete formOccurencies[formID]
+            delete formOccurencies[formID];
             idsInPage.splice(idsInPage.indexOf(formID), 1);
         } else {
             formOccurencies[formID] -= 1;

@@ -1038,14 +1038,13 @@ var Rexbuilder_Rexelement = (function ($) {
      */
     var _refreshSeparatedRexElement = function (data) {
         var elementID = data.elementID.toString();
-        var oldElementModelID = data.oldElementModelID.toString();
+        var oldElementID = data.oldElementID.toString();
         var elementData = data.elementData;
         var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]");
-        var $elementData = $elementWrapper.find(".rex-element-data");
         var $elementShortcode = $elementWrapper.find(".string-shortcode");
         var elementShortcode = $elementShortcode.attr("shortcode").toString();
 
-        var newElementShortcode = elementShortcode.replace(oldElementModelID, elementID);
+        var newElementShortcode = elementShortcode.replace(oldElementID, elementID);
         $elementShortcode.attr("shortcode", newElementShortcode);
 
         // Deleting the style

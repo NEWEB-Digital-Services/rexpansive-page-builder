@@ -216,10 +216,19 @@ var Element_Choose_Modal = (function ($) {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
+    var _sendPageEditedMessage = function() {
+        var data = {
+            eventName: "rexlive:edited",
+            modelEdited: false
+        };
+        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
+    }
+
     var _linkDocumentListeners = function () {
         rex_element_choose_panel.$button.on("click", function (e) {
             var optionSelected = this.getAttribute("data-rex-option");
             _closeChooseModal();
+            _sendPageEditedMessage();
             switch (optionSelected) {
                 case "remove":      // Need to create a new element based on the current element
                     oldElementID = elementData.element_target.element_id;
@@ -228,7 +237,6 @@ var Element_Choose_Modal = (function ($) {
                     _saveNewElementOnDB();
                     break;
                 case "edit":        // Editing an existing element
-                    // Selezionare il modal in base al tipo di elemento che abbiamo
                     Wpcf7_Edit_Form_Modal.openFormEditorModal({
                         elementData: elementData,
                         blockID: blockID

@@ -2848,10 +2848,10 @@ var TextEditor = (function ($) {
       var $gridStackItem = $target.parents(".grid-stack-item");
       var $section = $target.parents(".rexpansive_section");
 
-      if ( "mouseover" == event.type
-          && $gridStackItem[0].classList.contains('item--me-focus')
-          && $section[0].classList.contains('focusedRow')
-          && $section[0].classList.contains('block-editing') 
+      if ( "mouseover" == event.type &&
+          $gridStackItem[0].classList.contains('item--me-focus') &&
+          $section[0].classList.contains('focusedRow') &&
+          $section[0].classList.contains('block-editing') 
         ) {
         if ($target.parents(".rex-element-container").length != 0) {
           this.traceELMNT = $target.parents(".rex-element-container")[0];
@@ -2880,10 +2880,18 @@ var TextEditor = (function ($) {
       this.hideRexelementToolbox();
       var $elementContainer = $(this.traceELMNT).parents(".rex-element-wrapper");
       var $paragraphContainer = $elementContainer.parents("p.rex-elements-paragraph");
+
+      if ( 0 !== $elementContainer[0].getElementsByClassName('wpcf7-form').length ) {
+        var formID = $elementContainer[0].getAttribute('data-rex-element-id');
+        Rexbuilder_Rexwpcf7.removeFormInPage(formID);
+      }
+
       $elementContainer.remove();
       if ($paragraphContainer.find(".rex-element-wrapper").length == 0) {
         $paragraphContainer.remove();
       }
+
+      Rexbuilder_Util_Editor.builderEdited(false);
     },
 
     handleClickEditRexelement: function (e) {
@@ -3213,7 +3221,7 @@ var TextEditor = (function ($) {
       var $target = $(event.target);
       var $gridStackItem = $target.parents(".grid-stack-item");
       var $section = $target.parents(".rexpansive_section");
-
+      console.time('test')
       if ( "mouseover" == event.type &&
           $gridStackItem[0].classList.contains('item--me-focus') &&
           $section[0].classList.contains('focusedRow') &&
@@ -3227,9 +3235,10 @@ var TextEditor = (function ($) {
           this.setOutline(this.traceForm, '#00ACFF');
         }
 
-        if ( 0 !== $target.parents('.wpcf7-form').length ) {
+        var $form = $target.parents('.wpcf7-form');
+        if ( 0 !== $form.length ) {
           // The pointer is inside a form
-          this.traceForm = $target.parents('.wpcf7-form')[0];
+          this.traceForm = $form[0];
           this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
           // this.addFormContentBtns = this.traceForm.querySelectorAll('.wpcf7-add-new-form-content');
 
@@ -3250,9 +3259,10 @@ var TextEditor = (function ($) {
           this.hidePlusButtons();
           this.setOutline(this.traceForm, '#00ACFF');
 
-          if ( 0 !== $target.parents('.wpcf7-row').length ) {
+          var $formRow = $target.parents('.wpcf7-row');
+          if ( 0 !== $formRow.length ) {
             // The pointer is inside a form row
-            this.traceFormRow = $target.parents('.wpcf7-row')[0];
+            this.traceFormRow = $formRow[0];
             
             this.setOutline(this.traceFormRow, '#00ACFF');
             this.hideAllRowToolsInsideRow();
@@ -3265,26 +3275,30 @@ var TextEditor = (function ($) {
               this.hideRowToolbox();
             }
 
-            if ( $target.parents(".wpcf7-column").length != 0 && $target.parents(".wpcf7-column").find(".wpcf7-add-new-form-content").length != 0 ) {
+            var $formColumn = $target.parents(".wpcf7-column");
+            // if ( $formColumn.length !== 0 && 0 !== $formColumn.find(".wpcf7-add-new-form-content").length ) {
+            if ( $formColumn.length !== 0 && 0 !== $formColumn[0].getElementsByClassName("wpcf7-add-new-form-content").length ) { 
               // The pointer is inside a form column (and obviously row)
-              $target.parents(".wpcf7-column").find(".wpcf7-add-new-form-content").css("display", "block");
-            } else if ($target.hasClass("wpcf7-column") && $target.find(".wpcf7-add-new-form-content").length != 0) {
+              // $formColumn.find(".wpcf7-add-new-form-content").css("display", "block");
+              $formColumn[0].querySelector(".wpcf7-add-new-form-content").style.display = 'block';
+            // } else if ( $target.hasClass("wpcf7-column") && 0 !== $target.find(".wpcf7-add-new-form-content").length ) {
+            } else if ( $target.hasClass("wpcf7-column") && 0 !== $target[0].getElementsByClassName("wpcf7-add-new-form-content").length ) {
               // The pointer is inside a form column (and obviously row)
-              $target.find(".wpcf7-add-new-form-content").css("display", "block");
+              // $target.find(".wpcf7-add-new-form-content").css("display", "block");
+              $target[0].querySelector(".wpcf7-add-new-form-content").style.display = 'block';
             }
             
-            if ($target.parents(".wpcf7-column").length != 0 && $target.parents(".wpcf7-column").find(".wpcf7-add-new-form-content").length == 0 && $target.parents(".wpcf7-column").find(".wpcf7-add-new-row").length == 0) {
+            if ( $formColumn.length !== 0 && $formColumn[0].getElementsByClassName("wpcf7-add-new-form-content").length === 0 && $formColumn[0].getElementsByClassName("wpcf7-add-new-row").length === 0 ) {
               // The pointer is inside a form column (and obviously row)
-              this.traceFormColumn = $target.parents(".wpcf7-column")[0];
+              this.traceFormColumn = $formColumn[0];
               this.traceColumnContent = this.findElementToOutline(this.traceFormColumn);
 
-              if ($target[0] == this.traceColumnContent || $target.parents().filter(this.traceColumnContent).length != 0) {
-                
+              if ( $target[0] == this.traceColumnContent || $target.parents().filter(this.traceColumnContent).length != 0 ) {
                 this.hideRowToolbox();
                 this.viewColumnToolbox();
                 this.setOutline(this.traceColumnContent, "#FF0055");
               }
-            } else if ($target.hasClass("wpcf7-column") && $target.find(".wpcf7-add-new-form-content").length == 0 && $target.find(".wpcf7-add-new-row").length == 0) {
+            } else if ( $target.hasClass("wpcf7-column") && $target[0].getElementsByClassName("wpcf7-add-new-form-content").length === 0 && $target[0].getElementsByClassName("wpcf7-add-new-row").length === 0 ) {
               // The pointer is inside a form column (and obviously row)
               this.traceFormColumn = $target[0];
               this.traceColumnContent = this.findElementToOutline(this.traceFormColumn);
@@ -3296,6 +3310,7 @@ var TextEditor = (function ($) {
           }
         }
       }
+      console.timeEnd('test')
     },
 
     handleClickAddFormContent: function (event) {
