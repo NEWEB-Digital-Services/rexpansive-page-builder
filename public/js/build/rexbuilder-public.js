@@ -327,7 +327,8 @@ var Rexbuilder_App = (function($) {
       for( i=0; i < tot_scrbls; i++ ) {
         var inst = new SplitScrollable(scrbls[i], {
           scrollElsToWatchClass: 'text-wrap',
-          initializeComplete: fixScrollableGridGallery
+          initializeComplete: fixScrollableGridGallery,
+          customScrollContainer: this.target
         });
       }
     }

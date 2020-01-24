@@ -9,6 +9,7 @@
 		this.scrollElsToWatch = [];
 		this.totScrollEls = 0;
 		this.totScrollElsToWatch = 0;
+		this.actualScrollEl = null;
 
 		this.opacityElsWrapper = null;
 		this.opacityEls = [];
@@ -17,6 +18,10 @@
 		this.scrollElsState = [];
 
 		this.scrollObserver = null;
+		this.userScrolled = false;
+
+		this.viewportSizes = null;
+		this.scrollContainer = null;
 
 		if (arguments[0]) {
 			this.element = arguments[0];
@@ -32,7 +37,8 @@
 			opacityElsClass: 'opacity-block',
 			opacityFakeElClass: 'opacity-block-fake',
 			opacityElActiveClass: 'opacity-block-active',
-			initializeComplete: null
+			initializeComplete: null,
+			customScrollContainer: null
 		};
 
 		// Create options by extending defaults with the passed in arugments
@@ -41,6 +47,9 @@
 		} else {
 			this.options = defaults;
 		}
+
+		// this.debugEl = null;
+		// debugging.call(this);
 
 		initialize.call(this);
 		addWrappers.call(this);
@@ -51,7 +60,7 @@
 
 		fixStickyHeight.call(this);
 
-		watchScroll.call(this);
+		attachListeners.call(this);
 
 		// simulateLast.call(this);
 
@@ -79,6 +88,14 @@
 		for( i=0; i < this.totScrollEls; i++ ) {
 			this.scrollElsToWatch[i].setAttribute('data-scroll-el-index', i);
 			this.scrollElsState.push(null)
+		}
+
+		this.viewportSizes = viewport();
+
+		if ( this.options.customScrollContainer ) {
+			this.scrollContainer = this.options.customScrollContainer;
+		} else {
+			this.scrollContainer = window;
 		}
 	}
 
@@ -118,7 +135,84 @@
 		}
 	}
 
+	function fixStickyHeight() {
+		this.opacityElsWrapper.style.height = parseFloat( getComputedStyle( this.opacityEls[this.opacityEls.length-1], null ).top.replace("px", "") ) + 
+		( this.opacityEls[this.opacityEls.length-1].offsetHeight ) + 'px';
+	}
+
+	function attachListeners() {
+		// scroll event
+		// watchScroll.call(this);
+		// // check first scroll
+		// handleScroll.call(this);
+		
+		watchIntersectionObserver.call(this);
+
+		// resize event
+		watchResize.call(this);
+	}
+
+	/**
+	 * SCROLL HANDLING
+	 */
+	/**
+	 * Watching the browser scrolling, bouncing the event
+	 * every 150 ms to prevent event polling
+	 * @return {void}
+	 */
 	function watchScroll() {
+		userScrolled = false;
+		var that = this;
+
+		function scrollHandler() {
+			userScrolled = true;
+		}
+
+		this.scrollContainer.addEventListener( 'scroll', scrollHandler);
+
+		rInterval( function() {
+			if ( userScrolled ) {
+				handleScroll.call(that);
+				userScrolled = false;
+			}
+		}, 150);
+	}
+
+	function handleScroll() {
+		var totscroll = scrollDocumentPositionTop();
+		var scrollOffset = 0;
+		var i, toSet, offsetEl, guessedIndex = null;
+		var generalCondition = false, firstElementCondition = false;
+		// var heightFactor = ( this.aspectRatio >= 1 ? 0.5 : 0.2 );
+
+		this.debugEl.innerText = totscroll + ' + ' + this.viewportSizes.height + ' = ' + ( totscroll + this.viewportSizes.height ) + '\n';
+
+		for( i=0; i < this.totScrollElsToWatch; i++ ) {
+			if ( this.scrollElsToWatch[i] ) {
+				offsetEl = offsetAbsolute( this.scrollElsToWatch[i] );
+
+				this.debugEl.innerText += i + ' : ' + offsetEl.top + ' -- ' + offsetEl.height + ' ## ' + ( offsetEl.top - totscroll ) + '\n';
+
+				// view conditions
+				generalCondition = ( offsetEl.top - totscroll ) > 0 && ( ( offsetEl.top ) < ( totscroll + this.viewportSizes.height + scrollOffset ) ) && ( ( offsetEl.top + offsetEl.height ) > ( totscroll + scrollOffset ) );
+
+				if ( generalCondition ) {
+					guessedIndex = this.scrollElsToWatch[i].getAttribute('data-scroll-el-index');
+					break;
+				}
+			}
+		}
+
+		// get last guess
+		if ( guessedIndex ) {
+			if ( this.actualScrollEl !== guessedIndex ) {
+				activateScrollEl.call( this, guessedIndex );
+				this.actualScrollEl = guessedIndex;
+			}
+		}
+	}
+
+	function watchIntersectionObserver() {
 		var that = this;
 		this.scrollObserver = new IntersectionObserver( function( entries, observer ) {
 			var tot_entries = entries.length, i = 0;
@@ -186,6 +280,18 @@
 		}
 	}
 
+	function activateScrollEl( targetIndex ) {
+		for( var i=0; i < this.totScrollEls; i++ ) {
+			if ( this.scrollElsToWatch[i].getAttribute('data-scroll-el-index') == targetIndex ) {
+				addClass( this.scrollEls[i], this.options.scrollElActiveClass );
+				addClass( this.opacityEls[i], this.options.opacityElActiveClass );
+			} else {
+				removeClass( this.scrollEls[i], this.options.scrollElActiveClass );
+				removeClass( this.opacityEls[i], this.options.opacityElActiveClass );
+			}
+		}
+	}
+
 	function activeElementOnScroll( index ) {
 		for( var i=0; i < this.totScrollEls; i++ ) {
 			if ( index === i ) {
@@ -227,6 +333,34 @@
 		}
 	}
 
+	// handle resize
+	function watchResize() {
+		userResized = false;
+		var that = this;
+
+		function resizeHandler() {
+			userResized = true;
+		}
+
+		window.addEventListener( 'resize', resizeHandler );
+
+		rInterval( function() {
+			if ( userResized ) {
+				handleResize.call(that);
+				userResized = false;
+			}
+		}, 150);
+	}
+
+	function handleResize() {
+		this.viewportSizes = viewport();
+	}
+
+	/**
+	 * Simulating the last opacity block
+	 * @return {void}
+	 * @deprecated
+	 */
 	function simulateLast() {
 		var lastEl = this.opacityEls[this.totOpacityEls-1];
 		var fakeFirst = lastEl.cloneNode(true);
@@ -236,12 +370,20 @@
 		// this.opacityEls[0].parentNode.insertBefore(fakeFirst, this.opacityEls[0]);
 	}
 
-	function fixStickyHeight() {
-		this.opacityElsWrapper.style.height = parseFloat( getComputedStyle( this.opacityEls[this.opacityEls.length-1], null ).top.replace("px", "") ) + 
-		( this.opacityEls[this.opacityEls.length-1].offsetHeight ) + 'px';
+	function debugging() {
+		this.debugEl = document.createElement('div');
+		this.debugEl.style.position = 'fixed'
+		this.debugEl.style.bottom = '0px'
+		this.debugEl.style.right = '0px'
+		this.debugEl.style.backgroundColor = '#ddd'
+		this.debugEl.style.padding = '10px'
+		this.debugEl.style.zIndex = '9999'
+		this.debugEl.style.fontSize = '15px'
+		document.body.appendChild(this.debugEl)
 	}
 
 	// Utilities
+	// Class utilities
 	var hasClass, addClass, removeClass, toggleClass;
 	if ('classList' in document.documentElement) {
 		hasClass = function (el, className) { return el.classList.contains(className); };
@@ -264,6 +406,102 @@
 			removeClass(el, className);
 		} else {
 			addClass(el, className);
+		}
+	}
+
+	// scroll and size utilities
+	/**
+	 * Find element offset relative to scroll of the viewport
+	 * @param  {Element} el element to check
+	 * @return {Object}    top and left scroll of the element
+	 */
+	function offsetRelative( el ) {
+		var rect = el.getBoundingClientRect();
+
+		return {
+			top: rect.top + document.body.scrollTop,
+			left: rect.left + document.body.scrollLeft,
+			height: rect.height
+		}
+	}
+
+	/**
+	 * Find element offset relative to the document
+	 * @param  {Element} el element to check
+	 * @return {Object}    top, left and height of the element
+	 */
+	function offsetAbsolute( el ) {
+		var rect = el.getBoundingClientRect();
+
+		return {
+			top: rect.top  + ( window.pageYOffset || document.body.scrollTop )  - ( document.body.clientTop  || 0 ),
+  			left: rect.left + ( window.pageXOffset || document.body.scrollLeft ) - ( document.body.clientLeft || 0 ),
+  			height: rect.height
+		}
+	}
+
+	/**
+	 * Find the viewport scroll top value
+	 * @return {Number} scroll top value
+	 */
+	function scrollDocumentPositionTop() {
+		return window.pageYOffset || document.documentElement.scrollTop;
+	}
+
+	/**
+	 * Calculate viewport window and height
+	 * @return {Object} width, height of the viewport
+	 */
+	function viewport() {
+		var e = window, a = 'inner';
+		if (!('innerWidth' in window)) {
+			a = 'client';
+			e = document.documentElement || document.body;
+		}
+		return { width: e[a + 'Width'], height: e[a + 'Height'] };
+	}
+
+	// timing utilities
+	/**
+	 * Set timeout function rewritten with requestanimation frame
+	 * @param  {Function} callback [description]
+	 * @param  {Number}   delay    delay time
+	 * @return {Object}
+	 */
+	function rtimeOut( callback, delay ) {
+		var dateNow = Date.now,
+			requestAnimation = window.requestAnimationFrame,
+			start = dateNow(),
+			stop,
+			timeoutFunc = function(){
+				dateNow() - start < delay ? stop || requestAnimation(timeoutFunc) : callback()
+			};
+		requestAnimation(timeoutFunc);
+
+		return {
+			clear:function(){stop=1}
+		}
+	}
+
+	/**
+	 * Set interval function rewritten with requestanimation frame
+	 * @param  {Function} callback [description]
+	 * @param  {Number}   delay    delay time
+	 * @return {Object}
+	 */
+	function rInterval( callback, delay ) {
+		var dateNow = Date.now,
+			requestAnimation = window.requestAnimationFrame,
+			start = dateNow(),
+			stop,
+			intervalFunc = function() {
+				dateNow() - start < delay || ( start += delay, callback());
+				stop || requestAnimation( intervalFunc )
+			}
+		requestAnimation( intervalFunc );
+
+		return {
+			clear: function(){ stop=1 }
 		}
 	}
 
