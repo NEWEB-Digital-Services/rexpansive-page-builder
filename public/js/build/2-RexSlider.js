@@ -110,11 +110,20 @@ var RexSlider = (function ($) {
       $sliderWrap.flickity('playPlayer');
     }
 
-    if ( settings.prevNextButtons && $parentBlock.hasClass('custom-autoplay') ) {
+    if ( $parentBlock.hasClass('custom-autoplay') ) {
       var sliderInstance = $sliderWrap.data('flickity');
-      sliderInstance.customAutoplayInterval;
-      sliderInstance.prevButton.element.addEventListener('click', handleCustomAutoplay.bind( sliderInstance ));
-      sliderInstance.nextButton.element.addEventListener('click', handleCustomAutoplay.bind( sliderInstance ));
+      sliderInstance.customAutoplayInterval = null;
+      if ( settings.prevNextButtons ) {
+        sliderInstance.prevButton.element.addEventListener('click', handleCustomAutoplay.bind( sliderInstance ));
+        sliderInstance.nextButton.element.addEventListener('click', handleCustomAutoplay.bind( sliderInstance ));
+      }
+      if ( settings.pageDots ) {
+        for(var i=0; i < sliderInstance.pageDots.dots.length; i++) {
+          sliderInstance.pageDots.dots[i].addEventListener('click', handleCustomAutoplay.bind( sliderInstance));
+        }
+      }
+
+      sliderInstance.$element.on('dragEnd.flickity', handleCustomAutoplay.bind( sliderInstance ));
     }
 
     $sliderWrap.attr("data-rex-slider-active", true);
@@ -141,13 +150,14 @@ var RexSlider = (function ($) {
    */
   function handleCustomAutoplay(ev) {
     var slinderInstance = this;
+    var timer = ( this.element.getAttribute('data-custom-autoplay-timer') ? this.element.getAttribute('data-custom-autoplay-timer') : 9000 );
     if ( slinderInstance.customAutoplayInterval ) {
       slinderInstance.customAutoplayInterval.clear();
     }
 
     slinderInstance.customAutoplayInterval = Rexbuilder_Util.rtimeOut(function() {
       slinderInstance.playPlayer();
-    }, 4000);
+    }, timer);
 
     slinderInstance.pausePlayer()
   }
