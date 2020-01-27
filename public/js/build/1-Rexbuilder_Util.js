@@ -30,6 +30,50 @@ var Rexbuilder_Util = (function($) {
     }
   }
 
+  // timing utilities
+  /**
+   * Set timeout function rewritten with requestanimation frame
+   * @param  {Function} callback [description]
+   * @param  {Number}   delay    delay time
+   * @return {Object}
+   */
+  function rtimeOut( callback, delay ) {
+    var dateNow = Date.now,
+      requestAnimation = window.requestAnimationFrame,
+      start = dateNow(),
+      stop,
+      timeoutFunc = function(){
+        dateNow() - start < delay ? stop || requestAnimation(timeoutFunc) : callback()
+      };
+    requestAnimation(timeoutFunc);
+
+    return {
+      clear:function(){stop=1}
+    }
+  }
+
+  /**
+   * Set interval function rewritten with requestanimation frame
+   * @param  {Function} callback [description]
+   * @param  {Number}   delay    delay time
+   * @return {Object}
+   */
+  function rInterval( callback, delay ) {
+    var dateNow = Date.now,
+      requestAnimation = window.requestAnimationFrame,
+      start = dateNow(),
+      stop,
+      intervalFunc = function() {
+        dateNow() - start < delay || ( start += delay, callback());
+        stop || requestAnimation( intervalFunc )
+      }
+    requestAnimation( intervalFunc );
+
+    return {
+      clear: function(){ stop=1 }
+    }
+  }
+
   var fixSectionWidth = 0;
   var editorMode = false;
   var windowIsResizing = false;
@@ -4053,6 +4097,8 @@ var Rexbuilder_Util = (function($) {
     hasClass: hasClass,
     addClass: addClass,
     removeClass: removeClass,
-    toggleClass: toggleClass
+    toggleClass: toggleClass,
+    rtimeOut: rtimeOut,
+    rInterval: rInterval
   };
 })(jQuery);

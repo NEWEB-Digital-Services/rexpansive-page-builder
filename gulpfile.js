@@ -552,6 +552,10 @@ gulp.task('public-js-build', function() {
 	.pipe(gulp.dest('public/js'))
 });
 
+gulp.task('watch-public-js-build', function() {
+	gulp.watch(public_js_logic_src, ['public-js-build']);
+});
+
 /* ----- BUILD PLUGIN ------- */
 
 gulp.task('dev', ['admin-plugins-build', 'admin-css-build', 'public-css-build', 'public-plugins-build', 'public-js-build'] ,function() {
