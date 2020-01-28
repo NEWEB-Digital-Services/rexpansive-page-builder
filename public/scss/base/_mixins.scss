@@ -13,3 +13,9 @@
     clear: both;
   }
 }
+
+@mixin safariFlickerFix {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}

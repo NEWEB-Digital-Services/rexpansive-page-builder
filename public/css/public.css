@@ -5113,6 +5113,12 @@ a.pswp-item {
   top: 0; }
 
 .rexpansive_section.sticky-section.sticky-css .sticky-background-simulator {
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
   position: -webkit-sticky;
   position: sticky;
   top: 0;
@@ -5166,6 +5172,12 @@ a.pswp-item {
 .sticky__border-animation__right,
 .sticky__border-animation__bottom,
 .sticky__border-animation__left {
+  -webkit-transform-style: preserve-3d;
+          transform-style: preserve-3d;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+          transform: translateZ(0);
   position: absolute;
   -webkit-transform: scale(1, 1);
       -ms-transform: scale(1, 1);

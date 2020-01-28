@@ -6,6 +6,7 @@
         top: 0;
       }
       .sticky-background-simulator {
+        @include safariFlickerFix;
         position: sticky;
         top: 0;
         width: 100%;
@@ -82,6 +83,7 @@
 .sticky__border-animation__right,
 .sticky__border-animation__bottom,
 .sticky__border-animation__left {
+  @include safariFlickerFix;
   position: absolute;
   transform: scale(1,1);
   background-color: #fff;

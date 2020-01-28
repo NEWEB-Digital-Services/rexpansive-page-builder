@@ -119,7 +119,7 @@ var RexSlider = (function ($) {
       }
       if ( settings.pageDots ) {
         for(var i=0; i < sliderInstance.pageDots.dots.length; i++) {
-          sliderInstance.pageDots.dots[i].addEventListener('click', handleCustomAutoplay.bind( sliderInstance));
+          sliderInstance.pageDots.dots[i].addEventListener('click', handleCustomAutoplay.bind( sliderInstance ));
         }
       }
 
