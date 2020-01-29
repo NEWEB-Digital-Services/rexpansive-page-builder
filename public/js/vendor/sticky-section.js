@@ -75,7 +75,8 @@
 
         this.overlayAnimationEl.style.backgroundColor = originaloverlayEl.style.backgroundColor;
         removeClass( originaloverlayEl, 'rex-active-overlay' )
-        this.element.insertBefore(this.overlayAnimationEl, this.element.firstChild); 
+        // this.element.insertBefore(this.overlayAnimationEl, this.element.firstChild);
+        this.stickyElement.appendChild(this.overlayAnimationEl); 
       }
     }
 
@@ -84,15 +85,9 @@
     } else {
       var wrapper = document.createElement('div');
       wrapper.className = 'sticky-element__wrapper';
-      // wrapper.style.position = 'absolute';
-      // wrapper.style.top = '0';
-      // wrapper.style.right = '0';
-      // wrapper.style.bottom = '0';
-      // wrapper.style.left = '0';
-      // wrapper.style.zIndex = '0';
       addClass( this.element, 'sticky-css' );
       if ( this.stickyElement ) {
-        wrap( this.stickyElement, wrapper );
+        // wrap( this.stickyElement, wrapper );
       }
     }
 

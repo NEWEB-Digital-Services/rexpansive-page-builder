@@ -337,6 +337,7 @@
 
 .fade-element-in {
   opacity: 0;
+  @include safariFlickerFix;
   &.rex-element--animated {
     transition: opacity 0.5s $fade-all-ease;
   }

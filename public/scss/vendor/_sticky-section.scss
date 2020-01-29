@@ -2,13 +2,16 @@
   &.sticky-section {
     &.sticky-css {
       .rex-video-wrap {
+        @include safariFlickerFix;
         position: sticky;
         top: 0;
+        z-index: 20;
       }
       .sticky-background-simulator {
         @include safariFlickerFix;
         position: sticky;
         top: 0;
+        z-index: 20;
         width: 100%;
         height: 100vh;
         background-size: cover;
@@ -23,13 +26,14 @@
       }
     }
     .rex-video-wrap {
-      max-height: 100vh;
+      // max-height: 100vh;
+      height: 100vh;
     }
 
     @media screen and (min-width: 768px) {
       .perfect-grid-gallery {
         // min-height: 100vh;
-        margin-top: 100vh!important;
+        // margin-top: 100vh!important;
         margin-bottom: 20vh!important;
       }
     }
