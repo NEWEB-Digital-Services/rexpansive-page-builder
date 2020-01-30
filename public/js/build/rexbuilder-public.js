@@ -217,6 +217,15 @@ var Rexbuilder_App = (function($) {
       for( i = 0; i < tot_stickySections; i++ ) {
         if ( Rexbuilder_Util.has_class( stickySections[i], 'mp4-player' ) ) {
           stickyElementSelector = '.rex-video-wrap';
+
+          // video controls fix
+          var videoEl = stickySections[i].querySelector(stickyElementSelector);
+          var videoControls = videoEl.querySelector('.rex-video__controls');
+          if ( videoControls ) {
+            var stickyVideoControls = videoControls.cloneNode(true);
+            Rexbuilder_Util.addClass( stickyVideoControls, 'sticky-video-controls' );
+            videoEl.insertAdjacentElement('afterend', stickyVideoControls);
+          }
         } else if ( '' !== stickySections[i].style.backgroundImage ) {
           stickyElementSelector = '.sticky-background-simulator';
           var adjacent = stickySections[i].querySelector('.responsive-overlay');

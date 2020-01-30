@@ -188,7 +188,11 @@ class Rexbuilder_Block
                 $block_link_pre .= '<a class="pswp-item" href="' . $img_attrs[0] . '" itemprop="contentUrl" data-size="' . $img_attrs[1] . 'x' . $img_attrs[2] . '">';
                 $block_link_pre .= '<div class="pswp-item-thumb" data-thumb-image-type="' . $type_bg_block . '" data-thumburl="' . $img_attrs[0] . '" itemprop="thumbnail"></div>';
                 $block_link_before .= '</a>';
-                $block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>';
+                $block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description">';
+                ob_start();
+                do_action( 'rexbuilder_block_pswp_item_caption' );
+                $caption = ob_get_clean();
+                $block_link_before .= $caption . '</figcaption>';
                 $block_link_before .= '</figure>';
                 $content = strip_tags($content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br><font>');
             }

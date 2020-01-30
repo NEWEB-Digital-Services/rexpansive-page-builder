@@ -63,6 +63,17 @@
 //   z-index: 40;
 // }
 
+.sticky-video-controls {
+  position: sticky;
+  // bottom: auto;
+  // right: auto;
+  left: 100%;
+  top: calc(100% - 70px);
+  width: 40px;
+  height: 40px;
+  z-index: 50;
+}
+
 .sticky-element__wrapper {
   position: absolute;
   top: 0px;
