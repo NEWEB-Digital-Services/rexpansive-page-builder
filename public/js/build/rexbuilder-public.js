@@ -201,6 +201,18 @@ var Rexbuilder_App = (function($) {
       Rexbuilder_Util.playVideo( $target );
     }
     Rexbuilder_Util.$document.on('click', '.rex-video__controls .play', handleClickPauseVideo);
+
+    /**
+     * Video controls simulator, in case of sticky section
+     * (that cause problems of z-index)
+     * @param  {MouseEvent} ev click on the sticky controls area
+     * @return {void}
+     */
+    function handleClickStickyVideoControls(ev) {
+      var $activeTool = $(ev.currentTarget).prev().find('.video-tool--view');
+      $activeTool.click();
+    }
+    Rexbuilder_Util.$document.on('click', '.sticky-video-controls', handleClickStickyVideoControls);    
   };
 
   /**
@@ -213,17 +225,20 @@ var Rexbuilder_App = (function($) {
       var tot_stickySections = stickySections.length, i = 0;
       var stickyElementSelector = '';
       var overlayAnimation = false;
+      var videoEl, videoControls, stickyVideoControls;
 
       for( i = 0; i < tot_stickySections; i++ ) {
         if ( Rexbuilder_Util.has_class( stickySections[i], 'mp4-player' ) ) {
           stickyElementSelector = '.rex-video-wrap';
 
           // video controls fix
-          var videoEl = stickySections[i].querySelector(stickyElementSelector);
-          var videoControls = videoEl.querySelector('.rex-video__controls');
+          videoEl = stickySections[i].querySelector(stickyElementSelector);
+          videoControls = videoEl.querySelector('.rex-video__controls');
           if ( videoControls ) {
-            var stickyVideoControls = videoControls.cloneNode(true);
+            stickyVideoControls = document.createElement('div');
             Rexbuilder_Util.addClass( stickyVideoControls, 'sticky-video-controls' );
+            // Rexbuilder_Util.addClass( stickyVideoControls, 'rex-video__controls' );
+            // stickyVideoControls.innerHTML = '<div class="pause video-tool"><div class="indicator"></div></div><div class="play video-tool"><div class="indicator"></div></div>';
             videoEl.insertAdjacentElement('afterend', stickyVideoControls);
           }
         } else if ( '' !== stickySections[i].style.backgroundImage ) {

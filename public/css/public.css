@@ -5162,12 +5162,13 @@ a.pswp-item {
 
 /** sticky border animation **/
 .sticky-video-controls {
-  position: -webkit-sticky;
-  position: sticky;
-  left: 100%;
+  position: -webkit-sticky !important;
+  position: sticky !important;
+  left: calc( 100% - 70px);
   top: calc(100% - 70px);
   width: 40px;
   height: 40px;
+  margin-bottom: 30px;
   z-index: 50; }
 
 .sticky-element__wrapper {
