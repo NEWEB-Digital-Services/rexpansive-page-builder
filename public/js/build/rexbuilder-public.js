@@ -345,19 +345,7 @@ var Rexbuilder_App = (function($) {
     }
 
     // split scrolls
-    if ( 'undefined' !== typeof SplitScrollable ) {
-      var scrbls = [].slice.call( this.target.getElementsByClassName('split-scrollable') );
-      var tot_scrbls = scrbls.length, i = 0;
-      for( i=0; i < tot_scrbls; i++ ) {
-        var inst = new SplitScrollable(scrbls[i], {
-          scrollElsToWatchClass: 'text-wrap',
-          initializeComplete: fixScrollableGridGallery,
-          customScrollContainer: this.target
-        });
-      }
-    }
-
-    // this.element.style.color = 'red';
+    launchSplitScollable( this.target, this.target );
   }
 
   /**
@@ -386,6 +374,13 @@ var Rexbuilder_App = (function($) {
     }
   }
 
+  /**
+   * Fixing a builder section that contains scrollable content
+   * 1) set the blocks heights
+   * 2) destroy the grid plugin
+   * 3) set auto height on the section
+   * @return {void}
+   */
   function fixScrollableGridGallery() {
     // destroyGridGallery
     var grid = this.element.querySelector('.perfect-grid-gallery');
@@ -405,16 +400,26 @@ var Rexbuilder_App = (function($) {
     grid.style.height = '';
   };
 
-  var launchSplitScollable = function() {
+  /**
+   * If SplitScrollable plugin is defined, launch it on every intersted section
+   * @param  {Element} context               where to search the sections
+   * @param  {customScrollContainer} customScrollContainer container in which watch the scroll event
+   * @return {void}
+   */
+  var launchSplitScollable = function( context, customScrollContainer ) {
+    console.log( Rexbuilder_Util.viewport() );
     if ( 'undefined' !== typeof SplitScrollable ) {
-      var scrbls = [].slice.call( document.getElementsByClassName('split-scrollable') );
-      var tot_scrbls = scrbls.length, i;
-      for( i=0; i < tot_scrbls; i++ ) {
-        var inst = new SplitScrollable(scrbls[i], {
-          scrollElsToWatchClass: 'text-wrap',
-          initializeComplete: fixScrollableGridGallery
-        });
-      }
+      // if ( Rexbuilder_Util.viewport().width >= 768 ) {
+        var scrbls = [].slice.call( context.getElementsByClassName('split-scrollable') );
+        var tot_scrbls = scrbls.length, i;
+        for( i=0; i < tot_scrbls; i++ ) {
+          var inst = new SplitScrollable(scrbls[i], {
+            scrollElsToWatchClass: 'text-wrap',
+            initializeComplete: fixScrollableGridGallery,
+            customScrollContainer: ( 'undefined' !== typeof customScrollContainer ? customScrollContainer : null )
+          });
+        }
+      // }
     }
   };
 
@@ -1238,7 +1243,7 @@ var Rexbuilder_App = (function($) {
       // launch popUpContent
       launchPopUpContent();
       // launch splitScrollable
-      launchSplitScollable();
+      launchSplitScollable( document );
     }
 
     Rexbuilder_Util.galleryPluginActive = true;
