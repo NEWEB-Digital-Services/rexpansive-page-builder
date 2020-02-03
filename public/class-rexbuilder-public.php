@@ -480,6 +480,9 @@ class Rexbuilder_Public
                 'theme' => 'digital',
                 'format' => '(.ddd),dd'
             ),
+            'splitScrollable' => array(
+                'minViewportWidth' => 768
+            ),
             'old_builder' => Rexbuilder_Utilities::postSavedFromBackend()
         );
     }

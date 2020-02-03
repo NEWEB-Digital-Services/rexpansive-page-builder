@@ -746,7 +746,9 @@ var Rexbuilder_Dom_Util = (function($) {
     if (blocksDimensions.length > 0) {
       var $section = $(dataToUse.blocks[0].elem).parents(".rexpansive_section");
       if (!Rexbuilder_Util_Editor.updatingGridstack) {
-        gridstack.batchUpdate();
+        if ( gridstack.grid ) {
+          gridstack.batchUpdate();
+        }
       }
       for (i = 0; i < blocksDimensions.length; i++) {
         x = blocksDimensions[i].x;
@@ -757,7 +759,9 @@ var Rexbuilder_Dom_Util = (function($) {
         gridstack.update(elem, x, y, w, h);
       }
       if (!Rexbuilder_Util_Editor.updatingGridstack) {
-        gridstack.commit();
+        if ( gridstack.grid ) {
+          gridstack.commit();
+        }
       }
 
       setTimeout(

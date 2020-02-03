@@ -55,8 +55,29 @@
     }
   }
 
+  /**
+   * Get js animation end event name
+   * @return {string} event animation end name, based on browser
+   */
+  var whichAnimationEvent = function() {
+    var t, el = document.createElement("fakeelement");
+
+    var animations = {
+      animation: "animationend",
+      OAnimation: "oAnimationEnd",
+      MozAnimation: "animationend",
+      WebkitAnimation: "webkitAnimationEnd"
+    };
+
+    for (t in animations) {
+      if (el.style[t] !== undefined) {
+        return animations[t];
+      }
+    }
+  };
+
   // Calculate the viewport of the window
-  function viewport () {
+  function viewport() {
     var e = window,
       a = "inner";
     if (!("innerWidth" in window)) {
@@ -199,6 +220,12 @@
     }
     return textHeight;
   }
+
+  /**
+   * Global variables to share around the grid instances
+   * @since  2.0.3
+   */
+  var animationEndEventName = whichAnimationEvent();
 
   // The actual plugin constructor
   function perfectGridGalleryEditor(element, options) {
@@ -716,12 +743,15 @@
     updateFloatingElementsGridstack: function() {
       // to call before commit
       var gridstack = this.properties.gridstackInstance;
-      if (this.settings.galleryLayout == "masonry") {
-        gridstack.grid._float = false;
-        gridstack.grid.float = false;
-      } else {
-        gridstack.grid._float = true;
-        gridstack.grid.float = true;
+
+      if ( gridstack ) {
+        if (this.settings.galleryLayout == "masonry") {
+          gridstack.grid._float = false;
+          gridstack.grid.float = false;
+        } else {
+          gridstack.grid._float = true;
+          gridstack.grid.float = true;
+        }
       }
     },
 
@@ -1297,7 +1327,7 @@
       }
 
       // prevent hide sections bugs
-      if ( 0 !== this.properties.singleHeight && null !== this.element.offsetParent ) {
+      if ( 0 !== this.properties.singleHeight && null !== this.element.offsetParent && null !== this.properties.gridstackInstance ) {
         var gridstack = this.properties.gridstackInstance;
         gridstack.cellHeight(this.properties.singleHeight);
         gridstack._initStyles();
@@ -1580,7 +1610,7 @@
       };
 
       this.properties.gridstackInstance.addWidget( $newEL[0], 0, 0, w, h, true, 1, 500, 1 );
-      $newEL.filter(".insert-block-animation").one(Rexbuilder_Util._animationEvent, function(ev) {
+      $newEL.filter(".insert-block-animation").one(animationEndEventName, function(ev) {
         this.classList.remove("insert-block-animation");
       });
 

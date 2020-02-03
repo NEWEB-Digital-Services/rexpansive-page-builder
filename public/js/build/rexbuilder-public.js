@@ -212,7 +212,7 @@ var Rexbuilder_App = (function($) {
       var $activeTool = $(ev.currentTarget).prev().find('.video-tool--view');
       $activeTool.click();
     }
-    Rexbuilder_Util.$document.on('click', '.sticky-video-controls', handleClickStickyVideoControls);    
+    Rexbuilder_Util.$document.on('click', '.sticky-video-controls', handleClickStickyVideoControls);
   };
 
   /**
@@ -349,6 +349,16 @@ var Rexbuilder_App = (function($) {
   }
 
   /**
+   * Callback after load the popup iframe 
+   * @return {void}
+   */
+  var fixIframeContentAfterLoading = function() {
+    var rexLiveContent = this.iframeContainer.contentDocument.querySelector('.rexbuilder-live-content');
+    rexLiveContent.parentElement.removeChild(rexLiveContent)
+    this.iframeContainer.contentDocument.body.insertBefore(rexLiveContent, this.iframeContainer.contentDocument.body.firstChild);
+  }
+
+  /**
    * Launch popupcontent plugin on found launchers
    * @return {void}
    */
@@ -359,7 +369,9 @@ var Rexbuilder_App = (function($) {
 
       for( i=0; i < tot_btns; i++ ) {
         new PopUpContent(btns[i], {
-          getPopUpContentComplete: launchAllAfterLoading,
+          // getPopUpContentComplete: launchAllAfterLoading,
+          contentRetrieveMethod: 'iframe',
+          getPopUpContentComplete: fixIframeContentAfterLoading,
           ajaxSettings: {
             type: "GET",
             dataType: "json",
@@ -407,9 +419,8 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   var launchSplitScollable = function( context, customScrollContainer ) {
-    console.log( Rexbuilder_Util.viewport() );
     if ( 'undefined' !== typeof SplitScrollable ) {
-      // if ( Rexbuilder_Util.viewport().width >= 768 ) {
+      if ( Rexbuilder_Util.viewport().width >= _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
         var scrbls = [].slice.call( context.getElementsByClassName('split-scrollable') );
         var tot_scrbls = scrbls.length, i;
         for( i=0; i < tot_scrbls; i++ ) {
@@ -419,7 +430,7 @@ var Rexbuilder_App = (function($) {
             customScrollContainer: ( 'undefined' !== typeof customScrollContainer ? customScrollContainer : null )
           });
         }
-      // }
+      }
     }
   };
 

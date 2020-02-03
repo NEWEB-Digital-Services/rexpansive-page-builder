@@ -74,6 +74,10 @@ var Rexbuilder_Util = (function($) {
     }
   }
 
+  /**
+   * Global vars
+   * @type {Mixed}
+   */
   var fixSectionWidth = 0;
   var editorMode = false;
   var windowIsResizing = false;
@@ -92,6 +96,10 @@ var Rexbuilder_Util = (function($) {
   var changedFrontLayout;
 
   var loadWidth;
+
+  var $rexbuilderLayoutData;
+  var $rexbuilderModelData;
+  var $availableLayoutNames;
 
   var createRandomID = function(n) {
     var text = "";
@@ -347,12 +355,8 @@ var Rexbuilder_Util = (function($) {
     );
   };
 
-  var _updateDivModelCustomizationsNames = function(
-    updatedModelCustomizationsNames
-  ) {
-    var $modelsAvaiableNamesDiv = $(
-      "#rexbuilder-model-data .available-models-customizations-names"
-    );
+  var _updateDivModelCustomizationsNames = function( updatedModelCustomizationsNames ) {
+    var $modelsAvaiableNamesDiv = $rexbuilderModelData.find(".available-models-customizations-names");
     var names = JSON.parse($modelsAvaiableNamesDiv.text());
     var newNamesData = [];
     var i;
@@ -554,10 +558,7 @@ var Rexbuilder_Util = (function($) {
   };
 
   var _updatePageAvaiableLayoutsNames = function(updatedNames) {
-    var $pageLayoutsNamesDiv = $(
-      "#rexbuilder-layout-data .available-layouts-names"
-    );
-    $pageLayoutsNamesDiv.text(JSON.stringify(updatedNames));
+    $availableLayoutNames.text(JSON.stringify(updatedNames));
   };
 
   var _getSectionCustomLayouts = function(sectionRexID) {
@@ -592,8 +593,8 @@ var Rexbuilder_Util = (function($) {
   };
 
   var chooseLayout = function() {
-    var $responsiveData = $("#rexbuilder-layout-data");
-    var $modelData = $("#rexbuilder-model-data");
+    var $responsiveData = $rexbuilderLayoutData;
+    var $modelData = $rexbuilderModelData;
 
     Rexbuilder_Util.chosenLayoutData = {
       min: 0,
@@ -1126,27 +1127,14 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
-    Rexbuilder_Util.$rexContainer.attr(
-      "data-rex-layout-selected",
-      chosenLayoutName
-    );
+    Rexbuilder_Util.$rexContainer.attr( "data-rex-layout-selected", chosenLayoutName );
     Rexbuilder_Util.activeLayout = chosenLayoutName;
 
-    var $resposiveData = $("#rexbuilder-layout-data");
-    var $modelData = $("#rexbuilder-model-data");
-
     if (
-      $resposiveData
-        .children(".layouts-customizations")
-        .attr("data-empty-customizations") == "true" &&
-      $modelData
-        .children(".models-customizations")
-        .attr("data-empty-models-customizations") == "true"
+      $rexbuilderLayoutData.children(".layouts-customizations").attr("data-empty-customizations") == "true" &&
+      $rexbuilderModelData.children(".models-customizations").attr("data-empty-models-customizations") == "true"
     ) {
-      if (
-        _viewport().width >=
-        _plugin_frontend_settings.defaultSettings.collapseWidth
-      ) {
+      if ( _viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
         removeCollapsedGrids();
       } else {
         if (!Rexbuilder_Util.blockGridUnder768) {
@@ -1887,8 +1875,7 @@ var Rexbuilder_Util = (function($) {
   };
 
   var _getPageAvaiableLayoutsNames = function() {
-    var $pageLayoutsNamesDiv = $( "#rexbuilder-layout-data .available-layouts-names" );
-    return JSON.parse($pageLayoutsNamesDiv.text());
+    return JSON.parse($availableLayoutNames.text());
   };
 
   var _getLayoutLiveSectionTargets = function($section) {
@@ -1932,8 +1919,8 @@ var Rexbuilder_Util = (function($) {
         galleryLayout.layout = targets[0].props.layout;
         galleryLayout.fullHeight = targets[0].props.full_height;
         galleryLayout.collapsed = typeof targets[0].props.collapsed === "undefined" ? false : targets[0].props.collapsed;
-        for(var j=1, total_blocks = elemetsDisposition.length; j< total_blocks; j++){
-          for(var k = 0, total_default_blocks = targets.length; k< total_default_blocks; k++){
+        for(var j=1, total_blocks = elemetsDisposition.length; j < total_blocks; j++){
+          for(var k = 0, total_default_blocks = targets.length; k < total_default_blocks; k++){
             var currentEl = elemetsDisposition[j];
             if(currentEl.name == targets[k].name){
               currentEl.props.gs_x = targets[k].props.gs_x;
@@ -2527,14 +2514,11 @@ var Rexbuilder_Util = (function($) {
     var exists = false;
     var i;
     var tot_layoutsNamesAvaiable;
-    var $layoutsAvaiableDiv = $(
-      "#rexbuilder-layout-data .available-layouts-names"
-    );
 
     var layoutsNamesAvaiable = [];
 
-    if ($layoutsAvaiableDiv.text() != "") {
-      layoutsNamesAvaiable = JSON.parse($layoutsAvaiableDiv.text());
+    if ($availableLayoutNames.text() != "") {
+      layoutsNamesAvaiable = JSON.parse($availableLayoutNames.text());
     }
 
     for (i = 0, tot_layoutsNamesAvaiable = layoutsNamesAvaiable.length; i < tot_layoutsNamesAvaiable; i++) {
@@ -3950,8 +3934,13 @@ var Rexbuilder_Util = (function($) {
     this.$window = $(window);
     this.$document = $(document);
     this.$body = $("body");
+
+    $rexbuilderLayoutData = $(document.getElementById('rexbuilder-layout-data'));
+    $rexbuilderModelData = $(document.getElementById('rexbuilder-model-data'));
+    $availableLayoutNames = $rexbuilderLayoutData.find('.available-layouts-names');
+
     $modelsCustomizationsDataDiv = $("#rexbuilder-model-data").children(".models-customizations").eq(0);
-    $pageCustomizationsDataDiv = $("#rexbuilder-layout-data").children(".layouts-customizations").eq(0);
+    $pageCustomizationsDataDiv = $rexbuilderLayoutData.children(".layouts-customizations").eq(0);
     $liveDataContainer = $("#rexbuilder-layout-data-live");
     $layoutsDomOrder = $("#rexbuilder-layouts-sections-order");
     $defaultLayoutState = $("#rexbuilder-default-layout-state");

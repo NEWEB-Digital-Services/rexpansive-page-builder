@@ -4751,6 +4751,8 @@ a.pswp-item {
        -o-transition-delay: .3s;
           transition-delay: .3s;
   background-color: #fff; }
+  .popup-content.popup-content--loaded iframe {
+    opacity: 1; }
 
 .popup-content-content {
   opacity: 0;
@@ -4761,6 +4763,14 @@ a.pswp-item {
   -webkit-transition-delay: .0s;
        -o-transition-delay: .0s;
           transition-delay: .0s; }
+  .popup-content-content iframe {
+    width: 100%;
+    height: 100vh;
+    border: none;
+    opacity: 0;
+    -webkit-transition: opacity 0.2s;
+    -o-transition: opacity 0.2s;
+    transition: opacity 0.2s; }
 
 .popup-content-close-wrapper {
   display: -webkit-box;
@@ -4817,11 +4827,12 @@ a.pswp-item {
   -webkit-transform: matrix(1, 0, 0, 1, 0, 0);
       -ms-transform: matrix(1, 0, 0, 1, 0, 0);
           transform: matrix(1, 0, 0, 1, 0, 0);
-  overflow-x: hidden;
-  overflow-y: scroll;
   -webkit-transition-delay: .0s;
        -o-transition-delay: .0s;
           transition-delay: .0s; }
+  .popup-content--view.popup-content.popup-content__method--ajax {
+    overflow-x: hidden;
+    overflow-y: scroll; }
 
 .popup-content--view .popup-content-content {
   opacity: 1;

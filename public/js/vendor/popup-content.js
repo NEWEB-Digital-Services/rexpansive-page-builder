@@ -6,6 +6,7 @@
 	this.PopUpContent = function() {
 		// call object (button)
 		this.element = null;
+		this.iframeContainer = null;
 
 		// popup element
 		this.hashTarget = '';
@@ -25,14 +26,16 @@
 		var defaults = {
 			// classes
 			bodyPopUpViewClass: 'popup-content--active',
+			iframePopUpLoadClass: 'popup-iframe--loaded',
+			popUpContentLoaded: 'popup-content--loaded',
 			popUpWrapper: 'popup-content',
 			popupViewClass: 'popup-content--view',
 			popUpCloseWrapper: 'popup-content-close-wrapper',
 			popUpCloseClass: 'popup-content-close',
 			popUpContent: 'popup-content-content',
 			contentInjectorPoint: 'rexpansive_section',
-			// ajax
-			loadTiming: 'hover',		// hover | load | scroll(?)
+			loadTiming: 'hover',				// hover | load | scroll(?)
+			contentRetrieveMethod: 'ajax',		// ajax | iframe
 			getPopUpContentComplete: null,
 			ajaxSettings: null,
 		};
@@ -55,6 +58,8 @@
 		}
 
 		attachEventHandlers.call(this);
+
+		this.element.PopUpContentInstance = this;
 	};
 
 	function initialize() {
@@ -124,45 +129,85 @@
 		ev.preventDefault()
 		var that = this;
 
-		if ( null !== this.options.ajaxSettings ) {
-			$.ajax(this.options.ajaxSettings);
-		} else {
-			var request = new XMLHttpRequest();
-			request.open('GET', this.urlTarget, true);
-
-			request.onload = function() {
-				if (request.status >= 200 && request.status < 400) {
-					// Success!
-					var resp = request.responseText;
-					onGetPopUpContentComplete.call( that, resp );
+		switch( this.options.contentRetrieveMethod ) {
+			case 'iframe':
+				onGetPopUpContentComplete.call( this );
+				break;
+			case 'append':
+			default:
+				if ( null !== this.options.ajaxSettings ) {
+					$.ajax(this.options.ajaxSettings);
 				} else {
-					// We reached our target server, but it returned an error
+					var request = new XMLHttpRequest();
+					request.open('GET', this.urlTarget, true);
+
+					request.onload = function() {
+						if (request.status >= 200 && request.status < 400) {
+							// Success!
+							var resp = request.responseText;
+							onGetPopUpContentComplete.call( that, resp );
+						} else {
+							// We reached our target server, but it returned an error
+						}
+					};
+
+					request.onerror = function() {
+						// There was a connection error of some sort
+					};
+
+					request.send();
 				}
-			};
-
-			request.onerror = function() {
-				// There was a connection error of some sort
-			};
-
-			request.send();
+				break;
 		}
+
 	}
 
 	function onGetPopUpContentComplete( content ) {
 		addPopUpContent.call( this, content )
-		if ( 'function' === typeof this.options.getPopUpContentComplete ) {
-			this.options.getPopUpContentComplete.call(this)
+		switch( this.options.contentRetrieveMethod ) {
+			case 'iframe':
+				this.iframeContainer.addEventListener('load', onIframeLoadComplete.bind(this));
+				break;
+			case 'append':
+			default:
+				addClass( this.target, this.options.popUpContentLoaded );
+				if ( 'function' === typeof this.options.getPopUpContentComplete ) {
+					this.options.getPopUpContentComplete.call(this)
+				}
+				break;
 		}
 		this.contentLoaded = true;
 	}
 
 	function addPopUpContent(content) {
-		this.target.querySelector('.'+this.options.popUpContent).innerHTML = content;
+		switch( this.options.contentRetrieveMethod ) {
+			case 'iframe':
+				this.target.querySelector('.'+this.options.popUpContent).innerHTML = '<iframe src="' + this.urlTarget + '"></iframe>';
+				this.iframeContainer = this.target.getElementsByTagName('IFRAME')[0];
+				break;
+			case 'append':
+			default:
+				this.target.querySelector('.'+this.options.popUpContent).innerHTML = content;
+				break;
+		}
+	}
+
+	/**
+	 * On iframe correct load, add a class to the body and launch custom callback
+	 * @return {void}
+	 */
+	function onIframeLoadComplete() {
+		addClass( this.iframeContainer.contentDocument.body, this.options.iframePopUpLoadClass );
+		addClass( this.target, this.options.popUpContentLoaded );
+		if ( 'function' === typeof this.options.getPopUpContentComplete ) {
+			this.options.getPopUpContentComplete.call(this)
+		}
 	}
 
 	function generatePopUpContainer( options ) {
 		var popUpContainer = document.createElement('div');
 		addClass( popUpContainer,options.popUpWrapper );
+		addClass( popUpContainer, 'popup-content__method--' + options.contentRetrieveMethod );
 		var closeWrapper = document.createElement('div');
 		addClass( closeWrapper,options.popUpCloseWrapper );
 		var closeBtn = document.createElement('div');
