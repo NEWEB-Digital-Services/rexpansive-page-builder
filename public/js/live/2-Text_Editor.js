@@ -3676,6 +3676,10 @@ var TextEditor = (function ($) {
      * @param  {String} element Can be "form", "rows" or "columns"
      */
     clearOutlines: function (element) {
+      if ( ! this.traceForm ) {
+        return;
+      }
+
       switch (element) {
         case "form":
           this.traceForm.style.outline = '';
@@ -3768,6 +3772,10 @@ var TextEditor = (function ($) {
     },
 
     hidePlusButtons: function () {
+      if ( ! this.traceForm ) {
+        return;
+      }
+      
       this.traceForm.querySelectorAll('.wpcf7-add-new-form-content').forEach(function(el) {
         el.style.display = 'none';
       })

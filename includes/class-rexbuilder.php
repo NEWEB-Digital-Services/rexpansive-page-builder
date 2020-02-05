@@ -200,6 +200,10 @@ class Rexbuilder {
 		// Gutenberg
 		$this->loader->add_filter( 'use_block_editor_for_post', $plugin_admin, 'disable_gutenberg_on_live' );
 
+		// Duplicate Post Plugin
+		$this->loader->add_action( 'dp_duplicate_page', $plugin_admin, 'duplate_post_copy_fix', 50, 3 );
+		$this->loader->add_action( 'dp_duplicate_post', $plugin_admin, 'duplate_post_copy_fix', 50, 3 );
+
 		// Slider and models custom post type
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_slider_definition' );
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_models_defintion' );

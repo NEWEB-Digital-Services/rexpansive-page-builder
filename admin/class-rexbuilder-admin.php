@@ -573,13 +573,97 @@ class Rexbuilder_Admin {
 	 * @since 2.0.0
 	 * @date 07-03-2019
 	 */
-	public function dequeue_scripts()
-	{
+	public function dequeue_scripts() {
 		if ( isset( $_GET['rexlive'] ) && $_GET['rexlive'] == 'true' )
 		{
 			// var_dump( Rexbuilder_Utilities::get_registered_scripts_styles( true, false ) );
 			wp_dequeue_script( 'otgsPopoverTooltip' );
 		}
+	}
+
+	/**
+	 * Hooking on post duplication action of the Duplicate Post plugin
+	 * Fixing builder information, like:
+	 * - handlinge rexslider
+	 * 
+	 * @param  Integer $new_post_id     Duplicated post ID
+	 * @param  WP_Post $old_post_object Old post object
+	 * @param  WP_Post $new_post_status New post object
+	 * @return void
+	 * @since  2.0.3
+	 */
+	public function duplate_post_copy_fix( $new_post_id, $old_post_object, $new_post_status ) {
+		// check builder active on post
+		$builder_active = get_post_meta( $old_post_object->ID, '_rexbuilder_active', true );
+
+		if ( 'true' !== $builder_active ) {
+			return;
+		}
+
+		// retrieve shortcode
+		$shortcode = get_post_meta( $old_post_object->ID, '_rexbuilder_shortcode', true );
+
+		// check if shortcode exists
+		if ( empty( $shortcode ) ) {
+			return;
+		}
+
+		// check if rexslider is in the page
+		if ( false === strpos( $shortcode, 'RexSlider' ) ) {
+			return;
+		}
+
+		$pattern = get_shortcode_regex();
+		$slider_pattern = '\[(\[?)(RexSlider)(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*+(?:\[(?!\/\2\])[^\[]*+)*+)\[\/\2\])?)(\]?)';
+
+		preg_match_all( "/$pattern/", $shortcode, $sections );
+
+		$new_shortcode = '';
+
+		foreach( $sections[5] as $section_index => $section_content ) {
+			if ( false === strpos( $section_content, 'RexSlider' ) ) {
+				// section without slider, get clean section shortcode
+				$new_shortcode .= $sections[0][$section_index];
+				continue;
+			}
+
+			preg_match_all( "/$pattern/", $section_content, $blocks );
+
+			$new_shortcode .= '[' . $sections[2][$section_index] . $sections[3][$section_index] . ']';
+
+			foreach( $blocks[5] as $block_index => $block_content ) {
+				$new_shortcode .= '[' . $blocks[2][$block_index] . $blocks[3][$block_index] . ']';
+				if ( false === strpos( $block_content, 'RexSlider' ) ) {
+					// block without slider, get its clean content
+					$new_shortcode .= $block_content;
+				} else {
+					preg_match_all( "/$slider_pattern/", $block_content, $slider );
+					$slider_attrs = shortcode_parse_atts( trim( $slider[3][0] ) );
+
+					$slider_id = $slider_attrs['slider_id'];
+					$slider_id_insert = self::clone_slider( $slider_id );
+
+					if ( 0 === $slider_id_insert ) {
+						$new_shortcode .= '';
+					} else {
+						$slider_attrs['slider_id'] = $slider_id_insert;
+						$new_shortcode .= '[' . $slider[2][0];
+						foreach ($slider_attrs as $key => $attr) {
+							$new_shortcode .= ' ' . $key . '="' . $attr . '"';
+						}
+						$new_shortcode .= ']';
+					}
+
+				}
+
+				$new_shortcode .= '[/' . $blocks[2][$block_index] . ']';
+			}
+
+			$new_shortcode .= '[/' . $sections[2][$section_index] . ']';
+		}
+
+		// update the cloned shortcode
+		update_post_meta( $new_post_id, '_rexbuilder_shortcode', $new_shortcode );
 	}
 
 	/**
@@ -2182,7 +2266,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			$response['slider_id'] = $slider_id_insert;
 			$response['slider_title'] = $args['post_title'];
 			// adding the information for the slide
-			$response['add_results'] = $this->rex_add_slider_fields( $slider_settings, $response['slider_id'] );
+			$response['add_results'] = self::add_slider_fields( $slider_settings, $response['slider_id'] );
 		} else {
 			$response['slider_id'] = -1;
 			$response['slider_title'] = "";
@@ -2235,13 +2319,13 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			$response['slider_id'] = $slider_to_edit;
 			$response['slider_title'] = $new_slider_title;
 
-			$this->rex_clear_slider_fields( array(
+			self::clear_slider_fields( array(
 				'field_564f1f0c050be',
 				'field_5948cb2270b0f',
 				'field_564f2373722c3',
 			), $slider_to_edit );
 
-			$response['edit_results'] = $this->rex_add_slider_fields( $slider_settings, $slider_to_edit );
+			$response['edit_results'] = self::add_slider_fields( $slider_settings, $slider_to_edit );
 		} else {
 			$response['slider_id'] = -1;
 			$response['slider_title'] = '';
@@ -2256,7 +2340,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	*	@param 	Multidimensional Array 	array of fields
 	*	@param int 						rex slider id
 	*/
-	public function rex_add_slider_fields( $slider_settings, $slider_id ) {
+	private static function add_slider_fields( $slider_settings, $slider_id ) {
 		$result = array();
 
 		if( "true" == $slider_settings['settings']['auto_start'] ) {
@@ -2351,10 +2435,57 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	*	@param Array 	array of fields keys
 	*	@param int 		rex slider id
 	*/
-	public function rex_clear_slider_fields( $fields, $slider_id ) {
+	private static function clear_slider_fields( $fields, $slider_id ) {
 		foreach( $fields as $field ) {
 			delete_field( $field, $slider_id );
 		}
+	}
+
+	/**
+	 * Cloning a slider
+	 * @param  Integer $original_slider_id original slider id
+	 * @return Integer                     new slider id
+	 * @since  2.0.3
+	 */
+	private static function clone_slider( $original_slider_id ) {
+		$new_slider_title = get_the_title( $original_slider_id ) . '_' . date( 'YmdHis', time() );
+
+		// create the cloned rexslider object
+		$args = array(
+			'comment_status'	=>	'closed',
+			'ping_status'		=>	'closed',
+			'post_title'		=>	$new_slider_title,
+			'post_status'		=>	'publish',
+			'post_type'			=>	'rex_slider'
+		);
+		
+		$new_slider_id = wp_insert_post( $args );
+
+		if ( 0 === $new_slider_id ) {
+			return $new_slider_id;
+		}
+
+		// find all the metakeys that belongs to the slider
+		// and add them to the new slider
+		global $wpdb;
+		$slider_definition = $wpdb->get_results(
+			$wpdb->prepare( 
+				"
+				SELECT * 
+				FROM {$wpdb->prefix}postmeta 
+				WHERE post_id = %d AND 
+				meta_key LIKE '%_rex_%'
+				",
+				$original_slider_id
+			),
+			ARRAY_A
+		);
+
+		foreach( $slider_definition as $meta ) {
+			update_post_meta( $new_slider_id, $meta['meta_key'], maybe_unserialize( $meta['meta_value'] ) );
+		}
+
+		return $new_slider_id;
 	}
 
 	/**
