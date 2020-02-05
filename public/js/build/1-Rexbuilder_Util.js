@@ -1723,7 +1723,7 @@ var Rexbuilder_Util = (function($) {
           break;
         case "photoswipe":
           if (!Rexbuilder_Util.editorMode) {
-            if (targetProps["photoswipe"] == "true") {
+            if ('' === targetProps["linkurl"] && targetProps["photoswipe"] == "true") {
               Rexbuilder_Photoswipe.addElement(
                 $itemContent,
                 targetProps["image_bg_block"],

@@ -128,8 +128,9 @@ class Rexbuilder_Block
         $block_link_pre = '';
         $block_link_before = '';
 
-        if ($linkurl != '' && $photoswipe == 'true') {
+        if ( $linkurl != '' && $photoswipe == 'true' ) {
             $photoswipe = 'false';
+            $atts['photoswipe'] = '';
         }
 
         $block_custom_class = apply_filters('rexpansive_block_custom_class', trim($block_custom_class), $id);

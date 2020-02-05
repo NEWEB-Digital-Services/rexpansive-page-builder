@@ -3465,22 +3465,22 @@
         );
       }
 
-      console.table({
-        startH: startH,
-        blockRatio: blockRatio,
-        backImgType: backImgType,
-        backgroundHeight:backgroundHeight,
-        videoHeight:videoHeight,
-        defaultHeight:defaultHeight,
-        textHeight:textHeight,
-        sliderHeight:sliderHeight,
-        originalH:originalH,
-        originalStartH:originalStartH,
-        singleHeight: this.properties.singleHeight,
-        spaceAvailable:spaceAvailable,
-        newH:newH,
-        gutter:gutter
-      });
+      // console.table({
+      //   startH: startH,
+      //   blockRatio: blockRatio,
+      //   backImgType: backImgType,
+      //   backgroundHeight:backgroundHeight,
+      //   videoHeight:videoHeight,
+      //   defaultHeight:defaultHeight,
+      //   textHeight:textHeight,
+      //   sliderHeight:sliderHeight,
+      //   originalH:originalH,
+      //   originalStartH:originalStartH,
+      //   singleHeight: this.properties.singleHeight,
+      //   spaceAvailable:spaceAvailable,
+      //   newH:newH,
+      //   gutter:gutter
+      // });
 
       if ( this.properties.oneColumModeActive && ! Rexbuilder_Util.windowIsResizing ) {
         var collapsedHeight = newH;
