@@ -232,7 +232,7 @@ class Rexbuilder_Section
 
         $content_has_static_block = strpos($content, 'rex-static-block');
 
-        $row_has_accordion = has_shortcode($content, 'RexAccordion');
+        $row_has_accordion = strpos($content, 'RexAccordion');
 
         // echo classes
         echo ' class="rexpansive_section' . ($empty_section ? ' empty-section' : '');

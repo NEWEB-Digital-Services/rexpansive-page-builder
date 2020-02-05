@@ -110,7 +110,8 @@ class Rexbuilder_Block
         $shortcode_blacklist = Rexbuilder_Utilities::shortcode_black_list();
         if (!empty($shortcode_blacklist)) {
             foreach ($shortcode_blacklist as $shortcode) {
-                if (has_shortcode($content, $shortcode)) {
+                if ( false !== strpos( $content, $shortcode ) ) {
+                // if (has_shortcode($content, $shortcode)) {
                     ob_start();
                     echo do_shortcode($content);
                     return ob_get_clean();
@@ -205,14 +206,14 @@ class Rexbuilder_Block
         }
 
         $block_is_static = false;
-        if (strpos($block_custom_class, 'rex-static-block') !== false) {
+        if ( false !== strpos( $block_custom_class, 'rex-static-block' ) ) {
             $block_is_static = true;
         }
 
         $block_has_slider = false;
-        if (has_shortcode($content, 'RexSlider')) {
+        if ( false !== strpos( $content, 'RexSlider' ) ) {
             $block_has_slider = true;
-            $content = Rexbuilder_Utilities::remove_shortcode_wrap_paragraphs($content, 'RexSlider');
+            $content = Rexbuilder_Utilities::remove_shortcode_wrap_paragraphs( $content, 'RexSlider' );
 
             // pass the overlay parameter to slider if present
             if ( '' !== $overlay_block_color ) {
@@ -223,12 +224,12 @@ class Rexbuilder_Block
             }
         }
 
-        if (has_shortcode($content, 'RexSliderDefintion')) {
+        if ( false !== strpos( $content, 'RexSliderDefintion' ) ) {
             $block_has_slider = true;
             $content = Rexbuilder_Utilities::remove_shortcode_wrap_paragraphs($content, 'RexSliderDefintion');
         }
 
-        if (has_shortcode($content, 'RexIndicator')) {
+        if ( false !== strpos( $content, 'RexIndicator' ) ) {
             $block_has_indicator = true;
             $content = Rexbuilder_Utilities::remove_shortcode_wrap_paragraphs($content, 'RexIndicator');
         }
@@ -289,7 +290,7 @@ class Rexbuilder_Block
         }
 
         $block_has_map = false;
-        if (has_shortcode($content, 'RexGoogleMap')) {
+        if ( false !== strpos( $content, 'RexGoogleMap' ) ) {
             $block_has_map = true;
             $content = Rexbuilder_Utilities::remove_shortcode_wrap_paragraphs($content, 'RexGoogleMap');
         }
@@ -327,7 +328,7 @@ class Rexbuilder_Block
             echo 'effect-expand-' . $zak_side;
         }
 
-        if (has_shortcode($content, 'RexLastWorks')) {
+        if ( false !== strpos( $content, 'RexLastWorks' ) ) {
             echo ' horizontal-carousel';
         }
 

@@ -25,11 +25,13 @@ if ( empty( $rexbuilderShortcode ) && 'draft' === $post->post_status && 'true' =
 }
 
 if ( $rexbuilderShortcode == "" ) {
-    if( has_shortcode( $post->post_content, "RexpansiveSection" ) || has_shortcode( $post->post_content, "RexModel" ) ) {
+    // if( has_shortcode( $post->post_content, "RexpansiveSection" ) || has_shortcode( $post->post_content, "RexModel" ) ) {
+    if ( false !== strpos( $post->post_content, 'RexpansiveSection' ) || false !== strpos( $post->post_content, 'RexModel' ) ) {
         $rexbuilderShortcode = $post->post_content;
     }
 } else {
-    if( !has_shortcode( $rexbuilderShortcode, "RexpansiveSection" ) && !has_shortcode( $rexbuilderShortcode, "RexModel" ) ) {
+    // if( !has_shortcode( $rexbuilderShortcode, "RexpansiveSection" ) && !has_shortcode( $rexbuilderShortcode, "RexModel" ) ) {
+    if ( false === strpos( $rexbuilderShortcode, 'RexpansiveSection' ) && false === strpos( $rexbuilderShortcode, 'RexModel' ) ) {
         $rexbuilderShortcode = "";
     }
 }
