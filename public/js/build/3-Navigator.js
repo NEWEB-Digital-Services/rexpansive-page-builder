@@ -50,17 +50,17 @@ var Rex_Navigator = (function ($) {
   }
 
   var updateNavigationItems = function () {
-    navigationItems = $(document).find('.vertical-nav a');
+    navigationItems = Rexbuilder_Util.$document.find('.vertical-nav a');
   };
 
   var updateTouchNavigationLinks = function () {
-    $touch_navigation_links = $(document).find('.touch .vertical-nav a');
+    $touch_navigation_links = Rexbuilder_Util.$document.find('.touch .vertical-nav a');
   }
 
   var _fixNavigatorItemOrder = function ($section) {
     if (!($section.attr("id") == undefined || $section.attr("id") == "")) {
       var id = $section.attr("id");
-      var $navigatorWrap = $(document).find("nav[class*=\"vertical-nav\"]");
+      var $navigatorWrap = Rexbuilder_Util.$document.find("nav[class*=\"vertical-nav\"]");
       var $navItem = $navigatorWrap.find('li a[href="#' + id + '"]').parent();
       var $nextSection = $section;
       var nextID = "";
@@ -86,7 +86,7 @@ var Rex_Navigator = (function ($) {
    * @param {*} name name of the section, if name is "" the item will be removed
    */
   var _updateNavigatorItem = function ($section, newSafeName, newName) {
-    var $navigatorWrap = $(document).find("nav[class*=\"vertical-nav\"]");
+    var $navigatorWrap = Rexbuilder_Util.$document.find("nav[class*=\"vertical-nav\"]");
     if (newSafeName != "") {
       if ($section.attr("id") == "") {
         var totalSectionNumber = Rexbuilder_Util.$rexContainer.children(".rexpansive_section").length;
@@ -147,7 +147,7 @@ var Rex_Navigator = (function ($) {
   }
 
   var linkDocumentEvents = function () {
-    $(document).on("click", ".vertical-nav a", function (event) {
+    Rexbuilder_Util.$document.on("click", ".vertical-nav a", function (event) {
       event.preventDefault();
       var $target = $(event.target);
       if (!$target.is("a")) {
@@ -158,20 +158,20 @@ var Rex_Navigator = (function ($) {
       Rexbuilder_Util.smoothScroll($targetSection);
     });
 
-    $(document).on('click', ".touch .vertical-nav a", function () {
+    Rexbuilder_Util.$document.on('click', ".touch .vertical-nav a", function () {
       $touch_navigation_links.find('.rex-label').removeClass('fadeInAndOut');
       $(this).find('.rex-label').addClass('fadeInAndOut');
-      $(document).find('.touch .vertical-nav').removeClass('open');
+      Rexbuilder_Util.$document.find('.touch .vertical-nav').removeClass('open');
     });
   }
 
   var init = function () {
-    var $navigatorWrap = $(document).find("nav[class*=\"vertical-nav\"]");
+    var $navigatorWrap = Rexbuilder_Util.$document.find("nav[class*=\"vertical-nav\"]");
     if ($navigatorWrap.length != 0 && $navigatorWrap.hasClass("nav-editor-mode-disable")) {
       _updateNavigatorDom($navigatorWrap);
     }
 
-    var verticalNav = document.querySelector('.vertical-nav');
+    verticalNav = document.querySelector('.vertical-nav');
 
     if ( verticalNav ) {
       Rexbuilder_Util.$window.on('scroll', function () {

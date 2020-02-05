@@ -764,13 +764,7 @@ var Rexbuilder_Dom_Util = (function($) {
         }
       }
 
-      setTimeout(
-        function() {
-          Rexbuilder_Util.fixYoutube($section);
-        },
-        1500,
-        $section
-      );
+      setTimeout( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
     }
   };
 
@@ -1531,14 +1525,16 @@ var Rexbuilder_Dom_Util = (function($) {
     var flagNumbers;
     if ( Rexbuilder_Util.rexContainer ) {
       var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section:not(.removing_section)') );
-      sections.forEach( function( sec, j ) {
-        if ( Rexbuilder_Util.has_class( sec, 'rex-model-section' ) ) {
-          var modelID = sec.getAttribute( 'data-rexlive-model-id' );
+      var j, tot_sections = sections.length;
+
+      for( j=0; j < tot_sections; j++ ) {
+        if ( Rexbuilder_Util.hasClass( sections[j], 'rex-model-section' ) ) {
+          var modelID = sections[j].getAttribute( 'data-rexlive-model-id' );
           flagNumbers = false;
           for (i = 0; i < models.length; i++) {
             if ( models[i].id == modelID ) {
               models[i].number = models[i].number + 1;
-              sec.setAttribute( 'data-rexlive-model-number', models[i].number );
+              sections[j].setAttribute( 'data-rexlive-model-number', models[i].number );
               flagNumbers = true;
             }
           }
@@ -1548,10 +1544,32 @@ var Rexbuilder_Dom_Util = (function($) {
               number: 1
             };
             models.push(model);
-            sec.setAttribute( 'data-rexlive-model-number', model.number );
+            sections[j].setAttribute( 'data-rexlive-model-number', model.number );
           }
         }
-      });
+      }
+
+      // sections.forEach( function( sec, j ) {
+      //   if ( Rexbuilder_Util.hasClass( sec, 'rex-model-section' ) ) {
+      //     var modelID = sec.getAttribute( 'data-rexlive-model-id' );
+      //     flagNumbers = false;
+      //     for (i = 0; i < models.length; i++) {
+      //       if ( models[i].id == modelID ) {
+      //         models[i].number = models[i].number + 1;
+      //         sec.setAttribute( 'data-rexlive-model-number', models[i].number );
+      //         flagNumbers = true;
+      //       }
+      //     }
+      //     if ( !flagNumbers ) {
+      //       var model = {
+      //         id: modelID,
+      //         number: 1
+      //       };
+      //       models.push(model);
+      //       sec.setAttribute( 'data-rexlive-model-number', model.number );
+      //     }
+      //   }
+      // });
     }
 
     // Rexbuilder_Util.$rexContainer

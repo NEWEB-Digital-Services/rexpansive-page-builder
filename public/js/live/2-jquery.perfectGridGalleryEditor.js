@@ -87,6 +87,28 @@
     return { width: e[a + "Width"], height: e[a + "Height"] };
   }
 
+  // timing utilities
+  /**
+   * Set timeout function rewritten with requestanimation frame
+   * @param  {Function} callback [description]
+   * @param  {Number}   delay    delay time
+   * @return {Object}
+   */
+  function rtimeOut( callback, delay ) {
+    var dateNow = Date.now,
+      requestAnimation = window.requestAnimationFrame,
+      start = dateNow(),
+      stop,
+      timeoutFunc = function(){
+        dateNow() - start < delay ? stop || requestAnimation(timeoutFunc) : callback()
+      };
+    requestAnimation(timeoutFunc);
+
+    return {
+      clear:function(){stop=1}
+    }
+  }
+
   /**
    * Util function to print the blocks infos of this row
    * @since 2.0.0
@@ -2898,13 +2920,7 @@
             size_viewer_mobile = null;
 
             //waiting for transition end
-            setTimeout(
-              function() {
-                Rexbuilder_Util.fixYoutube($section);
-              },
-              1000,
-              $section
-            );
+            rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
           }
         });
     },
@@ -3465,6 +3481,8 @@
         );
       }
 
+      // console.trace();
+
       // console.table({
       //   startH: startH,
       //   blockRatio: blockRatio,
@@ -3821,13 +3839,7 @@
                 reverseData: reverseData
               };
               // that.updateSrollbars();
-              setTimeout(
-                function() {
-                  Rexbuilder_Util.fixYoutube($section);
-                },
-                1000,
-                $section
-              );
+              rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
 
               if ( !Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdaiting ) {
                 $(document).trigger(event);
