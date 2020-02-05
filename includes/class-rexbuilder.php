@@ -158,6 +158,7 @@ class Rexbuilder {
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-model-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-button-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-accordion-shortcode.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-icon-shortcode.php';
 
 		$this->loader = new Rexbuilder_Loader();
 
@@ -426,6 +427,11 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_get_embed_code', $plugin_public, 'rexlive_get_embed_code' );
 		$this->loader->add_action( 'wp_ajax_rexlive_save_buttons_in_page', $plugin_public, 'rexlive_save_buttons_in_page' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_buttons_in_page', $plugin_public, 'rexlive_save_buttons_in_page' );
+
+		// ajax logic
+		// for frontend effects
+		$this->loader->add_action( 'wp_ajax_rex_get_popup_content', $plugin_public, 'rex_get_popup_content' );
+		$this->loader->add_action( 'wp_ajax_nopriv_rex_get_popup_content', $plugin_public, 'rex_get_popup_content' );
 	}
 
 	/**
@@ -457,6 +463,7 @@ class Rexbuilder {
         $this->loader->add_shortcode( 'RexAccordionHeader', $accordion, 'render_accordion_header' );
         $this->loader->add_shortcode( 'RexAccordionContent', $accordion, 'render_accordion_content' );
         $this->loader->add_shortcode( 'RexAccordionFooter', $accordion, 'render_accordion_footer' );
+        $this->loader->add_shortcode( 'RexliveIcon', 'Rexbuilder_Icon_Shortcode', 'render' );
 	}
 
 	/**

@@ -26,6 +26,8 @@ var RexSlider = (function ($) {
       arrowShape: 'M 71.080084,1.034481 C 71.763642,0.34482599 72.61809,-1.250001e-8 73.557983,-1.250001e-8 c 0.939893,0 1.794341,0.34482600250001 2.477899,1.03448101250001 1.367117,1.37931 1.367117,3.620689 0,5 L 32.459031,49.999998 76.035882,93.965515 c 1.367117,1.379311 1.367117,3.62069 0,5 -1.367117,1.379315 -3.588681,1.379315 -4.955798,0 L 25.025333,52.499998 c -1.367117,-1.37931 -1.367117,-3.62069 0,-5 l 46.054751,-46.465517 0,0 z'
     };
 
+    var $parentBlock = $sliderWrap.parents('.block-has-slider');
+
     settings.setGallerySize = ('undefined' != typeof $sliderWrap.attr('data-set-gallery-size') ? JSON.parse($sliderWrap.attr('data-set-gallery-size')) : false);
     settings.wrapAround = ('undefined' != typeof $sliderWrap.attr('data-wrap-around') ? JSON.parse($sliderWrap.attr('data-wrap-around')) : true);
 
@@ -47,7 +49,7 @@ var RexSlider = (function ($) {
     }
 
     if ($sliderWrap.hasClass('rex-slider--bottom-interface')) {
-      $sliderWrap.parents('.block-has-slider').addClass('block-has-slider--navigator');
+      $parentBlock.addClass('block-has-slider--navigator');
     }
 
     $sliderWrap.find(".rex-slider-element").each(function (i, slide) {
@@ -68,6 +70,10 @@ var RexSlider = (function ($) {
           }
         }        
       };
+    }
+
+    if ( settings.prevNextButtons && $parentBlock.hasClass('custom-autoplay') ) {
+      settings.pauseAutoPlayOnHover = false;
     }
 
     $sliderWrap.flickity(settings);
@@ -104,6 +110,22 @@ var RexSlider = (function ($) {
       $sliderWrap.flickity('playPlayer');
     }
 
+    if ( $parentBlock.hasClass('custom-autoplay') ) {
+      var sliderInstance = $sliderWrap.data('flickity');
+      sliderInstance.customAutoplayInterval = null;
+      if ( settings.prevNextButtons ) {
+        sliderInstance.prevButton.element.addEventListener('click', handleCustomAutoplay.bind( sliderInstance ));
+        sliderInstance.nextButton.element.addEventListener('click', handleCustomAutoplay.bind( sliderInstance ));
+      }
+      if ( settings.pageDots ) {
+        for(var i=0; i < sliderInstance.pageDots.dots.length; i++) {
+          sliderInstance.pageDots.dots[i].addEventListener('click', handleCustomAutoplay.bind( sliderInstance ));
+        }
+      }
+
+      sliderInstance.$element.on('dragEnd.flickity', handleCustomAutoplay.bind( sliderInstance ));
+    }
+
     $sliderWrap.attr("data-rex-slider-active", true);
 
     /**
@@ -117,6 +139,27 @@ var RexSlider = (function ($) {
       $this.addClass('is-selected').siblings('.dot').removeClass('is-selected');
       $sliderWrap.flickity('select', index);
     })
+  }
+
+  /**
+   * If custom autoplay set, the slider plays either on hover
+   * and when the user clicks on a prev/next button stops;
+   * after tot seconds the autoplay restarts
+   * @param  {Event} ev event
+   * @return {void}
+   */
+  function handleCustomAutoplay(ev) {
+    var slinderInstance = this;
+    var timer = ( this.element.getAttribute('data-custom-autoplay-timer') ? this.element.getAttribute('data-custom-autoplay-timer') : 9000 );
+    if ( slinderInstance.customAutoplayInterval ) {
+      slinderInstance.customAutoplayInterval.clear();
+    }
+
+    slinderInstance.customAutoplayInterval = Rexbuilder_Util.rtimeOut(function() {
+      slinderInstance.playPlayer();
+    }, timer);
+
+    slinderInstance.pausePlayer()
   }
 
   var _initSliderBox = function (el) {

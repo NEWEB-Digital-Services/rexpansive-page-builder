@@ -447,6 +447,11 @@ $tool_button_classes = 'tool-button';
       </button>
     </li>
     <li>
+      <button class="medium-editor-action me-svg-inline">
+        <i class="fa fa-info-circle"></i>
+      </button>
+    </li>
+    <li>
       <button class="medium-editor-action me-svg-delete medium-editor-button-last">
         <i class="fa fa-times"></i>
       </button>

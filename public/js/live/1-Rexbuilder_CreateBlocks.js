@@ -606,6 +606,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
     $newBlockData.attr("data-id", newBlockID);
     $newBlockData.attr("id", newBlockID + "-builder-data");
 
+    sanitizeBlockContent( $newBlock[0] );
+
     $newBlock.appendTo($gallery.eq(0));
 
     var w = parseInt($newBlock.attr("data-gs-width"));
@@ -682,6 +684,51 @@ var Rexbuilder_CreateBlocks = (function ($) {
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+    }
+  }
+
+  /**
+   * Sanitize the block content before the copy
+   * @param  {Element} elem element to sanitize
+   * @return {void}
+   * @since  2.0.3
+   */
+  var sanitizeBlockContent = function( elem ) {
+    var textWrap = elem.querySelector('.text-wrap');
+    // sanitize buttons
+    sanitizeButtons( textWrap );
+  }
+
+  /**
+   * Sanitizing the buttons
+   * @param  {Element} textWrap text wrap
+   * @return {void}
+   * @since  2.0.3
+   * 
+   * @todo generate the style to view correctly the button live 
+   * @todo handling the copy of a section with multiple sync buttons
+   */
+  var sanitizeButtons = function( textWrap ) {
+    var buttonWrappers = [].slice.call( textWrap.getElementsByClassName('rex-button-wrapper') );
+    var tot_buttonWrappers = buttonWrappers.length, i;
+    var buttonData, buttonModelID, temp;
+
+    for( i=0; i < tot_buttonWrappers; i++ ) {
+      // separated button
+      if ( Rexbuilder_Util.hasClass( buttonWrappers[i], 'rex-separate-button' ) ) {
+        buttonWrappers[i].setAttribute('data-rex-button-id', Rexbuilder_Util.createBlockID());
+        buttonWrappers[i].setAttribute('data-rex-button-number', '1');
+        // @todo generate the style to view correctly the button live 
+      } else {    // synched button
+        buttonModelID = buttonWrappers[i].getAttribute( 'data-rex-button-id' );
+        temp = [].slice.call( document.querySelectorAll('.rex-button-wrapper[data-rex-button-id="' + buttonModelID + '"]'));
+        buttonWrappers[i].setAttribute('data-rex-button-number', temp.length + 1);
+
+        buttonData = buttonWrappers[i].querySelector('.rex-button-data');
+        if ( buttonData ) {
+          buttonData.removeAttribute('data-synchronize');
+        }
+      }
     }
   }
 
@@ -946,7 +993,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
     createSlider: _createSlider,
     createCopyBlock: _createCopyBlock,
     insertHTMLBlock: _insertHTMLBlock,
-    moveBlockToOtherSection: _moveBlockToOtherSection
+    moveBlockToOtherSection: _moveBlockToOtherSection,
+    sanitizeBlockContent: sanitizeBlockContent
   };
 
 })(jQuery);

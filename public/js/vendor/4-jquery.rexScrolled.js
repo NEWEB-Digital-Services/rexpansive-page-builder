@@ -60,6 +60,15 @@
     return rect.top + scrollTop;
   }
 
+  function viewport() {
+    var e = window, a = 'inner';
+    if (!('innerWidth' in window)) {
+      a = 'client';
+      e = document.documentElement || document.body;
+    }
+    return { width: e[a + 'Width'], height: e[a + 'Height'] };
+  }
+
   // The actual plugin constructor
   function rexScrolled(element, options) {
     this.element = element;
@@ -81,6 +90,8 @@
     this.settings.offset = parseInt(this.element.getAttribute('data-rs-animation-offset') || this.settings.offset);
     this.settings.force_launch = this.element.getAttribute('data-rs-animation-force-launch') || this.settings.force_launch;
 
+    this.bindedScrollHandler = null;
+
     this.init();
   }
 
@@ -97,12 +108,14 @@
       this.has_scrolled();
 
       // vanilla binding
-      window.addEventListener('scroll', this.has_scrolled.bind(this));
+      this.bindedScrollHandler = this.has_scrolled.bind(this);
+      window.addEventListener( 'scroll', this.bindedScrollHandler );
     },
     has_scrolled: function () {
-      if (this._viewport().width <= 767 && !this.settings.mobile) {
+      if (viewport().width <= 767 && !this.settings.mobile) {
 
         this.properties.launched = true;
+        this.removeScrollHandler();
 
       } else {
         var that = this;
@@ -131,17 +144,13 @@
             if( this.settings.callback && 'function' === typeof this.settings.callback ) {
               this.settings.callback( this.element );
             }
+            this.removeScrollHandler();
           }
         }
       }
     },
-    _viewport: function() {
-      var e = window, a = 'inner';
-      if (!('innerWidth' in window)) {
-        a = 'client';
-        e = document.documentElement || document.body;
-      }
-      return { width: e[a + 'Width'], height: e[a + 'Height'] };
+    removeScrollHandler: function() {
+      window.removeEventListener( 'scroll', this.bindedScrollHandler );
     }
   });
 

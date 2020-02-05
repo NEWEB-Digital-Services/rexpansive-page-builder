@@ -632,23 +632,29 @@
   height: 1em;
   vertical-align: -0.1em;
   line-height: 1; }
-
-.l-svg-icons > svg {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  fill: #979797;
-  vertical-align: -0.1em;
-  -webkit-transition: fill 600ms ease-out;
-  -o-transition: fill 600ms ease-out;
-  transition: fill 600ms ease-out; }
-
-#rex-button-editor .rexbutton-cont_row10 .l-svg-icons > svg,
-#rex-element-editor .rexelement-cont_row10 .l-svg-icons > svg {
-  -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-          transform: rotate(45deg);
-  cursor: pointer; }
+  .l-svg-icons > svg {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    fill: #979797;
+    vertical-align: -0.1em;
+    -webkit-transition: fill 600ms ease-out;
+    -o-transition: fill 600ms ease-out;
+    transition: fill 600ms ease-out; }
+  .l-svg-icons.inline-icon {
+    height: auto;
+    line-height: 0; }
+    .l-svg-icons.inline-icon > svg {
+      height: auto;
+      vertical-align: baseline;
+      max-height: 1em; }
+  .l-svg-icons.block-icon {
+    height: 1em;
+    line-height: 1; }
+    .l-svg-icons.block-icon > svg {
+      height: 1em;
+      vertical-align: -0.1em;
+      max-height: none; }
 
 .l-icon--white .l-svg-icons > svg {
   fill: #fff; }

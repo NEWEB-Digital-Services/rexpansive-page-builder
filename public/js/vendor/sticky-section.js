@@ -4,10 +4,11 @@
  * @version 1.0.0
  */
 ; (function () {
-  this.StickySection = function () { 
+  this.StickySection = function () {
     this.element = null;
     this.stickyElement = null;
     this.borderAnimationEl = {};
+    this.overlayAnimationEl = null;
     this.ticking = false;
 
     // get element as first argument
@@ -20,6 +21,8 @@
       stickyElementSelector: '.sticky-element',
       stickyJS: true,
       borderAnimation: false,
+      overlayAnimation: false,
+      originalOverlaySelector: '.responsive-overlay',
       borderCustomClass: '',
       requestAnimationFrame: false
     };
@@ -62,20 +65,29 @@
       this.element.insertBefore(this.borderAnimationEl.el, this.element.firstChild);
     }
 
+    if ( this.options.overlayAnimation ) {
+
+      var originaloverlayEl = this.element.querySelector(this.options.originalOverlaySelector);
+      if ( originaloverlayEl ) {
+        // generate overlay faker
+        this.overlayAnimationEl = document.createElement('div');
+        addClass( this.overlayAnimationEl, 'sticky__overlay' );
+
+        this.overlayAnimationEl.style.backgroundColor = originaloverlayEl.style.backgroundColor;
+        removeClass( originaloverlayEl, 'rex-active-overlay' )
+        // this.element.insertBefore(this.overlayAnimationEl, this.element.firstChild);
+        this.stickyElement.appendChild(this.overlayAnimationEl); 
+      }
+    }
+
     if ( this.options.stickyJS ) {
       addClass( this.element, 'sticky-js' );
     } else {
       var wrapper = document.createElement('div');
       wrapper.className = 'sticky-element__wrapper';
-      wrapper.style.position = 'absolute';
-      wrapper.style.top = '0';
-      wrapper.style.right = '0';
-      wrapper.style.bottom = '0';
-      wrapper.style.left = '0';
-      wrapper.style.zIndex = '0';
       addClass( this.element, 'sticky-css' );
       if ( this.stickyElement ) {
-        wrap( this.stickyElement, wrapper );
+        // wrap( this.stickyElement, wrapper );
       }
     }
 
@@ -88,6 +100,9 @@
       // classic method
       window.addEventListener('scroll', handleSticky.bind(this));
     }
+
+    // attach the plugin instance to the dom element
+    this.element.StickySectionInstance = this;
   }
 
   // private shared vars
@@ -179,11 +194,17 @@
       removeClass(this.element, 'visibile');
     }
 
+    // x = windowScrollTop - elScrollTop
+    // m = 100 / ( elHeight - windowInnerHeight )
+    // y = m * x + q
+    // y' = 2 * m * x - 100
+    // percentage of the section height reached during the scroll
+    var percentage = ( windowScrollTop - elScrollTop ) * 100 / ( elHeight - windowInnerHeight );
+    var _percentage = 2 * 100 / ( elHeight - windowInnerHeight ) * (windowScrollTop - elScrollTop) - 100
+
     // animate border
     if ( this.options.borderAnimation ) {
       if ( topViewport && bottomViewport ) {
-        // percentage of the section height reached during the scroll
-        var percentage = ( windowScrollTop - elScrollTop) * 100 / ( elHeight - windowInnerHeight );
         // scale value, relative to the height reached
         // divide by 100 to make the animation last until the end of the section
         // otherwise play with the value (now its 10)
@@ -206,6 +227,29 @@
         }
       }
     }
+
+    // animate overlay
+    if ( this.options.overlayAnimation ) {
+      // animate overlay faker
+      if ( topViewport && bottomViewport ) {
+        // opacity = percentage of scoll
+        this.overlayAnimationEl.style.opacity = 1- Math.pow( 1 - _percentage / 100, 1.75 );  // ease-out
+        // this.overlayAnimationEl.style.opacity = Math.pow( _percentage / 100, 1.75 );   // ease-in
+      } else {
+        if ( beforeViewport ) {
+          // opacity = 0
+          this.overlayAnimationEl.style.opacity = 0;
+        } else if ( afterViewport ) {
+          // opacity = 1
+          this.overlayAnimationEl.style.opacity = 1;
+        }
+      }
+    }
+  };
+
+  // public methods
+  StickySection.prototype.hideBorder = function() {
+    scaleBorder.call(this, 0);
   };
 
   /**

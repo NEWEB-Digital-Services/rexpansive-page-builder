@@ -15,6 +15,11 @@
     display: none;
 }
 
+#rex-button-editor .rexbutton-cont_row10 .l-svg-icons > svg {
+  transform: rotate(45deg);
+  cursor:pointer;
+}
+
 #rex-button__label{
     text-shadow: 2px 2px 4px black !important;
 }

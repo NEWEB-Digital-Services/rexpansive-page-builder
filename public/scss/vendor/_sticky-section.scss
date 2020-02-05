@@ -2,12 +2,16 @@
   &.sticky-section {
     &.sticky-css {
       .rex-video-wrap {
+        @include safariFlickerFix;
         position: sticky;
         top: 0;
+        z-index: 20;
       }
       .sticky-background-simulator {
+        @include safariFlickerFix;
         position: sticky;
         top: 0;
+        z-index: 20;
         width: 100%;
         height: 100vh;
         background-size: cover;
@@ -15,22 +19,39 @@
         background-repeat: no-repeat;
       }
     }
+
     &.will-change-rule {
       .rex-video-wrap {
         will-change: transform;
       }
     }
     .rex-video-wrap {
-      max-height: 100vh;
+      // max-height: 100vh;
+      height: 100vh;
     }
+
     @media screen and (min-width: 768px) {
       .perfect-grid-gallery {
         // min-height: 100vh;
+        // margin-top: 100vh!important;
+        margin-bottom: 20vh!important;
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      .perfect-grid-gallery {
         margin-top: 50vh!important;
-        margin-bottom: 40vh!important;
+        margin-bottom: 20vh!important;
+      }
+    }
+
+    .responsive-overlay {
+      &.rex-active-overlay {
+        visibility: hidden;
       }
     }
   }
+
 }
 /** sticky border animation **/
 // .sticky__border-animation__wrap {
@@ -42,10 +63,46 @@
 //   z-index: 40;
 // }
 
+// .rex-video__controls {
+.sticky-video-controls {
+  position: sticky!important;
+  // bottom: auto;
+  // right: auto;
+  left: calc( 100% - 70px);
+  top: calc(100% - 70px);
+  width: 40px;
+  height: 40px;
+  margin-bottom: 30px;
+  z-index: 50;
+  cursor: pointer;
+}
+// }
+
+.sticky-element__wrapper {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: 0;
+}
+
+.sticky__overlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity ease-out .3s;
+}
+
 .sticky__border-animation__top,
 .sticky__border-animation__right,
 .sticky__border-animation__bottom,
 .sticky__border-animation__left {
+  @include safariFlickerFix;
   position: absolute;
   transform: scale(1,1);
   background-color: #fff;

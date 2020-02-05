@@ -122,7 +122,7 @@ var Rexbuilder_Section = (function($) {
 
     tmpl.arg = "block";
     var contentEl;
-    var dragHanlderHTML = tmpl("tmpl-block-drag-handle")().trim();
+    var dragHandlerHTML = tmpl("tmpl-block-drag-handle")().trim();
 
     // removing scrollbars and text editor
     $gallery.find(".grid-stack-item").each(function(i, el) {
@@ -155,8 +155,11 @@ var Rexbuilder_Section = (function($) {
       // add dragging element, to drag blocks
       if ( null === el.querySelector('.rexlive-block-drag-handle') ) {
         contentEl = el.querySelector('.grid-item-content');
-        contentEl.insertAdjacentHTML( 'beforebegin', dragHanlderHTML );
+        contentEl.insertAdjacentHTML( 'beforebegin', dragHandlerHTML );
       }
+
+      // sanitize block content
+      Rexbuilder_CreateBlocks.sanitizeBlockContent( el );
     });
 
     tmpl.arg = "section";
@@ -306,7 +309,7 @@ var Rexbuilder_Section = (function($) {
             function() {
               galleryEditorInstance.properties.gridBlocksHeight = galleryEditorInstance._calculateGridHeight();
               galleryLayout.singleHeight =
-                galleryEditorInstance._viewport().height /
+                Rexbuilder_Util.viewport().height /
                 galleryEditorInstance.properties.gridBlocksHeight;
               galleryEditorInstance.updateGridstackStyles(
                 galleryLayout.singleHeight
@@ -578,8 +581,8 @@ var Rexbuilder_Section = (function($) {
       Rexbuilder_Live_Utilities.removeColorPicker($newSection);
 
       // insert the copyed row
-      $newSection.insertAfter($section);
       Rexbuilder_Section.prepareSectionCopied($newSection);
+      $newSection.insertAfter($section);
 
       Rexbuilder_Section_Editor.listenNewRowDataChange( $newSection.children('.section-data')[0] );
 

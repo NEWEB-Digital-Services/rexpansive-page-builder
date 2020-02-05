@@ -335,6 +335,17 @@ class Rexbuilder_Public
                 if ( false !== strpos( $customEffects, 'distance-accordion-toggle' ) ) {
                     wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.js', array(), $ver, true);
                 }
+
+                if ( false !== strpos( $customEffects, 'popup-content-button' ) ) {
+                    wp_enqueue_script('popup-content', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.js', array(), $ver, true);
+                    // @todo fix me
+                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.js', array(), $ver, true);
+                    wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.js', array(), $ver, true);
+                }
+
+                if ( false !== strpos( $customEffects, 'split-scrollable' ) ) {
+                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.js', array(), $ver, true);
+                }
             }
 
 
@@ -415,6 +426,17 @@ class Rexbuilder_Public
                     wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.min.js', array(), false, true);
                 }
 
+                if ( false !== strpos( $customEffects, 'popup-content-button' ) ) {
+                    wp_enqueue_script('popup-content', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.min.js', array(), false, true);
+                    // @todo: fix me
+                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.min.js', array(), false, true);
+                    wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.min.js', array(), false, true);
+                }
+
+                if ( false !== strpos( $customEffects, 'split-scrollable' ) ) {
+                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.min.js', array(), false, true);
+                }
+
                 wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-public.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
 
                 if( !Rexbuilder_Utilities::isBuilderLive() && 1 == $fast_load ) {
@@ -460,6 +482,9 @@ class Rexbuilder_Public
             'odometer' => array(
                 'theme' => 'digital',
                 'format' => '(.ddd),dd'
+            ),
+            'splitScrollable' => array(
+                'minViewportWidth' => 768
             ),
             'old_builder' => Rexbuilder_Utilities::postSavedFromBackend()
         );
@@ -1296,6 +1321,55 @@ class Rexbuilder_Public
     }
 
     /**
+     * Get the content of a page to display inside a popup
+     * @return JSON response
+     * @since  2.0.3
+     */
+    public function rex_get_popup_content() {
+        $nonce = $_REQUEST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if( !wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) {
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        }
+
+        // $t1 = microtime(true);
+        $maybe_id = url_to_postid( $_REQUEST['target'] );
+        // $t2 = microtime(true);
+        // $response['utp_T'] = $t2 - $t1;
+
+        $response['error'] = false;
+        $response['ID'] = $maybe_id;
+        $argsQuery = array(
+            'p' => $maybe_id,
+            'post_type' => 'any'
+        );
+
+        $query = new WP_Query( $argsQuery );
+
+        if ( $query->have_posts() ) {
+            add_filter( 'rexbuilder_fast_load', function() { return 0; } );
+            add_filter( 'rexbuilder_animation_enabled', function() { return false; } );
+            while ( $query->have_posts() ) {
+                $query->the_post();
+                $post = $query->post;
+                ob_start();
+                the_content();
+                $response['data'] = ob_get_clean();
+            }
+        }
+        wp_reset_postdata();
+
+        wp_send_json_success($response);
+    }
+
+    /**
      * Get the post ID. Check if WooCommerce is active and if the current page is a shop page
      * to correctly retreive its id
      *
@@ -1457,6 +1531,11 @@ class Rexbuilder_Public
         }
     }
     
+    /**
+     * Printing the custom buttons style
+     * @return void
+     * @since  2.0.0
+     */
     public function print_rex_buttons_style()
     {
         if ($this->builder_active_on_this_post_type()) {
@@ -1477,6 +1556,7 @@ class Rexbuilder_Public
             }
         }
     }
+    
     /**
      *    Prepare the html template for the vertical internal navigation (dots)
      *

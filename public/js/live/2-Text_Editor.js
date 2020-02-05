@@ -2248,6 +2248,11 @@ var TextEditor = (function ($) {
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
       }
 
+      if ( $el.hasClass("me-svg-inline") ) {
+        $(this.traceSVG).parents('i').toggleClass('inline-icon');
+        $(this.inlineSVGEditToolbar.querySelector('.me-svg-inline')).toggleClass('medium-editor-button-active');
+      };
+
       if( $el.hasClass("me-svg-delete") ) {
         $(this.traceSVG).parents('i').remove();
         this.hideEditInlineSVGToolbar();
@@ -2283,7 +2288,18 @@ var TextEditor = (function ($) {
     {
       this.traceSVG = target;
       this.placeEditInlineSVGToolbar();
+      this.checkToolbarTools();
       this.inlineSVGEditToolbar.classList.add("medium-editor-toolbar-active");
+    },
+
+    checkToolbarTools: function() {
+      var isInline = $(this.traceSVG).parents('i').hasClass('inline-icon');
+      var inlineTool = this.inlineSVGEditToolbar.querySelector('.me-svg-inline');
+      if ( isInline ) {
+        inlineTool.classList.add('medium-editor-button-active');
+      } else {
+        inlineTool.classList.remove('medium-editor-button-active');
+      }
     },
 
     imageResizableEnable: function() {

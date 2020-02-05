@@ -241,7 +241,9 @@ var effects_js_src = [
 	'public/js/vendor/6-jquery.rexSlideshow.js',
 	'public/js/vendor/sticky-section.js',
 	'public/js/vendor/scroll-css-animation.js',
-	'public/js/vendor/distance-accordion.js'
+	'public/js/vendor/distance-accordion.js',
+	'public/js/vendor/popup-content.js',
+	'public/js/vendor/split-scrollable.js',
 ];
 
 gulp.task('prepare-effects', function() {
@@ -479,9 +481,10 @@ gulp.task('builderlive-style', function() {
 
 gulp.task('live-production', ['prepare-effects','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style']);
 
-gulp.task('watch-live-production', ['builderlive-editor','builderlive'] ,function() {
+gulp.task('watch-live-production', ['prepare-effects','builderlive-editor','builderlive'] ,function() {
 	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive-editor']);
 	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive']);
+	gulp.watch(effects_js_src, ['prepare-effects']);
 });
 
 /* --- BUILD PUBLIC SCRIPTS AND STYLES ------ */
@@ -553,6 +556,10 @@ gulp.task('public-js-build', function() {
 	.pipe(gulp.dest('public/js'))
 });
 
+gulp.task('watch-public-js-build', function() {
+	gulp.watch(public_js_logic_src, ['public-js-build']);
+});
+
 /* ----- BUILD PLUGIN ------- */
 
 gulp.task('dev', ['admin-plugins-build', 'admin-css-build', 'public-css-build', 'public-plugins-build', 'public-js-build'] ,function() {
@@ -568,7 +575,7 @@ gulp.task('dev-live', ['live-builder-style'] ,function() {
 });
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
-var live_zip_name = 'Premium-202-Rexpansive-Builder.zip';
+var live_zip_name = 'Premium-203-Rexpansive-Builder.zip';
 // var live_folder_name = 'rexpansive-builder';		// old folder name
 var live_folder_name = 'rexpansive-page-builder';
 
@@ -593,6 +600,7 @@ var live_file_map = [
 	'includes/**/*',
 	'languages/**/*',
 	'Licensing/**/*',
+	'public/css/images',
 	'public/css/animate.css',
 	'public/css/builderlive-public.css',
 	'public/css/default-skin.png',

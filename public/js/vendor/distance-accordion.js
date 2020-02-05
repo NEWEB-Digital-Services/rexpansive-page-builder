@@ -14,6 +14,8 @@
     this.wrapper = null;
     this.$wrapToggler = [];
     // this.wrapContent = null;
+    this.targetsChildAccordions = null;
+    this.context = document;
 
     if (arguments[0]) {
       this.element = arguments[0];
@@ -28,7 +30,10 @@
       wrapperClassName: 'da-wrapper',
       wrapperCustomClass: '',
       accordionElementClassName: 'da-element',
-      scrollTo: false
+      accordionTogglerClass: 'distance-accordion-toggle',
+      scrollTo: false,
+      closeChilds: true,
+      context: null
     };
 
     // Create options by extending defaults with the passed in arugments
@@ -41,19 +46,22 @@
     // get eventually data attributes
     this.options.wrapObjects = ( this.element.getAttribute('data-wrap-objects' ) ? Boolean( this.element.getAttribute('data-wrap-objects' ) ) : this.options.wrapObjects );
     this.options.wrapperCustomClass = ( this.element.getAttribute('data-wrapper-cc' ) ? this.element.getAttribute('data-wrapper-cc' ) : this.options.wrapperCustomClass );
-    this.options.scrollTo = ( this.element.getAttribute('data-scroll-to' ) ? ( 'true' === this.element.getAttribute('data-scroll-to' ) ) : false );
+    this.options.scrollTo = ( this.element.getAttribute('data-scroll-to' ) ? ( 'true' === this.element.getAttribute('data-scroll-to' ) ) : this.options.scrollTo );
+    this.options.closeChilds = ( this.element.getAttribute('data-close-childs' ) ? ( 'true' === this.element.getAttribute('data-close-childs' ) ) : this.options.closeChilds );
+
+    this.context = ( this.options.context ? this.options.context : this.context );
 
     if ( this.element )
     {
       this.hashTarget = this.element.hash.substr(1);
       if ( '' !== this.hashTarget ) {
-        var target = document.getElementById( this.hashTarget );
+        var target = this.context.getElementById( this.hashTarget );
         if ( target ) {
           this.targets.push( target );
         }
       } else {
         this.classTarget = this.element.getAttribute('data-target');
-        this.targets = [].slice.call( document.getElementsByClassName(this.classTarget) );
+        this.targets = [].slice.call( this.context.getElementsByClassName( this.classTarget ) );
       }
 
       if ( this.targets.length > 0 ) {
@@ -97,45 +105,87 @@
           this.element.addEventListener('click', handleClick.bind(this));
         }
       }
+
+      // attach the plugin instance to the dom element
+      this.element.DistanceAccordionInstance = this;
     }
   }
 
+  // declaring plugin prototypes
+  DistanceAccordion.prototype.openAccordion = function() {
+    openAccordion.call(this);
+  };
+
+  DistanceAccordion.prototype.closeAccordion = function() {
+    closeAccordion.call(this);
+  };  
+
   function handleClick(event) {
     event.preventDefault();
-    if ( this.open ) {
-      this.$targets.slideUp();
-      this.$element.addClass('close').removeClass('open');
-      if ( this.$wrapToggler.length > 0 ) {
-        this.$wrapToggler.addClass('close').removeClass('open');
-      }
-      this.open = false;
-      this.close = true;
-    } else {
-      if ( this.options.scrollTo ) {
-        var scrollVal = this.$targets.eq(0).offset().top;
-        var that = this;
-
-        $('html, body').animate({ 
-            scrollTop: scrollVal
-          },
-          function() {
-            that.$targets.slideDown();    
-          } 
-        );
-      } else {
-        this.$targets.slideDown({
-          complete:function() {
-            $(this).trigger('da:open_complete');
-          }
-        });
-      }
-      this.$element.addClass('open').removeClass('close');
-      if ( this.$wrapToggler.length > 0 ) {
-        this.$wrapToggler.addClass('open').removeClass('close');
-      }
-      this.open = true;
-      this.close = false;
+    // if option to close eventually childs is active
+    // and the childs aren't cached ->
+    // found theme
+    if ( this.options.closeChilds && ! this.targetsChildAccordions ) {
+      this.targetsChildAccordions = [];
+      this.targets.forEach(function(t) {
+        this.targetsChildAccordions.push( [].slice.call( t.getElementsByClassName(this.options.accordionTogglerClass ) ) );
+      },this);
+      // flat childs array
+      this.targetsChildAccordions = [].concat.apply([], this.targetsChildAccordions);
     }
+
+    if ( this.open ) {
+      closeAccordion.call(this);
+    } else {
+      openAccordion.call(this);
+    }
+  }
+
+  function closeAccordion() {
+    this.$targets.slideUp();
+    this.$element.addClass('close').removeClass('open');
+    if ( this.$wrapToggler.length > 0 ) {
+      this.$wrapToggler.addClass('close').removeClass('open');
+    }
+
+    // propagate the close accordion to childs
+    if( this.options.closeChilds ) {
+      this.targetsChildAccordions.forEach(function(child) {
+        if( child.DistanceAccordionInstance.open ) {
+          child.DistanceAccordionInstance.closeAccordion();
+        }
+      })
+    }
+
+    this.open = false;
+    this.close = true;
+  };
+
+  function openAccordion() {
+    if ( this.options.scrollTo ) {
+      var scrollVal = this.$targets.eq(0).offset().top;
+      var that = this;
+
+      $('html, body').animate({ 
+          scrollTop: scrollVal
+        },
+        function() {
+          that.$targets.slideDown();    
+        } 
+      );
+    } else {
+      this.$targets.slideDown({
+        complete:function() {
+          $(this).trigger('da:open_complete');
+        }
+      });
+    }
+    this.$element.addClass('open').removeClass('close');
+    if ( this.$wrapToggler.length > 0 ) {
+      this.$wrapToggler.addClass('open').removeClass('close');
+    }
+    this.open = true;
+    this.close = false;
   }
 
   // Utility method to extend defaults with user options

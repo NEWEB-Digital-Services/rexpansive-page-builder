@@ -1251,6 +1251,7 @@ var Rex_Save_Listeners = (function($) {
       image_bg_section = "",
       image_width = 0,
       image_height = 0,
+      image_size="full",
       id_image_bg_section = "",
       image_bg_section_active = "",
       video_bg_url_section = "",
@@ -1309,6 +1310,7 @@ var Rex_Save_Listeners = (function($) {
         : isNaN(parseInt(section.getAttribute("data-background_image_height")))
         ? ""
         : parseInt(section.getAttribute("data-background_image_height"));
+    image_size = sectionData.getAttribute("data-image_size") == null ? "full" : sectionData.getAttribute("data-image_size");
     id_image_bg_section = sectionData.getAttribute("data-id_image_bg_section") === null ? "" : sectionData.getAttribute("data-id_image_bg_section");
     image_bg_section_active = sectionData.getAttribute("data-image_bg_section_active") == null ? true : sectionData.getAttribute("data-image_bg_section_active");
 
@@ -1403,6 +1405,8 @@ var Rex_Save_Listeners = (function($) {
         image_bg_section +
         '" id_image_bg_section="' +
         id_image_bg_section +
+        '" image_size="' +
+        image_size +
         '" video_bg_url_section="' +
         video_bg_url_section +
         '" video_bg_id_section="' +
@@ -1484,6 +1488,7 @@ var Rex_Save_Listeners = (function($) {
       props["image_width"] = image_width;
       props["image_height"] = image_height;
       props["id_image_bg_section"] = id_image_bg_section;
+      props["image_size"] = image_size;
       props["video_bg_id"] = video_bg_id_section;
       props["video_mp4_url"] = video_mp4_url;
       props["video_bg_url_section"] = video_bg_url_section;
@@ -1628,6 +1633,14 @@ var Rex_Save_Listeners = (function($) {
       },
       {
         condition: 'rex-indicator__',
+        active: false
+      },
+      {
+        condition: 'popup-content-button',
+        active: false
+      },
+      {
+        condition: 'split-scrollable',
         active: false
       }
     ];

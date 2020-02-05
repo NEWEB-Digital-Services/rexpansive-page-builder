@@ -2,28 +2,37 @@
   display: inline-block;
   width: 1em;
   height: 1em;
-  // fill: $icon-base-color;
   vertical-align: -0.1em;
   line-height: 1;
-}
 
-.l-svg-icons > svg {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  fill: $icon-base-color;
-  vertical-align: -0.1em;
-  transition: fill 600ms ease-out;
-}
-#rex-button-editor .rexbutton-cont_row10 .l-svg-icons > svg,
-#rex-element-editor .rexelement-cont_row10 .l-svg-icons > svg {
-  transform: rotate(45deg);
-  cursor:pointer;
-}
+  > svg {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    fill: $icon-base-color;
+    vertical-align: -0.1em;
+    transition: fill 600ms ease-out;
+  }
 
-#rex-wpcf7-content-adder .rexwpcf7-cont_row .l-svg-icons > svg,
-#rex-wpcf7-form-editor .rexwpcf7-cont_row .l-svg-icons > svg {
-  // cursor:pointer;
+  &.inline-icon {
+    height: auto;
+    line-height: 0;
+    > svg {
+      height: auto;
+      vertical-align: baseline;
+      max-height: 1em;
+    }
+  }
+
+  &.block-icon {
+    height: 1em;
+    line-height: 1;
+    > svg {
+      height: 1em;
+      vertical-align: -0.1em;
+      max-height: none;
+    }
+  }
 }
 
 .l-icon--white {

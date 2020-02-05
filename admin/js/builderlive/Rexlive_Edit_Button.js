@@ -212,6 +212,13 @@ var Button_Edit_Modal = (function ($) {
             $(".rexbutton-cont_row77").find("#rex-button__name-label").addClass("active");
             //$(".rexbutton-cont_row77").find("#rex-button__name").addClass("activeinput");
         }
+        if( "" !== button_editor_properties.$button_class.val() ) {
+            button_editor_properties.$button_class.prev().addClass('active');       // prefix
+            button_editor_properties.$button_class.next().addClass('active');       // label
+        } else {
+            button_editor_properties.$button_class.prev().removeClass('active');        // prefix
+            button_editor_properties.$button_class.next().removeClass('active');        // label
+        }
     }
 
     var _clearButtonData = function () {
@@ -238,6 +245,7 @@ var Button_Edit_Modal = (function ($) {
             padding_left: "",
             link_target: "",
             link_type: "",
+            classes: "",
             buttonTarget: {
                 button_name: "",
                 button_id: "",
@@ -260,6 +268,7 @@ var Button_Edit_Modal = (function ($) {
             buttonData.text = data.buttonInfo.text;
             buttonData.link_target = data.buttonInfo.link_target;
             buttonData.link_type = data.buttonInfo.link_type;
+            buttonData.classes = data.buttonInfo.classes;
             for (i = 0; i < rexButtonsJSON.length; i++) {
                 if (buttonID == rexButtonsJSON[i].rexID) {
                     buttonData.text_color = typeof rexButtonsJSON[i].rules.element.text_color === "undefined" ? "" : rexButtonsJSON[i].rules.element.text_color;
@@ -312,6 +321,8 @@ var Button_Edit_Modal = (function ($) {
         button_editor_properties.$button_link_target.val(buttonData.link_target);
         button_editor_properties.$button_link_type.val(buttonData.link_type);
         button_editor_properties.$button_name.val(buttonData.buttonTarget.button_name);
+
+        button_editor_properties.$button_class.val(buttonData.classes);
 
         button_editor_properties.$button_preview_border.css("border-width", buttonData.border_width);
 
@@ -372,6 +383,7 @@ var Button_Edit_Modal = (function ($) {
         buttonData.text = button_editor_properties.$button_label_text.val();
         buttonData.link_target = button_editor_properties.$button_link_target.val();
         buttonData.link_type = button_editor_properties.$button_link_type.val();
+        buttonData.classes = button_editor_properties.$button_class.val();
         //colors data are already updated
     };
 
@@ -437,6 +449,15 @@ var Button_Edit_Modal = (function ($) {
                 type: "button",
                 name: "link_target",
                 value: button_editor_properties.$button_link_target.val()
+            });
+        });
+
+        // CLASSES
+        button_editor_properties.$button_class.on("focusout", function(e) {
+            _updateButtonLive({
+                type: "button",
+                name: "button_class",
+                value: button_editor_properties.$button_class.val()
             });
         });
 
@@ -1455,6 +1476,8 @@ var Button_Edit_Modal = (function ($) {
             $button_link_target: $container.find("#rex-button-link-target"),
             $button_link_type: $container.find("#rex-button-link-type"),
 
+            $button_class: $container.find("#rex-button__class"),
+
             $button_name: $container.find("#rex-button__name")
         };
 
@@ -1507,6 +1530,7 @@ var Button_Edit_Modal = (function ($) {
             padding_right: "",
             link_target: "",
             link_type: "",
+            classes: "",
             buttonTarget: {
                 button_name: "",
                 button_id: "",

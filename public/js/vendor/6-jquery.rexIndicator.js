@@ -27,6 +27,15 @@
       after: '.rexpansive_section'
     };
 
+  function viewport() {
+    var e = window, a = 'inner';
+    if (!('innerWidth' in window)) {
+      a = 'client';
+      e = document.documentElement || document.body;
+    }
+    return { width: e[a + 'Width'], height: e[a + 'Height'] };
+  }
+
   // The actual plugin constructor
   function rexIndicator(element, options) {
     this.element = element;
@@ -92,21 +101,21 @@
 
       switch( this.settings.relative_to ) {
         case 'block':
-          if( this._viewport().width >= parseInt(_plugin_frontend_settings.collapse_dimension) ) {
+          if( viewport().width >= parseInt(_plugin_frontend_settings.collapse_dimension) ) {
             p = this._get_position_desktop_block_relative();
           } else {
             p = this._get_position_mobile();
           }
           break;
         case 'start':
-          if( this._viewport().width >= parseInt(_plugin_frontend_settings.collapse_dimension) ) {
+          if( viewport().width >= parseInt(_plugin_frontend_settings.collapse_dimension) ) {
             p = this._get_position_desktop_start_relative();
           } else {
             p = this._get_position_mobile();
           }
           break;
         case 'parent': {
-          if( this._viewport().width >= parseInt(_plugin_frontend_settings.collapse_dimension) ) {
+          if( viewport().width >= parseInt(_plugin_frontend_settings.collapse_dimension) ) {
             p = this._get_position_desktop_parent_relative();
           } else {
             p = this._get_position_mobile();
@@ -259,10 +268,10 @@
       }
 
       return p;
-    },
+    }
 
     // fix_wrap_height: function() {
-    //   if(this._viewport().width < 767) {
+    //   if(viewport().width < 767) {
     //     var w = this.$block_ref.find('.text-wrap')[0];
     //     w.style.minHeight = 'auto';
     //     var h = w.offsetHeight;
@@ -271,15 +280,6 @@
     //     }
     //   }
     // },
-    
-    _viewport: function () {
-      var e = window, a = 'inner';
-      if (!('innerWidth' in window)) {
-        a = 'client';
-        e = document.documentElement || document.body;
-      }
-      return { width: e[a + 'Width'], height: e[a + 'Height'] };
-    },
   });
 
   // A really lightweight plugin wrapper around the constructor,

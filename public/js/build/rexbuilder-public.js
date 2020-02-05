@@ -11,18 +11,766 @@ var Rexbuilder_App = (function($) {
   var $grids = null;
   var $accordions = null;
   var odometers = [];
+  var accordionSettings = {};
+
+  /**
+   * In case of RexButtons inside a block that is a link
+   * we must fix the buttons to re-wrap them with the correct class
+   *
+   */
+  var fixRexButtons = function() {
+    var buttons = [].slice.call( document.getElementsByClassName('rex-button-wrapper') );
+    var tot_buttons = buttons.length, i = 0;
+    for( i = 0; i < tot_buttons; i++ ) {
+      var container = buttons[i].querySelector( '.rex-button-container' );
+      if ( ! container ) {
+        var newContainer = document.createElement('span');
+        newContainer.className = 'rex-button-container';
+        var toWrap = buttons[i].querySelector('.rex-button-background');
+        toWrap.parentNode.insertBefore( newContainer, toWrap );
+        newContainer.appendChild( toWrap );
+      }
+    }
+  }
+
+  var _linkDocumentListeners = function() {
+    function handleYTPStart(e) {
+      var ytContainer = $(e.target);
+      var $toggle = ytContainer
+        .parents(".youtube-player")
+        .eq(0)
+        .children(".rex-video-toggle-audio");
+      var ytpPlayer = ytContainer.YTPGetPlayer();
+      if (ytpPlayer !== undefined) {
+        ytContainer.optimizeDisplay();
+        if ($toggle.length != 0 && !$toggle.hasClass("user-has-muted")) {
+          ytContainer.YTPUnmute();
+        } else {
+          ytpPlayer.mute();
+          ytpPlayer.isMute = true;
+          ytpPlayer.setVolume(0);
+        }
+      }
+    }
+    Rexbuilder_Util.$document.on("YTPStart", handleYTPStart);
+
+    // Pause/Play video on block click
+    function handleClickYTPOverlay(e) {
+      var $ytvideo = $(e.target).parents(".rex-youtube-wrap");
+      if ($ytvideo.length > 0) {
+        var video_state = $ytvideo[0].state;
+        if (video_state == 1) {
+          $ytvideo.YTPPause();
+        } else {
+          $ytvideo.YTPPlay();
+        }
+      }
+    }
+    Rexbuilder_Util.$document.on("click", ".YTPOverlay", handleClickYTPOverlay);
+
+    function handleClickBlockHasSlider(e) {
+      // if (!$(this).hasClass("block-has-slider")) {
+        var $itemContent = $(this).find(".grid-item-content");
+        var $ytvideo = $itemContent.children(".rex-youtube-wrap");
+        var $vimvideo = $itemContent.children(".rex-video-vimeo-wrap--block");
+        var $mpvideo = $itemContent.children(".rex-video-wrap");
+
+        if ($ytvideo.length > 0) {
+          var video_state = $ytvideo[0].state;
+          if (video_state == 1) {
+            $ytvideo.YTPPause();
+          } else {
+            $ytvideo.YTPPlay();
+          }
+        }
+
+        if ($vimvideo.length > 0) {
+          var player = VimeoVideo.findVideo($vimvideo.find("iframe")[0]);
+          if (player) {
+            player
+              .getPaused()
+              .then(function(paused) {
+                if (paused) {
+                  player.play();
+                } else {
+                  player.pause();
+                }
+              })
+              .catch(function(error) {
+                // an error occurred
+              });
+          }
+        }
+
+        if ($mpvideo.length > 0) {
+          var videoMp4 = $mpvideo.find(".rex-video-container").get(0);
+          if (videoMp4.paused) {
+            videoMp4.play();
+          } else {
+            videoMp4.pause();
+          }
+        }
+      // }
+    }
+
+    Rexbuilder_Util.$document.on("click", ".block-has-slider", handleClickBlockHasSlider);
+
+    // Adding audio functionallity
+    function handleClickVideoToggleAudio(e) {
+      e.stopPropagation();
+      var $toggle = $(this);
+      var $ytvideo = $toggle
+        .parents(".youtube-player")
+        .eq(0)
+        .children(".rex-youtube-wrap");
+      var $mpvideo = $toggle
+        .parents(".mp4-player")
+        .eq(0)
+        .find(".rex-video-container");
+      var $vimvideo = $toggle
+        .parents(".vimeo-player")
+        .eq(0)
+        .find(".rex-video-vimeo-wrap--block");
+
+      //youtube video
+      if ($ytvideo.length > 0) {
+        var isMuted = $ytvideo.get(0).player.isMuted();
+        if (isMuted) {
+          $ytvideo.YTPUnmute();
+          $toggle.removeClass("user-has-muted");
+        } else {
+          $ytvideo.YTPMute();
+          $toggle.addClass("user-has-muted");
+        }
+      }
+
+      //mp4 video
+      if ($mpvideo.length > 0) {
+        if ($mpvideo.prop("muted")) {
+          $mpvideo.prop("muted", false);
+          $toggle.removeClass("user-has-muted");
+        } else {
+          $mpvideo.prop("muted", true);
+          $toggle.addClass("user-has-muted");
+        }
+      }
+
+      // vimeo video
+      if ($vimvideo.length > 0) {
+        var player = VimeoVideo.findVideo($vimvideo.find("iframe")[0]);
+        if (player) {
+          player
+            .getVolume()
+            .then(function(volume) {
+              if (0 == volume) {
+                player.setVolume(1);
+                $toggle.removeClass("user-has-muted");
+              } else {
+                player.setVolume(0);
+                $toggle.addClass("user-has-muted");
+              }
+              // volume = the volume level of the player
+            })
+            .catch(function(error) {
+              // an error occurred
+            });
+        }
+      }
+    }
+    Rexbuilder_Util.$document.on("click", ".rex-video-toggle-audio", handleClickVideoToggleAudio);
+
+    // video controller tools
+    // play video
+    function handleClickPlayVideo(ev) {
+      var $tool = $(ev.currentTarget);
+      var $play_tool = $tool.parent().children('.play');
+      var $target = $tool.parents('.rexpansive_section');
+      $tool.removeClass('video-tool--view');
+      $play_tool.addClass('video-tool--view');
+      Rexbuilder_Util.pauseVideo( $target );
+    }
+    Rexbuilder_Util.$document.on('click', '.rex-video__controls .pause', handleClickPlayVideo);
+
+    // pause video
+    function handleClickPauseVideo(ev) {
+      var $tool = $(ev.currentTarget);
+      var $pause_tool = $tool.parent().children('.pause');
+      var $target = $tool.parents('.rexpansive_section');
+      $tool.removeClass('video-tool--view');
+      $pause_tool.addClass('video-tool--view');
+      Rexbuilder_Util.playVideo( $target );
+    }
+    Rexbuilder_Util.$document.on('click', '.rex-video__controls .play', handleClickPauseVideo);
+
+    /**
+     * Video controls simulator, in case of sticky section
+     * (that cause problems of z-index)
+     * @param  {MouseEvent} ev click on the sticky controls area
+     * @return {void}
+     */
+    function handleClickStickyVideoControls(ev) {
+      var $activeTool = $(ev.currentTarget).prev().find('.video-tool--view');
+      $activeTool.click();
+    }
+    Rexbuilder_Util.$document.on('click', '.sticky-video-controls', handleClickStickyVideoControls);
+  };
+
+  /**
+   * Launch sticky sections if any
+   */
+  var launchStickySections = function() {
+    if ( 'undefined' !== typeof StickySection ) {
+      var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
+      var stickySections = [].slice.call( document.getElementsByClassName( 'sticky-section' ) );
+      var tot_stickySections = stickySections.length, i = 0;
+      var stickyElementSelector = '';
+      var overlayAnimation = false;
+      var videoEl, videoControls, stickyVideoControls;
+
+      for( i = 0; i < tot_stickySections; i++ ) {
+        if ( Rexbuilder_Util.has_class( stickySections[i], 'mp4-player' ) ) {
+          stickyElementSelector = '.rex-video-wrap';
+
+          // video controls fix
+          videoEl = stickySections[i].querySelector(stickyElementSelector);
+          videoControls = videoEl.querySelector('.rex-video__controls');
+          if ( videoControls ) {
+            stickyVideoControls = document.createElement('div');
+            Rexbuilder_Util.addClass( stickyVideoControls, 'sticky-video-controls' );
+            // Rexbuilder_Util.addClass( stickyVideoControls, 'rex-video__controls' );
+            // stickyVideoControls.innerHTML = '<div class="pause video-tool"><div class="indicator"></div></div><div class="play video-tool"><div class="indicator"></div></div>';
+            videoEl.insertAdjacentElement('afterend', stickyVideoControls);
+          }
+        } else if ( '' !== stickySections[i].style.backgroundImage ) {
+          stickyElementSelector = '.sticky-background-simulator';
+          var adjacent = stickySections[i].querySelector('.responsive-overlay');
+          adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
+          var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
+          backgroundSimulator.style.backgroundImage = stickySections[i].style.backgroundImage;
+        } else if ( Rexbuilder_Util.has_class( stickySections[i], 'section-w-image' ) ) {
+          stickyElementSelector = '.sticky-background-simulator';
+          var adjacent = stickySections[i].querySelector('.responsive-overlay');
+          adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
+          var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
+          backgroundSimulator.style.backgroundImage = 'url(' + stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
+        }
+
+        overlayAnimation = ( 'true' === stickySections[i].querySelector('.section-data').getAttribute('data-row_overlay_active') ? true : false );
+
+        var stickySection = new StickySection(stickySections[i], {
+          borderAnimation: true,
+          stickyJS: stickyJS,
+          stickyElementSelector: stickyElementSelector,
+          overlayAnimation: overlayAnimation
+        });
+      }
+    }
+  };
+
+  /**
+   * Launch eventually scroll animations
+   */
+  var launchScrollCSSAnimations = function() {
+    if ( 'undefined' !== typeof ScrollCSSAnimation ) {
+      var fadesUps = [].slice.call(document.getElementsByClassName('fadeUpTextCSS'));
+      var tot_fadesUps = fadesUps.length, i = 0;
+      for( i = 0; i < tot_fadesUps; i++ ) {
+        var fu = new ScrollCSSAnimation(fadesUps[i],{
+          offset: 0.75
+        });
+      }
+    }
+  }
+
+  /**
+   * Launch eventually distance accordion (accordion on rows)
+   *
+   */
+  var launchDistanceAccordion = function() {
+    if ( 'undefined' !== typeof DistanceAccordion ) {
+      var togglers = document.getElementsByClassName('distance-accordion-toggle');
+      for ( var j=0, tot = togglers.length; j < tot; j++ ) {
+        var inst = new DistanceAccordion(togglers[j]);
+      }
+    }
+  }
+
+  /**
+   * Callback after load the pop up content
+   * @return {void}
+   */
+  var launchAllAfterLoading = function() {
+    var $popUpContent = $(this.target);
+    var $newGrids = $popUpContent.find(".grid-stack-row");
+    var $newSections = $popUpContent.find(".rexpansive_section");
+    var $newAccordions = $popUpContent.find('.rex-accordion');
+    var pageGrids = $grids.length;
+
+    // launch photoswipe
+    if ( $newSections.length > 0 ) {
+      var tot_newSections = $newSections.length, i;
+      for( i=0; i < tot_newSections; i++ ) {
+        $newSections[i].setAttribute( 'data-rexlive-section-number', pageGrids + i );
+        var pswchilds = $newSections[i].getElementsByClassName( "pswp-figure" );
+        if ( pswchilds.length === 0 ) {
+          Rexbuilder_Util.removeClass( $newSections[i], 'photoswipe-gallery' );
+        }
+      }
+      Rexbuilder_Photoswipe.init(".photoswipe-gallery");
+    }
+
+    // main grid
+    if( $newGrids.length > 0 ) {
+      $newGrids.perfectGridGalleryEditor({
+        editorMode: Rexbuilder_Util.editorMode
+      });
+    }
+
+    // accordions
+    if( $newAccordions.length > 0 ) {
+      $newAccordions.rexAccordion(accordionSettings);
+    }
+
+    // sliders
+    RexSlider.init();
+
+    // distance accordions
+    if ( 'undefined' !== typeof DistanceAccordion ) {
+      var togglers = this.target.getElementsByClassName('distance-accordion-toggle');
+      for ( var j=0, tot = togglers.length; j < tot; j++ ) {
+        var inst = new DistanceAccordion(togglers[j], {
+          context: this.target
+        });
+      }
+    }
+
+    // split scrolls
+    launchSplitScollable( this.target, this.target );
+  }
+
+  /**
+   * Callback after load the popup iframe 
+   * @return {void}
+   */
+  var fixIframeContentAfterLoading = function() {
+    var rexLiveContent = this.iframeContainer.contentDocument.querySelector('.rexbuilder-live-content');
+    rexLiveContent.parentElement.removeChild(rexLiveContent)
+    this.iframeContainer.contentDocument.body.insertBefore(rexLiveContent, this.iframeContainer.contentDocument.body.firstChild);
+  }
+
+  /**
+   * Launch popupcontent plugin on found launchers
+   * @return {void}
+   */
+  var launchPopUpContent = function() {
+    if ( 'undefined' !== typeof PopUpContent ) {     
+      var btns = [].slice.call( document.getElementsByClassName('popup-content-button') );
+      var tot_btns = btns.length, i = 0;
+
+      for( i=0; i < tot_btns; i++ ) {
+        new PopUpContent(btns[i], {
+          // getPopUpContentComplete: launchAllAfterLoading,
+          contentRetrieveMethod: 'iframe',
+          getPopUpContentComplete: fixIframeContentAfterLoading,
+          ajaxSettings: {
+            type: "GET",
+            dataType: "json",
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            data: {
+              action: "rex_get_popup_content",
+              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+            },
+          }
+        });
+      }
+    }
+  }
+
+  /**
+   * Fixing a builder section that contains scrollable content
+   * 1) set the blocks heights
+   * 2) destroy the grid plugin
+   * 3) set auto height on the section
+   * @return {void}
+   */
+  function fixScrollableGridGallery() {
+    // destroyGridGallery
+    var grid = this.element.querySelector('.perfect-grid-gallery');
+    var $grid = $(grid);
+    var i;
+
+    for( i=0; i < this.totScrollEls; i++ ) {
+      this.scrollEls[i].style.height = this.scrollEls[i].offsetHeight + 'px';
+    }
+
+    for( i=0; i < this.totOpacityEls; i++ ) {
+      this.opacityEls[i].style.height = this.opacityEls[i].offsetHeight + 'px';
+    }
+
+    // destroy tha grid
+    $grid.data('plugin_perfectGridGalleryEditor').destroyGridGallery();
+    grid.style.height = '';
+  };
+
+  /**
+   * If SplitScrollable plugin is defined, launch it on every intersted section
+   * @param  {Element} context               where to search the sections
+   * @param  {customScrollContainer} customScrollContainer container in which watch the scroll event
+   * @return {void}
+   */
+  var launchSplitScollable = function( context, customScrollContainer ) {
+    if ( 'undefined' !== typeof SplitScrollable ) {
+      if ( Rexbuilder_Util.viewport().width >= _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
+        var scrbls = [].slice.call( context.getElementsByClassName('split-scrollable') );
+        var tot_scrbls = scrbls.length, i;
+        for( i=0; i < tot_scrbls; i++ ) {
+          var inst = new SplitScrollable(scrbls[i], {
+            scrollElsToWatchClass: 'text-wrap',
+            initializeComplete: fixScrollableGridGallery,
+            customScrollContainer: ( 'undefined' !== typeof customScrollContainer ? customScrollContainer : null )
+          });
+        }
+      }
+    }
+  };
+
+  /**
+   * Launching odometer with some options
+   * Store globally the odometer elements for future use
+   * @param {NODE} target element on which launch odometer
+   * @since 2.0.0
+   * @date 26-02-2019
+   */
+  var launch_odometer = function( target ) {
+    if ( 'undefined' !== Odometer )
+    {
+      var fval = target.innerText;
+      // Check if user want yearly increment of value
+      if ( null !== target.getAttribute( 'data-yearly-inc' ) )
+      {
+        // if exists get the value, comparing today to the site date pubblication
+        if ( '' !== _plugin_frontend_settings.sitedate )
+        {
+          var siteDate = new Date( _plugin_frontend_settings.sitedate );
+          var today = new Date();
+          var mult = today.getFullYear() - siteDate.getFullYear();
+
+          var y_inc = target.getAttribute( 'data-yearly-inc' );
+          fval = parseInt( fval ) + ( parseInt( y_inc ) * mult );
+        }
+      }
+
+      if ( null !== target.getAttribute( 'data-montly-inc' ) )
+      {
+        // if exists get the value, comparing today to the site date pubblication
+        if ( '' !== _plugin_frontend_settings.sitedate )
+        {
+          var siteDate = new Date( _plugin_frontend_settings.sitedate );
+          var today = new Date();
+          var mult = today.getMonth() - siteDate.getMonth();
+
+          var m_inc = target.getAttribute( 'data-montly-inc' );
+          fval = parseInt( fval ) + ( parseInt( m_inc ) * mult );
+        }
+      }
+
+      target.setAttribute('data-final-value', fval);
+      var tval = target.getAttribute('data-start-value');
+      if ( null == tval )
+      {
+        tval = '';
+        // console.log(target.innerText, target.innerText.length);
+        for (var i=0, tot_nums = target.innerText.length; i<tot_nums; i++)
+        {
+          tval += "1";
+        }
+      }
+      var oElement = new Odometer({
+        el: target,
+        value: tval,
+        format: _plugin_frontend_settings.odometer.format,
+        theme: _plugin_frontend_settings.odometer.theme,
+      });
+      // odometers.push(oElement);
+      return oElement;
+    }
+  };
+
+  // Launch Photoswipe
+  var initPhotoSwipeFromDOM = function(gallerySelector, context) {
+    context = 'undefined' === typeof context ? document : context;
+    // parse slide data (url, title, size ...) from DOM elements
+    // (children of gallerySelector)
+    var parseThumbnailElements = function(el) {
+      //var thumbElements = el.childNodes,
+
+      var thumbElements = $(el)
+          .find(".pswp-figure")
+          .get(),
+        numNodes = thumbElements.length,
+        items = [],
+        figureEl,
+        linkEl,
+        size,
+        item;
+
+      for (var i = 0; i < numNodes; i++) {
+        figureEl = thumbElements[i]; // <figure> element
+
+        // include only element nodes
+        if (figureEl.nodeType !== 1) {
+          continue;
+        }
+
+        linkEl = figureEl.children[0]; // <a> element
+
+        size = linkEl.getAttribute("data-size").split("x");
+
+        // create slide object
+        item = {
+          src: linkEl.getAttribute("href"),
+          w: parseInt(size[0], 10),
+          h: parseInt(size[1], 10)
+        };
+
+        if (figureEl.children.length > 1) {
+          // <figcaption> content
+          item.title = figureEl.children[1].innerHTML;
+        }
+
+        if (linkEl.children.length > 0) {
+          // <img> thumbnail element, retrieving thumbnail url
+          item.msrc = linkEl.children[0].getAttribute("data-thumburl");
+        }
+
+        item.el = figureEl; // save link to element for getThumbBoundsFn
+        items.push(item);
+      }
+
+      return items;
+    };
+
+    // find nearest parent element
+    var closest = function closest(el, fn) {
+      return el && (fn(el) ? el : closest(el.parentNode, fn));
+    };
+
+    var collectionHas = function(a, b) {
+      //helper function (see below)
+      for (var i = 0, len = a.length; i < len; i++) {
+        if (a[i] == b) return true;
+      }
+      return false;
+    };
+
+    var findParentBySelector = function(elm, selector) {
+      var all = document.querySelectorAll(selector);
+      var cur = elm.parentNode;
+      while (cur && !collectionHas(all, cur)) {
+        //keep going up until you find a match
+        cur = cur.parentNode; //go up
+      }
+      return cur; //will return null if not found
+    };
+
+    // triggers when user clicks on thumbnail
+    var onThumbnailsClick = function(e) {
+      e = e || window.event;
+
+      // Bug fix for Block links and links inside blocks
+      if ( $(e.target).parents(".perfect-grid-item").find(".element-link").length > 0 || $(e.target).is("a") ) {
+        return;
+      }
+
+      var eTarget = e.target || e.srcElement;
+      
+      // find root element of slide
+      var clickedListItem = closest(eTarget, function(el) {
+        return el.tagName && el.tagName.toUpperCase() === "FIGURE";
+      });
+
+      if (!clickedListItem) {
+        return;
+      }
+
+      // move the prevent default here, cause if the element clicked can't be
+      // a photoswipe element, we must prevent default after decided that
+      e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+
+      // find index of clicked item by looping through all child nodes
+      // alternatively, you may define index via data- attribute
+      // var clickedGallery = clickedListItem.parentNode,
+      //var clickedGallery = findParentBySelector(clickedListItem, '.my-gallery'),
+      var clickedGallery = $(clickedListItem).parents(gallerySelector)[0],
+        //childNodes = clickedListItem.parentNode.childNodes,
+        childNodes = $(clickedGallery)
+          .find(".pswp-figure")
+          .get(),
+        numChildNodes = childNodes.length,
+        nodeIndex = 0,
+        index;
+
+      for (var i = 0; i < numChildNodes; i++) {
+        if (childNodes[i].nodeType !== 1) {
+          continue;
+        }
+
+        if (childNodes[i] === clickedListItem) {
+          index = nodeIndex;
+          break;
+        }
+        nodeIndex++;
+      }
+
+      if (index >= 0) {
+        // open PhotoSwipe if valid index found
+        openPhotoSwipe(index, clickedGallery);
+      }
+      return false;
+    };
+
+    // parse picture index and gallery index from URL (#&pid=1&gid=2)
+    var photoswipeParseHash = function() {
+      var hash = window.location.hash.substring(1),
+        params = {};
+
+      if (hash.length < 5) {
+        return params;
+      }
+
+      var vars = hash.split("&");
+      for (var i = 0, tot_vars = vars.length; i < tot_vars; i++) {
+        if (!vars[i]) {
+          continue;
+        }
+        var pair = vars[i].split("=");
+        if (pair.length < 2) {
+          continue;
+        }
+        params[pair[0]] = pair[1];
+      }
+
+      if (params.gid) {
+        params.gid = parseInt(params.gid, 10);
+      }
+
+      return params;
+    };
+
+    var openPhotoSwipe = function(
+      index,
+      galleryElement,
+      disableAnimation,
+      fromURL
+    ) {
+      var pswpElement = document.querySelectorAll(".pswp")[0],
+        gallery,
+        options,
+        items;
+
+      items = parseThumbnailElements(galleryElement);
+
+      // define options (if needed)
+      options = {
+        // define gallery index (for URL)
+        galleryUID: galleryElement.getAttribute("data-pswp-uid"),
+
+        getThumbBoundsFn: function(index) {
+          // See Options -> getThumbBoundsFn section of documentation for more info
+          var thumbnail = items[index].el.getElementsByClassName(
+              "pswp-item-thumb"
+            )[0], // find thumbnail
+            image_content = items[index].el.getElementsByClassName(
+              "rex-custom-scrollbar"
+            )[0],
+            pageYScroll =
+              window.pageYOffset || document.documentElement.scrollTop,
+            rect = image_content.getBoundingClientRect(),
+            image_type = thumbnail.getAttribute("data-thumb-image-type");
+
+          if (image_type == "natural") {
+            return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
+          } else {
+            // var full_rect = items[index].el.getBoundingClientRect();
+            // return {x:full_rect.left, y:full_rect.top + pageYScroll, w:full_rect.width};;
+            return null;
+          }
+        },
+
+        closeOnScroll: false,
+        showHideOpacity: true
+      };
+
+      // PhotoSwipe opened from URL
+      if (fromURL) {
+        if (options.galleryPIDs) {
+          // parse real index when custom PIDs are used
+          // http://photoswipe.com/documentation/faq.html#custom-pid-in-url
+          for (var j = 0, tot_items = items.length; j < tot_items; j++) {
+            if (items[j].pid == index) {
+              options.index = j;
+              break;
+            }
+          }
+        } else {
+          // in URL indexes start from 1
+          options.index = parseInt(index, 10) - 1;
+        }
+      } else {
+        options.index = parseInt(index, 10);
+      }
+
+      // exit if index not found
+      if (isNaN(options.index)) {
+        return;
+      }
+
+      if (disableAnimation) {
+        options.showAnimationDuration = 0;
+      }
+
+      // Pass data to PhotoSwipe and initialize it
+
+      gallery = new PhotoSwipe(
+        pswpElement,
+        PhotoSwipeUI_Default,
+        items,
+        options
+      );
+      gallery.init();
+    };
+
+    // loop through all gallery elements and bind events
+    var galleryElements = context.querySelectorAll(gallerySelector);
+
+    for (var i = 0, l = galleryElements.length; i < l; i++) {
+      galleryElements[i].setAttribute("data-pswp-uid", i + 1);
+      galleryElements[i].onclick = onThumbnailsClick;
+    }
+
+    // Parse URL and open gallery if it contains #&pid=3&gid=1
+    var hashData = photoswipeParseHash();
+    if (hashData.pid && hashData.gid) {
+      openPhotoSwipe(
+        hashData.pid,
+        galleryElements[hashData.gid - 1],
+        true,
+        true
+      );
+    }
+  };
 
   var init = function() {
     Rexbuilder_Util.init();
     Rexbuilder_Dom_Util.init();
     
     Rexbuilder_Rexbutton.init();
-    
+
     /* The order between these 2 is very important! */
     Rexbuilder_Rexelement.init();   // 1st
     Rexbuilder_Rexwpcf7.init();     // 2nd
-
     
+
     if (Rexbuilder_Util.editorMode) {
       Rexbuilder_Util_Editor.init();
       Rexbuilder_Color_Palette.init();
@@ -40,7 +788,6 @@ var Rexbuilder_App = (function($) {
       // fixes for front end only
       fixRexButtons();
     }
-    
 
     Rex_Navigator.init();
     //Rexbuilder_FormFixes.init();
@@ -65,8 +812,8 @@ var Rexbuilder_App = (function($) {
       // prevent pswp errors
       $sections.each(function(i, e) {
         var pswchilds = e.getElementsByClassName("pswp-figure");
-        if (pswchilds.length === 0) {
-          $(e).removeClass("photoswipe-gallery");
+        if ( pswchilds.length === 0 ) {
+          Rexbuilder_Util.removeClass(e,'photoswipe-gallery');
         }
       });
       Rexbuilder_Photoswipe.init(".photoswipe-gallery");
@@ -142,7 +889,7 @@ var Rexbuilder_App = (function($) {
 
     Rexbuilder_Util.playAllVideos();
 
-    var accordionSettings = {
+    accordionSettings = {
       durationOpen: 10,
       durationClose: 300
     };
@@ -377,188 +1124,6 @@ var Rexbuilder_App = (function($) {
 
   };
 
-  /**
-   * In case of RexButtons inside a block that is a link
-   * we must fix the buttons to re-wrap them with the correct class
-   *
-   */
-  var fixRexButtons = function() {
-    var buttons = [].slice.call( document.getElementsByClassName('rex-button-wrapper') );
-    buttons.forEach(function( btn ) {
-      var container = btn.querySelector( '.rex-button-container' );
-      if ( ! container ) {
-        var newContainer = document.createElement('span');
-        newContainer.className = 'rex-button-container';
-        var toWrap = btn.querySelector('.rex-button-background');
-        toWrap.parentNode.insertBefore( newContainer, toWrap );
-        newContainer.appendChild( toWrap );
-      }
-    });
-  }
-
-  var _linkDocumentListeners = function() {
-    $(document).on("YTPStart", function(e) {
-      var ytContainer = $(e.target);
-      var $toggle = ytContainer
-        .parents(".youtube-player")
-        .eq(0)
-        .children(".rex-video-toggle-audio");
-      var ytpPlayer = ytContainer.YTPGetPlayer();
-      if (ytpPlayer !== undefined) {
-        ytContainer.optimizeDisplay();
-        if ($toggle.length != 0 && !$toggle.hasClass("user-has-muted")) {
-          ytContainer.YTPUnmute();
-        } else {
-          ytpPlayer.mute();
-          ytpPlayer.isMute = true;
-          ytpPlayer.setVolume(0);
-        }
-      }
-    });
-
-    // Pause/Play video on block click
-    $(document).on("click", ".YTPOverlay", function(e) {
-      var $ytvideo = $(e.target).parents(".rex-youtube-wrap");
-      if ($ytvideo.length > 0) {
-        var video_state = $ytvideo[0].state;
-        if (video_state == 1) {
-          $ytvideo.YTPPause();
-        } else {
-          $ytvideo.YTPPlay();
-        }
-      }
-    });
-
-    $(document).on("click", ".perfect-grid-item", function() {
-      if (!$(this).hasClass("block-has-slider")) {
-        var $itemContent = $(this).find(".grid-item-content");
-        var $ytvideo = $itemContent.children(".rex-youtube-wrap");
-        var $vimvideo = $itemContent.children(".rex-video-vimeo-wrap--block");
-        var $mpvideo = $itemContent.children(".rex-video-wrap");
-
-        if ($ytvideo.length > 0) {
-          var video_state = $ytvideo[0].state;
-          if (video_state == 1) {
-            $ytvideo.YTPPause();
-          } else {
-            $ytvideo.YTPPlay();
-          }
-        }
-
-        if ($vimvideo.length > 0) {
-          var player = VimeoVideo.findVideo($vimvideo.find("iframe")[0]);
-          if (player) {
-            player
-              .getPaused()
-              .then(function(paused) {
-                if (paused) {
-                  player.play();
-                } else {
-                  player.pause();
-                }
-              })
-              .catch(function(error) {
-                // an error occurred
-              });
-          }
-        }
-
-        if ($mpvideo.length > 0) {
-          var videoMp4 = $mpvideo.find(".rex-video-container").get(0);
-          if (videoMp4.paused) {
-            videoMp4.play();
-          } else {
-            videoMp4.pause();
-          }
-        }
-      }
-    });
-
-    // Adding audio functionallity
-    $(document).on("click", ".rex-video-toggle-audio", function(e) {
-      e.stopPropagation();
-      var $toggle = $(this);
-      var $ytvideo = $toggle
-        .parents(".youtube-player")
-        .eq(0)
-        .children(".rex-youtube-wrap");
-      var $mpvideo = $toggle
-        .parents(".mp4-player")
-        .eq(0)
-        .find(".rex-video-container");
-      var $vimvideo = $toggle
-        .parents(".vimeo-player")
-        .eq(0)
-        .find(".rex-video-vimeo-wrap--block");
-
-      //youtube video
-      if ($ytvideo.length > 0) {
-        var isMuted = $ytvideo.get(0).player.isMuted();
-        if (isMuted) {
-          $ytvideo.YTPUnmute();
-          $toggle.removeClass("user-has-muted");
-        } else {
-          $ytvideo.YTPMute();
-          $toggle.addClass("user-has-muted");
-        }
-      }
-
-      //mp4 video
-      if ($mpvideo.length > 0) {
-        if ($mpvideo.prop("muted")) {
-          $mpvideo.prop("muted", false);
-          $toggle.removeClass("user-has-muted");
-        } else {
-          $mpvideo.prop("muted", true);
-          $toggle.addClass("user-has-muted");
-        }
-      }
-
-      // vimeo video
-      if ($vimvideo.length > 0) {
-        var player = VimeoVideo.findVideo($vimvideo.find("iframe")[0]);
-        if (player) {
-          player
-            .getVolume()
-            .then(function(volume) {
-              if (0 == volume) {
-                player.setVolume(1);
-                $toggle.removeClass("user-has-muted");
-              } else {
-                player.setVolume(0);
-                $toggle.addClass("user-has-muted");
-              }
-              // volume = the volume level of the player
-            })
-            .catch(function(error) {
-              // an error occurred
-            });
-        }
-      }
-    });
-
-    // video controller tools
-    // play video
-    $(document).on('click', '.rex-video__controls .pause', function(ev) {
-      var $tool = $(ev.currentTarget);
-      var $play_tool = $tool.parent().children('.play');
-      var $target = $tool.parents('.rexpansive_section');
-      $tool.removeClass('video-tool--view');
-      $play_tool.addClass('video-tool--view');
-      Rexbuilder_Util.pauseVideo( $target );
-    });
-
-    // pause video
-    $(document).on('click', '.rex-video__controls .play', function(ev) {
-      var $tool = $(ev.currentTarget);
-      var $pause_tool = $tool.parent().children('.pause');
-      var $target = $tool.parents('.rexpansive_section');
-      $tool.removeClass('video-tool--view');
-      $pause_tool.addClass('video-tool--view');
-      Rexbuilder_Util.playVideo( $target );
-    });
-  };
-
   var load = function() {
     if (Rexbuilder_Util.editorMode) {
       Rexbuilder_Util_Editor.load();
@@ -691,134 +1256,13 @@ var Rexbuilder_App = (function($) {
       launchScrollCSSAnimations();
       // launch distance accordions
       launchDistanceAccordion();
+      // launch popUpContent
+      launchPopUpContent();
+      // launch splitScrollable
+      launchSplitScollable( document );
     }
 
     Rexbuilder_Util.galleryPluginActive = true;
-  };
-
-  /**
-   * Launch sticky sections if any
-   */
-  var launchStickySections = function() {
-    if ( 'undefined' !== typeof StickySection ) {
-      var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
-      var stickySections = [].slice.call( document.getElementsByClassName( 'sticky-section' ) );
-
-      stickySections.forEach(function (el, index) {
-        var stickyElementSelector = '';
-        if ( Rexbuilder_Util.has_class( el, 'mp4-player' ) ) {
-          stickyElementSelector = '.rex-video-wrap';
-        } else if ( '' !== el.style.backgroundImage ) {
-          stickyElementSelector = '.sticky-background-simulator';
-          var adjacent = el.querySelector('.responsive-overlay');
-          adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
-          var backgroundSimulator = el.querySelector('.sticky-background-simulator');
-          backgroundSimulator.style.backgroundImage = el.style.backgroundImage;
-        } else if ( Rexbuilder_Util.has_class( el, 'section-w-image' ) ) {
-          stickyElementSelector = '.sticky-background-simulator';
-          var adjacent = el.querySelector('.responsive-overlay');
-          adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
-          var backgroundSimulator = el.querySelector('.sticky-background-simulator');
-          backgroundSimulator.style.backgroundImage = 'url(' + el.querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
-        }
-
-        var stickySection = new StickySection(el, {
-          borderAnimation: true,
-          stickyJS: stickyJS,
-          stickyElementSelector: stickyElementSelector
-        });
-      });
-    }
-  };
-
-  /**
-   * Launch eventually scroll animations
-   */
-  var launchScrollCSSAnimations = function() {
-    if ( 'undefined' !== typeof ScrollCSSAnimation ) {
-      var fadesUps = [].slice.call(document.getElementsByClassName('fadeUpTextCSS'));
-      fadesUps.forEach(function(el) {
-        var fu = new ScrollCSSAnimation(el,{
-          offset: 0.75
-        });
-      });
-    }
-  }
-
-  /**
-   * Launch eventually distance accordion (accordion on rows)
-   *
-   */
-  var launchDistanceAccordion = function() {
-    if ( 'undefined' !== typeof DistanceAccordion ) {
-      var togglers = document.getElementsByClassName('distance-accordion-toggle');
-      for ( var j=0, tot = togglers.length; j < tot; j++ ) {
-        new DistanceAccordion(togglers[j]);
-      }
-    }
-  }
-
-  /**
-   * Launching odometer with some options
-   * Store globally the odometer elements for future use
-   * @param {NODE} target element on which launch odometer
-   * @since 2.0.0
-   * @date 26-02-2019
-   */
-  var launch_odometer = function( target )
-  {
-    if ( 'undefined' !== Odometer )
-    {
-      var fval = target.innerText;
-      // Check if user want yearly increment of value
-      if ( null !== target.getAttribute( 'data-yearly-inc' ) )
-      {
-        // if exists get the value, comparing today to the site date pubblication
-        if ( '' !== _plugin_frontend_settings.sitedate )
-        {
-          var siteDate = new Date( _plugin_frontend_settings.sitedate );
-          var today = new Date();
-          var mult = today.getFullYear() - siteDate.getFullYear();
-
-          var y_inc = target.getAttribute( 'data-yearly-inc' );
-          fval = parseInt( fval ) + ( parseInt( y_inc ) * mult );
-        }
-      }
-
-      if ( null !== target.getAttribute( 'data-montly-inc' ) )
-      {
-        // if exists get the value, comparing today to the site date pubblication
-        if ( '' !== _plugin_frontend_settings.sitedate )
-        {
-          var siteDate = new Date( _plugin_frontend_settings.sitedate );
-          var today = new Date();
-          var mult = today.getMonth() - siteDate.getMonth();
-
-          var m_inc = target.getAttribute( 'data-montly-inc' );
-          fval = parseInt( fval ) + ( parseInt( m_inc ) * mult );
-        }
-      }
-
-      target.setAttribute('data-final-value', fval);
-      var tval = target.getAttribute('data-start-value');
-      if ( null == tval )
-      {
-        tval = '';
-        // console.log(target.innerText, target.innerText.length);
-        for (var i=0, tot_nums = target.innerText.length; i<tot_nums; i++)
-        {
-          tval += "1";
-        }
-      }
-      var oElement = new Odometer({
-        el: target,
-        value: tval,
-        format: _plugin_frontend_settings.odometer.format,
-        theme: _plugin_frontend_settings.odometer.theme,
-      });
-      // odometers.push(oElement);
-      return oElement;
-    }
   };
 
   return {
@@ -827,39 +1271,12 @@ var Rexbuilder_App = (function($) {
   };
 })(jQuery);
 
-(function($) {
+;(function() {
   "use strict";
 
-  /**
-   * All of the code for your public-facing JavaScript source
-   * should reside in this file.
-   *
-   * Note that this assume you're going to use jQuery, so it prepares
-   * the $ function reference to be used within the scope of this
-   * function.
-   *
-   * From here, you're able to define handlers for when the DOM is
-   * ready:
-   *
-   * $(function() {
-   *
-   * });
-   *
-   * Or when the window is loaded:
-   *
-   * $( window ).load(function() {
-   *
-   * });
-   *
-   * ...and so on.
-   *
-   * Remember that ideally, we should not attach any more than a single DOM-ready or window-load handler
-   * for any particular page. Though other scripts in WordPress core, other plugins, and other themes may
-   * be doing this, we should try to minimize doing that in our own work.
-   */
   // Waiting until the ready of the DOM
   document.addEventListener('DOMContentLoaded', Rexbuilder_App.init );
 
   // Waiting for the complete load of the window
   window.addEventListener('load', Rexbuilder_App.load );
-})(jQuery);
+})();

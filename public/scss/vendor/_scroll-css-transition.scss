@@ -19,7 +19,7 @@
     .text-wrap {
       > * {
         opacity: 1;
-        transition: opacity 3000ms $easeOutSine, transform 2500ms $easeOutCirc;
+        transition: opacity 500ms $easeOutSine, transform 400ms $easeOutCirc;
         transform: translateY(0);
       }
     }

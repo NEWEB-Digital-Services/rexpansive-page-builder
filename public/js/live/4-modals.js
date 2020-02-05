@@ -822,6 +822,9 @@
         typeof $sectionData.attr("data-id_image_bg_section") == "undefined"
           ? ""
           : $sectionData.attr("data-id_image_bg_section");
+      var image_size = typeof $sectionData.attr("data-image_size") == "undefined"
+          ? ""
+          : $sectionData.attr("data-image_size");
       var imageUrl =
         typeof $sectionData.attr("data-image_bg_section") == "undefined"
           ? ""
@@ -842,6 +845,7 @@
       var reverseData = {
         active: activeImage,
         idImage: idImage,
+        image_size: image_size,
         urlImage: imageUrl,
         width: width,
         height: height
@@ -853,6 +857,7 @@
         active: data.active,
         idImage: data.idImage,
         urlImage: data.urlImage,
+        image_size: data.image_size,
         width: data.width,
         height: data.height
       };
