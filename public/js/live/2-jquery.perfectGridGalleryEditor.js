@@ -3139,7 +3139,7 @@
           var tot_items = items.length, i = 0;
           for( i=0; i < tot_items; i++ ) {
             if ( Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid || this.properties.firstStartGrid ) {
-              if (!( hasClass(items[i], "rex-hide-element") || hasClass(items[i], "removing_block"))) {
+              if ( ! ( hasClass( items[i], "rex-hide-element" ) || hasClass( items[i], "removing_block" ) || hasClass( items[i], "block-has-slider" ) ) ) {
                 this.updateElementHeight( items[i] );
               }
             } else if ( ! this.properties.collapsingElements ) {
@@ -3465,22 +3465,22 @@
         );
       }
 
-      // console.table({
-      //   startH: startH,
-      //   blockRatio: blockRatio,
-      //   backImgType: backImgType,
-      //   backgroundHeight:backgroundHeight,
-      //   videoHeight:videoHeight,
-      //   defaultHeight:defaultHeight,
-      //   textHeight:textHeight,
-      //   sliderHeight:sliderHeight,
-      //   originalH:originalH,
-      //   originalStartH:originalStartH,
-      //   singleHeight: this.properties.singleHeight,
-      //   spaceAvailable:spaceAvailable,
-      //   newH:newH,
-      //   gutter:gutter
-      // });
+      console.table({
+        startH: startH,
+        blockRatio: blockRatio,
+        backImgType: backImgType,
+        backgroundHeight:backgroundHeight,
+        videoHeight:videoHeight,
+        defaultHeight:defaultHeight,
+        textHeight:textHeight,
+        sliderHeight:sliderHeight,
+        originalH:originalH,
+        originalStartH:originalStartH,
+        singleHeight: this.properties.singleHeight,
+        spaceAvailable:spaceAvailable,
+        newH:newH,
+        gutter:gutter
+      });
 
       if ( this.properties.oneColumModeActive && ! Rexbuilder_Util.windowIsResizing ) {
         var collapsedHeight = newH;

@@ -3264,7 +3264,11 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     var formOccurencies = {};
 
     var _getDBFormsInPage = function () {
-        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").has(' .wpcf7-form');
+        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").has('.wpcf7-form');
+
+        if ( 0 === $elementWrappers.length ) {
+            return;
+        }
 
         idsInPage = [];
         $elementWrappers.each(function() {
@@ -3306,7 +3310,11 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _updateDBFormsInPage = function (formID, needToAddElementStyle) {
-        var $elementWrappers = Rexbuilder_Util.$rexContainer.find('.rex-element-wrapper').has(' .wpcf7-form');
+        var $elementWrappers = Rexbuilder_Util.$rexContainer.find('.rex-element-wrapper').has('.wpcf7-form');
+
+        if ( 0 === $elementWrappers.length ) {
+            return;
+        }
 
         idsInPage = [];
         $elementWrappers.each(function(){
@@ -3326,9 +3334,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             dataType: "json",
             url: _plugin_frontend_settings.rexajax.ajaxurl,
             data: {
-              action: "rex_wpcf7_get_forms",
-              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-              form_id: idsInPage
+                action: "rex_wpcf7_get_forms",
+                nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                form_id: idsInPage
             },
             success: function(response) {
               if (response.success) {
