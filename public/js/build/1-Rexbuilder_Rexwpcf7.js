@@ -2084,8 +2084,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         if (inputType == "select" || inputType == "radio") {  // Lists
             shortcode = shortcode.replace(/\s[\"\'][\s\S]+[\"\']/, "");
-            for (var field of listFields) {
-                shortcode = shortcode.replace("]", " '" + field + "']");
+            for (var fieldIndex in listFields) {
+                shortcode = shortcode.replace("]", " '" + listFields[fieldIndex] + "']");
             }
         }
 
@@ -2494,11 +2494,11 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         // Menu fields
         var $listFields = $formColumn.find(".wpcf7-select").eq(0).find("option");
         if ($listFields.length != 0) {
-            for (var field of $listFields) {
-                if($(field).val() != "" && !$(field).attr("disabled")) {
-                    columnContentData.wpcf7_list_fields.push($(field).text());
-                } 
-            }
+            $listFields.each( function( i, el ) {
+                if( '' !== el.value && ! el.getAttribute('disabled') ) {
+                    columnContentData.wpcf7_list_fields.push( el.textContent );
+                }
+            });
         }
 
         // Radio fields
@@ -2508,9 +2508,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 $listFields2 = $formColumn.find('.wpcf7-radio').eq(0).find('.wpcf7-list-item-label');
             }
 
-            for (var field of $listFields2) {
-                columnContentData.wpcf7_list_fields.push($(field).text());
-            }
+            $listFields2.each( function( i, el ) {
+                columnContentData.wpcf7_list_fields.push( el.textContent );
+            });
         }
 
         if ( spanDataExists ) {
@@ -3180,16 +3180,17 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
      */
     var _fixWpcf7RadioButtons = function () {
         var radiosInPage = Rexbuilder_Util.$rexContainer[0].querySelectorAll('.wpcf7-radio');   // Has wpcf7-form-control class too
-        for (var field of radiosInPage) {
+        var i, tot_radiosInPage = radiosInPage.length;
+        for( i=0; i<tot_radiosInPage; i++ ) {
             // Fixing the radio-xxx class because at page reload it is in the .wpcf7-form-control element
-            var radioClass = /radio-\d+/.exec(field.className);
+            var radioClass = /radio-\d+/.exec(radiosInPage[i].className);
 
             if ( null !== radioClass ) {
                 radioClass = radioClass[0];
-                field.classList.remove(radioClass);
-                var fieldName = field.querySelector('[type=radio]').name;
+                radiosInPage[i].classList.remove(radioClass);
+                var fieldName = radiosInPage[i].querySelector('[type=radio]').name;
 
-                var fieldParent = field.parentNode;     // .wpcf7-form-control-wrap Element
+                var fieldParent = radiosInPage[i].parentNode;     // .wpcf7-form-control-wrap Element
                 fieldParent.classList.add(radioClass);
                 fieldParent.classList.remove(fieldName);
             }
@@ -3295,10 +3296,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             success: function(response) {
                 if (response.success) {
                     var id, i = 0;
-                    for (id of idsInPage) {
-                        $formsInPage[id] = $(response.data.html_forms[i].toString().trim());
-
-                        i++;
+                    for ( i=0; i < idsInPage.length; i++ ) {
+                        $formsInPage[idsInPage[i]] = $(response.data.html_forms[i].toString().trim());
                     }
 
                     _fixWpcf7();
@@ -3341,14 +3340,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             success: function(response) {
               if (response.success) {
                 var id, i = 0;
-                for (id of idsInPage) {
-                    $formsInPage[id] = $(response.data.html_forms[i].toString().trim());
+                for( i=0; i<idsInPage.length; i++ ) {
+                    $formsInPage[idsInPage[i]] = $(response.data.html_forms[i].toString().trim());
 
-                    if ( needToAddElementStyle && id == formID ) {
+                    if ( needToAddElementStyle && idsInPage[i] == formID ) {
                         Rexbuilder_Rexelement.addElementStyle($elementWrappers.filter('[data-rex-element-id="' + formID + '"]'));
                     }
-
-                    i++;
                 }
 
                 _fixInputs();

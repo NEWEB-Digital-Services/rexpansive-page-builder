@@ -3,7 +3,7 @@
  *  @since 2.0.0
  */
 
-(function($, window, document, _, undefined) {
+;(function($, window, document, _, undefined) {
   "use strict";
 
   // Create the defaults once

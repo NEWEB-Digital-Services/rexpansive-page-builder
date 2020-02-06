@@ -4,18 +4,13 @@ var Rexbuilder_Dom_Util = (function($) {
   var _updateSlider = function(data) {
     var $textWrap = data.textWrap;
     var numberSliderToActive = data.sliderNumberToActive;
-    $textWrap
-      .children(
-        '.rex-slider-wrap:not([data-rex-slider-number="' +
-          data.sliderNumberToActive +
-          '"])'
-      )
+    var $sliderToDestroy = $textWrap.children( '.rex-slider-wrap:not([data-rex-slider-number="' + data.sliderNumberToActive + '"])' );
+
+    $sliderToDestroy
       .each(function(i, slider) {
         var $slider = $(slider);
         slider.style.display = 'none';
         slider.setAttribute('data-rex-slider-active', false);
-        // $slider.css("display", "none");
-        // $slider.attr("data-rex-slider-active", false);
         RexSlider.destroySliderPlugins($slider);
       });
 
@@ -33,7 +28,6 @@ var Rexbuilder_Dom_Util = (function($) {
     } else {
       var sliderToActive = $sliderToActive[0];
       sliderToActive.style.display = '';
-      // $sliderToActive.css("display", "");
       RexSlider.initSlider($sliderToActive);
     }
   };
@@ -819,22 +813,38 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _fixSectionDomOrder = function(newOrder, domUpdating, sectionMoved) {
     var sections = [];
-    var $section;
+    var $section, $sec;
     var i, j;
     domUpdating = typeof domUpdating === "undefined" ? false : domUpdating;
-    Rexbuilder_Util.$rexContainer
-      .children(".rexpansive_section")
-      .each(function(i, sec) {
-        var $sec = $(sec);
-        var sectionObj = {
-          rexID: $sec.attr("data-rexlive-section-id"),
-          section_is_model: $sec.hasClass("rex-model-section"),
-          section_model_id: $sec.attr("data-rexlive-model-id"),
-          section_model_number: $sec.attr("data-rexlive-model-number"),
-          $section: $sec.detach()
-        };
-        sections.push(sectionObj);
-      });
+    var allSections = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section') );
+    var z, tot_allSections = allSections.length;
+
+    for( z=0; z < tot_allSections; z++ ) {
+      $sec = $(allSections[z]);
+      var sectionObj = {
+        rexID: allSections[z].getAttribute("data-rexlive-section-id"),
+        section_is_model: Rexbuilder_Util.hasClass( allSections[z], "rex-model-section" ),
+        section_model_id: allSections[z].getAttribute("data-rexlive-model-id"),
+        section_model_number: allSections[z].getAttribute("data-rexlive-model-number"),
+        $section: $sec.detach()
+      };
+      sections.push(sectionObj);
+    }
+
+    // Rexbuilder_Util.$rexContainer
+    //   .children(".rexpansive_section")
+    //   .each(function(i, sec) {
+    //     $sec = $(sec);
+    //     var sectionObj = {
+    //       rexID: $sec.attr("data-rexlive-section-id"),
+    //       section_is_model: $sec.hasClass("rex-model-section"),
+    //       section_model_id: $sec.attr("data-rexlive-model-id"),
+    //       section_model_number: $sec.attr("data-rexlive-model-number"),
+    //       $section: $sec.detach()
+    //     };
+    //     console.log(sectionObj)
+    //     sections.push(sectionObj);
+    //   });
 
     for (i = 0; i < newOrder.length; i++) {
       for (j = 0; j < sections.length; j++) {
