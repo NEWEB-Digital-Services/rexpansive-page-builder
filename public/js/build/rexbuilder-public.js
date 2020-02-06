@@ -216,6 +216,17 @@ var Rexbuilder_App = (function($) {
   };
 
   /**
+   * Launching indicators
+   * @param  {jQuery} $grids grids
+   * @return {void}
+   */
+  function launchIndicators( $grids ) {
+    if ( 'undefined' !== typeof rexIndicator ) {
+      $grids.find(".rex-indicator__placeholder").rexIndicator();
+    }
+  }
+
+  /**
    * Launch distortion effect
    * @return {void}
    */
@@ -605,7 +616,7 @@ var Rexbuilder_App = (function($) {
     
     Rexbuilder_Rexbutton.init();
 
-    if (Rexbuilder_Util.editorMode) {
+    if ( Rexbuilder_Util.editorMode ) {
       /* The order between these 2 is very important! */
       Rexbuilder_Rexelement.init();   // 1st
       Rexbuilder_Rexwpcf7.init();     // 2nd
@@ -645,7 +656,7 @@ var Rexbuilder_App = (function($) {
     }
 
     /** -- Launching plugins only on "real" frontend */
-    if (!Rexbuilder_Util.editorMode) {
+    if ( !Rexbuilder_Util.editorMode ) {
       /* -- Launching Photoswipe -- */
       // prevent pswp errors
       $sections.each(function(i, e) {
@@ -966,12 +977,16 @@ var Rexbuilder_App = (function($) {
   };
 
   var load = function() {
+    // @bugfix on other layouts than desktop with mixed customization definitions
+    var chosenLayoutName = Rexbuilder_Util.chooseLayout();
+    Rexbuilder_Util.edit_dom_layout(chosenLayoutName);
+
     if (Rexbuilder_Util.editorMode) {
       Rexbuilder_Util_Editor.load();
     }
     /* -- Launching the textfill -- */
     var $textFillContainer = $(".text-fill-container-canvas");
-    if ($textFillContainer.length > 0) {
+    if ( $textFillContainer.length > 0 ) {
       $textFillContainer.textFill({
         relative: true,
         relativeWrap: ".perfect-grid-item",
@@ -992,9 +1007,7 @@ var Rexbuilder_App = (function($) {
     //$grids.textResize();
 
     if( $grids ) {
-      if ( 'undefined' !== typeof rexIndicator ) {
-        $grids.find(".rex-indicator__placeholder").rexIndicator();
-      }
+      launchIndicators( $grids );
     }
 
     if( false == _plugin_frontend_settings.user.editing ) {

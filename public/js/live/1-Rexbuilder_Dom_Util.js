@@ -312,6 +312,7 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var _resetImageBlock = function($itemContent, $elemData, data) {
+    console.trace();
     $elemData.attr("data-id_image_bg_block", "");
     $elemData.attr("data-type_bg_block", "");
     $elemData.attr("data-image_bg_block", "");

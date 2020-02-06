@@ -289,11 +289,15 @@ class Rexbuilder_Public
             }
 
             //gridstack
-            wp_enqueue_script('jquery-ui', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery-ui.min.js', array('jquery'), $ver, true);
-            wp_enqueue_script('touchPunch', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.ui.touch-punch.js', array('jquery'), $ver, true);
+            if( Rexbuilder_Utilities::isBuilderLive() ) {
+                wp_enqueue_script('jquery-ui', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery-ui.min.js', array('jquery'), $ver, true);
+                wp_enqueue_script('touchPunch', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.ui.touch-punch.js', array('jquery'), $ver, true);
+            }
             wp_enqueue_script('lodash-live', REXPANSIVE_BUILDER_URL . 'public/js/vendor/lodash.js', array('jquery'), $ver, true);
             wp_enqueue_script('gridstack', REXPANSIVE_BUILDER_URL . 'public/gridstack/dist/gridstack.js', array('jquery'), $ver, true);
-            wp_enqueue_script('gridstackUI', REXPANSIVE_BUILDER_URL . 'public/gridstack/dist/gridstack.jQueryUI.js', array('jquery'), $ver, true);
+            if( Rexbuilder_Utilities::isBuilderLive() ) {
+                wp_enqueue_script('gridstackUI', REXPANSIVE_BUILDER_URL . 'public/gridstack/dist/gridstack.jQueryUI.js', array('jquery'), $ver, true);
+            }
 
             // Scripts
             wp_enqueue_script('3-Navigator', REXPANSIVE_BUILDER_URL . 'public/js/build/3-Navigator.js', array('jquery'), $ver, true);

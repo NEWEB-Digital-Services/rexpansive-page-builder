@@ -1118,32 +1118,15 @@ var Rexbuilder_Util = (function($) {
     return d.style[prop] === value;
   }
   
-  var _edit_dom_layout = function(chosenLayoutName) {
+  var _edit_dom_layout = function( chosenLayoutName ) {
     var response = {
       collapse_needed: false,
     };
     
     // No change layout, simple resize
-    if (chosenLayoutName == Rexbuilder_Util.activeLayout) {
-      if (chosenLayoutName == "default") {
-        if ( _viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
-          Rexbuilder_Util.removeCollapsedGrids();
-        } else {
-          if (!Rexbuilder_Util.blockGridUnder768) {
-            Rexbuilder_Util.collapseAllGrids();
-            response.collapse_needed = true;
-          }
-        }
-        return response;
-      }
-    }
-
-    Rexbuilder_Util.$rexContainer.attr( "data-rex-layout-selected", chosenLayoutName );
-    Rexbuilder_Util.activeLayout = chosenLayoutName;
-
-    if ( $rexbuilderLayoutData.children(".layouts-customizations").attr("data-empty-customizations") == "true" && $rexbuilderModelData.children(".models-customizations").attr("data-empty-models-customizations") == "true" ) {
+    if ( chosenLayoutName == Rexbuilder_Util.activeLayout && chosenLayoutName == "default" ) {
       if ( _viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
-        removeCollapsedGrids();
+        Rexbuilder_Util.removeCollapsedGrids();
       } else {
         if (!Rexbuilder_Util.blockGridUnder768) {
           Rexbuilder_Util.collapseAllGrids();
@@ -1153,37 +1136,72 @@ var Rexbuilder_Util = (function($) {
       return response;
     }
 
-    var modelsIDInPage = [];
+    Rexbuilder_Util.rexContainer.setAttribute( "data-rex-layout-selected", chosenLayoutName );
+    Rexbuilder_Util.activeLayout = chosenLayoutName;
 
-    Rexbuilder_Util.$rexContainer
-      .children(".rexpansive_section:not(.removing_section)")
-      .each(function(i, el) {
-        var $section = $(el);
-        if ($section.hasClass("rex-model-section")) {
-          modelsIDInPage.push(parseInt($section.attr("data-rexlive-model-id")));
+    if ( $rexbuilderLayoutData.children(".layouts-customizations").attr("data-empty-customizations") == "true" && $rexbuilderModelData.children(".models-customizations").attr("data-empty-models-customizations") == "true" ) {
+      if ( _viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+        Rexbuilder_Util.removeCollapsedGrids();
+      } else {
+        if ( ! Rexbuilder_Util.blockGridUnder768 ) {
+          Rexbuilder_Util.collapseAllGrids();
+          response.collapse_needed = true;
         }
-      });
+      }
+      return response;
+    }
 
+    var modelsIDInPage = [];
     var sectionsPage = [];
 
-    Rexbuilder_Util.$rexContainer
-      .children(".rexpansive_section:not(.removing_section)")
-      .each(function(i, el) {
-        var $section = $(el);
-        var secObj = {
-          rexID: $section.attr("data-rexlive-section-id"),
-          modelID: isNaN(parseInt($section.attr("data-rexlive-model-id")))
-            ? ""
-            : parseInt($section.attr("data-rexlive-model-id"))
-        };
-        sectionsPage.push(secObj);
-      });
+    var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll( '.rexpansive_section:not(.removing_section)' ) );
+    var sIndex, tot_sections = sections.length;
+    var temp_secObj;
+    for ( sIndex = 0; sIndex < tot_sections; sIndex++ ) {
+      // populate models ids array
+      if ( Rexbuilder_Util.hasClass( sections[sIndex], 'rex-model-section' ) ) {
+        modelsIDInPage.push( parseInt( sections[sIndex].getAttribute( 'data-rexlive-model-id' ) ) );
+      }
+
+      // populate sections object array
+      temp_secObj = {
+        rexID: sections[sIndex].getAttribute( 'data-rexlive-section-id' ),
+        modelID: isNaN( parseInt( sections[sIndex].getAttribute( 'data-rexlive-model-id' ) ) )
+          ? ''
+          : parseInt( sections[sIndex].getAttribute( 'data-rexlive-model-id' ) )
+      };
+      sectionsPage.push( temp_secObj );
+    }
+
+    // var $sections = Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)");
+
+    // Rexbuilder_Util.$rexContainer
+    //   .children(".rexpansive_section:not(.removing_section)")
+    //   .each(function(i, el) {
+    //     var $section = $(el);
+    //     if ($section.hasClass("rex-model-section")) {
+    //       modelsIDInPage.push(parseInt($section.attr("data-rexlive-model-id")));
+    //     }
+    //   });
+
+    // Rexbuilder_Util.$rexContainer
+    //   .children(".rexpansive_section:not(.removing_section)")
+    //   .each(function(i, el) {
+    //     var $section = $(el);
+    //     var secObj = {
+    //       rexID: $section.attr("data-rexlive-section-id"),
+    //       modelID: isNaN(parseInt($section.attr("data-rexlive-model-id")))
+    //         ? ""
+    //         : parseInt($section.attr("data-rexlive-model-id"))
+    //     };
+    //     sectionsPage.push(secObj);
+    //   });
 
     var i, j;
 
     var layoutDataPage = _getPageCustomizations();
 
-    if (Rexbuilder_Util.activeLayout == "default") {
+    if ( Rexbuilder_Util.activeLayout == "default" ) {
       _saveCustomizationDomOrder(jQuery.extend(true, [], layoutDataPage));
     }
 
@@ -1248,6 +1266,8 @@ var Rexbuilder_Util = (function($) {
     var sectionDomOrder = [];
 
     var meIndex, section, $section;
+
+    console.log(mergedEdits)
 
     for( meIndex in mergedEdits ) {
       if (!mergedEdits[meIndex].notInSection || chosenLayoutName == "default") {
@@ -1315,53 +1335,58 @@ var Rexbuilder_Util = (function($) {
               ? false
               : targets[i].props.hide.toString() == "true";
           if (hideElement) {
-            if (!$elem.hasClass("rex-hide-element")) {
+            if ( !$elem.hasClass("rex-hide-element") ) {
               $elem.addClass("rex-hide-element");
               galleryEditorInstance.removeBlock($elem);
             }
           } else {
-            if ($elem.hasClass("rex-hide-element")) {
+            if ( $elem.hasClass("rex-hide-element") ) {
               $elem.removeClass("rex-hide-element");
               galleryEditorInstance.reAddBlock($elem);
             }
           }
         }
 
-        var gridstackInstance =
-          galleryEditorInstance.properties.gridstackInstance;
+        var gridstackInstance = galleryEditorInstance.properties.gridstackInstance;
         galleryEditorInstance.batchGridstack();
       }
     }
 
-    for (var i = 1, tot_targets = targets.length; i < tot_targets; i++) {
-      if (!targets[i].notDisplay || Rexbuilder_Util.activeLayout == "default") {
-        var targetName = targets[i].name;
-        var targetProps = targets[i].props;
+    var i, tot_targets = targets.length;
+    var targetName, targetProps;
+    var $elem, $itemData, $itemContent;
+    var elem;
+    var inlineImgs, tot_inlineImgs;
+    for (i = 1; i < tot_targets; i++) {
+      if ( !targets[i].notDisplay || Rexbuilder_Util.activeLayout == "default" ) {
+        targetName = targets[i].name;
+        targetProps = targets[i].props;
         
-        var $elem = $gallery.children(
-          'div[data-rexbuilder-block-id="' + targetName + '"]'
-        );
-        var $itemData = $elem.children(".rexbuilder-block-data");
-        var $itemContent = $elem.find(".grid-item-content");
+        $elem = $gallery.children( 'div[data-rexbuilder-block-id="' + targetName + '"]' );
+        elem = $elem[0];
+        $itemData = $elem.children(".rexbuilder-block-data");
+        $itemContent = $elem.find(".grid-item-content");
 
-        if( $elem.length>0 ) {
-          if(!Rexbuilder_Util.editorMode && $elem.find("img").length != 0){
-            var $imgInline = $elem.find("img");
+        if( $elem.length > 0 ) {
+          inlineImgs = [].slice.call( elem.getElementsByTagName('img') );
+          tot_inlineImgs = inlineImgs.length;
 
-            for (var j = 0; j < $imgInline.length; j++) {
-              if ($($imgInline[j]).attr("inline-photoswipe") == "true") {
-                Rexbuilder_Photoswipe.addElementFromInline($($imgInline[j]));
+          if( !Rexbuilder_Util.editorMode && 0 !== tot_inlineImgs ) {
+            var j;
+
+            for ( j = 0; j < tot_inlineImgs; j++ ) {
+              if ( 'true' === inlineImgs[j].getAttribute('inline-photoswipe') ) {
+                Rexbuilder_Photoswipe.addElementFromInline( $( inlineImgs[j] ) );
               }
             }
           }
-          _updateDOMSingleElement($elem,targetProps,$itemData,$itemContent,gridstackInstance,{positionAndSize:true});
+          _updateDOMSingleElement( $elem, targetProps, $itemData, $itemContent, gridstackInstance, { positionAndSize:true } );
         }
-      } else {
-        var $el = $gallery.children(
-          'div[data-rexbuilder-block-id="' + targetName + '"]'
-        );
-        if ($el.length != 0) {}
-      }
+      } 
+      // else {
+        // var $el = $gallery.children( 'div[data-rexbuilder-block-id="' + targetName + '"]' );
+        // if ($el.length != 0) {}
+      // }
     }
 
     updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
@@ -1378,6 +1403,8 @@ var Rexbuilder_Util = (function($) {
         ? false
         : targets[0].props.collapse_grid.toString() == "true" ||
           forceCollapseElementsGrid;
+
+    // console.trace();
 
     if ( galleryData !== undefined ) {
       var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
@@ -1562,6 +1589,7 @@ var Rexbuilder_Util = (function($) {
       photoswipe: activeImage ? targetProps["photoswipe"] : ""
     };
 
+    // @todo why check editor mode ???
     if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
       Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
     }
@@ -1834,20 +1862,26 @@ var Rexbuilder_Util = (function($) {
     Rexbuilder_Util.domUpdaiting = false;
   };
 
-  var _saveCustomizationDomOrder = function(pageCustomizations) {
+  var _saveCustomizationDomOrder = function( pageCustomizations ) {
     var i, j, tot_pageCustomizations, tot_pageCustomizations_sections;
     $layoutsDomOrder.children().remove();
     var sections = [];
     for (i = 0, tot_pageCustomizations = pageCustomizations.length; i < tot_pageCustomizations; i++) {
-      var $divLayout = $(document.createElement("div"));
-      $divLayout.addClass("layout-sections");
-      $divLayout.attr("data-rex-layout-name", pageCustomizations[i].name);
+      var divLayout = document.createElement("div");
+      Rexbuilder_Util.addClass( divLayout, 'layout-sections' );
+      divLayout.setAttribute( 'data-rex-layout-name', pageCustomizations[i].name );
+
+      // var $divLayout = $(document.createElement("div"));
+      // $divLayout.addClass("layout-sections");
+      // $divLayout.attr("data-rex-layout-name", pageCustomizations[i].name);
       sections = [];
       for (j = 0, tot_pageCustomizations_sections = pageCustomizations[i].sections.length; j < tot_pageCustomizations_sections; j++) {
         sections.push(pageCustomizations[i].sections[j]);
       }
-      $divLayout.text(JSON.stringify(sections));
-      $divLayout.appendTo($layoutsDomOrder[0]);
+
+      divLayout.textContent = JSON.stringify(sections);
+      // $divLayout.text(JSON.stringify(sections));
+      $(divLayout).appendTo($layoutsDomOrder[0]);
     }
   };
 
@@ -3441,55 +3475,100 @@ var Rexbuilder_Util = (function($) {
    * todo to finish ( hide video did not start ) 
    */
   var _playAllVideos = function() {
-    Rexbuilder_Util.$rexContainer
-      .children(".rexpansive_section")
-      .each(function(i, section) {
-        var $section = $(section);
-        var $mp4Videos = $section.find(".mp4-player");
-        var $vimeoVideos = $section.find(".vimeo-player");
-        var $youtubeVideos = $section.find(".youtube-player");
+    var mp4Videos = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('mp4-player') );
+    var vimeoVideos = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('vimeo-player') );
+    var ytbVideos = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('youtube-player') );
+    var i, tot_mp4Videos = mp4Videos.length, tot_vimeoVideos = vimeoVideos.length, tot_ytbVideos = ytbVideos.length;
 
-        if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
-          $.each($mp4Videos, function(i, video) {
-            Rexbuilder_Util.playVideo($(video));
-          });
-        }
+    if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+      for( i=0; i<tot_mp4Videos; i++ ) {
+        Rexbuilder_Util.playVideo( $( mp4Videos[i] ) );
+      }
+    }
 
-        $.each($vimeoVideos, function(i, video) {
-          Rexbuilder_Util.playVideo($(video));
-        });
+    for( i=0; i<tot_vimeoVideos; i++ ) {
+      Rexbuilder_Util.playVideo( $( vimeoVideos[i] ) );
+    }
 
-        $.each($youtubeVideos, function(i, video) {
-          Rexbuilder_Util.playVideo($(video));
-        });
-        Rexbuilder_Util.playVideo($section);
-      });
+    for( i=0; i<tot_ytbVideos; i++ ) {
+      Rexbuilder_Util.playVideo( $( ytbVideos[i] ) );
+    }
+
+    // Rexbuilder_Util.$rexContainer
+    //   .children(".rexpansive_section")
+    //   .each(function(i, section) {
+    //     var $section = $(section);
+    //     var $mp4Videos = $section.find(".mp4-player");
+    //     var $vimeoVideos = $section.find(".vimeo-player");
+    //     var $youtubeVideos = $section.find(".youtube-player");
+
+    //     if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+    //       $.each($mp4Videos, function(i, video) {
+    //         Rexbuilder_Util.playVideo($(video));
+    //       });
+    //     }
+
+    //     $.each($vimeoVideos, function(i, video) {
+    //       Rexbuilder_Util.playVideo($(video));
+    //     });
+
+    //     $.each($youtubeVideos, function(i, video) {
+    //       Rexbuilder_Util.playVideo($(video));
+    //     });
+    //     Rexbuilder_Util.playVideo($section);
+    //   });
   };
 
   var _playVideo = function($target) {
-    if ($target.hasClass("mp4-player")) {
-      var videoEl = $target.find("video")[0];
+    var target = $target[0];
+
+    if ( Rexbuilder_Util.hasClass( target, 'mp4-player' ) ) {
+      var videoEl = target.querySelector('video');
       if ( videoEl )
       {
         videoEl.play();
       }
-    } else if ($target.hasClass("vimeo-player")) {
-      var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
+    } else if ( Rexbuilder_Util.hasClass( target, 'vimeo-player' ) ) {
+      var vimeoPlugin = VimeoVideo.findVideo( target.querySelector('iframe') );
       if( vimeoPlugin ) {
         vimeoPlugin.play();
       }
-    } else if ($target.hasClass("youtube-player")) {
-      if ($target.children(".rex-youtube-wrap").length != 0) {
-        if (
-          $target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined
-        ) {
+    } else if ( Rexbuilder_Util.hasClass( target, 'youtube-player' ) ) {
+      var youtubeEl = target.querySelector( '.rex-youtube-wrap' );
+      if ( youtubeEl ) {
+        var $youtubeEl = $(youtubeEl);
+        if ( $youtubeEl.YTPGetPlayer() === undefined ) {
           return;
         }
-        $target.children(".rex-youtube-wrap").YTPPlay();
+        $youtubeEl.YTPPlay();
       } else {
         return;
       }
     }
+
+    // if ($target.hasClass("mp4-player")) {
+    //   var videoEl = $target.find("video")[0];
+    //   if ( videoEl )
+    //   {
+    //     videoEl.play();
+    //   }
+    // } else if ($target.hasClass("vimeo-player")) {
+    //   var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
+    //   if( vimeoPlugin ) {
+    //     vimeoPlugin.play();
+    //   }
+    // } else if ($target.hasClass("youtube-player")) {
+    //   if ($target.children(".rex-youtube-wrap").length != 0) {
+    //     if (
+    //       $target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined
+    //     ) {
+    //       return;
+    //     }
+    //     $target.children(".rex-youtube-wrap").YTPPlay();
+    //   } else {
+    //     return;
+    //   }
+    // }
   };
 
   var _getBackgroundUrlFromCss = function(styleBackground) {
@@ -3651,12 +3730,12 @@ var Rexbuilder_Util = (function($) {
     this._transitionEvent = _whichTransitionEvent();
     this._animationEvent = _whichAnimationEvent();
 
-    this.scrollbarProperties = {
-      //className: "rex-overlay-scrollbar", per quando dobbiamo stilare usiamo questa classe
-      className: "os-theme-dark",
-      overflowBehavior: { x: "hidden" },
-      autoUpdate: false
-    };
+    // this.scrollbarProperties = {
+    //   //className: "rex-overlay-scrollbar", per quando dobbiamo stilare usiamo questa classe
+    //   className: "os-theme-dark",
+    //   overflowBehavior: { x: "hidden" },
+    //   autoUpdate: false
+    // };
     this.galleryPluginActive = false;
     this.firstStart = false;
     Rexbuilder_Util.changedFrontLayout = false;

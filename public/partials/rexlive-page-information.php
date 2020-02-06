@@ -147,9 +147,9 @@ if ($sectionsIDsUsed == null) {
     <div class="available-models-customizations-names"><?php echo json_encode($models_customizations_avaiable);?></div>
 </div>
 <div id="rexbuilder-layout-data" style="display: none;">
-    <div class="layouts-customizations" <?php
+    <div class="layouts-customizations"<?php
     if (!$flag_page_customization) {
-        echo 'data-empty-customizations="true">';
+        echo ' data-empty-customizations="true">';
     } else {?>>
         <?php
         foreach ($customizations_array as $customization) {

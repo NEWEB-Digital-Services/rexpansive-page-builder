@@ -459,6 +459,8 @@
 
       this.triggerGalleryReady();
       this.properties.firstStartGrid = false;
+
+      // console.trace()
     },
 
     _launchGridStack: function() {
@@ -500,13 +502,13 @@
           disableOneColumnMode: true,
           cellHeight: this.properties.singleHeight,
           disableDrag: true,
-          draggable: {
-            handle: ".rexlive-block-drag-handle"
-          },
-          disableResize: true,
-          resizable: {
-            disabled: true
-          },
+          // draggable: {
+          //   handle: ".rexlive-block-drag-handle"
+          // },
+          // disableResize: true,
+          // resizable: {
+          //   disabled: true
+          // },
           float: ( this.settings.galleryLayout == "masonry" ? false : true ),
           verticalMargin: 0,
           staticGrid: true,
