@@ -3904,6 +3904,8 @@
         rules.push( findVideoMaxWidth(videos[i]) );
       }
 
+      console.log(rules)
+
       // apply the founded rules
       // much fast this way
       for( i=0; i < tot_videos; i++ ) {

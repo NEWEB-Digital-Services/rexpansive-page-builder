@@ -44,7 +44,7 @@
   var lazyLoadBkgrImg = function( el ) {
     // if ( el ) {
       var src = el.getAttribute('data-src');
-      if ( null !== src ) {
+      if ( null !== src && -1 === el.style.backgroundImage.indexOf( src ) ) {
         var tempImg = new Image();
         tempImg.src = el.getAttribute('data-src');
         tempImg.onload = function() {
@@ -160,6 +160,7 @@
 
   /**
    * Handling all the intersections
+   * @deprecated [description]
    */
   var handleIntersectionObserver = function()
   {

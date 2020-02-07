@@ -1557,9 +1557,9 @@ var Rexbuilder_Util = (function($) {
       typeVideo: type
     };
 
-    if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+    // if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
       Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
-    }
+    // }
 
     // Update block image
     var activeImage =
@@ -1590,9 +1590,9 @@ var Rexbuilder_Util = (function($) {
     };
 
     // @todo why check editor mode ???
-    if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+    // if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
       Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
-    }
+    // }
 
     // Update block background
     var bgColorOpt = {
@@ -2633,9 +2633,9 @@ var Rexbuilder_Util = (function($) {
           : targetProps["row_overlay_active"].toString()
     };
 
-    if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
-      Rexbuilder_Dom_Util.updateImageBG($section, imageOptions);
-    }
+    // if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+    Rexbuilder_Dom_Util.updateImageBG($section, imageOptions);
+    // }
 
     var backgroundColorOpt = {
       color: targetProps["color_bg_section"],
@@ -3665,6 +3665,7 @@ var Rexbuilder_Util = (function($) {
 
   // init the utilities
   var init = function() {
+    this.fast_load = ( '1' == _plugin_frontend_settings.fast_load );
     this.firstStart = true;
     _plugin_frontend_settings.scroll_animation_offset = 0;
     
