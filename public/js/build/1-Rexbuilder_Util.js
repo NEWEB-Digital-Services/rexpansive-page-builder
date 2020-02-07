@@ -1267,7 +1267,7 @@ var Rexbuilder_Util = (function($) {
 
     var meIndex, section, $section;
 
-    console.log(mergedEdits)
+    // console.log(mergedEdits)
 
     for( meIndex in mergedEdits ) {
       if (!mergedEdits[meIndex].notInSection || chosenLayoutName == "default") {

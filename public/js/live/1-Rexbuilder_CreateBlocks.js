@@ -148,7 +148,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
     }
     
-    if (addBlockButton) {
+    if ( addBlockButton ) {
       var ev = jQuery.Event("rexlive:completeImportButton");
       ev.settings = {
         $buttonWrapper: data.$buttonWrapper,
@@ -170,7 +170,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
       gridstackInstance.move($el[0], moveX, moveY);
       Rexbuilder_Util.$document.trigger(ev);
     } else if (addBlockElement) {
-      // Qua c'è già lo spazio
+      // Here is space
       var ev = jQuery.Event("rexlive:completeImportElement");
       ev.settings = {
         $elementWrapper: data.$elementWrapper,

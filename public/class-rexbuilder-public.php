@@ -284,6 +284,8 @@ class Rexbuilder_Public
             wp_enqueue_script('1-Rexelement', REXPANSIVE_BUILDER_URL . 'public/js/build/1-Rexbuilder_Rexelement.js', array('jquery'), $ver, true);
             wp_enqueue_script('1-Rexwpcf7', REXPANSIVE_BUILDER_URL . 'public/js/build/1-Rexbuilder_Rexwpcf7.js', array('jquery'), $ver, true);
             if( Rexbuilder_Utilities::isBuilderLive() ) {
+                // wp_enqueue_script('1-RexElementEditor', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Rexelement_Editor.js', array('jquery'), $ver, true);
+                // wp_enqueue_script('1-Rexwpcf7Editor', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Rexwpcf7_Editor.js', array('jquery'), $ver, true);
                 wp_enqueue_script('1-RexOverlayPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Overlay_Palette.js', array('jquery'), $ver, true);
                 wp_enqueue_script('2-RexSaveListeners', REXPANSIVE_BUILDER_URL . 'public/js/live/2-Rex_Save_Listeners.js', array('jquery'), $ver, true);
             }
@@ -303,7 +305,7 @@ class Rexbuilder_Public
             wp_enqueue_script('3-Navigator', REXPANSIVE_BUILDER_URL . 'public/js/build/3-Navigator.js', array('jquery'), $ver, true);
             wp_enqueue_script('5-flickity', REXPANSIVE_BUILDER_URL . 'public/js/vendor/flickity.pkgd.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('2-RexSlider', REXPANSIVE_BUILDER_URL . 'public/js/build/2-RexSlider.js', array('jquery'), $ver, true);
-            wp_enqueue_script( 'textfill', REXPANSIVE_BUILDER_URL  . 'public/js/vendor/2-jquery.textFill.js', array( 'jquery' ), $ver, true );
+            wp_enqueue_script('textfill', REXPANSIVE_BUILDER_URL  . 'public/js/vendor/2-jquery.textFill.js', array( 'jquery' ), $ver, true );
             wp_enqueue_script('8-VimeoVideo', REXPANSIVE_BUILDER_URL . 'public/js/build/8-VimeoVideo.js', array('jquery'), $ver, true);
             if( !Rexbuilder_Utilities::isBuilderLive() ) {
                 wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrolled.js', array('jquery'), $ver, true);

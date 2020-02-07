@@ -616,10 +616,13 @@ var Rexbuilder_App = (function($) {
     
     Rexbuilder_Rexbutton.init();
 
+    /* The order between these 2 is very important! */
+    Rexbuilder_Rexelement.init();   // 1st
+    Rexbuilder_Rexwpcf7.init();     // 2nd
+
     if ( Rexbuilder_Util.editorMode ) {
-      /* The order between these 2 is very important! */
-      Rexbuilder_Rexelement.init();   // 1st
-      Rexbuilder_Rexwpcf7.init();     // 2nd
+      // Rexbuilder_Rexelement_Editor.init();
+      // Rexbuilder_Rexwpcf7_Editor.init();
       
       Rexbuilder_Util_Editor.init();
       Rexbuilder_Color_Palette.init();

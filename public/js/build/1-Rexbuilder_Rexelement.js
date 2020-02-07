@@ -1406,6 +1406,7 @@ var Rexbuilder_Rexelement = (function ($) {
                 element_number: "",
             }
         };
+        // generate element styles
         this.$rexelementsStyle = $("#rexpansive-builder-rexelement-style-inline-css");
 
         _fixCustomStyleElement();

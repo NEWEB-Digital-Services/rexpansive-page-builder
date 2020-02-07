@@ -624,6 +624,10 @@ var Rexbuilder_Util_Editor = (function($) {
       Rexbuilder_Rexelement.fixImportedElement(e.settings.data_to_send);
     });
 
+    // Rexbuilder_Util.$document.on("rexlive:completeImportElement", function (e) {
+    //   Rexbuilder_Rexelement_Editor.handleCompleteImportElement( e );
+    // });
+
     Rexbuilder_Util.$document.on("rexlive:remove_separate_element", function (e) {
       Rexbuilder_Rexelement.removeSeparateElement(e.settings.data_to_send);
     });
