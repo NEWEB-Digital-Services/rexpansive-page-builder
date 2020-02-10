@@ -709,6 +709,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
    * @todo handling the copy of a section with multiple sync buttons
    */
   var sanitizeButtons = function( textWrap ) {
+    if ( ! textWrap ) {
+      return;
+    }
+    
     var buttonWrappers = [].slice.call( textWrap.getElementsByClassName('rex-button-wrapper') );
     var tot_buttonWrappers = buttonWrappers.length, i;
     var buttonData, buttonModelID, temp;

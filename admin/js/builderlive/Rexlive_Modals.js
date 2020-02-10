@@ -90,19 +90,19 @@ var Rexlive_Modals = (function ($) {
         Button_Edit_Modal.init();
 
         // Element import tab
-        Element_Import_Modal.init();
+        // Element_Import_Modal.init();
         
         // Element editor
-        Element_Choose_Modal.init();
+        // Element_Choose_Modal.init();
         
         // Wpcf7 Content Adder
-        Wpcf7_Add_Content_Modal.init();
+        // Wpcf7_Add_Content_Modal.init();
 
         // Wpcf7 Content Editor
-        Wpcf7_Edit_Content_Modal.init();
+        // Wpcf7_Edit_Content_Modal.init();
 
         // Wpcf7 Form Editor
-        Wpcf7_Edit_Form_Modal.init();
+        // Wpcf7_Edit_Form_Modal.init();
 
         // live media list
         Rexlive_PostEdit_MediaList.init();

@@ -331,8 +331,8 @@ gulp.task('admin-plugins-build', function() {
 	'public/js/live/1-Rexbuilder_Dom_Util.js',
 	'public/js/live/1-Rexbuilder_Color_Palette.js',
 	'public/js/build/1-Rexbuilder_Rexbutton.js',
-	'public/js/build/1-Rexbuilder_Rexelement.js',
-	'public/js/build/1-Rexbuilder_Rexwpcf7.js',
+	// 'public/js/build/1-Rexbuilder_Rexelement.js',
+	// 'public/js/build/1-Rexbuilder_Rexwpcf7.js',
 	'public/js/live/1-Rexbuilder_Overlay_Palette.js',
 	'public/js/live/2-Rex_Save_Listeners.js',
 	'public/js/vendor/jquery-ui.min.js',
@@ -368,8 +368,10 @@ var builderlive_public = [
 	'public/js/live/1-Rexbuilder_Util_Editor.js',
 	'public/js/live/1-Rexbuilder_Dom_Util.js',
 	'public/js/build/1-Rexbuilder_Rexbutton.js',
-	'public/js/build/1-Rexbuilder_Rexelement.js',
-	'public/js/build/1-Rexbuilder_Rexwpcf7.js',
+
+	// 'public/js/build/1-Rexbuilder_Rexelement.js',
+	// 'public/js/build/1-Rexbuilder_Rexwpcf7.js',
+	
 	// 'public/js/live/1-Rexbuilder_CreateBlocks.js',
 	// 'public/js/live/2-Rex_Save_Listeners.js',
 	// 'public/js/vendor/jquery-ui.min.js',
