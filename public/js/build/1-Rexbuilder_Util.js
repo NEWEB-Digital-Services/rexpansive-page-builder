@@ -3159,9 +3159,12 @@ var Rexbuilder_Util = (function($) {
       mp4video.pause();
       // console.log("_stopVideo: faccio pause del video");
     } else if ($target.hasClass("vimeo-player")) {
-      VimeoVideo.findVideo(
+      var maybePlayer = VimeoVideo.findVideo(
         $target.children(".rex-video-vimeo-wrap").find("iframe")[0]
-      ).unload();
+      );
+      if ( maybePlayer ) {
+        maybePlayer.unload();
+      }
     } else if ($target.hasClass("youtube-player")) {
       if ($target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined) {
         return;
@@ -3224,13 +3227,13 @@ var Rexbuilder_Util = (function($) {
         $(mp4video).prop("muted", true);
       }
     } else if ($target.hasClass("vimeo-player")) {
-      var vimPlayer = VimeoVideo.findVideo(
-        $target.children(".rex-video-vimeo-wrap").find("iframe")[0]
-      );
+      var vimPlayer = VimeoVideo.findVideo( $target.children(".rex-video-vimeo-wrap").find("iframe")[0] );
       if ($toggle.length != 0 && !$toggle.hasClass("user-has-muted")) {
         vimPlayer.setVolume(1);
       } else {
-        vimPlayer.setVolume(0);
+        if ( vimPlayer ) {
+          vimPlayer.setVolume(0);
+        }
       }
     } else if ($target.hasClass("youtube-player")) {
       var ytpObj = $target.children(".rex-youtube-wrap");

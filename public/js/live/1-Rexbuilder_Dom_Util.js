@@ -184,13 +184,11 @@ var Rexbuilder_Dom_Util = (function($) {
         _updateImageSection($target, $sectionData, data);
       }
     } else if ($target.hasClass("grid-item-content")) {
-      console.log(data)
       var $elem = $target.parents(".grid-stack-item");
       var $elemData = $elem.children(".rexbuilder-block-data");
       if (data.idImage == "" || data.active.toString() != "true") {
         _resetImageBlock($target, $elemData, data);
       } else {
-        console.log('_updateImageBlock')
         _updateImageBlock($target, $elemData, data);
       }
     }
@@ -205,9 +203,6 @@ var Rexbuilder_Dom_Util = (function($) {
       return;
     }
     var section = $section[0];
-
-    console.trace()
-    console.log(Rexbuilder_Util.fast_load, data.urlImage)
 
     if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
       section.setAttribute('data-src', data.urlImage)
@@ -405,11 +400,13 @@ var Rexbuilder_Dom_Util = (function($) {
   var _removeVimeoVideo = function($target, removeFromDom) {
     var $vimeoWrap = $target.children(".rex-video-vimeo-wrap");
     var $toggleAudio = $target.children(".rex-video-toggle-audio");
+
     if ($vimeoWrap.length != 0) {
       var iframeVimeo = $vimeoWrap.children("iframe")[0];
       removeFromDom =
         typeof removeFromDom == "undefined" ? true : removeFromDom;
       $target.removeClass("vimeo-player");
+
       if (removeFromDom) {
         VimeoVideo.removePlayer(iframeVimeo);
         $vimeoWrap.remove();
@@ -417,7 +414,11 @@ var Rexbuilder_Dom_Util = (function($) {
           $toggleAudio.remove();
         }
       } else {
-        VimeoVideo.findVideo(iframeVimeo).unload();
+        var player = VimeoVideo.findVideo(iframeVimeo);
+        if ( player ) {
+          player.unload()
+        }
+        // VimeoVideo.findVideo(iframeVimeo).unload();
         if ($toggleAudio.length != 0) {
           $toggleAudio.addClass("removing-toggle-audio");
         }

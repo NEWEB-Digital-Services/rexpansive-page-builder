@@ -2897,7 +2897,7 @@ var TextEditor = (function ($) {
       var $elementContainer = $(this.traceELMNT).parents(".rex-element-wrapper");
       var $paragraphContainer = $elementContainer.parents("p.rex-elements-paragraph");
 
-      if ( 0 !== $elementContainer[0].getElementsByClassName('wpcf7-form').length ) {
+      if ( 'undefined' !== typeof Rexbuilder_Rexwpcf7 && 0 !== $elementContainer[0].getElementsByClassName('wpcf7-form').length ) {
         var formID = $elementContainer[0].getAttribute('data-rex-element-id');
         Rexbuilder_Rexwpcf7.removeFormInPage(formID);
       }

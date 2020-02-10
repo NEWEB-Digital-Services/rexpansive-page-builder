@@ -618,9 +618,10 @@ var Rexbuilder_App = (function($) {
 
     if ( Rexbuilder_Util.editorMode ) {
       /* The order between these 2 is very important! */
-      Rexbuilder_Rexelement.init();   // 1st
-      Rexbuilder_Rexwpcf7.init();     // 2nd
-      
+      // Rexbuilder_Rexelement.init();   // 1st
+      // Rexbuilder_Rexwpcf7.init();     // 2nd
+
+      Rexbuilder_CreateBlocks.init();
       Rexbuilder_Util_Editor.init();
       Rexbuilder_Color_Palette.init();
       Rexbuilder_Overlay_Palette.init();
