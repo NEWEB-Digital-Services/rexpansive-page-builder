@@ -6774,9 +6774,11 @@ MediumEditor.extensions = {};
         }
 
         if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
+          if( 'undefined' !== typeof this.options.extensions['rexbutton-input'] ) {
             if (this.options.extensions['rexbutton-input'].insideRexButton(node)) {
 //                event.preventDefault();
                 return;
+              }
             }
         }
 

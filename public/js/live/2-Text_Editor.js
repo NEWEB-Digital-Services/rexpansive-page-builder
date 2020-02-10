@@ -3904,6 +3904,9 @@ var TextEditor = (function ($) {
         onlySVGFixExtension : new OnlySVGFixExtension(),
         textEditing: new TextEditingExtension(),
       },
+      paste: {
+        forcePlainText: false,
+      },
       placeholder: {
         text: "Type here your text",
         hideOnClick: false
