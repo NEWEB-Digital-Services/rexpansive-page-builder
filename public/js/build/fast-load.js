@@ -113,7 +113,6 @@
       for ( var source in event.currentTarget.children ) {
         var videoSource = event.currentTarget.children[source];
         if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
-          // videoSource.src = src;
           videoSource.removeAttribute('src');
         }
       }

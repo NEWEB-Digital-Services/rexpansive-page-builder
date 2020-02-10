@@ -1532,79 +1532,35 @@ var Rexbuilder_Dom_Util = (function($) {
     var models = [];
     var i;
     var flagNumbers;
-    if ( Rexbuilder_Util.rexContainer ) {
-      var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section:not(.removing_section)') );
-      var j, tot_sections = sections.length;
-
-      for( j=0; j < tot_sections; j++ ) {
-        if ( Rexbuilder_Util.hasClass( sections[j], 'rex-model-section' ) ) {
-          var modelID = sections[j].getAttribute( 'data-rexlive-model-id' );
-          flagNumbers = false;
-          for (i = 0; i < models.length; i++) {
-            if ( models[i].id == modelID ) {
-              models[i].number = models[i].number + 1;
-              sections[j].setAttribute( 'data-rexlive-model-number', models[i].number );
-              flagNumbers = true;
-            }
-          }
-          if ( !flagNumbers ) {
-            var model = {
-              id: modelID,
-              number: 1
-            };
-            models.push(model);
-            sections[j].setAttribute( 'data-rexlive-model-number', model.number );
-          }
-        }
-      }
-
-      // sections.forEach( function( sec, j ) {
-      //   if ( Rexbuilder_Util.hasClass( sec, 'rex-model-section' ) ) {
-      //     var modelID = sec.getAttribute( 'data-rexlive-model-id' );
-      //     flagNumbers = false;
-      //     for (i = 0; i < models.length; i++) {
-      //       if ( models[i].id == modelID ) {
-      //         models[i].number = models[i].number + 1;
-      //         sec.setAttribute( 'data-rexlive-model-number', models[i].number );
-      //         flagNumbers = true;
-      //       }
-      //     }
-      //     if ( !flagNumbers ) {
-      //       var model = {
-      //         id: modelID,
-      //         number: 1
-      //       };
-      //       models.push(model);
-      //       sec.setAttribute( 'data-rexlive-model-number', model.number );
-      //     }
-      //   }
-      // });
+    
+    if ( ! Rexbuilder_Util.rexContainer ) {
+      return;
     }
 
-    // Rexbuilder_Util.$rexContainer
-    //   .children(".rexpansive_section:not(.removing_section)")
-    //   .each(function(j, sec) {
-    //     var $section = $(sec);
-    //     if ($section.hasClass("rex-model-section")) {
-    //       var modelID = $section.attr("data-rexlive-model-id");
-    //       flagNumbers = false;
-    //       for (i = 0; i < models.length; i++) {
-    //         if (models[i].id == modelID) {
-    //           models[i].number = models[i].number + 1;
-    //           $section.attr("data-rexlive-model-number", models[i].number);
-    //           flagNumbers = true;
-    //         }
-    //       }
-    //       if (!flagNumbers) {
-    //         var model = {
-    //           id: modelID,
-    //           number: 1
-    //         };
-    //         models.push(model);
-    //         $section.attr("data-rexlive-model-number", model.number);
-    //       }
-    //     }
-    //   });
+    var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section:not(.removing_section)') );
+    var j, tot_sections = sections.length;
+
+    for( j=0; j < tot_sections; j++ ) {
+      if ( Rexbuilder_Util.hasClass( sections[j], 'rex-model-section' ) ) {
+        var modelID = sections[j].getAttribute( 'data-rexlive-model-id' );
+        flagNumbers = false;
+        for (i = 0; i < models.length; i++) {
+          if ( models[i].id == modelID ) {
+            models[i].number = models[i].number + 1;
+            sections[j].setAttribute( 'data-rexlive-model-number', models[i].number );
+            flagNumbers = true;
+          }
+        }
+        if ( !flagNumbers ) {
+          var model = {
+            id: modelID,
+            number: 1
+          };
+          models.push(model);
+          sections[j].setAttribute( 'data-rexlive-model-number', model.number );
+        }
+      }
+    }
   };
 
   /**

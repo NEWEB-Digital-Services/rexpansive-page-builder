@@ -655,6 +655,8 @@ var Rexbuilder_App = (function($) {
       });
     }
 
+    Rexbuilder_Util.launchEditDomLayout();
+
     /** -- Launching plugins only on "real" frontend */
     if ( !Rexbuilder_Util.editorMode ) {
       /* -- Launching Photoswipe -- */
@@ -978,12 +980,17 @@ var Rexbuilder_App = (function($) {
 
   var load = function() {
     // @bugfix on other layouts than desktop with mixed customization definitions
-    var chosenLayoutName = Rexbuilder_Util.chooseLayout();
-    Rexbuilder_Util.edit_dom_layout(chosenLayoutName);
+    // @deprecated i don't like this solution, too much expensive
+    
+    // var chosenLayoutName = Rexbuilder_Util.chooseLayout();
+    // if ( 'default' !== chosenLayoutName ) {
+      // Rexbuilder_Util.edit_dom_layout(chosenLayoutName);
+    // }
 
-    if (Rexbuilder_Util.editorMode) {
+    if ( Rexbuilder_Util.editorMode ) {
       Rexbuilder_Util_Editor.load();
     }
+
     /* -- Launching the textfill -- */
     var $textFillContainer = $(".text-fill-container-canvas");
     if ( $textFillContainer.length > 0 ) {

@@ -941,7 +941,7 @@ var Rexbuilder_Util_Editor = (function($) {
     animate_contents =
       typeof animate_contents !== "undefined" ? animate_contents : true;
 
-    if (animate_contents) {
+    if ( animate_contents ) {
       Rexbuilder_Util.$rexContainer
         .parent()
         .addClass("rexbuilder-live-content--loading");

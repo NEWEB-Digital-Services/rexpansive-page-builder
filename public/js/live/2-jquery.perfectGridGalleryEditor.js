@@ -459,8 +459,6 @@
 
       this.triggerGalleryReady();
       this.properties.firstStartGrid = false;
-
-      // console.trace()
     },
 
     _launchGridStack: function() {
@@ -3903,8 +3901,6 @@
       for( i=0; i < tot_videos; i++ ) {
         rules.push( findVideoMaxWidth(videos[i]) );
       }
-
-      console.log(rules)
 
       // apply the founded rules
       // much fast this way
