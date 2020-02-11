@@ -3525,6 +3525,10 @@ var Rexbuilder_Util = (function($) {
   var _playVideo = function($target) {
     var target = $target[0];
 
+    if ( 'undefined' === typeof target ) {
+      return;
+    }
+
     if ( Rexbuilder_Util.hasClass( target, 'mp4-player' ) ) {
       var videoEl = target.querySelector('video');
       if ( videoEl )
