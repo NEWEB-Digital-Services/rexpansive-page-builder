@@ -396,55 +396,55 @@ class Rexbuilder_Public
             $customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
             $fast_load = ( isset( $this->plugin_options['fast_load'] ) ? $this->plugin_options['fast_load'] : 0 );
             
-            wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
+            wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
 
             if( Rexbuilder_Utilities::isBuilderLive() ) {
                 if ( false !== strpos( $customEffects, 'rex-indicator__placeholder' ) ) {
-                    wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), false, true);
+                    wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
                 }
                 wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-editor.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
 
             } else {
                 if ( false !== strpos( $customEffects, 'rex-effect' ) ) {
-                    wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . 'public/js/vendor/pixi.min.js', array('jquery'), false, true);
-                    wp_enqueue_script('effect', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexEffect.min.js', array('jquery'), false, true);
+                    wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . 'public/js/vendor/pixi.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
+                    wp_enqueue_script('effect', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexEffect.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
                 }
 
                 if ( false !== strpos( $customEffects, 'rex-num-spin' ) ) {
-                    wp_enqueue_script('odometer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/odometer.min.js', array('jquery'), false, true);
+                    wp_enqueue_script('odometer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/odometer.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
                 }
                 
                 if ( false !== strpos( $customEffects, 'rex-slideshow' ) ) {
-                    wp_enqueue_script('rex-slideshow', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexSlideshow.min.js', array('jquery'), false, true);
+                    wp_enqueue_script('rex-slideshow', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexSlideshow.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
                 }
 
                 if ( false !== strpos( $customEffects, 'sticky-section' ) ) {
-                    wp_enqueue_script('sticky-section', REXPANSIVE_BUILDER_URL . 'public/js/vendor/sticky-section.min.js', array(), false, true);
+                    wp_enqueue_script('sticky-section', REXPANSIVE_BUILDER_URL . 'public/js/vendor/sticky-section.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
                 }
 
                 if ( false !== strpos( $customEffects, 'fadeUpTextCSS' ) ) {
-                    wp_enqueue_script('scroll-css-animation', REXPANSIVE_BUILDER_URL . 'public/js/vendor/scroll-css-animation.min.js', array(), false, true);
+                    wp_enqueue_script('scroll-css-animation', REXPANSIVE_BUILDER_URL . 'public/js/vendor/scroll-css-animation.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
                 }
 
                 if ( false !== strpos( $customEffects, 'distance-accordion-toggle' ) ) {
-                    wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.min.js', array(), false, true);
+                    wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
                 }
 
                 if ( false !== strpos( $customEffects, 'popup-content-button' ) ) {
-                    wp_enqueue_script('popup-content', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.min.js', array(), false, true);
+                    wp_enqueue_script('popup-content', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
                     // @todo: fix me
-                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.min.js', array(), false, true);
-                    wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.min.js', array(), false, true);
+                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
+                    wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
                 }
 
                 if ( false !== strpos( $customEffects, 'split-scrollable' ) ) {
-                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.min.js', array(), false, true);
+                    wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
                 }
 
                 wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-public.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
 
                 if( !Rexbuilder_Utilities::isBuilderLive() && 1 == $fast_load ) {
-                    wp_enqueue_script('fast-load', REXPANSIVE_BUILDER_URL . 'public/js/build/fast-load.js', array( $this->plugin_name ), false, true);
+                    wp_enqueue_script('fast-load', REXPANSIVE_BUILDER_URL . 'public/js/build/fast-load.js', array( $this->plugin_name ), REXPANSIVE_BUILDER_VERSION, true);
                 }
             }
 

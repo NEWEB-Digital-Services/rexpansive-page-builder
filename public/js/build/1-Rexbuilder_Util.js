@@ -2610,6 +2610,8 @@ var Rexbuilder_Util = (function($) {
       Rexbuilder_Dom_Util.updateSectionVideoBackground($section, videoOptions);
     // }
 
+    $gallery.perfectGridGalleryEditor('fixVideoProportion' );
+
     var imageOptions = {
       active:
         typeof targetProps["image_bg_section_active"] == "undefined"
