@@ -232,7 +232,13 @@ class Rexbuilder {
 		$this->loader->add_filter( 'page_row_actions', $plugin_admin, 'add_builderlive_link', 10, 2 );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles_production' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+
+		if( REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS ) {
+			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts_production' );
+		} else {
+			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		}
+
 		// $this->loader->add_action( 'admin_print_scripts', $plugin_admin, 'dequeue_scripts', 99 );
 
 		$this->loader->add_action( 'admin_head', $plugin_admin, 'print_install_launcher' );

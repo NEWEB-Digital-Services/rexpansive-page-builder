@@ -464,7 +464,10 @@ var Rexbuilder_Dom_Util = (function($) {
 
     $target.addClass("mp4-player");
 
-    if ( ($videoWrap.length != 0 && $videoWrap.find("source").attr("src") != mp4Data.linkMp4) || $videoWrap.length == 0 ) {
+    var tempSrc = $videoWrap.find("source");
+    var tempSrcUrl = ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ? tempSrc.attr('data-src') : tempSrc.attr('src') );
+
+    if ( ($videoWrap.length != 0 && tempSrcUrl != mp4Data.linkMp4) || $videoWrap.length == 0 ) {
       _removeMp4Video($target, true);
       tmpl.arg = "video";
       var mp4Tmpl = tmpl("tmpl-video-mp4", {

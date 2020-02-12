@@ -109,12 +109,13 @@ if ($sectionsIDsUsed == null) {
     echo json_encode($sectionsIDsUsed);
 }
 ?></div>
-<div id="layout-avaiable-dimensions" style="display: none;"><?php echo json_encode($layoutsAvaiable); ?></div>
-<div id="rexbuilder-model-data" style="display: none;">
+<div id="layout-avaiable-dimensions" style="display:none;"><?php echo json_encode($layoutsAvaiable); ?></div>
+<div id="rexbuilder-model-data" style="display:none;">
     <div class="models-customizations" <?php
     if (!$flag_models) {
         echo 'data-empty-models-customizations="true">';
     } else {
+        ?>><?php
         foreach ($models_customizations as $model) {
             $idModel = $model['id'];
             echo '<div class="model-customizations-container" data-model-id="'. $idModel .'">';
@@ -150,7 +151,7 @@ if ($sectionsIDsUsed == null) {
         echo ' data-empty-customizations="true">';
     } else {?>>
         <?php
-        foreach ($customizations_array as $customization) {
+        foreach ( $customizations_array as $customization ) {
             $customization_name = $customization['name'];
             echo '<div class="customization-wrap" data-customization-name="'.$customization_name.'">';
             $sections = $customization['sections'];

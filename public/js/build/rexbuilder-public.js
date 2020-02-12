@@ -19,14 +19,14 @@ var Rexbuilder_App = (function($) {
    *
    */
   var fixRexButtons = function() {
-    var buttons = [].slice.call( document.getElementsByClassName('rex-button-wrapper') );
+    var buttons = [].slice.call( document.getElementsByClassName( 'rex-button-wrapper' ) );
     var tot_buttons = buttons.length, i = 0;
     for( i = 0; i < tot_buttons; i++ ) {
       var container = buttons[i].querySelector( '.rex-button-container' );
       if ( ! container ) {
         var newContainer = document.createElement('span');
         newContainer.className = 'rex-button-container';
-        var toWrap = buttons[i].querySelector('.rex-button-background');
+        var toWrap = buttons[i].querySelector( '.rex-button-background' );
         toWrap.parentNode.insertBefore( newContainer, toWrap );
         newContainer.appendChild( toWrap );
       }
@@ -610,6 +610,39 @@ var Rexbuilder_App = (function($) {
     }
   };
 
+  /**
+   * All front end effects in one function
+   * @return {vodi}
+   */
+  function launchFrontEndEffects() {
+    if( false == _plugin_frontend_settings.user.editing ) {
+      // launch distortion effect
+      launchEffectDistortion();
+
+      // launch border space animated
+      launchBorderSpaceAnimated();
+
+      // launch rexScrolled
+      launchRexScrolled( $sections );
+
+      // launch rexScrollify
+      if (1 == _plugin_frontend_settings.animations ) {
+        launchRexScrollify();
+      }
+
+      // sticky sections
+      launchStickySections();
+      // launch scrollCSSAnimations
+      launchScrollCSSAnimations();
+      // launch distance accordions
+      launchDistanceAccordion();
+      // launch popUpContent
+      launchPopUpContent();
+      // launch splitScrollable
+      launchSplitScollable( document );
+    }
+  }
+
   var init = function() {
     Rexbuilder_Util.init();
     Rexbuilder_Dom_Util.init();
@@ -656,6 +689,9 @@ var Rexbuilder_App = (function($) {
       });
     }
 
+    // listen one time to edit dom layout ending
+    Rexbuilder_Util.$document.one( 'rexlive:editDomLayoutEnd', launchFrontEndEffects );
+
     Rexbuilder_Util.launchEditDomLayout();
 
     /** -- Launching plugins only on "real" frontend */
@@ -668,7 +704,7 @@ var Rexbuilder_App = (function($) {
           Rexbuilder_Util.removeClass(e,'photoswipe-gallery');
         }
       });
-      Rexbuilder_Photoswipe.init(".photoswipe-gallery");
+      // Rexbuilder_Photoswipe.init(".photoswipe-gallery");
 
       /** -- Launching Odomter -- */
       var odometersEls = [].slice.call( document.getElementsByClassName('rex-num-spin') );
@@ -692,7 +728,7 @@ var Rexbuilder_App = (function($) {
       }
     }
 
-    if (true == _plugin_frontend_settings.native_scroll_animation) {
+    if ( true == _plugin_frontend_settings.native_scroll_animation ) {
       var excluded_links = [
         '[href="#"]',
         ".no-smoothing",
@@ -974,9 +1010,6 @@ var Rexbuilder_App = (function($) {
     //   });
     // });
 
-    /* $accordions.rexAccordion();
-    console.log("init - rexAccordion()"); */
-
   };
 
   var load = function() {
@@ -1009,41 +1042,13 @@ var Rexbuilder_App = (function($) {
     }
 
     // autoplay sliders
-    RexSlider.startAutoPlay();    
-
-    /* -- Launching TextResize ------ */
-    //$grids.textResize();
+    RexSlider.startAutoPlay();
 
     if( $grids ) {
       launchIndicators( $grids );
     }
 
-    if( false == _plugin_frontend_settings.user.editing ) {
-      // launch distortion effect
-      launchEffectDistortion();
-
-      // launch border space animated
-      launchBorderSpaceAnimated();
-
-      // launch rexScrolled
-      launchRexScrolled( $sections );
-
-      // launch rexScrollify
-      if (1 == _plugin_frontend_settings.animations ) {
-        launchRexScrollify();
-      }
-
-      // sticky sections
-      launchStickySections();    
-      // launch scrollCSSAnimations
-      launchScrollCSSAnimations();
-      // launch distance accordions
-      launchDistanceAccordion();
-      // launch popUpContent
-      launchPopUpContent();
-      // launch splitScrollable
-      launchSplitScollable( document );
-    }
+    // launchFrontEndEffects();
 
     Rexbuilder_Util.galleryPluginActive = true;
   };

@@ -42,8 +42,8 @@ var Rexbuilder_Util = (function($) {
       requestAnimation = window.requestAnimationFrame,
       start = dateNow(),
       stop,
-      timeoutFunc = function(){
-        dateNow() - start < delay ? stop || requestAnimation(timeoutFunc) : callback()
+      timeoutFunc = function() {
+        dateNow() - start < delay ? stop || requestAnimation( timeoutFunc ) : callback()
       };
     requestAnimation(timeoutFunc);
 
@@ -100,6 +100,20 @@ var Rexbuilder_Util = (function($) {
   var $rexbuilderLayoutData;
   var $rexbuilderModelData;
   var $availableLayoutNames;
+
+  var edlTimeouts = [];
+
+  function handlingRowReadyEnd( idx ) {
+    edlTimeouts[idx] = null;
+    if ( '' === edlTimeouts.join('') ) {
+      // Triggering event after edit dom layout end
+
+      var ev = jQuery.Event("rexlive:editDomLayoutEnd");
+      Rexbuilder_Util.$document.trigger(ev);
+
+      edlTimeouts = [];
+    }
+  }
 
   var createRandomID = function(n) {
     var text = "";
@@ -1271,6 +1285,8 @@ var Rexbuilder_Util = (function($) {
     var meIndex, section, $section;
 
     // console.log(mergedEdits)
+    var updateDOMelementsResponse;
+    var updateDOMelementsTimeouts = [];
 
     for( meIndex in mergedEdits ) {
       if (!mergedEdits[meIndex].notInSection || chosenLayoutName == "default") {
@@ -1294,13 +1310,13 @@ var Rexbuilder_Util = (function($) {
           section = Rexbuilder_Util.rexContainer.querySelector( 'section[data-rexlive-section-id="' + mergedEdits[meIndex].section_rex_id + '"]' );
         }
 
-        if ( section != 0 && ! Rexbuilder_Util.hasClass( section, 'removing_section' ) ) {
+        if ( section && ! Rexbuilder_Util.hasClass( section, 'removing_section' ) ) {
           if ( 'undefined' !== typeof mergedEdits[meIndex].section_hide && 'true' == mergedEdits[meIndex].section_hide.toString() ) {
             Rexbuilder_Util.addClass( section, 'rex-hide-section' );
           } else {
             Rexbuilder_Util.removeClass( section, 'rex-hide-section' );
             $section = $(section);
-            response.collapse_needed += _updateDOMelements( $section, mergedEdits[meIndex].targets, forceCollapseElementsGrid );
+            response.collapse_needed += _updateDOMelements( $section, mergedEdits[meIndex].targets, forceCollapseElementsGrid, meIndex );
           }
           sectionDomOrder.push(sectionObj);
         }
@@ -1318,7 +1334,7 @@ var Rexbuilder_Util = (function($) {
     return response;
   };
 
-  var _updateDOMelements = function( $section, targets, forceCollapseElementsGrid ) {
+  var _updateDOMelements = function( $section, targets, forceCollapseElementsGrid, meIndex ) {
     var $gallery = $section.find(".grid-stack-row");
     var galleryData = $gallery.data();
 
@@ -1414,17 +1430,21 @@ var Rexbuilder_Util = (function($) {
 
         galleryEditorInstance.properties.gridstackInstance.commit();
         //waiting for gridstack updating blocks dimensions with saved data
-        rtimeOut( handlingGridstackCommitEnd.bind(null, galleryEditorInstance, collapse, targets), 300 );
+        var handlingGridstackCommitEndTi = setTimeout( handlingGridstackCommitEnd.bind(null, galleryEditorInstance, collapse, targets, meIndex), 300 );
+        // var temp = Rexbuilder_Util.rtimeOut( handlingGridstackCommitEnd.bind(null, galleryEditorInstance, collapse, targets), 300 );
+        // handlingGridstackCommitEnd(galleryEditorInstance, collapse, targets);
       }
     }
 
     return collapse;
   };
 
-  function handlingGridstackCommitEnd( galleryEditorInstance, collapse, targets ) {
+  function handlingGridstackCommitEnd( galleryEditorInstance, collapse, targets, meIndex ) {
     Rexbuilder_Util.domUpdaiting = true;
     galleryEditorInstance.batchGridstack();
-    // galleryEditorInstance.properties.gridstackInstance.batchUpdate();
+    if( galleryEditorInstance.properties.gridstackInstance ) {
+      galleryEditorInstance.properties.gridstackInstance.batchUpdate();
+    }
     galleryEditorInstance.fixBlockDomOrder();
     galleryEditorInstance.saveStateGrid();
     //updaiting blocks height for masonry
@@ -1437,12 +1457,19 @@ var Rexbuilder_Util = (function($) {
       galleryEditorInstance.collapseElements();
       galleryEditorInstance.collapseElementsProperties();
     }
-    galleryEditorInstance.properties.gridstackInstance.commit();
+    // must use this launcher
+    if ( galleryEditorInstance.properties.gridstackInstance ) {
+      galleryEditorInstance.properties.gridstackInstance.commit();
+    }
+
     // row ready
-    Rexbuilder_Util.rtimeOut( handlingRowReady.bind( null, galleryEditorInstance ), 200 );
+    var handlingRowReadyTi = setTimeout( handlingRowReady.bind( null, galleryEditorInstance, meIndex ), 200 );
+    edlTimeouts.push( handlingRowReadyTi );
+    // Rexbuilder_Util.rtimeOut( handlingRowReady.bind( null, galleryEditorInstance ), 200 );
+    // handlingRowReady( galleryEditorInstance );
   }
 
-  function handlingRowReady( galleryEditorInstance ) {
+  function handlingRowReady( galleryEditorInstance, meIndex ) {
     Rexbuilder_Util.domUpdaiting = false;
     galleryEditorInstance.properties.dispositionBeforeCollapsing = galleryEditorInstance.createActionDataMoveBlocksGrid();
     galleryEditorInstance._createFirstReverseStack();
@@ -1451,7 +1478,12 @@ var Rexbuilder_Util = (function($) {
       galleryEditorInstance._updateElementsSizeViewers();
     }
     Rexbuilder_Util.playAllVideos();
-    Rexbuilder_Util.rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, galleryEditorInstance.section ), 1500 );
+
+    // callback after fixing a row
+    handlingRowReadyEnd( meIndex );
+
+    setTimeout( Rexbuilder_Util.fixYoutube.bind( null, galleryEditorInstance.section ), 1500 );
+    // Rexbuilder_Util.rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, galleryEditorInstance.section ), 1500 );
   }
 
   /**
@@ -2935,9 +2967,9 @@ var Rexbuilder_Util = (function($) {
 
         if( loadWidth !== Rexbuilder_Util.viewport().width ) {
           if( resizeTimeout ) {
-            resizeTimeout.clear();
+            clearTimeout( resizeTimeout );
           }
-          resizeTimeout = Rexbuilder_Util.rtimeOut( Rexbuilder_Util.doneResizing, 1000 );
+          resizeTimeout = setTimeout( Rexbuilder_Util.doneResizing, 1000 );
         }
       }
     });
@@ -2987,7 +3019,8 @@ var Rexbuilder_Util = (function($) {
         var choosedLayout = chooseLayout();
         _set_initial_grids_state( choosedLayout );
 
-        Rexbuilder_Util.rtimeOut( changeLayouHandling.bind(null, choosedLayout), 300 );
+        // Rexbuilder_Util.rtimeOut( changeLayouHandling.bind(null, choosedLayout), 300 );
+        setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
       } else {
         var l = chooseLayout();
         var resize_info = _edit_dom_layout(chooseLayout());
@@ -3279,7 +3312,7 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
-    Rexbuilder_Util.rtimeOut( Rexbuilder_Util.fixVideoAudio.bind( null, $target ), 500 );
+    setTimeout( Rexbuilder_Util.fixVideoAudio.bind( null, $target ), 500 );
   };
 
   // var _destroyVideoPlugins = function() {

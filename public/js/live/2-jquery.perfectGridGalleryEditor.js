@@ -257,7 +257,8 @@
     this.updateCollapsedBlocksHeight();
     this.commitGridstack();
 
-    rtimeOut( handleCollapseSecondTimeout.bind( this, reverseData ), 500 );
+    // rtimeOut( handleCollapseSecondTimeout.bind( this, reverseData ), 500 );
+    setTimeout( handleCollapseSecondTimeout.bind( this, reverseData ), 500 );
 
     this.properties.collapsingElements = false;
   }
@@ -279,7 +280,8 @@
       reverseData: reverseData
     };
     // this.updateSrollbars();
-    rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
+    // rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
+    setTimeout( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
 
     if ( !Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdaiting ) {
       $(document).trigger(event);
@@ -596,6 +598,7 @@
 
     /**
      * Re launch the grid for the front end area
+     * seems never used
      * @param {Object}  opts  optional parameters to set
      * @since 2.0.0
      */
@@ -3647,7 +3650,7 @@
     resizeBlock: function( el, width, height ) {
       if( ! isNaN( height ) ) {
         var gridstack = this.properties.gridstackInstance;
-        if ( gridstack !== undefined ) {
+        if ( 'undefined' !== typeof gridstack && null !== gridstack ) {
           if ( this.properties.oldCellHeight != 0 && this.properties.oldCellHeight != this.properties.singleHeight && this.properties.oldLayout == "masonry" ) {
             var x, y, w, h;
             var elDim;
@@ -3884,7 +3887,8 @@
       this.updateBlocksWidth();
       this.commitGridstack();
 
-      rtimeOut( handleCollapsFirstTimeout.bind( this, reverseData ), 500 );
+      // rtimeOut( handleCollapsFirstTimeout.bind( this, reverseData ), 500 );
+      setTimeout( handleCollapsFirstTimeout.bind( this, reverseData ), 500 );
 
       // var that = this;
       // setTimeout(
