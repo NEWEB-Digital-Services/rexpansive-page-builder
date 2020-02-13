@@ -258,6 +258,7 @@ class Rexbuilder_Admin {
 	 * Register the JavaScript for the admin area.
 	 *
 	 * @since    1.0.0
+	 * @version  2.0.3
 	 */
 	public function enqueue_scripts_production( $hook ) {
 

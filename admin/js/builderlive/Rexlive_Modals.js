@@ -2,6 +2,8 @@
 var Rexlive_Modals = (function ($) {
     'use strict';
 
+    var elements = false;
+
     var init = function () {
         // Top Tools
         Rexlive_Top_Tools.init();
@@ -89,20 +91,22 @@ var Rexlive_Modals = (function ($) {
         //editor button
         Button_Edit_Modal.init();
 
-        // Element import tab
-        // Element_Import_Modal.init();
-        
-        // Element editor
-        // Element_Choose_Modal.init();
-        
-        // Wpcf7 Content Adder
-        // Wpcf7_Add_Content_Modal.init();
+        if ( elements ) {
+            // Element import tab
+            Element_Import_Modal.init();
+            
+            // Element editor
+            Element_Choose_Modal.init();
+            
+            // Wpcf7 Content Adder
+            Wpcf7_Add_Content_Modal.init();
 
-        // Wpcf7 Content Editor
-        // Wpcf7_Edit_Content_Modal.init();
+            // Wpcf7 Content Editor
+            Wpcf7_Edit_Content_Modal.init();
 
-        // Wpcf7 Form Editor
-        // Wpcf7_Edit_Form_Modal.init();
+            // Wpcf7 Form Editor
+            Wpcf7_Edit_Form_Modal.init();
+        }
 
         // live media list
         Rexlive_PostEdit_MediaList.init();
