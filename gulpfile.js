@@ -588,7 +588,7 @@ gulp.task('builderlive-style', function() {
 	.pipe(gulp.dest('public/css'))
 });
 
-gulp.task('live-production', ['prepare-effects','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style', 'adminJS']);
+gulp.task('build', ['prepare-effects','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style', 'adminJS']);
 
 gulp.task('watch-live-production', ['prepare-effects','builderlive-editor','builderlive'] ,function() {
 	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive-editor']);
@@ -767,7 +767,7 @@ gulp.task('create-live-zip', ['create-temp-live-folder'], function(cb) {
 	cb(err);
 });
 
-gulp.task('build', ['create-temp-live-folder', 'create-live-zip', 'remove-temp-live-folder']);
+gulp.task('build-zip', ['create-temp-live-folder', 'create-live-zip', 'remove-temp-live-folder']);
 
 var exec = require('child_process').exec;
 

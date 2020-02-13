@@ -1,23 +1,52 @@
 var Rexbuilder_Photoswipe = (function($){
 	"use strict";
 
+	var init_inline_pswp = function(e) {
+		var initiator = e.target;
+		var data_items = initiator.getAttribute('data-inline-pswp-info');
+
+		if( 'undefined' !== typeof data_items && "" !== data_items ) {
+
+			var pswpElement = document.querySelectorAll('.pswp')[0];
+			var disableAnimation = false;
+
+			// build items array
+			var items = JSON.parse(data_items);
+
+			var options = {
+				// define gallery index (for URL)
+				galleryUID: initiator.getAttribute('data-pswp-uid'),
+
+				closeOnScroll: false,
+				showHideOpacity: true
+			};
+
+			if (disableAnimation) {
+				options.showAnimationDuration = 0;
+			}
+
+			var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
+			gallery.init();
+		}
+	};
+
 	var _addElement = function($itemContent, url, w, h, t) {
-	    if ( !$itemContent.parents('.grid-stack-item').hasClass('block-has-slider') ) {
-	      tmpl.arg = "image";
-	      var $gridstackItemContent = $itemContent.parents(".grid-stack-item-content");
-	      if ($itemContent.parents(".pswp-figure").length == 0) {
-	        $itemContent.parent().prepend(
-	          tmpl("tmpl-photoswipe-block", {
-	            link: url,
-	            width: w,
-	            height: h,
-	            type: t
-	          })
-	        );
-	        var $pspwItem = $gridstackItemContent.find(".pswp-item");
-	        $itemContent.detach().appendTo($pspwItem);
-	      }
-	    }
+		if ( !$itemContent.parents('.grid-stack-item').hasClass('block-has-slider') ) {
+		  tmpl.arg = "image";
+		  var $gridstackItemContent = $itemContent.parents(".grid-stack-item-content");
+		  if ($itemContent.parents(".pswp-figure").length == 0) {
+			$itemContent.parent().prepend(
+			  tmpl("tmpl-photoswipe-block", {
+				link: url,
+				width: w,
+				height: h,
+				type: t
+			  })
+			);
+			var $pspwItem = $gridstackItemContent.find(".pswp-item");
+			$itemContent.detach().appendTo($pspwItem);
+		  }
+		}
 	};
 
 	var _addElementFromInline = function($img) {
@@ -56,8 +85,8 @@ var Rexbuilder_Photoswipe = (function($){
 	var _removeElementFromInline = function($img) {
 		var $pswpFigure = $img.parents(".pswp-figure");
 
-        $img.detach().insertBefore($pswpFigure);
-        $pswpFigure.remove();
+		$img.detach().insertBefore($pswpFigure);
+		$pswpFigure.remove();
 	}
 
 	var _init = function(gallerySelector) {
@@ -66,46 +95,46 @@ var Rexbuilder_Photoswipe = (function($){
 		var parseThumbnailElements = function(el) {
 		  //var thumbElements = el.childNodes,
 		  var thumbElements = $(el)
-		      .find(".pswp-figure")
-		      .get(),
-		    numNodes = thumbElements.length,
-		    items = [],
-		    figureEl,
-		    linkEl,
-		    size,
-		    item;
+			  .find(".pswp-figure")
+			  .get(),
+			numNodes = thumbElements.length,
+			items = [],
+			figureEl,
+			linkEl,
+			size,
+			item;
 
 		  for (var i = 0; i < numNodes; i++) {
-		    figureEl = thumbElements[i]; // <figure> element
+			figureEl = thumbElements[i]; // <figure> element
 
-		    // include only element nodes
-		    if (figureEl.nodeType !== 1) {
-		      continue;
-		    }
+			// include only element nodes
+			if (figureEl.nodeType !== 1) {
+			  continue;
+			}
 
-		    linkEl = figureEl.children[0]; // <a> element
+			linkEl = figureEl.children[0]; // <a> element
 
-		    size = linkEl.getAttribute("data-size").replace("px", "").split("x");
+			size = linkEl.getAttribute("data-size").replace("px", "").split("x");
 
-		    // create slide object
-		    item = {
-		      src: linkEl.getAttribute("href"),
-		      w: parseInt(size[0], 10),
-		      h: parseInt(size[1], 10)
-		    };
+			// create slide object
+			item = {
+			  src: linkEl.getAttribute("href"),
+			  w: parseInt(size[0], 10),
+			  h: parseInt(size[1], 10)
+			};
 
-		    if (figureEl.children.length > 1) {
-		      // <figcaption> content
-		      item.title = figureEl.children[1].innerHTML;
-		    }
+			if (figureEl.children.length > 1) {
+			  // <figcaption> content
+			  item.title = figureEl.children[1].innerHTML;
+			}
 
-		    if (linkEl.children.length > 0) {
-		      // <img> thumbnail element, retrieving thumbnail url
-		      item.msrc = linkEl.children[0].getAttribute("data-thumburl");
-		    }
+			if (linkEl.children.length > 0) {
+			  // <img> thumbnail element, retrieving thumbnail url
+			  item.msrc = linkEl.children[0].getAttribute("data-thumburl");
+			}
 
-		    item.el = figureEl; // save link to element for getThumbBoundsFn
-		    items.push(item);
+			item.el = figureEl; // save link to element for getThumbBoundsFn
+			items.push(item);
 		  }
 
 		  return items;
@@ -119,7 +148,7 @@ var Rexbuilder_Photoswipe = (function($){
 		var collectionHas = function(a, b) {
 		  //helper function (see below)
 		  for (var i = 0, len = a.length; i < len; i++) {
-		    if (a[i] == b) return true;
+			if (a[i] == b) return true;
 		  }
 		  return false;
 		};
@@ -128,8 +157,8 @@ var Rexbuilder_Photoswipe = (function($){
 		  var all = document.querySelectorAll(selector);
 		  var cur = elm.parentNode;
 		  while (cur && !collectionHas(all, cur)) {
-		    //keep going up until you find a match
-		    cur = cur.parentNode; //go up
+			//keep going up until you find a match
+			cur = cur.parentNode; //go up
 		  }
 		  return cur; //will return null if not found
 		};
@@ -140,12 +169,12 @@ var Rexbuilder_Photoswipe = (function($){
 
 		  // Bug fix for Block links and links inside blocks
 		  if (
-		    $(e.target)
-		      .parents(".perfect-grid-item")
-		      .find(".element-link").length > 0 ||
-		    $(e.target).is("a")
+			$(e.target)
+			  .parents(".perfect-grid-item")
+			  .find(".element-link").length > 0 ||
+			$(e.target).is("a")
 		  ) {
-		    return;
+			return;
 		  }
 
 		  e.preventDefault ? e.preventDefault() : (e.returnValue = false);
@@ -154,11 +183,11 @@ var Rexbuilder_Photoswipe = (function($){
 
 		  // find root element of slide
 		  var clickedListItem = closest(eTarget, function(el) {
-		    return el.tagName && el.tagName.toUpperCase() === "FIGURE";
+			return el.tagName && el.tagName.toUpperCase() === "FIGURE";
 		  });
 
 		  if (!clickedListItem) {
-		    return;
+			return;
 		  }
 
 		  // find index of clicked item by looping through all child nodes
@@ -166,29 +195,29 @@ var Rexbuilder_Photoswipe = (function($){
 		  // var clickedGallery = clickedListItem.parentNode,
 		  //var clickedGallery = findParentBySelector(clickedListItem, '.my-gallery'),
 		  var clickedGallery = $(clickedListItem).parents(gallerySelector)[0],
-		    //childNodes = clickedListItem.parentNode.childNodes,
-		    childNodes = $(clickedGallery)
-		      .find(".pswp-figure")
-		      .get(),
-		    numChildNodes = childNodes.length,
-		    nodeIndex = 0,
-		    index;
+			//childNodes = clickedListItem.parentNode.childNodes,
+			childNodes = $(clickedGallery)
+			  .find(".pswp-figure")
+			  .get(),
+			numChildNodes = childNodes.length,
+			nodeIndex = 0,
+			index;
 
 		  for (var i = 0; i < numChildNodes; i++) {
-		    if (childNodes[i].nodeType !== 1) {
-		      continue;
-		    }
+			if (childNodes[i].nodeType !== 1) {
+			  continue;
+			}
 
-		    if (childNodes[i] === clickedListItem) {
-		      index = nodeIndex;
-		      break;
-		    }
-		    nodeIndex++;
+			if (childNodes[i] === clickedListItem) {
+			  index = nodeIndex;
+			  break;
+			}
+			nodeIndex++;
 		  }
 
 		  if (index >= 0) {
-		    // open PhotoSwipe if valid index found
-		    openPhotoSwipe(index, clickedGallery);
+			// open PhotoSwipe if valid index found
+			openPhotoSwipe(index, clickedGallery);
 		  }
 		  return false;
 		};
@@ -196,26 +225,26 @@ var Rexbuilder_Photoswipe = (function($){
 		// parse picture index and gallery index from URL (#&pid=1&gid=2)
 		var photoswipeParseHash = function() {
 		  var hash = window.location.hash.substring(1),
-		    params = {};
+			params = {};
 
 		  if (hash.length < 5) {
-		    return params;
+			return params;
 		  }
 
 		  var vars = hash.split("&");
 		  for (var i = 0; i < vars.length; i++) {
-		    if (!vars[i]) {
-		      continue;
-		    }
-		    var pair = vars[i].split("=");
-		    if (pair.length < 2) {
-		      continue;
-		    }
-		    params[pair[0]] = pair[1];
+			if (!vars[i]) {
+			  continue;
+			}
+			var pair = vars[i].split("=");
+			if (pair.length < 2) {
+			  continue;
+			}
+			params[pair[0]] = pair[1];
 		  }
 
 		  if (params.gid) {
-		    params.gid = parseInt(params.gid, 10);
+			params.gid = parseInt(params.gid, 10);
 		  }
 
 		  return params;
@@ -228,78 +257,78 @@ var Rexbuilder_Photoswipe = (function($){
 		  fromURL
 		) {
 		  var pswpElement = document.querySelectorAll(".pswp")[0],
-		    gallery,
-		    options,
-		    items;
+			gallery,
+			options,
+			items;
 
 		  items = parseThumbnailElements(galleryElement);
 
 		  // define options (if needed)
 		  options = {
-		    // define gallery index (for URL)
-		    galleryUID: galleryElement.getAttribute("data-pswp-uid"),
+			// define gallery index (for URL)
+			galleryUID: galleryElement.getAttribute("data-pswp-uid"),
 
-		    getThumbBoundsFn: function(index) {
-		      // See Options -> getThumbBoundsFn section of documentation for more info
-		      var thumbnail = items[index].el.getElementsByClassName(
-		          "pswp-item-thumb"
-		        )[0], // find thumbnail
-		        image_content = items[index].el.getElementsByClassName(
-		          "rex-custom-scrollbar"
-		        )[0],
-		        pageYScroll =
-		          window.pageYOffset || document.documentElement.scrollTop,
-		        rect = image_content.getBoundingClientRect(),
-		        image_type = thumbnail.getAttribute("data-thumb-image-type");
+			getThumbBoundsFn: function(index) {
+			  // See Options -> getThumbBoundsFn section of documentation for more info
+			  var thumbnail = items[index].el.getElementsByClassName(
+				  "pswp-item-thumb"
+				)[0], // find thumbnail
+				image_content = items[index].el.getElementsByClassName(
+				  "rex-custom-scrollbar"
+				)[0],
+				pageYScroll =
+				  window.pageYOffset || document.documentElement.scrollTop,
+				rect = image_content.getBoundingClientRect(),
+				image_type = thumbnail.getAttribute("data-thumb-image-type");
 
-		      if (image_type == "natural") {
-		        return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
-		      } else {
-		        // var full_rect = items[index].el.getBoundingClientRect();
-		        // return {x:full_rect.left, y:full_rect.top + pageYScroll, w:full_rect.width};;
-		        return null;
-		      }
-		    },
+			  if (image_type == "natural") {
+				return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
+			  } else {
+				// var full_rect = items[index].el.getBoundingClientRect();
+				// return {x:full_rect.left, y:full_rect.top + pageYScroll, w:full_rect.width};;
+				return null;
+			  }
+			},
 
-		    closeOnScroll: false,
-		    showHideOpacity: true
+			closeOnScroll: false,
+			showHideOpacity: true
 		  };
 
 		  // PhotoSwipe opened from URL
 		  if (fromURL) {
-		    if (options.galleryPIDs) {
-		      // parse real index when custom PIDs are used
-		      // http://photoswipe.com/documentation/faq.html#custom-pid-in-url
-		      for (var j = 0, tot_items = items.length; j < tot_items; j++) {
-		        if (items[j].pid == index) {
-		          options.index = j;
-		          break;
-		        }
-		      }
-		    } else {
-		      // in URL indexes start from 1
-		      options.index = parseInt(index, 10) - 1;
-		    }
+			if (options.galleryPIDs) {
+			  // parse real index when custom PIDs are used
+			  // http://photoswipe.com/documentation/faq.html#custom-pid-in-url
+			  for (var j = 0, tot_items = items.length; j < tot_items; j++) {
+				if (items[j].pid == index) {
+				  options.index = j;
+				  break;
+				}
+			  }
+			} else {
+			  // in URL indexes start from 1
+			  options.index = parseInt(index, 10) - 1;
+			}
 		  } else {
-		    options.index = parseInt(index, 10);
+			options.index = parseInt(index, 10);
 		  }
 
 		  // exit if index not found
 		  if (isNaN(options.index)) {
-		    return;
+			return;
 		  }
 
 		  if (disableAnimation) {
-		    options.showAnimationDuration = 0;
+			options.showAnimationDuration = 0;
 		  }
 
 		  // Pass data to PhotoSwipe and initialize it
 
 		  gallery = new PhotoSwipe(
-		    pswpElement,
-		    PhotoSwipeUI_Default,
-		    items,
-		    options
+			pswpElement,
+			PhotoSwipeUI_Default,
+			items,
+			options
 		  );
 		  gallery.init();
 		};
@@ -316,18 +345,19 @@ var Rexbuilder_Photoswipe = (function($){
 		var hashData = photoswipeParseHash();
 		if (hashData.pid && hashData.gid) {
 		  openPhotoSwipe(
-		    hashData.pid,
-		    galleryElements[hashData.gid - 1],
-		    true,
-		    true
+			hashData.pid,
+			galleryElements[hashData.gid - 1],
+			true,
+			true
 		  );
 		}
 	};
 
 	return {
-	init: _init,
-	addElement: _addElement,
-	addElementFromInline: _addElementFromInline,
-	removeElement: _removeElement
+		init: _init,
+		addElement: _addElement,
+		addElementFromInline: _addElementFromInline,
+		removeElement: _removeElement,
+		init_inline_pswp: init_inline_pswp
 	};
 })(jQuery);

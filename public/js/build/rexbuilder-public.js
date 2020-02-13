@@ -611,12 +611,20 @@ var Rexbuilder_App = (function($) {
     }
   };
 
+  function launchInlineGallery() {
+    var $inline_galleries = Rexbuilder_Util.$rexContainer.find('.inline-pswp-gallery');
+    $inline_galleries.on('click', Rexbuilder_Photoswipe.init_inline_pswp);
+  }
+
   /**
    * All front end effects in one function
    * @return {vodi}
    */
   function launchFrontEndEffects() {
     if( false == _plugin_frontend_settings.user.editing ) {
+      // inline photoswipe
+      launchInlineGallery();
+
       // launch distortion effect
       launchEffectDistortion();
 
