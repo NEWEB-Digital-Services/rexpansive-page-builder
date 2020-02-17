@@ -57,8 +57,7 @@ class Rexbuilder_Public
 	 * @param      string    $plugin_name       The name of the plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct($plugin_name, $version)
-	{
+	public function __construct($plugin_name, $version) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
@@ -106,8 +105,7 @@ class Rexbuilder_Public
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles()
-	{
+	public function enqueue_styles() {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -121,7 +119,8 @@ class Rexbuilder_Public
 		 * class.
 		 */
 
-		if ($this->builder_active_on_this_post_type()) {
+		global $post;
+		if ( $this->builder_active_on_this_post_type() ) {
 
 			$ver = null;
 
@@ -171,9 +170,9 @@ class Rexbuilder_Public
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_styles_production()
-	{
-		if ($this->builder_active_on_this_post_type()) {
+	public function enqueue_styles_production() {
+		global $post;
+		if ( $this->builder_active_on_this_post_type() ) {
 			wp_enqueue_style('rexpansive-builder-rexbutton-style', REXPANSIVE_BUILDER_URL . 'public/css/rex_buttons.css', array(), REXPANSIVE_BUILDER_VERSION, 'all');
 
 			if( Rexbuilder_Utilities::isBuilderLive() ) {
@@ -208,9 +207,9 @@ class Rexbuilder_Public
 		 * class.
 		 */
 
+		global $post;
 		if ( $this->builder_active_on_this_post_type() ) {
 			$ver = null;
-			global $post;
 			$customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
 
 			$fast_load = ( isset( $this->plugin_options['fast_load'] ) ? $this->plugin_options['fast_load'] : 0 );
@@ -395,8 +394,8 @@ class Rexbuilder_Public
 		 * class.
 		 */
 
-		if ($this->builder_active_on_this_post_type()) {
-			global $post;
+		global $post;
+		if ( $this->builder_active_on_this_post_type() ) {
 			$customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
 			$fast_load = ( isset( $this->plugin_options['fast_load'] ) ? $this->plugin_options['fast_load'] : 0 );
 			
@@ -1516,9 +1515,9 @@ class Rexbuilder_Public
 	 *
 	 * @since    1.0.0
 	 */
-	public function print_photoswipe_template()
-	{
-		if ($this->builder_active_on_this_post_type()) {
+	public function print_photoswipe_template() {
+		global $post;
+		if ( $this->builder_active_on_this_post_type() ) {
 			include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-photoswipe-template.php');
 		}
 	}
@@ -1528,10 +1527,9 @@ class Rexbuilder_Public
 	 *
 	 * @since    1.0.0
 	 */
-	public function print_post_custom_styles()
-	{
-		if ($this->builder_active_on_this_post_type()) {
-			global $post;
+	public function print_post_custom_styles() {
+		global $post;
+		if ( $this->builder_active_on_this_post_type() ) {
 			$meta = get_post_meta($post->ID, '_rexbuilder_custom_css', true);
 			if ($meta != ''):
 				wp_add_inline_style( $this->plugin_name . '-style', $meta);
@@ -1544,10 +1542,9 @@ class Rexbuilder_Public
 	 * @return void
 	 * @since  2.0.0
 	 */
-	public function print_rex_buttons_style()
-	{
-		if ($this->builder_active_on_this_post_type()) {
-			global $post;
+	public function print_rex_buttons_style() {
+		global $post;
+		if ( $this->builder_active_on_this_post_type() ) {
 			$buttonsIDs = get_post_meta($post->ID, '_rexbuilder_buttons_ids_in_page', true);
 			$buttonsInPage = json_decode($buttonsIDs, true);
 			$style = "";
@@ -1570,11 +1567,10 @@ class Rexbuilder_Public
 	 *
 	 *    @since    1.0.0
 	 */
-	public function print_vertical_dots()
-	{
+	public function print_vertical_dots() {
 		global $post;
 
-		if ($this->builder_active_on_this_post_type()) {
+		if ( $this->builder_active_on_this_post_type() ) {
 			$nav = get_post_meta(get_the_ID(), '_rex_navigation_type', true);
 
 			if (!empty($nav) && !empty(Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-' . $nav . '-template.php'))) {
@@ -1626,6 +1622,7 @@ class Rexbuilder_Public
 	 */
 	public function filter_yoast_seo_description( $description ) {
 		global $post;
+
 		if ( $this->builder_active_on_this_post_type() ) {
 			$yoast_metadesc = get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true );
 			if ( '' == $yoast_metadesc ) {
@@ -1653,12 +1650,17 @@ class Rexbuilder_Public
 	 * @return bool
 	 * @since 1.1.1
 	 */
-	private function builder_active_on_this_post_type()
-	{
+	private function builder_active_on_this_post_type() {
+		global $post;
+
 		$post_to_activate = $this->plugin_options['post_types'];
 		$this_post_type = get_post_type();
+		$post_id = get_the_ID();
+		$builder_active = get_post_meta( $post_id, '_rexbuilder_active', true );
 
-		return (apply_filters('rexbuilder_post_type_active', isset($post_to_activate) && $this_post_type && array_key_exists($this_post_type, $post_to_activate)));
+		$condition = isset( $post_to_activate ) && $this_post_type && array_key_exists( $this_post_type, $post_to_activate ) && $post_id && 'true' == $builder_active;
+
+		return ( apply_filters( 'rexbuilder_post_type_active', $condition ) );
 	}
 
 	/**
