@@ -4,6 +4,7 @@ var RexSlider = (function ($) {
   var slider_class = '.rex-slider-wrap';
   var slider_element_class = '.rex-slider-element';
   var slider_custom_nav_class = '.flickity-page-dots.rex-slider__custom-nav';
+  var slider_nav_preview_slide = '.flickity-page-dots.rex-slider__custom-nav__preview-slide';
   var slider_element_title_wrap = '.rex-slider-element-title';
   var context = '.rexpansive_section';
 
@@ -139,6 +140,16 @@ var RexSlider = (function ($) {
       $this.addClass('is-selected').siblings('.dot').removeClass('is-selected');
       $sliderWrap.flickity('select', index);
     })
+
+    /**
+     * Label custom navigation
+     */
+    $sliderWrap.find(slider_nav_preview_slide).find('.rex-slider__b-label-image--item').hover(
+      function(e) {
+        var index = parseInt(e.currentTarget.getAttribute('data-nav-index'));
+        $sliderWrap.flickity( 'select', index );
+      }
+    );
   }
 
   /**

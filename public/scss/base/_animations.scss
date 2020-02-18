@@ -348,8 +348,10 @@
 
 .fade-element-up {
   opacity: 0;
+  // transition-delay: 500ms;
   .grid-item-content {
     transform: translateY(200px);
+    // transition-delay: 500ms;
   }
   &.rex-element--animated {
     transition: opacity 1.5s $fade-up-ease;

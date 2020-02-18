@@ -307,14 +307,27 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   function launchRexScrolled( $sections ) {
-    $sections.rexScrolled({
-      callback: function(el) {
-        if (Rexbuilder_Util.hasClass(el, "rex-element--animated")) {
-          var $el = $(el);
-          $el
-            .addClass("run-animation")
-            .on(Rexbuilder_Util.transitionEvent, function(e) {});
-        }
+    // $sections.rexScrolled({
+    //   callback: function(el) {
+    //     if (Rexbuilder_Util.hasClass(el, "rex-element--animated")) {
+    //       var $el = $(el);
+    //       $el
+    //         .addClass("run-animation")
+    //         .on(Rexbuilder_Util._transitionEvent, function(e) {});
+    //     }
+    //   }
+    // });
+
+    function handleElementEndAnimation(el) {
+      Rexbuilder_Util.removeClass(this, 'rex-element--animated');
+      this.removeEventListener(Rexbuilder_Util._transitionEvent, handleElementEndAnimation);
+    }
+
+    var $animationElements = $(document.getElementsByClassName('rex-element--animated'));
+    $animationElements.rexScrolled({
+      callback: function (el) {
+        el.addEventListener(Rexbuilder_Util._transitionEvent, handleElementEndAnimation);
+        Rexbuilder_Util.addClass(el, 'run-animation');
       }
     });
   }
