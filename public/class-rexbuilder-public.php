@@ -447,7 +447,7 @@ class Rexbuilder_Public
 				wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-public.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
 
 				if( !Rexbuilder_Utilities::isBuilderLive() && 1 == $fast_load ) {
-					wp_enqueue_script('fast-load', REXPANSIVE_BUILDER_URL . 'public/js/build/fast-load.js', array( $this->plugin_name ), REXPANSIVE_BUILDER_VERSION, true);
+					wp_enqueue_script('fast-load', REXPANSIVE_BUILDER_URL . 'public/js/vendor/fast-load.min.js', array( $this->plugin_name ), REXPANSIVE_BUILDER_VERSION, true);
 				}
 			}
 

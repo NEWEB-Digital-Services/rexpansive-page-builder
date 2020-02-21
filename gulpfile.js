@@ -255,6 +255,13 @@ gulp.task('prepare-effects', function() {
 	})
 });
 
+gulp.task('fast-load', function() {
+	return gulp.src('public/js/build/fast-load.js')
+		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(rename({suffix: '.min'}))
+		.pipe(gulp.dest('public/js/vendor'))
+})
+
 /** -------- */
 
 var admin_js_src = [ 
@@ -588,9 +595,9 @@ gulp.task('builderlive-style', function() {
 	.pipe(gulp.dest('public/css'))
 });
 
-gulp.task('build', ['prepare-effects','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style', 'adminJS']);
+gulp.task('build', ['prepare-effects','fast-load','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style', 'adminJS']);
 
-gulp.task('watch-live-production', ['prepare-effects','builderlive-editor','builderlive'] ,function() {
+gulp.task('watch-live-production', ['prepare-effects','fast-load','builderlive-editor','builderlive'] ,function() {
 	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive-editor']);
 	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive']);
 	gulp.watch(effects_js_src, ['prepare-effects']);
@@ -685,7 +692,7 @@ gulp.task('dev-live', ['live-builder-style'] ,function() {
 });
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
-var live_zip_name = 'Premium-203-Rexpansive-Builder.zip';
+var live_zip_name = 'Premium-204-Rexpansive-Builder.zip';
 // var live_folder_name = 'rexpansive-builder';		// old folder name
 var live_folder_name = 'rexpansive-page-builder';
 

@@ -501,7 +501,9 @@ var Rexbuilder_Dom_Util = (function($) {
       }
     } else if ($videoWrap.length != 0) {
       $videoWrap.removeClass("removing-video-mp4");
-      $videoWrap.find("video")[0].play();
+      if ( !Rexbuilder_Util.fast_load ) {
+        $videoWrap.find("video")[0].play();
+      }
     }
 
     if ($toggleAudio.length == 0) {
