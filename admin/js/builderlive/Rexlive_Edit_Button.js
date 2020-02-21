@@ -149,7 +149,8 @@ var Button_Edit_Modal = (function ($) {
     var _openButtonEditorModal = function (data) {
         alreadyChooseToSynchronize = false;
         _updateButtonEditorModal(data);
-        if (!editingModelButton || alreadyChooseToSynchronize) {
+        // if (!editingModelButton || alreadyChooseToSynchronize) {
+        if (!editingModelButton) {
             Rexlive_Modals_Utils.openModal(
                 button_editor_properties.$self.parent(".rex-modal-wrap")
             );

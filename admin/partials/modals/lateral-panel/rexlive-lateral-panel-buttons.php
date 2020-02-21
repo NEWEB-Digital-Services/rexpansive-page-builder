@@ -16,18 +16,23 @@ defined('ABSPATH') or exit;
 			<?php 
 				// it's possibile to query like '_rex_button_%%_html0'?
 				$defaultButtonsIDs = '[]';
-				$buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
-				$buttonsIDsJSON = stripslashes($buttonsIDsJSON);
-				$buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
-				foreach ($buttonsIDsUsed as $index => $id_button) {
+				$buttonsIDsJSON = get_option( '_rex_buttons_ids', $defaultButtonsIDs );
+				$buttonsIDsJSON = stripslashes( $buttonsIDsJSON );
+				$buttonsIDsUsed = json_decode( $buttonsIDsJSON, true );
+
+				$re = '/data-button-name="([a-zA-Z0-9\s]+)"/m';
+
+				foreach ( $buttonsIDsUsed as $index => $id_button ) {
 					$buttonHTML = get_option('_rex_button_'.$id_button.'_html', "");
-					if($buttonHTML != ""){
-						$buttonHTML = stripslashes($buttonHTML);
+					if( $buttonHTML != "") {
+						$buttonHTML = stripslashes( $buttonHTML );
+
+						preg_match_all($re, $buttonHTML, $buttonName, PREG_SET_ORDER, 0);
 					?>
-					<li class="button-list__element" draggable="true">
+					<li class="button-list__element" draggable="true" title="<?php echo ( isset( $buttonName[0][1] ) ? $buttonName[0][1] : $id_button ); ?>">
 						<div class="rex-container"><?php echo $buttonHTML ?></div>
 						<div class="button-list__element__tools">
-							<div class="tool-button tool-button--black rex-close-button button__element--delete tippy" data-tippy-content="<?php _e('Delete','rexpansive-builder'); ?>">
+							<div class="tool-button tool-button--black rex-close-button button__element--delete tippy" data-tippy-content="<?php _e( 'Delete', 'rexpansive-builder' ); ?>">
 								<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 							</div>
 						</div>
