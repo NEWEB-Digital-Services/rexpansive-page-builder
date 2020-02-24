@@ -160,6 +160,10 @@ class Rexbuilder {
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-accordion-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-icon-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-inline-gallery-shortcode.php';
+		// require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-timeline-shortcode.php';
+		// require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-timeline-event-shortcode.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-timeline-pro-shortcode.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-timeline-pro-event-shortcode.php';
 
 		$this->loader = new Rexbuilder_Loader();
 
@@ -472,11 +476,15 @@ class Rexbuilder {
 		$this->loader->add_shortcode( 'RexModel', $model, 'render_model' );
 		$this->loader->add_shortcode( 'RexButton', $button, 'render_button' );
 		$this->loader->add_shortcode( 'RexAccordion', $accordion, 'render_accordion' );
-        $this->loader->add_shortcode( 'RexAccordionHeader', $accordion, 'render_accordion_header' );
-        $this->loader->add_shortcode( 'RexAccordionContent', $accordion, 'render_accordion_content' );
-        $this->loader->add_shortcode( 'RexAccordionFooter', $accordion, 'render_accordion_footer' );
-        $this->loader->add_shortcode( 'RexliveIcon', 'Rexbuilder_Icon_Shortcode', 'render' );
-        $this->loader->add_shortcode( 'RexInlineGallery', 'Rexbuilder_Inline_Gallery', 'render' );
+		$this->loader->add_shortcode( 'RexAccordionHeader', $accordion, 'render_accordion_header' );
+		$this->loader->add_shortcode( 'RexAccordionContent', $accordion, 'render_accordion_content' );
+		$this->loader->add_shortcode( 'RexAccordionFooter', $accordion, 'render_accordion_footer' );
+		$this->loader->add_shortcode( 'RexliveIcon', 'Rexbuilder_Icon_Shortcode', 'render' );
+		$this->loader->add_shortcode( 'RexInlineGallery', 'Rexbuilder_Inline_Gallery', 'render' );
+		// $this->loader->add_shortcode( 'RexTimelineEvent', 'Rexbuilder_Timeline_Event', 'render' );
+		// $this->loader->add_shortcode( 'RexTimeline', 'Rexbuilder_Timeline', 'render' );
+		$this->loader->add_shortcode( 'RexTimelineProEvent', 'Rexbuilder_Timeline_Pro_Event', 'render' );
+		$this->loader->add_shortcode( 'RexTimelinePro', 'Rexbuilder_Timeline_Pro', 'render' );
 	}
 
 	/**

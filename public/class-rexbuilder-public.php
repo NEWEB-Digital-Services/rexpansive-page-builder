@@ -507,7 +507,7 @@ class Rexbuilder_Public
 	 */
 	public function remove_shortcodes_from_live() {
 		if ( Rexbuilder_Utilities::isBuilderLive() ) {
-			$shortcodes = apply_filters( 'rexpansive_builder_remove_shortcodes_live', array() );
+			$shortcodes = apply_filters( 'rexpansive_builder_remove_shortcodes_live', array( 'Rexbuilder_Timeline_Pro', 'Rexbuilder_Timeline_Pro_Event' ) );
 			foreach( $shortcodes as $shortcode ) {
 				remove_shortcode( $shortcode );
 			}
