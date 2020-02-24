@@ -514,12 +514,11 @@ class Rexbuilder_Public
 		}
 	}
 
-	public function include_js_template()
-	{
-		if (!current_user_can('edit_posts') && !current_user_can('edit_pages')) {
+	public function include_js_template() {
+		if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 			return;
 		}
-		if (!isset($this->plugin_options['post_types'])) {
+		if ( ! isset( $this->plugin_options['post_types'] ) ) {
 			return;
 		}
 		if ( Rexbuilder_Utilities::isBuilderLive() ) {

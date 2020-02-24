@@ -501,7 +501,7 @@ var Rexbuilder_Dom_Util = (function($) {
       }
     } else if ($videoWrap.length != 0) {
       $videoWrap.removeClass("removing-video-mp4");
-      if ( !Rexbuilder_Util.fast_load ) {
+      if ( ! ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) ) {
         $videoWrap.find("video")[0].play();
       }
     }

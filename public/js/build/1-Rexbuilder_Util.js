@@ -3174,7 +3174,7 @@ var Rexbuilder_Util = (function($) {
 
     if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
       $.each($mp4Videos, function(i, video) {
-        Rexbuilder_Util.playVideoFromBegin($(video));
+        Rexbuilder_Util.playVideoFromBegin( $(video) );
       });
     }
 

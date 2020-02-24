@@ -288,6 +288,7 @@ class Rexbuilder {
 				$this->loader->add_action( 'rexpansive_builder_before_rexbuilder_header', $plugin_admin, 'add_switch_under_post_title' );
 			}
 		}
+		
 		$this->loader->add_action( 'edit_form_after_title', $plugin_admin, 'add_switch_under_post_title' );
 		
 		$this->loader->add_filter( 'upload_mimes', $plugin_admin, 'register_xml_json_mime_type' );

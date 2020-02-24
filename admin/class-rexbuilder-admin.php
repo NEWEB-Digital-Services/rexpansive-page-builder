@@ -586,9 +586,7 @@ class Rexbuilder_Admin {
 	 * @date 07-03-2019
 	 */
 	public function dequeue_scripts() {
-		if ( isset( $_GET['rexlive'] ) && $_GET['rexlive'] == 'true' )
-		{
-			// var_dump( Rexbuilder_Utilities::get_registered_scripts_styles( true, false ) );
+		if ( isset( $_GET['rexlive'] ) && $_GET['rexlive'] == 'true' ) {
 			wp_dequeue_script( 'otgsPopoverTooltip' );
 		}
 	}

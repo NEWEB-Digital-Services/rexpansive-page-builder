@@ -118,8 +118,13 @@ class Rexbuilder_Utilities {
 	 */
 	public static function isBuilderLive() {
 		// check post type rex_model ?
+		$maybe_post_type = get_post_type();
 
-		return is_user_logged_in() && ( ( isset( $_GET['editor'] ) && 'true' === $_GET['editor'] ) || ( isset( $_GET['rexlive'] ) && 'true' === $_GET['rexlive'] ) );
+		if ( '' !== $maybe_post_type && 'rex_model' === $maybe_post_type ) {
+			return true;
+		}
+
+		return is_user_logged_in() && isset( $_GET['editor'] ) && 'true' === $_GET['editor'];
 	}
 
 	/**
