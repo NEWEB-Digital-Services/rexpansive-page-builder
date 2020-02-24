@@ -212,7 +212,7 @@ class Rexbuilder_Block
 		}
 
 		$block_is_static = false;
-		if ( false !== strpos( $block_custom_class, 'rex-static-block' ) ) {
+		if ( ! $editor && false !== strpos( $block_custom_class, 'rex-static-block' ) ) {
 			$block_is_static = true;
 		}
 

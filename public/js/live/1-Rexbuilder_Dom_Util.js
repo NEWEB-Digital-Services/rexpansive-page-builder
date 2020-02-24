@@ -268,10 +268,12 @@ var Rexbuilder_Dom_Util = (function($) {
     // $imageDiv.css("background-image", "url(" + data.urlImage + ")");
     var $elem = $itemContent.parents(".grid-stack-item");
     var elem = $elem[0];
-    if ( elem.offsetWidth < data.width) {
-      $imageDiv.addClass("small-width");
-    } else {
-      $imageDiv.removeClass("small-width");
+    if ( elem ) {
+      if ( elem.offsetWidth < data.width) {
+        $imageDiv.addClass("small-width");
+      } else {
+        $imageDiv.removeClass("small-width");
+      }
     }
   };
 
