@@ -8,7 +8,7 @@
 var Rexbuilder_CreateBlocks = (function ($) {
   'use strict';
 
-  $(document).on("click", ".add-new-block-empty", function (e) {
+  function handleAddNewBlockEmpty(e) {
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
@@ -35,14 +35,14 @@ var Rexbuilder_CreateBlocks = (function ($) {
       modelEdited: $section.hasClass("rex-model-section")
     }
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-  });
+  }
 
   /**
    * Handle the user insert new text block
    * @since 2.0.0
    * @edit  22-03-2019  Finding the best text block width
    */
-  $(document).on("click", ".add-new-block-text", function (e) {
+  function handleNewBlockText(e) {
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
@@ -93,13 +93,13 @@ var Rexbuilder_CreateBlocks = (function ($) {
       modelEdited: $section.hasClass("rex-model-section")
     }
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-  });
+  }
 
   /**
-    * Listen to insert block event coming from the parent window
-    * @since 2.0.0
-    */
-  $(document).on("rexlive:insert_new_text_block", function (e) {
+  * Listen to insert block event coming from the parent window
+  * @since 2.0.0
+  */
+  function handleInsertNewTextBlock(e) {
     var data = e.settings.data_to_send;
 
     var $section;
@@ -199,13 +199,13 @@ var Rexbuilder_CreateBlocks = (function ($) {
       modelEdited: $section.hasClass("rex-model-section")
     }
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-  });
+  }
 
   /**
    * Insert block images in a row
    * @since 2.0.0
    */
-  $(document).on("rexlive:insert_image", function (e) {
+  function handleInsertImage(e) {
     var data = e.settings.data_to_send;
 
     var $section;
@@ -288,10 +288,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
       modelEdited: $section.hasClass("rex-model-section")
     }
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-  });
+  }
 
-
-  $(document).on("rexlive:insert_video", function (e) {
+  function handleInsertVideo(e) {
     var data = e.settings.data_to_send;
     if (!(typeof data.typeVideo == "undefined")) {
       var $section;
@@ -378,9 +377,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
       modelEdited: $section.hasClass("rex-model-section")
     }
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-  });
+  }
 
-  $(document).on("rexlive:insert_new_slider", function (e) {
+  function handleInsertSlider(e) {
     var $el = _createSlider(e.settings.data_to_send);
     var $section;
     if (e.settings.data_to_send.target.modelNumber != "") {
@@ -400,7 +399,21 @@ var Rexbuilder_CreateBlocks = (function ($) {
       modelEdited: $section.hasClass("rex-model-section")
     }
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-  });
+  }
+
+  /**
+   * Add event listeners for block insertion
+   * @since  2.0.3
+   */
+  function addListeners() {
+    Rexbuilder_Util.$document.on("click", ".add-new-block-empty", handleAddNewBlockEmpty);
+    Rexbuilder_Util.$document.on("click", ".add-new-block-text", handleNewBlockText);
+
+    Rexbuilder_Util.$document.on("rexlive:insert_new_text_block", handleInsertNewTextBlock);
+    Rexbuilder_Util.$document.on("rexlive:insert_image", handleInsertImage);
+    Rexbuilder_Util.$document.on("rexlive:insert_video", handleInsertVideo);
+    Rexbuilder_Util.$document.on("rexlive:insert_new_slider", handleInsertSlider);
+  }
 
   /**
    * Find the dimension of a new block to fit an empty space
@@ -709,6 +722,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
    * @todo handling the copy of a section with multiple sync buttons
    */
   var sanitizeButtons = function( textWrap ) {
+    if ( ! textWrap ) {
+      return;
+    }
+    
     var buttonWrappers = [].slice.call( textWrap.getElementsByClassName('rex-button-wrapper') );
     var tot_buttonWrappers = buttonWrappers.length, i;
     var buttonData, buttonModelID, temp;
@@ -989,7 +1006,17 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
   }
 
+  /**
+   * Object init function
+   * @return {void}
+   * @since  2.0.3
+   */
+  function init() {
+    addListeners();
+  }
+
   return {
+    init: init,
     createSlider: _createSlider,
     createCopyBlock: _createCopyBlock,
     insertHTMLBlock: _insertHTMLBlock,

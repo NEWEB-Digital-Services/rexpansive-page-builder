@@ -12,6 +12,7 @@ var Rexbuilder_App = (function($) {
   var $accordions = null;
   var odometers = [];
   var accordionSettings = {};
+  var elements = false;
 
   /**
    * In case of RexButtons inside a block that is a link
@@ -19,14 +20,14 @@ var Rexbuilder_App = (function($) {
    *
    */
   var fixRexButtons = function() {
-    var buttons = [].slice.call( document.getElementsByClassName('rex-button-wrapper') );
+    var buttons = [].slice.call( document.getElementsByClassName( 'rex-button-wrapper' ) );
     var tot_buttons = buttons.length, i = 0;
     for( i = 0; i < tot_buttons; i++ ) {
       var container = buttons[i].querySelector( '.rex-button-container' );
       if ( ! container ) {
         var newContainer = document.createElement('span');
         newContainer.className = 'rex-button-container';
-        var toWrap = buttons[i].querySelector('.rex-button-background');
+        var toWrap = buttons[i].querySelector( '.rex-button-background' );
         toWrap.parentNode.insertBefore( newContainer, toWrap );
         newContainer.appendChild( toWrap );
       }
@@ -306,14 +307,27 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   function launchRexScrolled( $sections ) {
-    $sections.rexScrolled({
-      callback: function(el) {
-        if (Rexbuilder_Util.hasClass(el, "rex-element--animated")) {
-          var $el = $(el);
-          $el
-            .addClass("run-animation")
-            .on(Rexbuilder_Util.transitionEvent, function(e) {});
-        }
+    // $sections.rexScrolled({
+    //   callback: function(el) {
+    //     if (Rexbuilder_Util.hasClass(el, "rex-element--animated")) {
+    //       var $el = $(el);
+    //       $el
+    //         .addClass("run-animation")
+    //         .on(Rexbuilder_Util._transitionEvent, function(e) {});
+    //     }
+    //   }
+    // });
+
+    function handleElementEndAnimation(el) {
+      Rexbuilder_Util.removeClass(this, 'rex-element--animated');
+      this.removeEventListener(Rexbuilder_Util._transitionEvent, handleElementEndAnimation);
+    }
+
+    var $animationElements = $(document.getElementsByClassName('rex-element--animated'));
+    $animationElements.rexScrolled({
+      callback: function (el) {
+        el.addEventListener(Rexbuilder_Util._transitionEvent, handleElementEndAnimation);
+        Rexbuilder_Util.addClass(el, 'run-animation');
       }
     });
   }
@@ -610,20 +624,61 @@ var Rexbuilder_App = (function($) {
     }
   };
 
+  function launchInlineGallery() {
+    var $inline_galleries = Rexbuilder_Util.$rexContainer.find('.inline-pswp-gallery');
+    $inline_galleries.on('click', Rexbuilder_Photoswipe.init_inline_pswp);
+  }
+
+  /**
+   * All front end effects in one function
+   * @return {vodi}
+   */
+  function launchFrontEndEffects() {
+    if( false == _plugin_frontend_settings.user.editing ) {
+      // inline photoswipe
+      launchInlineGallery();
+
+      // launch distortion effect
+      launchEffectDistortion();
+
+      // launch border space animated
+      launchBorderSpaceAnimated();
+
+      // launch rexScrolled
+      launchRexScrolled( $sections );
+
+      // launch rexScrollify
+      if (1 == _plugin_frontend_settings.animations ) {
+        launchRexScrollify();
+      }
+
+      // sticky sections
+      launchStickySections();
+      // launch scrollCSSAnimations
+      launchScrollCSSAnimations();
+      // launch distance accordions
+      launchDistanceAccordion();
+      // launch popUpContent
+      launchPopUpContent();
+      // launch splitScrollable
+      launchSplitScollable( document );
+    }
+  }
+
   var init = function() {
     Rexbuilder_Util.init();
     Rexbuilder_Dom_Util.init();
     
     Rexbuilder_Rexbutton.init();
-
-    /* The order between these 2 is very important! */
-    Rexbuilder_Rexelement.init();   // 1st
-    Rexbuilder_Rexwpcf7.init();     // 2nd
+    
+    if ( elements ) {
+      Rexbuilder_Rexelement.init();   // 1st
+      Rexbuilder_Rexwpcf7.init();     // 2nd
+    }
 
     if ( Rexbuilder_Util.editorMode ) {
-      // Rexbuilder_Rexelement_Editor.init();
-      // Rexbuilder_Rexwpcf7_Editor.init();
-      
+
+      Rexbuilder_CreateBlocks.init();
       Rexbuilder_Util_Editor.init();
       Rexbuilder_Color_Palette.init();
       Rexbuilder_Overlay_Palette.init();
@@ -658,6 +713,11 @@ var Rexbuilder_App = (function($) {
       });
     }
 
+    // listen one time to edit dom layout ending
+    Rexbuilder_Util.$document.one( 'rexlive:editDomLayoutEnd', launchFrontEndEffects );
+
+    Rexbuilder_Util.launchEditDomLayout();
+
     /** -- Launching plugins only on "real" frontend */
     if ( !Rexbuilder_Util.editorMode ) {
       /* -- Launching Photoswipe -- */
@@ -668,7 +728,7 @@ var Rexbuilder_App = (function($) {
           Rexbuilder_Util.removeClass(e,'photoswipe-gallery');
         }
       });
-      Rexbuilder_Photoswipe.init(".photoswipe-gallery");
+      // Rexbuilder_Photoswipe.init(".photoswipe-gallery");
 
       /** -- Launching Odomter -- */
       var odometersEls = [].slice.call( document.getElementsByClassName('rex-num-spin') );
@@ -692,7 +752,7 @@ var Rexbuilder_App = (function($) {
       }
     }
 
-    if (true == _plugin_frontend_settings.native_scroll_animation) {
+    if ( true == _plugin_frontend_settings.native_scroll_animation ) {
       var excluded_links = [
         '[href="#"]',
         ".no-smoothing",
@@ -974,19 +1034,21 @@ var Rexbuilder_App = (function($) {
     //   });
     // });
 
-    /* $accordions.rexAccordion();
-    console.log("init - rexAccordion()"); */
-
   };
 
   var load = function() {
     // @bugfix on other layouts than desktop with mixed customization definitions
-    var chosenLayoutName = Rexbuilder_Util.chooseLayout();
-    Rexbuilder_Util.edit_dom_layout(chosenLayoutName);
+    // @deprecated i don't like this solution, too much expensive
+    
+    // var chosenLayoutName = Rexbuilder_Util.chooseLayout();
+    // if ( 'default' !== chosenLayoutName ) {
+      // Rexbuilder_Util.edit_dom_layout(chosenLayoutName);
+    // }
 
-    if (Rexbuilder_Util.editorMode) {
+    if ( Rexbuilder_Util.editorMode ) {
       Rexbuilder_Util_Editor.load();
     }
+
     /* -- Launching the textfill -- */
     var $textFillContainer = $(".text-fill-container-canvas");
     if ( $textFillContainer.length > 0 ) {
@@ -1004,41 +1066,13 @@ var Rexbuilder_App = (function($) {
     }
 
     // autoplay sliders
-    RexSlider.startAutoPlay();    
-
-    /* -- Launching TextResize ------ */
-    //$grids.textResize();
+    RexSlider.startAutoPlay();
 
     if( $grids ) {
       launchIndicators( $grids );
     }
 
-    if( false == _plugin_frontend_settings.user.editing ) {
-      // launch distortion effect
-      launchEffectDistortion();
-
-      // launch border space animated
-      launchBorderSpaceAnimated();
-
-      // launch rexScrolled
-      launchRexScrolled( $sections );
-
-      // launch rexScrollify
-      if (1 == _plugin_frontend_settings.animations ) {
-        launchRexScrollify();
-      }
-
-      // sticky sections
-      launchStickySections();    
-      // launch scrollCSSAnimations
-      launchScrollCSSAnimations();
-      // launch distance accordions
-      launchDistanceAccordion();
-      // launch popUpContent
-      launchPopUpContent();
-      // launch splitScrollable
-      launchSplitScollable( document );
-    }
+    // launchFrontEndEffects();
 
     Rexbuilder_Util.galleryPluginActive = true;
   };

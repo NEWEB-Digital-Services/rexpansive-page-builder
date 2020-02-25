@@ -244,6 +244,51 @@
   }
 
   /**
+   * Timeout handlers
+   * Put here to create only one function per handler
+   */
+  /**
+   * Collapse first timeout handler
+   * @param  {Object} reverseData
+   * @return {void}
+   */
+  function handleCollapsFirstTimeout( reverseData ) {
+    this.batchGridstack();
+    this.updateCollapsedBlocksHeight();
+    this.commitGridstack();
+
+    // rtimeOut( handleCollapseSecondTimeout.bind( this, reverseData ), 500 );
+    setTimeout( handleCollapseSecondTimeout.bind( this, reverseData ), 500 );
+
+    this.properties.collapsingElements = false;
+  }
+
+  /**
+   * Collapse second timeout handler
+   * @param  {Object} reverseData
+   * @return {void}
+   */
+  function handleCollapseSecondTimeout( reverseData ) {
+    this._updateElementsSizeViewers();
+    this._createFirstReverseStack();
+    this._fixImagesDimension();
+    var event = jQuery.Event("rexlive:collapsingElementsEnded");
+    var $section = this.$section;
+    event.settings = {
+      galleryEditorInstance: this,
+      $section: $section,
+      reverseData: reverseData
+    };
+    // this.updateSrollbars();
+    // rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
+    setTimeout( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
+
+    if ( !Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdaiting ) {
+      $(document).trigger(event);
+    }
+  }
+
+  /**
    * Global variables to share around the grid instances
    * @since  2.0.3
    */
@@ -459,8 +504,6 @@
 
       this.triggerGalleryReady();
       this.properties.firstStartGrid = false;
-
-      // console.trace()
     },
 
     _launchGridStack: function() {
@@ -555,6 +598,7 @@
 
     /**
      * Re launch the grid for the front end area
+     * seems never used
      * @param {Object}  opts  optional parameters to set
      * @since 2.0.0
      */
@@ -2324,30 +2368,36 @@
 
     // add span elements that will be used as handles of the element
     _addHandles: function($elem, handles) {
-      var span;
-      var div;
-      var handle;
-      var stringID = $elem.attr("data-rexbuilder-block-id");
-      $(handles.split(", ")).each(function() {
-        handle = this;
-        span = $(document.createElement("span")).attr({
-          class: "circle-handle circle-handle-" + handle,
-          "data-axis": handle
-        });
-        div = $(document.createElement("div")).attr({
-          class: "ui-resizable-handle ui-resizable-" + handle,
-          "data-axis": handle
-        });
-        if ($elem.is("div")) {
-          if (stringID != "") {
-            $(div).attr({
-              id: stringID + "_handle_" + handle
-            });
+      var elem = $elem[0];
+      var span, $span;
+      var div, $div;
+      var stringID = elem.getAttribute("data-rexbuilder-block-id");
+      var handlesA = handles.split(", ");
+      var i, tot_handlesA = handlesA.length;
+
+      for( i=0; i<tot_handlesA; i++ ) {
+        span = document.createElement('span');
+        addClass(span, "circle-handle");
+        addClass(span, "circle-handle-" + handlesA[i]);
+        span.setAttribute('data-axis', handlesA[i]);
+
+        div = document.createElement('div');
+        addClass(div, "ui-resizable-handle");
+        addClass(div, "ui-resizable-" + handlesA[i]);
+        div.setAttribute('data-axis', handlesA[i]);
+
+        if( 'DIV' === elem.tagName.toUpperCase() ) {
+          if ( '' !== stringID ) {
+            div.setAttribute('id', '_handle_' + handlesA[i]);
           }
         }
-        $(span).appendTo($(div));
-        $(div).appendTo($elem);
-      });
+
+        $span = $(span);
+        $div = $(div);
+
+        $span.appendTo($div);
+        $div.appendTo($elem);
+      }
     },
 
     addElementListeners: function($elem) {
@@ -2359,8 +2409,7 @@
       var dragHandle = $dragHandle[0];
       var useDBclick = false;
 
-      // mouse down on another element
-      $elem.mousedown(function(e) {
+      function handleMouseDown(e) {
         var $target = $(e.target);
         if (
           Rexbuilder_Util.activeLayout != "default" &&
@@ -2430,9 +2479,9 @@
             }
           }
         }
-      });
+      }
 
-      $elem.mouseup(function(e) {
+      function handleMouseUp(e) {
         var $target = $(e.target);
         if (
           Rexbuilder_Util.activeLayout != "default" &&
@@ -2497,12 +2546,9 @@
             // }
           }
         }
-      });
+      }
 
-      /**
-       * Listen double click on a block to edit the text content
-       */
-      $elem.dblclick(function(e) {
+      function handleDbClick(e) {
         if (
           !(
             Rexbuilder_Util_Editor.editingElement ||
@@ -2545,9 +2591,9 @@
           }
           Rexbuilder_Util_Editor.startEditingElement();
         }
-      });
+      }
 
-      $elem.click(function(e) {
+      function handleClick(e) {
         if (!Rexbuilder_Util_Editor.elementDraggingTriggered) {
           if (
             Rexbuilder_Util_Editor.editingElement &&
@@ -2559,50 +2605,45 @@
             Rexbuilder_Util_Editor.activateElementFocus = true;
           }
         }
-      });
+      }
 
-      $elem.hover(
-        function(e) {
-          if (
-            !(
-              Rexbuilder_Util_Editor.editingElement ||
-              Rexbuilder_Util_Editor.elementIsResizing ||
-              Rexbuilder_Util_Editor.elementIsDragging ||
-              Rexbuilder_Util_Editor.manageElement
-            ) ||
-            (Rexbuilder_Util_Editor.editingElement &&
-              Rexbuilder_Util_Editor.editedElement.data(
-                "rexbuilder-block-id"
-              ) != $elem.data("rexbuilder-block-id"))
-          ) {
-            Rexbuilder_Util_Editor.focusedElement = $elem;
-            gallery.focusElement(Rexbuilder_Util_Editor.focusedElement);
-          }
-        },
-        function() {
-          if (
-            !(
-              Rexbuilder_Util_Editor.editingElement ||
-              Rexbuilder_Util_Editor.elementIsResizing ||
-              Rexbuilder_Util_Editor.elementIsDragging ||
-              Rexbuilder_Util_Editor.manageElement
-            ) ||
-            (Rexbuilder_Util_Editor.editingElement &&
-              Rexbuilder_Util_Editor.editedElement.data(
-                "rexbuilder-block-id"
-              ) != $elem.data("rexbuilder-block-id"))
-          ) {
-            Rexbuilder_Util_Editor.focusedElement;
-            gallery.unFocusElement(Rexbuilder_Util_Editor.focusedElement);
-          }
+      function handleHoverIn(e) {
+        if (
+          !(
+            Rexbuilder_Util_Editor.editingElement ||
+            Rexbuilder_Util_Editor.elementIsResizing ||
+            Rexbuilder_Util_Editor.elementIsDragging ||
+            Rexbuilder_Util_Editor.manageElement
+          ) ||
+          (Rexbuilder_Util_Editor.editingElement &&
+            Rexbuilder_Util_Editor.editedElement.data(
+              "rexbuilder-block-id"
+            ) != $elem.data("rexbuilder-block-id"))
+        ) {
+          Rexbuilder_Util_Editor.focusedElement = $elem;
+          gallery.focusElement(Rexbuilder_Util_Editor.focusedElement);
         }
-      );
+      }
 
-      /**
-       * On Blur event on medium editor, check if there is text
-       * @since 2.0.0
-       */
-      $elem.on('blur','.medium-editor-element', function(e) {
+      function handlerHoverOut(e) {
+        if (
+          !(
+            Rexbuilder_Util_Editor.editingElement ||
+            Rexbuilder_Util_Editor.elementIsResizing ||
+            Rexbuilder_Util_Editor.elementIsDragging ||
+            Rexbuilder_Util_Editor.manageElement
+          ) ||
+          (Rexbuilder_Util_Editor.editingElement &&
+            Rexbuilder_Util_Editor.editedElement.data(
+              "rexbuilder-block-id"
+            ) != $elem.data("rexbuilder-block-id"))
+        ) {
+          Rexbuilder_Util_Editor.focusedElement;
+          gallery.unFocusElement(Rexbuilder_Util_Editor.focusedElement);
+        }
+      }
+
+      function handleBlur(e) {
         var $current_textWrap = $(e.currentTarget);
         var $top_tools = $current_textWrap.parents('.grid-stack-item').find('.block-toolBox__editor-tools');
         var $T_tool = $top_tools.find('.edit-block-content');
@@ -2614,7 +2655,28 @@
           $T_tool.addClass('tool-button--hide');
           $content_position_tool.removeClass('tool-button--hide');
         }
-      });
+      }
+
+      // mouse down on another element
+      $elem.on('mousedown', handleMouseDown);
+
+      $elem.on('mouseup', handleMouseUp);
+
+      /**
+       * Listen double click on a block to edit the text content
+       */
+      $elem.on('dblclick', handleDbClick);
+
+      $elem.on('click', handleClick);
+
+      $elem.on('mouseenter', handleHoverIn);
+      $elem.on('mouseleave', handlerHoverOut);
+
+      /**
+       * On Blur event on medium editor, check if there is text
+       * @since 2.0.0
+       */
+      $elem.on('blur','.medium-editor-element', handleBlur);
     },
 
     // showBlockToolBox: function($elem) {
@@ -3247,7 +3309,8 @@
       var blockHasSlider = -1 !== elem.className.indexOf('block-has-slider');
       var blockIsEmpty = -1 !== itemContent.className.indexOf('empty-content');
       var blockHasYoutube = -1 !== itemContent.className.indexOf('youtube-player');
-      var blockHasVideo = -1 !== itemContent.className.indexOf('mp4-player');
+      var blockHasVideo = ( 0 !== [].slice.call( elem.getElementsByClassName('rex-video-wrap') ).length ? true : false );
+      // var blockHasVideo = -1 !== itemContent.className.indexOf('mp4-player');
       var blockHasVimeo = -1 !== itemContent.className.indexOf('vimeo-player');
 
       var elRealFluid = parseInt( elemData.getAttribute('data-element_real_fluid') );
@@ -3587,7 +3650,7 @@
     resizeBlock: function( el, width, height ) {
       if( ! isNaN( height ) ) {
         var gridstack = this.properties.gridstackInstance;
-        if ( gridstack !== undefined ) {
+        if ( 'undefined' !== typeof gridstack && null !== gridstack ) {
           if ( this.properties.oldCellHeight != 0 && this.properties.oldCellHeight != this.properties.singleHeight && this.properties.oldLayout == "masonry" ) {
             var x, y, w, h;
             var elDim;
@@ -3799,6 +3862,7 @@
       this.element.setAttribute('data-layout', 'masonry');
       this.element.setAttribute('data-full-height', 'false');
     },
+
     /**
      * When commit event is added, have to change timeouts with listeners
      */
@@ -3810,7 +3874,7 @@
         fullHeight: this.settings.fullHeight,
         singleHeight: this.properties.singleHeight
       };
-      var that = this;
+
       this.fixBlockDomOrder();
       this._saveBlocksPosition();
       this.collapseElementsProperties();
@@ -3822,39 +3886,44 @@
       this.batchGridstack();
       this.updateBlocksWidth();
       this.commitGridstack();
-      setTimeout(
-        function() {
-          // when elements are with width of 100%, we can calculate their content height
-          that.batchGridstack();
-          that.updateCollapsedBlocksHeight();
-          that.commitGridstack();
-          setTimeout(
-            function() {
-              that._updateElementsSizeViewers();
-              that._createFirstReverseStack();
-              that._fixImagesDimension();
-              var event = jQuery.Event("rexlive:collapsingElementsEnded");
-              var $section = that.$section;
-              event.settings = {
-                galleryEditorInstance: that,
-                $section: $section,
-                reverseData: reverseData
-              };
-              // that.updateSrollbars();
-              rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
 
-              if ( !Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdaiting ) {
-                $(document).trigger(event);
-              }
-            },
-            500,
-            reverseData
-          );
-          that.properties.collapsingElements = false;
-        },
-        500,
-        reverseData
-      );
+      // rtimeOut( handleCollapsFirstTimeout.bind( this, reverseData ), 500 );
+      setTimeout( handleCollapsFirstTimeout.bind( this, reverseData ), 500 );
+
+      // var that = this;
+      // setTimeout(
+      //   function() {
+      //     // when elements are with width of 100%, we can calculate their content height
+      //     that.batchGridstack();
+      //     that.updateCollapsedBlocksHeight();
+      //     that.commitGridstack();
+      //     setTimeout(
+      //       function() {
+      //         that._updateElementsSizeViewers();
+      //         that._createFirstReverseStack();
+      //         that._fixImagesDimension();
+      //         var event = jQuery.Event("rexlive:collapsingElementsEnded");
+      //         var $section = that.$section;
+      //         event.settings = {
+      //           galleryEditorInstance: that,
+      //           $section: $section,
+      //           reverseData: reverseData
+      //         };
+      //         // that.updateSrollbars();
+      //         rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
+
+      //         if ( !Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdaiting ) {
+      //           $(document).trigger(event);
+      //         }
+      //       },
+      //       500,
+      //       reverseData
+      //     );
+      //     that.properties.collapsingElements = false;
+      //   },
+      //   500,
+      //   reverseData
+      // );
     },
 
     updateBlocksWidth: function() {

@@ -56,7 +56,7 @@ var VimeoVideo = (function ($) {
      * @param {iframe} video iframe to link
      */
     var _addPlayer = function (mute, video, opt) {
-        if(typeof this.blockVideos != "undefined"){
+        if( typeof this.blockVideos != "undefined" ) {
             var player;
             if (typeof opt != "undefined") {
                 player = new Vimeo.Player(video, opt);

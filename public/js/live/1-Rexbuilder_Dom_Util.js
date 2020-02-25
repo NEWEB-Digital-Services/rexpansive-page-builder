@@ -176,7 +176,6 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var _updateImageBG = function($target, data) {
-    
     if ($target.hasClass("rexpansive_section")) {
       var $sectionData = $target.children(".section-data");
       if (data.idImage == "" || data.active.toString() != "true") {
@@ -199,17 +198,21 @@ var Rexbuilder_Dom_Util = (function($) {
     if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
       Rexbuilder_Section_Editor.updateRowBackgroundImageTool($section,data);
     }
-    if (
-      data.idImage == parseInt($sectionData.attr("data-id_image_bg_section"))
-    ) {
+    if ( data.idImage == parseInt( $sectionData.attr( "data-id_image_bg_section" ) ) ) {
       //same image
       return;
     }
     var section = $section[0];
-    section.style.backgroundImage = "url(" + data.urlImage + ")";
+
+    if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+      section.setAttribute('data-src', data.urlImage)
+    } else {
+      section.style.backgroundImage = "url(" + data.urlImage + ")";
+    }
+
     // $section.css("background-image", "url(" + data.urlImage + ")");
-    $section.attr("data-background_image_width", data.width);
-    $section.attr("data-background_image_height", data.height);
+    section.setAttribute("data-background_image_width", data.width);
+    section.setAttribute("data-background_image_height", data.height);
     $sectionData.attr("data-image_size", data.image_size);
     $sectionData.attr("data-id_image_bg_section", data.idImage);
     $sectionData.attr("data-image_bg_section", data.urlImage);
@@ -257,14 +260,20 @@ var Rexbuilder_Dom_Util = (function($) {
     var imageDiv = $imageDiv[0];
 
     $imageDiv.addClass("natural-image-background");
-    imageDiv.style.backgroundImage = "url(" + data.urlImage + ")";
+    if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+      imageDiv.setAttribute('data-src', data.urlImage);
+    } else {
+      imageDiv.style.backgroundImage = "url(" + data.urlImage + ")";
+    }
     // $imageDiv.css("background-image", "url(" + data.urlImage + ")");
     var $elem = $itemContent.parents(".grid-stack-item");
     var elem = $elem[0];
-    if ( elem.offsetWidth < data.width) {
-      $imageDiv.addClass("small-width");
-    } else {
-      $imageDiv.removeClass("small-width");
+    if ( elem ) {
+      if ( elem.offsetWidth < data.width) {
+        $imageDiv.addClass("small-width");
+      } else {
+        $imageDiv.removeClass("small-width");
+      }
     }
   };
 
@@ -277,14 +286,16 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _addImageFullBgBlock = function($itemContent, data) {
     var $imageDiv = $itemContent.find(".rex-image-wrapper");
-    var $dragHandle = $itemContent.children(".rexlive-block-drag-handle");
-    if ($imageDiv.length == 0) {
+    // var $dragHandle = $itemContent.children(".rexlive-block-drag-handle");
+    var $overlayBlock = $itemContent.find('.responsive-block-overlay');
+
+    if ( $imageDiv.length == 0 ) {
       var el = document.createElement("div");
       $imageDiv = $(el);
       $imageDiv.addClass("rex-image-wrapper");
-      $imageDiv.insertAfter($dragHandle[0]);
+      $imageDiv.insertBefore($overlayBlock[0]);
     } else if ($imageDiv.hasClass("natural-image-background")) {
-      $imageDiv.detach().insertAfter($dragHandle[0]);
+      $imageDiv.detach().insertBefore($overlayBlock[0]);
       $imageDiv.removeClass("natural-image-background");
       $imageDiv.removeClass("small-width");
     }
@@ -292,7 +303,11 @@ var Rexbuilder_Dom_Util = (function($) {
     var imageDiv = $imageDiv[0];
 
     $imageDiv.addClass("full-image-background");
-    imageDiv.style.backgroundImage = "url(" + data.urlImage + ")";
+    if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+      imageDiv.setAttribute('data-src', data.urlImage);
+    } else {
+      imageDiv.style.backgroundImage = "url(" + data.urlImage + ")";
+    }
   };
 
   var _resetImageSection = function($section, $sectionData) {
@@ -312,7 +327,7 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var _resetImageBlock = function($itemContent, $elemData, data) {
-    console.trace();
+    // console.trace();
     $elemData.attr("data-id_image_bg_block", "");
     $elemData.attr("data-type_bg_block", "");
     $elemData.attr("data-image_bg_block", "");
@@ -387,11 +402,13 @@ var Rexbuilder_Dom_Util = (function($) {
   var _removeVimeoVideo = function($target, removeFromDom) {
     var $vimeoWrap = $target.children(".rex-video-vimeo-wrap");
     var $toggleAudio = $target.children(".rex-video-toggle-audio");
+
     if ($vimeoWrap.length != 0) {
       var iframeVimeo = $vimeoWrap.children("iframe")[0];
       removeFromDom =
         typeof removeFromDom == "undefined" ? true : removeFromDom;
       $target.removeClass("vimeo-player");
+
       if (removeFromDom) {
         VimeoVideo.removePlayer(iframeVimeo);
         $vimeoWrap.remove();
@@ -399,7 +416,11 @@ var Rexbuilder_Dom_Util = (function($) {
           $toggleAudio.remove();
         }
       } else {
-        VimeoVideo.findVideo(iframeVimeo).unload();
+        var player = VimeoVideo.findVideo(iframeVimeo);
+        if ( player ) {
+          player.unload()
+        }
+        // VimeoVideo.findVideo(iframeVimeo).unload();
         if ($toggleAudio.length != 0) {
           $toggleAudio.addClass("removing-toggle-audio");
         }
@@ -445,9 +466,19 @@ var Rexbuilder_Dom_Util = (function($) {
 
     $target.addClass("mp4-player");
 
-    if ( ($videoWrap.length != 0 && $videoWrap.find("source").attr("src") != mp4Data.linkMp4) || $videoWrap.length == 0 ) {
+    var tempSrc = $videoWrap.find("source");
+    var tempSrcUrl = ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ? tempSrc.attr('data-src') : tempSrc.attr('src') );
+
+    if ( ($videoWrap.length != 0 && tempSrcUrl != mp4Data.linkMp4) || $videoWrap.length == 0 ) {
       _removeMp4Video($target, true);
       tmpl.arg = "video";
+      var mp4Tmpl = tmpl("tmpl-video-mp4", {
+          url: mp4Data.linkMp4,
+          width: mp4Data.width,
+          height: mp4Data.height,
+          fast_load: Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode
+        });
+
       if ($target.is("section")) {
         var insert_after = "";
         if ( Rexbuilder_Util.editorMode )
@@ -460,36 +491,21 @@ var Rexbuilder_Dom_Util = (function($) {
         }
         $target
           .children(insert_after)
-          .after(
-            tmpl("tmpl-video-mp4", {
-              url: mp4Data.linkMp4,
-              width: mp4Data.width,
-              height: mp4Data.height
-            })
-          );
+          .after(mp4Tmpl);
       } else {
         var $dragHandle = $target.find(".rexlive-block-drag-handle");
+
         if ($dragHandle.length == 0) {
-          $target.prepend(
-            tmpl("tmpl-video-mp4", {
-              url: mp4Data.linkMp4,
-              width: mp4Data.width,
-              height: mp4Data.height
-            })
-          );
+          $target.prepend(mp4Tmpl);
         } else {
-          $dragHandle.after(
-            tmpl("tmpl-video-mp4", {
-              url: mp4Data.linkMp4,
-              width: mp4Data.width,
-              height: mp4Data.height
-            })
-          );
+          $dragHandle.after(mp4Tmpl);
         }
       }
     } else if ($videoWrap.length != 0) {
       $videoWrap.removeClass("removing-video-mp4");
-      $videoWrap.find("video")[0].play();
+      if ( ! ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) ) {
+        $videoWrap.find("video")[0].play();
+      }
     }
 
     if ($toggleAudio.length == 0) {
@@ -701,10 +717,7 @@ var Rexbuilder_Dom_Util = (function($) {
       $sectionData.attr("data-video_bg_id_section", videoOptions.mp4Data.idMp4);
       $sectionData.attr("data-video_mp4_url", videoOptions.mp4Data.linkMp4);
       $sectionData.attr("data-video_bg_url_section", videoOptions.youtubeUrl);
-      $sectionData.attr(
-        "data-video_bg_url_vimeo_section",
-        videoOptions.vimeoUrl
-      );
+      $sectionData.attr("data-video_bg_url_vimeo_section",videoOptions.vimeoUrl);
       if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
         Rexbuilder_Section_Editor.updateRowBackgroundVideo( $target, videoOptions );
       }
@@ -1534,79 +1547,35 @@ var Rexbuilder_Dom_Util = (function($) {
     var models = [];
     var i;
     var flagNumbers;
-    if ( Rexbuilder_Util.rexContainer ) {
-      var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section:not(.removing_section)') );
-      var j, tot_sections = sections.length;
-
-      for( j=0; j < tot_sections; j++ ) {
-        if ( Rexbuilder_Util.hasClass( sections[j], 'rex-model-section' ) ) {
-          var modelID = sections[j].getAttribute( 'data-rexlive-model-id' );
-          flagNumbers = false;
-          for (i = 0; i < models.length; i++) {
-            if ( models[i].id == modelID ) {
-              models[i].number = models[i].number + 1;
-              sections[j].setAttribute( 'data-rexlive-model-number', models[i].number );
-              flagNumbers = true;
-            }
-          }
-          if ( !flagNumbers ) {
-            var model = {
-              id: modelID,
-              number: 1
-            };
-            models.push(model);
-            sections[j].setAttribute( 'data-rexlive-model-number', model.number );
-          }
-        }
-      }
-
-      // sections.forEach( function( sec, j ) {
-      //   if ( Rexbuilder_Util.hasClass( sec, 'rex-model-section' ) ) {
-      //     var modelID = sec.getAttribute( 'data-rexlive-model-id' );
-      //     flagNumbers = false;
-      //     for (i = 0; i < models.length; i++) {
-      //       if ( models[i].id == modelID ) {
-      //         models[i].number = models[i].number + 1;
-      //         sec.setAttribute( 'data-rexlive-model-number', models[i].number );
-      //         flagNumbers = true;
-      //       }
-      //     }
-      //     if ( !flagNumbers ) {
-      //       var model = {
-      //         id: modelID,
-      //         number: 1
-      //       };
-      //       models.push(model);
-      //       sec.setAttribute( 'data-rexlive-model-number', model.number );
-      //     }
-      //   }
-      // });
+    
+    if ( ! Rexbuilder_Util.rexContainer ) {
+      return;
     }
 
-    // Rexbuilder_Util.$rexContainer
-    //   .children(".rexpansive_section:not(.removing_section)")
-    //   .each(function(j, sec) {
-    //     var $section = $(sec);
-    //     if ($section.hasClass("rex-model-section")) {
-    //       var modelID = $section.attr("data-rexlive-model-id");
-    //       flagNumbers = false;
-    //       for (i = 0; i < models.length; i++) {
-    //         if (models[i].id == modelID) {
-    //           models[i].number = models[i].number + 1;
-    //           $section.attr("data-rexlive-model-number", models[i].number);
-    //           flagNumbers = true;
-    //         }
-    //       }
-    //       if (!flagNumbers) {
-    //         var model = {
-    //           id: modelID,
-    //           number: 1
-    //         };
-    //         models.push(model);
-    //         $section.attr("data-rexlive-model-number", model.number);
-    //       }
-    //     }
-    //   });
+    var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section:not(.removing_section)') );
+    var j, tot_sections = sections.length;
+
+    for( j=0; j < tot_sections; j++ ) {
+      if ( Rexbuilder_Util.hasClass( sections[j], 'rex-model-section' ) ) {
+        var modelID = sections[j].getAttribute( 'data-rexlive-model-id' );
+        flagNumbers = false;
+        for (i = 0; i < models.length; i++) {
+          if ( models[i].id == modelID ) {
+            models[i].number = models[i].number + 1;
+            sections[j].setAttribute( 'data-rexlive-model-number', models[i].number );
+            flagNumbers = true;
+          }
+        }
+        if ( !flagNumbers ) {
+          var model = {
+            id: modelID,
+            number: 1
+          };
+          models.push(model);
+          sections[j].setAttribute( 'data-rexlive-model-number', model.number );
+        }
+      }
+    }
   };
 
   /**

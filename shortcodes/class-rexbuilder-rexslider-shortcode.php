@@ -61,6 +61,8 @@ class Rexbuilder_RexSlider {
 			$nav_previewed = get_post_meta( $slider_id, '_rex_slider_previewed_nav', true );
 			$nav_previewed_html = '';
 
+			$nav_layout = get_post_meta( $slider_id, '_rex_slider_navigator_layout', true );
+
 			$set_gallery_size = get_post_meta( $slider_id, '_rex_slider_set_gallery_size', true );
 			$wrap_around = get_post_meta( $slider_id, '_rex_slider_wrap_around', true );
 
@@ -69,7 +71,7 @@ class Rexbuilder_RexSlider {
 			if( !empty( $slider_gallery ) ) {
 				$num_slides = count( $slider_gallery );
 			?>
-			<div data-slider-id="<?php echo $slider_id;?>" class="rex-slider-wrap<?php echo ( 1 == $nav_previewed ? ' rex-slider--bottom-interface' . ( 1 !== $num_slides ? ' rex-slider--bottom-interface--active' : '' ) : '' ); ?><?php echo ' rex-slider--' . $num_slides . '-slides'; ?>" data-rex-slider-animation="<?php echo ( is_array( $slider_animation ) ? 'true': ( "0" == $slider_animation ? 'true' : 'false' ) ); ?>" data-rex-slider-prev-next="<?php echo ( is_array( $slider_prev_next ) ? '1': ( "0" == $slider_prev_next ? 'true' : 'false' ) ); ?>" data-rex-slider-dots="<?php echo ( is_array( $slider_dots ) ? '1': ( "0" == $slider_dots ? 'true' : 'false' ) ); ?>" data-set-gallery-size="<?php echo esc_attr( ( 1 == $nav_previewed || 1 == $set_gallery_size ) ? 'true' : 'false' ); ?>"<?php echo ( '' !== $wrap_around ? ' data-wrap-around="' . $wrap_around . '"' : '' ); ?>>
+			<div data-slider-id="<?php echo $slider_id;?>" class="rex-slider-wrap<?php echo ( 1 == $nav_previewed ? ' rex-slider--bottom-interface' . ( 1 !== $num_slides ? ' rex-slider--bottom-interface--active' : '' ) : '' ); ?><?php echo ' rex-slider--' . $num_slides . '-slides'; ?><?php echo ( "" != $nav_layout ? ' rex-slider-navigator--' . $nav_layout : '' ); ?>" data-rex-slider-animation="<?php echo ( is_array( $slider_animation ) ? 'true': ( "0" == $slider_animation ? 'true' : 'false' ) ); ?>" data-rex-slider-prev-next="<?php echo ( is_array( $slider_prev_next ) ? '1': ( "0" == $slider_prev_next ? 'true' : 'false' ) ); ?>" data-rex-slider-dots="<?php echo ( is_array( $slider_dots ) ? '1': ( "0" == $slider_dots ? 'true' : 'false' ) ); ?>" data-set-gallery-size="<?php echo esc_attr( ( 1 == $nav_previewed || 1 == $set_gallery_size ) ? 'true' : 'false' ); ?>"<?php echo ( '' !== $wrap_around ? ' data-wrap-around="' . $wrap_around . '"' : '' ); ?>>
 			<?php
 
 			// creating overlay element
@@ -79,6 +81,11 @@ class Rexbuilder_RexSlider {
 			}
 
 			foreach( $slider_gallery as $key => $slide ) :
+				$hide_slide = $slide['_rex_slider_hide_slide'];
+				if( isset( $hide_slide[0] ) && 'hide' === $hide_slide[0] ) {
+					continue;
+				}
+
 				$slider_el_style = '';
 				$slideHasImage = false;
 				if( isset( $slide['_rex_banner_gallery_image']['url'] ) ) {
@@ -204,7 +211,76 @@ class Rexbuilder_RexSlider {
 			if( !empty( $nav_previewed_html ) && 1 !== $num_slides ) {
 				echo  '<ol class="flickity-page-dots rex-slider__previewed-nav rex-slider__custom-nav">' . $nav_previewed_html . '</ol>';
 			}
+
+			if( "" != $nav_layout && "bottom-right-numbers" == $nav_layout ) {
 				?>
+				<div class="rex-slider__br-nums-wrap rex-slider__num-navigator">
+					<strong class="rex-slider__num--actual-slide">1</strong><span>/</span><span class="rex-slider__num--total-slides"><?php echo $num_slides; ?></span>
+				</div>
+				<?php
+			}
+
+			if( "" != $nav_layout && "bottom-label-image" == $nav_layout ) {
+				?>
+				<div class="rex-slider__b-label-image-wrap menu-font-style">
+					<ol class="rex-slider__b-label-image-nav flickity-page-dots rex-slider__custom-nav rex-slider__custom-nav__preview-slide">
+					<?php
+					$slide_index = 0;
+					foreach ( $slider_gallery as $index => $slide ) {
+
+						$hide_slide = $slide['_rex_slider_hide_slide'];
+						if( isset( $hide_slide[0] ) && 'hide' === $hide_slide[0] ) {
+							continue;
+						}
+						
+						if( isset($slide['_rex_slider_nav_label'] ) && "" != $slide['_rex_slider_nav_label'] ) {
+							?>
+							<li class="rex-slider__b-label-image--item" data-nav-index="<?php echo esc_attr( $slide_index ); ?>">
+							<?php 
+							if( $slide['_rex_banner_gallery_url'] ) {
+								?>
+								<a href="<?php echo esc_url( $slide['_rex_banner_gallery_url'] ); ?>">
+									<span class="rex-slider__b-label-image__link-content">
+								<?php
+							}
+							if( isset( $slide['_rex_slider_nav_img'] ) && "" != $slide['_rex_slider_nav_img'] ) {
+								if("image/svg+xml" == $slide['_rex_slider_nav_img']['mime_type']) {
+									?>
+									<span class="rex-slider__b-image--item">
+									<?php
+									echo file_get_contents( get_attached_file( $slide['_rex_slider_nav_img']['id'] ) );
+									?>
+									</span>
+									<?php
+								} else {
+									?>
+									<img class="rex-slider__b-image--item" src="<?php echo esc_url( $slide['_rex_slider_nav_img']['url'] ); ?>" alt="" srcset="">
+									<?php
+								}
+							}
+							?>
+							<span class="rex-slider__b-label--item"><?php _e( $slide['_rex_slider_nav_label'] ); ?></span>
+							<?php
+							if( $slide['_rex_banner_gallery_url'] ) {
+								?>
+									</span>
+								</a>
+								<?php
+							}
+							?>
+							</li>
+							<?php
+						}
+						$slide_index++;
+					}
+					?>
+					</ol>
+				</div>
+				<?php
+			}
+
+			do_action( 'rex_slider_after_gallery_inside', $slider_id );
+			?>
 			</div>
 			<?php
 			do_action( 'rex_slider_after_gallery_render', $slider_id );

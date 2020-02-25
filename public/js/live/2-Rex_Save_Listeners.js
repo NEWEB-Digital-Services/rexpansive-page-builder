@@ -11,12 +11,14 @@ var Rex_Save_Listeners = (function($) {
       var activeLayoutName = Rexbuilder_Util.activeLayout;
 
       // WPCF7 Saving
-      var formIDsInPage = Rexbuilder_Rexwpcf7.getIDsInPage();
-      formIDsInPage.forEach(function(id) {
-        Rexbuilder_Rexwpcf7.updateFormInDB(id);
-      })
-      if ( 0 !== formIDsInPage.length ) {
-        Rexbuilder_Rexwpcf7.fixBlocksHeight();
+      if ( 'undefined' !== typeof Rexbuilder_Rexwpcf7 ) {
+        var formIDsInPage = Rexbuilder_Rexwpcf7.getIDsInPage();
+        formIDsInPage.forEach(function(id) {
+          Rexbuilder_Rexwpcf7.updateFormInDB(id);
+        })
+        if ( 0 !== formIDsInPage.length ) {
+          Rexbuilder_Rexwpcf7.fixBlocksHeight();
+        }
       }
 
       //getting custom css set in page

@@ -4,7 +4,8 @@
  *
  * @since  1.0.21 
  * @package rexpansive-builder
- * @deprecated
+ * 
+ * @deprecated 2.0.0
  */
 class Rexbuilder_Slider_Shortcode {
 

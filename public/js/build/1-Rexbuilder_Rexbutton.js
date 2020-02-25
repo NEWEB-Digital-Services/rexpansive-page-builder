@@ -594,7 +594,6 @@ var Rexbuilder_Rexbutton = (function ($) {
                         $buttonWrapper.find(".rex-button-text").eq(0).text(data.newValue);
                         break;
                     case "button_class":
-                        console.log(data.newValue)
                         $buttonWrapper.find("a.rex-button-container").eq(0).attr('class','').addClass('rex-button-container').addClass(data.newValue);
                         break;
                     case "button_name":

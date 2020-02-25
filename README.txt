@@ -3,8 +3,8 @@ Contributors: neweb_agency
 Donate link: http://www.neweb.info/
 Tags: builder, composer, content builder, custom, drag and drop, editor, page builder, page composer, responsive, theme
 Requires at least: 4.2
-Tested up to: 5.2.4
-Stable tag: 2.0.2
+Tested up to: 5.3.2
+Stable tag: 2.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -199,6 +199,20 @@ For the more experienced among us: you can insert CSS anywhere.
 11. Clean interface
 
 == Changelog ==
+
+= 2.0.3 – February 13, 2020 =
+* Fixed: Block heights on other layouts than default
+* Fixed: Pasting text inside other text
+* Fixed: Page cloning with a RexSlider
+* Fixed: Row cloning with a RexButton
+* Fixed: Image size for section background
+* Fixed: Delete of a copied row with a video block
+* Fixed: Block with link and photoswipe
+* Fixed: Block with RexSlider height
+* Added: Fast Load (loads images and videos on page scroll)
+* Added: Custom class for the RexButton
+* Added: Inline icon option
+* Update: Mp4 videos are not cut
 
 = 2.0.2 - November 15, 2019 =
 * Added: Hold grid button (prevents collapse on mobile)

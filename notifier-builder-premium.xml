@@ -1,8 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <notifier>
-	<latest>2.0.2</latest>
+	<latest>2.0.3</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.0.3</strong> – February 13, 2020</h4>
+			<p><strong>Fixed</strong>: Block heights on other layouts than default</p>
+			<p><strong>Fixed</strong>: Pasting text inside other text</p>
+			<p><strong>Fixed</strong>: Page cloning with a RexSlider</p>
+			<p><strong>Fixed</strong>: Row cloning with a RexButton</p>
+			<p><strong>Fixed</strong>: Image size for section background</p>
+			<p><strong>Fixed</strong>: Delete of a copied row with a video block</p>
+			<p><strong>Fixed</strong>: Block with link and photoswipe</p>
+			<p><strong>Fixed</strong>: Block with RexSlider height</p>
+			<p><strong>Added</strong>: Fast Load (loads images and videos on page scroll)</p>
+			<p><strong>Added</strong>: Custom class for the RexButton</p>
+			<p><strong>Added</strong>: Inline icon option</p>
+			<p><strong>Update</strong>: Mp4 videos are not cut</p>
 			<h4><strong>v2.0.2</strong> – November 15, 2019</h4>
 			<p><strong>Added</strong>: Hold grid button (prevents collapse on mobile)</p>
 			<p><strong>Update</strong>: Background image on block with text remains full when added</p>

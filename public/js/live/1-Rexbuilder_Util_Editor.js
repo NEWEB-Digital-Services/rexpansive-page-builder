@@ -945,7 +945,7 @@ var Rexbuilder_Util_Editor = (function($) {
     animate_contents =
       typeof animate_contents !== "undefined" ? animate_contents : true;
 
-    if (animate_contents) {
+    if ( animate_contents ) {
       Rexbuilder_Util.$rexContainer
         .parent()
         .addClass("rexbuilder-live-content--loading");
@@ -1149,28 +1149,6 @@ var Rexbuilder_Util_Editor = (function($) {
   }
 
   var _checkVisibleRow = function() {
-    // var ruleTop = document.createElement('div');
-    // var ruleBottom = document.createElement('div');
-
-    // ruleTop.className = 'ruleTop';
-    // ruleTop.style.width = '100%';
-    // ruleTop.style.backgroundColor = 'red';
-    // ruleTop.style.position = 'fixed';
-    // ruleTop.style.left = '0';
-    // ruleTop.style.height = '4px';
-    // ruleTop.style.zIndex = '2000';
-
-    // ruleTop.className = 'ruleBottom';
-    // ruleBottom.style.width = '100%';
-    // ruleBottom.style.backgroundColor = 'red';
-    // ruleBottom.style.position = 'fixed';
-    // ruleBottom.style.left = '0';
-    // ruleBottom.style.height = '4px';
-    // ruleBottom.style.zIndex = '2000';
-
-    // document.getElementsByTagName('body')[0].append(ruleTop);
-    // document.getElementsByTagName('body')[0].append(ruleBottom);
-
     Rexbuilder_Util_Editor.visibleRow = whichVisible();
     var visibleRowInfo = {};
     if( null !== Rexbuilder_Util_Editor.visibleRow ) {

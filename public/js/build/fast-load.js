@@ -44,7 +44,7 @@
   var lazyLoadBkgrImg = function( el ) {
     // if ( el ) {
       var src = el.getAttribute('data-src');
-      if ( null !== src ) {
+      if ( null !== src && -1 === el.style.backgroundImage.indexOf( src ) ) {
         var tempImg = new Image();
         tempImg.src = el.getAttribute('data-src');
         tempImg.onload = function() {
@@ -88,54 +88,55 @@
       }
     }
 
-    var onCanPlayThroughCallback = function(event) {
-      // console.log('%c canplaythrough', 'font-weight:bold;color:green;text-transform:uppercase;');
-      // console.log(event.currentTarget.children[0].src);
-      event.currentTarget.play();
-      if ( queuing ) { videoProcessingCounter--; }
-      // remove data-src attribute only if the
-      // video is correctly started
-      for ( var source in el.children ) {
-        var videoSource = el.children[source];
-        if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
-          videoSource.removeAttribute('data-src');
-        }
-      }
-      // removing the callback once performed, also the onerror callback
-      event.currentTarget.removeEventListener(event.type, onCanPlayThroughCallback);
-      event.currentTarget.removeEventListener('error', onErrorCallback);
-    }
-
-    var onErrorCallback = function(event) {
-      // console.log('%c error', 'font-weight:bold;color:red;text-transform:uppercase;');
-      // console.log(event.currentTarget.children[0].src);
-      // reset the video
-      for ( var source in event.currentTarget.children ) {
-        var videoSource = event.currentTarget.children[source];
-        if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
-          // videoSource.src = src;
-          videoSource.removeAttribute('src');
-        }
-      }
-      event.currentTarget.load();
-
-      if ( queuing ) { videoVisibleQueue.push(event.currentTarget); videoProcessingCounter--; }
-    }
-
     // if video can play
     el.addEventListener('canplaythrough', onCanPlayThroughCallback);
     
     // if error, try to reload the resource
     el.addEventListener('error', onErrorCallback);
 
-    // var testCb = function(event) {
-      // console.log(event.type);
-      // console.log(event.currentTarget.children[0].src);
-    // }
-
     // el.addEventListener('stalled',testCb);
     // el.addEventListener('suspend',testCb);
     // el.addEventListener('waiting',testCb);
+    // el.addEventListener('reject',testCb);
+    // el.addEventListener('loadeddata',testCb);
+    // el.addEventListener('loadedmetadata',testCb);
+    // el.addEventListener('abort',testCb);
+  }
+
+  function testCb(event) {
+    console.log(event.type)
+  }
+
+  var onCanPlayThroughCallback = function(event) {
+    // console.log('onCanPlayThroughCallback')
+    // console.log('fast-load.js - 112 - play()')
+    event.currentTarget.play();
+    if ( queuing ) { videoProcessingCounter--; }
+    // remove data-src attribute only if the
+    // video is correctly started
+    for ( var source in event.currentTarget.children ) {
+      var videoSource = event.currentTarget.children[source];
+      if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
+        videoSource.removeAttribute('data-src');
+      }
+    }
+    // removing the callback once performed, also the onerror callback
+    event.currentTarget.removeEventListener(event.type, onCanPlayThroughCallback);
+    event.currentTarget.removeEventListener('error', onErrorCallback);
+  }
+
+  var onErrorCallback = function(event) {
+    // console.log('onErrorCallback')
+    // reset the video
+    for ( var source in event.currentTarget.children ) {
+      var videoSource = event.currentTarget.children[source];
+      if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
+        videoSource.removeAttribute('src');
+      }
+    }
+    event.currentTarget.load();
+
+    if ( queuing ) { videoVisibleQueue.push(event.currentTarget); videoProcessingCounter--; }
   }
 
   /**
@@ -160,6 +161,7 @@
 
   /**
    * Handling all the intersections
+   * @deprecated [description]
    */
   var handleIntersectionObserver = function()
   {
@@ -309,17 +311,26 @@
               }
   
               if ( videoWrapper ) {
-                if ( entries[i].intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused ) {
-                  videoWrapper.play();
-                } else {
+                // if ( entries[i].intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused ) {
+                //   // console.log('potrei plaiare')
+                //   // videoWrapper.play();
+                // } else {
+                //   lazyLoadVideoHTML( videoWrapper );
+                // }
+
+                // if ( entries[i].intersectionRatio < 0.5 ) {
                   lazyLoadVideoHTML( videoWrapper );
-                }
+                // }
+
+                // if ( 0 !== videoWrapper.readyState && videoWrapper.paused ) {
+                //   videoWrapper.play();
+                // }
               }
             }
             // element goes invisible 
             else {
-              if ( videoWrapper ) {
-                videoWrapper.pause();
+              if ( videoWrapper && !videoWrapper.paused ) {
+                // videoWrapper.pause();
               }
             }
 
@@ -370,6 +381,7 @@
 
               if ( videoWrapper ) {
                 if ( entries[i].intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused ) {
+                  // console.log('fast-load.js - 375 - play()')
                   videoWrapper.play();
                 } else {
                   lazyLoadVideoHTML( videoWrapper );

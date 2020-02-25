@@ -255,6 +255,13 @@ gulp.task('prepare-effects', function() {
 	})
 });
 
+gulp.task('fast-load', function() {
+	return gulp.src('public/js/build/fast-load.js')
+		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(rename({suffix: '.min'}))
+		.pipe(gulp.dest('public/js/vendor'))
+})
+
 /** -------- */
 
 var admin_js_src = [ 
@@ -291,6 +298,107 @@ gulp.task('admin-plugins-build', function() {
  * BUILDERLIVE file concatenation logic
  * @since 2.0.0
  */
+
+var builderlive_admin = [
+	// 'admin/js/builderlive/nprogress.js',
+	// 'admin/spectrum/spectrum.js',
+	// 'admin/grapick/grapick.min.js',
+	// 'admin/js/builderlive/jquery.actual.min.js',
+	// 'admin/js/builderlive/Photoswipe/photoswipe.min.js',
+	// 'admin/js/builderlive/Photoswipe/photoswipe-ui-default.min.js',
+	// 'admin/js/builderlive/tippy.all.min.js',
+	// 'public/js/vendor/6-jquery.rexAccordion.js',
+	// 'public/js/vendor/tmpl.min.js',
+	// 'admin/ace/src-min-noconflict/ace.js',
+	// 'admin/ace/src-min-noconflict/mode-css.js',
+	// 'admin/ace/src-min-noconflict/mode-html.js',
+	'admin/js/builderlive/Rexlive_MediaUploader.js',
+	'admin/js/builderlive/Rexlive_RexSlider_TextEditor.js',
+	'admin/js/builderlive/Rexlive_Ajax_Calls.js',
+	'admin/js/builderlive/Rexlive_Color_Palette.js',
+	'admin/js/builderlive/Rexlive_Overlay_Palette.js',
+	'admin/js/builderlive/Rexlive_Modals_Utils.js',
+	'admin/js/builderlive/Rexlive_Insert_Video_Modal.js',
+	'admin/js/builderlive/Rexlive_LayoutGrid_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Width_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Separators_Modal.js',
+	'admin/js/builderlive/Rexlive_SectionMargins_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Photoswipe_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Hold_Grid_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Fullheight.js',
+	'admin/js/builderlive/Rexlive_SectionName_Modal.js',
+	'admin/js/builderlive/Rexlive_Top_Tools.js',
+	'admin/js/builderlive/Rexlive_Section_CustomClasses_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Modal.js',
+	'admin/js/builderlive/Rexlive_Background_Section_Color_Modal.js',
+	'admin/js/builderlive/Rexlive_Overlay_Color_Section_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Background_Image_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Video_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Background_Gradient.js',
+	'admin/js/builderlive/Rexlive_Section_Overlay_Gradient.js',
+	'admin/js/builderlive/Rexlive_Section_Background_Modal.js',
+	'admin/js/builderlive/Rexlive_CSS_Editor_Modal.js',
+	'admin/js/builderlive/Rexlive_Html_Editor_Modal.js',
+	'admin/js/builderlive/Rexlive_Background_Block_Color_Modal.js',
+	'admin/js/builderlive/Rexlive_Overlay_Color_Block_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Background_Image_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Background_Image_Setting.js',
+	'admin/js/builderlive/Rexlive_Block_Video_Background_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_ContentPosition_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_ContentPosition_Setting.js',
+	'admin/js/builderlive/Rexlive_Block_ImagePosition_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_ImagePosition_Setting.js',
+	'admin/js/builderlive/Rexlive_Block_Paddings_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Custom_Classes_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Image_Editor_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Accordion.js',
+	'admin/js/builderlive/Rexlive_Block_Slideshow.js',
+	'admin/js/builderlive/Rexlive_Block_Background_Gradient.js',
+	'admin/js/builderlive/Rexlive_Text_Gradient.js',
+	'admin/js/builderlive/Rexlive_Block_Overlay_Gradient.js',
+	'admin/js/builderlive/Rexlive_Block_Url_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Options_Modal.js',
+	'admin/js/builderlive/Rexlive_Model_Modal.js',
+	'admin/js/builderlive/Rexlive_Model_Edit_Name_Modal.js',
+	'admin/js/builderlive/Rexlive_Open_Models_Warning.js',
+	'admin/js/builderlive/Rexlive_CustomLayout_Modal.js',
+	'admin/js/builderlive/Rexlive_Model_Edit_Modal.js',
+	'admin/js/builderlive/Rexbuilder_RexSlider.js',
+	'admin/js/builderlive/Rexlive_ChangeLayout_Modal.js',
+	'admin/js/builderlive/Rexlive_Inline_SVG.js',
+	'admin/js/builderlive/Rexlive_PostEdit.js',
+	'admin/js/builderlive/Rexlive_PostEdit_MediaList.js',
+	'admin/js/builderlive/Rexlive_LockedOption_Mask.js',
+	'admin/js/builderlive/Rexlive_Model_Import.js',
+	'admin/js/builderlive/Rexlive_Button_Import.js',
+	'admin/js/builderlive/Rexlive_Edit_Button.js',
+	// 'admin/js/builderlive/Rexlive_Element_Import.js',
+	// 'admin/js/builderlive/Rexlive_Element_Choose.js',
+	// 'admin/js/builderlive/Rexlive_Wpcf7_Add_Content.js',
+	// 'admin/js/builderlive/Rexlive_Wpcf7_Edit_Content.js',
+	// 'admin/js/builderlive/Rexlive_Wpcf7_Edit_Form.js',
+	'admin/js/builderlive/Rexlive_Lateral_Menu.js',
+	'admin/js/builderlive/Rexlive_Modals.js',
+	'admin/js/builderlive/Rexlive_Base_Settings.js',
+	'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js',
+	'admin/js/builderlive/Rexlive_UpdateVideoInline.js',
+	'admin/js/builderlive/Rexlive_Gradient_Utils.js',
+	'admin/js/builderlive/Rexlive_Page_Margins.js',
+	'admin/js/builderlive/Rexlive_Page_Settings_Modal.js',
+	'admin/js/builderlive/Rexbuilder_Starting.js',
+];
+
+function adminJSScript(cb) {
+  return gulp.src(builderlive_admin)
+    .pipe(plumber())
+    .pipe(concat('builderlive-admin.js'))
+    .pipe(uglify({ mangle: true }))
+    .pipe(size({title: 'ADMIN JS:'}))
+    .pipe(gulp.dest('./admin/js'))
+  cb();
+}
+
+gulp.task( 'adminJS', adminJSScript )
 
  var builderlive_public_editor = [
 	'public/js/vendor/tippy.all.min.js',
@@ -331,8 +439,8 @@ gulp.task('admin-plugins-build', function() {
 	'public/js/live/1-Rexbuilder_Dom_Util.js',
 	'public/js/live/1-Rexbuilder_Color_Palette.js',
 	'public/js/build/1-Rexbuilder_Rexbutton.js',
-	'public/js/build/1-Rexbuilder_Rexelement.js',
-	'public/js/build/1-Rexbuilder_Rexwpcf7.js',
+	// 'public/js/build/1-Rexbuilder_Rexelement.js',
+	// 'public/js/build/1-Rexbuilder_Rexwpcf7.js',
 	'public/js/live/1-Rexbuilder_Overlay_Palette.js',
 	'public/js/live/2-Rex_Save_Listeners.js',
 	'public/js/vendor/jquery-ui.min.js',
@@ -368,8 +476,10 @@ var builderlive_public = [
 	'public/js/live/1-Rexbuilder_Util_Editor.js',
 	'public/js/live/1-Rexbuilder_Dom_Util.js',
 	'public/js/build/1-Rexbuilder_Rexbutton.js',
-	'public/js/build/1-Rexbuilder_Rexelement.js',
-	'public/js/build/1-Rexbuilder_Rexwpcf7.js',
+
+	// 'public/js/build/1-Rexbuilder_Rexelement.js',
+	// 'public/js/build/1-Rexbuilder_Rexwpcf7.js',
+	
 	// 'public/js/live/1-Rexbuilder_CreateBlocks.js',
 	// 'public/js/live/2-Rex_Save_Listeners.js',
 	// 'public/js/vendor/jquery-ui.min.js',
@@ -485,9 +595,9 @@ gulp.task('builderlive-style', function() {
 	.pipe(gulp.dest('public/css'))
 });
 
-gulp.task('live-production', ['prepare-effects','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style']);
+gulp.task('build', ['prepare-effects','fast-load','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style', 'adminJS']);
 
-gulp.task('watch-live-production', ['prepare-effects','builderlive-editor','builderlive'] ,function() {
+gulp.task('watch-live-production', ['prepare-effects','fast-load','builderlive-editor','builderlive'] ,function() {
 	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive-editor']);
 	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive']);
 	gulp.watch(effects_js_src, ['prepare-effects']);
@@ -582,7 +692,7 @@ gulp.task('dev-live', ['live-builder-style'] ,function() {
 });
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
-var live_zip_name = 'Premium-203-Rexpansive-Builder.zip';
+var live_zip_name = 'Premium-204-Rexpansive-Builder.zip';
 // var live_folder_name = 'rexpansive-builder';		// old folder name
 var live_folder_name = 'rexpansive-page-builder';
 
@@ -664,7 +774,7 @@ gulp.task('create-live-zip', ['create-temp-live-folder'], function(cb) {
 	cb(err);
 });
 
-gulp.task('build', ['create-temp-live-folder', 'create-live-zip', 'remove-temp-live-folder']);
+gulp.task('build-zip', ['create-temp-live-folder', 'create-live-zip', 'remove-temp-live-folder']);
 
 var exec = require('child_process').exec;
 

@@ -31,10 +31,12 @@ if ( ! class_exists( 'Rexbuilder_Icon_Shortcode' ) ) {
 			ob_start();
 
 			if( ! empty( $id ) ) {
+				$i_style = '';
 				if ( ! empty( $size ) ) {
 					$i_style = ' style="font-size:' . $size . 'px;"';
 				}
 
+				$svg_style = '';
 				if ( ! empty( $color ) ) {
 					$svg_style = ' style="fill:' . $color . ';"';
 				}

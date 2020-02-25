@@ -16608,6 +16608,8 @@ input:disabled + .rex_edit_title_slider {
 .top-lateral-tools {
   position: relative; }
   .top-lateral-tools .tool-button.tool-button--close {
+    top: auto;
+    bottom: -20px;
     -webkit-transform: translate(50%, -50%) rotate(-90deg);
         -ms-transform: translate(50%, -50%) rotate(-90deg);
             transform: translate(50%, -50%) rotate(-90deg);

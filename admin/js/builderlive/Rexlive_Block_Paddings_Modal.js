@@ -49,7 +49,6 @@ var BlockPaddings_Modal = (function ($) {
 
         var $wrapPaddingType = block_paddings_modal_properties.$padding_type_types_wrap;
         var typePadding = $wrapPaddingType.children(".selected").attr("data-rex-type-padding");
-        console.log("pro");
         var data_padding = {
             eventName: "rexlive:apply_paddings_block",
             data_to_send: {
