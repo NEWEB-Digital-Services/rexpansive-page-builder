@@ -440,6 +440,7 @@ gulp.task( 'adminJS', adminJSScript )
 	'public/js/live/1-Rexbuilder_Color_Palette.js',
 	'public/js/build/1-Rexbuilder_Rexbutton.js',
 	// 'public/js/build/1-Rexbuilder_Rexelement.js',
+	// 'public/js/live/1-Rexbuilder_Rexelement_Editor.js',
 	// 'public/js/build/1-Rexbuilder_Rexwpcf7.js',
 	'public/js/live/1-Rexbuilder_Overlay_Palette.js',
 	'public/js/live/2-Rex_Save_Listeners.js',

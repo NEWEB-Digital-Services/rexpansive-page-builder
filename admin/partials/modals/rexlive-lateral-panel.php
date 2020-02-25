@@ -14,7 +14,7 @@
 
 defined('ABSPATH') or exit;
 
-$elements = false;
+$elements = true;
 ?>
 <div id="rexbuilder-lateral-panel" class="rex-lateral-panel">
 	<div class="top-lateral-tools clearfix">

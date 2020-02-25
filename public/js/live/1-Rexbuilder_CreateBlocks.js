@@ -171,7 +171,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
       Rexbuilder_Util.$document.trigger(ev);
     } else if (addBlockElement) {
       // Here is space
-      var ev = jQuery.Event("rexlive:completeImportElement");
+      var ev = jQuery.Event('rexlive:complete_import_element');
       ev.settings = {
         $elementWrapper: data.$elementWrapper,
         $elementAdded: $el,

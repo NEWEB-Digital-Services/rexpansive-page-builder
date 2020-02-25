@@ -12,7 +12,6 @@ var Rexbuilder_App = (function($) {
   var $accordions = null;
   var odometers = [];
   var accordionSettings = {};
-  var elements = false;
 
   /**
    * In case of RexButtons inside a block that is a link
@@ -671,13 +670,15 @@ var Rexbuilder_App = (function($) {
     
     Rexbuilder_Rexbutton.init();
     
+    var elements = false;
     if ( elements ) {
       Rexbuilder_Rexelement.init();   // 1st
       Rexbuilder_Rexwpcf7.init();     // 2nd
     }
 
     if ( Rexbuilder_Util.editorMode ) {
-
+      Rexbuilder_Rexelement_Editor.init();
+      Rexbuilder_Rexwpcf7_Editor.init();
       Rexbuilder_CreateBlocks.init();
       Rexbuilder_Util_Editor.init();
       Rexbuilder_Color_Palette.init();

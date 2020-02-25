@@ -619,14 +619,14 @@ var Rexbuilder_Util_Editor = (function($) {
       Rexbuilder_Rexbutton.lockSynchronize(e.settings.data_to_send);
     });
 
-    // ELEMENTS
+    /* ===== Elements ===== */
     Rexbuilder_Util.$document.on("rexlive:import_element", function (e) {
-      Rexbuilder_Rexelement.fixImportedElement(e.settings.data_to_send);
+      Rexbuilder_Rexelement_Editor.fixImportedElement( e.settings.data );
     });
 
-    // Rexbuilder_Util.$document.on("rexlive:completeImportElement", function (e) {
-    //   Rexbuilder_Rexelement_Editor.handleCompleteImportElement( e );
-    // });
+    Rexbuilder_Util.$document.on("rexlive:complete_import_element", function ( e ) {
+      Rexbuilder_Rexelement_Editor.handleCompleteImportElement( e );
+    });
 
     Rexbuilder_Util.$document.on("rexlive:remove_separate_element", function (e) {
       Rexbuilder_Rexelement.removeSeparateElement(e.settings.data_to_send);
@@ -646,7 +646,7 @@ var Rexbuilder_Util_Editor = (function($) {
 
     // WPCF7
     Rexbuilder_Util.$document.on("rexlive:wpcf7_add_field", function (e) {
-      Rexbuilder_Rexwpcf7.addField(e.settings.data_to_send);
+      Rexbuilder_Rexwpcf7_Editor.addField(e.settings.data_to_send);
     });
 
     Rexbuilder_Util.$document.on("rexlive:wpcf7_create_form_span_data", function (e) {

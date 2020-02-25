@@ -406,7 +406,7 @@ var Rexbuilder_Section = (function($) {
 
         if ( 0 !== $elem.find('.wpcf7-form').length ) {
           var formID = $elem.attr('data-rex-element-id');
-          Rexbuilder_Rexwpcf7.removeFormInPage(formID);
+          Rexbuilder_Rexwpcf7_Editor.removeFormInPage(formID);
         }
       });
     }

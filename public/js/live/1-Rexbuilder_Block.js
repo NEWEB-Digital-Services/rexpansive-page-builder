@@ -14,7 +14,7 @@ var Rexbuilder_Block = (function ($) {
 
 		if ( 0 !== $elem.find('.wpcf7-form').length ) {
 			var formID = $elem.find('.rex-element-wrapper').attr('data-rex-element-id');
-			Rexbuilder_Rexwpcf7.removeFormInPage(formID);
+			Rexbuilder_Rexwpcf7_Editor.removeFormInPage(formID);
 		}
 
 		if ( 0 === $section.find('.perfect-grid-item').not('.rex-hide-element').length )

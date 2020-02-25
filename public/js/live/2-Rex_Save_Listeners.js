@@ -12,12 +12,12 @@ var Rex_Save_Listeners = (function($) {
 
       // WPCF7 Saving
       if ( 'undefined' !== typeof Rexbuilder_Rexwpcf7 ) {
-        var formIDsInPage = Rexbuilder_Rexwpcf7.getIDsInPage();
+        var formIDsInPage = Rexbuilder_Rexwpcf7_Editor.getIDsInPage();
         formIDsInPage.forEach(function(id) {
           Rexbuilder_Rexwpcf7.updateFormInDB(id);
         })
         if ( 0 !== formIDsInPage.length ) {
-          Rexbuilder_Rexwpcf7.fixBlocksHeight();
+          Rexbuilder_Rexwpcf7_Editor.fixBlocksHeight();
         }
       }
 

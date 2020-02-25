@@ -3474,20 +3474,20 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	return {
 		init: _init,
 
-        addFormInPage: _addFormInPage,
-        removeFormInPage: _removeFormInPage,
-        getIDsInPage: _getIDsInPage,
-        updateDBFormsInPage: _updateDBFormsInPage,
-        fixBlocksHeight: _fixBlocksHeight,
+        // addFormInPage: _addFormInPage,       // Builder
+        // removeFormInPage: _removeFormInPage,
+        // getIDsInPage: _getIDsInPage,
+        // updateDBFormsInPage: _updateDBFormsInPage,       // Builder
+        // fixBlocksHeight: _fixBlocksHeight,
 
         // Rexwpcf7 generic functions
-		addField: _addField,
-        addNewRow: _addNewRow,
-        addRow: _addRow,
-        addClonedColumnRow: _addClonedColumnRow,
-        deleteRow: _deleteRow,
-        deleteColumnContent: _deleteColumnContent,
-        updateFormsData: _updateFormsData,
+		// addField: _addField,      // Builder
+        addNewRow: _addNewRow,      // Builder
+        addRow: _addRow,        // Builder
+        addClonedColumnRow: _addClonedColumnRow,        // Builder
+        deleteRow: _deleteRow,      // Builder
+        deleteColumnContent: _deleteColumnContent,      // Builder
+        updateFormsData: _updateFormsData,      // Builder
 
 		// CSS functions
 		addFormStyle: _addFormStyle,

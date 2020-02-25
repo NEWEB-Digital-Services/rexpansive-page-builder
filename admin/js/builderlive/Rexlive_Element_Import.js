@@ -25,62 +25,62 @@ var Element_Import_Modal = (function ($) {
 				if (response.success) {
 					var currentList = [];
 					element_import_props.$self
-					   .find(".element-list__element")
-                       .each(function(i, element) {
-                            var elementID = $(element).attr("data-rex-element-id");
-                            var elementObj = {
-                              id: elementID,
-                              founded: false
-                            };
-                            currentList.push(elementObj);
-					   });
+            .find(".element-list__element")
+            .each(function(i, element) {
+              var elementID = $(element).attr("data-rex-element-id");
+              var elementObj = {
+                id: elementID,
+                founded: false
+              };
+              currentList.push(elementObj);
+          });
 
-					var updatedList = response.data.updated_list;
+          var updatedList = response.data.updated_list;
 
-					for (var i = 0; i < updatedList.length; i++) {
-						updatedList[i].founded = false;
-					}
+          for (var i = 0; i < updatedList.length; i++) {
+            updatedList[i].founded = false;
+          }
 
-					for (var i = 0; i < updatedList.length; i++) {
-						for (var j = 0; j < currentList.length; j++) {
-						  if (updatedList[i].id == currentList[j].id) {
-						    updatedList[i].founded = true;
-						    currentList[j].founded = true;
-						    break;
-						  }
-						}
-					}
-                    
-					tmpl.arg = "element";
-					for (var i = 0; i < updatedList.length; i++) {
-						if (!updatedList[i].founded) {
-                            element_import_props.$self.find(".element-list").prepend(
-                                tmpl("rexlive-tmpl-element-item-list", {
-                                  id: updatedList[i].id,
-                                  name: updatedList[i].name,
-                                  preview:
-                                  updatedList[i].preview_image_url != "" ? updatedList[i].preview_image_url : ""
-                                })
-                            ).find(".rex-element-wrapper").prepend(updatedList[i].element_data_html[0]);
-						}
-					}
+          for (var i = 0; i < updatedList.length; i++) {
+            for (var j = 0; j < currentList.length; j++) {
+              if (updatedList[i].id == currentList[j].id) {
+                updatedList[i].founded = true;
+                currentList[j].founded = true;
+                break;
+              }
+            }
+          }
 
-					for (var i = 0; i < currentList.length; i++) {
-						if (!currentList[i].founded) {
-						  element_import_props.$self
-						  .find(
-						    '.element-list__element[data-rex-element-id="' +
-						    currentList[i].id +
-						    '"]'
-						    )
-						  .remove();
-						}
-					}
+          tmpl.arg = "element";
+          for (var i = 0; i < updatedList.length; i++) {
+            if (!updatedList[i].founded) {
+              element_import_props.$self.find(".element-list").prepend(
+                tmpl("rexlive-tmpl-element-item-list", {
+                  id: updatedList[i].id,
+                  name: updatedList[i].name,
+                  preview:
+                  updatedList[i].preview_image_url != "" ? updatedList[i].preview_image_url : ""
+                })
+                ).find(".rex-element-wrapper").prepend(updatedList[i].element_data_html[0]);
+            }
+          }
 
-					var event = jQuery.Event("rexlive:lateralMenuReady");
-					$(document).trigger(event);
-				}
-			},
+          for (var i = 0; i < currentList.length; i++) {
+            if (!currentList[i].founded) {
+              element_import_props.$self
+              .find(
+                '.element-list__element[data-rex-element-id="' +
+                currentList[i].id +
+                '"]'
+                )
+              .remove();
+            }
+          }
+
+          var event = jQuery.Event("rexlive:lateralMenuReady");
+          $(document).trigger(event);
+        }
+      },
 			error: function(response) {},
 			complete: function(response) {
 				element_import_props.$self.removeClass("rex-modal--loading");
@@ -88,7 +88,7 @@ var Element_Import_Modal = (function ($) {
 		});
 	};
 
-    /**
+  /**
 	* Saves the element thumbnail in the db using an AJAX call.
 	* @param element_selected
 	* @param selected_image_id Wordpress id of the new thumbnail image
@@ -110,9 +110,7 @@ var Element_Import_Modal = (function ($) {
 		    set_post_thumbnail_result: null,
 		    set_post_thumbnail_url_result: null
 		  },
-		  success: function(response) {
-		    if (response.success) {}
-		  },
+		  success: function(response) {},
 		  error: function(response) {}
 		});
 	};
@@ -135,9 +133,7 @@ var Element_Import_Modal = (function ($) {
 		    delete_post_thumbnail_result: null,
 		    delete_post_thumbnail_url_result: null
 		  },
-		  success: function(response) {
-		    if (response.success) {}
-		  },
+		  success: function(response) {},
 		  error: function(response) {}
 		});
 	};
@@ -505,45 +501,43 @@ var Element_Import_Modal = (function ($) {
             });
 
             $rexContainer.on('drop', ".grid-stack-row", function (event) {
-                if (Rexbuilder_Util_Admin_Editor.dragImportType == "rexelement") {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    var e;
-                    if (event.isTrigger) {
-                        e = triggerEvent.originalEvent;
+              if (Rexbuilder_Util_Admin_Editor.dragImportType == "rexelement") {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  var e;
+                  if (event.isTrigger) {
+                      e = triggerEvent.originalEvent;
+                  } else {
+                      e = event.originalEvent;
+                  }
+                  try {
+                    var textData = "";
+                    if (isIE) {
+                      textData = e.dataTransfer.getData("text");
                     } else {
-                        e = event.originalEvent;
+                      textData = e.dataTransfer.getData("text/plain");
                     }
-                    try {
-                        var textData = "";
-                        if (isIE) {
-                            textData = e.dataTransfer.getData("text");
-                        } else {
-                            textData = e.dataTransfer.getData("text/plain");
-                        }
-                        var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder
-                            .contents()
-                            .find(".drop-marker");
+                    var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find(".drop-marker");
 
-                        textData = textData.trim();
+                    textData = textData.trim();
 
-                        var $divInsert = $($.parseHTML(textData));
-                        $divInsert.addClass("rex-loading-element");
-                        $divInsert.insertAfter($insertionPoint[0]);
-                        $divInsert.hide();
-                        $insertionPoint.remove();
-                        var dataEndDrop = {
-                            eventName: "rexlive:import_element",
-                            data_to_send: {
-                            	// elementDimensions: elementDimensions,
-                                mousePosition: mousePositionToIFrame
-                            }
-                        };
-                        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
-                    }
-                    catch (e) {
-                        console.log(e);
-                    }
+                    var $divInsert = $($.parseHTML(textData));
+                    $divInsert.addClass("rex-loading-element");
+                    $divInsert.insertAfter($insertionPoint[0]);
+                    $divInsert.hide();
+                    $insertionPoint.remove();
+                    var dataEndDrop = {
+                      eventName: "rexlive:import_element",
+                      data: {
+                        // elementDimensions: elementDimensions,
+                        mousePosition: mousePositionToIFrame
+                      }
+                    };
+                    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
+                  }
+                  catch (e) {
+                    console.log(e);
+                  }
                 }
             });
         });

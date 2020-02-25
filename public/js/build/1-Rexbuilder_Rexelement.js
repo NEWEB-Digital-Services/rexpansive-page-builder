@@ -10,27 +10,27 @@ var Rexbuilder_Rexelement = (function ($) {
     /////////////////////////////////////////////////////////////////////////////////////////////////
     
     var _fixCustomStyleElement = function () {
-        if (Rexbuilder_Rexelement.$rexelementsStyle.length == 0) {
-            var css = "",
-                head = document.head || document.getElementsByTagName("head")[0],
-                style = document.createElement("style");
+      if (Rexbuilder_Rexelement.$rexelementsStyle.length == 0) {
+        var css = "",
+          head = document.head || document.getElementsByTagName("head")[0],
+          style = document.createElement("style");
 
-            style.type = "text/css";
-            style.id = "rexpansive-builder-rexelement-style-inline-css";
-            style.dataset.rexName = "rexelements-style";
-            if (style.styleSheet) {
-                // This is required for IE8 and below.
-                style.styleSheet.cssText = css;
-            } else {
-                style.appendChild(document.createTextNode(css));
-            }
-            head.appendChild(style);
+        style.type = "text/css";
+        style.id = "rexpansive-builder-rexelement-style-inline-css";
+        style.dataset.rexName = "rexelements-style";
+        if (style.styleSheet) {
+          // This is required for IE8 and below.
+          style.styleSheet.cssText = css;
+        } else {
+          style.appendChild(document.createTextNode(css));
         }
-        for (var i = 0; i < document.styleSheets.length; i++) {
-            if (document.styleSheets[i].ownerNode.id == "rexpansive-builder-rexelement-style-inline-css") {
-                styleSheet = document.styleSheets[i];
-            }
+        head.appendChild(style);
+      }
+      for (var i = 0; i < document.styleSheets.length; i++) {
+        if (document.styleSheets[i].ownerNode.id == "rexpansive-builder-rexelement-style-inline-css") {
+          styleSheet = document.styleSheets[i];
         }
+      }
     };
 
     var _getActiveStyleSheet = function () {
@@ -134,428 +134,427 @@ var Rexbuilder_Rexelement = (function ($) {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// Rexelement Generic Functions
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
+  /// Rexelement Generic Functions
+  ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * Fixes the dragged element in the DOM.
-     * @param  data
-     * @since x.x.x
-     */
-	var _fixImportedElement = function (data) {
-        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-loading-element .rex-element-wrapper");
-        var elementID = $elementWrapper.attr("data-rex-element-id");
-        var $elementsParagraph = $elementWrapper.parents(".rex-elements-paragraph").eq(0);
-        var $textWrap = $elementWrapper.parents(".text-wrap").eq(0);
-        var $gridGallery = $elementWrapper.parents(".grid-stack-row").eq(0);
-        var $section = $elementWrapper.parents(".rexpansive_section").eq(0);
+  /**
+   * Fixes the dragged element in the DOM.
+   * @param  data
+   * @since x.x.x
+   */
+  var _fixImportedElement = function (data) {
+    var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-loading-element .rex-element-wrapper");
+    var elementID = $elementWrapper.attr("data-rex-element-id");
+    var $elementsParagraph = $elementWrapper.parents(".rex-elements-paragraph").eq(0);
+    var $textWrap = $elementWrapper.parents(".text-wrap").eq(0);
+    var $gridGallery = $elementWrapper.parents(".grid-stack-row").eq(0);
+    var $section = $elementWrapper.parents(".rexpansive_section").eq(0);
 
-        // Removing element unnecessary data
-        // $elementWrapper.show();     // Was hided before calling this function
-        $elementWrapper.detach();
-        $gridGallery.find('.element-list-preview').remove();
+    // Removing element unnecessary data
+    // $elementWrapper.show();     // Was hided before calling this function
+    $elementWrapper.detach();
+    $gridGallery.find('.element-list-preview').remove();
 
-        var dropType;
-        if ($textWrap.length == 0) {
-            if ($gridGallery.length != 0) {
-                dropType = "inside-row";
-            } else {
-                dropType = "inside-new-row";
-            }
-        } else if ($elementsParagraph.length != 0) {
-            dropType = "inside-paragraph";
-        } else {
-            dropType = "inside-block";
-        }
-
-        // Getting the html of the element
-        $.ajax({
-          type: "POST",
-          dataType: "json",
-          url: _plugin_frontend_settings.rexajax.ajaxurl,
-          data: {
-            action: "rex_transform_element_shortcode",
-            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-            elementID: elementID
-          },
-          success: function(response) {
-            if (response.success) {     // If success get the element HTML and append it to a new div
-                var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
-                var formFieldsString = response.data.form_content.toString().trim();
-
-                var $elementContainer = $(document.createElement("div"));
-                $elementContainer.addClass("rex-element-container");
-                $elementWrapper.append($elementContainer);
-                $elementContainer.append($shortcodeTransformed);
-
-                // Get the shortcode and keep it as an attribute
-                var shortcode = response.data.shortcode;
-                var $spanShortcode = $(document.createElement("span"));
-                $spanShortcode.addClass("string-shortcode");
-                $spanShortcode.attr("shortcode", shortcode);
-                $elementWrapper.prepend($spanShortcode);
-
-                var $elementData = $elementWrapper.find(".rex-element-data");
-                var elementDataFromDB = $.parseHTML(response.data.element_data_html[0]);
-
-                $elementData.attr('data-synchronize', false);
-
-                if ( null !== elementDataFromDB ) {
-                    $elementData.remove();
-
-                    var $elementDataFromDB = $(elementDataFromDB);
-                    $elementWrapper.prepend($elementDataFromDB);
-                    $elementDataFromDB.attr('data-synchronize', false);
-                }
-
-                switch (dropType) {
-                    case "inside-block":
-                        $elementWrapper.wrap("<span class=\"rex-elements-paragraph\"></span>");
-                        _endFixingImportedElement($elementWrapper, formFieldsString);
-                        Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
-                        break;
-                    case "inside-paragraph":
-                        _endFixingImportedElement($elementWrapper, formFieldsString);
-                        Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
-                        break;
-                    case "inside-row":
-                        var ev = jQuery.Event("rexlive:insert_new_text_block");
-                        ev.settings = {
-                            data_to_send: {
-                                $elementWrapper: $elementWrapper,
-                                $section: $section,
-                                addBlockElement: true,
-                                mousePosition: data.mousePosition,
-                                formFieldsString: formFieldsString
-                            }
-                        };
-                        Rexbuilder_Util.$document.trigger(ev);
-                        break;
-                    case "inside-new-row":
-                            // @todo
-                        break;
-                    default:
-                        break;
-                }
-            }
-          },
-          error: function(response) {}
-        });
-    };
-
-    var _endFixingImportedElement = function ($elementWrapper, formFieldsString) {
-        var elementID = $elementWrapper.attr("data-rex-element-id");
-        var flagElementFound = false;
-
-        // Adding element style and updating elements in page if the new element 
-        // is the first of the elements with that ID
-        $elementWrapper.attr("data-rex-element-number", 1);
-        for (var i = 0; i < elementsInPage.length; i++) {
-            if (elementsInPage[i].id == elementID) {
-                elementsInPage[i].number += 1;
-                $elementWrapper.attr('data-rex-element-number', elementsInPage[i].number);
-                flagElementFound = true;
-                break;
-            }
-        }
-
-        if (!flagElementFound) {
-            elementsInPage.push({
-                id: elementID,
-                number: 1
-            });
-        }
-
-        // Setting the block height
-        var $gridGallery = $elementWrapper.parents(".grid-stack-row").eq(0);
-		var galleryData = $gridGallery.data();
-        var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
-        var $block = $elementWrapper.parents(".grid-stack-item");
-
-        // Removing medium editor placeholder if there
-        var $textWrap = $elementWrapper.parents(".text-wrap");
-        // console.log($textWrap[0].outerHTML)
-        if ($textWrap.length != 0) {
-            TextEditor.removePlaceholder($textWrap.eq(0));
-        }
-
-        // Adding form rows if element is wpcf7 and first time we are adding it
-        if ($elementWrapper.find(".wpcf7").length != 0 && $elementWrapper.find(".wpcf7-rows").length == 0) {
-            var $form = $elementWrapper.find(".wpcf7-form");
-            var formID = elementID;
-            var $formChilds = $form.children().not('.wpcf7-response-output').not($form.children().first());
-            $formChilds.wrapAll('<div class="wpcf7-rows ui-sortable"></div>');
-            var $rows = $form.find('.wpcf7-rows');
-
-            // Removing unwanted elements
-            // CONTROLLARE CHE RIMUOVANO TUTTO, nel DOM
-            $form.find('[type=url]').parents('.wpcf7-form-control-wrap').remove();
-            $form.find('[type=tel]').parents('.wpcf7-form-control-wrap').remove();
-            $form.find('[type=date]').parents('.wpcf7-form-control-wrap').remove();
-            $form.find('[type=range]').parents('.wpcf7-form-control-wrap').remove();
-            $form.find('.wpcf7-checkbox').parents('.wpcf7-form-control-wrap').remove();
-            $form.find('.wpcf7-quiz-label').parents('.wpcf7-form-control-wrap').remove();
-
-            var regexToFind = /\[(url|tel|date|checkbox|quiz|range)\*?[^\]]+\]/g;
-            var result;
-            while ((result = regexToFind.exec(formFieldsString)) !== null) {
-                // This is necessary to avoid infinite loops with zero-width matches
-                if (result.index === regexToFind.lastIndex) {
-                    regexToFind.lastIndex++;
-                } 
-                formFieldsString = formFieldsString.replace(result[0], '');
-            }
-
-            var $childrenWithInputs = $rows.children().filter(function() {      // Getting only the children containing the form fields
-                var $field = $(this);
-                return $field.find('.wpcf7-form-control-wrap').length != 0 || $field.find('.wpcf7-form-control').length != 0 ||  $field.is('.wpcf7-form-control-wrap') || $field.is('.wpcf7-form-control')
-            });
-
-            var $formFields = $();
-            $childrenWithInputs.each(function(i, el) {
-                var $el = $(el);
-
-                if ( 0 !== $el.find('.wpcf7-form-control-wrap').length ) {
-                    $el = $el.find('.wpcf7-form-control-wrap');
-                    if ( 0 != $el.parent('label').length ) {
-                        $el = $el.parent('label');  // Searching only on the first parent because there may be a label containing more inputs, and this should not happen
-                    }
-                } else {
-                    if ( 0 !== $el.find('.wpcf7-form-control').length ) {
-                        $el = $el.find('.wpcf7-form-control');
-                    }
-                }
-
-                $formFields = $formFields.add($el);
-            });
-
-
-            $rows.empty();
-
-            var fieldsNumbers = [];
-            var fieldsShortcodes = [];
-            var $rowsInDB = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
-            $formFields.each(function (i, el) {
-                var $el = $(el);
-
-                var $newRowInDB = $(document.createElement("div"))
-                    .addClass("wpcf7-row wpcf7-row__1-column")
-                    .attr("wpcf7-row-number", (i + 1));
-                var $newColumnInDB = $(document.createElement("div"))
-                    .addClass("wpcf7-column")
-                    .attr("wpcf7-column-number", "1");
-                var $newColumnContentInDB = $(document.createElement("span"))
-                    .addClass("wpcf7-column-content")
-                    .append(el);
-                $newColumnInDB.append($newColumnContentInDB);
-                $newRowInDB.append($newColumnInDB);
-                $rowsInDB.append($newRowInDB);
-
-                var $newRow = $(document.createElement("div"))
-                    .addClass("wpcf7-row wpcf7-row__1-column")
-                    .attr("wpcf7-row-number", (i + 1));
-                var $newColumn = $(document.createElement("div"))
-                    .addClass("wpcf7-column")
-                    .attr("wpcf7-column-number", "1");
-                var $newColumnContent = $(document.createElement("span"))
-                    .addClass("wpcf7-column-content")
-                    .append(el);
-                $newColumn.append($newColumnContent);
-                $newRow.append($newColumn);
-                $rows.append($newRow);
-                $newColumnContentInDB.append($el[0].outerHTML)
-
-                if ( $el.is('label') ) {
-                    if ( undefined === $el.find('.wpcf7-form-control-wrap') ) {
-                        $el = $el.find('.wpcf7-form-control');
-                    } else {
-                        $el = $el.find('.wpcf7-form-control-wrap');
-                    }
-                }
-
-                var containsText = $el.find('[type=text]').length != 0;
-                var containsEmail = $el.find('.wpcf7-email').length != 0;
-                var containsNumber = $el.find('.wpcf7-number').length != 0;
-                var containsTextarea = $el.find('.wpcf7-textarea').length != 0;
-                var containsSelect = $el.find('.wpcf7-select').length != 0;
-                var containsRadioButtons = $el.find('.wpcf7-radio').length != 0;
-                var containsCheckbox = $el.find('.wpcf7-acceptance').length != 0;
-                var containsFile = $el.find('.wpcf7-file').length != 0;
-                var containsSubmit = $el.is('.wpcf7-submit');
-
-                var randomNumber = Rexbuilder_Util.createRandomNumericID(3);
-                fieldsNumbers[i] = randomNumber;
-                
-                fieldsShortcodes[i] = /\[[\w]+[^\]]+\]/.exec(formFieldsString)[0];
-                
-                if (containsText) { // Fixing all the fields
-                    var newClass = "text-" + fieldsNumbers[i];
-
-                    // DOM
-                    var $input = $el.find('.wpcf7-text');
-                    $input.addClass(newClass);
-                    $el.addClass(newClass);     // Serve?
-                    $input.attr('size', '');
-
-                    // Shortcode
-                    formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    var regexpToSearch = /\[text\*? [^(\s|\])]+/;
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
-
-                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
-                } else if (containsEmail) {
-                    var newClass = "email-" + fieldsNumbers[i];
-
-                    // DOM
-                    var $input = $el.find('.wpcf7-email');
-                    $input.addClass(newClass);
-                    $el.addClass(newClass);     // Serve?
-                    $input.attr('size', '');
-
-                    // Shortcode
-                    formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    var regexpToSearch = /\[email\*? [^(\s|\])]+/;
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
-
-                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
-                } else if (containsNumber) {
-                    var newClass = "number-" + fieldsNumbers[i];
-
-                    // DOM
-                    var $input = $el.find('.wpcf7-number');
-                    $input.addClass(newClass);
-                    $el.addClass(newClass);     // Serve?
-                    $input.attr('size', '');
-
-                    // Shortcode
-                    formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    var regexpToSearch = /\[number\*? [^(\s|\])]+/;
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
-
-                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
-                } else if (containsTextarea) {
-                    var newClass = "textarea-" + fieldsNumbers[i];
-
-                    // DOM
-                    var $input = $el.find('.wpcf7-textarea');
-                    $input.addClass(newClass);
-                    $el.addClass(newClass);
-                    $input.attr('size', '');
-
-                    // Shortcode
-                    formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    var regexpToSearch = /\[textarea\*? [^(\s|\])]+/;
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
-
-                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
-                } else if (containsSelect) {
-                    var newClass = "menu-" + fieldsNumbers[i];
-
-                    // DOM
-                    var $input = $el.find('.wpcf7-select');
-                    $input.addClass(newClass);
-                    $el.addClass(newClass);
-                    $input.prepend('<option value="" disabled="disabled" selected="selected">Select something</option>');
-                    $input.attr('size', '');
-
-                    // Shortcode
-                    formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    var regexpToSearch = /\[select\*? [^(\s|\])]+/;
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
-
-                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
-                } else if (containsRadioButtons) {
-                    var newClass = "radio-" + fieldsNumbers[i];
-                    var fieldName = $el.find('[type=radio]').attr('name');
-                    
-                    // DOM
-                    $el.addClass(newClass);
-                    $el.removeClass(fieldName);
-
-                    // Shortcode
-                    formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    var regexpToSearch = /\[radio\*? [^(\s|\])]+/;
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
-
-                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
-                } else if (containsCheckbox) {
-                    var newClass = "acceptance-" + fieldsNumbers[i];
-                    var fieldName = $el.find('[type=checkbox]').attr('name');
-
-                    // DOM
-                    $el.addClass(newClass);
-                    $el.removeClass(fieldName);
-
-                    // Shortcode
-                    fieldsShortcodes[i] = /\[acceptance\*?[^(\])]+\][^(\])]+\]/.exec(formFieldsString)[0];
-                    formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    var regexpToSearch = /\[acceptance\*? [^(\s|\])]+/;
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
-
-                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
-                } else if (containsFile) {
-                    var newClass = "file-" + fieldsNumbers[i];
-                    var fieldName = $el.find('[type=file]').attr('name');
-
-                    // DOM
-                    $el.append('<div class="wpcf7-file-caption">Your text here</div>');
-                    $el.addClass(newClass);
-                    $el.removeClass(fieldName);
-
-                    // Shortcode
-                    formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    var regexpToSearch = /\[file\*? [^(\s|\])]+/;
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(']', ']' + '<div class="wpcf7-file-caption">Your text here</div>');
-
-                    $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
-                } else if (containsSubmit) {
-                    var newClass = "submit-" + randomNumber;
-
-                    // DOM
-                    $el.addClass(newClass);
-
-                    // Shortcode
-                    formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
-                    var regexpToSearch = /\[submit/;
-                    fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
-
-                    $newColumnContentInDB.find('.wpcf7-form-control').replaceWith(fieldsShortcodes[i]);
-                }
-
-                if (!/\]/.test(fieldsShortcodes[i])) {
-                    fieldsShortcodes[i] += ']';
-                }
-            });
-
-            Rexbuilder_Rexwpcf7.addFormInPage(formID, $rowsInDB);   // Necessary for creating column content data
-
-            $rowsInDB.find('.wpcf7-column').each(function(i, el) {
-                Rexbuilder_Rexwpcf7.createColumnContentSpanData({
-                    editPoint: {
-                        element_id: formID,
-                        row_number: (i + 1),
-                        column_number: 1,
-                    }
-                });
-            });
-
-            var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").eq(0);
-            _addElementStyle($elementWrapper);
-            Rexbuilder_Rexwpcf7.fixInputs();
-        } else {    // If it's not a new element
-            Rexbuilder_Rexwpcf7.updateDBFormsInPage(elementID, !flagElementFound);
-        }
-        
-        Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
-
-        /* Copied form Rexbuilder_Rexbutton */
-        // locking grid to prevent errors on focus right text node
-        // var $element = $textWrap.parents(".grid-stack-item");
-        // var $section = $element.parents(".rexpansive_section");
-        // Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
+    var dropType;
+    if ($textWrap.length == 0) {
+      if ($gridGallery.length != 0) {
+        dropType = "inside-row";
+      } else {
+        dropType = "inside-new-row";
+      }
+    } else if ($elementsParagraph.length != 0) {
+      dropType = "inside-paragraph";
+    } else {
+      dropType = "inside-block";
     }
+
+    // Getting the html of the element
+    $.ajax({
+      type: "POST",
+      dataType: "json",
+      url: _plugin_frontend_settings.rexajax.ajaxurl,
+      data: {
+        action: "rex_transform_element_shortcode",
+        nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+        elementID: elementID
+      },
+      success: function(response) {
+        if (response.success) {     // If success get the element HTML and append it to a new div
+          var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
+          var formFieldsString = response.data.form_content.toString().trim();
+
+          var $elementContainer = $(document.createElement("div"));
+          $elementContainer.addClass("rex-element-container");
+          $elementWrapper.append($elementContainer);
+          $elementContainer.append($shortcodeTransformed);
+
+          // Get the shortcode and keep it as an attribute
+          var shortcode = response.data.shortcode;
+          var $spanShortcode = $(document.createElement("span"));
+          $spanShortcode.addClass("string-shortcode");
+          $spanShortcode.attr("shortcode", shortcode);
+          $elementWrapper.prepend($spanShortcode);
+
+          var $elementData = $elementWrapper.find(".rex-element-data");
+          var elementDataFromDB = $.parseHTML(response.data.element_data_html[0]);
+
+          $elementData.attr('data-synchronize', false);
+
+          if ( null !== elementDataFromDB ) {
+            $elementData.remove();
+
+            var $elementDataFromDB = $(elementDataFromDB);
+            $elementWrapper.prepend($elementDataFromDB);
+            $elementDataFromDB.attr('data-synchronize', false);
+          }
+
+          switch (dropType) {
+            case "inside-block":
+              $elementWrapper.wrap("<span class=\"rex-elements-paragraph\"></span>");
+              _endFixingImportedElement($elementWrapper, formFieldsString);
+              Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
+              break;
+            case "inside-paragraph":
+              _endFixingImportedElement($elementWrapper, formFieldsString);
+              Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
+              break;
+            case "inside-row":
+              var ev = jQuery.Event("rexlive:insert_new_text_block");
+              ev.settings = {
+                  data_to_send: {
+                      $elementWrapper: $elementWrapper,
+                      $section: $section,
+                      addBlockElement: true,
+                      mousePosition: data.mousePosition,
+                      formFieldsString: formFieldsString
+                  }
+              };
+              Rexbuilder_Util.$document.trigger(ev);
+              break;
+            case "inside-new-row":
+              // @todo
+              break;
+            default:
+              break;
+          }
+        }
+      },
+      error: function(response) {}
+    });
+  };
+
+  var _endFixingImportedElement = function ($elementWrapper, formFieldsString) {
+    var elementID = $elementWrapper.attr("data-rex-element-id");
+    var flagElementFound = false;
+
+    // Adding element style and updating elements in page if the new element 
+    // is the first of the elements with that ID
+    $elementWrapper.attr("data-rex-element-number", 1);
+    for (var i = 0; i < elementsInPage.length; i++) {
+      if (elementsInPage[i].id == elementID) {
+        elementsInPage[i].number += 1;
+        $elementWrapper.attr('data-rex-element-number', elementsInPage[i].number);
+        flagElementFound = true;
+        break;
+      }
+    }
+
+    if (!flagElementFound) {
+      elementsInPage.push({
+        id: elementID,
+        number: 1
+      });
+    }
+
+    // Setting the block height
+    var $gridGallery = $elementWrapper.parents(".grid-stack-row").eq(0);
+		var galleryData = $gridGallery.data();
+    var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
+    var $block = $elementWrapper.parents(".grid-stack-item");
+
+    // Removing medium editor placeholder if there
+    var $textWrap = $elementWrapper.parents(".text-wrap");
+    if ($textWrap.length != 0) {
+        TextEditor.removePlaceholder($textWrap.eq(0));
+    }
+
+    // Adding form rows if element is wpcf7 and first time we are adding it
+    if ($elementWrapper.find(".wpcf7").length != 0 && $elementWrapper.find(".wpcf7-rows").length == 0) {
+      var $form = $elementWrapper.find(".wpcf7-form");
+      var formID = elementID;
+      var $formChilds = $form.children().not('.wpcf7-response-output').not($form.children().first());
+      $formChilds.wrapAll('<div class="wpcf7-rows ui-sortable"></div>');
+      var $rows = $form.find('.wpcf7-rows');
+
+      // Removing unwanted elements
+      // CONTROLLARE CHE RIMUOVANO TUTTO, nel DOM
+      $form.find('[type=url]').parents('.wpcf7-form-control-wrap').remove();
+      $form.find('[type=tel]').parents('.wpcf7-form-control-wrap').remove();
+      $form.find('[type=date]').parents('.wpcf7-form-control-wrap').remove();
+      $form.find('[type=range]').parents('.wpcf7-form-control-wrap').remove();
+      $form.find('.wpcf7-checkbox').parents('.wpcf7-form-control-wrap').remove();
+      $form.find('.wpcf7-quiz-label').parents('.wpcf7-form-control-wrap').remove();
+
+      var regexToFind = /\[(url|tel|date|checkbox|quiz|range)\*?[^\]]+\]/g;
+      var result;
+      while ((result = regexToFind.exec(formFieldsString)) !== null) {
+        // This is necessary to avoid infinite loops with zero-width matches
+        if (result.index === regexToFind.lastIndex) {
+          regexToFind.lastIndex++;
+        } 
+        formFieldsString = formFieldsString.replace(result[0], '');
+      }
+
+      var $childrenWithInputs = $rows.children().filter(function() {      // Getting only the children containing the form fields
+        var $field = $(this);
+        return $field.find('.wpcf7-form-control-wrap').length != 0 || $field.find('.wpcf7-form-control').length != 0 ||  $field.is('.wpcf7-form-control-wrap') || $field.is('.wpcf7-form-control')
+      });
+
+      var $formFields = $();
+      $childrenWithInputs.each(function(i, el) {
+          var $el = $(el);
+
+          if ( 0 !== $el.find('.wpcf7-form-control-wrap').length ) {
+              $el = $el.find('.wpcf7-form-control-wrap');
+              if ( 0 != $el.parent('label').length ) {
+                  $el = $el.parent('label');  // Searching only on the first parent because there may be a label containing more inputs, and this should not happen
+              }
+          } else {
+              if ( 0 !== $el.find('.wpcf7-form-control').length ) {
+                  $el = $el.find('.wpcf7-form-control');
+              }
+          }
+
+          $formFields = $formFields.add($el);
+      });
+
+
+      $rows.empty();
+
+      var fieldsNumbers = [];
+      var fieldsShortcodes = [];
+      var $rowsInDB = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
+      $formFields.each(function (i, el) {
+          var $el = $(el);
+
+          var $newRowInDB = $(document.createElement("div"))
+              .addClass("wpcf7-row wpcf7-row__1-column")
+              .attr("wpcf7-row-number", (i + 1));
+          var $newColumnInDB = $(document.createElement("div"))
+              .addClass("wpcf7-column")
+              .attr("wpcf7-column-number", "1");
+          var $newColumnContentInDB = $(document.createElement("span"))
+              .addClass("wpcf7-column-content")
+              .append(el);
+          $newColumnInDB.append($newColumnContentInDB);
+          $newRowInDB.append($newColumnInDB);
+          $rowsInDB.append($newRowInDB);
+
+          var $newRow = $(document.createElement("div"))
+              .addClass("wpcf7-row wpcf7-row__1-column")
+              .attr("wpcf7-row-number", (i + 1));
+          var $newColumn = $(document.createElement("div"))
+              .addClass("wpcf7-column")
+              .attr("wpcf7-column-number", "1");
+          var $newColumnContent = $(document.createElement("span"))
+              .addClass("wpcf7-column-content")
+              .append(el);
+          $newColumn.append($newColumnContent);
+          $newRow.append($newColumn);
+          $rows.append($newRow);
+          $newColumnContentInDB.append($el[0].outerHTML)
+
+          if ( $el.is('label') ) {
+              if ( undefined === $el.find('.wpcf7-form-control-wrap') ) {
+                  $el = $el.find('.wpcf7-form-control');
+              } else {
+                  $el = $el.find('.wpcf7-form-control-wrap');
+              }
+          }
+
+          var containsText = $el.find('[type=text]').length != 0;
+          var containsEmail = $el.find('.wpcf7-email').length != 0;
+          var containsNumber = $el.find('.wpcf7-number').length != 0;
+          var containsTextarea = $el.find('.wpcf7-textarea').length != 0;
+          var containsSelect = $el.find('.wpcf7-select').length != 0;
+          var containsRadioButtons = $el.find('.wpcf7-radio').length != 0;
+          var containsCheckbox = $el.find('.wpcf7-acceptance').length != 0;
+          var containsFile = $el.find('.wpcf7-file').length != 0;
+          var containsSubmit = $el.is('.wpcf7-submit');
+
+          var randomNumber = Rexbuilder_Util.createRandomNumericID(3);
+          fieldsNumbers[i] = randomNumber;
+          
+          fieldsShortcodes[i] = /\[[\w]+[^\]]+\]/.exec(formFieldsString)[0];
+          
+          if (containsText) { // Fixing all the fields
+              var newClass = "text-" + fieldsNumbers[i];
+
+              // DOM
+              var $input = $el.find('.wpcf7-text');
+              $input.addClass(newClass);
+              $el.addClass(newClass);     // Serve?
+              $input.attr('size', '');
+
+              // Shortcode
+              formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
+              var regexpToSearch = /\[text\*? [^(\s|\])]+/;
+              fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+              $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
+          } else if (containsEmail) {
+              var newClass = "email-" + fieldsNumbers[i];
+
+              // DOM
+              var $input = $el.find('.wpcf7-email');
+              $input.addClass(newClass);
+              $el.addClass(newClass);     // Serve?
+              $input.attr('size', '');
+
+              // Shortcode
+              formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
+              var regexpToSearch = /\[email\*? [^(\s|\])]+/;
+              fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+              $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
+          } else if (containsNumber) {
+              var newClass = "number-" + fieldsNumbers[i];
+
+              // DOM
+              var $input = $el.find('.wpcf7-number');
+              $input.addClass(newClass);
+              $el.addClass(newClass);     // Serve?
+              $input.attr('size', '');
+
+              // Shortcode
+              formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
+              var regexpToSearch = /\[number\*? [^(\s|\])]+/;
+              fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+              $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
+          } else if (containsTextarea) {
+              var newClass = "textarea-" + fieldsNumbers[i];
+
+              // DOM
+              var $input = $el.find('.wpcf7-textarea');
+              $input.addClass(newClass);
+              $el.addClass(newClass);
+              $input.attr('size', '');
+
+              // Shortcode
+              formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
+              var regexpToSearch = /\[textarea\*? [^(\s|\])]+/;
+              fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+              $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
+          } else if (containsSelect) {
+              var newClass = "menu-" + fieldsNumbers[i];
+
+              // DOM
+              var $input = $el.find('.wpcf7-select');
+              $input.addClass(newClass);
+              $el.addClass(newClass);
+              $input.prepend('<option value="" disabled="disabled" selected="selected">Select something</option>');
+              $input.attr('size', '');
+
+              // Shortcode
+              formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
+              var regexpToSearch = /\[select\*? [^(\s|\])]+/;
+              fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+              $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
+          } else if (containsRadioButtons) {
+              var newClass = "radio-" + fieldsNumbers[i];
+              var fieldName = $el.find('[type=radio]').attr('name');
+              
+              // DOM
+              $el.addClass(newClass);
+              $el.removeClass(fieldName);
+
+              // Shortcode
+              formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
+              var regexpToSearch = /\[radio\*? [^(\s|\])]+/;
+              fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+              $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
+          } else if (containsCheckbox) {
+              var newClass = "acceptance-" + fieldsNumbers[i];
+              var fieldName = $el.find('[type=checkbox]').attr('name');
+
+              // DOM
+              $el.addClass(newClass);
+              $el.removeClass(fieldName);
+
+              // Shortcode
+              fieldsShortcodes[i] = /\[acceptance\*?[^(\])]+\][^(\])]+\]/.exec(formFieldsString)[0];
+              formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
+              var regexpToSearch = /\[acceptance\*? [^(\s|\])]+/;
+              fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+              $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
+          } else if (containsFile) {
+              var newClass = "file-" + fieldsNumbers[i];
+              var fieldName = $el.find('[type=file]').attr('name');
+
+              // DOM
+              $el.append('<div class="wpcf7-file-caption">Your text here</div>');
+              $el.addClass(newClass);
+              $el.removeClass(fieldName);
+
+              // Shortcode
+              formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
+              var regexpToSearch = /\[file\*? [^(\s|\])]+/;
+              fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+              fieldsShortcodes[i] = fieldsShortcodes[i].replace(']', ']' + '<div class="wpcf7-file-caption">Your text here</div>');
+
+              $newColumnContentInDB.find('.wpcf7-form-control-wrap').replaceWith(fieldsShortcodes[i]);
+          } else if (containsSubmit) {
+              var newClass = "submit-" + randomNumber;
+
+              // DOM
+              $el.addClass(newClass);
+
+              // Shortcode
+              formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
+              var regexpToSearch = /\[submit/;
+              fieldsShortcodes[i] = fieldsShortcodes[i].replace(regexpToSearch, regexpToSearch.exec(fieldsShortcodes[i])[0] + ' class:' + newClass);
+
+              $newColumnContentInDB.find('.wpcf7-form-control').replaceWith(fieldsShortcodes[i]);
+          }
+
+          if (!/\]/.test(fieldsShortcodes[i])) {
+              fieldsShortcodes[i] += ']';
+          }
+      });
+
+      Rexbuilder_Rexwpcf7.addFormInPage(formID, $rowsInDB);   // Necessary for creating column content data
+
+      $rowsInDB.find('.wpcf7-column').each(function(i, el) {
+        Rexbuilder_Rexwpcf7.createColumnContentSpanData({
+          editPoint: {
+            element_id: formID,
+            row_number: (i + 1),
+            column_number: 1,
+          }
+        });
+      });
+
+      var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").eq(0);
+      _addElementStyle($elementWrapper);
+      Rexbuilder_Rexwpcf7.fixInputs();
+    } else {    // If it's not a new element
+      Rexbuilder_Rexwpcf7.updateDBFormsInPage(elementID, !flagElementFound);
+    }
+    
+    Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
+
+    /* Copied form Rexbuilder_Rexbutton */
+    // locking grid to prevent errors on focus right text node
+    // var $element = $textWrap.parents(".grid-stack-item");
+    // var $section = $element.parents(".rexpansive_section");
+    // Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
+  }
 
     var _endFixingSeparatedElement = function ($elementWrapper, formFieldsString) {
         var elementID = $elementWrapper.attr("data-rex-element-id");
@@ -1027,7 +1026,7 @@ var Rexbuilder_Rexelement = (function ($) {
             }
         }
 
-        Rexbuilder_Rexwpcf7.removeFormInPage(elementID);
+        Rexbuilder_Rexwpcf7_Editor.removeFormInPage(elementID);
     }
 
     /**
@@ -1358,60 +1357,61 @@ var Rexbuilder_Rexelement = (function ($) {
     }
 
 	var init = function() {
-        styleSheet = null;
-        elementsInPage = [];
+    styleSheet = null;
+    elementsInPage = [];
 
-        elementDataDefaults = {
-            synchronize: false,
-            wpcf7_data: {
-                background_color: 'rgb(0, 0, 0, 0)',
-                border_color: 'rgb(0, 0, 0, 1)',
-                border_width: '2px',
-                margin_top: '5px',
-                margin_left: '5px',
-                margin_right: '5px',
-                margin_bottom: '5px',
-                error_message_color: 'rgb(0, 0, 0, 1)',
-                error_message_font_size: '15px',
-                send_message_color: 'rgb(0, 0, 0, 1)',
-                send_message_font_size: '15px',
-                columns: {
-                    padding_top: '15px',
-                    padding_left: '15px',
-                    padding_right: '15px',
-                    padding_bottom: '15px',
-                },
-                content: {
-                    background_color: 'rgb(255, 255, 255, 1)',
-                    background_color_hover: 'rgb(255, 255, 255, 1)',
-                    text_color: 'rgb(0, 0, 0, 1)',
-                    text_color_hover: 'rgb(0, 0, 0, 1)',
-                    border_color: 'rgb(0, 0, 0, 1)',
-                    border_color_hover: 'rgb(0, 0, 0, 1)',
-                    width: '200px',
-                    height: '100%',
-                    font_size: '15px',
-                    border_width: '1px',
-                    border_radius: '0px',
-                },
-                options_different: {
-                    width: true,
-                    height: true,
-                    font_size: true,
-                    text_color: true
-                }
-            },
-            element_target: {
-                element_id: "",
-                element_number: "",
-            }
-        };
-        // generate element styles
-        this.$rexelementsStyle = $("#rexpansive-builder-rexelement-style-inline-css");
+    elementDataDefaults = {
+      synchronize: false,
+      wpcf7_data: {
+        background_color: 'rgb(0, 0, 0, 0)',
+        border_color: 'rgb(0, 0, 0, 1)',
+        border_width: '2px',
+        margin_top: '5px',
+        margin_left: '5px',
+        margin_right: '5px',
+        margin_bottom: '5px',
+        error_message_color: 'rgb(0, 0, 0, 1)',
+        error_message_font_size: '15px',
+        send_message_color: 'rgb(0, 0, 0, 1)',
+        send_message_font_size: '15px',
+        columns: {
+          padding_top: '15px',
+          padding_left: '15px',
+          padding_right: '15px',
+          padding_bottom: '15px',
+        },
+        content: {
+          background_color: 'rgb(255, 255, 255, 1)',
+          background_color_hover: 'rgb(255, 255, 255, 1)',
+          text_color: 'rgb(0, 0, 0, 1)',
+          text_color_hover: 'rgb(0, 0, 0, 1)',
+          border_color: 'rgb(0, 0, 0, 1)',
+          border_color_hover: 'rgb(0, 0, 0, 1)',
+          width: '200px',
+          height: '100%',
+          font_size: '15px',
+          border_width: '1px',
+          border_radius: '0px',
+        },
+        options_different: {
+          width: true,
+          height: true,
+          font_size: true,
+          text_color: true
+        }
+      },
+      element_target: {
+        element_id: "",
+        element_number: "",
+      }
+    };
 
-        _fixCustomStyleElement();
-        _updateElementListInPage();
-		_linkDocumentListeners();
+    // Generate element styles
+    this.$rexelementsStyle = $("#rexpansive-builder-rexelement-style-inline-css");
+
+    _fixCustomStyleElement();
+    _updateElementListInPage();
+    _linkDocumentListeners();
 	}
 
 	return {
