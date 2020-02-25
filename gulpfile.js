@@ -490,6 +490,7 @@ var builderlive_public = [
 	'public/js/build/3-Navigator.js',
 	// 'public/js/build/5-Rexbuilder_FormFixes.js',
 	'public/js/vendor/flickity.pkgd.min.js',
+	'public/js/vendor/bg-lazyload.js',
 	'public/js/build/2-RexSlider.js',
 	'public/js/vendor/2-jquery.textFill.js',
 	'public/js/build/8-VimeoVideo.js',

@@ -305,6 +305,7 @@ class Rexbuilder_Public
 			// Scripts
 			wp_enqueue_script('3-Navigator', REXPANSIVE_BUILDER_URL . 'public/js/build/3-Navigator.js', array('jquery'), $ver, true);
 			wp_enqueue_script('5-flickity', REXPANSIVE_BUILDER_URL . 'public/js/vendor/flickity.pkgd.min.js', array('jquery'), $ver, true);
+			wp_enqueue_script('flickity-bglazy-load', REXPANSIVE_BUILDER_URL . 'public/js/vendor/bg-lazyload.js', array('jquery','5-flickity'), $ver, true);
 			wp_enqueue_script('2-RexSlider', REXPANSIVE_BUILDER_URL . 'public/js/build/2-RexSlider.js', array('jquery'), $ver, true);
 			wp_enqueue_script( 'textfill', REXPANSIVE_BUILDER_URL  . 'public/js/vendor/2-jquery.textFill.js', array( 'jquery' ), $ver, true );
 			wp_enqueue_script('8-VimeoVideo', REXPANSIVE_BUILDER_URL . 'public/js/build/8-VimeoVideo.js', array('jquery'), $ver, true);
@@ -507,7 +508,7 @@ class Rexbuilder_Public
 	 */
 	public function remove_shortcodes_from_live() {
 		if ( Rexbuilder_Utilities::isBuilderLive() ) {
-			$shortcodes = apply_filters( 'rexpansive_builder_remove_shortcodes_live', array( 'Rexbuilder_Timeline_Pro', 'Rexbuilder_Timeline_Pro_Event' ) );
+			$shortcodes = apply_filters( 'rexpansive_builder_remove_shortcodes_live', array( 'RexTimelinePro', 'RexTimelineProEvent', 'RexliveIcon' ) );
 			foreach( $shortcodes as $shortcode ) {
 				remove_shortcode( $shortcode );
 			}

@@ -49,6 +49,11 @@ var RexSlider = (function ($) {
       settings.pageDots = true;
     }
 
+    var originalLazyLoad = $sliderWrap.attr('data-rexlider-lazyload');
+    if ('undefined' != typeof originalLazyLoad && '1' == originalLazyLoad.toString()) {
+      settings.bgLazyLoad = true;
+    }
+
     if ($sliderWrap.hasClass('rex-slider--bottom-interface')) {
       $parentBlock.addClass('block-has-slider--navigator');
     }
