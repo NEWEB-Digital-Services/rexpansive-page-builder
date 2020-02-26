@@ -204,7 +204,7 @@
     // y' = 2 * m * x - 100
     // percentage of the section height reached during the scroll
     var percentage = ( windowScrollTop - elScrollTop ) * 100 / ( elHeight - windowInnerHeight );
-    var _percentage = 2 * 100 / ( elHeight - windowInnerHeight ) * (windowScrollTop - elScrollTop) - 100
+    // var _percentage = 2 * 100 / ( elHeight - windowInnerHeight ) * ( windowScrollTop - elScrollTop ) - 100
 
     // animate border
     if ( this.options.borderAnimation ) {
@@ -232,13 +232,17 @@
       }
     }
 
+    var opY;
+
     // animate overlay
     if ( this.options.overlayAnimation ) {
       // animate overlay faker
       if ( topViewport && bottomViewport ) {
         // opacity = percentage of scoll
-        this.overlayAnimationEl.style.opacity = 1- Math.pow( 1 - _percentage / 100, 1.75 );  // ease-out
-        // this.overlayAnimationEl.style.opacity = Math.pow( _percentage / 100, 1.75 );   // ease-in
+        // opY = 1 - Math.pow( 1 - percentage / 100, 1.75 );    // ease-out
+        opY = 1 - Math.pow( 1 - percentage / 100, 3 );    // much steep ease-out
+        this.overlayAnimationEl.style.opacity = opY;
+        // this.overlayAnimationEl.style.opacity = Math.pow( percentage / 100, 1.75 );   // ease-in
       } else {
         if ( beforeViewport ) {
           // opacity = 0
