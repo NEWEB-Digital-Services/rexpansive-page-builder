@@ -78,7 +78,10 @@ var RexSlider = (function ($) {
       };
     }
 
-    if ( settings.prevNextButtons && $parentBlock.hasClass('custom-autoplay') ) {
+    // var hasCustomAutoplay = $parentBlock.hasClass('custom-autoplay');    // custom autoplay becomes the default
+    var hasCustomAutoplay = true;
+
+    if ( settings.prevNextButtons && hasCustomAutoplay ) {
       settings.pauseAutoPlayOnHover = false;
     }
 
@@ -116,7 +119,7 @@ var RexSlider = (function ($) {
       $sliderWrap.flickity('playPlayer');
     }
 
-    if ( $parentBlock.hasClass('custom-autoplay') ) {
+    if ( hasCustomAutoplay ) {
       var sliderInstance = $sliderWrap.data('flickity');
       sliderInstance.customAutoplayInterval = null;
       if ( settings.prevNextButtons ) {
