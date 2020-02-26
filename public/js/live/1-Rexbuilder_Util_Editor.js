@@ -620,7 +620,7 @@ var Rexbuilder_Util_Editor = (function($) {
     });
 
     /* ===== Elements ===== */
-    Rexbuilder_Util.$document.on("rexlive:import_element", function (e) {
+    Rexbuilder_Util.$document.on('rexlive:import_element', function (e) {
       Rexbuilder_Rexelement_Editor.fixImportedElement( e.settings.data );
     });
 
@@ -628,24 +628,24 @@ var Rexbuilder_Util_Editor = (function($) {
       Rexbuilder_Rexelement_Editor.handleCompleteImportElement( e );
     });
 
+    Rexbuilder_Util.$document.on('rexlive:lock_synchronize_on_element', function (e) {
+      Rexbuilder_Rexelement_Editor.lockSynchronize( e.settings.data_to_send );
+    });
+
+    Rexbuilder_Util.$document.on('rexlive:separate_rex_element', function (e) {
+      Rexbuilder_Rexelement_Editor.separateRexElement(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on('rexlive:refresh_separated_rex_element', function (e) {
+      Rexbuilder_Rexelement_Editor.refreshSeparatedRexElement(e.settings.data_to_send);
+    });
+
     Rexbuilder_Util.$document.on("rexlive:remove_separate_element", function (e) {
       Rexbuilder_Rexelement.removeSeparateElement(e.settings.data_to_send);
     });
 
-    Rexbuilder_Util.$document.on("rexlive:lock_synchronize_on_element", function (e) {
-      Rexbuilder_Rexelement.lockSynchronize(e.settings.data_to_send);
-    });
-
-    Rexbuilder_Util.$document.on("rexlive:separate_rex_element", function (e) {
-      Rexbuilder_Rexelement.separateRexElement(e.settings.data_to_send);
-    });
-
-    Rexbuilder_Util.$document.on("rexlive:refresh_separated_rex_element", function (e) {
-      Rexbuilder_Rexelement.refreshSeparatedRexElement(e.settings.data_to_send);
-    });
-
-    // WPCF7
-    Rexbuilder_Util.$document.on("rexlive:wpcf7_add_field", function (e) {
+    /* ===== CF7 ===== */
+    Rexbuilder_Util.$document.on('rexlive:wpcf7_add_field', function (e) {
       Rexbuilder_Rexwpcf7_Editor.addField(e.settings.data_to_send);
     });
 
@@ -653,24 +653,20 @@ var Rexbuilder_Util_Editor = (function($) {
       Rexbuilder_Rexwpcf7.createFormSpanData(e.settings.data_to_send);
     });
 
-    Rexbuilder_Util.$document.on("rexlive:wpcf7_remove_form_span_data", function (e) {
-      Rexbuilder_Rexwpcf7.removeFormSpanData(e.settings.data_to_send);
+    Rexbuilder_Util.$document.on('rexlive:updateFormLive', function(e){
+      Rexbuilder_Rexwpcf7_Editor.updateFormLive(e.settings.data_to_send);
     });
 
-    Rexbuilder_Util.$document.on("rexlive:updateFormLive", function(e){
-      Rexbuilder_Rexwpcf7.updateFormLive(e.settings.data_to_send);
+    Rexbuilder_Util.$document.on('rexlive:updateFormContentLive', function(e){
+      Rexbuilder_Rexwpcf7_Editor.updateFormContentLive(e.settings.data_to_send);
     });
 
-    Rexbuilder_Util.$document.on("rexlive:updateFormContentLive", function(e){
-      Rexbuilder_Rexwpcf7.updateFormContentLive(e.settings.data_to_send);
+    Rexbuilder_Util.$document.on('rexlive:wpcf7_create_column_content_span_data', function (e) {
+      Rexbuilder_Rexwpcf7_Editor.createColumnContentSpanData(e.settings.data_to_send);
     });
 
-    Rexbuilder_Util.$document.on("rexlive:wpcf7_create_column_content_span_data", function (e) {
-      Rexbuilder_Rexwpcf7.createColumnContentSpanData(e.settings.data_to_send);
-    });
-
-    Rexbuilder_Util.$document.on("rexlive:updateColumnContentLive", function(e){
-      Rexbuilder_Rexwpcf7.updateColumnContentLive(e.settings.data_to_send);
+    Rexbuilder_Util.$document.on('rexlive:updateColumnContentLive', function(e){
+      Rexbuilder_Rexwpcf7_Editor.updateColumnContentLive(e.settings.data_to_send);
     });
     
     // DRAG & DROP

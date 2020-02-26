@@ -314,16 +314,16 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
     }
 
     var _applyData = function () {
-        var columnContentDataToIframe = {
-            eventName: "rexlive:update_wcpf7_column_content_page",
-            data_to_send: {
-                reverseColumnContentData: jQuery.extend(true, {}, reverseData),
-                actionColumnContentData: jQuery.extend(true, {}, columnContentData),
-                needToSave: needToSave
-            }
-        };
-        reverseData = jQuery.extend(true, {}, columnContentDataToIframe.data_to_send.actionColumnContentData);
-        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(columnContentDataToIframe);
+      var columnContentDataToIframe = {
+        eventName: "rexlive:update_wcpf7_column_content_page",
+        data_to_send: {
+          reverseColumnContentData: jQuery.extend(true, {}, reverseData),
+          actionColumnContentData: jQuery.extend(true, {}, columnContentData),
+          needToSave: needToSave
+        }
+      };
+      reverseData = jQuery.extend(true, {}, columnContentDataToIframe.data_to_send.actionColumnContentData);
+      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(columnContentDataToIframe);
     };
 
     var _updateColumnContentEditorModal = function (data) {

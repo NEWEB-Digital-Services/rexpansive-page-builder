@@ -14,7 +14,7 @@ var Rex_Save_Listeners = (function($) {
       if ( 'undefined' !== typeof Rexbuilder_Rexwpcf7 ) {
         var formIDsInPage = Rexbuilder_Rexwpcf7_Editor.getIDsInPage();
         formIDsInPage.forEach(function(id) {
-          Rexbuilder_Rexwpcf7.updateFormInDB(id);
+          Rexbuilder_Rexwpcf7_Editor.updateFormInDB(id);
         })
         if ( 0 !== formIDsInPage.length ) {
           Rexbuilder_Rexwpcf7_Editor.fixBlocksHeight();

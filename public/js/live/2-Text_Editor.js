@@ -3372,18 +3372,18 @@ var TextEditor = (function ($) {
       this.hideColumnToolbox();
     },
 
-    handleClickFormSettings: function (event) {
-      this.hideAllToolbars();
-      var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
-      var $form = $elementWrapper.find(".wpcf7");
+    // handleClickFormSettings: function (event) {
+    //   this.hideAllToolbars();
+    //   var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
+    //   var $form = $elementWrapper.find(".wpcf7");
 
-      var data = {
-        eventName: "rexlive:openRexWpcf7EditForm",
-        formData: Rexbuilder_Rexwpcf7.generateFormData($form),
-      };
-      $elementWrapper.parents(".text-wrap").blur();
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-    },
+    //   var data = {
+    //     eventName: "rexlive:openRexWpcf7EditForm",
+    //     formData: Rexbuilder_Rexwpcf7.generateFormData($form),
+    //   };
+    //   $elementWrapper.parents(".text-wrap").blur();
+    //   Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    // },
 
     handleSelectColumns: function (event) {
       Rexbuilder_Util_Editor.builderEdited(false);
@@ -3408,7 +3408,7 @@ var TextEditor = (function ($) {
         this.columnsSelected = 4;
       }
 
-      Rexbuilder_Rexwpcf7.addNewRow(formID, this.columnsSelected);
+      Rexbuilder_Rexwpcf7_Editor.addNewRow(formID, this.columnsSelected);
       this.hideFormToolbox();
 
       this.updatePlusButtons();
@@ -3427,7 +3427,7 @@ var TextEditor = (function ($) {
       var $rowToClone = $(this.traceFormRow).clone();
       var numberRowBefore = parseInt($rowToClone.attr("wpcf7-row-number"));
 
-      Rexbuilder_Rexwpcf7.addRow(formID, $rowToClone, numberRowBefore);
+      Rexbuilder_Rexwpcf7_Editor.addRow(formID, $rowToClone, numberRowBefore);
 
       this.updatePlusButtons();
       this.updateHeight();
@@ -3443,7 +3443,7 @@ var TextEditor = (function ($) {
       var rowNumberToDelete = $(this.traceFormRow).attr("wpcf7-row-number");
       var blockIDToFocusAfterDelete = $(this.traceForm).parents(".grid-stack-item").attr("id");
 
-      Rexbuilder_Rexwpcf7.deleteRow(formID, rowNumberToDelete, blockIDToFocusAfterDelete);
+      Rexbuilder_Rexwpcf7_Editor.deleteRow(formID, rowNumberToDelete, blockIDToFocusAfterDelete);
 
       this.updateHeight();
       this.focusBlock();
@@ -3479,7 +3479,7 @@ var TextEditor = (function ($) {
       var clonedColumnNumber = $(this.traceFormColumn).attr("wpcf7-column-number");
       var numberRowBefore = parseInt($(this.traceFormRow).attr("wpcf7-row-number"));
 
-      Rexbuilder_Rexwpcf7.addClonedColumnRow(formID, clonedColumnNumber, numberRowBefore);
+      Rexbuilder_Rexwpcf7_Editor.addClonedColumnRow(formID, clonedColumnNumber, numberRowBefore);
 
       this.updatePlusButtons();
       this.updateHeight();
@@ -3494,7 +3494,7 @@ var TextEditor = (function ($) {
       var $columnToDelete = $(this.traceFormColumn);
       var rowNumberToDelete = $(this.traceFormRow).attr("wpcf7-row-number");
       var columnNumberToDelete = $(this.traceFormColumn).attr("wpcf7-column-number");
-      Rexbuilder_Rexwpcf7.deleteColumnContent(formID, rowNumberToDelete, columnNumberToDelete);
+      Rexbuilder_Rexwpcf7_Editor.deleteColumnContent(formID, rowNumberToDelete, columnNumberToDelete);
 
       this.updatePlusButtons();
       this.focusBlock();

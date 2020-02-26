@@ -363,7 +363,7 @@ class Rexbuilder_Admin {
 	 */
 	public function enqueue_scripts( $hook ) {
 		$page_info = get_current_screen();
-		$elements = false;
+		$elements = true;
 
 		if( $this->builder_active_on_this_post_type( $page_info ) ) {
 			wp_enqueue_media();

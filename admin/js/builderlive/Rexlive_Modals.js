@@ -2,7 +2,6 @@
 var Rexlive_Modals = (function ($) {
     'use strict';
 
-    var elements = false;
 
     var init = function () {
         // Top Tools
@@ -93,9 +92,10 @@ var Rexlive_Modals = (function ($) {
 
         // Element import tab
         Element_Import_Modal.init();
+
+        var elements = true;
         if ( elements ) {
-            
-            // Element editor
+            // Element chooser
             Element_Choose_Modal.init();
             
             // Wpcf7 Content Adder
