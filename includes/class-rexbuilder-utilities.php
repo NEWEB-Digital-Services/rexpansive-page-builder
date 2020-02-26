@@ -326,12 +326,11 @@ class Rexbuilder_Utilities {
 		global $post;
 
 		$plugin_options = get_option('rexpansive-builder_options');
-		$post_to_activate = $plugin_options['post_types'];
 		$this_post_type = get_post_type();
 		$post_id = get_the_ID();
 		$builder_active = get_post_meta( $post_id, '_rexbuilder_active', true );
 
-		$condition = isset( $post_to_activate ) && $this_post_type && array_key_exists( $this_post_type, $post_to_activate ) && $post_id && 'true' == $builder_active;
+		$condition = isset( $plugin_options['post_types'] ) && $this_post_type && array_key_exists( $this_post_type, $plugin_options['post_types'] ) && $post_id && 'true' == $builder_active;
 
 		return ( apply_filters( 'rexbuilder_post_type_active', $condition ) );
 	}
