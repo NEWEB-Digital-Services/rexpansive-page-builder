@@ -3707,6 +3707,9 @@ var Rexbuilder_Util = (function($) {
   var init = function() {
     this.fast_load = ( '1' == _plugin_frontend_settings.fast_load );
     this.firstStart = true;
+
+    this.isIframe = ( window.location !== window.parent.location );
+
     _plugin_frontend_settings.scroll_animation_offset = 0;
     
     Rexbuilder_Util.changedFrontLayout = false;

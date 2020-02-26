@@ -501,26 +501,55 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   var launchPopUpContent = function() {
-    if ( 'undefined' !== typeof PopUpContent ) {     
-      var btns = [].slice.call( document.getElementsByClassName('popup-content-button') );
-      var tot_btns = btns.length, i = 0;
+    if ( 'undefined' === typeof PopUpContent ) {
+      return
+    }
 
-      for( i=0; i < tot_btns; i++ ) {
-        new PopUpContent(btns[i], {
-          // getPopUpContentComplete: launchAllAfterLoading,
-          contentRetrieveMethod: 'iframe',
-          getPopUpContentComplete: fixIframeContentAfterLoading,
-          ajaxSettings: {
-            type: "GET",
-            dataType: "json",
-            url: _plugin_frontend_settings.rexajax.ajaxurl,
-            data: {
-              action: "rex_get_popup_content",
-              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-            },
-          }
-        });
-      }
+    var btns = [].slice.call( document.getElementsByClassName('popup-content-button') );
+    var tot_btns = btns.length, i = 0;
+
+    for( i=0; i < tot_btns; i++ ) {
+      new PopUpContent(btns[i], {
+        // getPopUpContentComplete: launchAllAfterLoading,
+        contentRetrieveMethod: 'iframe',
+        getPopUpContentComplete: fixIframeContentAfterLoading,
+        ajaxSettings: {
+          type: "GET",
+          dataType: "json",
+          url: _plugin_frontend_settings.rexajax.ajaxurl,
+          data: {
+            action: "rex_get_popup_content",
+            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+          },
+        }
+      });
+    }
+  }
+
+  function listenPopUpContentEvents() {
+    if ( 'undefined' === typeof PopUpContent ) {
+      return
+    }
+
+    if ( ! Rexbuilder_Util.isIframe ) {
+      window.addEventListener("message", receivePopUpContentMsgs, false);
+    }
+  }
+
+  function receivePopUpContentMsgs( event ) {
+    if ( ! event.data.rexliveEvent ) {
+      return;
+    }
+
+    switch( event.data.eventName ) {
+      case "popUpContent:pswpOpened":
+        Rexbuilder_Util.addClass( document.body, 'popup-content--active--pswp-open' );
+        break;
+      case "popUpContent:pswpClosed":
+        Rexbuilder_Util.removeClass( document.body, 'popup-content--active--pswp-open' );
+        break;
+      default:
+        break;
     }
   }
 
@@ -672,6 +701,9 @@ var Rexbuilder_App = (function($) {
       launchPopUpContent();
       // launch splitScrollable
       launchSplitScollable( document );
+
+      // listen iframe events (for popupcontent)
+      listenPopUpContentEvents();
     }
   }
 

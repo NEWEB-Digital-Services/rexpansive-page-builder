@@ -101,5 +101,14 @@
   }
   .popup-content-close-wrapper {
     opacity: 1;
+    transition-delay: .0s;
   }
+}
+
+.popup-content--active--pswp-open {
+	.popup-content--view {
+		.popup-content-close-wrapper {
+			opacity: 0;
+		}
+	}
 }
