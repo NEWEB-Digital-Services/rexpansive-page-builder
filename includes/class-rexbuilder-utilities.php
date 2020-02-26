@@ -325,7 +325,8 @@ class Rexbuilder_Utilities {
 	public static function public_builder_active_on_this_post_type( ) {
 		global $post;
 
-		$post_to_activate = get_option('rexpansive-builder_options');
+		$plugin_options = get_option('rexpansive-builder_options');
+		$post_to_activate = $plugin_options['post_types'];
 		$this_post_type = get_post_type();
 		$post_id = get_the_ID();
 		$builder_active = get_post_meta( $post_id, '_rexbuilder_active', true );

@@ -307,7 +307,7 @@ class Rexbuilder_Public
 			wp_enqueue_script('5-flickity', REXPANSIVE_BUILDER_URL . 'public/js/vendor/flickity.pkgd.min.js', array('jquery'), $ver, true);
 			wp_enqueue_script('flickity-bglazy-load', REXPANSIVE_BUILDER_URL . 'public/js/vendor/bg-lazyload.js', array('jquery','5-flickity'), $ver, true);
 			wp_enqueue_script('2-RexSlider', REXPANSIVE_BUILDER_URL . 'public/js/build/2-RexSlider.js', array('jquery'), $ver, true);
-			wp_enqueue_script( 'textfill', REXPANSIVE_BUILDER_URL  . 'public/js/vendor/2-jquery.textFill.js', array( 'jquery' ), $ver, true );
+			wp_enqueue_script('textfill', REXPANSIVE_BUILDER_URL  . 'public/js/vendor/2-jquery.textFill.js', array( 'jquery' ), $ver, true );
 			wp_enqueue_script('8-VimeoVideo', REXPANSIVE_BUILDER_URL . 'public/js/build/8-VimeoVideo.js', array('jquery'), $ver, true);
 			if( !Rexbuilder_Utilities::isBuilderLive() ) {
 				wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrolled.js', array('jquery'), $ver, true);
