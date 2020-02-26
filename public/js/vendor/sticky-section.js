@@ -38,6 +38,10 @@
     // find element to stick
     this.stickyElement = ('' !== this.options.stickyElementSelector ? this.element.querySelector(this.options.stickyElementSelector) : null);
 
+    if ( null === this.stickyElement ) {
+      return;
+    }
+
     // prepare border animation if prsents
     if (this.options.borderAnimation) {
       this.borderAnimationEl.el = document.createElement('div');
