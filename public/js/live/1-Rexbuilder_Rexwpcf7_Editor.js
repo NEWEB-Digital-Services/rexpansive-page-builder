@@ -251,6 +251,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function($) {
         cssSelector = "wpcf7-" + inputType;
         break;
       case "acceptance":
+        cssSelector =  "wpcf7-form-control-wrap";
+        break;
       case "submit":
       case "file":
         cssSelector = fieldClass;
