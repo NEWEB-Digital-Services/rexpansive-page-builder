@@ -11,7 +11,6 @@ var Rexbuilder_Rexelement = (function ($) {
   function addStyles() {
     Rexbuilder_Util.$rexContainer.find('.rex-element-wrapper').each(function (i, element) {
       var $elementWrapper = $(element);
-      var elementID = $elementWrapper.attr('data-rex-element-id');
 
       if ($elementWrapper.hasClass('rex-separate-element')) {
         addElementStyle($elementWrapper);

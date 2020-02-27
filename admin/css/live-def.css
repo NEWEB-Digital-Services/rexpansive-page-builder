@@ -6323,6 +6323,8 @@ span.builderlive-editable-field[contenteditable=true] {
                   justify-content: center; }
         .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .wpcf7-column-content {
           width: 100%; }
+          .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .wpcf7-column-content label {
+            display: block; }
           .wpcf7-form .wpcf7-rows .wpcf7-row .wpcf7-column .wpcf7-column-content .wpcf7-form-control-wrap {
             max-width: 100%;
             max-height: 100%; }

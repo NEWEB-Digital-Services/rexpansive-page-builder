@@ -670,11 +670,8 @@ var Rexbuilder_App = (function($) {
     
     Rexbuilder_Rexbutton.init();
     
-    var elements = true;
-    if ( elements ) {
-      Rexbuilder_Rexelement.init();
-      Rexbuilder_Rexwpcf7.init();
-    }
+    Rexbuilder_Rexelement.init();
+    Rexbuilder_Rexwpcf7.init();
 
     if ( Rexbuilder_Util.editorMode ) {
       Rexbuilder_Rexelement_Editor.init();

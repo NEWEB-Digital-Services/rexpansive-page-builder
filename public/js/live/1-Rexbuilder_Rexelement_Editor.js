@@ -242,7 +242,7 @@ var Rexbuilder_Rexelement_Editor = (function($) {
 		// var $gridGallery = $elementWrapper.parents('.grid-stack-row').eq(0);
 		// var galleryData = $gridGallery.data();
 		// var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
-		var $block = $elementWrapper.parents('.grid-stack-item');
+		// var $block = $elementWrapper.parents('.grid-stack-item');
 
 		// Removing medium editor placeholder if there
 		var $textWrap = $elementWrapper.parents('.text-wrap');
@@ -270,7 +270,7 @@ var Rexbuilder_Rexelement_Editor = (function($) {
   			$form.find('.wpcf7-quiz-label').parents('.wpcf7-form-control-wrap').remove();
 
   			var regexToFind = /\[(url|tel|date|checkbox|quiz|range)\*?[^\]]+\]/g;
-  			
+  
   			formFieldsString = formFieldsString.replace(regexToFind, '');
 
   			var $childrenWithInputs = $rows.children().filter(function(index, element) {
@@ -357,9 +357,9 @@ var Rexbuilder_Rexelement_Editor = (function($) {
 
   				var randomNumber = Rexbuilder_Util.createRandomNumericID(3);
   				fieldsNumbers[i] = randomNumber;
-  				
+
   				fieldsShortcodes[i] = /\[[\w]+[^\]]+\]/.exec(formFieldsString)[0];
-  				
+
   				if (containsText) { // Fixing all the fields
   					var newClass = "text-" + fieldsNumbers[i];
 
@@ -459,6 +459,8 @@ var Rexbuilder_Rexelement_Editor = (function($) {
   					$el.removeClass(fieldName);
 
   					// Shortcode
+            // @tofix: If [acceptance] tag doesn't have a closing [/acceptance] tag,
+            // this regexp will eat the next shortcode  
   					fieldsShortcodes[i] = /\[acceptance\*?[^(\])]+\][^(\])]+\]/.exec(formFieldsString)[0];
   					formFieldsString = formFieldsString.replace(fieldsShortcodes[i], '');
   					var regexpToSearch = /\[acceptance\*? [^(\s|\])]+/;
@@ -548,10 +550,10 @@ var Rexbuilder_Rexelement_Editor = (function($) {
     }
 
     // Setting the block height
-    var $gridGallery = $elementWrapper.parents(".grid-stack-row").eq(0);
-    var galleryData = $gridGallery.data();
-    var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
-    var $block = $elementWrapper.parents(".grid-stack-item");
+    // var $gridGallery = $elementWrapper.parents(".grid-stack-row").eq(0);
+    // var galleryData = $gridGallery.data();
+    // var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
+    // var $block = $elementWrapper.parents(".grid-stack-item");
     // galleryEditorInstance.updateElementHeight($block);
 
     // Removing medium editor placeholder if there
@@ -560,7 +562,6 @@ var Rexbuilder_Rexelement_Editor = (function($) {
       TextEditor.removePlaceholder($textWrap.eq(0));
     }
 
-    // Adding form rows if element is wpcf7 and first time we are adding it
     if ($elementWrapper.find(".wpcf7").length != 0 && $elementWrapper.find(".wpcf7-rows").length == 0) {
         var $form = $elementWrapper.find(".wpcf7-form");
         var formID = elementID;
@@ -801,10 +802,10 @@ var Rexbuilder_Rexelement_Editor = (function($) {
             }
         });
 
-        Rexbuilder_Rexwpcf7.addFormInPage(formID, $rowsInDB);   // Necessary for creating column content data
+        Rexbuilder_Rexwpcf7_Editor.addFormInPage(formID, $rowsInDB);   // Necessary for creating column content data
 
         $rowsInDB.find('.wpcf7-column').each(function(i, el) {
-          Rexbuilder_Rexwpcf7.createColumnContentSpanData({
+          Rexbuilder_Rexwpcf7_Editor.createColumnContentSpanData({
             editPoint: {
               element_id: formID,
               row_number: (i + 1),
@@ -817,16 +818,10 @@ var Rexbuilder_Rexelement_Editor = (function($) {
         _addElementStyle($elementWrapper);
         Rexbuilder_Rexwpcf7.fixInputs();
     } else {
-        Rexbuilder_Rexwpcf7.updateDBFormsInPage(elementID, true);
+        Rexbuilder_Rexwpcf7_Editor.updateDBFormsInPage(elementID, true);
     }
 
     Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
-
-    /* Copied form Rexbuilder_Rexbutton */
-    // locking grid to prevent errors on focus right text node
-    // var $element = $textWrap.parents(".grid-stack-item");
-    // var $section = $element.parents(".rexpansive_section");
-    // Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
   }
 
 	function _updateElementListInPage() {

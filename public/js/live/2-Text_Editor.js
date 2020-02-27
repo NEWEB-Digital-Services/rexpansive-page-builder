@@ -3237,6 +3237,7 @@ var TextEditor = (function ($) {
       var $target = $(event.target);
       var $gridStackItem = $target.parents(".grid-stack-item");
       var $section = $target.parents(".rexpansive_section");
+
       if ( "mouseover" == event.type &&
           $gridStackItem[0].classList.contains('item--me-focus') &&
           $section[0].classList.contains('focusedRow') &&
@@ -3246,7 +3247,7 @@ var TextEditor = (function ($) {
         // var needToAddPlusButtonsListener = null === this.addFormContentBtns;
 
         if ( event.target.classList.contains('wpcf7-form') ) {
-          this.traceForm = $target[0];
+          this.traceForm = $target.get(0);
           this.setOutline(this.traceForm, '#00ACFF');
         }
 
@@ -3681,17 +3682,20 @@ var TextEditor = (function ($) {
       }
 
       switch (element) {
-        case "form":
+        case 'form':
           this.traceForm.style.outline = '';
           this.traceForm.style.outlineOffset = '';
           break;
-        case "rows":
-          this.traceForm.querySelectorAll('.wpcf7-row').forEach(function(el) {
-            el.style.outline = '';
-            el.style.outlineOffset = '';
-          })
+        case 'rows':
+          var rows = Array.prototype.slice.call( this.traceForm.querySelectorAll('.wpcf7-row') );
+          var rowsLength = rows.length;
+
+          for( var i = 0; i < rowsLength; i++ ) {
+            rows[i].style.outline = '';
+            rows[i].style.outlineOffset = '';
+          }
           break;
-        case "columns":
+        case 'columns':
           var that = this;
           var $formColumns = $(this.traceForm.querySelectorAll('.wpcf7-column')).not('.with-button');
 
@@ -3726,42 +3730,41 @@ var TextEditor = (function ($) {
     },
 
     findElementToOutline: function (formColumn) {
-        var possibleFields = {
-            text: formColumn.querySelector('[type=text]') === null,
-            email: formColumn.querySelector('.wpcf7-email') === null,
-            number: formColumn.querySelector('.wpcf7-number') === null,
-            textarea: formColumn.querySelector('.wpcf7-textarea') === null,
-            select: formColumn.querySelector('.wpcf7-select') === null,
-            radio: formColumn.querySelector('.wpcf7-radio') === null,
-            acceptance:formColumn.querySelector('.wpcf7-acceptance') === null, 
-            file: formColumn.querySelector('.wpcf7-file') === null,
-            submit: formColumn.querySelector('.wpcf7-submit') === null
-        }
+      var possibleFields = {
+        text: formColumn.querySelector('[type=text]') !== null,
+        email: formColumn.querySelector('.wpcf7-email') !== null,
+        number: formColumn.querySelector('.wpcf7-number') !== null,
+        textarea: formColumn.querySelector('.wpcf7-textarea') !== null,
+        select: formColumn.querySelector('.wpcf7-select') !== null,
+        radio: formColumn.querySelector('.wpcf7-radio') !== null,
+        acceptance:formColumn.querySelector('.wpcf7-acceptance') !== null, 
+        file: formColumn.querySelector('.wpcf7-file') !== null,
+        submit: formColumn.querySelector('.wpcf7-submit') !== null
+      }
 
-        for (var type in possibleFields) {
-            if ( true === possibleFields[type] ) {
-                var elementToOutlineType = type;
-                break;
-            }
+      for (var type in possibleFields) {
+        if ( true === possibleFields[type] ) {
+          var elementToOutlineType = type;
+          break;
         }
-
-        switch (elementToOutlineType) {
-            case "text":
-            case "textarea":
-            case "number":
-            case "email":
-            case "submit":
-            case "select":
-                return formColumn.querySelector('.wpcf7-form-control');
-                break;
-            case "radio":
-            case "acceptance":
-            case "file":
-                return formColumn.querySelector('.wpcf7-form-control-wrap');
-                break;
-            default:
-                break;
-        }
+      }
+      
+      switch (elementToOutlineType) {
+        case 'text':
+        case 'textarea':
+        case 'number':
+        case 'email':
+        case 'submit':
+        case 'select':
+          return formColumn.querySelector('.wpcf7-form-control');
+          break;
+        case 'radio':
+        case 'acceptance':
+        case 'file':
+          return formColumn.querySelector('.wpcf7-form-control-wrap');
+          break;
+        default: break;
+      }
     },
 
     updatePlusButtons: function() {
@@ -3776,9 +3779,12 @@ var TextEditor = (function ($) {
         return;
       }
       
-      this.traceForm.querySelectorAll('.wpcf7-add-new-form-content').forEach(function(el) {
-        el.style.display = 'none';
-      })
+      var addNewContentButtons = Array.prototype.slice.call( this.traceForm.querySelectorAll('.wpcf7-add-new-form-content') );
+      var addNewContentButtonsLength = addNewContentButtons.length;
+
+      for( var i = 0; i < addNewContentButtonsLength; i++ ) {
+        addNewContentButtons[i].style.display = 'none';
+      }
     },
   });
 

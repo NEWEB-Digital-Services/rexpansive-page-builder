@@ -739,8 +739,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         // List fields
         var $listFields = wpcf7_content_editor_properties.$field_list.find(".wpcf7-select-field");
         columnContentData.wpcf7_list_fields = [];
-        for (var field of $listFields) {
-            columnContentData.wpcf7_list_fields.push($(field).val());
+
+        for ( var i = 0; i < $listFields.length; i++ ) {
+          columnContentData.wpcf7_list_fields.push($listFields[i].value);
         }
 
         // Button
@@ -819,9 +820,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         wpcf7_content_editor_properties.$field_list.find(".wpcf7-select-field").on("keyup", function (e) {
             var $listFields = wpcf7_content_editor_properties.$field_list.find(".wpcf7-select-field");
             var listFieldsArray = [];
-            
-            for (var field of $listFields) {
-                listFieldsArray.push($(field).val());
+
+            for ( var i = 0; i < $listFields.length; i++ ) {
+              listFieldsArray.push($listFields[i].value);
             }
             
             _updateColumnContentLive({
@@ -1942,8 +1943,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             if ( 0 !== $listFields.length ) {
                 var listFieldsArray = [];
 
-                for (var field of $listFields) {
-                    listFieldsArray.push($(field).val());
+                for ( var i = 0; i < $listFields.length; i++ ) {
+                  listFieldsArray.push($listFields[i].value);
                 }
 
                 _updateColumnContentLive({
@@ -2538,8 +2539,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
                 var listFieldsArray = [];
 
-                for (var field of $listFields) {
-                    listFieldsArray.push($(field).val());
+                for ( var i = 0; i < $listFields.length; i++ ) {
+                  listFieldsArray.push($listFields[i].value);
                 }
 
                 _updateColumnContentLive({
