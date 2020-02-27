@@ -3713,7 +3713,10 @@ var TextEditor = (function ($) {
     updateHeight: function() {
       if ( null !== this.traceForm ) {
         var $textWrap = $(this.traceForm).parents('.text-wrap');
-        Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap, false);
+
+        if ( 0 !== $textWrap.length ) {
+          Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap, false);
+        }
       }
     },
 
