@@ -70,7 +70,7 @@ class Rexbuilder {
 	 */
 	public function __construct() {
 
-		$this->plugin_name = 'rexpansive-builder';
+		$this->plugin_name = REXPANSIVE_BUILDER_NAME;
 		$this->version = REXPANSIVE_BUILDER_VERSION;
 
 		$this->load_dependencies();
@@ -273,8 +273,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites' );
 		
 		// The if is here to prevent conflicts between versions and Gutenberg
-		if( Rexbuilder_Utilities::is_version( '>=', '5.0' ) && ! Rexbuilder_Utilities::check_plugin_active( 'classic-editor/classic-editor.php' ) )
-		{
+		if( Rexbuilder_Utilities::is_version( '>=', '5.0' ) && ! Rexbuilder_Utilities::check_plugin_active( 'classic-editor/classic-editor.php' ) ) {
 			// Checks if WC product
 			// If post is already saved, get the post_type
 			$post_id = ( isset( $_GET['post'] ) ? $_GET['post'] : null );

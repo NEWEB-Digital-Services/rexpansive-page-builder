@@ -128,6 +128,36 @@ class Rexbuilder_Utilities {
 	}
 
 	/**
+	 * Enqueue scripts and styles for a certain resource
+	 * @param  string $resource resource name
+	 * @param  array  $args     additonal arguments
+	 * @return void
+	 * @since  2.0.4
+	 */
+	public static function enqueue_resource( $resource = '', $args = array() ) {
+		$style_depths = ( isset( $args['style_depths'] ) ? : array() );
+		$script_depths = ( isset( $args['script_depths'] ) ? : array() );
+
+		switch ( $resource ) {
+			case 'flickity':
+				wp_enqueue_style( 'flickity-style', REXPANSIVE_BUILDER_URL . '/public/css/flickity.min.css', $style_depths, REXCLASSIC_VERSION );
+				wp_enqueue_script( 'flickity-script', REXPANSIVE_BUILDER_URL . 'public/js/vendor/flickity.pkgd.min.js', $script_depths, REXCLASSIC_VERSION, true );
+				break;
+			case 'rex-accordion':
+				wp_enqueue_script( 'rex-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexAccordion.min.js', $script_depths, REXCLASSIC_VERSION, true );
+				break;
+			case 'photoswipe':
+				wp_enqueue_style( 'photoswipe-style', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/photoswipe.css', $style_depths, REXCLASSIC_VERSION );
+				wp_enqueue_style( 'photoswipe-skin', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/default-skin/default-skin.css', $style_depths, REXCLASSIC_VERSION, 'all');
+				wp_enqueue_script( 'photoswipe-script', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/photoswipe.min.js', $script_depths, REXCLASSIC_VERSION, true );
+				wp_enqueue_script( 'photoswipe-ui-script', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/photoswipe-ui-default.min.js', $script_depths, REXCLASSIC_VERSION, true );
+				break;
+			default:
+				break;
+		}
+	}
+
+	/**
 	 * If the post was never saved on live, returns true
 	 * otherwise false
 	 *

@@ -28,6 +28,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+define( 'REXPANSIVE_BUILDER_NAME', 'rexpansive-builder' );
+
 /**
  * Currently plugin version.
  * Start at version 1.0.0 and use SemVer - https://semver.org

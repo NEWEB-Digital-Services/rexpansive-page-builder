@@ -312,7 +312,7 @@ class Rexbuilder_Public
 			if( !Rexbuilder_Utilities::isBuilderLive() ) {
 				wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrolled.js', array('jquery'), $ver, true);
 			}
-			wp_enqueue_script('rex-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexAccordion.js', array('jquery'), $ver, true);
+			wp_enqueue_script('rex-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexAccordion.js', array('jquery'), $ver, true);
 			
 			if ( false !== strpos( $customEffects, 'rex-indicator__placeholder' ) ) {
 				wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
