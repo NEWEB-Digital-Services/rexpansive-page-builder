@@ -51,8 +51,7 @@
 
     this.context = ( this.options.context ? this.options.context : this.context );
 
-    if ( this.element )
-    {
+    if ( this.element ) {
       this.hashTarget = this.element.hash.substr(1);
       if ( '' !== this.hashTarget ) {
         var target = this.context.getElementById( this.hashTarget );

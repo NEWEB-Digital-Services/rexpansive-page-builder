@@ -4975,7 +4975,13 @@ a.pswp-item {
           transition-delay: .3s; }
 
 .popup-content--view .popup-content-close-wrapper {
-  opacity: 1; }
+  opacity: 1;
+  -webkit-transition-delay: .0s;
+       -o-transition-delay: .0s;
+          transition-delay: .0s; }
+
+.popup-content--active--pswp-open .popup-content--view .popup-content-close-wrapper {
+  opacity: 0; }
 
 .split-scrollable .rex-row__dimension,
 .split-scrollable .perfect-grid-gallery {

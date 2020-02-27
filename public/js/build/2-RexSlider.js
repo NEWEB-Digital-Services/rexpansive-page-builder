@@ -49,6 +49,11 @@ var RexSlider = (function ($) {
       settings.pageDots = true;
     }
 
+    var originalLazyLoad = $sliderWrap.attr('data-rexlider-lazyload');
+    if ('undefined' != typeof originalLazyLoad && '1' == originalLazyLoad.toString()) {
+      settings.bgLazyLoad = 1;
+    }
+
     if ($sliderWrap.hasClass('rex-slider--bottom-interface')) {
       $parentBlock.addClass('block-has-slider--navigator');
     }
@@ -73,7 +78,10 @@ var RexSlider = (function ($) {
       };
     }
 
-    if ( settings.prevNextButtons && $parentBlock.hasClass('custom-autoplay') ) {
+    // var hasCustomAutoplay = $parentBlock.hasClass('custom-autoplay');    // custom autoplay becomes the default
+    var hasCustomAutoplay = true;
+
+    if ( settings.prevNextButtons && hasCustomAutoplay ) {
       settings.pauseAutoPlayOnHover = false;
     }
 
@@ -111,7 +119,7 @@ var RexSlider = (function ($) {
       $sliderWrap.flickity('playPlayer');
     }
 
-    if ( $parentBlock.hasClass('custom-autoplay') ) {
+    if ( hasCustomAutoplay ) {
       var sliderInstance = $sliderWrap.data('flickity');
       sliderInstance.customAutoplayInterval = null;
       if ( settings.prevNextButtons ) {

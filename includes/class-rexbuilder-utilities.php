@@ -128,6 +128,36 @@ class Rexbuilder_Utilities {
 	}
 
 	/**
+	 * Enqueue scripts and styles for a certain resource
+	 * @param  string $resource resource name
+	 * @param  array  $args     additonal arguments
+	 * @return void
+	 * @since  2.0.4
+	 */
+	public static function enqueue_resource( $resource = '', $args = array() ) {
+		$style_depths = ( isset( $args['style_depths'] ) ? : array() );
+		$script_depths = ( isset( $args['script_depths'] ) ? : array() );
+
+		switch ( $resource ) {
+			case 'flickity':
+				wp_enqueue_style( 'flickity-style', REXPANSIVE_BUILDER_URL . '/public/css/flickity.min.css', $style_depths, REXCLASSIC_VERSION );
+				wp_enqueue_script( 'flickity-script', REXPANSIVE_BUILDER_URL . 'public/js/vendor/flickity.pkgd.min.js', $script_depths, REXCLASSIC_VERSION, true );
+				break;
+			case 'rex-accordion':
+				wp_enqueue_script( 'rex-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexAccordion.min.js', $script_depths, REXCLASSIC_VERSION, true );
+				break;
+			case 'photoswipe':
+				wp_enqueue_style( 'photoswipe-style', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/photoswipe.css', $style_depths, REXCLASSIC_VERSION );
+				wp_enqueue_style( 'photoswipe-skin', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/default-skin/default-skin.css', $style_depths, REXCLASSIC_VERSION, 'all');
+				wp_enqueue_script( 'photoswipe-script', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/photoswipe.min.js', $script_depths, REXCLASSIC_VERSION, true );
+				wp_enqueue_script( 'photoswipe-ui-script', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/photoswipe-ui-default.min.js', $script_depths, REXCLASSIC_VERSION, true );
+				break;
+			default:
+				break;
+		}
+	}
+
+	/**
 	 * If the post was never saved on live, returns true
 	 * otherwise false
 	 *
@@ -325,12 +355,12 @@ class Rexbuilder_Utilities {
 	public static function public_builder_active_on_this_post_type( ) {
 		global $post;
 
-		$post_to_activate = get_option('rexpansive-builder_options');
+		$plugin_options = get_option('rexpansive-builder_options');
 		$this_post_type = get_post_type();
 		$post_id = get_the_ID();
 		$builder_active = get_post_meta( $post_id, '_rexbuilder_active', true );
 
-		$condition = isset( $post_to_activate ) && $this_post_type && array_key_exists( $this_post_type, $post_to_activate ) && $post_id && 'true' == $builder_active;
+		$condition = isset( $plugin_options['post_types'] ) && $this_post_type && array_key_exists( $this_post_type, $plugin_options['post_types'] ) && $post_id && 'true' == $builder_active;
 
 		return ( apply_filters( 'rexbuilder_post_type_active', $condition ) );
 	}

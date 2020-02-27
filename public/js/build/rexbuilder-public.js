@@ -373,13 +373,23 @@ var Rexbuilder_App = (function($) {
           var adjacent = stickySections[i].querySelector('.responsive-overlay');
           adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
           var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
-          backgroundSimulator.style.backgroundImage = stickySections[i].style.backgroundImage;
+
+          // if ( '1' === _plugin_frontend_settings.fast_load ) {
+          //   backgroundSimulator.setAttribute('data-src', stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section'));
+          // } else if ( '0' === _plugin_frontend_settings.fast_load ) {
+            backgroundSimulator.style.backgroundImage = stickySections[i].style.backgroundImage;
+          // }
         } else if ( Rexbuilder_Util.hasClass( stickySections[i], 'section-w-image' ) ) {
           stickyElementSelector = '.sticky-background-simulator';
           var adjacent = stickySections[i].querySelector('.responsive-overlay');
           adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
           var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
-          backgroundSimulator.style.backgroundImage = 'url(' + stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
+
+          if ( '1' === _plugin_frontend_settings.fast_load ) {
+            backgroundSimulator.setAttribute('data-src', stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section'));
+          } else if ( '0' === _plugin_frontend_settings.fast_load ) {
+            backgroundSimulator.style.backgroundImage = 'url(' + stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
+          }
         }
 
         overlayAnimation = ( 'true' === stickySections[i].querySelector('.section-data').getAttribute('data-row_overlay_active') ? true : false );
@@ -490,26 +500,55 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   var launchPopUpContent = function() {
-    if ( 'undefined' !== typeof PopUpContent ) {     
-      var btns = [].slice.call( document.getElementsByClassName('popup-content-button') );
-      var tot_btns = btns.length, i = 0;
+    if ( 'undefined' === typeof PopUpContent ) {
+      return
+    }
 
-      for( i=0; i < tot_btns; i++ ) {
-        new PopUpContent(btns[i], {
-          // getPopUpContentComplete: launchAllAfterLoading,
-          contentRetrieveMethod: 'iframe',
-          getPopUpContentComplete: fixIframeContentAfterLoading,
-          ajaxSettings: {
-            type: "GET",
-            dataType: "json",
-            url: _plugin_frontend_settings.rexajax.ajaxurl,
-            data: {
-              action: "rex_get_popup_content",
-              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-            },
-          }
-        });
-      }
+    var btns = [].slice.call( document.getElementsByClassName('popup-content-button') );
+    var tot_btns = btns.length, i = 0;
+
+    for( i=0; i < tot_btns; i++ ) {
+      new PopUpContent(btns[i], {
+        // getPopUpContentComplete: launchAllAfterLoading,
+        contentRetrieveMethod: 'iframe',
+        getPopUpContentComplete: fixIframeContentAfterLoading,
+        ajaxSettings: {
+          type: "GET",
+          dataType: "json",
+          url: _plugin_frontend_settings.rexajax.ajaxurl,
+          data: {
+            action: "rex_get_popup_content",
+            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+          },
+        }
+      });
+    }
+  }
+
+  function listenPopUpContentEvents() {
+    if ( 'undefined' === typeof PopUpContent ) {
+      return
+    }
+
+    if ( ! Rexbuilder_Util.isIframe ) {
+      window.addEventListener("message", receivePopUpContentMsgs, false);
+    }
+  }
+
+  function receivePopUpContentMsgs( event ) {
+    if ( ! event.data.rexliveEvent ) {
+      return;
+    }
+
+    switch( event.data.eventName ) {
+      case "popUpContent:pswpOpened":
+        Rexbuilder_Util.addClass( document.body, 'popup-content--active--pswp-open' );
+        break;
+      case "popUpContent:pswpClosed":
+        Rexbuilder_Util.removeClass( document.body, 'popup-content--active--pswp-open' );
+        break;
+      default:
+        break;
     }
   }
 
@@ -661,6 +700,9 @@ var Rexbuilder_App = (function($) {
       launchPopUpContent();
       // launch splitScrollable
       launchSplitScollable( document );
+
+      // listen iframe events (for popupcontent)
+      listenPopUpContentEvents();
     }
   }
 

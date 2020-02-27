@@ -32,10 +32,10 @@
 				<!--  Controls are self-explanatory. Order can be changed. -->
 
 				<div class="pswp__counter"></div>
-				<button class="pswp__button pswp__button--close" title="<?php _e( 'Close (Esc)', $this->plugin_name ); ?>"></button>
-				<button class="pswp__button pswp__button--share" title="<?php _e( 'Share', $this->plugin_name ); ?>"></button>
-				<button class="pswp__button pswp__button--fs" title="<?php _e( 'Toggle fullscreen', $this->plugin_name ); ?>"></button>
-				<button class="pswp__button pswp__button--zoom" title="<?php _e( 'Zoom in/out', $this->plugin_name ); ?>"></button>
+				<button class="pswp__button pswp__button--close" title="<?php _e( 'Close (Esc)', REXPANSIVE_BUILDER_NAME ); ?>"></button>
+				<button class="pswp__button pswp__button--share" title="<?php _e( 'Share', REXPANSIVE_BUILDER_NAME ); ?>"></button>
+				<button class="pswp__button pswp__button--fs" title="<?php _e( 'Toggle fullscreen', REXPANSIVE_BUILDER_NAME ); ?>"></button>
+				<button class="pswp__button pswp__button--zoom" title="<?php _e( 'Zoom in/out', REXPANSIVE_BUILDER_NAME ); ?>"></button>
 				<!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
 				<div class="pswp__preloader">
 					<div class="pswp__preloader__icn">
@@ -48,9 +48,9 @@
 			<div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
 				<div class="pswp__share-tooltip"></div> 
 			</div>
-			<button class="pswp__button pswp__button--arrow--left" title="<?php _e( 'Previous (arrow left)', $this->plugin_name ); ?>">
+			<button class="pswp__button pswp__button--arrow--left" title="<?php _e( 'Previous (arrow left)', REXPANSIVE_BUILDER_NAME ); ?>">
 			</button>
-			<button class="pswp__button pswp__button--arrow--right" title="<?php _e( 'Next (arrow right)', $this->plugin_name ); ?>">
+			<button class="pswp__button pswp__button--arrow--right" title="<?php _e( 'Next (arrow right)', REXPANSIVE_BUILDER_NAME ); ?>">
 			</button>
 			<div class="pswp__caption">
 				<div class="pswp__caption__center"></div>

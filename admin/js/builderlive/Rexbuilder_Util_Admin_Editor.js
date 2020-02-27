@@ -95,7 +95,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
   var _receiveMessage = function(event) {
     if (event.data.rexliveEvent) {
-      //fare come sul live, con lo switch sui nomi degli eventi
+      //do as on live, with the switch on the names of the events
       var eventData = event.data;
       if (event.data.eventName == "rexlive:edited") {
         if (event.data.modelEdited) {

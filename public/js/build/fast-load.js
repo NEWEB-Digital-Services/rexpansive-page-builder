@@ -38,33 +38,50 @@
   }
 
   /**
+   * Fixing a sticky section with lazy load
+   * @param  {Element} section maybe section to check
+   * @return {void}
+   * @since  2.0.4
+   */
+  function checkLazyStickySection( section ) {
+    var bkgrSimulator = section.querySelector('.sticky-background-simulator');
+    if ( null === bkgrSimulator ) {
+      return;
+    }
+
+    var src = bkgrSimulator.getAttribute('data-src');
+    if ( null === src ) {
+      return;
+    }
+
+    bkgrSimulator.style.backgroundImage = 'url(' + src + ')';
+  }
+
+  /**
    * Loading lazy a background image in an element
    * @param {Node} el element to lazy load a background image
    */
   var lazyLoadBkgrImg = function( el ) {
-    // if ( el ) {
-      var src = el.getAttribute('data-src');
-      if ( null !== src && -1 === el.style.backgroundImage.indexOf( src ) ) {
-        var tempImg = new Image();
-        tempImg.src = el.getAttribute('data-src');
-        tempImg.onload = function() {
-          el.style.backgroundImage = 'url(' + this.src + ')';
-          el.removeAttribute('data-src');
-          // if ( observable.getAttribute('data-rexbuilder-block-id') ) {
+    var src = el.getAttribute('data-src');
+    if ( null !== src && -1 === el.style.backgroundImage.indexOf( src ) ) {
+      var tempImg = new Image();
+      tempImg.src = el.getAttribute('data-src');
+      tempImg.onload = function() {
+        el.style.backgroundImage = 'url(' + this.src + ')';
+        el.removeAttribute('data-src');
 
-          // } else if ( observable.getAttribute('data-rexlive-section-id') ) {
+        if ( -1 !== el.className.indexOf('sticky-section') ) {
+          checkLazyStickySection( el );
+        }
+      };
 
-          // }
-        };
-
-        // on case of loading error, repush the image on the visibile queue
-        // so the next interval can be reprocessed
-        tempImg.onerror = function() {
-          console.log('error')
-          imgVisibleQueue.push( el );
-        };
-      }
-    // }
+      // on case of loading error, repush the image on the visibile queue
+      // so the next interval can be reprocessed
+      tempImg.onerror = function() {
+        console.log('error')
+        imgVisibleQueue.push( el );
+      };
+    }
   }
 
   /**
@@ -159,114 +176,96 @@
     }
   }
 
-  /**
-   * Handling all the intersections
-   * @deprecated [description]
-   */
-  var handleIntersectionObserver = function()
-  {
-    // console.log(queuing);
-    if ('1' === _plugin_frontend_settings.fast_load )
-    {
-      if ("IntersectionObserver" in window) {
-        // observer sections
-        var sections = [].slice.call(document.querySelectorAll('.rexpansive_section'));
-        var tot_sections = sections.length, i;
-  
-        scrollobserverSection = new IntersectionObserver(function(entries, observer) {
-          var tot_entries = entries.length, i;
-          for( i=0; i < tot_entries; i++ ) {
-            if(entries[i].isIntersecting) {
-              if ( queuing )
-              {
-                // check images background
-                var imgWrapper = entries[i].target; 
-                if ( imgWrapper ) {
-                  imgVisibleQueue.push( imgWrapper );
-                }
-    
-                // check video background
-                var videoWrapper = entries[i].target.querySelector('.rex-video-container');
-                if ( videoWrapper ) {
-                  addLazyVideoListeners( videoWrapper );
-                  videoVisibleQueue.push( videoWrapper );
-                }
-              }
-              else
-              {
-                // check images background
-                if ( -1 !== entries[i].target.className.indexOf('section-w-image') ) {
-                  var imgWrapper = entries[i].target;
-                  if ( imgWrapper ) {
-                    lazyLoadBkgrImg( imgWrapper );
-                  }
-                }
-    
-                // check video background
-                var videoWrapper = entries[i].target.querySelector('.rex-video-container');
-                if ( videoWrapper ) {
-                  addLazyVideoListeners( videoWrapper );
-                  lazyLoadVideoHTML( videoWrapper );
-                }
-              }
-  
-              // stop observing section
-              scrollobserverSection.unobserve(entries[i].target);
-            }
-          }
-        });
-  
-        for( i=0; i < tot_sections; i++ ) {
-          scrollobserverSection.observe(sections[i]);
-        }
-  
-        // observe blocks
-        var blocks = [].slice.call(document.querySelectorAll('.perfect-grid-item'));
-        var tot_blocks = blocks.length, j;
-  
-        scrollobserverBlock = new IntersectionObserver(function(entries, observer) {
-          var tot_entries = entries.length, i;
-          for( i=0; i < tot_entries; i++ ) {
-            if(entries[i].isIntersecting) 
-            {
-              if (queuing) {
-                // check images background
-                var imgWrapper = entries[i].target.querySelector('.rex-image-wrapper');
-                if ( imgWrapper ) {
-                  imgVisibleQueue.push( imgWrapper );
-                }
-    
-                // check video background
-                var videoWrapper = entries[i].target.querySelector('.rex-video-container');
-                if ( videoWrapper ) {
-                  videoVisibleQueue.push( videoWrapper );
-                }
-              }
-              else
-              {
-                // check images background
-                if ( -1 !== entries[i].target.className.indexOf('block-w-image') ) {
-                  var imgWrapper = entries[i].target.querySelector('.rex-image-wrapper');
-                  if ( imgWrapper ) {
-                    lazyLoadBkgrImg( imgWrapper );
-                  }
-                }
+  function sectionIntersectionObserverCallback(entries, observer) {
+    var tot_entries = entries.length, i;
+    var imgWrapper, videoWrapper;
 
-                // check video background
-                var videoWrapper = entries[i].target.querySelector('.rex-video-container');
-                if ( videoWrapper ) {
-                  lazyLoadVideoHTML( videoWrapper );
-                }
-              }
-  
-              // stop observing block
-              scrollobserverBlock.unobserve(entries[i].target);
-            }
+    for( i=0; i < tot_entries; i++ ) {
+      imgWrapper = null;
+      videoWrapper = null;
+
+      // element becomes visible
+      if( entries[i].isIntersecting ) {
+        if ( -1 !== entries[i].target.className.indexOf('section-w-image') ) {
+          imgWrapper = entries[i].target;
+        }
+
+        // check video background
+        if ( -1 !== entries[i].target.className.indexOf('section-w-html-video') ) {
+          videoWrapper = entries[i].target.querySelector('.rex-video-container');
+        }
+
+        // check images background
+        if ( imgWrapper ) {
+          lazyLoadBkgrImg( imgWrapper );
+        }
+
+        if ( videoWrapper ) {
+          // if ( entries[i].intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused ) {
+          //   // console.log('potrei plaiare')
+          //   // videoWrapper.play();
+          // } else {
+          //   lazyLoadVideoHTML( videoWrapper );
+          // }
+
+          // if ( entries[i].intersectionRatio < 0.5 ) {
+            lazyLoadVideoHTML( videoWrapper );
+          // }
+
+          // if ( 0 !== videoWrapper.readyState && videoWrapper.paused ) {
+          //   videoWrapper.play();
+          // }
+        }
+      }
+      // element goes invisible 
+      else {
+        if ( videoWrapper && !videoWrapper.paused ) {
+          // videoWrapper.pause();
+        }
+      }
+
+      // stop observing section
+      // scrollobserverSection.unobserve(entries[i].target);
+    }
+  }
+
+  function blockIntersectionObserverCallback(entries, observer) {
+    var tot_entries = entries.length, i;
+    var imgWrapper, videoWrapper;
+    
+    for( i=0; i < tot_entries; i++ ) {
+      imgWrapper = null;
+      videoWrapper = null;
+
+      // check video background
+      if ( -1 !== entries[i].target.className.indexOf('block-w-html-video') ) {
+        videoWrapper = entries[i].target.querySelector('.rex-video-container');
+      }
+
+      if ( entries[i].isIntersecting ) {
+        if ( -1 !== entries[i].target.className.indexOf('block-w-image') ) {
+          imgWrapper = entries[i].target.querySelector('.rex-image-wrapper');
+        }
+
+        // check images background
+        if ( imgWrapper ) {
+          lazyLoadBkgrImg( imgWrapper );
+        }
+
+        if ( videoWrapper ) {
+          if ( entries[i].intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused ) {
+            // console.log('fast-load.js - 375 - play()')
+            videoWrapper.play();
+          } else {
+            lazyLoadVideoHTML( videoWrapper );
           }
-        });
-  
-        for( j=0; j < tot_blocks; j++ ) {
-          scrollobserverBlock.observe(blocks[j]);
+        }
+
+        // stop observing block
+        // scrollobserverBlock.unobserve(entries[i].target);
+      } else {
+        if ( videoWrapper ) {
+          videoWrapper.pause();
         }
       }
     }
@@ -277,141 +276,60 @@
    * checking going in viewport and going out
    * 
    */
-  var handleIntersectionObserverSmart = function()
-  {
-    // console.log(queuing);
-    if ('1' === _plugin_frontend_settings.fast_load )
-    {
-      if ("IntersectionObserver" in window) {
-        // observer sections
-        var sections = [].slice.call(document.querySelectorAll('.rexpansive_section'));
-        var tot_sections = sections.length, i;
-  
-        scrollobserverSection = new IntersectionObserver(function(entries, observer) {
-          var tot_entries = entries.length, i;
-          for( i=0; i < tot_entries; i++ ) {
-            var imgWrapper = null;
-            var videoWrapper = null;
+  var handleIntersectionObserverSmart = function() {
+    if ('0' === _plugin_frontend_settings.fast_load ) {
+      return;
+    }
 
-            if ( -1 !== entries[i].target.className.indexOf('section-w-image') ) {
-              imgWrapper = entries[i].target;
-            }
+    if ( ! "IntersectionObserver" in window) {
+      return;
+    }
 
-            // check video background
-            if ( -1 !== entries[i].target.className.indexOf('section-w-html-video') ) {
-              videoWrapper = entries[i].target.querySelector('.rex-video-container');
-            }
+    // observer sections
+    var sections = [].slice.call(document.querySelectorAll('.rexpansive_section'));
+    var tot_sections = sections.length, i;
 
-            // element becomes visible
-            if( entries[i].isIntersecting ) {
+    scrollobserverSection = new IntersectionObserver(
+      sectionIntersectionObserverCallback, 
+      {
+        threshold: [0, 0.5 ,1],
+        rootMargin: '100% 0% 100% 0%'
+      }
+    );
 
-              // check images background
-              if ( imgWrapper ) {
-                lazyLoadBkgrImg( imgWrapper );
-              }
-  
-              if ( videoWrapper ) {
-                // if ( entries[i].intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused ) {
-                //   // console.log('potrei plaiare')
-                //   // videoWrapper.play();
-                // } else {
-                //   lazyLoadVideoHTML( videoWrapper );
-                // }
-
-                // if ( entries[i].intersectionRatio < 0.5 ) {
-                  lazyLoadVideoHTML( videoWrapper );
-                // }
-
-                // if ( 0 !== videoWrapper.readyState && videoWrapper.paused ) {
-                //   videoWrapper.play();
-                // }
-              }
-            }
-            // element goes invisible 
-            else {
-              if ( videoWrapper && !videoWrapper.paused ) {
-                // videoWrapper.pause();
-              }
-            }
-
-            // stop observing section
-            // scrollobserverSection.unobserve(entries[i].target);
-          }
-        }, {
-          threshold: [0, 0.5 ,1]
-        });
-  
-        for( i=0; i < tot_sections; i++ ) {
-          // adding listeners only one time
-          if ( -1 !== sections[i].className.indexOf('section-w-html-video') ) {
-            var videoWrapper = sections[i].querySelector('.rex-video-container');
-            if ( videoWrapper ) {
-              addLazyVideoListeners( videoWrapper );
-            }
-          }
-
-          scrollobserverSection.observe(sections[i]);
-        }
-  
-        // observe blocks
-        var blocks = [].slice.call(document.querySelectorAll('.perfect-grid-item'));
-        var tot_blocks = blocks.length, j;
-  
-        scrollobserverBlock = new IntersectionObserver(function(entries, observer) {
-          var tot_entries = entries.length, i;
-          for( i=0; i < tot_entries; i++ ) {
-            var imgWrapper = null;
-            var videoWrapper = null;
-
-            if ( -1 !== entries[i].target.className.indexOf('block-w-image') ) {
-              imgWrapper = entries[i].target.querySelector('.rex-image-wrapper');
-            }
-
-            // check video background
-            if ( -1 !== entries[i].target.className.indexOf('block-w-html-video') ) {
-              videoWrapper = entries[i].target.querySelector('.rex-video-container');
-            }
-
-            if ( entries[i].isIntersecting ) 
-            {
-              // check images background
-              if ( imgWrapper ) {
-                lazyLoadBkgrImg( imgWrapper );
-              }
-
-              if ( videoWrapper ) {
-                if ( entries[i].intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused ) {
-                  // console.log('fast-load.js - 375 - play()')
-                  videoWrapper.play();
-                } else {
-                  lazyLoadVideoHTML( videoWrapper );
-                }
-              }
-  
-              // stop observing block
-              // scrollobserverBlock.unobserve(entries[i].target);
-            }
-            else {
-              if ( videoWrapper ) {
-                videoWrapper.pause();
-              }
-            }
-          }
-        },  {
-          threshold: [0, 0.5 ,1]
-        });
-  
-        for( j=0; j < tot_blocks; j++ ) {
-          if ( -1 !== blocks[j].className.indexOf('block-w-html-video') ) {
-            var videoWrapper = blocks[j].querySelector('.rex-video-container');
-            if ( videoWrapper ) {
-              addLazyVideoListeners( videoWrapper );
-            }
-          }
-
-          scrollobserverBlock.observe(blocks[j]);
+    for( i=0; i < tot_sections; i++ ) {
+      // adding listeners only one time
+      if ( -1 !== sections[i].className.indexOf('section-w-html-video') ) {
+        var videoWrapper = sections[i].querySelector('.rex-video-container');
+        if ( videoWrapper ) {
+          addLazyVideoListeners( videoWrapper );
         }
       }
+
+      scrollobserverSection.observe(sections[i]);
+    }
+
+    // observe blocks
+    var blocks = [].slice.call(document.querySelectorAll('.perfect-grid-item'));
+    var tot_blocks = blocks.length, j;
+
+    scrollobserverBlock = new IntersectionObserver(
+      blockIntersectionObserverCallback, 
+      {
+        threshold: [0, 0.5 ,1],
+        rootMargin: '100% 0% 100% 0%'
+      }
+    );
+
+    for( j=0; j < tot_blocks; j++ ) {
+      if ( -1 !== blocks[j].className.indexOf('block-w-html-video') ) {
+        var videoWrapper = blocks[j].querySelector('.rex-video-container');
+        if ( videoWrapper ) {
+          addLazyVideoListeners( videoWrapper );
+        }
+      }
+
+      scrollobserverBlock.observe(blocks[j]);
     }
   }
 
@@ -518,6 +436,7 @@
   if ( queuing ) {
     document.addEventListener('DOMContentLoaded', handlingQueues);
   }
-  // window.addEventListener('load', handleIntersectionObserver);
+
   window.addEventListener('load', handleIntersectionObserverSmart);
+  // window.addEventListener('load', barbarianLoad);
 }());
