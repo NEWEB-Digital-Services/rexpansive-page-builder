@@ -16609,11 +16609,11 @@ input:disabled + .rex_edit_title_slider {
   position: relative; }
   .top-lateral-tools .tool-button.tool-button--close {
     top: auto;
-    bottom: -20px;
+    bottom: 14px;
     -webkit-transform: translate(50%, -50%) rotate(-90deg);
         -ms-transform: translate(50%, -50%) rotate(-90deg);
             transform: translate(50%, -50%) rotate(-90deg);
-    font-size: 12px;
+    font-size: 13px;
     background-color: #424242;
     color: #fff; }
     .top-lateral-tools .tool-button.tool-button--close .l-svg-icons > svg {
