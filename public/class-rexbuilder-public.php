@@ -1475,6 +1475,7 @@ class Rexbuilder_Public
 		?>
 		<div class="rex-container" data-rex-layout-selected="" data-backend-edited="<?php echo $backendEditing;?>">
 		<?php echo $rexbuilderShortcode; ?>
+		<?php do_action( 'rexbuilder_builder_after_live_content' ); ?>
 		</div>
 		<?php 
 		if ( isset( $editor ) && $editor == "true" ) {
