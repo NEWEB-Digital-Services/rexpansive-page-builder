@@ -152,6 +152,9 @@ class Rexbuilder_Utilities {
 				wp_enqueue_script( 'photoswipe-script', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/photoswipe.min.js', $script_depths, REXCLASSIC_VERSION, true );
 				wp_enqueue_script( 'photoswipe-ui-script', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/photoswipe-ui-default.min.js', $script_depths, REXCLASSIC_VERSION, true );
 				break;
+			case 'rxcf7':
+				wp_enqueue_style( 'rxcf7', REXPANSIVE_BUILDER_URL . 'public/css/rxcf7.css', $style_depths, REXCLASSIC_VERSION );
+				break;
 			default:
 				break;
 		}
