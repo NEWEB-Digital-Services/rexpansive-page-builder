@@ -22,6 +22,7 @@
   var pluginName = "rexAccordion",
     defaults = {
       selectors: {
+        self: '.rex-accordion',
         toggle: '.rex-accordion--toggle',
         content: '.rex-accordion--content'
       },
@@ -52,9 +53,28 @@
       this.settings.durationClose = this.settings.duration;
     }
 
+    var tempToggle = this.$element.find(this.settings.selectors.toggle);
+    var tempContent = this.$element.find(this.settings.selectors.content);
+
+    var that = this;
+
+    var toggle = [];
+    tempToggle.each( function(i,el) {
+      if ( $(el).closest(that.settings.selectors.self).is(that.$element) ) {
+        toggle.push(el)
+      }
+    });
+
+    var content = [];
+    tempContent.each( function(i,el) {
+      if ( $(el).closest(that.settings.selectors.self).is(that.$element) ) {
+        content.push(el)
+      }
+    });
+
     this.properties = {
-      $toggle: this.$element.find(this.settings.selectors.toggle),
-      $content: this.$element.find(this.settings.selectors.content)
+      $toggle: $(toggle),
+      $content: $(content)
     };
 
     this.init();
@@ -215,6 +235,10 @@
       if( this.$element.hasClass('open') ) {
         this.$element.addClass('close').removeClass('open');
       }
+    },
+
+    getState: function() {
+      return this.properties.$content.attr('data-item-status');
     }
   });
 
