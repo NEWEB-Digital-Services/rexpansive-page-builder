@@ -586,20 +586,59 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   var launchSplitScollable = function( context, customScrollContainer ) {
-    if ( 'undefined' !== typeof SplitScrollable ) {
-      if ( Rexbuilder_Util.viewport().width >= _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
-        var scrbls = [].slice.call( context.getElementsByClassName('split-scrollable') );
-        var tot_scrbls = scrbls.length, i;
-        for( i=0; i < tot_scrbls; i++ ) {
-          var inst = new SplitScrollable(scrbls[i], {
-            scrollElsToWatchClass: 'text-wrap',
-            initializeComplete: fixScrollableGridGallery,
-            customScrollContainer: ( 'undefined' !== typeof customScrollContainer ? customScrollContainer : null )
-          });
-        }
+    if ( 'undefined' === typeof SplitScrollable ) {
+      return;
+    }
+    if ( Rexbuilder_Util.viewport().width >= _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
+      var scrbls = Array.prototype.slice.call( context.getElementsByClassName('split-scrollable') );
+      var tot_scrbls = scrbls.length, i;
+      for( i=0; i < tot_scrbls; i++ ) {
+        var inst = new SplitScrollable(scrbls[i], {
+          scrollElsToWatchClass: 'text-wrap',
+          initializeComplete: fixScrollableGridGallery,
+          customScrollContainer: ( 'undefined' !== typeof customScrollContainer ? customScrollContainer : null )
+        });
       }
     }
   };
+
+  /**
+   * if ParticleSwarm plugin is defined, launch on every section
+   * creates a canvas, insert inside the section and launch the effect
+   * @return {void}
+   */
+  function launchParticleSwarm() {
+    if ( 'undefined' === typeof ParticleSwarm ) {
+      return;
+    }
+
+    var particleSwarm = Array.prototype.slice.call( document.getElementsByClassName('particle-swarm') );
+    var i, tot_particelSwarm = particleSwarm.length;
+    for( i=0; i < tot_particelSwarm; i++ ) {
+      var c = document.createElement('canvas');
+      particleSwarm[i].insertBefore(c, particleSwarm[i].firstChild);
+      new ParticleSwarm(c);
+    }
+  }
+
+  function disableGrids() {
+    var gridsToDisable = Array.prototype.slice.call( document.getElementsByClassName('disable-grid') );
+    var i, tot_gridsToDisable = gridsToDisable.length;
+    for( i=0; i<tot_gridsToDisable; i++ ) {
+      var bs = Array.prototype.slice.call( gridsToDisable[i].getElementsByClassName('grid-stack-item') );
+      var j, tot_bs = bs.length;
+
+      for( j =0; j < tot_bs; j++ ) {
+        bs[j].style.height = window.getComputedStyle(bs[j]).height;
+      }
+
+      var pgg = gridsToDisable[i].querySelector('.perfect-grid-gallery');
+      $(pgg).perfectGridGalleryEditor('destroyGridGallery');
+      // $(pgg).perfectGridGalleryEditor('destroy');
+      Rexbuilder_Util.addClass(gridsToDisable[i], 'disabled');
+      pgg.style.height = '';
+    }
+  }
 
   /**
    * Launching odometer with some options
@@ -701,6 +740,10 @@ var Rexbuilder_App = (function($) {
       launchPopUpContent();
       // launch splitScrollable
       launchSplitScollable( document );
+
+      launchParticleSwarm();
+
+      disableGrids();
 
       // listen iframe events (for popupcontent)
       listenPopUpContentEvents();

@@ -1644,6 +1644,10 @@ var Rex_Save_Listeners = (function($) {
       {
         condition: 'split-scrollable',
         active: false
+      },
+      {
+        condition: 'particle-swarm',
+        active: false
       }
     ];
 

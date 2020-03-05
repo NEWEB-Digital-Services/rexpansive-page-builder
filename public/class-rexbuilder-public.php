@@ -355,8 +355,11 @@ class Rexbuilder_Public
 				if ( false !== strpos( $customEffects, 'split-scrollable' ) ) {
 					wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.js', array(), $ver, true);
 				}
-			}
 
+				if ( false !== strpos( $customEffects, 'particle-swarm' ) ) {
+					wp_enqueue_script('particle-swarm', REXPANSIVE_BUILDER_URL . 'public/js/vendor/particle-swarm.js', array(), REXPANSIVE_BUILDER_VERSION, true);
+				}
+			}
 
 			wp_enqueue_script('utilities', REXPANSIVE_BUILDER_URL . 'public/js/vendor/utilities.js', array('jquery'), $ver, true);
 			wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . 'public/js/live/2-jquery.perfectGridGalleryEditor.js', array('jquery'), null, true);
@@ -444,6 +447,10 @@ class Rexbuilder_Public
 
 				if ( false !== strpos( $customEffects, 'split-scrollable' ) ) {
 					wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
+				}
+
+				if ( false !== strpos( $customEffects, 'particle-swarm' ) ) {
+					wp_enqueue_script('particle-swarm', REXPANSIVE_BUILDER_URL . 'public/js/vendor/particle-swarm.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
 				}
 
 				wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-public.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );

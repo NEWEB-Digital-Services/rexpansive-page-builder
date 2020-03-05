@@ -244,7 +244,8 @@ var effects_js_src = [
 	'public/js/vendor/distance-accordion.js',
 	'public/js/vendor/popup-content.js',
 	'public/js/vendor/split-scrollable.js',
-	'public/js/vendor/jquery.rexAccordion.js'
+	'public/js/vendor/jquery.rexAccordion.js',
+	'public/js/vendor/particle-swarm.js'
 ];
 
 gulp.task('prepare-effects', function() {

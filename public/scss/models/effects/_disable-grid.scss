@@ -1,0 +1,12 @@
+.disable-grid{
+	&.disabled {
+		.perfect-grid-gallery,
+		.rex-row__dimension {
+			overflow:visible;
+		}
+
+		.grid-stack>.grid-stack-item {
+			position:static;
+		}
+	}
+}
