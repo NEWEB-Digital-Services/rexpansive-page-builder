@@ -1040,7 +1040,7 @@ var Rex_Save_Listeners = (function($) {
         // retrieve the block content
         // if there is some, or there is an img, an iframe or an icon inline
         if ( savingBlock.textContent.trim() == '' ) {
-          if ( savingBlock.getElementsByTagName('iframe').length > 0 || savingBlock.getElementsByTagName('img').length > 0 || savingBlock.getElementsByTagName('i').length > 0 || savingBlock.getElementsByTagName('form').length > 0 ) {
+          if ( savingBlock.getElementsByTagName('iframe').length > 0 || savingBlock.getElementsByTagName('img').length > 0 || savingBlock.getElementsByTagName('i').length > 0 || savingBlock.getElementsByTagName('form').length > 0 || savingBlock.getElementsByTagName('hr').length > 0 ) {
             if( savingBlock.getElementsByTagName('form').length > 0 ) {
               [].slice.call( savingBlock.getElementsByClassName('rex-element-container') ).forEach( function(el) {
                 $(el).empty();

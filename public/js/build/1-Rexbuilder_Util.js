@@ -1342,9 +1342,9 @@ var Rexbuilder_Util = (function($) {
       $gallery.attr("data-rexlive-layout-changed", true);
     }
 
-    if (galleryData !== undefined) {
+    if ( 'undefined' !== typeof galleryData ) {
       var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
-      if (galleryEditorInstance !== undefined) {
+      if ( 'undefined' !== typeof galleryEditorInstance ) {
         for (var i = 1, tot_target = targets.length; i < tot_target; i++) {
           var $elem = $gallery.children(
             'div[data-rexbuilder-block-id="' + targets[i].name + '"]'
@@ -1423,16 +1423,18 @@ var Rexbuilder_Util = (function($) {
         : targets[0].props.collapse_grid.toString() == "true" ||
           forceCollapseElementsGrid;
 
-    if ( galleryData !== undefined ) {
+    if ( 'undefined' !== typeof galleryData ) {
       var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
-      if ( galleryEditorInstance !== undefined ) {
-        Rexbuilder_Util.domUpdaiting = true;
+      if ( 'undefined' !== typeof galleryEditorInstance ) {
+        if ( 'undefined' !== typeof galleryEditorInstance.properties.gridstackInstance && galleryEditorInstance.properties.gridstackInstance ) {
+          Rexbuilder_Util.domUpdaiting = true;
 
-        galleryEditorInstance.properties.gridstackInstance.commit();
-        //waiting for gridstack updating blocks dimensions with saved data
-        var handlingGridstackCommitEndTi = setTimeout( handlingGridstackCommitEnd.bind(null, galleryEditorInstance, collapse, targets, meIndex), 300 );
-        // var temp = Rexbuilder_Util.rtimeOut( handlingGridstackCommitEnd.bind(null, galleryEditorInstance, collapse, targets), 300 );
-        // handlingGridstackCommitEnd(galleryEditorInstance, collapse, targets);
+          galleryEditorInstance.properties.gridstackInstance.commit();
+          //waiting for gridstack updating blocks dimensions with saved data
+          var handlingGridstackCommitEndTi = setTimeout( handlingGridstackCommitEnd.bind(null, galleryEditorInstance, collapse, targets, meIndex), 300 );
+          // var temp = Rexbuilder_Util.rtimeOut( handlingGridstackCommitEnd.bind(null, galleryEditorInstance, collapse, targets), 300 );
+          // handlingGridstackCommitEnd(galleryEditorInstance, collapse, targets);
+        }
       }
     }
 
@@ -2824,7 +2826,7 @@ var Rexbuilder_Util = (function($) {
     var increaseHeight = parseInt(posData.increaseHeight);
     var realFluid = parseInt(posData.realFluid);
 
-    if (typeof posData.gridstackInstance != "undefined") {
+    if ( "undefined" !== typeof posData.gridstackInstance && posData.gridstackInstance ) {
       posData.gridstackInstance.update(elem, x, y, w, h);
     } else {
       elem.setAttribute("data-gs-height", h);
