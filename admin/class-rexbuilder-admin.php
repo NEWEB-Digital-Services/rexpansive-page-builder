@@ -802,39 +802,39 @@ class Rexbuilder_Admin {
 	}
 
 	/**
-     * Including eventually custom sprites
-     * uploaded on the backend
-     *
-     * @since 2.0.0
-     */
-    public function include_custom_sprites() {
-    	$upload_dir = wp_upload_dir();
+	 * Including eventually custom sprites
+	 * uploaded on the backend
+	 *
+	 * @since 2.0.0
+	 */
+	public function include_custom_sprites() {
+		$upload_dir = wp_upload_dir();
 		$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
 
-        if ( file_exists( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ) ) 
-        {
-        ?>
-        <div style="display:none"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
-        <?php
-        }
-    }
+		if ( file_exists( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ) ) 
+		{
+		?>
+		<div style="display:none"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
+		<?php
+		}
+	}
 
-    /**
+	/**
 	 * Add the admin tools for the builder live mode
 	 * @return null
 	 * @since  2.0.0
 	 */
-   	public function include_live_editing() {
+	public function include_live_editing() {
 		include_once( 'partials/rexbuilder-live-editing.php' );
-    }
+	}
 
-    /**
-     * Add RexLive class on admin body when editing a page in live mode
-     * @param  Array $classes array of admin body classes
-     * @return Array          array update
-     * @since  2.0.0
-     */
-    public function rexlive_body_class( $classes ) {
+	/**
+	 * Add RexLive class on admin body when editing a page in live mode
+	 * @param  Array $classes array of admin body classes
+	 * @return Array          array update
+	 * @since  2.0.0
+	 */
+	public function rexlive_body_class( $classes ) {
 	   $classes .= ' rexpansive-editor ';
 	   return $classes;
 	}
@@ -901,7 +901,7 @@ class Rexbuilder_Admin {
 	 * @since  2.0.2
 	 */
 	public function acf_settings_url( $url ) {
-	    return REXPANSIVE_BUILDER_ACF_URL;
+		return REXPANSIVE_BUILDER_ACF_URL;
 	}
 
 	/**
@@ -911,7 +911,7 @@ class Rexbuilder_Admin {
 	 * @since  2.0.2
 	 */
 	public function acf_settings_show_admin( $show_admin ) {
-	    return false;
+		return false;
 	}
 
 	/**
@@ -920,180 +920,182 @@ class Rexbuilder_Admin {
 	 * @since  2.0.2
 	 */
 	public function define_acf_fields() {
-		if( function_exists("register_field_group") ) {
-		    register_field_group(array (
-		        'id' => 'acf_rexpansive-slider',
-		        'title' => 'Rexpansive Slider',
-		        'fields' => array (
-		            array (
-		                'key' => 'field_564f2373722c3',
-		                'label' => 'Slides',
-		                'name' => '_rex_banner_gallery',
-		                'type' => 'repeater',
-		                'sub_fields' => array (
-		                    array (
-		                        'key' => 'field_5675394f2fa0f',
-		                        'label' => 'Image',
-		                        'name' => '_rex_banner_gallery_image',
-		                        'type' => 'image',
-		                        'column_width' => '',
-		                        'save_format' => 'object',
-		                        'preview_size' => 'thumbnail',
-		                        'library' => 'all',
-		                    ),
-		                    array (
-		                        'key' => 'field_567539852fa11',
-		                        'label' => 'Title',
-		                        'name' => '_rex_banner_gallery_image_title',
-		                        'type' => 'wysiwyg',
-		                        'column_width' => '',
-		                        'default_value' => '',
-		                        'toolbar' => 'full',
-		                        'media_upload' => 'no',
-		                    ),
-		                    array (
-		                        'key' => 'field_580e08d79f9db',
-		                        'label' => 'Video',
-		                        'name' => '_rex_banner_gallery_video',
-		                        'type' => 'text',
-		                        'column_width' => '',
-		                        'default_value' => '',
-		                        'placeholder' => '',
-		                        'prepend' => '',
-		                        'append' => '',
-		                        'formatting' => 'html',
-		                        'maxlength' => '',
-		                    ),
-		                    array (
-		                        'key' => 'field_5948ca17a1bb8',
-		                        'label' => 'Mp4',
-		                        'name' => '_rex_banner_gallery_video_mp4',
-		                        'type' => 'file',
-		                        'column_width' => '',
-		                        'save_format' => 'object',
-		                        'library' => 'all',
-		                    ),
-		                    array (
-		                        'key' => 'field_5948eb01358e1',
-		                        'label' => 'Audio',
-		                        'name' => '_rex_banner_gallery_video_audio',
-		                        'type' => 'checkbox',
-		                        'column_width' => '',
-		                        'choices' => array (
-		                            'yes' => 'Enable',
-		                        ),
-		                        'default_value' => '',
-		                        'layout' => 'vertical',
-		                    ),
-		                    array (
-		                        'key' => 'field_594a186edc532',
-		                        'label' => 'Url',
-		                        'name' => '_rex_banner_gallery_url',
-		                        'type' => 'text',
-		                        'column_width' => '',
-		                        'default_value' => '',
-		                        'placeholder' => '',
-		                        'prepend' => '',
-		                        'append' => '',
-		                        'formatting' => 'html',
-		                        'maxlength' => '',
-		                    ),
-		                    array (
-								'key' => 'field_5b963966471bd',
-								'label' => 'Navigator Label',
-								'name' => '_rex_slider_nav_label',
-								'type' => 'text',
-								'column_width' => '',
-								'default_value' => '',
-								'placeholder' => '',
-								'prepend' => '',
-								'append' => '',
-								'formatting' => 'html',
-								'maxlength' => '',
-							),
-							array (
-								'key' => 'field_5b963990471be',
-								'label' => 'Navigator Image',
-								'name' => '_rex_slider_nav_img',
-								'type' => 'image',
-								'column_width' => '',
-								'save_format' => 'object',
-								'preview_size' => 'thumbnail',
-								'library' => 'all',
-		                    ),
-		                    array (
-								'key' => 'field_5ba9ef6fef790',
-								'label' => 'Hide slide',
-								'name' => '_rex_slider_hide_slide',
-								'type' => 'checkbox',
-								'column_width' => '',
-								'choices' => array (
-									'hide' => 'Yes',
-								),
-								'default_value' => '',
-								'layout' => 'horizontal',
-							),
-		                ),
-		                'row_min' => '',
-		                'row_limit' => '',
-		                'layout' => 'row',
-		                'button_label' => 'Add Slide',
-		            ),
-		            array (
-		                'key' => 'field_564f1f0c050bc',
-		                'label' => 'Enable Animation',
-		                'name' => '_rex_enable_banner_animation',
-		                'type' => 'checkbox',
-		                'instructions' => 'If check, enables animation on banner images',
-		                'choices' => array (
-		                    'yes' => 'Enable',
-		                ),
-		                'default_value' => 'yes',
-		                'layout' => 'horizontal',
-		            ),
-		            array (
-		                'key' => 'field_5948caf770b0e',
-		                'label' => 'View Prev Next Arrows',
-		                'name' => '_rex_enable_banner_prev_next',
-		                'type' => 'checkbox',
-		                'choices' => array (
-		                    'yes' => 'Enable',
-		                ),
-		                'default_value' => 'yes',
-		                'layout' => 'horizontal',
-		            ),
-		            array (
-		                'key' => 'field_5948cb2270b0f',
-		                'label' => 'View Dots',
-		                'name' => '_rex_enable_banner_dots',
-		                'type' => 'checkbox',
-		                'choices' => array (
-		                    'yes' => 'Enable',
-		                ),
-		                'default_value' => 'yes',
-		                'layout' => 'horizontal',
-		            ),
-		        ),
-		        'location' => array (
-		            array (
-		                array (
-		                    'param' => 'post_type',
-		                    'operator' => '==',
-		                    'value' => 'rex_slider',
-		                    'order_no' => 0,
-		                    'group_no' => 0,
-		                ),
-		            ),
-		        ),
-		        'options' => array (
-		            'position' => 'normal',
-		            'layout' => 'default',
-		            'hide_on_screen' => array (
-		            ),
-		        ),
-		        'menu_order' => 0,
-		    ));
+		if( ! function_exists("register_field_group") ) {
+			return;
 		}
+
+		register_field_group(array (
+			'id' => 'acf_rexpansive-slider',
+			'title' => 'Rexpansive Slider',
+			'fields' => array (
+				array (
+					'key' => 'field_564f2373722c3',
+					'label' => 'Slides',
+					'name' => '_rex_banner_gallery',
+					'type' => 'repeater',
+					'sub_fields' => array (
+						array (
+							'key' => 'field_5675394f2fa0f',
+							'label' => 'Image',
+							'name' => '_rex_banner_gallery_image',
+							'type' => 'image',
+							'column_width' => '',
+							'save_format' => 'object',
+							'preview_size' => 'thumbnail',
+							'library' => 'all',
+						),
+						array (
+							'key' => 'field_567539852fa11',
+							'label' => 'Title',
+							'name' => '_rex_banner_gallery_image_title',
+							'type' => 'wysiwyg',
+							'column_width' => '',
+							'default_value' => '',
+							'toolbar' => 'full',
+							'media_upload' => 'no',
+						),
+						array (
+							'key' => 'field_580e08d79f9db',
+							'label' => 'Video',
+							'name' => '_rex_banner_gallery_video',
+							'type' => 'text',
+							'column_width' => '',
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'formatting' => 'html',
+							'maxlength' => '',
+						),
+						array (
+							'key' => 'field_5948ca17a1bb8',
+							'label' => 'Mp4',
+							'name' => '_rex_banner_gallery_video_mp4',
+							'type' => 'file',
+							'column_width' => '',
+							'save_format' => 'object',
+							'library' => 'all',
+						),
+						array (
+							'key' => 'field_5948eb01358e1',
+							'label' => 'Audio',
+							'name' => '_rex_banner_gallery_video_audio',
+							'type' => 'checkbox',
+							'column_width' => '',
+							'choices' => array (
+								'yes' => 'Enable',
+							),
+							'default_value' => '',
+							'layout' => 'vertical',
+						),
+						array (
+							'key' => 'field_594a186edc532',
+							'label' => 'Url',
+							'name' => '_rex_banner_gallery_url',
+							'type' => 'text',
+							'column_width' => '',
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'formatting' => 'html',
+							'maxlength' => '',
+						),
+						array (
+							'key' => 'field_5b963966471bd',
+							'label' => 'Navigator Label',
+							'name' => '_rex_slider_nav_label',
+							'type' => 'text',
+							'column_width' => '',
+							'default_value' => '',
+							'placeholder' => '',
+							'prepend' => '',
+							'append' => '',
+							'formatting' => 'html',
+							'maxlength' => '',
+						),
+						array (
+							'key' => 'field_5b963990471be',
+							'label' => 'Navigator Image',
+							'name' => '_rex_slider_nav_img',
+							'type' => 'image',
+							'column_width' => '',
+							'save_format' => 'object',
+							'preview_size' => 'thumbnail',
+							'library' => 'all',
+						),
+						array (
+							'key' => 'field_5ba9ef6fef790',
+							'label' => 'Hide slide',
+							'name' => '_rex_slider_hide_slide',
+							'type' => 'checkbox',
+							'column_width' => '',
+							'choices' => array (
+								'hide' => 'Yes',
+							),
+							'default_value' => '',
+							'layout' => 'horizontal',
+						),
+					),
+					'row_min' => '',
+					'row_limit' => '',
+					'layout' => 'row',
+					'button_label' => 'Add Slide',
+				),
+				array (
+					'key' => 'field_564f1f0c050bc',
+					'label' => 'Enable Animation',
+					'name' => '_rex_enable_banner_animation',
+					'type' => 'checkbox',
+					'instructions' => 'If check, enables animation on banner images',
+					'choices' => array (
+						'yes' => 'Enable',
+					),
+					'default_value' => 'yes',
+					'layout' => 'horizontal',
+				),
+				array (
+					'key' => 'field_5948caf770b0e',
+					'label' => 'View Prev Next Arrows',
+					'name' => '_rex_enable_banner_prev_next',
+					'type' => 'checkbox',
+					'choices' => array (
+						'yes' => 'Enable',
+					),
+					'default_value' => 'yes',
+					'layout' => 'horizontal',
+				),
+				array (
+					'key' => 'field_5948cb2270b0f',
+					'label' => 'View Dots',
+					'name' => '_rex_enable_banner_dots',
+					'type' => 'checkbox',
+					'choices' => array (
+						'yes' => 'Enable',
+					),
+					'default_value' => 'yes',
+					'layout' => 'horizontal',
+				),
+			),
+			'location' => array (
+				array (
+					array (
+						'param' => 'post_type',
+						'operator' => '==',
+						'value' => 'rex_slider',
+						'order_no' => 0,
+						'group_no' => 0,
+					),
+				),
+			),
+			'options' => array (
+				'position' => 'normal',
+				'layout' => 'default',
+				'hide_on_screen' => array (
+				),
+			),
+			'menu_order' => 0,
+		));
 
 		$navigation_choices = array(
 			'none'			=>	'None',
@@ -1106,53 +1108,50 @@ class Rexbuilder_Admin {
 		// 	$navigation_choices['horizontal_points'] = 'Horizontal Points';
 		// }
 
-		if(function_exists("register_field_group"))
-		{
-			register_field_group(array (
-				'id' => 'acf_internal-navigation',
-				'title' => 'Internal Navigation',
-				'fields' => array (
-					array (
-						'key' => 'field_56cb20b3f2432',
-						'label' => 'Navigation Type',
-						'name' => '_rex_navigation_type',
-						'type' => 'select',
-						'conditional_logic' => array (
-							'status' => 1,
-							'rules' => array (
-								array (
-									'field' => 'null',
-									'operator' => '==',
-								),
+		register_field_group(array (
+			'id' => 'acf_internal-navigation',
+			'title' => 'Internal Navigation',
+			'fields' => array (
+				array (
+					'key' => 'field_56cb20b3f2432',
+					'label' => 'Navigation Type',
+					'name' => '_rex_navigation_type',
+					'type' => 'select',
+					'conditional_logic' => array (
+						'status' => 1,
+						'rules' => array (
+							array (
+								'field' => 'null',
+								'operator' => '==',
 							),
-							'allorany' => 'all',
 						),
-						'choices' => $navigation_choices,
-						'default_value' => 'horizontal_points',
-						'allow_null' => 0,
-						'multiple' => 0,
+						'allorany' => 'all',
 					),
+					'choices' => $navigation_choices,
+					'default_value' => 'horizontal_points',
+					'allow_null' => 0,
+					'multiple' => 0,
 				),
-				'location' => array (
+			),
+			'location' => array (
+				array (
 					array (
-						array (
-							'param' => 'rexpansive_builder',
-							'operator' => '==',
-							'value' => 1,
-							'order_no' => 0,
-							'group_no' => 0,
-						),
+						'param' => 'rexpansive_builder',
+						'operator' => '==',
+						'value' => 1,
+						'order_no' => 0,
+						'group_no' => 0,
 					),
 				),
-				'options' => array (
-					'position' => 'normal',
-					'layout' => 'default',
-					'hide_on_screen' => array (
-					),
+			),
+			'options' => array (
+				'position' => 'normal',
+				'layout' => 'default',
+				'hide_on_screen' => array (
 				),
-				'menu_order' => 0,
-			));
-		}
+			),
+			'menu_order' => 0,
+		));
 	}
 
 	/**
@@ -1303,34 +1302,34 @@ class Rexbuilder_Admin {
 		
 			<div id="icon-tools" class="icon32"></div>
 			<h2><?php echo $theme_data['Name']; ?> Plugin Updates</h2>
-		    <div id="message" class="updated below-h2"><p><strong>There is a new version of the <?php echo $theme_data['Name']; ?> plugin available.</strong> You have version <?php echo $theme_data['Version']; ?> installed. Update to version <?php echo $xml->latest; ?>.</p></div>
+			<div id="message" class="updated below-h2"><p><strong>There is a new version of the <?php echo $theme_data['Name']; ?> plugin available.</strong> You have version <?php echo $theme_data['Version']; ?> installed. Update to version <?php echo $xml->latest; ?>.</p></div>
 
-		    <h2>Check your email to get the automatic update download link</h2>
-	        
-	        <!-- <a href="http://rexpansive.neweb.info/download/1450/" class="update-notify-link" title="Update" style="background-image:url(<?php echo WP_PLUGIN_DIR . '/rexpansive-builder/screenshot.png'; ?>);">
-	        	<h2>Version <?php echo $xml->latest; ?></h2>
-	        	Download this update
-	    		<?php 
-	    			// echo do_shortcode( '[rexArrow type="download" target="_self" color="#ffffff" link="http://rexpansive.neweb.info/download/1450/" isinsidelink="true"]Download this update[/rexArrow]' ); 
-	    		?>
-	        </a> -->
-	        <!-- <img style="float: left; margin: 0 20px 20px 0; border: 1px solid #ddd;" src="<?php echo WP_PLUGIN_DIR . '/rexpansive-builder/screenshot.png'; ?>" /> -->
+			<h2>Check your email to get the automatic update download link</h2>
+			
+			<!-- <a href="http://rexpansive.neweb.info/download/1450/" class="update-notify-link" title="Update" style="background-image:url(<?php echo WP_PLUGIN_DIR . '/rexpansive-builder/screenshot.png'; ?>);">
+				<h2>Version <?php echo $xml->latest; ?></h2>
+				Download this update
+				<?php 
+					// echo do_shortcode( '[rexArrow type="download" target="_self" color="#ffffff" link="http://rexpansive.neweb.info/download/1450/" isinsidelink="true"]Download this update[/rexArrow]' ); 
+				?>
+			</a> -->
+			<!-- <img style="float: left; margin: 0 20px 20px 0; border: 1px solid #ddd;" src="<?php echo WP_PLUGIN_DIR . '/rexpansive-builder/screenshot.png'; ?>" /> -->
 
-	        <div id="instructions" style="max-width: 800px;">
-	            <h3>Update Download and Instructions</h3>
-	            <p><strong>Please note:</strong> make a <strong>backup</strong> of the Plugin inside your WordPress installation folder <strong>/wp-content/plugins/<?php echo strtolower($theme_data['Name']); ?>/</strong></p>
-	            <p>To update the Plugin, login to your account, head over to your <strong>downloads</strong> section and re-download the plugin like you did when you bought it.</p>
-	            <p>Extract the zip's contents, look for the extracted plugin folder, and after you have all the new files upload them using FTP to the <strong>/wp-content/plugins/<?php echo strtolower($theme_data['Name']); ?>/</strong> folder overwriting the old ones (this is why it's important to backup any changes you've made to the plugin files).</p>
-	            <p>If you didn't make any changes to the plugin files, you are free to overwrite them with the new ones without the risk of losing plugin settings, pages, posts, etc, and backwards compatibility is guaranteed.</p>
-	        </div>
-	        
-	            <div class="clear"></div>
-		    
-		    <h3 class="title">Changelog</h3>
-		    <?php echo $xml->changelog; ?>
+			<div id="instructions" style="max-width: 800px;">
+				<h3>Update Download and Instructions</h3>
+				<p><strong>Please note:</strong> make a <strong>backup</strong> of the Plugin inside your WordPress installation folder <strong>/wp-content/plugins/<?php echo strtolower($theme_data['Name']); ?>/</strong></p>
+				<p>To update the Plugin, login to your account, head over to your <strong>downloads</strong> section and re-download the plugin like you did when you bought it.</p>
+				<p>Extract the zip's contents, look for the extracted plugin folder, and after you have all the new files upload them using FTP to the <strong>/wp-content/plugins/<?php echo strtolower($theme_data['Name']); ?>/</strong> folder overwriting the old ones (this is why it's important to backup any changes you've made to the plugin files).</p>
+				<p>If you didn't make any changes to the plugin files, you are free to overwrite them with the new ones without the risk of losing plugin settings, pages, posts, etc, and backwards compatibility is guaranteed.</p>
+			</div>
+			
+				<div class="clear"></div>
+			
+			<h3 class="title">Changelog</h3>
+			<?php echo $xml->changelog; ?>
 
 		</div>
-	    
+		
 	<?php }
 
 	// This function retrieves a remote xml file on my server to see if there's a new update 
@@ -1645,51 +1644,51 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		// get the optimized sprites
 		$sprites = $_REQUEST['sprites'];
 
-        if ( ! empty( $sprites ) ) {
-            $spritesStripped = stripslashes( $sprites );
-            $spritesData = json_decode( $spritesStripped, true );
+		if ( ! empty( $sprites ) ) {
+			$spritesStripped = stripslashes( $sprites );
+			$spritesData = json_decode( $spritesStripped, true );
 
-            $upload_dir = wp_upload_dir();
+			$upload_dir = wp_upload_dir();
 			$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
 
-            $response['path'] = $uploads_dirname . '/assets/symbol/sprite.symbol.svg';
-            $response['path_ids'] = $uploads_dirname . '/assets/sprite-list.json';
+			$response['path'] = $uploads_dirname . '/assets/symbol/sprite.symbol.svg';
+			$response['path_ids'] = $uploads_dirname . '/assets/sprite-list.json';
 
-            // get sprite ids JSON
-            if ( file_exists( $response['path_ids'] ) )
-            {
-            	$sprite_list = file_get_contents( $response['path_ids'] );
-            	$symbolsIdJSON = json_decode( $sprite_list, true );
-            }
-            else
-            {
-	         	$symbolsIdJSON = array(
-	         		'l-svg-icons' => array()
-	         	);
-            }
-         
-            $symbolsHTML = '';
+			// get sprite ids JSON
+			if ( file_exists( $response['path_ids'] ) )
+			{
+				$sprite_list = file_get_contents( $response['path_ids'] );
+				$symbolsIdJSON = json_decode( $sprite_list, true );
+			}
+			else
+			{
+				$symbolsIdJSON = array(
+					'l-svg-icons' => array()
+				);
+			}
+		 
+			$symbolsHTML = '';
 
-            foreach ($spritesData as $index => $spriteData) {
-            	// prevent duplicates
-            	if ( false === array_search( $spriteData['id'], $symbolsIdJSON['l-svg-icons']) ) {
-	            	$symbolsHTML .= $spriteData['data'];
-	            	array_push( $symbolsIdJSON['l-svg-icons'], $spriteData['id'] );
-            	}
-            }
+			foreach ($spritesData as $index => $spriteData) {
+				// prevent duplicates
+				if ( false === array_search( $spriteData['id'], $symbolsIdJSON['l-svg-icons']) ) {
+					$symbolsHTML .= $spriteData['data'];
+					array_push( $symbolsIdJSON['l-svg-icons'], $spriteData['id'] );
+				}
+			}
 
-            $response['ids'] = $symbolsIdJSON;
+			$response['ids'] = $symbolsIdJSON;
 
-            // save svg symbols
-            $symbolFile = fopen( $response['path'], 'a') or die( "Unable to open file!" );
-            fwrite( $symbolFile, $symbolsHTML );
-            fclose( $symbolFile );
+			// save svg symbols
+			$symbolFile = fopen( $response['path'], 'a') or die( "Unable to open file!" );
+			fwrite( $symbolFile, $symbolsHTML );
+			fclose( $symbolFile );
 
-            // save id list
-            $listFile = fopen( $response['path_ids'], 'w') or die( "Unable to open file!" );
+			// save id list
+			$listFile = fopen( $response['path_ids'], 'w') or die( "Unable to open file!" );
 			fwrite( $listFile, json_encode( $symbolsIdJSON ) );
-            fclose( $listFile );
-        }
+			fclose( $listFile );
+		}
 
 		wp_send_json_success( $response );
 	}
@@ -1715,53 +1714,53 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		// get the optimized sprites
 		$deleteList = $_REQUEST['deleteList'];
 
-        if ( ! empty( $deleteList ) ) {
-            $deleteListStripped = stripslashes( $deleteList );
-            $deleteListData = json_decode( $deleteListStripped, true );
+		if ( ! empty( $deleteList ) ) {
+			$deleteListStripped = stripslashes( $deleteList );
+			$deleteListData = json_decode( $deleteListStripped, true );
 
-            $upload_dir = wp_upload_dir();
+			$upload_dir = wp_upload_dir();
 			$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
 
-            $response['path'] = $uploads_dirname . '/assets/symbol/sprite.symbol.svg';
-            $response['path_ids'] = $uploads_dirname . '/assets/sprite-list.json';
+			$response['path'] = $uploads_dirname . '/assets/symbol/sprite.symbol.svg';
+			$response['path_ids'] = $uploads_dirname . '/assets/sprite-list.json';
 
-            // get sprite ids JSON
-            if ( file_exists( $response['path_ids'] ) && file_exists( $response['path'] ) )
-            {
-            	$sprite_list = file_get_contents( $response['path_ids'] );
-            	$symbolsIdJSON = json_decode( $sprite_list, true );
+			// get sprite ids JSON
+			if ( file_exists( $response['path_ids'] ) && file_exists( $response['path'] ) )
+			{
+				$sprite_list = file_get_contents( $response['path_ids'] );
+				$symbolsIdJSON = json_decode( $sprite_list, true );
 
-            	$spriteDefinitions = file_get_contents( $response['path'] );
+				$spriteDefinitions = file_get_contents( $response['path'] );
 
-	            foreach ( $deleteListData as $key ) {
-	            	// remove symbol
-	            	$re = '/<\s*symbol[^>]*id="' . $key . '"[^>]*>(?:.*?)<\s*\/\s*symbol>/m';
-	            	$spriteDefinitions = preg_replace( $re, '', $spriteDefinitions );
+				foreach ( $deleteListData as $key ) {
+					// remove symbol
+					$re = '/<\s*symbol[^>]*id="' . $key . '"[^>]*>(?:.*?)<\s*\/\s*symbol>/m';
+					$spriteDefinitions = preg_replace( $re, '', $spriteDefinitions );
 
-	            	// remove index
-	            	$idxDel = array_search( $key, $symbolsIdJSON['l-svg-icons'] );
-	            	array_splice( $symbolsIdJSON['l-svg-icons'], $idxDel, 1 );
-	            }
+					// remove index
+					$idxDel = array_search( $key, $symbolsIdJSON['l-svg-icons'] );
+					array_splice( $symbolsIdJSON['l-svg-icons'], $idxDel, 1 );
+				}
 
-	            $response['ids'] = $symbolsIdJSON;
-	            $response['deleteList'] = $deleteListData;
+				$response['ids'] = $symbolsIdJSON;
+				$response['deleteList'] = $deleteListData;
 
-	            // save svg symbols
-	            $symbolFile = fopen( $response['path'], 'w') or die( "Unable to open file!" );
-	            fwrite( $symbolFile, $spriteDefinitions );
-	            fclose( $symbolFile );
+				// save svg symbols
+				$symbolFile = fopen( $response['path'], 'w') or die( "Unable to open file!" );
+				fwrite( $symbolFile, $spriteDefinitions );
+				fclose( $symbolFile );
 
-	            // save id list
-	            $listFile = fopen( $response['path_ids'], 'w') or die( "Unable to open file!" );
+				// save id list
+				$listFile = fopen( $response['path_ids'], 'w') or die( "Unable to open file!" );
 				fwrite( $listFile, json_encode( $symbolsIdJSON ) );
-	            fclose( $listFile );
-	        }
-	        else
-	        {
-	        	$response['msg'] = 'No sprites!';
+				fclose( $listFile );
+			}
+			else
+			{
+				$response['msg'] = 'No sprites!';
 				wp_send_json_error( $response );
-	        }
-        }
+			}
+		}
 
 		wp_send_json_success( $response );
 	}
@@ -2360,11 +2359,11 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			$response['slider_id'] = $slider_to_edit;
 			$response['slider_title'] = $new_slider_title;
 
-			self::clear_slider_fields( array(
-				'field_564f1f0c050be',
-				'field_5948cb2270b0f',
-				'field_564f2373722c3',
-			), $slider_to_edit );
+			// self::clear_slider_fields( array(
+			// 	'field_564f1f0c050be',
+			// 	'field_5948cb2270b0f',
+			// 	'field_564f2373722c3',
+			// ), $slider_to_edit );
 
 			$response['edit_results'] = self::add_slider_fields( $slider_settings, $slider_to_edit );
 		} else {
@@ -2669,37 +2668,37 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		register_post_type( 'rex_model', $args );
 	}
 
-    /**
-     * Saving custom layouts
-     *
-     * @return JSON
-     */
-    public function rex_save_custom_layouts()
-    {
-        $nonce = $_POST['nonce_param'];
+	/**
+	 * Saving custom layouts
+	 *
+	 * @return JSON
+	 */
+	public function rex_save_custom_layouts()
+	{
+		$nonce = $_POST['nonce_param'];
 
-        $response = array(
-            'error' => false,
-            'msg' => '',
-        );
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
 
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		endif;
 
-        if (!isset($_POST['custom_layouts'])) {
-            $response['error'] = true;
-            $response['msg'] = 'Data error!';
-            wp_send_json_error($response);
-        }
+		if (!isset($_POST['custom_layouts'])) {
+			$response['error'] = true;
+			$response['msg'] = 'Data error!';
+			wp_send_json_error($response);
+		}
 
-        $response['error'] = false;
-        
-        update_option("_rex_responsive_layouts", $_POST['custom_layouts']);
+		$response['error'] = false;
+		
+		update_option("_rex_responsive_layouts", $_POST['custom_layouts']);
 
-        wp_send_json_success($response);
+		wp_send_json_success($response);
 	}
 	
 	/**
@@ -2866,8 +2865,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @return 
 	 * @todo Review with spani85
 	 */
-    public function print_rex_buttons_style_backend()
-    {
+	public function print_rex_buttons_style_backend()
+	{
 		$defaultButtonsIDs = '[]';
 		$buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
 		$buttonsIDsJSON = stripslashes( $buttonsIDsJSON );
@@ -2895,18 +2894,18 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$image_selected = $_GET['image_selected'];
 		$image_size = $_GET['image_size'];
 
-        $response = array(
-            'error' => false,
-            'msg' => '',
-            'model_target' => $model_target,
-            'selected_image' => $image_selected
-        );
+		$response = array(
+			'error' => false,
+			'msg' => '',
+			'model_target' => $model_target,
+			'selected_image' => $image_selected
+		);
 
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		endif;
 
 		$response['error'] = false;
 
@@ -2929,17 +2928,17 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$nonce = $_GET['nonce_param'];
 		$model_target = $_GET['model_target'];
 
-        $response = array(
-            'error' => false,
-            'msg' => '',
-            'model_target' => $model_target
-        );
+		$response = array(
+			'error' => false,
+			'msg' => '',
+			'model_target' => $model_target
+		);
 
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		endif;
 
 		$response['error'] = false;
 
@@ -2962,17 +2961,17 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$nonce = $_GET['nonce_param'];
 		$modelData = $_GET['modelData'];
 
-        $response = array(
-            'error' => false,
-            'msg' => '',
-            'modelData' => $modelData
-        );
+		$response = array(
+			'error' => false,
+			'msg' => '',
+			'modelData' => $modelData
+		);
 
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		endif;
 
 		$response['error'] = false;
 
@@ -2994,16 +2993,16 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	public function rex_get_model_list(){
 		$nonce = $_GET['nonce_param'];
 
-        $response = array(
-            'error' => false,
-            'msg' => '',
-        );
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
 
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		endif;
 
 		$response['error'] = false;
 		
@@ -3013,7 +3012,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			'post_status'            => array( 'publish', 'private' ),
 			'posts_per_page'         => '-1',
 			'orderby' => 'title',
-            'order' => 'ASC'
+			'order' => 'ASC'
 		);
 
 		$modelList = array();
@@ -3043,7 +3042,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$response["updated_list"] = $modelList;
 		$response["args"] = $args;
 
-        wp_send_json_success($response);
+		wp_send_json_success($response);
 	}
 
 	/**
@@ -3052,31 +3051,31 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @since  2.0.0
 	 */
 	public function rex_save_model_customization(){
-        $nonce = $_POST['nonce_param'];
+		$nonce = $_POST['nonce_param'];
 
-        $response = array(
-            'error' => false,
-            'msg' => '',
-        );
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
 
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		endif;
 
-        $response['error'] = false;
+		$response['error'] = false;
 
-        $post_id_to_update = intval($_POST['model_id_to_update']);
+		$post_id_to_update = intval($_POST['model_id_to_update']);
 
-        $targets = $_POST['targets'];
-        $layout_name = $_POST['layout_name'];
+		$targets = $_POST['targets'];
+		$layout_name = $_POST['layout_name'];
 
-        $targetsData = stripslashes($targets);
-        update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $targetsData);
-        $response['id_received'] = $post_id_to_update;
+		$targetsData = stripslashes($targets);
+		update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $targetsData);
+		$response['id_received'] = $post_id_to_update;
 
-        wp_send_json_success($response);
+		wp_send_json_success($response);
 	}
 
 	/**
@@ -3085,27 +3084,27 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @since  2.0.0
 	 */
 	public function rex_save_model_customization_names(){
-        $nonce = $_POST['nonce_param'];
+		$nonce = $_POST['nonce_param'];
 
-        $response = array(
-            'error' => false,
-            'msg' => '',
-        );
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
 
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		endif;
 
-        $response['error'] = false;
+		$response['error'] = false;
 
-        $post_id_to_update = intval($_POST['model_id_to_update']);
+		$post_id_to_update = intval($_POST['model_id_to_update']);
 
-        $names = $_POST['names'];
-        update_post_meta($post_id_to_update, '_rex_model_customization_names', $names);
+		$names = $_POST['names'];
+		update_post_meta($post_id_to_update, '_rex_model_customization_names', $names);
 		$response['names'] = $names;
-        wp_send_json_success($response);
+		wp_send_json_success($response);
 	}
 
 	/**
@@ -3201,25 +3200,25 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	public function rex_delete_rexmodel() {
 		$nonce = $_POST['nonce_param'];
 		
-        $response = array(
+		$response = array(
 			'error' => false,
-            'msg' => '',
-        );
+			'msg' => '',
+		);
 		
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        }
-
-        if ( !isset( $_POST['model_id'] ) ) {
-        	$response['msg'] = 'ID Error!';
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
 			wp_send_json_error($response);
-        }
+		}
 
-        $response['delete_result'] = wp_delete_post( $_POST['model_id'] );
+		if ( !isset( $_POST['model_id'] ) ) {
+			$response['msg'] = 'ID Error!';
+			wp_send_json_error($response);
+		}
 
-        wp_send_json_success( $response );
+		$response['delete_result'] = wp_delete_post( $_POST['model_id'] );
+
+		wp_send_json_success( $response );
 	}
 
 	/**
@@ -3230,23 +3229,23 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	public function rex_get_element_list(){
 		$nonce = $_GET['nonce_param'];
 
-        $response = array(
-            'error' => false,
-            'msg' => '',
-        );
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
 
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		endif;
 
 		$response['error'] = false;
 		
 		// WP_Query arguments
 		$args = array(
-            'post_type' => array('wpcf7_contact_form')
-        );
+			'post_type' => array('wpcf7_contact_form')
+		);
 
 		$elementList = array();
 
@@ -3276,7 +3275,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$response["updated_list"] = $elementList;
 		$response["args"] = $args;
 
-        wp_send_json_success($response);
+		wp_send_json_success($response);
 	}
 
 	/**
@@ -3287,25 +3286,25 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	public function rex_delete_rexelement() {
 		$nonce = $_POST['nonce_param'];
 		
-        $response = array(
+		$response = array(
 			'error' => false,
-            'msg' => '',
-        );
+			'msg' => '',
+		);
 		
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        }
-
-        if ( !isset( $_POST['element_id'] ) ) {
-        	$response['msg'] = 'ID Error!';
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
 			wp_send_json_error($response);
-        }
+		}
 
-        $response['delete_result'] = wp_delete_post( $_POST['element_id'] );
+		if ( !isset( $_POST['element_id'] ) ) {
+			$response['msg'] = 'ID Error!';
+			wp_send_json_error($response);
+		}
 
-        wp_send_json_success( $response );
+		$response['delete_result'] = wp_delete_post( $_POST['element_id'] );
+
+		wp_send_json_success( $response );
 	}
 
 	/**
@@ -3319,18 +3318,18 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$image_selected = $_GET['image_selected'];
 		$image_size = $_GET['image_size'];
 
-        $response = array(
-            'error' => false,
-            'msg' => '',
-            'element_target' => $element_target,
-            'selected_image' => $image_selected
-        );
+		$response = array(
+			'error' => false,
+			'msg' => '',
+			'element_target' => $element_target,
+			'selected_image' => $image_selected
+		);
 
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		endif;
 
 		$response['error'] = false;
 
@@ -3353,17 +3352,17 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$nonce = $_GET['nonce_param'];
 		$element_target = $_GET['element_target'];
 
-        $response = array(
-            'error' => false,
-            'msg' => '',
-            'element_target' => $element_target
-        );
+		$response = array(
+			'error' => false,
+			'msg' => '',
+			'element_target' => $element_target
+		);
 
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		endif;
 
 		$response['error'] = false;
 
@@ -3385,16 +3384,16 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	public function rex_clone_element() {
 		$nonce = $_POST['nonce_param'];
 		
-        $response = array(
+		$response = array(
 			'error' => false,
-            'msg' => '',
-        );
+			'msg' => '',
+		);
 		
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		endif;
 		
 		$response['error'] = false;
 		
@@ -3413,16 +3412,16 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	public function rex_update_button() {
 		$nonce = $_POST['nonce_param'];
 		
-        $response = array(
+		$response = array(
 			'error' => false,
-            'msg' => '',
-        );
+			'msg' => '',
+		);
 		
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		endif;
 		
 		$response['error'] = false;
 		
@@ -3446,16 +3445,16 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	public function	rex_update_buttons_ids(){
 		$nonce = $_POST['nonce_param'];
 		
-        $response = array(
+		$response = array(
 			'error' => false,
-            'msg' => '',
-        );
+			'msg' => '',
+		);
 		
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        endif;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		endif;
 		
 		$response['error'] = false;
 		$buttons_ids = $_POST["ids_used"];
@@ -3472,57 +3471,57 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	public function rex_delete_rexbutton() {
 		$nonce = $_POST['nonce_param'];
 		
-        $response = array(
+		$response = array(
 			'error' => false,
-            'msg' => '',
-        );
+			'msg' => '',
+		);
 		
-        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
-            $response['error'] = true;
-            $response['msg'] = 'Nonce Error!';
-            wp_send_json_error($response);
-        }
-
-        if ( !isset( $_POST['button_id'] ) ) {
-        	$response['msg'] = 'ID Error!';
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
 			wp_send_json_error($response);
-        }
+		}
 
-        // remove button html and css definition
-        $response['delete_result']['css'] = delete_option( "_rex_button_{$_POST['button_id']}_css" );
-        $response['delete_result']['html'] = delete_option( "_rex_button_{$_POST['button_id']}_html" );
+		if ( !isset( $_POST['button_id'] ) ) {
+			$response['msg'] = 'ID Error!';
+			wp_send_json_error($response);
+		}
 
-        // remove id from the id list
-        $button_ids = json_decode( stripslashes( get_option( '_rex_buttons_ids' ) ), true );
-        $button_id_index = null;
-        foreach( $button_ids as $i => $id ) {
-        	if ( $id === $_POST['button_id'] ) {
-        		$button_id_index = $i;
-        		break;
-        	}
-        }
+		// remove button html and css definition
+		$response['delete_result']['css'] = delete_option( "_rex_button_{$_POST['button_id']}_css" );
+		$response['delete_result']['html'] = delete_option( "_rex_button_{$_POST['button_id']}_html" );
 
-        if ( null !== $button_id_index ) {
-        	array_splice( $button_ids, $button_id_index, 1 );
-        	$response['delete_result']['id'] = update_option( '_rex_buttons_ids', json_encode( $button_ids ) );
-        }
+		// remove id from the id list
+		$button_ids = json_decode( stripslashes( get_option( '_rex_buttons_ids' ) ), true );
+		$button_id_index = null;
+		foreach( $button_ids as $i => $id ) {
+			if ( $id === $_POST['button_id'] ) {
+				$button_id_index = $i;
+				break;
+			}
+		}
 
-        // remove button style
-        $button_styles = json_decode( stripslashes( get_option( '_rex_buttons_styles' ) ), true );
-        $button_style_index = null;
-        foreach ($button_styles as $i => $style) {
-        	if( $style['rexID'] === $_POST['button_id'] ) {
-        		$button_style_index = $i;
-        		break;
-        	}
-        }
+		if ( null !== $button_id_index ) {
+			array_splice( $button_ids, $button_id_index, 1 );
+			$response['delete_result']['id'] = update_option( '_rex_buttons_ids', json_encode( $button_ids ) );
+		}
 
-        if ( null !== $button_style_index ) {
-        	array_splice( $button_styles, $button_style_index, 1 );
-        	$response['delete_result']['style'] = update_option( '_rex_buttons_styles', json_encode( $button_styles ) );
-        }
+		// remove button style
+		$button_styles = json_decode( stripslashes( get_option( '_rex_buttons_styles' ) ), true );
+		$button_style_index = null;
+		foreach ($button_styles as $i => $style) {
+			if( $style['rexID'] === $_POST['button_id'] ) {
+				$button_style_index = $i;
+				break;
+			}
+		}
 
-        wp_send_json_success( $response );
+		if ( null !== $button_style_index ) {
+			array_splice( $button_styles, $button_style_index, 1 );
+			$response['delete_result']['style'] = update_option( '_rex_buttons_styles', json_encode( $button_styles ) );
+		}
+
+		wp_send_json_success( $response );
 	}
 	
 	/**
@@ -4047,17 +4046,17 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 									?>
 <div class="element-visual-info<?php
   if('' != $temp_block_setts['youtube'] || '' != $temp_block_setts['video'] || '' != $temp_block_setts['vimeo'] ) :
-    echo ' ' . 'rex-active-video-notice';
+	echo ' ' . 'rex-active-video-notice';
   endif;
 ?>"<?php 
   if( '' != $temp_block_setts['overlay_block_color'] ) :
-    echo ' style="background-color:' . $temp_block_setts['overlay_block_color'] . '"';
+	echo ' style="background-color:' . $temp_block_setts['overlay_block_color'] . '"';
   endif;
 ?>>
   <div class="vert-wrap">
-    <div class="vert-elem">
-      <i class="material-icons rex-icon rex-notice rex-video-notice">G</i>
-    </div>
+	<div class="vert-elem">
+	  <i class="material-icons rex-icon rex-notice rex-video-notice">G</i>
+	</div>
   </div>
 </div>
 <div class="el-visual-size"><span><?php echo $block_attr['size_x'] . 'x' . $block_attr['size_y']; ?></span></div>
@@ -4883,7 +4882,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @param  string  $new_edit what page to check for accepts new - new post page ,edit - edit post page, null for either
 	 * @return boolean
 	 */
-   	private function is_edit_page($new_edit = null){
+	private function is_edit_page($new_edit = null){
 		global $pagenow;
 		//make sure we are on the backend
 		if (!is_admin()) return false;
@@ -4917,7 +4916,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @return void
 	 * @since 1.1.2
 	 */
-   	public function import_models() {
+	public function import_models() {
 		if(isset( $_GET['builder-import-models'] ) && 'true' == $_GET['builder-import-models'] && is_admin()) {
 			$imported = get_option( 'rexbuilder_models_imported' );
 			if( "1" != $imported ) {
