@@ -309,7 +309,7 @@ var Rexbuilder_Section = (function($) {
             function() {
               galleryEditorInstance.properties.gridBlocksHeight = galleryEditorInstance._calculateGridHeight();
               galleryLayout.singleHeight =
-                Rexbuilder_Util.viewport().height /
+                Rexbuilder_Util.globalViewport.height /
                 galleryEditorInstance.properties.gridBlocksHeight;
               galleryEditorInstance.updateGridstackStyles(
                 galleryLayout.singleHeight

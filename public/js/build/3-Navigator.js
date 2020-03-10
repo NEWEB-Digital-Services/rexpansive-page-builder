@@ -35,7 +35,8 @@ var Rex_Navigator = (function ($) {
         activeSection = document.querySelector('.vertical-nav a[href="#' + this.getAttribute('id') + '"]');
         if ( activeSection ) {
           activeSectionIndex = activeSection.getAttribute('data-number') - 1;
-          if (($this.offset().top - Rexbuilder_Util.$window.height() / 2 < Rexbuilder_Util.$window.scrollTop()) && ($this.offset().top + $this.height() - Rexbuilder_Util.$window.height() / 2 > Rexbuilder_Util.$window.scrollTop())) {
+          // if (($this.offset().top - Rexbuilder_Util.$window.height() / 2 < Rexbuilder_Util.$window.scrollTop()) && ($this.offset().top + $this.height() - Rexbuilder_Util.$window.height() / 2 > Rexbuilder_Util.$window.scrollTop())) {
+          if (($this.offset().top - Rexbuilder_Util.globalViewport.height / 2 < Rexbuilder_Util.$window.scrollTop()) && ($this.offset().top + $this.height() - Rexbuilder_Util.globalViewport.height / 2 > Rexbuilder_Util.$window.scrollTop())) {
             navigationItems.eq(activeSection).addClass('is-selected');
           } else {
             navigationItems.eq(activeSection).removeClass('is-selected');

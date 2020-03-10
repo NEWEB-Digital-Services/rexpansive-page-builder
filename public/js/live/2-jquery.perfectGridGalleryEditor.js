@@ -1887,7 +1887,6 @@
 
     // Define usefull private properties
     _defineDynamicPrivateProperties: function() {
-
       var newWidth = this.element.offsetWidth;
 
       // var collapseGrid = this.$section.attr("data-rex-collapse-grid");

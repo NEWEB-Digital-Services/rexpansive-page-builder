@@ -305,7 +305,8 @@ var Rexbuilder_Util = (function($) {
    * @since 2.0.0
    */
   var _findFrontLayout = function() {
-    var dev_w = _viewport().width;
+    // var dev_w = _viewport().width;
+    var dev_w = Rexbuilder_Util.globalViewport.width;
     for( var i=frontAvailableLayouts.length-1; i >= 0; i-- ) {
       if(dev_w >= parseInt(frontAvailableLayouts[i].min) && ( "" != frontAvailableLayouts[i].max ? dev_w <= parseInt(frontAvailableLayouts[i].max) : true ) ) {
         return frontAvailableLayouts[i].id;
@@ -636,7 +637,8 @@ var Rexbuilder_Util = (function($) {
       return "default";
     }
 
-    var windowWidth = _viewport().width;
+    // var windowWidth = _viewport().width;
+    var windowWidth = Rexbuilder_Util.globalViewport.width;
     var i, j, k;
     var tot_allLayoutsDimensions, tot_allModelsCustomizationsNames, tot_allModelsCustomizationsNames_names, tot_avaiableNames, tot_layoutsPageNames, tot_ordered;
     var $availableDims = $("#layout-avaiable-dimensions");
@@ -715,7 +717,8 @@ var Rexbuilder_Util = (function($) {
    * Predict the acutal layout based on browser size
    */
   var predictLayout = function() {
-    var w = _viewport().width;
+    // var w = _viewport().width;
+    var w = Rexbuilder_Util.globalViewport.width;
     if( w <= 767 ) {
       return 'mobile';
     } else if( w <= 1024 ) {
@@ -735,7 +738,8 @@ var Rexbuilder_Util = (function($) {
       };
       if (
         targetsToEmpty[i].name == "self" &&
-        _viewport().width <
+        // _viewport().width <
+        Rexbuilder_Util.globalViewport.width <
           _plugin_frontend_settings.defaultSettings.collapseWidth
       ) {
         emptyTarget.props.collapse_grid = true;
@@ -1097,7 +1101,8 @@ var Rexbuilder_Util = (function($) {
           ((Rexbuilder_Util.activeLayout != "default" &&
             layoutSelectedSections[i].defaultSection) ||
             Rexbuilder_Util.activeLayout == "default") &&
-          _viewport().width <
+          // _viewport().width <
+          Rexbuilder_Util.globalViewport.width <
             _plugin_frontend_settings.defaultSettings.collapseWidth
         ) {
           // default mobile section props
@@ -1115,7 +1120,8 @@ var Rexbuilder_Util = (function($) {
    * Checks if viewport width is under collapsing width
    */
   var _isMobile = function(){
-    return _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth;
+    // return _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth;
+    return Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.defaultSettings.collapseWidth;
   }
 
   /**
@@ -1142,7 +1148,8 @@ var Rexbuilder_Util = (function($) {
     
     // No change layout, simple resize
     if ( chosenLayoutName == Rexbuilder_Util.activeLayout && chosenLayoutName == "default" ) {
-      if ( _viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+      // if ( _viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+      if ( Rexbuilder_Util.globalViewport.width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
         Rexbuilder_Util.removeCollapsedGrids();
       } else {
         if (!Rexbuilder_Util.blockGridUnder768) {
@@ -1157,7 +1164,8 @@ var Rexbuilder_Util = (function($) {
     Rexbuilder_Util.activeLayout = chosenLayoutName;
 
     if ( $rexbuilderLayoutData.children(".layouts-customizations").attr("data-empty-customizations") == "true" && $rexbuilderModelData.children(".models-customizations").attr("data-empty-models-customizations") == "true" ) {
-      if ( _viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+      // if ( _viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+      if ( Rexbuilder_Util.globalViewport.width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
         Rexbuilder_Util.removeCollapsedGrids();
       } else {
         if ( ! Rexbuilder_Util.blockGridUnder768 ) {
@@ -2845,9 +2853,11 @@ var Rexbuilder_Util = (function($) {
   // function to detect if we are on a mobile device
   var _detect_mobile = function() {
     if (!("ontouchstart" in document.documentElement)) {
-      document.documentElement.className += " no-touch";
+      // document.documentElement.className += " no-touch";
+      Rexbuilder_Util.addClass( document.body, 'no-touch' );
     } else {
-      document.documentElement.className += " touch";
+      // document.documentElement.className += " touch";
+      Rexbuilder_Util.addClass( document.body, 'touch' );
     }
   };
 
@@ -2957,6 +2967,8 @@ var Rexbuilder_Util = (function($) {
      * @since  2.0.0
      */
     Rexbuilder_Util.$window.on("resize", function(event) {
+      Rexbuilder_Util.globalViewport = Rexbuilder_Util.viewport();
+
       if (!Rexbuilder_Util_Editor.elementIsResizing) {
         // event.preventDefault();
         // event.stopImmediatePropagation();
@@ -2967,7 +2979,8 @@ var Rexbuilder_Util = (function($) {
           Rexbuilder_Util.firstResize = false;
         }
 
-        if( loadWidth !== Rexbuilder_Util.viewport().width ) {
+        // if( loadWidth !== Rexbuilder_Util.viewport().width ) {
+        if( loadWidth !== Rexbuilder_Util.globalViewport.width ) {
           if( resizeTimeout ) {
             clearTimeout( resizeTimeout );
           }
@@ -3032,7 +3045,8 @@ var Rexbuilder_Util = (function($) {
 
     Rexbuilder_Util.windowIsResizing = false;
     Rexbuilder_Util.firstResize = true;
-    loadWidth =  Rexbuilder_Util.viewport().width;    
+    // loadWidth =  Rexbuilder_Util.viewport().width;
+    loadWidth =  Rexbuilder_Util.globalViewport.width;
   }
 
   /**
@@ -3707,6 +3721,8 @@ var Rexbuilder_Util = (function($) {
 
   // init the utilities
   var init = function() {
+    this.globalViewport = Rexbuilder_Util.viewport();
+
     this.fast_load = ( '1' == _plugin_frontend_settings.fast_load );
     this.firstStart = true;
 
@@ -3770,7 +3786,8 @@ var Rexbuilder_Util = (function($) {
 
     this.chosenLayoutData = null;
 
-    loadWidth = Rexbuilder_Util.viewport().width;
+    // loadWidth = Rexbuilder_Util.viewport().width;
+    loadWidth = Rexbuilder_Util.globalViewport.width;
 
     _updateSectionsID();
     Rexbuilder_Dom_Util.fixModelNumbers();

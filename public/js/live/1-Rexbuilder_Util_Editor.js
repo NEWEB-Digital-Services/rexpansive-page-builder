@@ -1633,7 +1633,7 @@ var Rexbuilder_Util_Editor = (function($) {
     this.mousePosition = null;
     this.mouseClickObject = null;
     this.mousePositionFrameYOffset = 50;
-    this.viewportMeasurement = Rexbuilder_Util.viewport();
+    this.viewportMeasurement = Rexbuilder_Util.globalViewport;
 
     this.elementDraggingTriggered = false;
 

@@ -284,7 +284,7 @@ var Rexbuilder_App = (function($) {
       var $el = $(el);
       $el.addClass("border-space-animated");
       if (1 == _plugin_frontend_settings.animations ) {
-        if( Rexbuilder_Util.viewport().width > 768 ) {
+        if( Rexbuilder_Util.globalViewport.width > 768 ) {
           $el.one("rs-animation-complete", function() {
             $el.addClass("border-active");
           });
@@ -589,7 +589,7 @@ var Rexbuilder_App = (function($) {
     if ( 'undefined' === typeof SplitScrollable ) {
       return;
     }
-    if ( Rexbuilder_Util.viewport().width >= _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
+    if ( Rexbuilder_Util.globalViewport.width >= _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
       var scrbls = Array.prototype.slice.call( context.getElementsByClassName('split-scrollable') );
       var tot_scrbls = scrbls.length, i;
       for( i=0; i < tot_scrbls; i++ ) {
