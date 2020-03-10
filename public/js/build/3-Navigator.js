@@ -86,7 +86,7 @@ var Rex_Navigator = (function ($) {
    * @param {*} $section section linked
    * @param {*} name name of the section, if name is "" the item will be removed
    */
-  var _updateNavigatorItem = function ($section, newSafeName, newName) {
+  var _updateNavigatorItem = function ( $section, newSafeName, newName ) {
     var $navigatorWrap = Rexbuilder_Util.$document.find("nav[class*=\"vertical-nav\"]");
     if (newSafeName != "") {
       if ($section.attr("id") == "") {
@@ -178,9 +178,10 @@ var Rex_Navigator = (function ($) {
       Rexbuilder_Util.$window.on('scroll', function () {
         updateNavigation();
       });
+
+      linkDocumentEvents();
     }
 
-    linkDocumentEvents();
     updateNavigator();
   }
 

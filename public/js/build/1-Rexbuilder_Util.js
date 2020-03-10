@@ -103,6 +103,8 @@ var Rexbuilder_Util = (function($) {
 
   var edlTimeouts = [];
 
+  var $bodyHtml;
+
   function handlingRowReadyEnd( idx ) {
     edlTimeouts[idx] = null;
     if ( '' === edlTimeouts.join('') ) {
@@ -3302,11 +3304,12 @@ var Rexbuilder_Util = (function($) {
   };
 
   var _playVideoFromBegin = function($target) {
+    var hasVideo = false;
     if ($target.hasClass("mp4-player")) {
-      // console.log("_playVideoFromBegin: faccio play al video");
       var mp4video = $target.children(".rex-video-wrap").find("video")[0];
       mp4video.currentTime = 0;
       mp4video.play();
+      hasVideo = true;
     } else if ($target.hasClass("vimeo-player")) {
       var vimPlayer = VimeoVideo.findVideo(
         $target.children(".rex-video-vimeo-wrap").find("iframe")[0]
@@ -3315,6 +3318,7 @@ var Rexbuilder_Util = (function($) {
       {
         vimPlayer.play();
       }
+      hasVideo = true;
     } else if ($target.hasClass("youtube-player")) {
       var ytpObj = $target.children(".rex-youtube-wrap");
       if (ytpObj.length != 0) {
@@ -3326,9 +3330,12 @@ var Rexbuilder_Util = (function($) {
       } else {
         return;
       }
+      hasVideo = true;
     }
 
-    setTimeout( Rexbuilder_Util.fixVideoAudio.bind( null, $target ), 500 );
+    if ( hasVideo ) {
+      setTimeout( Rexbuilder_Util.fixVideoAudio.bind( null, $target ), 500 );
+    }
   };
 
   // var _destroyVideoPlugins = function() {
@@ -3411,7 +3418,7 @@ var Rexbuilder_Util = (function($) {
   var _scroll_timing = 600;
 
   function _smoothScroll($target) {
-    $("body,html").animate(
+    $bodyHtml.animate(
       {
         scrollTop:
           $target.offset().top +
@@ -3747,6 +3754,7 @@ var Rexbuilder_Util = (function($) {
     this.$window = $(window);
     this.$document = $(document);
     this.$body = $("body");
+    $bodyHtml = $('body, html');
 
     this.galleryPluginActive = false;
 
