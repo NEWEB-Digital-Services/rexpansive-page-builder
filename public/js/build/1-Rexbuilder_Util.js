@@ -2968,7 +2968,8 @@ var Rexbuilder_Util = (function($) {
      * @return {null}
      * @since  2.0.0
      */
-    Rexbuilder_Util.$window.on("resize", function(event) {
+    window.addEventListener('resize', function(event) {
+    // Rexbuilder_Util.$window.on("resize", function(event) {
       Rexbuilder_Util.globalViewport = Rexbuilder_Util.viewport();
 
       if (!Rexbuilder_Util_Editor.elementIsResizing) {

@@ -488,7 +488,7 @@
 
       // we are under the collapse width and the grid hasn't set a layout
       // collaps all
-      if ( Rexbuilder_Util.activeLayout == "default" && viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+      if ( Rexbuilder_Util.activeLayout == "default" && Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
         if ( null === collapseGrid ) {
           this.collapseElements();
         } else {
@@ -620,7 +620,7 @@
         singleHeight: this.properties.singleHeight
       };
 
-      if ( Rexbuilder_Util.activeLayout == "default" && viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+      if ( Rexbuilder_Util.activeLayout == "default" && Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
         if (typeof collapseGrid == "undefined") {
           this.collapseElements();
         } else {
@@ -1374,7 +1374,7 @@
       var cellHeight;
       if (active) {
         if( this.settings.galleryLayout == "fixed" ) {
-          cellHeight = viewport().height / this.properties.gridBlocksHeight;
+          cellHeight = Rexbuilder_Util.globalViewport.height / this.properties.gridBlocksHeight;
         }
       } else {
         cellHeight = this.properties.singleWidth;
@@ -1893,13 +1893,13 @@
       var collapseGrid = this.section.getAttribute("data-rex-collapse-grid");
 
       // if ( collapseGrid ) {
-      //   if ( Rexbuilder_Util.activeLayout == "default" && viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+      //   if ( Rexbuilder_Util.activeLayout == "default" && Rexbuilder_Util.globalViewport.width <= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
       //     this.properties.oneColumModeActive = true;
       //   } else {
       //     this.properties.oneColumModeActive = false;
       //   }
       // } else 
-      if ( collapseGrid && ( ( Rexbuilder_Util.activeLayout == "default" && viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth && collapseGrid.toString() == "true") || collapseGrid.toString() == "true" ) ) {
+      if ( collapseGrid && ( ( Rexbuilder_Util.activeLayout == "default" && Rexbuilder_Util.globalViewport.width <= _plugin_frontend_settings.defaultSettings.collapseWidth && collapseGrid.toString() == "true") || collapseGrid.toString() == "true" ) ) {
         this.properties.oneColumModeActive = true;
       } else {
         this.properties.oneColumModeActive = false;
@@ -1921,7 +1921,7 @@
         var newSingleHeight;
         if (this.settings.fullHeight.toString() == "true") {
           this.properties.gridBlocksHeight = this._calculateGridHeight();
-          newSingleHeight = viewport().height / this.properties.gridBlocksHeight;
+          newSingleHeight = Rexbuilder_Util.globalViewport.height / this.properties.gridBlocksHeight;
         } else {
           newSingleHeight = this.properties.singleWidth;
         }
@@ -3209,29 +3209,31 @@
     updateBlocksHeight: function () {
       var $elem;    
       var gridstack = this.properties.gridstackInstance;
-      if ( typeof gridstack !== "null" ) {
-        this.properties.blocksBottomTop = this.getElementBottomTop();
-        if ( !this.properties.updatingSectionSameGrid || Rexbuilder_Util.windowIsResizing ) {
-          this.batchGridstack();
+      if ( typeof gridstack === "null" ) {
+        return;
+      }
+      
+      this.properties.blocksBottomTop = this.getElementBottomTop();
+      if ( !this.properties.updatingSectionSameGrid || Rexbuilder_Util.windowIsResizing ) {
+        this.batchGridstack();
 
-          var items = [].slice.call( this.properties.blocksBottomTop );
-          var tot_items = items.length, i = 0;
-          for( i=0; i < tot_items; i++ ) {
-            if ( Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid || this.properties.firstStartGrid ) {
-              if ( ! ( hasClass( items[i], "rex-hide-element" ) || hasClass( items[i], "removing_block" ) || hasClass( items[i], "block-has-slider" ) ) ) {
-                this.updateElementHeight( items[i] );
-              }
-            } else if ( ! this.properties.collapsingElements ) {
+        var items = [].slice.call( this.properties.blocksBottomTop );
+        var tot_items = items.length, i = 0;
+        for( i=0; i < tot_items; i++ ) {
+          if ( Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid || this.properties.firstStartGrid ) {
+            if ( ! ( hasClass( items[i], "rex-hide-element" ) || hasClass( items[i], "removing_block" ) || hasClass( items[i], "block-has-slider" ) ) ) {
               this.updateElementHeight( items[i] );
             }
+          } else if ( ! this.properties.collapsingElements ) {
+            this.updateElementHeight( items[i] );
           }
-          // end foreach of boxes
+        }
+        // end foreach of boxes
 
-          // if ( !Rexbuilder_Util.windowIsResizing && !this.properties.updatingSection )
+        // if ( !Rexbuilder_Util.windowIsResizing && !this.properties.updatingSection )
 
-          if ( !Rexbuilder_Util.windowIsResizing ) {
-            this.commitGridstack();
-          }
+        if ( !Rexbuilder_Util.windowIsResizing ) {
+          this.commitGridstack();
         }
       }
     },
@@ -3472,7 +3474,7 @@
         // @todo check me to prevent video auto ratio-resize 
         if ( blockHasYoutube || blockHasVideo || blockHasVimeo ) {
           // videoHeight = Math.round( w * sw * defaultRatio );
-          // if ( viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+          // if ( Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
           //   videoHeight = Math.round( w * sw * defaultRatio );
           // } else {
             videoHeight = originalH * this.properties.singleHeight;
@@ -3482,7 +3484,7 @@
         // calculate slider height
         // var sliderRatio = parseFloat( blockData.getAttribute( 'data-slider_ratio' ) );
         // if ( blockHasSlider && !isNaN( sliderRatio ) ) {
-        //   if ( viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+        //   if ( Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
         //     sliderHeight = w * sw * defaultRatio;
         //   } else {
         //     sliderHeight = w * sw * sliderRatio;
@@ -3690,7 +3692,7 @@
     _setParentGridPadding: function() {
       var $parent = this.$element.parent();
       if (
-        (viewport().width >=
+        (Rexbuilder_Util.globalViewport.width >=
           _plugin_frontend_settings.defaultSettings.collapseWidth &&
           !this.properties.setDesktopPadding) ||
         (!this.properties.setDesktopPadding &&
@@ -3804,7 +3806,7 @@
         * this.properties.halfSeparator); } else {
         * this.$element.find(this.settings.itemSelector).css('padding',
         * this.properties.halfSeparator); } } } else if
-        * (viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth &&
+        * (Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.defaultSettings.collapseWidth &&
         * !this.properties.setMobilePadding &&
         * this.$section.attr("data-rex-collapse-grid") == "true") {
         * this.properties.setMobilePadding = true;

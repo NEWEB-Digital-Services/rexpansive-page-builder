@@ -27,19 +27,18 @@
       callback: null,
     };
 
-  // window height shared var
+  // viewport size shared var
   // the window height do not depends on the elements to scroll position
   // its the same for everyone
   // so I can share it between the plugin instances and update it on the page resize
-  var windowInnerHeight = document.documentElement.clientHeight;
-  window.addEventListener('resize', updateWindowInnerHeight);
+  var globalViewportSize = viewport();
+  window.addEventListener('resize', updateGlobalViewportSize);
 
   /**
-   * Updating the window inner height only if occurs a window resize
-   * @param {ResizeEvent} event resize event
+   * Updating the viewport size only if occurs a window resize
    */
-  function updateWindowInnerHeight(event) {
-    windowInnerHeight = document.documentElement.clientHeight;
+  function updateGlobalViewportSize() {
+    globalViewportSize = viewport();
   }
 
   /**
@@ -112,40 +111,43 @@
       window.addEventListener( 'scroll', this.bindedScrollHandler );
     },
     has_scrolled: function () {
-      if (viewport().width <= 767 && !this.settings.mobile) {
+      if (globalViewportSize.width <= 767 && !this.settings.mobile) {
 
         this.properties.launched = true;
         this.removeScrollHandler();
 
       } else {
+        if ( this.properties.launched ) {
+          return;
+        }
+        
         var that = this;
-        if (!that.properties.launched) {
-          var win_height = windowInnerHeight,
-            win_height_padded_bottom,
-            win_height_padded_top,
-            scrolled = scrollDocumentPositionTop(),
-            blockPosition = offsetTop(this.element, scrolled),
-            blockHeight = this.element.offsetHeight;
 
-          if (this.settings.offset === 0) {
-            win_height_padded_bottom = win_height * 0.7;
-            win_height_padded_top = win_height * 0.2;
-          } else if (this.settings.offset > 0) {
-            win_height_padded_bottom = win_height - this.settings.offset;
-            win_height_padded_top = win_height * 0.2;
-          } else if (this.settings.offset < 0) {
-            win_height_padded_bottom = win_height * 0.7;
-            win_height_padded_top = win_height + this.settings.offset;
-          }
+        var win_height = globalViewportSize.height,
+          win_height_padded_bottom,
+          win_height_padded_top,
+          scrolled = scrollDocumentPositionTop(),
+          blockPosition = offsetTop(this.element, scrolled),
+          blockHeight = this.element.offsetHeight;
 
-          if (((blockPosition - win_height_padded_bottom < scrolled) && ((blockPosition + blockHeight) - win_height_padded_top > scrolled)) || that.settings.force_launch) {
-            that.properties.launched = true;
-            that.$element.trigger('rs-scrolled-complete');
-            if( this.settings.callback && 'function' === typeof this.settings.callback ) {
-              this.settings.callback( this.element );
-            }
-            this.removeScrollHandler();
+        if (this.settings.offset === 0) {
+          win_height_padded_bottom = win_height * 0.7;
+          win_height_padded_top = win_height * 0.2;
+        } else if (this.settings.offset > 0) {
+          win_height_padded_bottom = win_height - this.settings.offset;
+          win_height_padded_top = win_height * 0.2;
+        } else if (this.settings.offset < 0) {
+          win_height_padded_bottom = win_height * 0.7;
+          win_height_padded_top = win_height + this.settings.offset;
+        }
+
+        if (((blockPosition - win_height_padded_bottom < scrolled) && ((blockPosition + blockHeight) - win_height_padded_top > scrolled)) || that.settings.force_launch) {
+          that.properties.launched = true;
+          that.$element.trigger('rs-scrolled-complete');
+          if( this.settings.callback && 'function' === typeof this.settings.callback ) {
+            this.settings.callback( this.element );
           }
+          this.removeScrollHandler();
         }
       }
     },

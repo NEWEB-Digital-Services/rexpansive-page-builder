@@ -4,12 +4,20 @@
  * @version 1.0.0
  */
 ; (function () {
+  var stickySectionsDidScroll = [];
+  var stickySectionsHandlers = [];
+  var globalStickySectionIndex = 0;
+
+  var wInterval = true;
+  var wCallbacks = false;
+
   this.StickySection = function () {
     this.element = null;
     this.stickyElement = null;
     this.borderAnimationEl = {};
     this.overlayAnimationEl = null;
     this.ticking = false;
+    this.stickyId = null;
 
     // get element as first argument
     if (arguments[0]) {
@@ -41,6 +49,11 @@
     if ( null === this.stickyElement ) {
       return;
     }
+
+    this.stickyId = globalStickySectionIndex;
+    stickySectionsDidScroll[this.stickyId] = false;
+
+    globalStickySectionIndex++;
 
     // prepare border animation if prsents
     if (this.options.borderAnimation) {
@@ -100,13 +113,31 @@
     if ( this.options.requestAnimationFrame ) {
       // debounce method
       window.addEventListener('scroll', handleScroll.bind(this));
+    } else if ( wInterval ) {
+      // debounce classic method
+      var that = this;
+      setInterval(function() {
+        if( stickySectionsDidScroll[that.stickyId] ) {
+          stickySectionsDidScroll[that.stickyId] = false;
+          handleSticky.call(that);
+        }
+      }, 50);
+    } else if ( wCallbacks ) {
+      stickySectionsHandlers[this.stickyId] = handleSticky.bind(this);
     } else {
-      // classic method
+      // no debounce method
       window.addEventListener('scroll', handleSticky.bind(this));
     }
 
+
     // attach the plugin instance to the dom element
     this.element.StickySectionInstance = this;
+  }
+
+  if ( wInterval ) {
+    window.addEventListener('scroll', debounceHandleScroll);
+  } else if ( wCallbacks ) {
+    window.addEventListener('scroll', callStickyHandlers);
   }
 
   // private shared vars
@@ -115,6 +146,30 @@
 
   var transformCrossbrowser = ['-webkit-transform','-ms-transform','transform'];
   var totTransform = transformCrossbrowser.length;
+
+  /**
+   * On scroll call the callbacks of stickies
+   * registered inside an array
+   * @return {void}
+   */
+  function callStickyHandlers() {
+    var i, tot_sticky = stickySectionsHandlers.length;
+    for( i=0; i < tot_sticky; i++ ) {
+      stickySectionsHandlers[i].call();
+    }
+  }
+
+  /**
+   * On scroll set a true the scrolling for all the sticky sections
+   * instantiated
+   * @return {void}
+   */
+  function debounceHandleScroll() {
+    var i, tot_sticky = stickySectionsDidScroll.length;
+    for( i=0; i < tot_sticky; i++ ) {
+      stickySectionsDidScroll[i] = true;
+    }
+  }
 
   /**
    * Handling the scrolling with the aid of the request animation frame

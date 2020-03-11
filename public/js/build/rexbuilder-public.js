@@ -1145,7 +1145,6 @@ var Rexbuilder_App = (function($) {
     Rexbuilder_Util.playAllVideos();
 
     launchAccordions();
-
   };
 
   var load = function() {

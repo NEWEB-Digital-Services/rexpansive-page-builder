@@ -30,19 +30,18 @@
       force_launch: false,
     };
 
-  // window height shared var
+  // viewport size shared var
   // the window height do not depends on the elements to scroll position
   // its the same for everyone
   // so I can share it between the plugin instances and update it on the page resize
-  var windowInnerHeight = document.documentElement.clientHeight;
-  window.addEventListener('resize', updateWindowInnerHeight);
+  var globalViewportSize = viewport();
+  window.addEventListener('resize', updateGlobalViewportSize);
 
   /**
-   * Updating the window inner height only if occurs a window resize
-   * @param {ResizeEvent} event resize event
+   * Updating the viewport size only if occurs a window resize
    */
-  function updateWindowInnerHeight(event) {
-    windowInnerHeight = document.documentElement.clientHeight;
+  function updateGlobalViewportSize() {
+    globalViewportSize = viewport();
   }
 
   /**
@@ -107,15 +106,19 @@
       window.addEventListener('scroll', this.launchScrollingAnimation.bind(this));
     },
     launchScrollingAnimation: function () {
-      if (viewport().width <= 767 && !this.settings.mobile) {
+      if (globalViewportSize.width <= 767 && !this.settings.mobile) {
 
         this.$element.css('opacity', 1);
         this.properties.launched = true;
 
       } else {
+        if ( this.properties.launched ) {
+          return;
+        }
+
         var that = this;
 
-        var win_height = windowInnerHeight,
+        var win_height = globalViewportSize.height,
           win_height_padded_bottom,
           win_height_padded_top,
           blockPosition = this.$element.offset().top,
@@ -133,30 +136,27 @@
           win_height_padded_top = win_height + this.settings.offset;
         }
 
-        if (!that.properties.launched) {
+        if (((blockPosition - win_height_padded_bottom < scrolled) && ((blockPosition + blockHeight) - win_height_padded_top > scrolled)) || that.settings.force_launch) {
 
-          if (((blockPosition - win_height_padded_bottom < scrolled) && ((blockPosition + blockHeight) - win_height_padded_top > scrolled)) || that.settings.force_launch) {
-
-            // Fix to prevent loop animation on delay
-            if (that.settings.delay) {
-              that.launched = true;
-            }
-
-            this.$element.velocity(
-              that.settings.animation,
-              {
-                duration: that.settings.duration,
-                delay: that.settings.delay,
-                stagger: that.settings.stagger,
-                begin: function (elements) {
-                  that.properties.launched = true;
-                },
-                complete: function (elements) {
-                  that.$element.trigger('rs-animation-complete');
-                }
-              }
-            );
+          // Fix to prevent loop animation on delay
+          if (that.settings.delay) {
+            that.launched = true;
           }
+
+          this.$element.velocity(
+            that.settings.animation,
+            {
+              duration: that.settings.duration,
+              delay: that.settings.delay,
+              stagger: that.settings.stagger,
+              begin: function (elements) {
+                that.properties.launched = true;
+              },
+              complete: function (elements) {
+                that.$element.trigger('rs-animation-complete');
+              }
+            }
+          );
         }
       }
     },
