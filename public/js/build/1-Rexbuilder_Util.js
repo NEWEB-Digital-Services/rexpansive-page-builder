@@ -78,7 +78,6 @@ var Rexbuilder_Util = (function($) {
    * Global vars
    * @type {Mixed}
    */
-  var fixSectionWidth = 0;
   var editorMode = false;
   var windowIsResizing = false;
   var firstResize = true;
@@ -2887,19 +2886,6 @@ var Rexbuilder_Util = (function($) {
     return ID;
   };
 
-  // Get the value of a query variable from the actual url
-  var _getQueryVariable = function(variable) {
-    var query = window.location.search.substring(1);
-    var vars = query.split("&");
-    for (var i = 0, tot_vars = vars.length; i < tot_vars; i++) {
-      var pair = vars[i].split("=");
-      if (pair[0] == variable) {
-        return pair[1];
-      }
-    }
-    return false;
-  };
-
   var _checkPresentationPage = function() {
     if (0 !== $(".rexpansive_portfolio_presentation").length) {
       return true;
@@ -3339,10 +3325,6 @@ var Rexbuilder_Util = (function($) {
     }
   };
 
-  // var _destroyVideoPlugins = function() {
-    //console.log(Rexbuilder_Util.$rexContainer.find(".youtube-player"));
-  // };
-
   var _launchVideoPlugins = function() {
     /* -- Launching YouTube Video -- */
 
@@ -3415,8 +3397,6 @@ var Rexbuilder_Util = (function($) {
 
   var _transitionEvent = "";
   var _animationEvent = "";
-
-  var _scroll_timing = 600;
 
   function _smoothScroll($target) {
     $bodyHtml.animate(
@@ -3635,13 +3615,6 @@ var Rexbuilder_Util = (function($) {
     // }
   };
 
-  var _getBackgroundUrlFromCss = function(styleBackground) {
-    return styleBackground
-      .replace("url(", "")
-      .replace(")", "")
-      .replace(/\"/gi, "");
-  };
-
   var _getPaddingsDataString = function(paddingString) {
     var paddingsData = {
       top: "5",
@@ -3814,19 +3787,14 @@ var Rexbuilder_Util = (function($) {
     getYoutubeID: getYoutubeID,
     transitionEvent: _transitionEvent,
     animationEvent: _animationEvent,
-    getQueryVariable: _getQueryVariable,
     checkPresentationPage: _checkPresentationPage,
     checkStaticPresentationPage: _checkStaticPresentationPage,
     checkPost: _checkPost,
-    // $window: $window,
-    scroll_timing: _scroll_timing,
-    fixSectionWidth: fixSectionWidth,
     editorMode: editorMode,
     windowIsResizing: windowIsResizing,
     firstResize: firstResize,
     addWindowListeners: addWindowListeners,
     launchVideoPlugins: _launchVideoPlugins,
-    // destroyVideoPlugins: _destroyVideoPlugins,
     stopPluginsSection: _stopPluginsSection,
     playPluginsSection: _playPluginsSection,
     stopBlockVideos: _stopBlockVideos,
@@ -3836,6 +3804,10 @@ var Rexbuilder_Util = (function($) {
     setContainer: setContainer,
     createSectionID: _createSectionID,
     createBlockID: createBlockID,
+    addSectionID: _addSectionID,
+    removeSectionID: _removeSectionID,
+    createRandomID: createRandomID,
+    createRandomNumericID: _createRandomNumericID,
     responsiveLayouts: responsiveLayouts,
     defaultLayoutSections: defaultLayoutSections,
     launchEditDomLayout: launchEditDomLayout,
@@ -3850,7 +3822,6 @@ var Rexbuilder_Util = (function($) {
     playVideo: _playVideo,
     destroyVideo: _destroyVideo,
     startVideoPlugin: _startVideoPlugin,
-    getBackgroundUrlFromCss: _getBackgroundUrlFromCss,
     getPaddingsDataString: _getPaddingsDataString,
     paddingsToString: _paddingsToString,
     playAllVideos: _playAllVideos,
@@ -3885,10 +3856,6 @@ var Rexbuilder_Util = (function($) {
     updateGridsHeights: _updateGridsHeights,
     getSectionNamesUsed: _getSectionNamesUsed,
     saveSectionNamesUsed: _saveSectionNamesUsed,
-    addSectionID: _addSectionID,
-    removeSectionID: _removeSectionID,
-    createRandomID: createRandomID,
-    createRandomNumericID: _createRandomNumericID,
     updateDOMSingleElement: _updateDOMSingleElement,
     getDefaultBlockMeasure: _getDefaultBlockMeasure,
     doneResizing: doneResizing,

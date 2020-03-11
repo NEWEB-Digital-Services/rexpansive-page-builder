@@ -4,6 +4,13 @@
  */
 var Rexbuilder_Live_Utilities = (function($) {
   "use strict";
+
+  var _getBackgroundUrlFromCss = function(styleBackground) {
+    return styleBackground
+      .replace("url(", "")
+      .replace(")", "")
+      .replace(/\"/gi, "");
+  };
   
   var _removeColorPicker = function($elem) {
     $elem.find(".tool-button--spectrum").remove();
@@ -48,15 +55,11 @@ var Rexbuilder_Live_Utilities = (function($) {
     }
   }
 
-  var init = function() {
-    
-  };
-
   return {
-    init: init,
     removeColorPicker: _removeColorPicker,
     addSpectrumCustomSaveButton: _addSpectrumCustomSaveButton,
     addSpectrumCustomCloseButton: _addSpectrumCustomCloseButton,
-    activeAddSection: _activeAddSection
+    activeAddSection: _activeAddSection,
+    getBackgroundUrlFromCss: _getBackgroundUrlFromCss
   };
 })(jQuery);

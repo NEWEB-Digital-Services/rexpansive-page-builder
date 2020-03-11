@@ -7,7 +7,6 @@ var Rexbuilder_Util_Editor = (function($) {
 
   var undoStackArray;
   var redoStackArray;
-  var tippyCollection;
 
   /**
    * @param {jQuery} $textWrap Text-wrap whose container block height has to be update
@@ -144,7 +143,7 @@ var Rexbuilder_Util_Editor = (function($) {
         ? ""
         : parseInt($slide.attr("data-rex-slide-image-id"));
 
-      var backgroundImageUrl = Rexbuilder_Util.getBackgroundUrlFromCss(
+      var backgroundImageUrl = Rexbuilder_Live_Utilities.getBackgroundUrlFromCss(
         $slide.css("background-image")
       );
       if (backgroundImageUrl != "none") {
@@ -1128,22 +1127,6 @@ var Rexbuilder_Util_Editor = (function($) {
     });
   }
 
-  var _tooltips = function() {
-    tippyCollection = tippy(".tippy", {
-      arrow: true,
-      arrowType: "round",
-      size: "small",
-      // content: 'Shared content',
-      // target: '.tippy',
-      // livePlacement: false,
-      theme: "rexlive"
-    });
-  };
-
-  var noop = function() {
-
-  }
-
   var _checkVisibleRow = function() {
     Rexbuilder_Util_Editor.visibleRow = whichVisible();
     var visibleRowInfo = {};
@@ -1726,7 +1709,6 @@ var Rexbuilder_Util_Editor = (function($) {
     startLoading: _startLoading,
     endLoading: _endLoading,
     builderEdited: _builderEdited,
-    launchTooltips: _tooltips,
     getMousePosition: _getMousePosition,
     hideAllTools: _hideAllTools,
     lockRows: _lockRows,

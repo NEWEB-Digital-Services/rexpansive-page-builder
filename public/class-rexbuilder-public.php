@@ -235,7 +235,7 @@ class Rexbuilder_Public
 				wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . 'public/js/vendor/medium-editor-toolbar-states.min.js', array('jquery'), $ver, true);
 
 				// Rexbuilder
-				wp_enqueue_script('1-RexUtilEditorUtilities', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Live_Utilities.js', array('jquery'), $ver, true);
+				wp_enqueue_script('0-RexUtilEditorUtilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Utilities.js', array('jquery'), $ver, true);
 				wp_enqueue_script('0-Rexbuilder_Array_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Array_Utilities.js', array('jquery'), $ver, true);
 				wp_enqueue_script('1-RexColorPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Color_Palette.js', array('jquery'), $ver, true);
 				wp_enqueue_script('1-RexOverlayPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Overlay_Palette.js', array('jquery'), $ver, true);
@@ -251,7 +251,7 @@ class Rexbuilder_Public
 			}
 			else
 			{
-				wp_enqueue_script('1-RexUtilEditorUtilities', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Live_Utilities.js', array('jquery'), $ver, true);
+				wp_enqueue_script('0-RexUtilEditorUtilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Utilities.js', array('jquery'), $ver, true);
 				wp_enqueue_script('0-Rexbuilder_Array_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Array_Utilities.js', array('jquery'), $ver, true);
 				wp_enqueue_script('intersection-observer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/intersection-observer.js', array(), $ver, true);
 			}
