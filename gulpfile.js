@@ -433,6 +433,7 @@ gulp.task( 'adminJS', adminJSScript )
 	// 'public/js/vendor/medium-editor-insert-plugin.js',
 	'public/js/live/0-Rexbuilder_Array_Utilities.js',
 	'public/js/live/0-Rexbuilder_Live_Utilities.js',
+	'public/js/live/0-Rexbuilder_Only_Live_Utils.js',
 	'public/js/live/1-Rexbuilder_Color_Palette.js',
 	'public/js/live/1-Rexbuilder_Overlay_Palette.js',
 	'public/js/live/2-Text_Editor.js',
@@ -477,7 +478,8 @@ gulp.task( 'adminJS', adminJSScript )
 	'public/js/live/2-jquery.perfectGridGalleryEditor.js',
 	'public/js/vendor/3-velocity.min.js',
 	'public/js/vendor/3-velocity.ui.min.js',
-	'public/js/build/rexbuilder-public.js'
+	'public/js/build/99-Rexbuilder_App.js',
+	'public/js/rexbuilder-public.js'
 ];
 
 var builderlive_public = [
@@ -530,7 +532,8 @@ var builderlive_public = [
 	'public/js/vendor/3-velocity.min.js',
 	'public/js/vendor/3-velocity.ui.min.js',
 	'public/js/vendor/4-jquery.rexScrollify.js',
-	'public/js/build/rexbuilder-public.js',
+	'public/js/build/99-Rexbuilder_App.js',
+	'public/js/rexbuilder-public.js',
 	// 'public/js/build/fast-load.js',
 ];
 

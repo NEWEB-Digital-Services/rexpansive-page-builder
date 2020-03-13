@@ -236,6 +236,8 @@ class Rexbuilder_Public
 
 				// Rexbuilder
 				wp_enqueue_script('0-RexUtilEditorUtilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Utilities.js', array('jquery'), $ver, true);
+				wp_enqueue_script('0-Rexbuilder_Only_Live_Utils', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Only_Live_Utils.js', array('jquery'), $ver, true);
+				
 				wp_enqueue_script('0-Rexbuilder_Array_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Array_Utilities.js', array('jquery'), $ver, true);
 				wp_enqueue_script('1-RexColorPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Color_Palette.js', array('jquery'), $ver, true);
 				wp_enqueue_script('1-RexOverlayPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Overlay_Palette.js', array('jquery'), $ver, true);
@@ -370,7 +372,8 @@ class Rexbuilder_Public
 				wp_enqueue_script('4-jqueryScrollify', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrollify.js', array('jquery'), $ver, true);
 			}
 			
-			wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . 'public/js/build/rexbuilder-public.js', array('jquery'), $ver, true);
+			wp_enqueue_script('rexbuilder-app', REXPANSIVE_BUILDER_URL . 'public/js/build/99-Rexbuilder_App.js', array('jquery'), $ver, true);
+			wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . 'public/js/rexbuilder-public.js', array('jquery'), $ver, true);
 
 			if( !Rexbuilder_Utilities::isBuilderLive() && 1 == $fast_load ) {
 				wp_enqueue_script('fast-load', REXPANSIVE_BUILDER_URL . 'public/js/build/fast-load.js', array('intersection-observer'), $ver, true);

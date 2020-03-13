@@ -5,7 +5,6 @@ var Rex_Save_Listeners = (function($) {
       var eventData = e.settings.data_to_send;
       var i, j, k, m, p, q;
 
-      // Rexbuilder_Util_Editor.startLoading();
       Rexbuilder_Util_Editor.savingPage = true;
       var idPost = parseInt($("#id-post").attr("data-post-id"));
       var activeLayoutName = Rexbuilder_Util.activeLayout;
@@ -1066,30 +1065,11 @@ var Rex_Save_Listeners = (function($) {
           });
         }
 
-        // retrieve the block content
-        // if there is some, or there is an img, an iframe or an icon inline
-        // if ($savingBlock.text().trim() == "") {
-        //   if( $savingBlock.find("iframe").length > 0 || $savingBlock.find("img").length > 0 || $savingBlock.find("i").length > 0 ){
-        //     content = $savingBlock.html().trim();
-        //   } else {
-        //     content = "";
-        //   }
-        // } else {
-        //   content = $savingBlock.html().trim();
-        //   $savingBlock.find(".rex-button-data").each(function (i, buttonData) {
-        //     $(buttonData).removeAttr("data-synchronize");
-        //   });
-        // }
-
       } else {
         var sliderToSave = textWrap.querySelector('.rex-slider-wrap[data-rex-slider-active="true"]');
 
         if ( sliderToSave ) {
           var sliderID = parseInt( sliderToSave.getAttribute("data-slider-id") );
-          // var sliderData = Rexbuilder_Util_Editor.createSliderData($sliderToSave);
-          // if (!Rexbuilder_Util_Editor.openingModel) {
-          //   Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, false);
-          // }
         }
 
         content = '[RexSlider slider_id="' + sliderID + '"]';

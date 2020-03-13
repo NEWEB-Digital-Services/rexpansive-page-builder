@@ -997,6 +997,7 @@ var Rexbuilder_App = (function($) {
 
     if ( Rexbuilder_Util.editorMode ) {
       Rexbuilder_Util_Editor.load();
+      Rexbuilder_Only_Live_Utils.load();
     }
 
     /* -- Launching the textfill -- */
@@ -1032,13 +1033,3 @@ var Rexbuilder_App = (function($) {
     load: load
   };
 })(jQuery);
-
-;(function() {
-  "use strict";
-
-  // Waiting until the ready of the DOM
-  document.addEventListener('DOMContentLoaded', Rexbuilder_App.init );
-
-  // Waiting for the complete load of the window
-  window.addEventListener('load', Rexbuilder_App.load );
-})();

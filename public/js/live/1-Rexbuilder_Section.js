@@ -88,7 +88,7 @@ var Rexbuilder_Section = (function($) {
       return (className.match(/grid-stack-instance-\d+/g) || []).join(" ");
     });
 
-    Rexbuilder_Util_Editor.removeDeletedBlocks($gallery);
+    Rexbuilder_Only_Live_Utils.removeDeletedBlocks($gallery);
 
     // Change section rexID
     // Do this first to prevent synch bugs
@@ -131,17 +131,17 @@ var Rexbuilder_Section = (function($) {
         block_type: ''
       };
       if (!Rexbuilder_Util_Editor.insertingModel) {
-        Rexbuilder_Util_Editor.generateElementNewIDs(
+        Rexbuilder_Only_Live_Utils.generateElementNewIDs(
           $elem,
           i,
           Rexbuilder_Util.lastSectionNumber
         );
       }
       // Rexbuilder_Util_Editor.removeScrollBar($elem);
-      Rexbuilder_Util_Editor.removeHandles($elem);
-      Rexbuilder_Util_Editor.removeTextEditor($elem);
+      Rexbuilder_Only_Live_Utils.removeHandles($elem);
+      Rexbuilder_Only_Live_Utils.removeTextEditor($elem);
       if (!Rexbuilder_Util_Editor.insertingModel) {
-        Rexbuilder_Util_Editor.fixCopiedElementSlider($elem);
+        Rexbuilder_Only_Live_Utils.fixCopiedElementSlider($elem);
       }
       if ($elem.find(".rexlive-block-toolbox").length == 0) {
         $elem
@@ -598,7 +598,7 @@ var Rexbuilder_Section = (function($) {
     // update the tools
     Rexbuilder_Section_Editor.updateRowTools( $newSection );
     Rexbuilder_Block_Editor.updateBlockToolsOnRow( $newSection );
-    Rexbuilder_Util_Editor.launchTooltips();
+    Rexbuilder_Only_Live_Utils.launchTooltips();
 
     var reverseData = {
       show: false,
@@ -799,7 +799,7 @@ var Rexbuilder_Section = (function($) {
     Rexbuilder_Util.$rexContainer.sortable("refresh");
 
     Rexbuilder_Section_Editor.updateRowTools( $newSection );
-    Rexbuilder_Util_Editor.launchTooltips();
+    Rexbuilder_Only_Live_Utils.launchTooltips();
 
     var reverseData = {
       show: false,
@@ -929,7 +929,7 @@ var Rexbuilder_Section = (function($) {
     Rexbuilder_Util.$rexContainer.sortable("refresh");
 
     Rexbuilder_Section_Editor.updateRowTools( $newSection );
-    Rexbuilder_Util_Editor.launchTooltips();
+    Rexbuilder_Only_Live_Utils.launchTooltips();
 
     var reverseData = {
       show: false,
@@ -1077,7 +1077,7 @@ var Rexbuilder_Section = (function($) {
     $row.perfectGridGalleryEditor({editorMode:true});
 
     // Launching and Updating tools
-    Rexbuilder_Util_Editor.updateModelSectionTools( $newSection, $newSectionData );
+    Rexbuilder_Only_Live_Utils.updateModelSectionTools( $newSection, $newSectionData );
 
     //starting sliders after grid is up
     setTimeout(
@@ -1294,7 +1294,7 @@ var Rexbuilder_Section = (function($) {
           $row.perfectGridGalleryEditor({editorMode:true});
 
           // Launching and Updating tools
-          Rexbuilder_Util_Editor.updateModelSectionTools( $newSection, $newSectionData );
+          Rexbuilder_Only_Live_Utils.updateModelSectionTools( $newSection, $newSectionData );
 
           //starting sliders after grid is up
           setTimeout(
@@ -1484,8 +1484,8 @@ var Rexbuilder_Section = (function($) {
           $row.perfectGridGalleryEditor({editorMode:true});
 
           // Launching and Updating tools
-          Rexbuilder_Util_Editor.updateModelSectionTools( $newSection, $newSectionData );
-          Rexbuilder_Util_Editor.launchTooltips();
+          Rexbuilder_Only_Live_Utils.updateModelSectionTools( $newSection, $newSectionData );
+          Rexbuilder_Only_Live_Utils.launchTooltips();
 
           Rexbuilder_Util.$rexContainer.sortable("refresh");
           Rexbuilder_Dom_Util.updateSectionVisibility($section, false);
