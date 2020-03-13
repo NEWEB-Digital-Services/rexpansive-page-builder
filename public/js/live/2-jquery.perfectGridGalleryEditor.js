@@ -574,7 +574,11 @@
         }
       }
 
-      if ( !Rexbuilder_Util.domUpdaiting && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying ) ) {
+      if (this.settings.editorMode) {
+        if ( !Rexbuilder_Util.domUpdaiting && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying ) ) {
+          this.updateBlocksHeight();
+        }
+      } else {
         this.updateBlocksHeight();
       }
 

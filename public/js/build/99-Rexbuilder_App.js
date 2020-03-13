@@ -866,9 +866,7 @@ var Rexbuilder_App = (function($) {
       Rexbuilder_Section_Editor.init();
       Rexbuilder_Block.init();
       Rexbuilder_Block_Editor.init();
-      Rexbuilder_Util_Editor.addDocumentListeners();
-      Rexbuilder_Util_Editor.addWindowListeners();
-      Rexbuilder_Util_Editor.addDnDEvents();
+      Rexbuilder_Only_Live_Utils.addBuilderListeners();
       TextEditor.init();
       Rexbuilder_Section_Editor.triggerRowDataChange();
     } else {
