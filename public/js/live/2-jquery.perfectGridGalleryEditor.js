@@ -2589,7 +2589,7 @@
             if (caretPosition == "begin") {
               $textWrap.focus();
             } else {
-              Rexbuilder_Only_Live_Utils.setEndOfContenteditable($textWrap[0]);
+              Rexbuilder_Live_Utilities.setEndOfContenteditable($textWrap[0]);
             }
           }
           Rexbuilder_Util_Editor.startEditingElement();

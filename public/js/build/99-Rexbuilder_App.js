@@ -866,7 +866,7 @@ var Rexbuilder_App = (function($) {
       Rexbuilder_Section_Editor.init();
       Rexbuilder_Block.init();
       Rexbuilder_Block_Editor.init();
-      Rexbuilder_Only_Live_Utils.addBuilderListeners();
+      Rexbuilder_Live_Utilities.addBuilderListeners();
       TextEditor.init();
       Rexbuilder_Section_Editor.triggerRowDataChange();
     } else {
@@ -995,7 +995,7 @@ var Rexbuilder_App = (function($) {
 
     if ( Rexbuilder_Util.editorMode ) {
       Rexbuilder_Util_Editor.load();
-      Rexbuilder_Only_Live_Utils.load();
+      Rexbuilder_Live_Utilities.load();
     }
 
     /* -- Launching the textfill -- */

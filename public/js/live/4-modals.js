@@ -453,7 +453,7 @@
 
       var $gallery = $section.find(".grid-stack-row");
 
-      var elementsBefore = Rexbuilder_Only_Live_Utils.getElementsPhotoswipe( $gallery );
+      var elementsBefore = Rexbuilder_Live_Utilities.getElementsPhotoswipe( $gallery );
       var reverseData = {
         elements: elementsBefore
       };
@@ -467,7 +467,7 @@
       }
 
       //actionData: state after
-      var elementsAfter = Rexbuilder_Only_Live_Utils.getElementsPhotoswipe(
+      var elementsAfter = Rexbuilder_Live_Utilities.getElementsPhotoswipe(
         $gallery
       );
       var actionData = {

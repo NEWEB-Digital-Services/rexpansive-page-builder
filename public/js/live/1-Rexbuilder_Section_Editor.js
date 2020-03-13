@@ -510,7 +510,7 @@ var Rexbuilder_Section_Editor = (function($) {
           Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         }
 
-        Rexbuilder_Only_Live_Utils.hideAllTools();
+        Rexbuilder_Live_Utilities.hideAllTools();
 
         flagPickerUsed = false;
       },
@@ -630,7 +630,7 @@ var Rexbuilder_Section_Editor = (function($) {
           Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         }
 
-        Rexbuilder_Only_Live_Utils.hideAllTools();
+        Rexbuilder_Live_Utilities.hideAllTools();
 
         flagPickerUsed = false;
       },

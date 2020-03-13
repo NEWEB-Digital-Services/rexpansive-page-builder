@@ -88,7 +88,7 @@ var Rexbuilder_Section = (function($) {
       return (className.match(/grid-stack-instance-\d+/g) || []).join(" ");
     });
 
-    Rexbuilder_Only_Live_Utils.removeDeletedBlocks($gallery);
+    Rexbuilder_Live_Utilities.removeDeletedBlocks($gallery);
 
     // Change section rexID
     // Do this first to prevent synch bugs
@@ -131,17 +131,17 @@ var Rexbuilder_Section = (function($) {
         block_type: ''
       };
       if (!Rexbuilder_Util_Editor.insertingModel) {
-        Rexbuilder_Only_Live_Utils.generateElementNewIDs(
+        Rexbuilder_Live_Utilities.generateElementNewIDs(
           $elem,
           i,
           Rexbuilder_Util.lastSectionNumber
         );
       }
       // Rexbuilder_Util_Editor.removeScrollBar($elem);
-      Rexbuilder_Only_Live_Utils.removeHandles($elem);
-      Rexbuilder_Only_Live_Utils.removeTextEditor($elem);
+      Rexbuilder_Live_Utilities.removeHandles($elem);
+      Rexbuilder_Live_Utilities.removeTextEditor($elem);
       if (!Rexbuilder_Util_Editor.insertingModel) {
-        Rexbuilder_Only_Live_Utils.fixCopiedElementSlider($elem);
+        Rexbuilder_Live_Utilities.fixCopiedElementSlider($elem);
       }
       if ($elem.find(".rexlive-block-toolbox").length == 0) {
         $elem
@@ -490,7 +490,7 @@ var Rexbuilder_Section = (function($) {
     // if the page remains empty
     // make sure that the "add row" button is visible
     if( 0 === Rexbuilder_Util.rexContainer.querySelectorAll(".rexpansive_section:not(.removing_section)").length ) {
-      Rexbuilder_Live_Utilities.activeAddSection();
+      Rexbuilder_Util_Editor.activeAddSection();
     }
 
     var actionData = {
@@ -598,7 +598,7 @@ var Rexbuilder_Section = (function($) {
     // update the tools
     Rexbuilder_Section_Editor.updateRowTools( $newSection );
     Rexbuilder_Block_Editor.updateBlockToolsOnRow( $newSection );
-    Rexbuilder_Only_Live_Utils.launchTooltips();
+    Rexbuilder_Live_Utilities.launchTooltips();
 
     var reverseData = {
       show: false,
@@ -799,7 +799,7 @@ var Rexbuilder_Section = (function($) {
     Rexbuilder_Util.$rexContainer.sortable("refresh");
 
     Rexbuilder_Section_Editor.updateRowTools( $newSection );
-    Rexbuilder_Only_Live_Utils.launchTooltips();
+    Rexbuilder_Live_Utilities.launchTooltips();
 
     var reverseData = {
       show: false,
@@ -929,7 +929,7 @@ var Rexbuilder_Section = (function($) {
     Rexbuilder_Util.$rexContainer.sortable("refresh");
 
     Rexbuilder_Section_Editor.updateRowTools( $newSection );
-    Rexbuilder_Only_Live_Utils.launchTooltips();
+    Rexbuilder_Live_Utilities.launchTooltips();
 
     var reverseData = {
       show: false,
@@ -1077,7 +1077,7 @@ var Rexbuilder_Section = (function($) {
     $row.perfectGridGalleryEditor({editorMode:true});
 
     // Launching and Updating tools
-    Rexbuilder_Only_Live_Utils.updateModelSectionTools( $newSection, $newSectionData );
+    Rexbuilder_Live_Utilities.updateModelSectionTools( $newSection, $newSectionData );
 
     //starting sliders after grid is up
     setTimeout(
@@ -1294,7 +1294,7 @@ var Rexbuilder_Section = (function($) {
           $row.perfectGridGalleryEditor({editorMode:true});
 
           // Launching and Updating tools
-          Rexbuilder_Only_Live_Utils.updateModelSectionTools( $newSection, $newSectionData );
+          Rexbuilder_Live_Utilities.updateModelSectionTools( $newSection, $newSectionData );
 
           //starting sliders after grid is up
           setTimeout(
@@ -1484,8 +1484,8 @@ var Rexbuilder_Section = (function($) {
           $row.perfectGridGalleryEditor({editorMode:true});
 
           // Launching and Updating tools
-          Rexbuilder_Only_Live_Utils.updateModelSectionTools( $newSection, $newSectionData );
-          Rexbuilder_Only_Live_Utils.launchTooltips();
+          Rexbuilder_Live_Utilities.updateModelSectionTools( $newSection, $newSectionData );
+          Rexbuilder_Live_Utilities.launchTooltips();
 
           Rexbuilder_Util.$rexContainer.sortable("refresh");
           Rexbuilder_Dom_Util.updateSectionVisibility($section, false);

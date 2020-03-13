@@ -5,8 +5,18 @@
 var Rexbuilder_Util_Editor = (function($) {
   "use strict";
 
-  var undoStackArray;
-  var redoStackArray;
+  /**
+   * Make visibile the plus button under the container
+   * @param  {Object} $s section
+   * @return {void}
+   */
+  var _activeAddSection = function( $s ) {
+    $s = 'undefined' !== typeof $s ? $s : null;
+    Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
+    if ( $s ) {
+      $s.removeClass("activeRowTools");
+    }
+  }
 
   /**
    * @param {jQuery} $textWrap Text-wrap whose container block height has to be update
@@ -141,8 +151,8 @@ var Rexbuilder_Util_Editor = (function($) {
       reverseActionData: reverseData
     };
 
-    undoStackArray.push(action);
-    redoStackArray = [];
+    Rexbuilder_Util_Editor.undoStackArray.push(action);
+    Rexbuilder_Util_Editor.redoStackArray = [];
 
     _sendUndoRedoInformation();
   };
@@ -151,8 +161,8 @@ var Rexbuilder_Util_Editor = (function($) {
     var ur_data = {
       eventName: "rexlive:undoRedoStackChange",
       stacks: {
-        undo: undoStackArray.length,
-        redo: redoStackArray.length
+        undo: Rexbuilder_Util_Editor.undoStackArray.length,
+        redo: Rexbuilder_Util_Editor.redoStackArray.length
       }
     };
     Rexbuilder_Util_Editor.sendParentIframeMessage(ur_data);
@@ -189,8 +199,8 @@ var Rexbuilder_Util_Editor = (function($) {
    */
   var _getStacks = function() {
     var stacks = {
-      undo: undoStackArray,
-      redo: redoStackArray
+      undo: Rexbuilder_Util_Editor.undoStackArray,
+      redo: Rexbuilder_Util_Editor.redoStackArray
     };
     return stacks;
   };
@@ -839,8 +849,8 @@ var Rexbuilder_Util_Editor = (function($) {
     this.scrollbarsActive = false;
 
     this.dragAndDropFromParent = false;
-    undoStackArray = [];
-    redoStackArray = [];
+    this.undoStackArray = [];
+    this.redoStackArray = [];
 
     this.needToSave = true;
 
@@ -859,6 +869,7 @@ var Rexbuilder_Util_Editor = (function($) {
     init: init,
     load: load,
     // removeScrollBar: _removeScrollBar,
+    activeAddSection: _activeAddSection,
     endEditingElement: endEditingElement,
     startEditingElement: startEditingElement,
     sendParentIframeMessage: sendParentIframeMessage,
@@ -884,6 +895,7 @@ var Rexbuilder_Util_Editor = (function($) {
     getPrefixedValues: _getPrefixedValues,
     synchGradient: _synchGradient,
     updateBlockContainerHeight: _updateBlockContainerHeight,
-    updateContainerMargins: _updateContainerMargins
+    updateContainerMargins: _updateContainerMargins,
+    sendUndoRedoInformation: _sendUndoRedoInformation
   };
 })(jQuery);

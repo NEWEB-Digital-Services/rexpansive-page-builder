@@ -433,7 +433,6 @@ gulp.task( 'adminJS', adminJSScript )
 	// 'public/js/vendor/medium-editor-insert-plugin.js',
 	'public/js/live/0-Rexbuilder_Array_Utilities.js',
 	'public/js/live/0-Rexbuilder_Live_Utilities.js',
-	'public/js/live/0-Rexbuilder_Only_Live_Utils.js',
 	'public/js/live/1-Rexbuilder_Color_Palette.js',
 	'public/js/live/1-Rexbuilder_Overlay_Palette.js',
 	'public/js/live/2-Text_Editor.js',
@@ -484,7 +483,6 @@ gulp.task( 'adminJS', adminJSScript )
 
 var builderlive_public = [
 	'public/js/live/0-Rexbuilder_Array_Utilities.js',
-	'public/js/live/0-Rexbuilder_Live_Utilities.js',
 	'public/js/vendor/intersection-observer.js',
 	'public/js/vendor/jquery.requestanimationframe.min.js',
 	'public/js/vendor/tmpl.min.js',

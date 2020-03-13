@@ -871,7 +871,7 @@ var Rexbuilder_Block_Editor = (function($) {
           Rexbuilder_Util.$document.trigger(event);
         }
 
-        Rexbuilder_Only_Live_Utils.hideAllTools();
+        Rexbuilder_Live_Utilities.hideAllTools();
         flagPickerUsed = false;
       },
     });
@@ -1021,7 +1021,7 @@ var Rexbuilder_Block_Editor = (function($) {
           Rexbuilder_Util.$document.trigger(event);
         }
 
-        Rexbuilder_Only_Live_Utils.hideAllTools();
+        Rexbuilder_Live_Utilities.hideAllTools();
 
         flagPickerUsed = false;
       },
