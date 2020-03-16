@@ -1,46 +1,12 @@
 .wpcf7-form {
-  display: flex;
-  flex-wrap: wrap;
-  cursor: default;
-  padding-top: 13px;
-  margin-top: 10px;
-
   .wpcf7-rows {
-    display: block;
-    width: 100%;
 
     .wpcf7-row {
-      display: flex;
-      width: 100%;
-      min-height: 72px;
 
       .wpcf7-column {
-        display: flex;
 
         &.with-button {
           justify-content: center;
-        }
-
-        .wpcf7-column-content {
-          width: 100%;
-
-          label {
-            display: block;
-          }
-
-          .wpcf7-form-control-wrap {
-            max-width: 100%;
-            max-height: 100%;
-          }
-
-          .wpcf7-radio,
-          .wpcf7-acceptance {
-            overflow: hidden;
-          }
-        }
-
-        .rex-wpcf7-column-content-data {
-          display: none;
         }
 
         .wpcf7-add-new-form-content {
@@ -51,76 +17,7 @@
         .wpcf7-add-new-row {
           margin: auto 0;
         }
-
-        .wpcf7-list-item {
-          display: inline-flex;
-          align-items: center;
-        }
-      }
-
-      &.wpcf7-row__1-column,
-      &.wpcf7-row__2-columns,
-      &.wpcf7-row__3-columns,
-      &.wpcf7-row__4-columns {
-        .wpcf7-column {
-          float: left;
-        }
-      }
-      
-      &.wpcf7-row__1-column {
-        .wpcf7-column {
-          width: 100%;
-        }
-      }
-
-      &.wpcf7-row__2-columns {
-        .wpcf7-column {
-          width: 50%;
-          max-width: 50%;
-        }
-      }
-
-      &.wpcf7-row__3-columns {
-        .wpcf7-column {
-          width: 33.3333%;
-        }
-      }
-
-      &.wpcf7-row__4-columns {
-        .wpcf7-column {
-          width: 25%;
-        }
       }
     }
   }
-
-  .wpcf7-response-output {
-    width: 100%;
-  }
-
-  .wpcf7-submit {
-    min-width: 150px;
-    min-height: 40px;
-  }
 }
-
-// div.wpcf7-response-output {
-//   margin: 2em 0.5em 1em;
-//   padding: 0.2em 1em;
-// }
-
-// div.wpcf7-mail-sent-ok {
-//   border: 2px solid #398f14;
-// }
-
-// div.wpcf7-mail-sent-ng {
-//   border: 2px solid #ff0000;
-// }
-
-// div.wpcf7-spam-blocked {
-//   border: 2px solid #ffa500;
-// }
-
-// div.wpcf7-validation-errors {
-//   border: 2px solid #f7e700;
-// }

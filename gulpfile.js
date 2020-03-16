@@ -555,7 +555,7 @@ var builderlive_public_style = [
 	'public/css/gridstack.css',
 	'public/css/input-spinner.css',
 	'public/css/public.css',
-	'admin/css/live-def.css'
+	// 'admin/css/live-def.css'
 ];
 
 // var public_res = builderlive_public_editor.concat(builderlive_public);
