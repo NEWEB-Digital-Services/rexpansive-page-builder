@@ -231,7 +231,7 @@ gulp.task('admin-builder-style', function() {
 	.pipe(gulp.dest('admin/css'));
 });
 
-gulp.task('peter', ['live-builder-style','admin-builder-style', 'prepare-effects'] ,function() {
+gulp.task('peter', ['live-builder-style','admin-builder-style', 'minify-external'] ,function() {
 	gulp.watch('admin/scss/rexlive/**/*.scss', ['live-builder-style']);
 	gulp.watch('admin/scss/rexlive/**/*.scss', ['admin-builder-style']);
 });
@@ -245,10 +245,11 @@ var effects_js_src = [
 	'public/js/vendor/popup-content.js',
 	'public/js/vendor/split-scrollable.js',
 	'public/js/vendor/jquery.rexAccordion.js',
-	'public/js/vendor/particle-swarm.js'
+	'public/js/vendor/particle-swarm.js',
+	'public/js/build/fast-load.js',
 ];
 
-gulp.task('prepare-effects', function() {
+gulp.task('minify-external', function() {
 	effects_js_src.forEach( function( effect_src ) {
 		return gulp.src(effect_src)
 			.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
@@ -256,13 +257,6 @@ gulp.task('prepare-effects', function() {
 			.pipe(gulp.dest('public/js/vendor'))
 	})
 });
-
-gulp.task('fast-load', function() {
-	return gulp.src('public/js/build/fast-load.js')
-		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
-		.pipe(rename({suffix: '.min'}))
-		.pipe(gulp.dest('public/js/vendor'))
-})
 
 gulp.task('rxcf7', function() {
 	return gulp.src('public/scss/rxcf7.scss')
@@ -531,8 +525,7 @@ var builderlive_public = [
 	'public/js/vendor/3-velocity.ui.min.js',
 	'public/js/vendor/4-jquery.rexScrollify.js',
 	'public/js/build/99-Rexbuilder_App.js',
-	'public/js/rexbuilder-public.js',
-	// 'public/js/build/fast-load.js',
+	'public/js/rexbuilder-public.js'
 ];
 
 var builderlive_public_editor_style = [
@@ -556,8 +549,8 @@ var builderlive_public_editor_style = [
 var builderlive_public_style = [
 	'public/Photoswipe/default-skin/default-skin.css',
 	'public/jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css',
-	'public/css/animate.css',
-	'public/css/textFill.css',
+	// 'public/css/animate.css',
+	// 'public/css/textFill.css',
 	'public/css/jquery-ui.min.css',
 	'public/css/gridstack.css',
 	'public/css/input-spinner.css',
@@ -616,12 +609,12 @@ gulp.task('builderlive-style', function() {
 		.pipe(gulp.dest('public/css'))
 });
 
-gulp.task('build', ['prepare-effects','fast-load','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style', 'adminJS']);
+gulp.task('build', ['minify-external','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style', 'adminJS']);
 
-gulp.task('watch-live-production', ['prepare-effects','fast-load','builderlive-editor','builderlive'] ,function() {
+gulp.task('watch-live-production', ['minify-external','builderlive-editor','builderlive'] ,function() {
 	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive-editor']);
 	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive']);
-	gulp.watch(effects_js_src, ['prepare-effects']);
+	gulp.watch(effects_js_src, ['minify-external']);
 });
 
 /* --- BUILD PUBLIC SCRIPTS AND STYLES ------ */
@@ -708,10 +701,6 @@ gulp.task('dev', ['admin-plugins-build', 'admin-css-build', 'public-css-build', 
 	gulp.watch(public_js_logic_src, ['public-js-build']);
 });
 
-gulp.task('dev-live', ['live-builder-style'] ,function() {
-	gulp.watch('admin/scss/builder-live/**/*.scss', ['live-builder-style']);
-});
-
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
 var live_zip_name = 'Premium-204-Rexpansive-Builder.zip';
 // var live_folder_name = 'rexpansive-builder';		// old folder name
@@ -763,6 +752,7 @@ var live_file_map = [
 	'public/js/vendor/**/*',
 	'public/js/builderlive-editor.js',
 	'public/js/builderlive-public.js',
+	'public/js/rexbuilder-public.js',
 	'public/partials/**/*',
 	'public/Photoswipe/**/*',
 	'public/templates/**/*',
