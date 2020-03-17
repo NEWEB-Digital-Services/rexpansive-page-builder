@@ -46,6 +46,7 @@ var	config = {
 	}
 };
 
+// LIVE e ADMIN
 gulp.task("live-sprites", function() {
 	gulp
 	.src("./admin/ICO_Live-new/**/*.svg")
@@ -86,49 +87,6 @@ gulp.task('admin-builder-style', function() {
 	.pipe(size({title: 'LiveBuilder Admin CSS'}))
 	.pipe(gulp.dest('admin/css'));
 });
-
-gulp.task('peter', ['live-builder-style','admin-builder-style'] ,function() {
-	gulp.watch('admin/scss/rexlive/**/*.scss', ['live-builder-style']);
-	gulp.watch('admin/scss/rexlive/**/*.scss', ['admin-builder-style']);
-});
-
-var effects_js_src = [
-	'public/js/vendor/jquery.rexEffect.js',
-	'public/js/vendor/6-jquery.rexSlideshow.js',
-	'public/js/vendor/sticky-section.js',
-	'public/js/vendor/scroll-css-animation.js',
-	'public/js/vendor/distance-accordion.js',
-	'public/js/vendor/popup-content.js',
-	'public/js/vendor/split-scrollable.js',
-	'public/js/vendor/jquery.rexAccordion.js',
-	'public/js/vendor/particle-swarm.js',
-	'public/js/build/fast-load.js',
-];
-
-gulp.task('minify-external', function() {
-	effects_js_src.forEach( function( effect_src ) {
-		return gulp.src(effect_src)
-			.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
-			.pipe(rename({suffix: '.min'}))
-			.pipe(gulp.dest('public/js/vendor'))
-	})
-});
-
-// FIX CF7
-gulp.task('rxcf7', function() {
-	return gulp.src('public/scss/rxcf7.scss')
-		.pipe(sass({
-			sourcemap: false,
-			outputStyle:'compressed'
-		}))
-		.pipe(plumber())
-		.pipe(autoprefixer({
-			browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
-		}))
-		.pipe(plumber.stop())
-		.pipe(size({title: 'RXCF7 CSS'}))
-		.pipe(gulp.dest('public/css'));
-})
 
 // ADMIN JS
 var builderlive_admin = [
@@ -413,13 +371,46 @@ gulp.task('builderlive-style', function() {
 		.pipe(gulp.dest('public/css'))
 });
 
-gulp.task('build', ['minify-external','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style', 'adminJS']);
+// PUBLIC
+var effects_js_src = [
+	'public/js/vendor/jquery.rexEffect.js',
+	'public/js/vendor/6-jquery.rexSlideshow.js',
+	'public/js/vendor/sticky-section.js',
+	'public/js/vendor/scroll-css-animation.js',
+	'public/js/vendor/distance-accordion.js',
+	'public/js/vendor/popup-content.js',
+	'public/js/vendor/split-scrollable.js',
+	'public/js/vendor/jquery.rexAccordion.js',
+	'public/js/vendor/particle-swarm.js',
+	'public/js/build/fast-load.js',
+];
 
-gulp.task('watch-live-production', ['minify-external','builderlive-editor','builderlive'] ,function() {
-	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive-editor']);
-	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive']);
-	gulp.watch(effects_js_src, ['minify-external']);
+gulp.task('minify-external', function() {
+	effects_js_src.forEach( function( effect_src ) {
+		return gulp.src(effect_src)
+			.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
+			.pipe(rename({suffix: '.min'}))
+			.pipe(gulp.dest('public/js/vendor'))
+	})
 });
+
+// FIX CF7
+gulp.task('rxcf7', function() {
+	return gulp.src('public/scss/rxcf7.scss')
+		.pipe(sass({
+			sourcemap: false,
+			outputStyle:'compressed'
+		}))
+		.pipe(plumber())
+		.pipe(autoprefixer({
+			browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+		}))
+		.pipe(plumber.stop())
+		.pipe(size({title: 'RXCF7 CSS'}))
+		.pipe(gulp.dest('public/css'));
+})
+
+gulp.task('build', ['minify-external','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style', 'adminJS']);
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
 var live_zip_name = 'Premium-204-Rexpansive-Builder.zip';
@@ -529,141 +520,3 @@ gulp.task('remove-temp-live-mac-folder', ['create-temp-live-folder','mac-live-zi
 });
 
 gulp.task('build-live-mac', ['create-temp-live-folder', 'mac-live-zip', 'remove-temp-live-mac-folder']);
-
-/** OLD BUILDER */
-
-// public css
-gulp.task('builder-front', function() {
-	return gulp.src('public/scss/rexbuilder-public.scss')
-	.pipe(sass({outputStyle:'compressed'}))
-	.pipe(plumber())
-	.pipe(autoprefixer({
-		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
-	}))
-	.pipe(plumber.stop())
-	.pipe(size({title: 'Front CSS'}))
-	.pipe(gulp.dest('public/css/'));
-});
-
-gulp.task('default', ['builder-front']);
-
-// admin css
-gulp.task('admin-builder', function() {
-	return gulp.src('admin/scss/builder.scss')
-	.pipe(sass({outputStyle:'expanded'}).on('error', sass.logError))
-	.pipe(gulp.dest('admin/scss'))
-});
-
-gulp.task('admin-css-build', function() {
-	sass('admin/admin.scss',{
-		outputStyle:'compressed'
-	})
-	.pipe(plumber())
-	.pipe(autoprefixer({
-		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
-	}))
-	.pipe(plumber.stop())
-	.pipe(size({title: 'Admin CSS'}))
-	.pipe(gulp.dest('admin/css'));
-});
-
-// admin js
-var admin_js_src = [ 
-	'admin/js/jquery.gridster.js', 
-	'admin/spectrum/spectrum.js', 
-	'admin/materialize/js/materialize.js',
-	'admin/js/0-Rexpansive_Builder_Admin_Config.js',
-	'admin/js/0-Rexpansive_Builder_Admin_Utilities.js',
-	'admin/js/1-Rexpansive_Builder_Admin_Modals.js',
-	'admin/js/1-Rexpansive_Builder_Admin_Templates.js',
-	'admin/js/2-Rexpansive_Builder_Admin_Hooks.js',
-	'admin/js/3-Rexpansive_Builder_Admin_Lightbox.js',
-	'admin/js/3-Rexpansive_Builder_Admin_ModelEditor.js',
-	'admin/js/3-Rexpansive_Builder_Admin_PaddingEditor.js',
-	'admin/js/3-Rexpansive_Builder_Admin_PositionEditor.js',
-	'admin/js/3-Rexpansive_Builder_Admin_Rxcf.js',
-	'admin/js/3-Rexpansive_Builder_Admin_TextEditor.js',
-	'admin/js/3-Rexpansive_Builder_Admin_VideoEditor.js',
-	'admin/js/4-Rexpansive_Builder_Admin_MediaUploader.js',
-	'admin/js/4-Rexpansive_Builder_Admin_VideoUploader.js',
-	'admin/js/5-Rexpansive_Builder_Admin_Section.js',
-	'admin/js/rexbuilder.js', 
-];
-
-gulp.task('admin-plugins-build', function() {
-	return gulp.src(admin_js_src)
-	.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
-	.pipe(concat('plugins.js'))
-	.pipe(size({title:'Admin JS'}))
-	.pipe(gulp.dest('admin/js'))
-});
-
-gulp.task('dev', ['admin-plugins-build', 'admin-css-build', 'public-css-build', 'public-plugins-build', 'public-js-build'] ,function() {
-	gulp.watch(admin_js_src, ['admin-plugins-build']);
-	gulp.watch('admin/scss/admin/builder.scss', ['admin-css-build']);
-	gulp.watch('public/scss/**/*.scss', ['public-css-build']);
-	gulp.watch(public_js_src, ['public-plugins-build']);
-	gulp.watch(public_js_logic_src, ['public-js-build']);
-});
-
-/* --- BUILD PUBLIC SCRIPTS AND STYLES ------ */
-
-var public_js_src = [
-	'public/js/vendor/0-isotope.pkgd.min.js',
-	'public/js/vendor/1-classie.js',
-	'public/js/vendor/1-jquery.mCustomScrollbar.concat.min.js',
-	'public/js/vendor/2-jquery.expandEffect.js',
-	'public/js/vendor/2-jquery.perfectGridGallery.js',
-	'public/js/vendor/2-jquery.textFill.js',
-	'public/js/vendor/2-TextResize.js',
-	'public/js/vendor/3-velocity.min.js',
-	'public/js/vendor/3-velocity.ui.min.js',
-	'public/js/vendor/4-jquery.rexScrolled.js',
-	'public/js/vendor/4-jquery.rexScrollify.js',
-	'public/js/vendor/5-flickity.pkgd.min.js',
-	'public/js/vendor/5-jquery.rexIndicator.js',
-	'public/js/vendor/jquery.rexAccordion.js',
-	'public/js/vendor/photoswipe.min.js',
-	'public/js/vendor/photoswipe-ui-default.min.js',
-	'public/js/vendor/jquery.mb.YTPlayer.min.js',
-	//'public/js/wow.min.js',
-	//'public/js/underscore-min.js',
-	//'public/js/jquery.getVideoThumbnail.js'
-];
-
-var public_js_logic_src = [
-	'public/js/build/1-Rexbuilder_Util.js',
-	'public/js/build/1-Rexbuilder_Photoswipe.js',
-	'public/js/build/2-RexSlider.js',
-	'public/js/build/5-Rexbuilder_FormFixes.js',
-	'public/js/build/8-VimeoVideo.js',
-	'public/js/build/rexbuilder-public.js',
-	//'public/js/TextResize.js',
-];
-
-gulp.task('public-plugins-build', function() {
-	return gulp.src(public_js_src)
-	.pipe(uglify({preserveComments: 'license'}).on('error', function(e){
-		console.log(e);
-	}))
-	.pipe(concat('plugins.js'))
-	.pipe(size({title:'Public JS Plugins'}))
-	.pipe(gulp.dest('public/js'))
-});
-
-gulp.task('public-js-build', function() {
-	return gulp.src(public_js_logic_src)
-	.pipe(uglify({preserveComments: 'license'}).on('error', function(e){
-		console.log(e);
-	}))		
-	//.pipe(uglify({preserveComments: 'all'}))	
-	.pipe(concat('public.js'))
-	.pipe(size({title:'Public JS'}))
-	.pipe(gulp.dest('public/js'))
-});
-
-gulp.task('watch-public-js-build', function() {
-	gulp.watch(public_js_logic_src, ['public-js-build']);
-});
-
-// ************** //
