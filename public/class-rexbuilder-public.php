@@ -373,6 +373,7 @@ class Rexbuilder_Public
 			}
 			
 			wp_enqueue_script('rexbuilder-app', REXPANSIVE_BUILDER_URL . 'public/js/build/99-Rexbuilder_App.js', array('jquery'), $ver, true);
+			wp_enqueue_script('rex-grid', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rex-grid.js', array(), $ver, true);
 			wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . 'public/js/rexbuilder-public.js', array('jquery'), $ver, true);
 
 			if( !Rexbuilder_Utilities::isBuilderLive() && 1 == $fast_load ) {

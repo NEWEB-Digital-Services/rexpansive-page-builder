@@ -882,12 +882,29 @@ var Rexbuilder_App = (function($) {
     $sections = Rexbuilder_Util.$rexContainer.find(".rexpansive_section");
     $grids = Rexbuilder_Util.$rexContainer.find(".grid-stack-row");
 
+    var gridInstances = [];
+
     /* -- Launching the grid -- */
     // $grids.find(".wrapper-expand-effect").expandEffect();
     if( $grids ) {
-      $grids.perfectGridGalleryEditor({
-        editorMode: Rexbuilder_Util.editorMode
-      });
+      if ( Rexbuilder_Util.editorMode ) {
+        $grids.perfectGridGalleryEditor({
+          editorMode: Rexbuilder_Util.editorMode
+        });
+      } else {
+        var grids = Array.prototype.slice.call( document.getElementsByClassName( 'grid-stack-row' ) );
+        var tot_grids = grids.length;
+        var i = 0;
+
+        for ( i = 0; i < tot_grids; i++ ) {
+          var rexGridInstance = new RexGrid( grids[i] );
+
+          gridInstances.push( rexGridInstance );
+        }
+
+        console.log( gridInstances );
+        
+      }
     }
 
     // listen one time to edit dom layout ending

@@ -322,7 +322,7 @@ class Rexbuilder_Section {
 
 		do_action('rexpansive_section_before_grid', array(&$parsed_atts));
 
-		echo '<div class="perfect-grid-gallery grid-stack grid-stack-row' . ( !empty( $grid_custom_classes ) ? ' ' . $grid_custom_classes : '' ) . '" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . (('true' == $full_height) ? 'true' : 'false') . '"' . $row_separators . '>';
+		echo '<div class="perfect-grid-gallery grid-stack grid-stack-row' . ( !empty( $grid_custom_classes ) ? ' ' . $grid_custom_classes : '' ) . '" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . (('true' == $full_height) ? 'true' : 'false') . '"' . $row_separators . ' data-rex-grid-id="' . $rexlive_section_id . '">';
 		echo '<div class="perfect-grid-sizer"></div>';
 		echo do_shortcode( $content );
 		echo '</div>';
