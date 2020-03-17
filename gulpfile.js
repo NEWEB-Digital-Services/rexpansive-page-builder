@@ -1,21 +1,17 @@
-var gulp = require('gulp'),
-	sass = require('gulp-sass'),
-	// sass = require('gulp-ruby-sass'),
-	watch = require('gulp-watch'),
-	minifyCSS = require('gulp-minify-css'),
-	autoprefixer = require('gulp-autoprefixer'),
-	plumber = require('gulp-plumber'),
-	rename = require('gulp-rename'),
-	header = require('gulp-header'),
-	pkg = require('./package.json'),
-	uglify = require('gulp-uglify'),
-	uglifyCSS = require('gulp-uglifycss'),
-	clean = require('gulp-clean'),
-	zip = require('gulp-zip'),
-	size = require('gulp-size'),
-	concat = require('gulp-concat'),
-	gulpUtil = require('gulp-util'),
-	svgSprite = require('gulp-svg-sprite');
+const { src, dest, watch } = require('gulp');
+const { series, parallel } = require('gulp');
+const exec = require('child_process').exec;
+const clean = require('gulp-clean');
+const zip = require('gulp-zip');
+const sass = require('gulp-sass');
+const plumber = require('gulp-plumber');
+const concat = require('gulp-concat');
+const uglify = require('gulp-uglify');
+const size = require('gulp-size');
+const autoprefixer = require('gulp-autoprefixer');
+const rename = require('gulp-rename');
+const gulpUtil = require('gulp-util');
+const svgSprite = require('gulp-svg-sprite');
 
 /** LIVE BUILDER */
 /** SPRITES TASKS */
@@ -47,46 +43,54 @@ var	config = {
 };
 
 // LIVE e ADMIN
-gulp.task("live-sprites", function() {
-	gulp
-	.src("./admin/ICO_Live-new/**/*.svg")
-	.pipe(svgSprite(config))
-	.pipe(gulp.dest("./admin/sprites-live"));
-});
+function liveSprites(cb) {
+	return src('./admin/ICO_Live-new/**/*.svg')
+		.pipe(svgSprite(config))
+    .pipe(dest('./admin/sprites-live'))
+  cb();
+}
+
+exports.liveSprites = liveSprites;
 
 /** end SPRITES TASKS */
 
 // LIVE
-gulp.task('live-builder-style', function() {
-	return gulp.src('admin/scss/rexlive/live-def.scss')
-	.pipe(sass({
-		sourcemap: false,
-		outputStyle:'compressed'
-	}))
-	.pipe(plumber())
-	.pipe(autoprefixer({
-		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
-	}))
-	.pipe(plumber.stop())
-	.pipe(size({title: 'LiveBuilder CSS'}))
-	.pipe(gulp.dest('admin/css'));
-});
+function liveBuilderStyle(cb) {
+	return src('admin/scss/rexlive/live-def.scss')
+		.pipe(sass({
+			sourcemap: false,
+			outputStyle:'compressed'
+		}))
+		.pipe(plumber())
+		.pipe(autoprefixer({
+			browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+		}))
+		.pipe(plumber.stop())
+		.pipe(size({title: 'LiveBuilder CSS'}))
+		.pipe(dest('admin/css'));
+	cb()
+}
+
+exports.liveBuilderStyle = liveBuilderStyle;
 
 // ADMIN
-gulp.task('admin-builder-style', function() {
-	return gulp.src('admin/scss/rexlive/tools-def.scss')
-	.pipe(sass({
-		sourcemap: false,
-		outputStyle:'compressed'
-	}))
-	.pipe(plumber())
-	.pipe(autoprefixer({
-		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
-	}))
-	.pipe(plumber.stop())
-	.pipe(size({title: 'LiveBuilder Admin CSS'}))
-	.pipe(gulp.dest('admin/css'));
-});
+function adminBuilderStyle(cb) {
+	return src('admin/scss/rexlive/tools-def.scss')
+		.pipe(sass({
+			sourcemap: false,
+			outputStyle:'compressed'
+		}))
+		.pipe(plumber())
+		.pipe(autoprefixer({
+			browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+		}))
+		.pipe(plumber.stop())
+		.pipe(size({title: 'LiveBuilder Admin CSS'}))
+		.pipe(dest('admin/css'));
+	cb();
+}
+
+exports.adminBuilderStyle = adminBuilderStyle;
 
 // ADMIN JS
 var builderlive_admin = [
@@ -167,16 +171,16 @@ var builderlive_admin = [
 ];
 
 function adminJSScript(cb) {
-  return gulp.src(builderlive_admin)
+  return src(builderlive_admin)
     .pipe(plumber())
     .pipe(concat('builderlive-admin.js'))
     .pipe(uglify({ mangle: true }))
     .pipe(size({title: 'ADMIN JS:'}))
-    .pipe(gulp.dest('./admin/js'))
+    .pipe(dest('./admin/js'))
   cb();
 }
 
-gulp.task( 'adminJS', adminJSScript )
+exports.adminJSScript = adminJSScript;
 
 // LIVE JS
 var builderlive_public_editor = [
@@ -238,6 +242,17 @@ var builderlive_public_editor = [
 	'public/js/rexbuilder-public.js'
 ];
 
+function builderliveEditor(cb) {
+	return src(builderlive_public_editor)
+		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(concat('builderlive-editor.js'))
+		.pipe(size({title:'Builderlive Editor'}))
+		.pipe(dest('public/js'))
+	cb();
+}
+
+exports.builderliveEditor = builderliveEditor;
+
 // PUBLIC JS
 var builderlive_public = [
 	'public/js/live/0-Rexbuilder_Array_Utilities.js',
@@ -277,51 +292,20 @@ var builderlive_public = [
 	'public/js/rexbuilder-public.js'
 ];
 
-// LIVE CSS
-var builderlive_public_editor_style = [
-	'admin/public/css/builder.css',
-	'admin/css/rex-custom-editor-buttons.css',
-	'admin/spectrum/spectrum.css',
-	'public/css/medium-editor.css',
-	'public/Photoswipe/default-skin/default-skin.css',
-	'public/jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css',
-	// 'public/css/animate.css',
-	// 'public/css/textFill.css',
-	'public/css/jquery-ui.min.css',
-	'public/css/gridstack.css',
-	'public/css/input-spinner.css',
-	'public/css/public-editor.css',
-	'admin/css/live-def.css'
-];
+function builderlive(cb) {
+	return src(builderlive_public)
+		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(concat('builderlive-public.js'))
+		.pipe(size({title:'Builderlive'}))
+		.pipe(dest('public/js'));
+	cb();
+}
 
-// PUBLIC CSS
-var builderlive_public_style = [
-	'public/Photoswipe/default-skin/default-skin.css',
-	'public/jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css',
-	'public/css/jquery-ui.min.css',
-	'public/css/gridstack.css',
-	'public/css/input-spinner.css',
-	'public/css/public.css',
-];
-
-// PUBLIC CSS
-gulp.task('public-css-build', function() {
-	return gulp.src('public/public.scss')
-	.pipe(sass({
-		outputStyle:'compressed'
-	}))
-	.pipe(plumber())
-	.pipe(autoprefixer({
-		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
-	}))
-	.pipe(plumber.stop())
-	.pipe(size({title: 'Public CSS'}))
-	.pipe(gulp.dest('public/css'));
-});
+exports.builderlive = builderlive;
 
 // LIVE CSS
-gulp.task('public-editor-css', function() {
-	return gulp.src('public/public-editor.scss')
+function builderliveEditorStyle(cb) {
+	return src('live/builderlive-editor.scss')
 		.pipe(sass({
 			sourcemap: false,
 			outputStyle:'compressed'
@@ -332,44 +316,29 @@ gulp.task('public-editor-css', function() {
 		}))
 		.pipe(plumber.stop())
 		.pipe(size({title: 'Public CSS'}))
-		.pipe(gulp.dest('public/css'));
-});
+		.pipe(dest('live/css'));
+	cb();
+}
 
-// LIVE JS
-gulp.task('builderlive-editor', function() {
-	return gulp.src(builderlive_public_editor)
-		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
-		.pipe(concat('builderlive-editor.js'))
-		.pipe(size({title:'Builderlive Editor'}))
-		.pipe(gulp.dest('public/js'))
-});
-
-// PUBLIC JS
-gulp.task('builderlive', function() {
-	return gulp.src(builderlive_public)
-		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
-		.pipe(concat('builderlive-public.js'))
-		.pipe(size({title:'Builderlive'}))
-		.pipe(gulp.dest('public/js'))
-});
-
-// LIVE CSS
-gulp.task('builderlive-editor-style', function() {
-	return gulp.src(builderlive_public_editor_style)
-		.pipe(concat('builderlive-editor.css'))
-		.pipe(uglifyCSS({preserveComments: 'license'}).on('error', gulpUtil.log))
-		.pipe(size({title:'Builderlive Editor Style'}))
-		.pipe(gulp.dest('admin/css'))
-});
+exports.builderliveEditorStyle = builderliveEditorStyle;
 
 // PUBLIC CSS
-gulp.task('builderlive-style', function() {
-	return gulp.src(builderlive_public_style)
-		.pipe(concat('builderlive-public.css'))
-		.pipe(uglifyCSS({preserveComments: 'license'}).on('error', gulpUtil.log))
-		.pipe(size({title:'Builderlive Style'}))
-		.pipe(gulp.dest('public/css'))
-});
+function builderliveStyle(cb) {
+	return src('public/builderlive-public.scss')
+		.pipe(sass({
+			outputStyle:'compressed'
+		}))
+		.pipe(plumber())
+		.pipe(autoprefixer({
+			browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+		}))
+		.pipe(plumber.stop())
+		.pipe(size({title: 'Public CSS'}))
+		.pipe(dest('public/css'));
+	cb();
+}
+
+exports.builderliveStyle = builderliveStyle;
 
 // PUBLIC
 var effects_js_src = [
@@ -385,18 +354,36 @@ var effects_js_src = [
 	'public/js/build/fast-load.js',
 ];
 
-gulp.task('minify-external', function() {
+function minifyExternal(cb) {
 	effects_js_src.forEach( function( effect_src ) {
-		return gulp.src(effect_src)
+		return src(effect_src)
 			.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
 			.pipe(rename({suffix: '.min'}))
-			.pipe(gulp.dest('public/js/vendor'))
+			.pipe(dest('public/js/vendor'))
 	})
-});
+	cb();
+}
+
+exports.minifyExternal = minifyExternal;
 
 // FIX CF7
-gulp.task('rxcf7', function() {
-	return gulp.src('public/scss/rxcf7.scss')
+// gulp.task('rxcf7', function() {
+// 	return gulp.src('public/scss/rxcf7.scss')
+// 		.pipe(sass({
+// 			sourcemap: false,
+// 			outputStyle:'compressed'
+// 		}))
+// 		.pipe(plumber())
+// 		.pipe(autoprefixer({
+// 			browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+// 		}))
+// 		.pipe(plumber.stop())
+// 		.pipe(size({title: 'RXCF7 CSS'}))
+// 		.pipe(gulp.dest('public/css'));
+// })
+
+function rxcf7(cb) {
+	return src('public/scss/rxcf7.scss')
 		.pipe(sass({
 			sourcemap: false,
 			outputStyle:'compressed'
@@ -407,10 +394,15 @@ gulp.task('rxcf7', function() {
 		}))
 		.pipe(plumber.stop())
 		.pipe(size({title: 'RXCF7 CSS'}))
-		.pipe(gulp.dest('public/css'));
-})
+		.pipe(dest('public/css'));
+	cb();
+}
 
-gulp.task('build', ['minify-external','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style', 'adminJS']);
+exports.rxcf7 = rxcf7;
+
+// gulp.task('dev', ['minify-external','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style', 'adminJS']);
+
+exports.build = series( minifyExternal, builderliveEditor, builderlive, builderliveEditorStyle, builderliveStyle );
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
 var live_zip_name = 'Premium-204-Rexpansive-Builder.zip';
@@ -437,6 +429,7 @@ var live_file_map = [
 	'includes/**/*',
 	'languages/**/*',
 	'Licensing/**/*',
+	'live/**/*',
 	'public/css/images',
 	'public/css/animate.css',
 	'public/css/builderlive-public.css',
@@ -478,45 +471,53 @@ var live_file_map = [
 	'wpml-config.xml',
 ];
 
-gulp.task('create-temp-live-folder', function(cb) {
-	return gulp.src(live_file_map, { base: './' })
-	.pipe(gulp.dest(live_folder_name + '/'));
-	cb(err);
-});
+/**
+ * Creating the plugin folder
+ * @param {Function} cb callback
+ */
+function createTempLiveFolder(cb) {
+  return src(live_file_map, { base: './' })
+    .pipe(dest(live_folder_name + '/'))
+  cb(err);
+}
 
-/* Windows */
+/**
+ * Removing the plugin folder
+ * @param {Function} cb callback
+ */
+function removeTempLiveFolder(cb) {
+  return src(live_folder_name, { read: false })
+    .pipe(clean());
+  cb(err);
+}
 
-gulp.task('remove-temp-live-folder', ['create-temp-live-folder','create-live-zip'], function(cb) {
-	return gulp.src(live_folder_name, {read: false})
-	.pipe(clean());
-	cb(err);
-});
+/**
+ * Zip the folder
+ * @param {Function} cb callback
+ */
+function standardZip(cb) {
+  return src(live_folder_name + '/**/*', { base: './' })
+    .pipe(zip(live_zip_name))
+    .pipe(dest('./'));
+  cb(err);
+}
 
-gulp.task('create-live-zip', ['create-temp-live-folder'], function(cb) {
-	return gulp.src(live_folder_name + '/**/*', { base: './'})
-	.pipe(zip(live_zip_name))
-	.pipe(gulp.dest(''));
-	cb(err);
-});
+/**
+ * Zip the folder on macOS
+ * @param {Function} cb callback
+ */
+function macZip(cb) {
+  exec('zip -r ' + live_zip_name + ' ' + live_folder_name + ' -x "*.DS_Store"', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+}
 
-gulp.task('build-zip', ['create-temp-live-folder', 'create-live-zip', 'remove-temp-live-folder']);
+exports.createTempLiveFolder = createTempLiveFolder;
+exports.removeTempLiveFolder = removeTempLiveFolder;
+exports.macZip = macZip;
 
-/* MacOS */
-
-var exec = require('child_process').exec;
-
-gulp.task('mac-live-zip', ['create-temp-live-folder'], function (cb) {
-	exec('zip -r ' + live_zip_name + ' ' + live_folder_name + ' -x "*.DS_Store"', function (err, stdout, stderr) {
-		console.log(stdout);
-		console.log(stderr);
-		cb(err);
-	});
-});
-
-gulp.task('remove-temp-live-mac-folder', ['create-temp-live-folder','mac-live-zip'], function(cb) {
-	return gulp.src(live_folder_name, {read: false})
-	.pipe(clean());
-	cb(err);
-});
-
-gulp.task('build-live-mac', ['create-temp-live-folder', 'mac-live-zip', 'remove-temp-live-mac-folder']);
+// Final build tasks
+exports.standardBuild = series(createTempLiveFolder, standardZip, removeTempLiveFolder);
+exports.macBuild = series(createTempLiveFolder, macZip, removeTempLiveFolder);

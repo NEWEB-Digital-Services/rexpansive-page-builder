@@ -1,0 +1,23 @@
+// Cleaning version of builder public css to use in the editor
+// Removing animations logic in the editor
+@charset "UTF-8";
+
+// @import '../admin/css/builder';
+@import '../admin/css/rex-custom-editor-buttons';
+@import '../admin/spectrum/spectrum';
+@import '../public/css/medium-editor';
+// @import '../public/Photoswipe/default-skin/default-skin';
+@import '../public/jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min';
+@import '../public/css/jquery-ui.min';
+@import '../public/css/gridstack';
+@import '../public/css/input-spinner';
+
+@import "../public/scss/vendor/perfectGridGallery";
+@import "../public/scss/vendor/animate";
+@import "../public/scss/vendor/textFill";
+@import "../public/scss/vendor/flickity.min";
+// @import "../public/scss/vendor/photoswipe";
+@import "../public/scss/vendor/odometer/odometer-theme-digital";
+@import "../public/scss/rexbuilder-editor-public";
+
+@import '../admin/css/live-def';
