@@ -1,3 +1,4 @@
+// LIVE
 .builderlive-editable-field[contenteditable=true]:empty:before{
   content: attr(data-editable-placeholder);
   display: block; /* For Firefox */

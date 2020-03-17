@@ -238,11 +238,13 @@ class Rexbuilder_Admin {
 			wp_enqueue_style( 'spectrum-style', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.css', array(), null, 'all' );
 
 			if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
+				// iframe wrap
 				wp_enqueue_style( 'rexbuilder-live-google-fonts', 'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i', false );
 				wp_enqueue_style('photoswipe-skin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Photoswipe/default-skin/default-skin.css', array(), $ver, 'all');
 				wp_enqueue_style( 'grapick', REXPANSIVE_BUILDER_URL . 'admin/grapick/grapick.min.css', array(), null, 'all' );
 				wp_enqueue_style( 'rexliveStyle', REXPANSIVE_BUILDER_URL . 'admin/css/tools-def.css', array(), null, 'all' );
 			} else {
+				// standard wp backend
 				wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), null, 'all' );
 				wp_enqueue_style( 'admin-live-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin-live.css', array(), null, 'all' );
 			}
