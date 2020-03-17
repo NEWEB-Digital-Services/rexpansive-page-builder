@@ -327,8 +327,8 @@ var builderlive_public_editor_style = [
 	'public/css/medium-editor.css',
 	'public/Photoswipe/default-skin/default-skin.css',
 	'public/jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css',
-	'public/css/animate.css',
-	'public/css/textFill.css',
+	// 'public/css/animate.css',
+	// 'public/css/textFill.css',
 	'public/css/jquery-ui.min.css',
 	'public/css/gridstack.css',
 	'public/css/input-spinner.css',
@@ -377,17 +377,16 @@ gulp.task('public-editor-css', function() {
 		.pipe(gulp.dest('public/css'));
 });
 
-var public_res = builderlive_public_editor;
-var public_editor_res = builderlive_public_editor_style;
-
+// LIVE JS
 gulp.task('builderlive-editor', function() {
-	return gulp.src(public_res)
+	return gulp.src(builderlive_public_editor)
 		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
 		.pipe(concat('builderlive-editor.js'))
 		.pipe(size({title:'Builderlive Editor'}))
 		.pipe(gulp.dest('public/js'))
 });
 
+// PUBLIC JS
 gulp.task('builderlive', function() {
 	return gulp.src(builderlive_public)
 		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
@@ -396,14 +395,16 @@ gulp.task('builderlive', function() {
 		.pipe(gulp.dest('public/js'))
 });
 
+// LIVE CSS
 gulp.task('builderlive-editor-style', function() {
-	return gulp.src(public_editor_res)
+	return gulp.src(builderlive_public_editor_style)
 		.pipe(concat('builderlive-editor.css'))
 		.pipe(uglifyCSS({preserveComments: 'license'}).on('error', gulpUtil.log))
 		.pipe(size({title:'Builderlive Editor Style'}))
 		.pipe(gulp.dest('admin/css'))
 });
 
+// PUBLIC CSS
 gulp.task('builderlive-style', function() {
 	return gulp.src(builderlive_public_style)
 		.pipe(concat('builderlive-public.css'))
@@ -492,7 +493,9 @@ gulp.task('create-temp-live-folder', function(cb) {
 	cb(err);
 });
 
-gulp.task('remove-temp-live-folder', ['create-temp-live-folder','mac-live-zip'], function(cb) {
+/* Windows */
+
+gulp.task('remove-temp-live-folder', ['create-temp-live-folder','create-live-zip'], function(cb) {
 	return gulp.src(live_folder_name, {read: false})
 	.pipe(clean());
 	cb(err);
@@ -507,6 +510,8 @@ gulp.task('create-live-zip', ['create-temp-live-folder'], function(cb) {
 
 gulp.task('build-zip', ['create-temp-live-folder', 'create-live-zip', 'remove-temp-live-folder']);
 
+/* MacOS */
+
 var exec = require('child_process').exec;
 
 gulp.task('mac-live-zip', ['create-temp-live-folder'], function (cb) {
@@ -517,7 +522,13 @@ gulp.task('mac-live-zip', ['create-temp-live-folder'], function (cb) {
 	});
 });
 
-gulp.task('build-live-mac', ['create-temp-live-folder', 'mac-live-zip', 'remove-temp-live-folder']);
+gulp.task('remove-temp-live-mac-folder', ['create-temp-live-folder','mac-live-zip'], function(cb) {
+	return gulp.src(live_folder_name, {read: false})
+	.pipe(clean());
+	cb(err);
+});
+
+gulp.task('build-live-mac', ['create-temp-live-folder', 'mac-live-zip', 'remove-temp-live-mac-folder']);
 
 /** OLD BUILDER */
 

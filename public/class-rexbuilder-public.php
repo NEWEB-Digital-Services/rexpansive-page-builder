@@ -154,13 +154,13 @@ class Rexbuilder_Public
 			if( Rexbuilder_Utilities::isBuilderLive() ) 
 			{
 				wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $folder . 'css/public-editor.css', array(), $ver, 'all');
+				wp_enqueue_style('rexpansive-builder-editor-style', REXPANSIVE_BUILDER_URL .'admin/css/live-def.css', array(), $ver, 'all');
 			}
 			else
 			{
 				wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $folder . 'css/public.css', array(), $ver, 'all');
 			}
 
-			wp_enqueue_style('rexpansive-builder-editor-style', REXPANSIVE_BUILDER_URL .'admin/css/live-def.css', array(), $ver, 'all');
 		}
 	}
 
