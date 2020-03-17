@@ -57,7 +57,12 @@
 
 	/* ===== Global vars ===== */
 	var globalViewportSize = Utils.viewport();
-	var globalGridWidthsCallbacks = [];
+  var globalGridWidthsCallbacks = [];
+  
+  /* ===== RexBlock ===== */
+  function RexBlock() {
+    // proprietà dei blocchi
+  }
 
 	/* ===== Plugin constructor ===== */
 	function RexGrid() {
@@ -91,21 +96,22 @@
 	function _init() {
 		// Calculations of grid width. In this way it's possible to access to this
 		// value without causing a layout reflow
-		_calcGridWidth.call(this);
-		globalGridWidthsCallbacks.push( _calcGridWidth.bind(this) );
+		_calcGridBaseAttrs.call(this);
+		globalGridWidthsCallbacks.push( _calcGridBaseAttrs.bind(this) );
 
 		// Finding the block inside the grid
-		_getGridBlocks.call(this);
+    _getGridBlocks.call(this);
+    
+    // Prima calcolo altezze
+    // Poi calcolo top
 
-		this.calcBlocksHeights();
+    this.calcBlocksHeights();
+    this.calcBlocksTop();
 	}
 
-	function _calcGridWidth() {
-		this.properties.gridWidth = this.element.offsetWidth;		// Can cause a layout reflow
-	}
-
-	function _calcSingleHeight() {
-		this.properties.singleHeight = this.properties.gridWidth / 12;
+	function _calcGridBaseAttrs() {
+    this.properties.gridWidth = this.element.offsetWidth;		// Can cause a layout reflow
+    this.properties.singleHeight = this.properties.gridWidth / 12;
 	}
 
 	function _getGridBlocks() {
@@ -123,28 +129,46 @@
 	 * @since	1.0.0
 	 */
 	RexGrid.prototype.calcBlocksHeights = function(){
-		_calcSingleHeight.call(this);
-
 		var tot_blocksArray = this.gridBlocks.length;
 		var i = 0;
 
+    var currentBlock;
 		var currentBlockGridHeight = 0;
-		var currentBlockRealHeight = 0;
+    var currentBlockRealHeight = 0;
 
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < tot_blocksArray; i++ ) {
-			var currentBlock = this.gridBlocks[i];
+			currentBlock = this.gridBlocks[i];
 
 			currentBlockGridHeight = currentBlock.getAttribute( 'data-gs-height' );
-
 			currentBlockRealHeight = this.properties.singleHeight * currentBlockGridHeight;
 
-			currentBlock.style.height = currentBlockRealHeight + 'px';
-		}
+      currentBlock.style.height = currentBlockRealHeight + 'px';
+		}		
+  }
+  
+  /**
+	 * Calculating top of the grid blocks.
+	 * @since	1.0.0
+	 */
+	RexGrid.prototype.calcBlocksTop = function() {
+    var tot_blocksArray = this.gridBlocks.length;
+		var i = 0;
 
-		// console.log( 'fine' );
-		
-	}
+    var currentBlock;
+		var currentBlockGridTop = 0;
+		var currentBlockRealTop = 0;
+
+		// for native loop guarantees more performance efficiency
+		for ( i = 0; i < tot_blocksArray; i++ ) {
+			currentBlock = this.gridBlocks[i];
+
+			currentBlockGridTop = currentBlock.getAttribute( 'data-gs-y' );
+			currentBlockRealTop = this.properties.singleHeight * currentBlockGridTop;
+
+			currentBlock.style.top = currentBlockRealTop + 'px';
+		}	
+  }
 
 	/* ===== Global event handlers ===== */
 
@@ -155,8 +179,6 @@
 	RexGrid.prototype.handleResizeEvent = function() {
     globalViewportSize = Utils.viewport();
     
-    console.log( this );
-		
 		globalGridWidthsCallbacks.forEach(function(el) {
 			el.call();
 		});

@@ -9,9 +9,9 @@
 
 	window.addEventListener('resize', function () {
 
-		console.log( RexGrid );
-		
 		// Every handler
-		RexGrid.handleResizeEvent();
+		if ( RexGrid ) {
+			RexGrid.prototype.handleResizeEvent();
+		}
 	});
 })();
