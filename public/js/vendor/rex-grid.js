@@ -62,7 +62,8 @@
 	/* ===== Plugin constructor ===== */
 	function RexGrid() {
 		this.element = null;
-		this.gridBlocks = [];
+    this.gridBlocks = [];
+    this.id = "";
 
 		// Get element as first argument
 		if ( arguments[0] ) {
@@ -83,9 +84,6 @@
 
 		this.properties = {};
 
-		// Making the instance accessible from the outside
-		this.RexGridInstance = this;
-		
 		_init.call(this);
 	}
 
@@ -108,12 +106,14 @@
 
 	function _calcSingleHeight() {
 		this.properties.singleHeight = this.properties.gridWidth / 12;
-		this.properties.singleWidth = this.properties.singleHeight;
 	}
 
 	function _getGridBlocks() {
 		var gridElement = this.element;
-		var blocksArray = Array.prototype.slice.call( gridElement.getElementsByClassName( 'rex-grid-block' ) );
+    var blocksArray = Array.prototype.slice.call( gridElement.getElementsByClassName( 'perfect-grid-item' ) );
+    
+    // Getting grid id
+    this.id = this.element.dataset.rexGridId;
 
 		this.gridBlocks = blocksArray;
 	}
@@ -128,22 +128,17 @@
 		var tot_blocksArray = this.gridBlocks.length;
 		var i = 0;
 
-		var currentBlockGridWidth = 0;
 		var currentBlockGridHeight = 0;
-		var currentBlockRealWidth = 0;
 		var currentBlockRealHeight = 0;
 
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < tot_blocksArray; i++ ) {
 			var currentBlock = this.gridBlocks[i];
 
-			currentBlockGridWidth = currentBlock.getAttribute( 'data-rex-grid-width' );
-			currentBlockGridHeight = currentBlock.getAttribute( 'data-rex-grid-height' );
+			currentBlockGridHeight = currentBlock.getAttribute( 'data-gs-height' );
 
-			currentBlockRealWidth = this.properties.singleWidth * currentBlockGridWidth;
 			currentBlockRealHeight = this.properties.singleHeight * currentBlockGridHeight;
 
-			currentBlock.style.width = currentBlockRealWidth + 'px';
 			currentBlock.style.height = currentBlockRealHeight + 'px';
 		}
 
@@ -151,15 +146,16 @@
 		
 	}
 
-	/* ===== Global events ===== */
-	window.addEventListener('resize', handleResizeEvent);
+	/* ===== Global event handlers ===== */
 
 	/**
 	 * Changing viewport sizes and grids widths.
 	 * @since		1.0.0
 	 */
-	function handleResizeEvent() {
-		globalViewportSize = Utils.viewport();
+	RexGrid.prototype.handleResizeEvent = function() {
+    globalViewportSize = Utils.viewport();
+    
+    console.log( this );
 		
 		globalGridWidthsCallbacks.forEach(function(el) {
 			el.call();
