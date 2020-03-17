@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <style>
+    .rex-grid-block {
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    #img-1 {
+      background-image: url('https://images.unsplash.com/photo-1558979158-65a1eaa08691?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
+    }
+
+    #img-2 {
+      background-image: url('https://images.unsplash.com/photo-1584033115915-427b9b62b1ba?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80');
+    }
+
+    #img-3 {
+      background-image: url('https://images.unsplash.com/photo-1583963793123-2cfce22eb7a1?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=701&q=80');
+    }
+
+    #img-4 {
+      background-image: url('https://images.unsplash.com/photo-1581094788434-091044475dd6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80');
+    }
+
+    #img-5 {
+      background-image: url('https://images.unsplash.com/photo-1583853449137-33c27c030154?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80');
+    }
+
+    #img-6 {
+      background-image: url('https://images.unsplash.com/photo-1583680599407-f73ab374fff4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
+    }
+
+    #img-7 {
+      background-image: url('https://images.unsplash.com/photo-1583990897087-1925fe328e25?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80');
+    }
+
+    #img-8 {
+      background-image: url('https://images.unsplash.com/photo-1584033376088-a6babaaabbfc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=629&q=80');
+    }
+
+    #img-9 {
+      background-image: url('https://images.unsplash.com/photo-1583948091791-2b07892c238a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=633&q=80');
+    }
+
+    #img-10 {
+      background-image: url('https://images.unsplash.com/photo-1562887009-7924341c5cbc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2000&q=80');
+    }
+
+    #img-11 {
+      background-image: url('https://images.unsplash.com/photo-1583964507951-d37d728de553?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80');
+    }
+
+    #img-12 {
+      background-image: url('https://images.unsplash.com/photo-1583972962232-55bab4268ee6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=676&q=80');
+    }
+    #img-13 {
+      background-image: url('https://images.unsplash.com/photo-1583964970061-1b98019f2376?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80');
+    }
+
+    #img-14 {
+      background-image: url('https://images.unsplash.com/photo-1583934754518-17915fd797f5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=693&q=80');
+    }
+
+    #img-15 {
+      background-image: url('https://images.unsplash.com/photo-1583853897569-783cf454d216?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80');
+    }
+
+    #img-16 {
+      background-image: url('https://images.unsplash.com/photo-1583813611092-d9158078a457?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1973&q=80');
+    }
+
+    #img-17 {
+      background-image: url('https://images.unsplash.com/photo-1584033092063-7a5648bc78e0?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80');
+    }
+
+    #img-18 {
+      background-image: url('https://images.unsplash.com/photo-1583990551613-3ace02366616?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=615&q=80');
+    }
+
+    #img-19 {
+      background-image: url('https://images.unsplash.com/photo-1583946920627-0ae48d5a471d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80');
+    }
+
+    #img-20 {
+      background-image: url('https://images.unsplash.com/photo-1584033376505-9d3402a0c016?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80');
+    }
+
+    #img-21 {
+      background-image: url('https://images.unsplash.com/photo-1583948036701-9ac87df42cd6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=633&q=80');
+    }
+
+    #img-22 {
+      background-image: url('https://images.unsplash.com/photo-1583960742433-b5a548b932a4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=687&q=80');
+    }
+
+    #img-23 {
+      background-image: url('https://images.unsplash.com/photo-1562887009-d33955afc319?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=80');
+    }
+
+    #img-24 {
+      background-image: url('https://images.unsplash.com/photo-1583984979922-f261e1f69a68?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80');
+    }
+
+    #img-25 {
+      background-image: url('https://images.unsplash.com/photo-1584024477935-a53440773f3e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=640&q=80');
+    }
+
+    #img-26 {
+      background-image: url('https://images.unsplash.com/photo-1583972962347-928802b1eabd?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1491&q=80');
+    }
+
+    #img-27 {
+      background-image: url('https://images.unsplash.com/photo-1583994581863-3137a9976f34?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80');
+    }
+
+    #img-2 {
+      background-image: url('https://images.unsplash.com/photo-1583939254428-a4c0dfd5eedb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80');
+    }
+  </style>
+</head>
+<body>
+  <div class="rex-grid">
+    <div id="img-1" class="rex-grid-block" data-rex-grid-width="4" data-rex-grid-height="3"></div>
+    <div id="img-2" class="rex-grid-block" data-rex-grid-width="6" data-rex-grid-height="2"></div>
+    <div id="img-3" class="rex-grid-block" data-rex-grid-width="2" data-rex-grid-height="1"></div>
+    <div id="img-4" class="rex-grid-block" data-rex-grid-width="9" data-rex-grid-height="6"></div>
+  </div>
+
+  <div class="rex-grid">
+    <div id="img-5" class="rex-grid-block" data-rex-grid-width="4" data-rex-grid-height="3"></div>
+    <div id="img-6" class="rex-grid-block" data-rex-grid-width="6" data-rex-grid-height="2"></div>
+    <div id="img-7" class="rex-grid-block" data-rex-grid-width="2" data-rex-grid-height="1"></div>
+    <div id="img-8" class="rex-grid-block" data-rex-grid-width="9" data-rex-grid-height="6"></div>
+  </div>
+
+  <div class="rex-grid">
+    <div id="img-9" class="rex-grid-block" data-rex-grid-width="4" data-rex-grid-height="3"></div>
+    <div id="img-10" class="rex-grid-block" data-rex-grid-width="6" data-rex-grid-height="2"></div>
+    <div id="img-11" class="rex-grid-block" data-rex-grid-width="2" data-rex-grid-height="1"></div>
+    <div id="img-12" class="rex-grid-block" data-rex-grid-width="9" data-rex-grid-height="6"></div>
+  </div>
+
+  <div class="rex-grid">
+    <div id="img-13" class="rex-grid-block" data-rex-grid-width="4" data-rex-grid-height="3"></div>
+    <div id="img-14" class="rex-grid-block" data-rex-grid-width="6" data-rex-grid-height="2"></div>
+    <div id="img-15" class="rex-grid-block" data-rex-grid-width="2" data-rex-grid-height="1"></div>
+    <div id="img-16" class="rex-grid-block" data-rex-grid-width="9" data-rex-grid-height="6"></div>
+  </div>
+
+  <div class="rex-grid">
+    <div id="img-17" class="rex-grid-block" data-rex-grid-width="4" data-rex-grid-height="3"></div>
+    <div id="img-18" class="rex-grid-block" data-rex-grid-width="6" data-rex-grid-height="2"></div>
+    <div id="img-19" class="rex-grid-block" data-rex-grid-width="2" data-rex-grid-height="1"></div>
+    <div id="img-20" class="rex-grid-block" data-rex-grid-width="9" data-rex-grid-height="6"></div>
+  </div>
+
+  <div class="rex-grid">
+    <div id="img-21" class="rex-grid-block" data-rex-grid-width="4" data-rex-grid-height="3"></div>
+    <div id="img-22" class="rex-grid-block" data-rex-grid-width="6" data-rex-grid-height="2"></div>
+    <div id="img-23" class="rex-grid-block" data-rex-grid-width="2" data-rex-grid-height="1"></div>
+    <div id="img-24" class="rex-grid-block" data-rex-grid-width="9" data-rex-grid-height="6"></div>
+  </div>
+
+  <div class="rex-grid">
+    <div id="img-25" class="rex-grid-block" data-rex-grid-width="4" data-rex-grid-height="3"></div>
+    <div id="img-26" class="rex-grid-block" data-rex-grid-width="6" data-rex-grid-height="2"></div>
+    <div id="img-27" class="rex-grid-block" data-rex-grid-width="2" data-rex-grid-height="1"></div>
+    <div id="img-28" class="rex-grid-block" data-rex-grid-width="9" data-rex-grid-height="6"></div>
+  </div>
+
+  <script src="./../public/js/build/rex-grid.js"></script>
+  <script>
+    ;(function() {
+      document.addEventListener( 'DOMContentLoaded', handleDCL );
+      window.addEventListener('resize', handleResizeEvent);
+
+      function handleDCL() {
+        var grids = Array.prototype.slice.call( document.getElementsByClassName( 'rex-grid' ) );
+        var tot_grids = grids.length;
+        var i = 0;
+
+        for ( i = 0; i < tot_grids; i++ ) {
+          gridInstances.push(new RexGrid(grids[i]));
+        }
+      }
+
+      var gridInstances = [];
+
+      function handleResizeEvent() {
+        var i = 0;
+        var tot_gridInstances = gridInstances.length;
+
+        for ( i = 0; i < tot_gridInstances; i++ ) {
+          gridInstances[i].calcBlocksHeights();
+        }
+      }
+      
+    }());
+
+  </script>
+</body>
+</html>
