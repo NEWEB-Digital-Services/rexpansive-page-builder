@@ -892,7 +892,7 @@ var Rexbuilder_App = (function($) {
           editorMode: Rexbuilder_Util.editorMode
         });
       } else {
-        var grids = Array.prototype.slice.call( document.getElementsByClassName( 'grid-stack-row' ) );
+        var grids = Array.prototype.slice.call( document.getElementsByClassName( 'perfect-grid-gallery' ) );
         var tot_grids = grids.length;
         var i = 0;
 
@@ -901,9 +901,6 @@ var Rexbuilder_App = (function($) {
 
           gridInstances.push( rexGridInstance );
         }
-
-        console.log( gridInstances );
-        
       }
     }
 

@@ -35,6 +35,52 @@
 			return source;
 		},
 
+		/**
+		 * Checks if an element matches a selector class
+		 * @param  {Node}			el
+		 * @param  {String}		selector
+		 * @return {Boolean}	Does the element match the given selector?
+		 */
+		matches: function(el, selector) {
+			return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
+		},
+
+		/**
+		 * Search for parent ancestor element in vanillaJS
+		 * @param  {Node}					el
+		 * @param  {String}				selector
+		 * @return {Node | null}	Parent node that matches the given selector if does exist, null otherwise
+		 */
+		parents: function (el, selector) {
+			while ( el.parentNode ) {
+				if ( Utils.matches(el, selector) ) {
+					return el;
+				}
+				el = el.parentNode;
+			}
+			return null;
+		},
+
+		/**
+		 * Checks if a number or a String
+		 * representing a Number is even
+		 * and returns true if so.
+		 * @param  {Number | String} num		Number to check
+		 * @return {Boolean}							Is the number even?
+		 * @since  1.0.0
+		 */
+		isEven: function ( num ) {
+			if ( typeof num === "string" ) {
+				num = parseInt(num);
+			}
+
+			if ( !isNaN( num ) ) {
+				return num % 2 === 0;
+			} else {
+				throw new Error('The value passed is not a Number or a String representing a Number')
+			}
+		},
+
 		toggleClass: function(el, className) {
 			if (hasClass(el, className)) {
 				Utils.removeClass(el, className);
@@ -58,6 +104,7 @@
 	/* ===== Global vars ===== */
 	var globalViewportSize = Utils.viewport();
   var globalGridWidthsCallbacks = [];
+  var blocksHeightsCallbacks = [];
   
   /* ===== RexBlock ===== */
   function RexBlock() {
@@ -66,17 +113,37 @@
 
 	/* ===== Plugin constructor ===== */
 	function RexGrid() {
+		/**
+		 * Grid DOM Element.
+		 * It's identified by the class .perfect-grid-gallery
+		 * because we get it from Rexpansive builder.
+		 */
 		this.element = null;
-    this.gridBlocks = [];
-    this.id = "";
 
-		// Get element as first argument
+		/**
+		 * Block elements inside the grid.
+		 * It is possibile to have 0 blocks.
+		 * They're identified by the class .perfect-grid-item
+		 * because we get them from Rexpansive builder.
+		 */
+		this.gridBlocks = [];
+
+		/**
+		 * Section DOM Element.
+		 * It's identified by the class .rexpansive_section
+		 * because we get it from Rexpansive builder.
+		 */
+		this.section = null;
+
+		// Getting grid element as first argument
 		if ( arguments[0] ) {
 			this.element = arguments[0];
 		}
 
+		// Default options values
 		var defaults = {
-			type: 'fixed'
+			type: 'fixed',
+			gutter: 20
 		};
 
 		// Create options by extending defaults with the passed in arugments.
@@ -87,7 +154,61 @@
 			this.options = defaults;
 		}
 
-		this.properties = {};
+		this.properties = {
+			id: '',
+			gridWidth: 0,
+      // singleWidth: 0,
+      singleHeight: 0,
+			halfSeparator: 0,
+      halfSeparatorTop: 0,
+      halfSeparatorRight: 0,
+      halfSeparatorBottom: 0,
+      halfSeparatorLeft: 0,
+      halfSeparatorElementTop: 0,
+      halfSeparatorElementRight: 0,
+      halfSeparatorElementBottom: 0,
+      halfSeparatorElementLeft: 0,
+      gridTopSeparator: null,
+      gridRightSeparator: null,
+      gridBottomSeparator: null,
+      gridLeftSeparator: null,
+      // wrapWidth: 0,
+      // paddingTopBottom: false,
+      // setMobilePadding: false,
+      // setDesktopPadding: false,
+      // elementStartingH: 0,
+      // resizeHandle: "",
+      sectionNumber: null,
+      // serializedData: [],
+      // firstStartGrid: false,
+      // gridBlocksHeight: 0,
+      // editedFromBackend: false,
+      // oneColumMode: false,
+      // oneColumModeActive: false,
+      // gridstackBatchMode: false,
+      // updatingSection: false,
+      // oldLayout: "",
+      // oldCellHeight: 0,
+      // blocksBottomTop: null,
+      // updatingSectionSameGrid: false,
+      // startingLayout: "",
+      // oldFullHeight: "",
+      // blocksDimensions: [],
+      // reverseDataGridDisposition: {},
+      // updatefullHeigth2Phases: false,
+      // removingCollapsedElements: false,
+      // collapsingElements: false,
+      // lastIDBlock: 0,
+      // updatingGridWidth: false,
+      // numberBlocksVisibileOnGrid: 0,
+      // beforeCollapseWasFixed: false,
+      // dispositionBeforeCollapsing: {},
+      // layoutBeforeCollapsing: {},
+      // initialStateGrid: null,
+      // mirrorStateGrid: null,
+      // fullWidthNaturalBackground: false,
+      // naturalBackground: false
+		};
 
 		_init.call(this);
 	}
@@ -99,18 +220,27 @@
 		_calcGridBaseAttrs.call(this);
 		globalGridWidthsCallbacks.push( _calcGridBaseAttrs.bind(this) );
 
-		// Finding the block inside the grid
-    _getGridBlocks.call(this);
+		// Finding the blocks in the DOM
+		_getGridBlocks.call(this);
+		
+		// Gutter functions
+		_getDOMGutterOptions.call(this);
+		_setGridGutterProperties.call(this);
+		_setBlocksGutterProperties.call(this);
+		_applyGutters.call(this);
     
-    // Prima calcolo altezze
-    // Poi calcolo top
+		this.calcBlocksHeights();
+		blocksHeightsCallbacks.push( this.calcBlocksHeights.bind( this ) );
 
-    this.calcBlocksHeights();
-    this.calcBlocksTop();
+		// _checkCollisions.call(this)
+
+		this.calcBlocksTop();
+		
+		_setGridHeight.call(this);
 	}
 
 	function _calcGridBaseAttrs() {
-    this.properties.gridWidth = this.element.offsetWidth;		// Can cause a layout reflow
+		this.properties.gridWidth = this.element.offsetWidth;		// Can cause a layout reflow
     this.properties.singleHeight = this.properties.gridWidth / 12;
 	}
 
@@ -119,35 +249,287 @@
     var blocksArray = Array.prototype.slice.call( gridElement.getElementsByClassName( 'perfect-grid-item' ) );
     
     // Getting grid id
-    this.id = this.element.dataset.rexGridId;
+    this.properties.id = this.element.dataset.rexGridId;
 
 		this.gridBlocks = blocksArray;
 	}
+
+	function _checkCollisions() {
+		var blocksToCheck = this.gridBlocks.filter(function (block) {
+			return 'true' === block.getAttribute( 'height-different' )
+		})
+		
+		var currentBlockToCheck;
+		var currentBlockToCheckX;
+		var currentBlockToCheckY;
+		var currentBlockToCheckWidth;
+		var currentBlockToCheckHeight;
+		var tot_blocksToCheck = blocksToCheck.length;
+		var i = 0;
+		
+		var currentBlock;
+		var currentBlockX;
+		var currentBlockY;
+		var currentBlockWidth;
+		var currentBlockHeight;
+		var tot_blocks = this.gridBlocks.length;
+		var j = 0;
+
+		for ( i = 0; i < tot_blocksToCheck; i++ ) {
+			currentBlockToCheck = blocksToCheck[i];
+			currentBlockToCheckX = currentBlockToCheck.getAttribute( 'data-gs-x' );
+			currentBlockToCheckY = currentBlockToCheck.getAttribute( 'data-gs-y' );
+			currentBlockToCheckWidth = currentBlockToCheck.getAttribute( 'data-gs-width' );
+			currentBlockToCheckHeight = currentBlockToCheck.getAttribute( 'data-gs-height' );
+
+			for ( j = 0; j < tot_blocks; j++) {
+				currentBlock = this.gridBlocks[j];
+				currentBlockX = currentBlock.getAttribute('data-gs-x');
+				currentBlockY = currentBlock.getAttribute('data-gs-y');
+				currentBlockWidth = currentBlock.getAttribute('data-gs-width');
+				currentBlockHeight = currentBlock.getAttribute('data-gs-height');
+
+				if (currentBlockToCheckX < currentBlockX + currentBlockWidth &&
+					currentBlockToCheckX + currentBlockToCheckWidth > currentBlockX &&
+					currentBlockToCheckY < currentBlockY + currentBlockHeight &&
+					currentBlockToCheckY + currentBlockToCheckHeight > currentBlockY) {
+					 // Collision detected!
+					 console.log( 'currentBlock', currentBlock );
+					 console.log( 'currentBlockToCheck', currentBlockToCheck );
+					 
+			 }
+				
+			}
+			
+		}
+		
+	}
+  
+	/**
+   * Calculate the height of the text content of a block.
+   * @param  {Element}  block		Grid block element
+   * @return {Number}       		Necessary text height
+	 * @since	 1.0.0
+   */
+  function _calculateTextWrapHeight( block ) {
+		var textWrap = block.querySelector( '.text-wrap' );
+		var textHeight = 0;
+		
+    if ( textWrap ) {
+			var blockHasSlider = Utils.hasClass( block, 'block-has-slider' );
+			var textWrapHasContent = 0 !== textWrap.textContent.trim().length;
+			var textWrapHasChildren = 0 !== textWrap.childElementCount;
+			
+      if ( !blockHasSlider && ( textWrapHasContent || textWrapHasChildren ) ) {
+				textHeight = textWrap.offsetHeight;
+			}
+    }
+    return textHeight;
+  }
+
+	function _setGridHeight() {
+		var newGridHeight = _calculateGridHeight.call(this);
+		
+		this.element.style.height = newGridHeight + 'px';
+	}
+	
+	/**
+	 * Calculating grid DOM Element total height
+	 * @return 	{Number}	Grid total height
+	 * @since		1.0.0
+	 */
+	function _calculateGridHeight() {
+		var blocks = this.gridBlocks;
+		var heightTot = 0;
+		var heightTemp;
+
+		var tot_blocks = blocks.length;
+		var i = 0;
+
+		// for native loop guarantees more performance efficiency
+		for( i = 0; i < tot_blocks; i++ ) {
+			if ( -1 === blocks[i].className.indexOf( 'removing_block' ) ) {
+				heightTemp = parseInt( blocks[i].getAttribute('data-gs-height') ) + parseInt( blocks[i].getAttribute('data-gs-y') );
+
+				if (heightTemp > heightTot) {
+					heightTot = heightTemp;
+				}
+			}
+		}
+		return heightTot * this.properties.singleHeight;
+	};
+
+	function _getDOMGutterOptions() {
+		// Overriding blocks gutter value if there is the respective DOM Attribute
+		if ( this.element.getAttribute('data-separator') ) {
+			this.options.gutter = parseInt(this.element.getAttribute('data-separator'));
+		};
+
+		// Definig grid separators
+		this.properties.gridTopSeparator =
+			this.element.getAttribute('data-row-separator-top') ?
+			parseInt(this.element.getAttribute('data-row-separator-top')) :
+			null;
+		this.properties.gridRightSeparator =
+			this.element.getAttribute('data-row-separator-right') ?
+			parseInt(this.element.getAttribute('data-row-separator-right')) :
+			null;
+		this.properties.gridBottomSeparator =
+			this.element.getAttribute('data-row-separator-bottom') ?
+			parseInt(this.element.getAttribute('data-row-separator-bottom')) :
+			null;
+		this.properties.gridLeftSeparator =
+			this.element.getAttribute('data-row-separator-left') ?
+			parseInt(this.element.getAttribute('data-row-separator-left')) :
+			null;
+
+		// this.properties.paddingTopBottom = -1 !== this.section.className.indexOf('distance-block-top-bottom');
+	}
+
+	function _setGridGutterProperties() {
+		if ( Utils.isEven(this.options.gutter) ) {
+			this.properties.halfSeparatorTop = this.options.gutter / 2;
+			this.properties.halfSeparatorRight = this.options.gutter / 2;
+			this.properties.halfSeparatorBottom = this.options.gutter / 2;
+			this.properties.halfSeparatorLeft = this.options.gutter / 2;
+		} else {
+			this.properties.halfSeparatorTop = Math.floor(
+				this.options.gutter / 2
+			);
+			this.properties.halfSeparatorRight = Math.floor(
+				this.options.gutter / 2
+			);
+			this.properties.halfSeparatorBottom = Math.ceil(
+				this.options.gutter / 2
+			);
+			this.properties.halfSeparatorLeft = Math.ceil(
+				this.options.gutter / 2
+			);
+		}
+	}
+
+	function _setBlocksGutterProperties() {
+		if ( Utils.isEven(this.options.gutter) ) {
+			this.properties.halfSeparatorElementTop = this.options.gutter / 2;
+			this.properties.halfSeparatorElementRight = this.options.gutter / 2;
+			this.properties.halfSeparatorElementBottom = this.options.gutter / 2;
+			this.properties.halfSeparatorElementLeft = this.options.gutter / 2;
+		} else {
+			this.properties.halfSeparatorElementTop = Math.floor(
+				this.options.gutter / 2
+			);
+			this.properties.halfSeparatorElementRight = Math.floor(
+				this.options.gutter / 2
+			);
+			this.properties.halfSeparatorElementBottom = Math.ceil(
+				this.options.gutter / 2
+			);
+			this.properties.halfSeparatorElementLeft = Math.ceil(
+				this.options.gutter / 2
+			);
+		}
+	}
+
+	function _applyGutters() {
+		// Applying grid separators
+		_applyGridSeparators.call(this);
+
+		// Applying blocks separators
+		_applyBlocksSeparators.call(this);
+	}
+
+	function _applyGridSeparators() {
+		// if (
+		// 	!this.properties.setDesktopPadding ||
+		// 	(!this.properties.setDesktopPadding &&
+		// 		!this.properties.setMobilePadding &&
+		// 		this.section.getAttribute("data-rex-collapse-grid") == "true")
+		// ) {
+			// this.properties.setDesktopPadding = true;
+			// if (this.section.getAttribute("data-rex-collapse-grid") == "true") {
+			// 	this.properties.setMobilePadding = true;
+			// } else {
+			// 	this.properties.setMobilePadding = false;
+			// }
+
+			if ( null !== this.properties.gridTopSeparator ) {
+				this.element.style.marginTop = ( this.properties.gridTopSeparator - this.properties.halfSeparatorTop ) + 'px';
+			} else {
+				this.element.style.marginTop = this.properties.halfSeparatorTop + 'px';
+			}
+
+			if ( null !== this.properties.gridBottomSeparator ) {
+				this.element.style.marginBottom = ( this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom ) + 'px';
+			} else {
+				this.element.style.marginBottom = this.properties.halfSeparatorBottom + 'px';
+			}
+
+			// if (!this.properties.paddingTopBottom) {
+				if ( null !== this.properties.gridLeftSeparator ) {
+					this.element.style.marginLeft = ( this.properties.gridLeftSeparator - this.properties.halfSeparatorLeft ) + 'px';
+				} else {
+					this.element.style.marginLeft = this.properties.halfSeparatorLeft + 'px';
+				}
+
+				if ( null !== this.properties.gridRightSeparator ) {
+					this.element.style.marginRight = ( this.properties.gridRightSeparator - this.properties.halfSeparatorRight ) + 'px';
+				} else {
+					this.element.style.marginRight = this.properties.halfSeparatorRight + 'px';
+				}
+			// }
+		// }
+	}
+
+	function _applyBlocksSeparators() {
+		var tot_blocksArray = this.gridBlocks.length;
+		var i = 0;
+
+		// for native loop guarantees more performance efficiency
+		for ( i = 0; i < tot_blocksArray; i++ ) {
+			currentBlock = this.gridBlocks[i].querySelector( '.grid-stack-item-content' );
+
+			currentBlock.style.paddingTop = this.properties.halfSeparatorElementTop + 'px';
+			currentBlock.style.paddingRight = this.properties.halfSeparatorElementRight + 'px';
+			currentBlock.style.paddingBottom = this.properties.halfSeparatorElementBottom + 'px';
+			currentBlock.style.paddingLeft = this.properties.halfSeparatorElementLeft + 'px';
+		}
+	}
+
+	/* ===== Public Methods ===== */
 
 	/**
 	 * Calculating height of the grid blocks.
 	 * @since	1.0.0
 	 */
-	RexGrid.prototype.calcBlocksHeights = function(){
+	RexGrid.prototype.calcBlocksHeights = function() {
+		var currentBlock;
+		var currentBlockGridHeight = 0;
+		var currentBlockDOMHeight = 0;
+		var currentBlockTextHeight = 0;
+		
 		var tot_blocksArray = this.gridBlocks.length;
 		var i = 0;
-
-    var currentBlock;
-		var currentBlockGridHeight = 0;
-    var currentBlockRealHeight = 0;
 
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < tot_blocksArray; i++ ) {
 			currentBlock = this.gridBlocks[i];
 
 			currentBlockGridHeight = currentBlock.getAttribute( 'data-gs-height' );
-			currentBlockRealHeight = this.properties.singleHeight * currentBlockGridHeight;
+			currentBlockDOMHeight = this.properties.singleHeight * currentBlockGridHeight;
 
-      currentBlock.style.height = currentBlockRealHeight + 'px';
+			currentBlockTextHeight = _calculateTextWrapHeight.call(this, currentBlock);
+
+			if ( currentBlockTextHeight > currentBlockDOMHeight ) {
+				currentBlock.style.height = currentBlockTextHeight + 'px';
+				currentBlock.setAttribute( 'height-different', true );	// Will be a RexBlock property
+			} else {
+				currentBlock.style.height = currentBlockDOMHeight + 'px';
+				currentBlock.setAttribute( 'height-different', false );	// Will be a RexBlock property
+			}
 		}		
-  }
-  
-  /**
+	}
+
+	/**
 	 * Calculating top of the grid blocks.
 	 * @since	1.0.0
 	 */
@@ -168,7 +550,7 @@
 
 			currentBlock.style.top = currentBlockRealTop + 'px';
 		}	
-  }
+	}
 
 	/* ===== Global event handlers ===== */
 
@@ -178,8 +560,14 @@
 	 */
 	RexGrid.prototype.handleResizeEvent = function() {
     globalViewportSize = Utils.viewport();
-    
+		
+		// Adjusting grid sizes data for every instance
 		globalGridWidthsCallbacks.forEach(function(el) {
+			el.call();
+		});
+		
+		// Adjusting blocks sizes data for every instance
+		blocksHeightsCallbacks.forEach(function(el) {
 			el.call();
 		});
 	}
