@@ -168,17 +168,17 @@
 				<div class="block-content">B</div>
 			</div>
 		</div>
-		<div id="b3" class="block" data-w="3" data-h="3" data-x="0" data-y="5">
+		<div id="b3" class="block" data-w="2" data-h="3" data-x="0" data-y="5">
 			<div class="block-wrap">
 				<div class="block-content">E</div>
 			</div>
 		</div>
-		<div id="b4" class="block" data-w="8" data-h="3" data-x="3" data-y="3">
+		<div id="b4" class="block" data-w="10" data-h="3" data-x="2" data-y="3">
 			<div class="block-wrap">
 				<div class="block-content">D</div>
 			</div>
 		</div>
-		<div id="b5" class="block" data-w="8" data-h="3" data-x="3" data-y="6">
+		<div id="b5" class="block" data-w="8" data-h="3" data-x="2" data-y="6">
 			<div class="block-wrap">
 				<div class="block-content">F</div>
 			</div>
@@ -189,8 +189,9 @@
 ;(function() {
 	var sW;
 	var sH;
+	var grid;
 
-	var bMatrix = [];
+	var bList = [];
 
 	function attachListeners() {
 		var buttonFix = document.getElementById('fix');
@@ -201,10 +202,10 @@
 	}
 
 	function handleDOMContentLoaded() {
-		var g = document.getElementById('grid');
-		var blocks = Array.prototype.slice.call( g.getElementsByClassName('block') );
+		grid = document.getElementById('grid');
+		var blocks = Array.prototype.slice.call( grid.getElementsByClassName('block') );
 		var i, tot_blocks = blocks.length;
-		var gW = g.offsetWidth;
+		var gW = grid.offsetWidth;
 		sW = gW/12;
 		sH = sW;
 
@@ -218,21 +219,21 @@
 
 			blocks[i].addEventListener('click', selectBlock);
 
-			bMatrix.push( {
+			bList.push( {
 				el: blocks[i],
 				id: blocks[i].getAttribute('id'),
 				w: parseInt( blocks[i].getAttribute('data-w') ),
 				h: bh,
 				x: parseInt( blocks[i].getAttribute('data-x') ),
 				y: by,
-				toCheck: false
+				toCheck: false,
 			} );
 
-			bMatrix[i].domIndex = bMatrix[i].x + ( bMatrix[i].y * 12 )
+			bList[i].domIndex = bList[i].x + ( bList[i].y * 12 )
 		}
 
 		// sort blocks array by ascending DOM order
-		bMatrix.sort( function( bA, bB ) {
+		bList.sort( function( bA, bB ) {
 			return ( bA.domIndex - bB.domIndex )
 		})
 
@@ -242,10 +243,10 @@
 
 	function selectBlock(e) {
 		e.preventDefault()
-		var i, tot_bMatrix = bMatrix.length;
-		for( i=0; i<tot_bMatrix; i++ ) {
-			if ( bMatrix[i].el === this ) {
-				bMatrix[i].toCheck = true;
+		var i, tot_bList = bList.length;
+		for( i=0; i<tot_bList; i++ ) {
+			if ( bList[i].el === this ) {
+				bList[i].toCheck = true;
 				break;
 			}
 		}
@@ -254,79 +255,85 @@
 
 	function handleFixGrid() {
 		var i;
-		var j, tot_bMatrix = bMatrix.length;
+		var j, tot_bList = bList.length;
+
+		grid.style.display = 'none';
 
 		// set the new height
-		for( i=0; i<tot_bMatrix; i++ ) {
-			if ( ! bMatrix[i].toCheck ) {
+		for( i=0; i<tot_bList; i++ ) {
+			if ( ! bList[i].toCheck ) {
 				continue;
 			}
 
 			var randomH = Math.ceil( Math.random() * 5 )
-			var newBh = bMatrix[i].h + ( randomH );
-			bMatrix[i].el.setAttribute('data-h', newBh );
-			bMatrix[i].el.style.height = (newBh * sH) + 'px';
-			bMatrix[i].el.style.background = '';
+			var newBh = bList[i].h + ( randomH );
+			bList[i].el.setAttribute('data-h', newBh );
+			bList[i].el.style.height = (newBh * sH) + 'px';
+			bList[i].el.style.background = '';
 
-			bMatrix[i].h = newBh;
+			bList[i].h = newBh;
 		}
 
 		// check other blocks collapse
-		for( i=0; i<tot_bMatrix; i++ ) {
-			// if ( ! bMatrix[i].toCheck ) {
-				// continue;
-			// }
+		for( i=0; i<tot_bList; i++ ) {
+			if ( ! bList[i].toCheck ) {
+				continue;
+			}
 
-			for( j=0; j<tot_bMatrix; j++ ) {
-				if( bMatrix[i].el === bMatrix[j].el ) {
+			for( j=0; j<tot_bList; j++ ) {
+				if( bList[i].el === bList[j].el ) {
 					continue;
 				}
 
-				if (bMatrix[i].x < bMatrix[j].x + bMatrix[j].w &&
-					bMatrix[i].x + bMatrix[i].w > bMatrix[j].x &&
-					bMatrix[i].y < bMatrix[j].y + bMatrix[j].h &&
-					bMatrix[i].y + bMatrix[i].h > bMatrix[j].y) {
+				if (bList[i].x < bList[j].x + bList[j].w &&
+					bList[i].x + bList[i].w > bList[j].x &&
+					bList[i].y < bList[j].y + bList[j].h &&
+					bList[i].y + bList[i].h > bList[j].y) {
 					
-					var t = ( bMatrix[i].y + bMatrix[i].h ) - bMatrix[j].y;
-					var newY = bMatrix[j].y + t;
+					var t = ( bList[i].y + bList[i].h ) - bList[j].y;
+					var newY = bList[j].y + t;
 
-					bMatrix[j].el.setAttribute( 'data-y', newY );
+					bList[j].el.setAttribute( 'data-y', newY );
 
-					bMatrix[j].el.style.top = ((newY) * sH) + 'px';
-					bMatrix[j].y = newY;
-					bMatrix[j].domIndex = bMatrix[j].x + ( bMatrix[j].y * 12 )
+					bList[j].el.style.top = ((newY) * sH) + 'px';
+					bList[j].y = newY;
+					bList[j].domIndex = bList[j].x + ( bList[j].y * 12 )
+
+					bList[j].toCheck = true;
 				}
 			}
 
-			bMatrix[i].toCheck = false;
+			bList[i].toCheck = false;
 		}
+
+		grid.style.display = '';
 	}
 
 	function handleCollapseGrid() {
 		var i;
-		var j, tot_bMatrix = bMatrix.length;
-		for( j=0; j<tot_bMatrix; j++ ) {
-			bMatrix[j].x = 0;
-			bMatrix[j].w = 12;
-			bMatrix[j].el.setAttribute('data-x', 0)
-			bMatrix[j].el.setAttribute('data-w', 12)
+		var j, tot_bList = bList.length;
+		for( j=0; j<tot_bList; j++ ) {
+			bList[j].x = 0;
+			bList[j].w = 12;
+			bList[j].el.setAttribute('data-x', 0)
+			bList[j].el.setAttribute('data-w', 12)
 
 			// set new height
 			
-			if ( j+1 < tot_bMatrix ) {
-				var newT = bMatrix[j].y + bMatrix[j].h;
-				bMatrix[j+1].y = newT;
-				bMatrix[j+1].el.setAttribute('data-y', newT);
-				bMatrix[j+1].el.style.top = ( newT * sH ) + 'px';
+			if ( j+1 < tot_bList ) {
+				var newT = bList[j].y + bList[j].h;
+				bList[j+1].y = newT;
+				bList[j+1].el.setAttribute('data-y', newT);
+				bList[j+1].el.style.top = ( newT * sH ) + 'px';
 			}
 		}
 
 		// sort blocks array by ascending DOM order
-		bMatrix.sort( function( bA, bB ) {
+		bList.sort( function( bA, bB ) {
 			return ( bA.domIndex - bB.domIndex )
 		})
 
-		console.log(bMatrix)
+		console.log(bList)
 	}
 
 	document.addEventListener('DOMContentLoaded', handleDOMContentLoaded)
