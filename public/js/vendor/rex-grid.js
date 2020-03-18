@@ -353,9 +353,6 @@
       if ( !blockHasSlider && ( textWrapHasContent || textWrapHasChildren ) ) {
 				textHeight = textWrap.offsetHeight;
 			}
-
-			console.log( textHeight );
-			
     }
     return textHeight;
   }
@@ -606,18 +603,19 @@
 			currentBlockTextHeight = _calculateTextWrapHeight.call(this, currentBlock);
 
 			if ( currentBlockTextHeight > currentBlockDOMHeight ) {
-				this.gridBlocks[i].h = Math.round((currentBlockTextHeight + this.options.gutter) / this.properties.singleHeight);
+				this.gridBlocks[i].h = Math.ceil((currentBlockTextHeight + this.options.gutter) / this.properties.singleHeight);
 				
-				// @tofix
-				currentBlock.style.height = currentBlockTextHeight + 'px';
+				currentBlock.style.height = (this.gridBlocks[i].h * this.properties.singleHeight) + 'px';
+				currentBlock.setAttribute( 'data-gs-height', this.gridBlocks[i].h );
 				this.gridBlocks[i].toCheck = true;
-				// currentBlock.setAttribute( 'height-different', true );	// Will be a RexBlock property
 			} else {
 				currentBlock.style.height = currentBlockDOMHeight + 'px';
 				this.gridBlocks[i].toCheck = false;
-				currentBlock.setAttribute( 'height-different', false );	// Will be a RexBlock property
 			}
-		}		
+		}
+
+		console.log( this.gridBlocks );
+		
 	}
 
 	/**
