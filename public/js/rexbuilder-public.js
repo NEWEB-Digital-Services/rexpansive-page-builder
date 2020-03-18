@@ -8,8 +8,7 @@
 	window.addEventListener('load', Rexbuilder_App.load );
 
 	window.addEventListener('resize', function () {
-
-		// Every handler
+		// RexGrid handler
 		if ( RexGrid ) {
 			RexGrid.prototype.handleResizeEvent();
 		}
