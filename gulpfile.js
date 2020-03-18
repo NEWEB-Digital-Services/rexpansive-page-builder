@@ -278,7 +278,8 @@ var builderlive_public = [
 	'public/js/build/1-Rexbuilder_Rexwpcf7.js',
 	
 	'public/js/vendor/lodash.js',
-	'public/gridstack/dist/gridstack.js',
+	// 'public/gridstack/dist/gridstack.js',
+	'public/js/vendor/rex-grid.js',
 	'public/js/build/3-Navigator.js',
 	'public/js/vendor/flickity.pkgd.min.js',
 	'public/js/vendor/bg-lazyload.js',
