@@ -52,7 +52,7 @@ function liveSprites(cb) {
 
 exports.liveSprites = liveSprites;
 
-/** end SPRITES TASKS */
+/** END SPRITES TASKS */
 
 // LIVE
 function liveBuilderStyle(cb) {
@@ -68,18 +68,23 @@ function liveBuilderStyle(cb) {
 		.pipe(plumber.stop())
 		.pipe(size({title: 'LiveBuilder CSS'}))
 		.pipe(dest('admin/css'));
-	cb()
+	cb();
 }
 
 exports.liveBuilderStyle = liveBuilderStyle;
 
 // ADMIN
-function adminBuilderStyle(cb) {
+function adminBuilderStyle(cb, dev) {
+	let sassConfig = {
+		sourcemap: false
+	};
+
+	if ( !dev ) {
+		sassConfig.outputStyle = 'compressed'
+	}
+
 	return src('admin/scss/rexlive/tools-def.scss')
-		.pipe(sass({
-			sourcemap: false,
-			outputStyle:'compressed'
-		}))
+		.pipe(sass(sassConfig))
 		.pipe(plumber())
 		.pipe(autoprefixer({
 			browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
@@ -90,7 +95,11 @@ function adminBuilderStyle(cb) {
 	cb();
 }
 
-exports.adminBuilderStyle = adminBuilderStyle;
+// Watching public styles
+function watchAdminBuilderStyle(cb) {
+  watch( [ './admin/scss/rexlive/**/*.scss'], adminBuilderStyle.bind( null, cb, true ) );
+	cb();
+}
 
 // ADMIN JS
 var builderlive_admin = [
@@ -170,17 +179,15 @@ var builderlive_admin = [
 	'admin/js/builderlive/Rexbuilder_Starting.js',
 ];
 
-function adminJSScript(cb) {
+function adminScript(cb) {
   return src(builderlive_admin)
     .pipe(plumber())
     .pipe(concat('builderlive-admin.js'))
     .pipe(uglify({ mangle: true }))
     .pipe(size({title: 'ADMIN JS:'}))
-    .pipe(dest('./admin/js'))
+    .pipe(dest('./admin/js'));
   cb();
 }
-
-exports.adminJSScript = adminJSScript;
 
 // LIVE JS
 var builderlive_public_editor = [
@@ -247,11 +254,9 @@ function builderliveEditor(cb) {
 		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
 		.pipe(concat('builderlive-editor.js'))
 		.pipe(size({title:'Builderlive Editor'}))
-		.pipe(dest('public/js'))
+		.pipe(dest('public/js'));
 	cb();
 }
-
-exports.builderliveEditor = builderliveEditor;
 
 // PUBLIC JS
 var builderlive_public = [
@@ -301,15 +306,18 @@ function builderlive(cb) {
 	cb();
 }
 
-exports.builderlive = builderlive;
-
 // LIVE CSS
-function builderliveEditorStyle(cb) {
+function builderliveEditorStyle(cb, dev) {
+	let sassConfig = {
+		sourcemap: false
+	};
+
+	if ( !dev ) {
+		sassConfig.outputStyle = 'compressed'
+	}
+
 	return src('live/builderlive-editor.scss')
-		.pipe(sass({
-			sourcemap: false,
-			outputStyle:'compressed'
-		}))
+		.pipe(sass(sassConfig))
 		.pipe(plumber())
 		.pipe(autoprefixer({
 			browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
@@ -320,14 +328,27 @@ function builderliveEditorStyle(cb) {
 	cb();
 }
 
-exports.builderliveEditorStyle = builderliveEditorStyle;
+// Watching live & admin styles
+function watchBuilderliveEditorStyle(cb) {
+  watch( [ 
+		'./public/scss/**/*.scss',
+		'./admin/scss/rexlive/**/*.scss'
+	], builderliveEditorStyle.bind( null, cb, true ) );
+	cb();
+}
 
 // PUBLIC CSS
-function builderliveStyle(cb) {
+function builderliveStyle(cb, dev) {
+	let sassConfig = {};
+
+	if ( !dev ) {
+		sassConfig = {
+			outputStyle: 'compressed'
+		}
+	}
+
 	return src('public/builderlive-public.scss')
-		.pipe(sass({
-			outputStyle:'compressed'
-		}))
+		.pipe(sass(sassConfig))
 		.pipe(plumber())
 		.pipe(autoprefixer({
 			browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
@@ -338,7 +359,11 @@ function builderliveStyle(cb) {
 	cb();
 }
 
-exports.builderliveStyle = builderliveStyle;
+// Watching public styles
+function watchBuilderliveStyle(cb) {
+  watch( [ './public/scss/**/*.scss'], builderliveStyle.bind( null, cb, true ) );
+	cb();
+}
 
 // PUBLIC
 var effects_js_src = [
@@ -359,29 +384,12 @@ function minifyExternal(cb) {
 		return src(effect_src)
 			.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
 			.pipe(rename({suffix: '.min'}))
-			.pipe(dest('public/js/vendor'))
+			.pipe(dest('public/js/vendor'));
 	})
 	cb();
 }
 
-exports.minifyExternal = minifyExternal;
-
 // FIX CF7
-// gulp.task('rxcf7', function() {
-// 	return gulp.src('public/scss/rxcf7.scss')
-// 		.pipe(sass({
-// 			sourcemap: false,
-// 			outputStyle:'compressed'
-// 		}))
-// 		.pipe(plumber())
-// 		.pipe(autoprefixer({
-// 			browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
-// 		}))
-// 		.pipe(plumber.stop())
-// 		.pipe(size({title: 'RXCF7 CSS'}))
-// 		.pipe(gulp.dest('public/css'));
-// })
-
 function rxcf7(cb) {
 	return src('public/scss/rxcf7.scss')
 		.pipe(sass({
@@ -400,9 +408,8 @@ function rxcf7(cb) {
 
 exports.rxcf7 = rxcf7;
 
-// gulp.task('dev', ['minify-external','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style', 'adminJS']);
-
-exports.build = series( minifyExternal, builderliveEditor, builderlive, builderliveEditorStyle, builderliveStyle );
+exports.dev = parallel( watchAdminBuilderStyle, watchBuilderliveStyle, watchBuilderliveEditorStyle );
+exports.build = series( minifyExternal, adminScript, builderliveEditor, builderlive, adminBuilderStyle.bind( null, null, false ), builderliveEditorStyle.bind( null, null, false ), builderliveStyle.bind( null, null , false ) );
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
 var live_zip_name = 'Premium-204-Rexpansive-Builder.zip';
@@ -517,6 +524,7 @@ function macZip(cb) {
 exports.createTempLiveFolder = createTempLiveFolder;
 exports.removeTempLiveFolder = removeTempLiveFolder;
 exports.macZip = macZip;
+exports.standardZip = standardZip;
 
 // Final build tasks
 exports.standardBuild = series(createTempLiveFolder, standardZip, removeTempLiveFolder);
