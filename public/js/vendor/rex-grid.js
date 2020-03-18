@@ -107,8 +107,16 @@
   var blocksHeightsCallbacks = [];
   
   /* ===== RexBlock ===== */
-  function RexBlock() {
-    // proprietà dei blocchi
+  function RexBlock(options) {
+		// Classe dei blocchi
+		this.el = options.el;
+		this.id = options.id;
+		this.w = options.w;
+		this.h = options.h;
+		this.x = options.x;
+		this.y = options.y;
+		this.toCheck = options.toCheck;
+		this.domIndex = this.x + ( this.y * 12 );
   }
 
 	/* ===== Plugin constructor ===== */
@@ -235,6 +243,8 @@
 		// _checkCollisions.call(this)
 
 		this.calcBlocksTop();
+
+		_fixBlockPositions.call(this);
 		
 		_setGridHeight.call(this);
 	}
@@ -245,18 +255,38 @@
 	}
 
 	function _getGridBlocks() {
-		var gridElement = this.element;
-    var blocksArray = Array.prototype.slice.call( gridElement.getElementsByClassName( 'perfect-grid-item' ) );
-    
+		var blocksArray = Array.prototype.slice.call( this.element.getElementsByClassName( 'perfect-grid-item' ) );
+		var blockInstance;
+
+		var tot_blocks = blocksArray.length;
+		var i = 0;
+
+		for ( i = 0; i < tot_blocks; i++ ) {
+			blockInstance = new RexBlock({
+				el: blocksArray[i],
+				id: blocksArray[i].getAttribute('data-rexbuilder-block-id'),
+				w: parseInt( blocksArray[i].getAttribute('data-gs-width') ),
+				h: parseInt( blocksArray[i].getAttribute('data-gs-height') ),
+				x: parseInt( blocksArray[i].getAttribute('data-gs-x') ),
+				y: parseInt( blocksArray[i].getAttribute('data-gs-y') ),
+				toCheck: false,
+			});
+
+			this.gridBlocks.push( blockInstance );
+		}
+		
+		// sort blocks array by ascending DOM order
+		this.gridBlocks.sort( function( bA, bB ) {
+			return ( bA.domIndex - bB.domIndex )
+		});
+
     // Getting grid id
     this.properties.id = this.element.dataset.rexGridId;
-
-		this.gridBlocks = blocksArray;
 	}
 
 	function _checkCollisions() {
 		var blocksToCheck = this.gridBlocks.filter(function (block) {
-			return 'true' === block.getAttribute( 'height-different' )
+			return 'true' === block.el.getAttribute( 'height-different' )
 		})
 		
 		var currentBlockToCheck;
@@ -283,7 +313,7 @@
 			currentBlockToCheckHeight = currentBlockToCheck.getAttribute( 'data-gs-height' );
 
 			for ( j = 0; j < tot_blocks; j++) {
-				currentBlock = this.gridBlocks[j];
+				currentBlock = this.gridBlocks[j].el;
 				currentBlockX = currentBlock.getAttribute('data-gs-x');
 				currentBlockY = currentBlock.getAttribute('data-gs-y');
 				currentBlockWidth = currentBlock.getAttribute('data-gs-width');
@@ -294,8 +324,8 @@
 					currentBlockToCheckY < currentBlockY + currentBlockHeight &&
 					currentBlockToCheckY + currentBlockToCheckHeight > currentBlockY) {
 					 // Collision detected!
-					 console.log( 'currentBlock', currentBlock );
-					 console.log( 'currentBlockToCheck', currentBlockToCheck );
+					//  console.log( 'currentBlock', currentBlock );
+					//  console.log( 'currentBlockToCheck', currentBlockToCheck );
 					 
 			 }
 				
@@ -348,8 +378,8 @@
 
 		// for native loop guarantees more performance efficiency
 		for( i = 0; i < tot_blocks; i++ ) {
-			if ( -1 === blocks[i].className.indexOf( 'removing_block' ) ) {
-				heightTemp = parseInt( blocks[i].getAttribute('data-gs-height') ) + parseInt( blocks[i].getAttribute('data-gs-y') );
+			if ( -1 === blocks[i].el.className.indexOf( 'removing_block' ) ) {
+				heightTemp = parseInt( blocks[i].el.getAttribute('data-gs-height') ) + parseInt( blocks[i].el.getAttribute('data-gs-y') );
 
 				if (heightTemp > heightTot) {
 					heightTot = heightTemp;
@@ -486,13 +516,69 @@
 
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < tot_blocksArray; i++ ) {
-			currentBlock = this.gridBlocks[i].querySelector( '.grid-stack-item-content' );
+			currentBlock = this.gridBlocks[i].el.querySelector( '.grid-stack-item-content' );
 
 			currentBlock.style.paddingTop = this.properties.halfSeparatorElementTop + 'px';
 			currentBlock.style.paddingRight = this.properties.halfSeparatorElementRight + 'px';
 			currentBlock.style.paddingBottom = this.properties.halfSeparatorElementBottom + 'px';
 			currentBlock.style.paddingLeft = this.properties.halfSeparatorElementLeft + 'px';
 		}
+	}
+
+	function _fixBlockPositions() {
+		var i;
+		var j, tot_blocks = this.gridBlocks.length;
+
+		// grid.style.display = 'none';
+
+		// set the new height
+		// for( i=0; i<tot_blocks; i++ ) {
+		// 	if ( ! this.gridBlocks[i].toCheck ) {
+		// 		continue;
+		// 	}
+
+		// 	var randomH = Math.ceil( Math.random() * 5 )
+		// 	var newBh = this.gridBlocks[i].h + ( randomH );
+		// 	this.gridBlocks[i].el.setAttribute('data-gs-h', newBh );
+		// 	this.gridBlocks[i].el.style.height = (newBh * sH) + 'px';
+		// 	this.gridBlocks[i].el.style.background = '';
+
+		// 	this.gridBlocks[i].h = newBh;
+		// }
+
+		// check other blocks collapse
+		for( i=0; i<tot_blocks; i++ ) {
+			if ( ! this.gridBlocks[i].toCheck ) {
+				continue;
+			}
+
+			for( j=0; j<tot_blocks; j++ ) {
+				if( this.gridBlocks[i].el === this.gridBlocks[j].el ) {
+					continue;
+				}
+
+				if (this.gridBlocks[i].x < this.gridBlocks[j].x + this.gridBlocks[j].w &&
+					this.gridBlocks[i].x + this.gridBlocks[i].w > this.gridBlocks[j].x &&
+					this.gridBlocks[i].y < this.gridBlocks[j].y + this.gridBlocks[j].h &&
+					this.gridBlocks[i].y + this.gridBlocks[i].h > this.gridBlocks[j].y) {
+					
+					var newTop = ( this.gridBlocks[i].y + this.gridBlocks[i].h ) - this.gridBlocks[j].y;
+					var newY = this.gridBlocks[j].y + newTop;
+
+					this.gridBlocks[j].el.setAttribute( 'data-gs-y', newY );
+
+					this.gridBlocks[j].el.style.top = ((newY) * this.properties.singleHeight) + 'px';
+					this.gridBlocks[j].y = newY;
+					this.gridBlocks[j].domIndex = this.gridBlocks[j].x + ( this.gridBlocks[j].y * 12 )
+
+					this.gridBlocks[j].toCheck = true;
+				}
+			}
+
+			this.gridBlocks[i].toCheck = false;
+		}
+
+		// grid.style.display = '';
 	}
 
 	/* ===== Public Methods ===== */
@@ -503,7 +589,6 @@
 	 */
 	RexGrid.prototype.calcBlocksHeights = function() {
 		var currentBlock;
-		var currentBlockGridHeight = 0;
 		var currentBlockDOMHeight = 0;
 		var currentBlockTextHeight = 0;
 		
@@ -512,21 +597,25 @@
 
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < tot_blocksArray; i++ ) {
-			currentBlock = this.gridBlocks[i];
+			currentBlock = this.gridBlocks[i].el;
 
-			currentBlockGridHeight = currentBlock.getAttribute( 'data-gs-height' );
-			currentBlockDOMHeight = this.properties.singleHeight * currentBlockGridHeight;
-
+			currentBlockDOMHeight = this.properties.singleHeight * this.gridBlocks[i].h;
 			currentBlockTextHeight = _calculateTextWrapHeight.call(this, currentBlock);
 
 			if ( currentBlockTextHeight > currentBlockDOMHeight ) {
-				currentBlock.style.height = currentBlockTextHeight + 'px';
-				currentBlock.setAttribute( 'height-different', true );	// Will be a RexBlock property
+				this.gridBlocks[i].h = Math.ceil((currentBlockTextHeight + this.options.gutter) / this.properties.singleHeight);
+				
+				currentBlock.style.height = (this.gridBlocks[i].h * this.properties.singleHeight) + 'px';
+				currentBlock.setAttribute( 'data-gs-height', this.gridBlocks[i].h );
+				this.gridBlocks[i].toCheck = true;
 			} else {
 				currentBlock.style.height = currentBlockDOMHeight + 'px';
-				currentBlock.setAttribute( 'height-different', false );	// Will be a RexBlock property
+				this.gridBlocks[i].toCheck = false;
 			}
-		}		
+		}
+
+		console.log( this.gridBlocks );
+		
 	}
 
 	/**
@@ -538,15 +627,13 @@
 		var i = 0;
 
     var currentBlock;
-		var currentBlockGridTop = 0;
 		var currentBlockRealTop = 0;
 
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < tot_blocksArray; i++ ) {
-			currentBlock = this.gridBlocks[i];
+			currentBlock = this.gridBlocks[i].el;
 
-			currentBlockGridTop = currentBlock.getAttribute( 'data-gs-y' );
-			currentBlockRealTop = this.properties.singleHeight * currentBlockGridTop;
+			currentBlockRealTop = this.properties.singleHeight * this.gridBlocks[i].y;
 
 			currentBlock.style.top = currentBlockRealTop + 'px';
 		}	

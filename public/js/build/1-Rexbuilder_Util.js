@@ -3012,24 +3012,24 @@ var Rexbuilder_Util = (function($) {
         return;
       }
     } else {    // Front end resize logic
-      var actualLayout = _findFrontLayout();
-      if( startFrontLayout != actualLayout ) {
-        Rexbuilder_Util.changedFrontLayout = true;
-        startFrontLayout = actualLayout;
-        Rexbuilder_Util_Editor.startLoading();
-      }
+      // var actualLayout = _findFrontLayout();
+      // if( startFrontLayout != actualLayout ) {
+      //   Rexbuilder_Util.changedFrontLayout = true;
+      //   startFrontLayout = actualLayout;
+      //   Rexbuilder_Util_Editor.startLoading();
+      // }
 
-      if( Rexbuilder_Util.changedFrontLayout ) {
-        var choosedLayout = chooseLayout();
-        _set_initial_grids_state( choosedLayout );
+      // if( Rexbuilder_Util.changedFrontLayout ) {
+      //   var choosedLayout = chooseLayout();
+      //   _set_initial_grids_state( choosedLayout );
 
-        // Rexbuilder_Util.rtimeOut( changeLayouHandling.bind(null, choosedLayout), 300 );
-        setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
-      } else {
-        var l = chooseLayout();
-        var resize_info = _edit_dom_layout(chooseLayout());
-        _updateGridsHeights();
-      }
+      //   // Rexbuilder_Util.rtimeOut( changeLayouHandling.bind(null, choosedLayout), 300 );
+      //   setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
+      // } else {
+      //   var l = chooseLayout();
+      //   var resize_info = _edit_dom_layout(chooseLayout());
+      //   _updateGridsHeights();
+      // }
     }
 
     Rexbuilder_Util.windowIsResizing = false;
