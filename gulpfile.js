@@ -277,7 +277,7 @@ var builderlive_public = [
 	'public/js/build/1-Rexbuilder_Rexelement.js',
 	'public/js/build/1-Rexbuilder_Rexwpcf7.js',
 	
-	'public/js/vendor/lodash.js',
+	// 'public/js/vendor/lodash.js',
 	// 'public/gridstack/dist/gridstack.js',
 	'public/js/vendor/rex-grid.js',
 	'public/js/build/3-Navigator.js',
@@ -290,7 +290,7 @@ var builderlive_public = [
 	'public/js/vendor/jquery.rexAccordion.js',
 	'public/js/vendor/6-jquery.rexIndicator.js',
 	'public/js/vendor/utilities.js',
-	'public/js/live/2-jquery.perfectGridGalleryEditor.js',
+	// 'public/js/live/2-jquery.perfectGridGalleryEditor.js',
 	'public/js/vendor/3-velocity.min.js',
 	'public/js/vendor/3-velocity.ui.min.js',
 	'public/js/vendor/4-jquery.rexScrollify.js',
