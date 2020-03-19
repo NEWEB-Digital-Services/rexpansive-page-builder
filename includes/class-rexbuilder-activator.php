@@ -46,6 +46,7 @@ class Rexbuilder_Activator {
 	private static function check_options( $n ) {
 		// create uploads folder
 		self::create_icons_folder();
+		self::add_service_worker();
 
 		// Defaults values
 		$defaults = array(
@@ -105,5 +106,25 @@ class Rexbuilder_Activator {
 		if( ! file_exists( $symbol_dirname ) ) {
 			wp_mkdir_p( $symbol_dirname );
 		}
+	}
+
+	/**
+	 * Add service worker for assets caching.
+	 * 
+	 * @return null
+	 * @since  2.0.4
+	 */
+	private static function add_service_worker() {
+		if (!REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS) return;
+		if (file_exists (ABSPATH . 'service-worker.js')) return;
+
+		if (file_exists (REXPANSIVE_BUILDER_PATH . 'public/js/service-worker.js')) {
+			if (is_writable(ABSPATH)) {
+				$serviceWorkerContents = file_get_contents(REXPANSIVE_BUILDER_PATH . 'public/js/service-worker.js' );
+
+				file_put_contents( ABSPATH . 'service-worker.js', $serviceWorkerContents);
+			}
+		}
+
 	}
 }

@@ -1023,6 +1023,7 @@ var Rexbuilder_Util = (function($) {
                     sectionDefault.targets[n].props,
                     sectionCustom.targets[m].props
                   );
+
                   break;
                 }
               }
