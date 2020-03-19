@@ -1035,7 +1035,7 @@ var Rexbuilder_App = (function($) {
       launchIndicators( $grids );
     }
 
-    // launchFrontEndEffects();
+    launchFrontEndEffects();
 
     Rexbuilder_Util.galleryPluginActive = true;
   };

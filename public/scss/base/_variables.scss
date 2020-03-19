@@ -47,6 +47,11 @@ $easeOutCirc: cubic-bezier(0.075, 0.82, 0.165, 1);
 $easeInCubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
 $easeInCirc: cubic-bezier(0.6, 0.04, 0.98, 0.335);
 
+// other eases
+$power4: cubic-bezier(0.215, 0.61, 0.355, 1);
+$soft: cubic-bezier(.165,.84,.44,1);
+$sosoft: cubic-bezier(.215,.61,.355,1);
+
 /** INDICATOR **/
 $indicator-dot-width: 11px;
 $indicator-line-dimension: 85px;
@@ -106,6 +111,8 @@ $link-label-dim: 21px;
 
 .has-rs-animation {
 	opacity: 0;
+	animation-duration: 0.5s;
+	animation-timing-function: $easeOutSine;
 }
 
 @mixin card {
