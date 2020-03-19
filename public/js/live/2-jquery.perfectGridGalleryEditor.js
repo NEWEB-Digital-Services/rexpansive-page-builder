@@ -3513,8 +3513,6 @@
             defaultHeight = startH * this.properties.singleHeight;
           }
         }
-      } else {
-        textHeight = textHeight;
       }
 
       if ( !blockHasSlider && backgroundHeight == 0 && videoHeight == 0 && textHeight == 0 ) {

@@ -1157,8 +1157,10 @@ var Rexbuilder_Util = (function($) {
   }
 
   var launchEditDomLayout = function() {
-    var l = Rexbuilder_Util.chooseLayout();
-    Rexbuilder_Util.edit_dom_layout(l);
+    var layout = Rexbuilder_Util.chooseLayout();
+    if ( Rexbuilder_Util.editorMode ) {
+      Rexbuilder_Util.edit_dom_layout(layout);
+    }
   }
   
   var _edit_dom_layout = function( chosenLayoutName ) {

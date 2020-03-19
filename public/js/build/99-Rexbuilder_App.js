@@ -434,59 +434,6 @@ var Rexbuilder_App = (function($) {
   }
 
   /**
-   * Callback after load the pop up content
-   * @return {void}
-   */
-  var launchAllAfterLoading = function() {
-    var $popUpContent = $(this.target);
-    var $newGrids = $popUpContent.find(".grid-stack-row");
-    var $newSections = $popUpContent.find(".rexpansive_section");
-    var $newAccordions = $popUpContent.find('.rex-accordion');
-    var pageGrids = $grids.length;
-
-    // launch photoswipe
-    if ( $newSections.length > 0 ) {
-      var tot_newSections = $newSections.length, i;
-      for( i=0; i < tot_newSections; i++ ) {
-        $newSections[i].setAttribute( 'data-rexlive-section-number', pageGrids + i );
-        var pswchilds = $newSections[i].getElementsByClassName( "pswp-figure" );
-        if ( pswchilds.length === 0 ) {
-          Rexbuilder_Util.removeClass( $newSections[i], 'photoswipe-gallery' );
-        }
-      }
-      Rexbuilder_Photoswipe.init(".photoswipe-gallery");
-    }
-
-    // main grid
-    if( $newGrids.length > 0 ) {
-      $newGrids.perfectGridGalleryEditor({
-        editorMode: Rexbuilder_Util.editorMode
-      });
-    }
-
-    // accordions
-    if( $newAccordions.length > 0 ) {
-      $newAccordions.rexAccordion(accordionSettings);
-    }
-
-    // sliders
-    RexSlider.init();
-
-    // distance accordions
-    if ( 'undefined' !== typeof DistanceAccordion ) {
-      var togglers = this.target.getElementsByClassName('distance-accordion-toggle');
-      for ( var j=0, tot = togglers.length; j < tot; j++ ) {
-        var inst = new DistanceAccordion(togglers[j], {
-          context: this.target
-        });
-      }
-    }
-
-    // split scrolls
-    launchSplitScollable( this.target, this.target );
-  }
-
-  /**
    * Callback after load the popup iframe 
    * @return {void}
    */
@@ -882,8 +829,6 @@ var Rexbuilder_App = (function($) {
     $sections = Rexbuilder_Util.$rexContainer.find(".rexpansive_section");
     $grids = Rexbuilder_Util.$rexContainer.find(".grid-stack-row");
 
-    var gridInstances = [];
-
     /* -- Launching the grid -- */
     // $grids.find(".wrapper-expand-effect").expandEffect();
     if( $grids ) {
@@ -891,16 +836,6 @@ var Rexbuilder_App = (function($) {
         $grids.perfectGridGalleryEditor({
           editorMode: Rexbuilder_Util.editorMode
         });
-      } else {
-        var grids = Array.prototype.slice.call( document.getElementsByClassName( 'perfect-grid-gallery' ) );
-        var tot_grids = grids.length;
-        var i = 0;
-
-        for ( i = 0; i < tot_grids; i++ ) {
-          var rexGridInstance = new RexGrid( grids[i] );
-
-          gridInstances.push( rexGridInstance );
-        }
       }
     }
 
@@ -988,14 +923,16 @@ var Rexbuilder_App = (function($) {
 
     _linkDocumentListeners();
 
-    // Starting slider
-    RexSlider.init();
-
-    Rexbuilder_Util.launchVideoPlugins();
-
-    Rexbuilder_Util.playAllVideos();
-
-    launchAccordions();
+    if (Rexbuilder_Util.editorMode) {
+      // Starting slider
+      RexSlider.init();
+      
+      Rexbuilder_Util.launchVideoPlugins();
+      
+      Rexbuilder_Util.playAllVideos();
+      
+      launchAccordions();
+    }
   };
 
   var load = function() {
@@ -1007,9 +944,31 @@ var Rexbuilder_App = (function($) {
       // Rexbuilder_Util.edit_dom_layout(chosenLayoutName);
     // }
 
+    var gridInstances = [];
+
     if ( Rexbuilder_Util.editorMode ) {
       Rexbuilder_Util_Editor.load();
       Rexbuilder_Live_Utilities.load();
+    } else {
+      // Launching RexGrid
+      var grids = Array.prototype.slice.call( document.getElementsByClassName( 'perfect-grid-gallery' ) );
+      var tot_grids = grids.length;
+      var i = 0;
+
+      for ( i = 0; i < tot_grids; i++ ) {
+        var rexGridInstance = new RexGrid( grids[i] );
+
+        gridInstances.push( rexGridInstance );
+      }
+
+      // Starting slider
+      RexSlider.init();
+
+      Rexbuilder_Util.launchVideoPlugins();
+
+      Rexbuilder_Util.playAllVideos();
+
+      launchAccordions();
     }
 
     /* -- Launching the textfill -- */
@@ -1035,7 +994,7 @@ var Rexbuilder_App = (function($) {
       launchIndicators( $grids );
     }
 
-    // launchFrontEndEffects();
+    launchFrontEndEffects();
 
     Rexbuilder_Util.galleryPluginActive = true;
   };
