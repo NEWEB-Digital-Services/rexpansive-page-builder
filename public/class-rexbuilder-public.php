@@ -298,10 +298,8 @@ class Rexbuilder_Public
 			if( Rexbuilder_Utilities::isBuilderLive() ) {
 				wp_enqueue_script('jquery-ui', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery-ui.min.js', array('jquery'), $ver, true);
 				wp_enqueue_script('touchPunch', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.ui.touch-punch.js', array('jquery'), $ver, true);
-			}
-			wp_enqueue_script('lodash-live', REXPANSIVE_BUILDER_URL . 'public/js/vendor/lodash.js', array('jquery'), $ver, true);
-			wp_enqueue_script('gridstack', REXPANSIVE_BUILDER_URL . 'public/gridstack/dist/gridstack.js', array('jquery'), $ver, true);
-			if( Rexbuilder_Utilities::isBuilderLive() ) {
+				wp_enqueue_script('lodash-live', REXPANSIVE_BUILDER_URL . 'public/js/vendor/lodash.js', array('jquery'), $ver, true);
+				wp_enqueue_script('gridstack', REXPANSIVE_BUILDER_URL . 'public/gridstack/dist/gridstack.js', array('jquery'), $ver, true);
 				wp_enqueue_script('gridstackUI', REXPANSIVE_BUILDER_URL . 'public/gridstack/dist/gridstack.jQueryUI.js', array('jquery'), $ver, true);
 			}
 
@@ -364,12 +362,16 @@ class Rexbuilder_Public
 			}
 
 			wp_enqueue_script('utilities', REXPANSIVE_BUILDER_URL . 'public/js/vendor/utilities.js', array('jquery'), $ver, true);
-			wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . 'public/js/live/2-jquery.perfectGridGalleryEditor.js', array('jquery'), null, true);
-
+			
 			wp_enqueue_script('3-velocity', REXPANSIVE_BUILDER_URL . 'public/js/vendor/3-velocity.min.js', array('jquery'), $ver, true);
 			wp_enqueue_script('3-velocityui', REXPANSIVE_BUILDER_URL . 'public/js/vendor/3-velocity.ui.min.js', array('jquery'), $ver, true);
 			if( !Rexbuilder_Utilities::isBuilderLive() ) {
 				wp_enqueue_script('4-jqueryScrollify', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrollify.js', array('jquery'), $ver, true);
+			}
+			
+			if( Rexbuilder_Utilities::isBuilderLive() ) {
+				wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . 'public/js/live/2-jquery.perfectGridGalleryEditor.js', array('jquery'), null, true);
+				
 			}
 			
 			wp_enqueue_script('rexbuilder-app', REXPANSIVE_BUILDER_URL . 'public/js/build/99-Rexbuilder_App.js', array('jquery'), $ver, true);

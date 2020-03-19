@@ -687,11 +687,25 @@ var Rexbuilder_Util = (function($) {
     }
 
     var selectedLayoutName = "";
-    var ordered = _.sortBy(layoutsPageNames, [
-      function(o) {
-        return parseInt(o.min);
+    // var ordered = _.sortBy(layoutsPageNames, [
+    //   function(o) {
+    //     return parseInt(o.min);
+    //   }
+    // ]);
+
+    // const sortBy = (key) => {
+    //   return (a, b) => (a[key] > b[key]) ? 1 : ((b[key] > a[key]) ? -1 : 0);
+    // };
+
+    var sortBy = function (key) {
+      return function (a, b) {
+        return a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0
       }
-    ]);
+    };
+
+    // Creating a copy of layoutsPageNames and sorting it
+    var ordered = layoutsPageNames.concat();
+    ordered.concat().sort(sortBy('min'));
 
     for (i = 0, tot_ordered = ordered.length; i < tot_ordered; i++) {
       if (windowWidth >= ordered[i].min) {
@@ -1018,11 +1032,16 @@ var Rexbuilder_Util = (function($) {
                     }
                   }
 
-                  sectionCustom.targets[m].props = _.merge(
-                    {},
+                  // sectionCustom.targets[m].props = _.merge(
+                  //   {},
+                  //   sectionDefault.targets[n].props,
+                  //   sectionCustom.targets[m].props
+                  // );
+                  sectionCustom.targets[m].props = Rexbuilder_Util.merge(
                     sectionDefault.targets[n].props,
                     sectionCustom.targets[m].props
                   );
+
                   break;
                 }
               }
@@ -2653,7 +2672,8 @@ var Rexbuilder_Util = (function($) {
       Rexbuilder_Dom_Util.updateSectionVideoBackground($section, videoOptions);
     // }
 
-    $gallery.perfectGridGalleryEditor('fixVideoProportion' );
+    // @todo on RexGrid
+    // $gallery.perfectGridGalleryEditor('fixVideoProportion' );
 
     var imageOptions = {
       active:
@@ -2873,6 +2893,33 @@ var Rexbuilder_Util = (function($) {
     return { width: e[a + "Width"], height: e[a + "Height"] };
   };
 
+  var _merge = function (obj1, obj2) {
+    // Variables
+    var target = {};
+    var deep = false;
+    var i = 0;
+    // Merge the object into the target object
+    var merger = function (obj) {
+      for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+          if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
+            // If we're doing a deep merge 
+            // and the property is an object
+            target[prop] = merge(target[prop], obj[prop]);
+          } else {
+            // Otherwise, do a regular merge
+            target[prop] = obj[prop];
+          }
+        }
+      }
+    };
+    
+    merger(obj1);
+    merger(obj2);
+
+    return target;
+  };
+
   // function to find the youtube id based on an url
   var getYoutubeID = function(url) {
     var ID;
@@ -3012,24 +3059,24 @@ var Rexbuilder_Util = (function($) {
         return;
       }
     } else {    // Front end resize logic
-      // var actualLayout = _findFrontLayout();
-      // if( startFrontLayout != actualLayout ) {
-      //   Rexbuilder_Util.changedFrontLayout = true;
-      //   startFrontLayout = actualLayout;
-      //   Rexbuilder_Util_Editor.startLoading();
-      // }
+      var actualLayout = _findFrontLayout();
+      if( startFrontLayout != actualLayout ) {
+        Rexbuilder_Util.changedFrontLayout = true;
+        startFrontLayout = actualLayout;
+        Rexbuilder_Util_Editor.startLoading();
+      }
 
-      // if( Rexbuilder_Util.changedFrontLayout ) {
-      //   var choosedLayout = chooseLayout();
-      //   _set_initial_grids_state( choosedLayout );
+      if( Rexbuilder_Util.changedFrontLayout ) {
+        var choosedLayout = chooseLayout();
+        _set_initial_grids_state( choosedLayout );
 
-      //   // Rexbuilder_Util.rtimeOut( changeLayouHandling.bind(null, choosedLayout), 300 );
-      //   setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
-      // } else {
-      //   var l = chooseLayout();
-      //   var resize_info = _edit_dom_layout(chooseLayout());
-      //   _updateGridsHeights();
-      // }
+        // Rexbuilder_Util.rtimeOut( changeLayouHandling.bind(null, choosedLayout), 300 );
+        setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
+      } else {
+        var l = chooseLayout();
+        var resize_info = _edit_dom_layout(chooseLayout());
+        _updateGridsHeights();
+      }
     }
 
     Rexbuilder_Util.windowIsResizing = false;
@@ -3870,6 +3917,7 @@ var Rexbuilder_Util = (function($) {
     removeClass: removeClass,
     toggleClass: toggleClass,
     rtimeOut: rtimeOut,
-    rInterval: rInterval
+    rInterval: rInterval,
+    merge: _merge
   };
 })(jQuery);
