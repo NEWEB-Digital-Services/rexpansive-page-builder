@@ -965,14 +965,10 @@ var Rexbuilder_App = (function($) {
       Rexbuilder_Util_Editor.load();
       Rexbuilder_Live_Utilities.load();
     } else {
-      var grids = Array.prototype.slice.call( document.getElementsByClassName( 'perfect-grid-gallery' ) );
-      var tot_grids = grids.length;
+      var tot_grids = gridInstances.length;
       var i = 0;
 
       for ( i = 0; i < tot_grids; i++ ) {
-        // var rexGridInstance = new RexGrid( grids[ i ] );
-        // gridInstances.push( rexGridInstance );
-
         gridInstances[i].fixAfterLoad();
       }
 
@@ -1014,8 +1010,35 @@ var Rexbuilder_App = (function($) {
     Rexbuilder_Util.galleryPluginActive = true;
   };
 
+  function handleFrontEndResize() {
+    var actualLayout = Rexbuilder_Util.findFrontLayout();
+
+    if( Rexbuilder_Util.startFrontLayout != actualLayout ) {
+      Rexbuilder_Util.changedFrontLayout = true;
+      Rexbuilder_Util.startFrontLayout = actualLayout;
+    }
+
+    var choosedLayout = Rexbuilder_Util.chooseLayout();
+
+    if( Rexbuilder_Util.changedFrontLayout ) {
+
+      // _set_initial_grids_state( choosedLayout );
+      // setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
+
+    } else {
+      // fix heights and tops
+      var i;
+      var tot_grids = gridInstances.length;
+
+      for ( i = 0; i < tot_grids; i++ ) {
+        gridInstances[i].endResize();
+      }
+    }
+  }
+
   return {
     init: init,
-    load: load
+    load: load,
+    handleFrontEndResize: handleFrontEndResize
   };
 })(jQuery);

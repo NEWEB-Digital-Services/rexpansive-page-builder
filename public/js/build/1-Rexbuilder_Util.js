@@ -80,7 +80,6 @@ var Rexbuilder_Util = (function($) {
    */
   var editorMode = false;
   var windowIsResizing = false;
-  var firstResize = true;
   var responsiveLayouts;
   var defaultLayoutSections;
   var $modelsCustomizationsDataDiv;
@@ -2993,8 +2992,8 @@ var Rexbuilder_Util = (function($) {
     }
   };
 
+  /** live resize */
   var addWindowListeners = function() {
-    Rexbuilder_Util.firstResize = true;
     var resizeTimeout;
     
     /**
@@ -3004,25 +3003,22 @@ var Rexbuilder_Util = (function($) {
      * @since  2.0.0
      */
     window.addEventListener('resize', function(event) {
-    // Rexbuilder_Util.$window.on("resize", function(event) {
       Rexbuilder_Util.globalViewport = Rexbuilder_Util.viewport();
 
-      if (!Rexbuilder_Util_Editor.elementIsResizing) {
-        // event.preventDefault();
-        // event.stopImmediatePropagation();
-        // event.stopPropagation();
+      if( Rexbuilder_Util.editorMode ) {
+        if ( !Rexbuilder_Util_Editor.elementIsResizing ) {
+          // event.preventDefault();
+          // event.stopImmediatePropagation();
+          // event.stopPropagation();
 
-        Rexbuilder_Util.windowIsResizing = true;
-        if ( Rexbuilder_Util.firstResize ) {
-          Rexbuilder_Util.firstResize = false;
-        }
+          Rexbuilder_Util.windowIsResizing = true;
 
-        // if( loadWidth !== Rexbuilder_Util.viewport().width ) {
-        if( loadWidth !== Rexbuilder_Util.globalViewport.width ) {
-          if( resizeTimeout ) {
-            clearTimeout( resizeTimeout );
+          if( loadWidth !== Rexbuilder_Util.globalViewport.width ) {
+            if( resizeTimeout ) {
+              clearTimeout( resizeTimeout );
+            }
+            resizeTimeout = setTimeout( Rexbuilder_Util.doneResizing, 1000 );
           }
-          resizeTimeout = setTimeout( Rexbuilder_Util.doneResizing, 1000 );
         }
       }
     });
@@ -3062,9 +3058,9 @@ var Rexbuilder_Util = (function($) {
       }
     } else {    // Front end resize logic
       var actualLayout = _findFrontLayout();
-      if( startFrontLayout != actualLayout ) {
+      if( Rexbuilder_Util.startFrontLayout != actualLayout ) {
         Rexbuilder_Util.changedFrontLayout = true;
-        startFrontLayout = actualLayout;
+        Rexbuilder_Util.startFrontLayout = actualLayout;
         Rexbuilder_Util_Editor.startLoading();
       }
 
@@ -3072,7 +3068,6 @@ var Rexbuilder_Util = (function($) {
         var choosedLayout = chooseLayout();
         _set_initial_grids_state( choosedLayout );
 
-        // Rexbuilder_Util.rtimeOut( changeLayouHandling.bind(null, choosedLayout), 300 );
         setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
       } else {
         var l = chooseLayout();
@@ -3082,8 +3077,6 @@ var Rexbuilder_Util = (function($) {
     }
 
     Rexbuilder_Util.windowIsResizing = false;
-    Rexbuilder_Util.firstResize = true;
-    // loadWidth =  Rexbuilder_Util.viewport().width;
     loadWidth =  Rexbuilder_Util.globalViewport.width;
   }
 
@@ -3768,7 +3761,7 @@ var Rexbuilder_Util = (function($) {
       this.editorMode = false;
       var $availableDims = $("#layout-avaiable-dimensions");
       frontAvailableLayouts = ( $availableDims.length > 0 ? JSON.parse( $availableDims.text() ) : [] );
-      startFrontLayout = _findFrontLayout();
+      Rexbuilder_Util.startFrontLayout = _findFrontLayout();
     }
 
     this._transitionEvent = _whichTransitionEvent();
@@ -3817,7 +3810,6 @@ var Rexbuilder_Util = (function($) {
 
     this.chosenLayoutData = null;
 
-    // loadWidth = Rexbuilder_Util.viewport().width;
     loadWidth = Rexbuilder_Util.globalViewport.width;
 
     _updateSectionsID();
@@ -3841,7 +3833,6 @@ var Rexbuilder_Util = (function($) {
     checkPost: _checkPost,
     editorMode: editorMode,
     windowIsResizing: windowIsResizing,
-    firstResize: firstResize,
     addWindowListeners: addWindowListeners,
     launchVideoPlugins: _launchVideoPlugins,
     stopPluginsSection: _stopPluginsSection,
@@ -3914,6 +3905,8 @@ var Rexbuilder_Util = (function($) {
     isMobile: _isMobile,
     cssPropertyValueSupported: _cssPropertyValueSupported,
     changedFrontLayout: changedFrontLayout,
+    startFrontLayout: startFrontLayout,
+    findFrontLayout: _findFrontLayout,
     hasClass: hasClass,
     addClass: addClass,
     removeClass: removeClass,

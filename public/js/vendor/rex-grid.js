@@ -243,10 +243,12 @@
 		// Applying grid separators
 		_applyGridSeparators.call( this );
 
+		this.properties.layout = this.element.getAttribute( 'data-layout' );
+
 		// Calculations of grid width. In this way it's possible to access to this
 		// value without causing a layout reflow
 		_calcGridBaseAttrs.call( this );
-		globalGridWidthsCallbacks.push( _calcGridBaseAttrs.bind( this ) );
+		// globalGridWidthsCallbacks.push( _calcGridBaseAttrs.bind( this ) );
 
 		// Finding the blocks in the DOM
 		_getGridBlocks.call( this );
@@ -256,7 +258,7 @@
 
 		// Calculatione
 		this.calcAllBlocksHeights();
-		blocksHeightsCallbacks.push( this.calcAllBlocksHeights.bind( this ) );
+		// blocksHeightsCallbacks.push( this.calcAllBlocksHeights.bind( this ) );
 		this.calcBlocksTop();
 
 		// Fixings
@@ -268,8 +270,6 @@
 	}
 
 	function _calcGridBaseAttrs() {
-		this.properties.layout = this.element.getAttribute( 'data-layout' );
-
 		this.properties.gridWidth = this.element.offsetWidth; // Can cause a layout reflow
 		this.properties.singleWidth = this.properties.gridWidth / 12;
 
@@ -704,7 +704,8 @@
 			);
 		}
 
-		if ( this.properties.oneColumModeActive && !Rexbuilder_Util.windowIsResizing ) {
+		// if ( this.properties.oneColumModeActive && !Rexbuilder_Util.windowIsResizing ) {
+		if ( this.properties.oneColumModeActive ) {
 			var collapsedHeight = newH;
 
 			return {
@@ -784,6 +785,20 @@
 		this.fixAllBlocksHeigths();
 		_fixBlockPositions.call( this );
 		blockFixingCallbacks.push( _fixBlockPositions.bind( this ) );
+
+		_setGridHeight.call( this );
+	}
+
+	RexGrid.prototype.endResize = function() {
+		// update grid single height and single width
+		_calcGridBaseAttrs.call( this );
+		// Calculatione
+		this.calcAllBlocksHeights();
+		this.calcBlocksTop();
+
+		// Fixings
+		this.fixAllBlocksHeigths();
+		_fixBlockPositions.call( this );
 
 		_setGridHeight.call( this );
 	}
