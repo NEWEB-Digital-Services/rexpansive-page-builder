@@ -840,6 +840,10 @@ var Rexbuilder_App = (function($) {
           editorMode: Rexbuilder_Util.editorMode
         });
       } else {
+        // get layout information and set this information on the grids
+        var choosedLayout = Rexbuilder_Util.chooseLayout();
+        Rexbuilder_Util.handleLayoutChange( choosedLayout );
+
       	// Launching RexGrid
       	var grids = Array.prototype.slice.call( document.getElementsByClassName( 'perfect-grid-gallery' ) );
       	var tot_grids = grids.length;
@@ -851,7 +855,7 @@ var Rexbuilder_App = (function($) {
       		gridInstances.push( rexGridInstance );
         }
 
-        // Lancio fast load?
+        // launch fast load?
         window.FastLoad();
       }
     }
@@ -1028,7 +1032,6 @@ var Rexbuilder_App = (function($) {
     // find and set new layout information
     if( Rexbuilder_Util.changedFrontLayout ) {
       var choosedLayout = Rexbuilder_Util.chooseLayout();
-
       Rexbuilder_Util.handleLayoutChange( choosedLayout );
 
       // _set_initial_grids_state( choosedLayout );
