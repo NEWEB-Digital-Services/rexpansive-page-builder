@@ -1,4 +1,5 @@
-;( function( window, factory ) {
+;
+( function( window, factory ) {
 	'use strict';
 	window.RexGrid = factory( window );
 } )( 'undefined' !== typeof window ? window : this, function() {
@@ -111,6 +112,7 @@
 	/* ===== RexBlock ===== */
 	function RexBlock( options ) {
 		this.el = options.el;
+		this.blockData = this.el.querySelector( '.rexbuilder-block-data' );
 		this.id = options.id;
 		this.w = options.w;
 		this.h = options.h;
@@ -187,9 +189,8 @@
 			gridBottomSeparator: null,
 			gridLeftSeparator: null,
 			// wrapWidth: 0,
-			// paddingTopBottom: false,
-			// setMobilePadding: false,
-			// setDesktopPadding: false,
+			setMobilePadding: false,
+			setDesktopPadding: false,
 			// elementStartingH: 0,
 			// resizeHandle: "",
 			sectionNumber: null,
@@ -253,13 +254,13 @@
 		// Applying blocks separators
 		_applyBlocksSeparators.call( this );
 
+		// Calculatione
 		this.calcAllBlocksHeights();
 		blocksHeightsCallbacks.push( this.calcAllBlocksHeights.bind( this ) );
-
-		this.fixAllBlocksHeigths();
-
 		this.calcBlocksTop();
 
+		// Fixings
+		this.fixAllBlocksHeigths();
 		_fixBlockPositions.call( this );
 		blockFixingCallbacks.push( _fixBlockPositions.bind( this ) );
 
@@ -267,10 +268,9 @@
 	}
 
 	function _calcGridBaseAttrs() {
-		this.properties.gridWidth = this.element.offsetWidth; // Can cause a layout reflow
-
 		this.properties.layout = this.element.getAttribute( 'data-layout' );
 
+		this.properties.gridWidth = this.element.offsetWidth; // Can cause a layout reflow
 		this.properties.singleWidth = this.properties.gridWidth / 12;
 
 		if ( 'fixed' === this.properties.layout ) {
@@ -331,6 +331,7 @@
 				textHeight = textWrap.offsetHeight;
 			}
 		}
+
 		return textHeight;
 	}
 
@@ -370,7 +371,7 @@
 			this.options.gutter = parseInt( this.element.getAttribute( 'data-separator' ) );
 		};
 
-		// Definig grid separators
+		// Defining grid separators
 		this.properties.gridTopSeparator =
 			this.element.getAttribute( 'data-row-separator-top' ) ?
 			parseInt( this.element.getAttribute( 'data-row-separator-top' ) ) :
@@ -387,8 +388,6 @@
 			this.element.getAttribute( 'data-row-separator-left' ) ?
 			parseInt( this.element.getAttribute( 'data-row-separator-left' ) ) :
 			null;
-
-		// this.properties.paddingTopBottom = -1 !== this.section.className.indexOf('distance-block-top-bottom');
 	}
 
 	function _setGridGutterProperties() {
@@ -398,18 +397,10 @@
 			this.properties.halfSeparatorBottom = this.options.gutter / 2;
 			this.properties.halfSeparatorLeft = this.options.gutter / 2;
 		} else {
-			this.properties.halfSeparatorTop = Math.floor(
-				this.options.gutter / 2
-			);
-			this.properties.halfSeparatorRight = Math.floor(
-				this.options.gutter / 2
-			);
-			this.properties.halfSeparatorBottom = Math.ceil(
-				this.options.gutter / 2
-			);
-			this.properties.halfSeparatorLeft = Math.ceil(
-				this.options.gutter / 2
-			);
+			this.properties.halfSeparatorTop = Math.floor( this.options.gutter / 2 );
+			this.properties.halfSeparatorRight = Math.floor( this.options.gutter / 2 );
+			this.properties.halfSeparatorBottom = Math.ceil( this.options.gutter / 2 );
+			this.properties.halfSeparatorLeft = Math.ceil( this.options.gutter / 2 );
 		}
 	}
 
@@ -420,61 +411,50 @@
 			this.properties.halfSeparatorElementBottom = this.options.gutter / 2;
 			this.properties.halfSeparatorElementLeft = this.options.gutter / 2;
 		} else {
-			this.properties.halfSeparatorElementTop = Math.floor(
-				this.options.gutter / 2
-			);
-			this.properties.halfSeparatorElementRight = Math.floor(
-				this.options.gutter / 2
-			);
-			this.properties.halfSeparatorElementBottom = Math.ceil(
-				this.options.gutter / 2
-			);
-			this.properties.halfSeparatorElementLeft = Math.ceil(
-				this.options.gutter / 2
-			);
+			this.properties.halfSeparatorElementTop = Math.floor( this.options.gutter / 2 );
+			this.properties.halfSeparatorElementRight = Math.floor( this.options.gutter / 2 );
+			this.properties.halfSeparatorElementBottom = Math.ceil( this.options.gutter / 2 );
+			this.properties.halfSeparatorElementLeft = Math.ceil( this.options.gutter / 2 );
 		}
 	}
 
 	function _applyGridSeparators() {
-		// if (
-		// 	!this.properties.setDesktopPadding ||
-		// 	(!this.properties.setDesktopPadding &&
-		// 		!this.properties.setMobilePadding &&
-		// 		this.section.getAttribute("data-rex-collapse-grid") == "true")
-		// ) {
-		// this.properties.setDesktopPadding = true;
-		// if (this.section.getAttribute("data-rex-collapse-grid") == "true") {
-		// 	this.properties.setMobilePadding = true;
-		// } else {
-		// 	this.properties.setMobilePadding = false;
-		// }
+		if ( !this.properties.setDesktopPadding ||
+			( !this.properties.setDesktopPadding &&
+				!this.properties.setMobilePadding &&
+				this.section.getAttribute( 'data-rex-collapse-grid' ) == 'true' )
+		) {
+			this.properties.setDesktopPadding = true;
+			if ( this.section.getAttribute( 'data-rex-collapse-grid' ) == 'true' ) {
+				this.properties.setMobilePadding = true;
+			} else {
+				this.properties.setMobilePadding = false;
+			}
 
-		if ( null !== this.properties.gridTopSeparator ) {
-			this.element.style.marginTop = ( this.properties.gridTopSeparator - this.properties.halfSeparatorTop ) + 'px';
-		} else {
-			this.element.style.marginTop = this.properties.halfSeparatorTop + 'px';
-		}
+			if ( null !== this.properties.gridTopSeparator ) {
+				this.element.style.marginTop = ( this.properties.gridTopSeparator - this.properties.halfSeparatorTop ) + 'px';
+			} else {
+				this.element.style.marginTop = this.properties.halfSeparatorTop + 'px';
+			}
 
-		if ( null !== this.properties.gridBottomSeparator ) {
-			this.element.style.marginBottom = ( this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom ) + 'px';
-		} else {
-			this.element.style.marginBottom = this.properties.halfSeparatorBottom + 'px';
-		}
+			if ( null !== this.properties.gridBottomSeparator ) {
+				this.element.style.marginBottom = ( this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom ) + 'px';
+			} else {
+				this.element.style.marginBottom = this.properties.halfSeparatorBottom + 'px';
+			}
 
-		// if (!this.properties.paddingTopBottom) {
-		if ( null !== this.properties.gridLeftSeparator ) {
-			this.element.style.marginLeft = ( this.properties.gridLeftSeparator - this.properties.halfSeparatorLeft ) + 'px';
-		} else {
-			this.element.style.marginLeft = this.properties.halfSeparatorLeft + 'px';
-		}
+			if ( null !== this.properties.gridLeftSeparator ) {
+				this.element.style.marginLeft = ( this.properties.gridLeftSeparator - this.properties.halfSeparatorLeft ) + 'px';
+			} else {
+				this.element.style.marginLeft = this.properties.halfSeparatorLeft + 'px';
+			}
 
-		if ( null !== this.properties.gridRightSeparator ) {
-			this.element.style.marginRight = ( this.properties.gridRightSeparator - this.properties.halfSeparatorRight ) + 'px';
-		} else {
-			this.element.style.marginRight = this.properties.halfSeparatorRight + 'px';
+			if ( null !== this.properties.gridRightSeparator ) {
+				this.element.style.marginRight = ( this.properties.gridRightSeparator - this.properties.halfSeparatorRight ) + 'px';
+			} else {
+				this.element.style.marginRight = this.properties.halfSeparatorRight + 'px';
+			}
 		}
-		// }
-		// }
 	}
 
 	function _applyBlocksSeparators() {
@@ -532,6 +512,46 @@
 		// grid.style.display = '';
 	}
 
+	/**
+	 * Fix natural image with a proper class to style correctly 
+	 * the image in background as a natural image with IMG tag
+	 * @return {void}
+	 * @since 1.0.0
+	 */
+	function _fixNaturalImage( gridBlockObj ) {
+		var currentBlock = gridBlockObj.el;
+		var naturalImage = currentBlock.querySelector( '.natural-image-background' );
+
+		if ( null === naturalImage ) {
+			return;
+		}
+
+		var itemContent = currentBlock.querySelector( '.grid-item-content' );
+
+		if ( null === itemContent ) {
+			console.warn( 'No .grid-item-content Element found in function fixNaturalImage!' );
+			return;
+		}
+
+		var naturalImageWidth = parseInt( itemContent.getAttribute( 'data-background_image_width' ) );
+		var blockWidth = ( this.properties.singleWidth * gridBlockObj.w ) - this.options.gutter;
+
+		if ( naturalImageWidth > blockWidth ) {
+			Utils.addClass( naturalImage, 'small-width' );
+		}
+	}
+
+	function _updateBlockDataHeightProperties( blockData, newH ) {
+		if ( this.properties.layout === 'masonry' ) {
+			blockData.setAttribute( 'data-block_height_masonry', newH );
+		} else {
+			blockData.setAttribute( 'data-block_height_fixed', newH );
+		}
+
+		blockData.setAttribute( 'data-gs_start_h', newH );
+		blockData.setAttribute( 'data-block_height_calculated', newH );
+	}
+
 	/* ===== Public Methods ===== */
 
 	/**
@@ -566,7 +586,7 @@
 		var currentBlock = gridBlockObj.el;
 
 		// Properties
-		var blockData = currentBlock.querySelector( '.rexbuilder-block-data' );
+		var blockData = gridBlockObj.blockData;
 		var startH = parseInt( blockData.getAttribute( 'data-gs_start_h' ) );
 
 		var newH;
@@ -732,55 +752,11 @@
 		_updateBlockDataHeightProperties.call( this, blockData, newH );
 
 		// Setting dimensions
+
 		gridBlockObj.h = newH;
 		currentBlock.style.height = ( gridBlockObj.h * this.properties.singleHeight ) + 'px';
 		currentBlock.setAttribute( 'data-gs-height', gridBlockObj.h );
 		gridBlockObj.toCheck = true;
-	}
-
-	/**
-	 * Fix natural image with a proper class to style correctly 
-	 * the image in background as a natural image with IMG tag
-	 * @return {void}
-	 * @since 1.0.0
-	 */
-	function _fixNaturalImage( gridBlockObj ) {
-		var currentBlock = gridBlockObj.el;
-		var naturalImage = currentBlock.querySelector( '.natural-image-background' );
-
-		if ( null === naturalImage ) {
-			return;
-		}
-
-		var itemContent = currentBlock.querySelector( '.grid-item-content' );
-
-		if ( null === itemContent ) {
-			console.warn( 'No .grid-item-content Element found in function fixNaturalImage!' );
-			return;
-		}
-
-		var naturalImageWidth = parseInt( itemContent.getAttribute( 'data-background_image_width' ) );
-		var blockWidth = ( this.properties.singleWidth * gridBlockObj.w ) - this.options.gutter;
-		console.groupCollapsed( 'group-rex-grid.js ' );
-		console.log( 'this.properties', this.properties );
-		console.log( 'gridBlockObj.el', gridBlockObj.el );
-		console.log( 'blockWidth', blockWidth );
-		console.groupEnd();
-
-		if ( naturalImageWidth > blockWidth ) {
-			Utils.addClass( naturalImage, 'small-width' );
-		}
-	}
-
-	function _updateBlockDataHeightProperties( blockData, newH ) {
-		if ( this.properties.layout === 'masonry' ) {
-			blockData.setAttribute( 'data-block_height_masonry', newH );
-		} else {
-			blockData.setAttribute( 'data-block_height_fixed', newH );
-		}
-
-		blockData.setAttribute( 'data-gs_start_h', newH );
-		blockData.setAttribute( 'data-block_height_calculated', newH );
 	}
 
 	/**

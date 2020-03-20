@@ -659,7 +659,9 @@ var Rexbuilder_App = (function($) {
    * @return {vodi}
    */
   function launchFrontEndEffects() {
-    if( false == _plugin_frontend_settings.user.editing ) {
+    if( !Rexbuilder_Util.editorMode ) {
+      Rexbuilder_Photoswipe.init('.photoswipe-gallery');
+
       // inline photoswipe
       launchInlineGallery();
 

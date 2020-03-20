@@ -1357,9 +1357,9 @@ var Rexbuilder_Util = (function($) {
 
     Rexbuilder_Util.domUpdaiting = false;
 
-    if ( ! Rexbuilder_Util.editorMode ) {
-      Rexbuilder_Photoswipe.init(".photoswipe-gallery");
-    }
+    // if ( ! Rexbuilder_Util.editorMode ) {
+    //   Rexbuilder_Photoswipe.init(".photoswipe-gallery");
+    // }
 
     return response;
   };
