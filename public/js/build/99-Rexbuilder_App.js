@@ -1020,19 +1020,17 @@ var Rexbuilder_App = (function($) {
 
     var choosedLayout = Rexbuilder_Util.chooseLayout();
 
+    // find new layout information
     if( Rexbuilder_Util.changedFrontLayout ) {
-
       // _set_initial_grids_state( choosedLayout );
       // setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
+    }
 
-    } else {
-      // fix heights and tops
-      var i;
-      var tot_grids = gridInstances.length;
-
-      for ( i = 0; i < tot_grids; i++ ) {
-        gridInstances[i].endResize();
-      }
+    // fix heights and tops
+    var i;
+    var tot_grids = gridInstances.length;
+    for ( i = 0; i < tot_grids; i++ ) {
+      gridInstances[i].endResize();
     }
   }
 

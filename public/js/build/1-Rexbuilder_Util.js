@@ -686,15 +686,6 @@ var Rexbuilder_Util = (function($) {
     }
 
     var selectedLayoutName = "";
-    // var ordered = _.sortBy(layoutsPageNames, [
-    //   function(o) {
-    //     return parseInt(o.min);
-    //   }
-    // ]);
-
-    // const sortBy = (key) => {
-    //   return (a, b) => (a[key] > b[key]) ? 1 : ((b[key] > a[key]) ? -1 : 0);
-    // };
 
     var sortBy = function (key) {
       return function (a, b) {

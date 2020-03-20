@@ -634,6 +634,10 @@
 			blockHasVimeo = -1 !== itemContent.className.indexOf( 'vimeo-player' );
 		}
 
+		if ( blockHasSlider ) {
+			return;
+		}
+
 		var currentBlockTextHeight = _calculateTextWrapHeight.call( this, currentBlock );
 
 		if ( this.properties.oneColumModeActive ) {

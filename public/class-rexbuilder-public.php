@@ -472,7 +472,7 @@ class Rexbuilder_Public
 
 	public function add_service_worker() {
 		if( ! Rexbuilder_Utilities::isBuilderLive() ) {
-			wp_add_inline_script( $this->plugin_name, '<script>SERVICE WORKER</script>' );
+			// wp_add_inline_script( $this->plugin_name, '<script></script>' );
 		}
 	}
 
