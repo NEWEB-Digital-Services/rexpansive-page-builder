@@ -13,6 +13,7 @@ var Rexbuilder_App = (function($) {
   var $otherAccordions = null;
   var odometers = [];
   var accordionSettings = {};
+  var gridInstances = [];
 
   /**
    * In case of RexButtons inside a block that is a link
@@ -838,6 +839,20 @@ var Rexbuilder_App = (function($) {
         $grids.perfectGridGalleryEditor({
           editorMode: Rexbuilder_Util.editorMode
         });
+      } else {
+      	// Launching RexGrid
+      	var grids = Array.prototype.slice.call( document.getElementsByClassName( 'perfect-grid-gallery' ) );
+      	var tot_grids = grids.length;
+      	var i = 0;
+
+      	for ( i = 0; i < tot_grids; i++ ) {
+      		var rexGridInstance = new RexGrid( grids[ i ] );
+
+      		gridInstances.push( rexGridInstance );
+        }
+
+        // Lancio fast load?
+        window.FastLoad();
       }
     }
 
@@ -946,21 +961,19 @@ var Rexbuilder_App = (function($) {
       // Rexbuilder_Util.edit_dom_layout(chosenLayoutName);
     // }
 
-    var gridInstances = [];
-
     if ( Rexbuilder_Util.editorMode ) {
       Rexbuilder_Util_Editor.load();
       Rexbuilder_Live_Utilities.load();
     } else {
-      // Launching RexGrid
       var grids = Array.prototype.slice.call( document.getElementsByClassName( 'perfect-grid-gallery' ) );
       var tot_grids = grids.length;
       var i = 0;
 
       for ( i = 0; i < tot_grids; i++ ) {
-        var rexGridInstance = new RexGrid( grids[i] );
+        // var rexGridInstance = new RexGrid( grids[ i ] );
+        // gridInstances.push( rexGridInstance );
 
-        gridInstances.push( rexGridInstance );
+        gridInstances[i].fixAfterLoad();
       }
 
       // Starting slider

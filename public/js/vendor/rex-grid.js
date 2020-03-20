@@ -260,9 +260,9 @@
 		this.calcBlocksTop();
 
 		// Fixings
-		this.fixAllBlocksHeigths();
-		_fixBlockPositions.call( this );
-		blockFixingCallbacks.push( _fixBlockPositions.bind( this ) );
+		// this.fixAllBlocksHeigths();
+		// _fixBlockPositions.call( this );
+		// blockFixingCallbacks.push( _fixBlockPositions.bind( this ) );
 
 		_setGridHeight.call( this );
 	}
@@ -777,6 +777,15 @@
 
 			currentBlock.style.top = currentBlockRealTop + 'px';
 		}
+	}
+
+	RexGrid.prototype.fixAfterLoad = function () {
+		// Fixings
+		this.fixAllBlocksHeigths();
+		_fixBlockPositions.call( this );
+		blockFixingCallbacks.push( _fixBlockPositions.bind( this ) );
+
+		_setGridHeight.call( this );
 	}
 
 	/* ===== Global event handlers ===== */
