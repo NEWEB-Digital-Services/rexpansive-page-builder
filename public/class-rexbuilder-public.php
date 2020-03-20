@@ -470,6 +470,12 @@ class Rexbuilder_Public
 		}
 	}
 
+	public function add_service_worker() {
+		if( ! Rexbuilder_Utilities::isBuilderLive() ) {
+			wp_add_inline_script( $this->plugin_name, '<script>SERVICE WORKER</script>' );
+		}
+	}
+
 	/**
 	 * Generating a JS global object to store plugins settings
 	 *
@@ -1546,9 +1552,9 @@ class Rexbuilder_Public
 		global $post;
 		if ( $this->builder_active_on_this_post_type() ) {
 			$meta = get_post_meta($post->ID, '_rexbuilder_custom_css', true);
-			if ($meta != ''):
+			if ( $meta != '' ) {
 				wp_add_inline_style( $this->plugin_name . '-style', $meta);
-			endif;
+			}
 		}
 	}
 	
