@@ -793,6 +793,10 @@
 		_setGridHeight.call( this );
 	}
 
+	/**
+	 * Fix the grid after a resize
+	 * @return {[type]} [description]
+	 */
 	RexGrid.prototype.endResize = function() {
 		// update grid single height and single width
 		_calcGridBaseAttrs.call( this );
@@ -805,6 +809,21 @@
 		_fixBlockPositions.call( this );
 
 		_setGridHeight.call( this );
+	}
+
+	/**
+	 * Update RexBlocks information
+	 * @return {void}
+	 * @since  2.0.4
+	 */
+	RexGrid.prototype.updateGridBlocks = function() {
+		var i;
+		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
+			this.gridBlocks[i].w = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-width' ) );
+			this.gridBlocks[i].h = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-height' ) );
+			this.gridBlocks[i].x = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-x' ) );
+			this.gridBlocks[i].y = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-y' ) );
+		}
 	}
 
 	/* ===== Global event handlers ===== */
