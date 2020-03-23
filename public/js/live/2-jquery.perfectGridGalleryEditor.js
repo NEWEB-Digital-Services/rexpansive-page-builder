@@ -1591,8 +1591,10 @@
       }
       $elem.removeClass("rex-hide-element");
 
-      $elem.draggable("destroy");
-      $elem.resizable("destroy");
+      if ( this.settings.editorMode ) {
+        $elem.draggable("destroy");
+        $elem.resizable("destroy");
+      }
 
       $elem.children(".ui-resizable-handle").each(function(i, el) {
         $(el).remove();
