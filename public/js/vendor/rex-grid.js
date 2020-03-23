@@ -118,6 +118,7 @@
 		this.h = options.h;
 		this.x = options.x;
 		this.y = options.y;
+		this.hide = options.hide;
 		this.toCheck = options.toCheck;
 		this.domIndex = this.x + ( this.y * 12 );
 	}
@@ -262,7 +263,7 @@
 		this.calcBlocksTop();
 
 		// Fixings
-		// this.fixAllBlocksHeigths();
+		// this.fixAllBlocksHeights();
 		// _fixBlockPositions.call( this );
 		// blockFixingCallbacks.push( _fixBlockPositions.bind( this ) );
 
@@ -295,6 +296,7 @@
 				h: parseInt( blocksArray[ i ].getAttribute( 'data-gs-height' ) ),
 				x: parseInt( blocksArray[ i ].getAttribute( 'data-gs-x' ) ),
 				y: parseInt( blocksArray[ i ].getAttribute( 'data-gs-y' ) ),
+				hide: Utils.hasClass( blocksArray[ i ], 'rex-hide-element' ),
 				toCheck: false
 			} );
 
@@ -354,7 +356,7 @@
 
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
-			if ( -1 === this.gridBlocks[ i ].el.className.indexOf( 'removing_block' ) ) {
+			if ( ! this.gridBlocks[ i ].hide ) {
 				heightTemp = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-height' ) ) + parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-y' ) );
 
 				if ( heightTemp > heightTot ) {
@@ -571,12 +573,14 @@
 		gridBlockObj.el.style.height = ( this.properties.singleHeight * gridBlockObj.h ) + 'px';
 	}
 
-	RexGrid.prototype.fixAllBlocksHeigths = function() {
+	RexGrid.prototype.fixAllBlocksHeights = function() {
 		var i = 0;
 
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
-			this.fixBlockHeight( this.gridBlocks[ i ] );
+			if ( ! this.gridBlocks[ i ].hide ) {
+				this.fixBlockHeight( this.gridBlocks[ i ] );
+			}
 		}
 	}
 
@@ -786,7 +790,7 @@
 
 	RexGrid.prototype.fixAfterLoad = function () {
 		// Fixings
-		this.fixAllBlocksHeigths();
+		this.fixAllBlocksHeights();
 		_fixBlockPositions.call( this );
 		blockFixingCallbacks.push( _fixBlockPositions.bind( this ) );
 
@@ -805,7 +809,7 @@
 		this.calcBlocksTop();
 
 		// Fixings
-		this.fixAllBlocksHeigths();
+		this.fixAllBlocksHeights();
 		_fixBlockPositions.call( this );
 
 		_setGridHeight.call( this );
@@ -823,6 +827,7 @@
 			this.gridBlocks[i].h = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-height' ) );
 			this.gridBlocks[i].x = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-x' ) );
 			this.gridBlocks[i].y = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-y' ) );
+			this.gridBlocks[i].hide = Utils.hasClass( this.gridBlocks[ i ].el, 'rex-hide-element' );
 		}
 	}
 

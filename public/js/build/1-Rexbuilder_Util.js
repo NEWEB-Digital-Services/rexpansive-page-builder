@@ -1731,8 +1731,6 @@ var Rexbuilder_Util = (function($) {
         : targetProps["block_dimensions_live_edited"];
     $itemData.attr("data-block_dimensions_live_edited", blockEdited);
 
-    // console.log('updateDOMSingleElement', blockEdited);
-
     var hideBlock =
       typeof targetProps["hide"] == "undefined"
         ? false
@@ -3832,7 +3830,7 @@ var Rexbuilder_Util = (function($) {
 
     var meIndex, section, $section;
 
-    console.log(mergedEdits)
+    console.log(JSON.parse( JSON.stringify( mergedEdits) ) )
     var updateDOMelementsResponse;
     var updateDOMelementsTimeouts = [];
 
@@ -3893,7 +3891,25 @@ var Rexbuilder_Util = (function($) {
     }
 
     var i, tot_targets = targets.length;
+    // for ( i = 1; i < tot_targets; i++ ) {
+    //   var $elem = $gallery.children('div[data-rexbuilder-block-id="' + targets[i].name + '"]');
+    //   var hideElement =
+    //     typeof targets[i].props.hide == "undefined"
+    //       ? false
+    //       : targets[i].props.hide.toString() == "true";
+    //   if (hideElement) {
+    //     if ( !$elem.hasClass("rex-hide-element") ) {
+    //       $elem.addClass("rex-hide-element");
+    //     }
+    //   } else {
+    //     if ( $elem.hasClass("rex-hide-element") ) {
+    //       $elem.removeClass("rex-hide-element");
+    //     }
+    //   }
+    // }
+
     for ( i = 1; i < tot_targets; i++ ) {
+      console.log(targets[i].props.hide)
       var $elem = $gallery.children('div[data-rexbuilder-block-id="' + targets[i].name + '"]');
       var hideElement =
         typeof targets[i].props.hide == "undefined"
