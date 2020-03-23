@@ -1122,8 +1122,6 @@ var Rexbuilder_Util = (function($) {
           var j = 0;
           var tot_blocks = layoutSelectedSections[i].targets.length;
 
-          console.log( Rexbuilder_Util.activeLayout );
-
           for ( j = 0; j < tot_blocks; j++ ) {
           	if ( layoutSelectedSections[ i ].targets[ j ].name === 'self' ) {
               continue;

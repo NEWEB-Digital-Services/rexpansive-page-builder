@@ -482,8 +482,6 @@
 		var i;
 		var j;
 
-		// grid.style.display = 'none';
-
 		// check other blocks collapse
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
 			if ( !this.gridBlocks[ i ].toCheck || this.gridBlocks[ i ].hide ) {
@@ -504,6 +502,7 @@
 					var newY = this.gridBlocks[ j ].y + newTop;
 
 					this.gridBlocks[ j ].el.setAttribute( 'data-gs-y', newY );
+					this.gridBlocks[ j ].blockData.setAttribute( 'data-gs-y', newY );
 
 					this.gridBlocks[ j ].el.style.top = ( ( newY ) * this.properties.singleHeight ) + 'px';
 					this.gridBlocks[ j ].y = newY;
@@ -515,8 +514,6 @@
 
 			this.gridBlocks[ i ].toCheck = false;
 		}
-
-		// grid.style.display = '';
 	}
 
 	/**
@@ -555,6 +552,7 @@
 			blockData.setAttribute( 'data-block_height_fixed', newH );
 		}
 
+		blockData.setAttribute( 'data-gs_height', newH );
 		blockData.setAttribute( 'data-gs_start_h', newH );
 		blockData.setAttribute( 'data-block_height_calculated', newH );
 	}
@@ -772,13 +770,12 @@
 
 		_updateBlockDataHeightProperties.call( this, blockData, newH );
 
-
-
 		// Setting dimensions
 
 		gridBlockObj.h = newH;
 		currentBlock.style.height = ( gridBlockObj.h * this.properties.singleHeight ) + 'px';
 		currentBlock.setAttribute( 'data-gs-height', gridBlockObj.h );
+		currentBlock.setAttribute( 'data-height', gridBlockObj.h );
 		gridBlockObj.toCheck = true;
 	}
 
