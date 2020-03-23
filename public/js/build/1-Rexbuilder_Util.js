@@ -1118,23 +1118,28 @@ var Rexbuilder_Util = (function($) {
           // default mobile section props
           layoutSelectedSections[i].targets[0].props.collapse_grid = true;
           layoutSelectedSections[i].targets[0].props.layout = "masonry";
+          
+          if ( !Rexbuilder_Util.editorMode ) {
+            // Setting block properties if we are on mobile, no saved
+            // mobile layout exists and if the collapsing is needed
+          	var j = 0;
+          	var tot_blocks = layoutSelectedSections[ i ].targets.length;
 
-          var j = 0;
-          var tot_blocks = layoutSelectedSections[i].targets.length;
+          	for ( j = 0; j < tot_blocks; j++ ) {
+          		if ( layoutSelectedSections[ i ].targets[ j ].name === 'self' ) {
+          			continue;
+          		}
 
-          for ( j = 0; j < tot_blocks; j++ ) {
-          	if ( layoutSelectedSections[ i ].targets[ j ].name === 'self' ) {
-              continue;
-            }
-            
-            // Block width
-            layoutSelectedSections[ i ].targets[ j ].props.gs_width = '12';
-            layoutSelectedSections[ i ].targets[ j ].props.size_x = '12';
+          		// Block width
+          		layoutSelectedSections[ i ].targets[ j ].props.gs_width = '12';
+          		layoutSelectedSections[ i ].targets[ j ].props.size_x = '12';
 
-            // Block position
-            layoutSelectedSections[ i ].targets[ j ].props.gs_x = '0';
-            layoutSelectedSections[ i ].targets[ j ].props.row = '1';
+          		// Block position
+          		layoutSelectedSections[ i ].targets[ j ].props.gs_x = '0';
+          		layoutSelectedSections[ i ].targets[ j ].props.row = '1';
+          	}
           }
+
           // todo fix proposal
           // layoutSelectedSections[i].targets[0].props.gridEdited = false;
         }
@@ -3838,7 +3843,7 @@ var Rexbuilder_Util = (function($) {
       defaultLayoutSections
     );
 
-    console.log( 'mergedEdits', mergedEdits );
+    // console.log( 'mergedEdits', mergedEdits );
 
     // removing collapsed from grid
     // Rexbuilder_Util.removeCollapsedGrids();
@@ -3900,7 +3905,6 @@ var Rexbuilder_Util = (function($) {
   function updateRexGrid( section, targets, forceCollapseElementsGrid, meIndex ) {
     var $section = $( section );
     var $gallery = $section.find( ".grid-stack-row" );
-    var gallery = $gallery.get(0);
 
     // Setting one column mode on the actual RexGrid instance
     section.querySelector( '.section-data' ).setAttribute( 'data-collapse-grid', targets[ 0 ].props.collapse_grid );

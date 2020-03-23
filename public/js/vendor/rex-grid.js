@@ -270,9 +270,6 @@
 		// blockFixingCallbacks.push( _fixBlockPositions.bind( this ) );
 
 		_setGridHeight.call( this );
-
-		console.log( this );
-
 	}
 
 	function _calcGridBaseAttrs() {
@@ -497,7 +494,6 @@
 					this.gridBlocks[ i ].x + this.gridBlocks[ i ].w > this.gridBlocks[ j ].x &&
 					this.gridBlocks[ i ].y < this.gridBlocks[ j ].y + this.gridBlocks[ j ].h &&
 					this.gridBlocks[ i ].y + this.gridBlocks[ i ].h > this.gridBlocks[ j ].y ) {
-
 					var newTop = ( this.gridBlocks[ i ].y + this.gridBlocks[ i ].h ) - this.gridBlocks[ j ].y;
 					var newY = this.gridBlocks[ j ].y + newTop;
 
@@ -734,7 +730,7 @@
 
 		// check if resize really needed
 		// fix occurs on first start and not in editor mode
-		if ( ! this.properties.oneColumnModeActive ) {
+		// if ( ! this.properties.oneColumnModeActive ) {
 			if ( currentBlockTextHeight !== 0 ) {
 				if ( 'fixed' === this.properties.layout || ( 1 !== elRealFluid && 'masonry' === this.properties.layout ) ) {
 					if ( newH < spaceAvailable ) {
@@ -752,7 +748,7 @@
 					}
 				}
 			}
-		}
+		// }
 
 		if ( resizeNotNeeded ) {
 			return;
@@ -771,7 +767,6 @@
 		_updateBlockDataHeightProperties.call( this, blockData, newH );
 
 		// Setting dimensions
-
 		gridBlockObj.h = newH;
 		currentBlock.style.height = ( gridBlockObj.h * this.properties.singleHeight ) + 'px';
 		currentBlock.setAttribute( 'data-gs-height', gridBlockObj.h );
@@ -813,7 +808,9 @@
 	 * @return {void}
 	 */
 	RexGrid.prototype.endResize = function() {
+		// Checking layout change and if the grid has to collapse
 		this.properties.layout = this.element.getAttribute( 'data-layout' );
+		this.properties.oneColumnModeActive = 'true' == this.sectionData.getAttribute( 'data-collapse-grid' );
 
 		// update grid single height and single width
 		_calcGridBaseAttrs.call( this );
