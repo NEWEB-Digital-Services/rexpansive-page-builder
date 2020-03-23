@@ -271,7 +271,7 @@
 
 		_setGridHeight.call( this );
 
-		console.log( 'dis', this );
+		console.log( this );
 
 	}
 
@@ -486,7 +486,7 @@
 
 		// check other blocks collapse
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
-			if ( !this.gridBlocks[ i ].toCheck ) {
+			if ( !this.gridBlocks[ i ].toCheck || this.gridBlocks[ i ].hide ) {
 				continue;
 			}
 
@@ -589,6 +589,12 @@
 		}
 	}
 
+	/**
+	 * Fix the height of a block, according to the builder contents rules
+	 * @param  {RexBlock} gridBlockObj RexBlock instance
+	 * @return {void}
+	 * @since  2.0.4
+	 */
 	RexGrid.prototype.fixBlockHeight = function( gridBlockObj ) {
 		var editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
 
@@ -604,11 +610,9 @@
 
 		// if ( this.properties.oneColumnModeActive ) {
 		// Reflow can happen
-		// console.log( this.properties.gridItemWidth );
-
-		// singleWidth = this.element.offsetWidth * this.properties.gridItemWidth;
+			// singleWidth = this.element.offsetWidth * this.properties.gridItemWidth;
 		// } else {
-		singleWidth = singleWidthGrid;
+			singleWidth = singleWidthGrid;
 		// }
 
 		var gutter = this.options.gutter;
@@ -719,32 +723,34 @@
 		}
 
 		// if ( this.properties.oneColumnModeActive && !Rexbuilder_Util.windowIsResizing ) {
-		if ( this.properties.oneColumnModeActive ) {
-			var collapsedHeight = newH;
-
+		// if ( this.properties.oneColumnModeActive ) {
+			// return;
+			// var collapsedHeight = newH;
 			// return {
 			// 	height: collapsedHeight,
 			// 	empty: emptyBlockFlag
 			// };
-		}
+		// }
 
 		var resizeNotNeeded = false;
 
 		// check if resize really needed
 		// fix occurs on first start and not in editor mode
-		if ( currentBlockTextHeight !== 0 ) {
-			if ( 'fixed' === this.properties.layout || ( 1 !== elRealFluid && 'masonry' === this.properties.layout ) ) {
-				if ( newH < spaceAvailable ) {
-					resizeNotNeeded = true;
-				}
-			}
-		} else if ( backgroundHeight !== 0 ) {
-			if ( 'fixed' === this.properties.layout ) {
-				resizeNotNeeded = true;
-			} else if ( 'masonry' === this.properties.layout ) {
-				if ( ( 'natural' === backImgType && 1 !== elRealFluid ) || 'full' === backImgType ) {
+		if ( ! this.properties.oneColumnModeActive ) {
+			if ( currentBlockTextHeight !== 0 ) {
+				if ( 'fixed' === this.properties.layout || ( 1 !== elRealFluid && 'masonry' === this.properties.layout ) ) {
 					if ( newH < spaceAvailable ) {
 						resizeNotNeeded = true;
+					}
+				}
+			} else if ( backgroundHeight !== 0 ) {
+				if ( 'fixed' === this.properties.layout ) {
+					resizeNotNeeded = true;
+				} else if ( 'masonry' === this.properties.layout ) {
+					if ( ( 'natural' === backImgType && 1 !== elRealFluid ) || 'full' === backImgType ) {
+						if ( newH < spaceAvailable ) {
+							resizeNotNeeded = true;
+						}
 					}
 				}
 			}
