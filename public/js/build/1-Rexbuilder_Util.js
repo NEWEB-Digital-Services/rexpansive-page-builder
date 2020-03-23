@@ -1326,7 +1326,6 @@ var Rexbuilder_Util = (function($) {
 
     var meIndex, section, $section;
 
-    // console.log(mergedEdits)
     var updateDOMelementsResponse;
     var updateDOMelementsTimeouts = [];
 
@@ -3843,7 +3842,7 @@ var Rexbuilder_Util = (function($) {
       defaultLayoutSections
     );
 
-    // console.log( 'mergedEdits', mergedEdits );
+    console.log( 'mergedEdits', mergedEdits );
 
     // removing collapsed from grid
     // Rexbuilder_Util.removeCollapsedGrids();

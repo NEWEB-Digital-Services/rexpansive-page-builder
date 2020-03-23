@@ -475,7 +475,25 @@
 		}
 	}
 
+	/**
+	 * Fixing the block positions according to heights
+	 * @return {void}
+	 */
 	function _fixBlockPositions() {
+		switch( this.properties.layout ) {
+			case 'masonry':
+				_fixBlockPositionsMasonry.call(this);
+			default:
+				_fixBlockPositionsFixed.call(this);
+				break;
+		}
+	}
+
+	/**
+	 * Fix blocks top positions for a fixed grid
+	 * @return {void}
+	 */
+	function _fixBlockPositionsFixed() {
 		var i;
 		var j;
 
@@ -509,6 +527,24 @@
 			}
 
 			this.gridBlocks[ i ].toCheck = false;
+		}
+	}
+
+	/**
+	 * Fix blocks top positions for a masonry grid
+	 * @return {void}
+	 */
+	function _fixBlockPositionsMasonry() {
+		var i;
+		var j;
+
+		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
+			this.gridBlocks[ i ].el.setAttribute( 'data-gs-y', 0 );
+			this.gridBlocks[ i ].blockData.setAttribute( 'data-gs-y', 0 );
+
+			this.gridBlocks[ i ].el.style.top = '0px';
+			this.gridBlocks[ i ].y = 0;
+			this.gridBlocks[ i ].toCheck = true;
 		}
 	}
 
@@ -730,7 +766,7 @@
 
 		// check if resize really needed
 		// fix occurs on first start and not in editor mode
-		// if ( ! this.properties.oneColumnModeActive ) {
+		if ( ! this.properties.oneColumnModeActive ) {
 			if ( currentBlockTextHeight !== 0 ) {
 				if ( 'fixed' === this.properties.layout || ( 1 !== elRealFluid && 'masonry' === this.properties.layout ) ) {
 					if ( newH < spaceAvailable ) {
@@ -748,7 +784,7 @@
 					}
 				}
 			}
-		// }
+		}
 
 		if ( resizeNotNeeded ) {
 			return;
