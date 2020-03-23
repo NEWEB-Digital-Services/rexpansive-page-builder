@@ -255,21 +255,22 @@
 
 		// Finding the blocks in the DOM
 		_getGridBlocks.call( this );
-
+		
 		// Applying blocks separators
 		_applyBlocksSeparators.call( this );
 
-		// Calculatione
+		// Height and top calculations
 		this.calcAllBlocksHeights();
 		// blocksHeightsCallbacks.push( this.calcAllBlocksHeights.bind( this ) );
 		this.calcBlocksTop();
 
-		// Fixings
+		// Height and top fixings
 		// this.fixAllBlocksHeights();
 		// _fixBlockPositions.call( this );
 		// blockFixingCallbacks.push( _fixBlockPositions.bind( this ) );
-
+		
 		_setGridHeight.call( this );
+
 	}
 
 	function _calcGridBaseAttrs() {
@@ -289,6 +290,8 @@
 
 		this.gridBlocksTotal = blocksArray.length;
 		var i = 0;
+
+		this.element.style.minHeight = '100vh';
 
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
 			blockInstance = new RexBlock( {
@@ -480,11 +483,12 @@
 	 * @return {void}
 	 */
 	function _fixBlockPositions() {
-		switch( this.properties.layout ) {
+		switch ( this.properties.layout ) {
 			case 'masonry':
-				_fixBlockPositionsMasonry.call(this);
+				// If layout is masonry we set all the y to 0
+				_fixBlockPositionsMasonry.call( this );
 			default:
-				_fixBlockPositionsFixed.call(this);
+				_fixBlockPositionsFixed.call( this );
 				break;
 		}
 	}
@@ -640,9 +644,9 @@
 
 		// if ( this.properties.oneColumnModeActive ) {
 		// Reflow can happen
-			// singleWidth = this.element.offsetWidth * this.properties.gridItemWidth;
+		// singleWidth = this.element.offsetWidth * this.properties.gridItemWidth;
 		// } else {
-			singleWidth = singleWidthGrid;
+		singleWidth = singleWidthGrid;
 		// }
 
 		var gutter = this.options.gutter;
@@ -754,19 +758,19 @@
 
 		// if ( this.properties.oneColumnModeActive && !Rexbuilder_Util.windowIsResizing ) {
 		// if ( this.properties.oneColumnModeActive ) {
-			// return;
-			// var collapsedHeight = newH;
-			// return {
-			// 	height: collapsedHeight,
-			// 	empty: emptyBlockFlag
-			// };
+		// return;
+		// var collapsedHeight = newH;
+		// return {
+		// 	height: collapsedHeight,
+		// 	empty: emptyBlockFlag
+		// };
 		// }
 
 		var resizeNotNeeded = false;
 
 		// check if resize really needed
 		// fix occurs on first start and not in editor mode
-		if ( ! this.properties.oneColumnModeActive ) {
+		if ( !this.properties.oneColumnModeActive ) {
 			if ( currentBlockTextHeight !== 0 ) {
 				if ( 'fixed' === this.properties.layout || ( 1 !== elRealFluid && 'masonry' === this.properties.layout ) ) {
 					if ( newH < spaceAvailable ) {
@@ -837,6 +841,7 @@
 		blockFixingCallbacks.push( _fixBlockPositions.bind( this ) );
 
 		_setGridHeight.call( this );
+		this.element.style.minHeight = '';
 	}
 
 	/**

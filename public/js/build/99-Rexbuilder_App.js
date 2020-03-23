@@ -855,7 +855,7 @@ var Rexbuilder_App = (function($) {
       		gridInstances.push( rexGridInstance );
         }
 
-        // launch fast load?
+        // Launch fast load
         window.FastLoad();
       }
     }
@@ -957,6 +957,8 @@ var Rexbuilder_App = (function($) {
   };
 
   var load = function() {
+    console.log( 'load' );
+    
     // @bugfix on other layouts than desktop with mixed customization definitions
     // @deprecated i don't like this solution, too much expensive
     

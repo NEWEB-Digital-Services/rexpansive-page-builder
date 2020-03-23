@@ -117,6 +117,8 @@
 
   		request.onload = function() {
   			if ( request.status === 200 ) {
+          console.log( 'xhr onload' );
+          
   				// If successful, resolve the promise by passing back the request response
   				el.style.backgroundImage = 'url(' + src + ')';
   				el.removeAttribute( 'data-src' );
