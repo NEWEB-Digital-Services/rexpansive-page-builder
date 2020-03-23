@@ -470,12 +470,6 @@ class Rexbuilder_Public
 		}
 	}
 
-	public function add_service_worker() {
-		if( ! Rexbuilder_Utilities::isBuilderLive() ) {
-			// wp_add_inline_script( $this->plugin_name, '<script></script>' );
-		}
-	}
-
 	/**
 	 * Generating a JS global object to store plugins settings
 	 *
