@@ -1118,6 +1118,25 @@ var Rexbuilder_Util = (function($) {
           // default mobile section props
           layoutSelectedSections[i].targets[0].props.collapse_grid = true;
           layoutSelectedSections[i].targets[0].props.layout = "masonry";
+
+          var j = 0;
+          var tot_blocks = layoutSelectedSections[i].targets.length;
+
+          console.log( Rexbuilder_Util.activeLayout );
+
+          for ( j = 0; j < tot_blocks; j++ ) {
+          	if ( layoutSelectedSections[ i ].targets[ j ].name === 'self' ) {
+              continue;
+            }
+            
+            // Block width
+            layoutSelectedSections[ i ].targets[ j ].props.gs_width = '12';
+            layoutSelectedSections[ i ].targets[ j ].props.size_x = '12';
+
+            // Block position
+            layoutSelectedSections[ i ].targets[ j ].props.gs_x = '0';
+            layoutSelectedSections[ i ].targets[ j ].props.row = '1';
+          }
           // todo fix proposal
           // layoutSelectedSections[i].targets[0].props.gridEdited = false;
         }
@@ -3821,6 +3840,8 @@ var Rexbuilder_Util = (function($) {
       defaultLayoutSections
     );
 
+    console.log( 'mergedEdits', mergedEdits );
+
     // removing collapsed from grid
     // Rexbuilder_Util.removeCollapsedGrids();
 
@@ -3828,11 +3849,7 @@ var Rexbuilder_Util = (function($) {
     var forceCollapseElementsGrid = false;
     var sectionDomOrder = [];
 
-    var meIndex, section, $section;
-
-    console.log(JSON.parse( JSON.stringify( mergedEdits) ) )
-    var updateDOMelementsResponse;
-    var updateDOMelementsTimeouts = [];
+    var meIndex, section/*,  $section */;
 
     for( meIndex in mergedEdits ) {
       if (!mergedEdits[meIndex].notInSection || chosenLayoutName == "default") {
@@ -3861,8 +3878,8 @@ var Rexbuilder_Util = (function($) {
             Rexbuilder_Util.addClass( section, 'rex-hide-section' );
           } else {
             Rexbuilder_Util.removeClass( section, 'rex-hide-section' );
-            $section = $(section);
             updateRexGrid( section, mergedEdits[meIndex].targets, forceCollapseElementsGrid, meIndex );
+            // $section = $(section);
             // response.collapse_needed += _updateDOMelements( $section, mergedEdits[meIndex].targets, forceCollapseElementsGrid, meIndex );
           }
           sectionDomOrder.push(sectionObj);
@@ -3883,11 +3900,15 @@ var Rexbuilder_Util = (function($) {
    * @since  2.0.4
    */
   function updateRexGrid( section, targets, forceCollapseElementsGrid, meIndex ) {
-    var $section = $(section);
-    var $gallery = $section.find(".grid-stack-row");
+    var $section = $( section );
+    var $gallery = $section.find( ".grid-stack-row" );
+    var gallery = $gallery.get(0);
 
-    if( targets[0].props.gridEdited ) {
-      $gallery.attr("data-rexlive-layout-changed", true);
+    // Setting one column mode on the actual RexGrid instance
+    section.querySelector( '.section-data' ).setAttribute( 'data-collapse-grid', targets[ 0 ].props.collapse_grid );
+
+    if ( targets[ 0 ].props.gridEdited ) {
+    	$gallery.attr( "data-rexlive-layout-changed", true );
     }
 
     var i, tot_targets = targets.length;
@@ -3909,7 +3930,6 @@ var Rexbuilder_Util = (function($) {
     // }
 
     for ( i = 1; i < tot_targets; i++ ) {
-      console.log(targets[i].props.hide)
       var $elem = $gallery.children('div[data-rexbuilder-block-id="' + targets[i].name + '"]');
       var hideElement =
         typeof targets[i].props.hide == "undefined"

@@ -851,7 +851,8 @@ var Rexbuilder_App = (function($) {
 
       	for ( i = 0; i < tot_grids; i++ ) {
       		var rexGridInstance = new RexGrid( grids[ i ] );
-
+          console.log( 'pusho' );
+          
       		gridInstances.push( rexGridInstance );
         }
 
@@ -1015,6 +1016,30 @@ var Rexbuilder_App = (function($) {
   };
 
   /**
+   * Returns the instance of the grid DOM Element passed.
+   * @param  {Element} grid   DOM Element of the grid
+   * @return {RexGrid|null}   RexGrid instance if exists, null otherwise
+   * @since  2.0.4
+   */
+  function getRexGridInstance( grid ) {
+    var gridId = grid.getAttribute( 'data-rex-grid-id' );
+    
+    console.log( gridInstances );
+    
+
+  	var i = 0;
+  	var tot_instances = gridInstances.length;
+
+  	for ( i = 0; i < tot_instances; i++ ) {
+  		if ( gridId === gridInstances[ i ].properties.id && grid === gridInstances[ i ].element ) {
+  			return gridInstances[ i ];
+  		}
+  	}
+
+  	return null;
+  }
+
+  /**
    * Handle front end resize
    * @return {void}
    */
@@ -1053,6 +1078,9 @@ var Rexbuilder_App = (function($) {
   return {
     init: init,
     load: load,
-    handleFrontEndResize: handleFrontEndResize
+    handleFrontEndResize: handleFrontEndResize,
+
+    // RexGrid functions
+    getRexGridInstance: getRexGridInstance
   };
 })(jQuery);

@@ -200,7 +200,7 @@
 			// gridBlocksHeight: 0,
 			editedFromBackend: false,
 			// oneColumMode: false,
-			oneColumModeActive: false,
+			oneColumnModeActive: false,
 			// gridstackBatchMode: false,
 			// updatingSection: false,
 			// oldLayout: "",
@@ -217,7 +217,7 @@
 			// lastIDBlock: 0,
 			// updatingGridWidth: false,
 			// numberBlocksVisibileOnGrid: 0,
-			beforeCollapseWasFixed: false,
+			beforeCollapseWasFixed: true,
 			// dispositionBeforeCollapsing: {},
 			// layoutBeforeCollapsing: {},
 			// initialStateGrid: null,
@@ -235,6 +235,8 @@
 			// @todo set to false on change layout
 			this.properties.editedFromBackend = true;
 		}
+
+		this.properties.oneColumnModeActive = 'true' == this.sectionData.getAttribute( 'data-collapse-grid' );
 
 		// Gutter functions
 		_getDOMGutterOptions.call( this );
@@ -268,6 +270,9 @@
 		// blockFixingCallbacks.push( _fixBlockPositions.bind( this ) );
 
 		_setGridHeight.call( this );
+
+		console.log( 'dis', this );
+
 	}
 
 	function _calcGridBaseAttrs() {
@@ -356,7 +361,7 @@
 
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
-			if ( ! this.gridBlocks[ i ].hide ) {
+			if ( !this.gridBlocks[ i ].hide ) {
 				heightTemp = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-height' ) ) + parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-y' ) );
 
 				if ( heightTemp > heightTot ) {
@@ -578,7 +583,7 @@
 
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
-			if ( ! this.gridBlocks[ i ].hide ) {
+			if ( !this.gridBlocks[ i ].hide ) {
 				this.fixBlockHeight( this.gridBlocks[ i ] );
 			}
 		}
@@ -597,12 +602,14 @@
 		var singleWidthGrid = this.properties.singleWidth;
 		var singleWidth;
 
-		if ( this.properties.oneColumModeActive ) {
-			// Reflow can happen
-			singleWidth = this.element.offsetWidth * this.properties.gridItemWidth;
-		} else {
-			singleWidth = singleWidthGrid;
-		}
+		// if ( this.properties.oneColumnModeActive ) {
+		// Reflow can happen
+		// console.log( this.properties.gridItemWidth );
+
+		// singleWidth = this.element.offsetWidth * this.properties.gridItemWidth;
+		// } else {
+		singleWidth = singleWidthGrid;
+		// }
 
 		var gutter = this.options.gutter;
 
@@ -644,7 +651,7 @@
 
 		var currentBlockTextHeight = _calculateTextWrapHeight.call( this, currentBlock );
 
-		if ( this.properties.oneColumModeActive ) {
+		if ( this.properties.oneColumnModeActive ) {
 			originalWidth = 12;
 		}
 
@@ -678,13 +685,12 @@
 			if ( videoHeight == 0 && backgroundHeight == 0 && sliderHeight == 0 && ( Rexbuilder_Util_Editor.updatingSectionLayout || blockIsEmpty || blockHasSlider ) ) {
 				if ( this.properties.editedFromBackend && this.properties.layout == "masonry" ) {
 					defaultHeight = Math.round( singleWidth * startH );
-				} else if ( this.properties.oneColumModeActive && this.properties.beforeCollapseWasFixed ) {
-					defaultHeight = startH * this.properties.singleWidth;
+				} else if ( this.properties.oneColumnModeActive && this.properties.beforeCollapseWasFixed ) {
+					defaultHeight = startH * singleWidth;
 				} else {
 					defaultHeight = startH * this.properties.singleHeight;
 				}
 			}
-
 		}
 
 		if ( !blockHasSlider && backgroundHeight == 0 && videoHeight == 0 && currentBlockTextHeight == 0 ) {
@@ -693,7 +699,7 @@
 
 		// if the block has a full image background, without text
 		// maintain the old height
-		if ( !blockHasSlider && !blockHasYoutube && !blockHasVimeo && !blockHasVideo && ( ( ( 'full' === backImgType && 0 === currentBlockTextHeight ) || ( '' === backImgType && 0 === currentBlockTextHeight ) ) && !this.properties.oneColumModeActive ) ) {
+		if ( !blockHasSlider && !blockHasYoutube && !blockHasVimeo && !blockHasVideo && ( ( ( 'full' === backImgType && 0 === currentBlockTextHeight ) || ( '' === backImgType && 0 === currentBlockTextHeight ) ) && !this.properties.oneColumnModeActive ) ) {
 			newH = startH * this.properties.singleHeight;
 		} else {
 			if ( editingBlock ) {
@@ -712,14 +718,14 @@
 			);
 		}
 
-		// if ( this.properties.oneColumModeActive && !Rexbuilder_Util.windowIsResizing ) {
-		if ( this.properties.oneColumModeActive ) {
+		// if ( this.properties.oneColumnModeActive && !Rexbuilder_Util.windowIsResizing ) {
+		if ( this.properties.oneColumnModeActive ) {
 			var collapsedHeight = newH;
 
-			return {
-				height: collapsedHeight,
-				empty: emptyBlockFlag
-			};
+			// return {
+			// 	height: collapsedHeight,
+			// 	empty: emptyBlockFlag
+			// };
 		}
 
 		var resizeNotNeeded = false;
@@ -760,6 +766,8 @@
 
 		_updateBlockDataHeightProperties.call( this, blockData, newH );
 
+
+
 		// Setting dimensions
 
 		gridBlockObj.h = newH;
@@ -788,7 +796,7 @@
 		}
 	}
 
-	RexGrid.prototype.fixAfterLoad = function () {
+	RexGrid.prototype.fixAfterLoad = function() {
 		// Fixings
 		this.fixAllBlocksHeights();
 		_fixBlockPositions.call( this );
@@ -799,9 +807,11 @@
 
 	/**
 	 * Fix the grid after a resize
-	 * @return {[type]} [description]
+	 * @return {void}
 	 */
 	RexGrid.prototype.endResize = function() {
+		this.properties.layout = this.element.getAttribute( 'data-layout' );
+
 		// update grid single height and single width
 		_calcGridBaseAttrs.call( this );
 		// Calculatione
@@ -823,11 +833,11 @@
 	RexGrid.prototype.updateGridBlocks = function() {
 		var i;
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
-			this.gridBlocks[i].w = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-width' ) );
-			this.gridBlocks[i].h = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-height' ) );
-			this.gridBlocks[i].x = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-x' ) );
-			this.gridBlocks[i].y = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-y' ) );
-			this.gridBlocks[i].hide = Utils.hasClass( this.gridBlocks[ i ].el, 'rex-hide-element' );
+			this.gridBlocks[ i ].w = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-width' ) );
+			this.gridBlocks[ i ].h = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-height' ) );
+			this.gridBlocks[ i ].x = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-x' ) );
+			this.gridBlocks[ i ].y = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-y' ) );
+			this.gridBlocks[ i ].hide = Utils.hasClass( this.gridBlocks[ i ].el, 'rex-hide-element' );
 		}
 	}
 
