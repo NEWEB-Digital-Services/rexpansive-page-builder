@@ -3832,7 +3832,7 @@ var Rexbuilder_Util = (function($) {
 
     var meIndex, section, $section;
 
-    // console.log(mergedEdits)
+    console.log(mergedEdits)
     var updateDOMelementsResponse;
     var updateDOMelementsTimeouts = [];
 
@@ -3864,7 +3864,7 @@ var Rexbuilder_Util = (function($) {
           } else {
             Rexbuilder_Util.removeClass( section, 'rex-hide-section' );
             $section = $(section);
-            updateRexGrid( section, mergedEdits[meIndex].targets );
+            updateRexGrid( section, mergedEdits[meIndex].targets, forceCollapseElementsGrid, meIndex );
             // response.collapse_needed += _updateDOMelements( $section, mergedEdits[meIndex].targets, forceCollapseElementsGrid, meIndex );
           }
           sectionDomOrder.push(sectionObj);
@@ -3884,19 +3884,80 @@ var Rexbuilder_Util = (function($) {
    * @return {void}
    * @since  2.0.4
    */
-  function updateRexGrid( section, information ) {
-    for( var i=0; i < information.length; i++ ) {
-      if ( 'self' === information[i].name ) {
+  function updateRexGrid( section, targets, forceCollapseElementsGrid, meIndex ) {
+    var $section = $(section);
+    var $gallery = $section.find(".grid-stack-row");
 
+    if( targets[0].props.gridEdited ) {
+      $gallery.attr("data-rexlive-layout-changed", true);
+    }
+
+    var i, tot_targets = targets.length;
+    for ( i = 1; i < tot_targets; i++ ) {
+      var $elem = $gallery.children('div[data-rexbuilder-block-id="' + targets[i].name + '"]');
+      var hideElement =
+        typeof targets[i].props.hide == "undefined"
+          ? false
+          : targets[i].props.hide.toString() == "true";
+      if (hideElement) {
+        if ( !$elem.hasClass("rex-hide-element") ) {
+          $elem.addClass("rex-hide-element");
+        }
       } else {
-        var block = section.querySelector('.perfect-grid-item[data-rexbuilder-block-id="' + information[i].name + '"]');
-
-        block.setAttribute( 'data-gs-width', information[i].props.gs_width);
-        block.setAttribute( 'data-gs-height', information[i].props.gs_height);
-        block.setAttribute( 'data-gs-x', information[i].props.gs_x);
-        block.setAttribute( 'data-gs-y', information[i].props.gs_y);
+        if ( $elem.hasClass("rex-hide-element") ) {
+          $elem.removeClass("rex-hide-element");
+        }
       }
     }
+
+    var targetName, targetProps;
+    var $elem, $itemData, $itemContent;
+    var elem;
+    var inlineImgs, tot_inlineImgs;
+    for (i = 1; i < tot_targets; i++) {
+      if ( !targets[i].notDisplay || Rexbuilder_Util.activeLayout == "default" ) {
+        targetName = targets[i].name;
+        targetProps = targets[i].props;
+        
+        $elem = $gallery.children( 'div[data-rexbuilder-block-id="' + targetName + '"]' );
+        elem = $elem[0];
+        $itemData = $elem.children(".rexbuilder-block-data");
+        $itemContent = $elem.find(".grid-item-content");
+
+        if( $elem.length > 0 ) {
+          inlineImgs = [].slice.call( elem.getElementsByTagName('img') );
+          tot_inlineImgs = inlineImgs.length;
+
+          if( !Rexbuilder_Util.editorMode && 0 !== tot_inlineImgs ) {
+            var j;
+
+            for ( j = 0; j < tot_inlineImgs; j++ ) {
+              if ( 'true' === inlineImgs[j].getAttribute('inline-photoswipe') ) {
+                Rexbuilder_Photoswipe.addElementFromInline( $( inlineImgs[j] ) );
+              }
+            }
+          }
+          var gridstackInstance = null;
+          _updateDOMSingleElement( $elem, targetProps, $itemData, $itemContent, gridstackInstance, { positionAndSize:true } );
+        }
+      }
+    }
+
+    updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
+    /*
+    for( var i=0; i < targets.length; i++ ) {
+      if ( 'self' === targets[i].name ) {
+
+      } else {
+        var block = section.querySelector('.perfect-grid-item[data-rexbuilder-block-id="' + targets[i].name + '"]');
+
+        block.setAttribute( 'data-gs-width', targets[i].props.gs_width);
+        block.setAttribute( 'data-gs-height', targets[i].props.gs_height);
+        block.setAttribute( 'data-gs-x', targets[i].props.gs_x);
+        block.setAttribute( 'data-gs-y', targets[i].props.gs_y);
+      }
+    }
+    */
   }
 
   // init the utilities

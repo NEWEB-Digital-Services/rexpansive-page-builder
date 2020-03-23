@@ -2,16 +2,59 @@
   display: inline-block;
   width: 1em;
   height: 1em;
-  // fill: $icon-base-color;
   vertical-align: -0.1em;
   line-height: 1;
+
+  > svg {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    fill: $icon-base-color;
+    vertical-align: -0.1em;
+    transition: fill 600ms ease-out;
+  }
+
+  &.inline-icon {
+    height: auto;
+    line-height: 0;
+    > svg {
+      height: auto;
+      vertical-align: baseline;
+      max-height: 1em;
+    }
+  }
+
+  &.block-icon {
+    height: 1em;
+    line-height: 1;
+    > svg {
+      height: 1em;
+      vertical-align: -0.1em;
+      max-height: none;
+    }
+  }
 }
 
-.l-svg-icons > svg {
-  display: inline-block;
-  width: 1em;
-  height: 1em;
-  fill: #000;
-  vertical-align: -0.1em;
-  transition: fill 600ms ease-out;
+.l-icon--white {
+  @include fill-icon(#fff);
+}
+
+.l-icon--dark-grey {
+  @include fill-icon($palette-color-4);
+}
+
+.l-icon--c-default {
+  .l-svg-icons > svg {
+    cursor: default;
+  }
+}
+
+.l-icon--rotate-90 {
+  transform: rotate(90deg);
+}
+
+.l-svg-icons {
+  &.drop-down-icon {
+    transform: rotate(180deg);
+  }
 }
