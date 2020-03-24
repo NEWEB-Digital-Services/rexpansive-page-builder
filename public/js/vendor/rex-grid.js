@@ -251,7 +251,7 @@
 
 		// Finding the blocks in the DOM
 		_getGridBlocks.call( this );
-		
+
 		// Applying blocks separators
 		_applyBlocksSeparators.call( this );
 
@@ -262,7 +262,7 @@
 		// Height and top fixings
 		// this.fixAllBlocksHeights();
 		// _fixBlockPositions.call( this );
-		
+
 		_setGridHeight.call( this );
 
 	}
@@ -586,46 +586,13 @@
 		blockData.setAttribute( 'data-gs_start_h', newH );
 		blockData.setAttribute( 'data-block_height_calculated', newH );
 	}
-
-	/* ===== Public Methods ===== */
-
 	/**
-	 * Calculating height of the grid blocks.
-	 * @since	1.0.0
+	 * Getting the block height based on content or background
+	 * @param  {RexBlock} 		gridBlockObj
+	 * @return {Number|null}	Passed block height
+	 * @since	 1.0.0
 	 */
-	RexGrid.prototype.calcAllBlocksHeights = function() {
-		var i = 0;
-
-		// for native loop guarantees more performance efficiency
-		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
-			this.calcAndSetBlockHeight( this.gridBlocks[ i ] );
-		}
-	}
-
-	RexGrid.prototype.calcAndSetBlockHeight = function( gridBlockObj ) {
-		gridBlockObj.el.style.height = ( this.properties.singleHeight * gridBlockObj.h ) + 'px';
-	}
-
-	RexGrid.prototype.fixAllBlocksHeights = function() {
-		var i = 0;
-
-		// for native loop guarantees more performance efficiency
-		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
-			if ( !this.gridBlocks[ i ].hide ) {
-				this.fixBlockHeight( this.gridBlocks[ i ] );
-			}
-		}
-	}
-
-	/**
-	 * Fix the height of a block, according to the builder contents rules
-	 * @param  {RexBlock} gridBlockObj RexBlock instance
-	 * @return {void}
-	 * @since  2.0.4
-	 */
-	RexGrid.prototype.fixBlockHeight = function( gridBlockObj ) {
-		var editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
-
+	function _getBlockHeight( gridBlockObj ) {
 		var currentBlock = gridBlockObj.el;
 
 		// Properties
@@ -633,15 +600,7 @@
 		var startH = parseInt( blockData.getAttribute( 'data-gs_start_h' ) );
 
 		var newH;
-		var singleWidthGrid = this.properties.singleWidth;
-		var singleWidth;
-
-		// if ( this.properties.oneColumnModeActive ) {
-		// Reflow can happen
-		// singleWidth = this.element.offsetWidth * this.properties.gridItemWidth;
-		// } else {
-		singleWidth = singleWidthGrid;
-		// }
+		var singleWidth = this.properties.singleWidth;
 
 		var gutter = this.options.gutter;
 
@@ -677,8 +636,9 @@
 			blockHasVimeo = -1 !== itemContent.className.indexOf( 'vimeo-player' );
 		}
 
+		// Prevents slider growing in height when resizing
 		if ( blockHasSlider ) {
-			return;
+			return null;
 		}
 
 		var currentBlockTextHeight = _calculateTextWrapHeight.call( this, currentBlock );
@@ -734,11 +694,7 @@
 		if ( !blockHasSlider && !blockHasYoutube && !blockHasVimeo && !blockHasVideo && ( ( ( 'full' === backImgType && 0 === currentBlockTextHeight ) || ( '' === backImgType && 0 === currentBlockTextHeight ) ) && !this.properties.oneColumnModeActive ) ) {
 			newH = startH * this.properties.singleHeight;
 		} else {
-			if ( editingBlock ) {
-				startH *= this.properties.singleHeight;
-			} else {
-				startH = 0;
-			}
+			startH = 0;
 
 			newH = Math.max(
 				startH,
@@ -750,42 +706,30 @@
 			);
 		}
 
-		// if ( this.properties.oneColumnModeActive && !Rexbuilder_Util.windowIsResizing ) {
-		// if ( this.properties.oneColumnModeActive ) {
-		// return;
-		// var collapsedHeight = newH;
-		// return {
-		// 	height: collapsedHeight,
-		// 	empty: emptyBlockFlag
-		// };
-		// }
-
 		var resizeNotNeeded = false;
 
 		// check if resize really needed
 		// fix occurs on first start and not in editor mode
-		if ( !this.properties.oneColumnModeActive ) {
-			if ( currentBlockTextHeight !== 0 ) {
-				if ( 'fixed' === this.properties.layout || ( 1 !== elRealFluid && 'masonry' === this.properties.layout ) ) {
+		if ( currentBlockTextHeight !== 0 ) {
+			if ( 'fixed' === this.properties.layout || ( 1 !== elRealFluid && 'masonry' === this.properties.layout ) ) {
+				if ( newH < spaceAvailable ) {
+					resizeNotNeeded = true;
+				}
+			}
+		} else if ( backgroundHeight !== 0 ) {
+			if ( 'fixed' === this.properties.layout ) {
+				resizeNotNeeded = true;
+			} else if ( 'masonry' === this.properties.layout ) {
+				if ( ( 'natural' === backImgType && 1 !== elRealFluid ) || 'full' === backImgType ) {
 					if ( newH < spaceAvailable ) {
 						resizeNotNeeded = true;
-					}
-				}
-			} else if ( backgroundHeight !== 0 ) {
-				if ( 'fixed' === this.properties.layout ) {
-					resizeNotNeeded = true;
-				} else if ( 'masonry' === this.properties.layout ) {
-					if ( ( 'natural' === backImgType && 1 !== elRealFluid ) || 'full' === backImgType ) {
-						if ( newH < spaceAvailable ) {
-							resizeNotNeeded = true;
-						}
 					}
 				}
 			}
 		}
 
 		if ( resizeNotNeeded ) {
-			return;
+			return null;
 		}
 
 		if ( this.properties.layout == "fixed" ) {
@@ -798,13 +742,141 @@
 			newH = Math.ceil( ( newH + gutter ) / this.properties.singleHeight );
 		}
 
-		_updateBlockDataHeightProperties.call( this, blockData, newH );
+		return newH;
+	}
+
+	/**
+	 * Calculate single block height, based on the assume that is a collapse
+	 * and that the block properties are not defined for the collapse (no mobile layout saved)
+	 * @param  {RexBlock} gridBlockObj 	element to get the dimension
+	 * @return {Object}      						width and height of a collapsed block
+	 * @since	 1.0.0
+	 */
+	function _getBlockHeightOnCollapse( gridBlockObj ) {
+		var currentBlock = gridBlockObj.el;
+
+		var elemData = currentBlock.querySelector( '.rexbuilder-block-data' );
+		var textWrap = currentBlock.querySelector( '.text-wrap' );
+		var imgWrap = currentBlock.querySelector( '.rex-image-wrapper' );
+		var itemContent = currentBlock.querySelector( '.grid-item-content' );
+
+		var blockHasSlider = -1 !== currentBlock.className.indexOf( 'block-has-slider' );
+		// var blockIsEmpty = -1 !== itemContent.className.indexOf( 'empty-content' );
+		var blockHasYoutube = -1 !== itemContent.className.indexOf( 'youtube-player' );
+		var blockHasVideo = ( 0 !== [].slice.call( currentBlock.getElementsByClassName( 'rex-video-wrap' ) ).length ? true : false );
+		var blockHasVimeo = -1 !== itemContent.className.indexOf( 'vimeo-player' );
+
+		// var elRealFluid = parseInt( elemData.getAttribute( 'data-element_real_fluid' ) );
+		// var backImgType = elemData.getAttribute( 'data-type_bg_block' );
+		var newH = 0;
+		var hasText = false;
+		var spaceNeeded = null;
+
+		// calc the new height, based on the old height props
+		var spaceAvailable = gridBlockObj.h * this.properties.singleHeight;
+		var newH = Math.round( spaceAvailable / this.properties.singleHeight );
+
+		// check height if the block has text
+		if ( textWrap ) {
+			if ( textWrap.innerText.trim().length > 0 && textWrap.childElementCount > 0 ) {
+				hasText = true;
+				spaceNeeded = textWrap.offsetHeight + this.options.gutter;
+			}
+		}
+
+		// check height if is a masonry grid, with a natural image, without text
+		if ( !hasText && imgWrap ) {
+			var imgWidth = parseInt( itemContent.getAttribute( "data-background_image_width" ) );
+			var imgHeight = parseInt( itemContent.getAttribute( "data-background_image_height" ) );
+			var imageWrapperWidth = ( this.properties.singleWidth * gridBlockObj.w ) - this.options.gutter;
+
+			if ( imageWrapperWidth < imgWidth ) {
+				spaceNeeded = ( imgHeight * ( ( gridBlockObj.w * this.properties.singleWidth ) - this.options.gutter ) ) / imgWidth;
+				Utils.addClass( imgWrap, "small-width" );
+			} else {
+				spaceNeeded = imgHeight + this.options.gutter;
+				Utils.removeClass( imgWrap, "small-width" );
+			}
+		}
+
+		var defaultRatio = 3 / 4;
+
+		if ( !hasText && ( blockHasYoutube || blockHasVideo || blockHasVimeo ) ) {
+			spaceNeeded = Math.round( gridBlockObj.w * this.properties.singleWidth * defaultRatio );
+		}
+
+		// calculate slider height
+		var sliderRatio = parseFloat( elemData.getAttribute( 'data-slider_ratio' ) );
+		if ( blockHasSlider && !isNaN( sliderRatio ) ) {
+			if ( !isNaN( sliderRatio ) ) {
+				spaceNeeded = gridBlockObj.w * this.properties.singleWidth * sliderRatio;
+			} else {
+				spaceNeeded = gridBlockObj.w * this.properties.singleWidth * defaultRatio;
+			}
+		}
+
+		// on collapse the height need to reflect the contents height
+		newH = Math.round( spaceNeeded / this.properties.singleHeight );
+
+		return newH;
+	}
+
+	/* ===== Public Methods ===== */
+
+	/**
+	 * Calculating height of the grid blocks.
+	 * @since	1.0.0
+	 */
+	RexGrid.prototype.calcAllBlocksHeights = function() {
+		var i = 0;
+
+		// for native loop guarantees more performance efficiency
+		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
+			this.calcAndSetBlockHeight( this.gridBlocks[ i ] );
+		}
+	}
+
+	RexGrid.prototype.calcAndSetBlockHeight = function( gridBlockObj ) {
+		gridBlockObj.el.style.height = ( this.properties.singleHeight * gridBlockObj.h ) + 'px';
+	}
+
+	RexGrid.prototype.fixAllBlocksHeights = function() {
+		var i = 0;
+
+		// for native loop guarantees more performance efficiency
+		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
+			if ( !this.gridBlocks[ i ].hide ) {
+				this.fixBlockHeight( this.gridBlocks[ i ] );
+			}
+		}
+	}
+
+	/**
+	 * Fix the height of a block, according to the builder contents rules
+	 * @param  {RexBlock} gridBlockObj RexBlock instance
+	 * @return {void}
+	 * @since  2.0.4
+	 */
+	RexGrid.prototype.fixBlockHeight = function( gridBlockObj ) {
+		var newH;
+
+		if ( this.properties.oneColumnModeActive ) {
+			newH = _getBlockHeightOnCollapse.call( this, gridBlockObj );
+		} else {
+			newH = _getBlockHeight.call( this, gridBlockObj );
+		}
+
+		if ( null === newH ) {
+			return;
+		}
+
+		_updateBlockDataHeightProperties.call( this, gridBlockObj.blockData, newH );
 
 		// Setting dimensions
 		gridBlockObj.h = newH;
-		currentBlock.style.height = ( gridBlockObj.h * this.properties.singleHeight ) + 'px';
-		currentBlock.setAttribute( 'data-gs-height', gridBlockObj.h );
-		currentBlock.setAttribute( 'data-height', gridBlockObj.h );
+		gridBlockObj.el.style.height = ( gridBlockObj.h * this.properties.singleHeight ) + 'px';
+		gridBlockObj.el.setAttribute( 'data-gs-height', gridBlockObj.h );
+		gridBlockObj.el.setAttribute( 'data-height', gridBlockObj.h );
 		gridBlockObj.toCheck = true;
 	}
 
