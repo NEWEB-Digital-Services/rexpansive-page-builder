@@ -249,6 +249,10 @@
 		// value without causing a layout reflow
 		_calcGridBaseAttrs.call( this );
 
+		// Setting min-height to the grid for prevent loading of
+		// all images on mobile
+		this.element.style.minHeight = globalViewportSize.height + 'px';
+
 		// Finding the blocks in the DOM
 		_getGridBlocks.call( this );
 
@@ -264,7 +268,6 @@
 		// _fixBlockPositions.call( this );
 
 		_setGridHeight.call( this );
-
 	}
 
 	function _calcGridBaseAttrs() {
@@ -284,8 +287,6 @@
 
 		this.gridBlocksTotal = blocksArray.length;
 		var i = 0;
-
-		this.element.style.minHeight = '100vh';
 
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
 			blockInstance = new RexBlock( {
@@ -534,7 +535,6 @@
 	 */
 	function _fixBlockPositionsMasonry() {
 		var i;
-		var j;
 
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
 			this.gridBlocks[ i ].el.setAttribute( 'data-gs-y', 0 );
