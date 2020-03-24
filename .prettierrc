@@ -1,0 +1,10 @@
+{
+	// "tabWidth": 2,
+	// "useTabs": true,
+	"semi": true,
+	"singleQuote": true,
+	"printWidth": 120,
+	// "bracketSpacing": true,
+	"arrowParens": "avoid",
+	"vueIndentScriptAndStyle": false
+}
