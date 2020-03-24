@@ -957,7 +957,7 @@ var Rexbuilder_App = (function($) {
   };
 
   var load = function() {
-    console.log( 'load' );
+    // console.log( 'load' );
     
     // @bugfix on other layouts than desktop with mixed customization definitions
     // @deprecated i don't like this solution, too much expensive

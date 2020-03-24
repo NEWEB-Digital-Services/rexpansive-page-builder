@@ -105,9 +105,6 @@
 
 	/* ===== Global vars ===== */
 	var globalViewportSize = Utils.viewport();
-	var globalGridWidthsCallbacks = [];
-	var blocksHeightsCallbacks = [];
-	var blockFixingCallbacks = [];
 
 	/* ===== RexBlock ===== */
 	function RexBlock( options ) {
@@ -251,7 +248,6 @@
 		// Calculations of grid width. In this way it's possible to access to this
 		// value without causing a layout reflow
 		_calcGridBaseAttrs.call( this );
-		// globalGridWidthsCallbacks.push( _calcGridBaseAttrs.bind( this ) );
 
 		// Finding the blocks in the DOM
 		_getGridBlocks.call( this );
@@ -261,13 +257,11 @@
 
 		// Height and top calculations
 		this.calcAllBlocksHeights();
-		// blocksHeightsCallbacks.push( this.calcAllBlocksHeights.bind( this ) );
 		this.calcBlocksTop();
 
 		// Height and top fixings
 		// this.fixAllBlocksHeights();
 		// _fixBlockPositions.call( this );
-		// blockFixingCallbacks.push( _fixBlockPositions.bind( this ) );
 		
 		_setGridHeight.call( this );
 
@@ -838,7 +832,6 @@
 		// Fixings
 		this.fixAllBlocksHeights();
 		_fixBlockPositions.call( this );
-		blockFixingCallbacks.push( _fixBlockPositions.bind( this ) );
 
 		_setGridHeight.call( this );
 		this.element.style.minHeight = '';
@@ -880,31 +873,6 @@
 			this.gridBlocks[ i ].y = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-y' ) );
 			this.gridBlocks[ i ].hide = Utils.hasClass( this.gridBlocks[ i ].el, 'rex-hide-element' );
 		}
-	}
-
-	/* ===== Global event handlers ===== */
-
-	/**
-	 * Changing viewport sizes and grids widths.
-	 * @since		1.0.0
-	 */
-	RexGrid.prototype.handleResizeEvent = function() {
-		globalViewportSize = Utils.viewport();
-
-		// Adjusting grid sizes data for every instance
-		globalGridWidthsCallbacks.forEach( function( el ) {
-			el.call();
-		} );
-
-		// Adjusting blocks sizes data for every instance
-		blocksHeightsCallbacks.forEach( function( el ) {
-			el.call();
-		} );
-
-		// Adjusting blocks sizes for every instance
-		blockFixingCallbacks.forEach( function( el ) {
-			el.call();
-		} );
 	}
 
 	return RexGrid;
