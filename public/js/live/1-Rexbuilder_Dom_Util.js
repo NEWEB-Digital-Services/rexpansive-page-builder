@@ -693,6 +693,8 @@ var Rexbuilder_Dom_Util = (function($) {
       return;
     }
 
+    
+    
     var type = videoOptions.typeVideo;
     if (type == "") {
       _removeMp4Video($target, true);

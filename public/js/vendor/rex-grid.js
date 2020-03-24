@@ -1,4 +1,5 @@
-;( function( window, factory ) {
+;
+( function( window, factory ) {
 	'use strict';
 	window.RexGrid = factory( window );
 } )( 'undefined' !== typeof window ? window : this, function() {
@@ -762,17 +763,15 @@
 
 		var resizeNeeded = true;
 
-		console.log(newH, spaceAvailable, originalHeight, gridBlockObj.h)
-
 		// check if resize really needed
 		// fix occurs on first start and not in editor mode
-		if ( currentBlockTextHeight !== 0 ) {
+		if ( 0 !== currentBlockTextHeight ) {
 			if ( 'fixed' === this.properties.layout || ( 1 !== elRealFluid && 'masonry' === this.properties.layout ) ) {
 				if ( newH <= spaceAvailable && originalHeight > gridBlockObj.h ) {
 					resizeNeeded = false;
 				}
 			}
-		} else if ( backgroundHeight !== 0 ) {
+		} else if ( 0 !== backgroundHeight ) {
 			if ( 'fixed' === this.properties.layout ) {
 				resizeNeeded = false;
 			} else if ( 'masonry' === this.properties.layout ) {
@@ -999,8 +998,6 @@
 	 * @since  1.0.0
 	 */
 	RexGrid.prototype.updateGridBlocks = function() {
-		console.log( 'updateGridBlocks' );
-
 		var i = 0;
 
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
@@ -1061,59 +1058,59 @@
 
 		// get all elements
 		if ( '*' == rule ) {
-			for( i=0; i < this.gridBlocksTotal; i++ ) {
-				toMaintain.push( this.gridBlocks[i].el );
-				toMaintainCoords.push( { 
-					x:this.gridBlocks[i].x,
-					y:this.gridBlocks[i].y,
-					w:this.gridBlocks[i].w,
-					h:this.gridBlocks[i].h
+			for ( i = 0; i < this.gridBlocksTotal; i++ ) {
+				toMaintain.push( this.gridBlocks[ i ].el );
+				toMaintainCoords.push( {
+					x: this.gridBlocks[ i ].x,
+					y: this.gridBlocks[ i ].y,
+					w: this.gridBlocks[ i ].w,
+					h: this.gridBlocks[ i ].h
 				} )
-				this.gridBlocks[i].hide = false;
+				this.gridBlocks[ i ].hide = false;
 			}
 		} else {
 			// filter by a rule
-			for( i=0; i < this.gridBlocksTotal; i++ ) {
-				if ( Utils.hasClass( this.gridBlocks[i].el, rule ) ) {
-					toMaintain.push( this.gridBlocks[i].el );
-					toMaintainCoords.push( { 
-						x:0,
-						y:0,
-						w:this.gridBlocks[i].w,
-						h:this.gridBlocks[i].h
+			for ( i = 0; i < this.gridBlocksTotal; i++ ) {
+				if ( Utils.hasClass( this.gridBlocks[ i ].el, rule ) ) {
+					toMaintain.push( this.gridBlocks[ i ].el );
+					toMaintainCoords.push( {
+						x: 0,
+						y: 0,
+						w: this.gridBlocks[ i ].w,
+						h: this.gridBlocks[ i ].h
 					} )
-					this.gridBlocks[i].hide = false;
+					this.gridBlocks[ i ].hide = false;
 				} else {
-					this.gridBlocks[i].hide = true;
-					toRemove.push( this.gridBlocks[i].el );
+					this.gridBlocks[ i ].hide = true;
+					toRemove.push( this.gridBlocks[ i ].el );
 				}
 			}
 
-			idx.setGrid( 0, 0, toMaintainCoords[0].w, toMaintainCoords[0].h );
+			idx.setGrid( 0, 0, toMaintainCoords[ 0 ].w, toMaintainCoords[ 0 ].h );
 			var idx_pos;
 			var idx_cords;
-			for( i=1; i< toMaintainCoords.length; i++ ) {
-				idx_pos = idx.willFit( toMaintainCoords[i].w, toMaintainCoords[i].h );
+			for ( i = 1; i < toMaintainCoords.length; i++ ) {
+				idx_pos = idx.willFit( toMaintainCoords[ i ].w, toMaintainCoords[ i ].h );
 				if ( idx_pos ) {
 					idx_cords = Utils.getCoord( idx_pos, this.options.columns );
-					idx.setGrid( idx_cords.x, idx_cords.y, toMaintainCoords[i].w, toMaintainCoords[i].h )
-					toMaintainCoords[i].x = idx_cords.x;
-					toMaintainCoords[i].y = idx_cords.y;
+					idx.setGrid( idx_cords.x, idx_cords.y, toMaintainCoords[ i ].w, toMaintainCoords[ i ].h )
+					toMaintainCoords[ i ].x = idx_cords.x;
+					toMaintainCoords[ i ].y = idx_cords.y;
 				}
 			}
 		}
 
 		var that = this;
-		var timeline = anime.timeline({
+		var timeline = anime.timeline( {
 			duration: 200,
 			easing: 'easeInOutQuad',
 			begin: function() {
 				// handle filter click here
 			},
-			complete: function(anim) {
+			complete: function( anim ) {
 				// animation complete
 			}
-		});
+		} );
 
 		timeline.add( {
 			targets: toMaintain,
@@ -1121,12 +1118,12 @@
 			opacity: 1,
 			left: function( target, index ) {
 				// target.setAttribute('data-gs-x', toMaintainCoords[index].x);
-				return ( toMaintainCoords[index].x * that.properties.singleWidth ) + 'px';
+				return ( toMaintainCoords[ index ].x * that.properties.singleWidth ) + 'px';
 			},
 			top: function( target, index ) {
-				return ( toMaintainCoords[index].y * that.properties.singleHeight ) + 'px';
+				return ( toMaintainCoords[ index ].y * that.properties.singleHeight ) + 'px';
 			},
-		}).add( {
+		} ).add( {
 			targets: toRemove,
 			scale: 0,
 			opacity: 0

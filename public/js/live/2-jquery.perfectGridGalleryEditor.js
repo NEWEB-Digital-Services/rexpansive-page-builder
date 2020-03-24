@@ -3447,6 +3447,11 @@
         blockHasVimeo = -1 !== itemContent.className.indexOf('vimeo-player');
       }
 
+      if ( blockHasSlider ) {
+        Rexbuilder_Util_Editor.elementIsResizing = false;
+      	return;
+      }
+
       // calculate text content height
       // textHeight = calculateTextWrapHeight($textWrap);
       textHeight = calculateTextWrapHeightNew( $textWrap, this.settings.editorMode );
