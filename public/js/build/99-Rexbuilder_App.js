@@ -13,6 +13,7 @@ var Rexbuilder_App = (function($) {
   var $otherAccordions = null;
   var odometers = [];
   var accordionSettings = {};
+  var gridInstances = [];
 
   /**
    * In case of RexButtons inside a block that is a link
@@ -434,59 +435,6 @@ var Rexbuilder_App = (function($) {
   }
 
   /**
-   * Callback after load the pop up content
-   * @return {void}
-   */
-  var launchAllAfterLoading = function() {
-    var $popUpContent = $(this.target);
-    var $newGrids = $popUpContent.find(".grid-stack-row");
-    var $newSections = $popUpContent.find(".rexpansive_section");
-    var $newAccordions = $popUpContent.find('.rex-accordion');
-    var pageGrids = $grids.length;
-
-    // launch photoswipe
-    if ( $newSections.length > 0 ) {
-      var tot_newSections = $newSections.length, i;
-      for( i=0; i < tot_newSections; i++ ) {
-        $newSections[i].setAttribute( 'data-rexlive-section-number', pageGrids + i );
-        var pswchilds = $newSections[i].getElementsByClassName( "pswp-figure" );
-        if ( pswchilds.length === 0 ) {
-          Rexbuilder_Util.removeClass( $newSections[i], 'photoswipe-gallery' );
-        }
-      }
-      Rexbuilder_Photoswipe.init(".photoswipe-gallery");
-    }
-
-    // main grid
-    if( $newGrids.length > 0 ) {
-      $newGrids.perfectGridGalleryEditor({
-        editorMode: Rexbuilder_Util.editorMode
-      });
-    }
-
-    // accordions
-    if( $newAccordions.length > 0 ) {
-      $newAccordions.rexAccordion(accordionSettings);
-    }
-
-    // sliders
-    RexSlider.init();
-
-    // distance accordions
-    if ( 'undefined' !== typeof DistanceAccordion ) {
-      var togglers = this.target.getElementsByClassName('distance-accordion-toggle');
-      for ( var j=0, tot = togglers.length; j < tot; j++ ) {
-        var inst = new DistanceAccordion(togglers[j], {
-          context: this.target
-        });
-      }
-    }
-
-    // split scrolls
-    launchSplitScollable( this.target, this.target );
-  }
-
-  /**
    * Callback after load the popup iframe 
    * @return {void}
    */
@@ -712,7 +660,9 @@ var Rexbuilder_App = (function($) {
    * @return {vodi}
    */
   function launchFrontEndEffects() {
-    if( false == _plugin_frontend_settings.user.editing ) {
+    if( !Rexbuilder_Util.editorMode ) {
+      Rexbuilder_Photoswipe.init('.photoswipe-gallery');
+
       // inline photoswipe
       launchInlineGallery();
 
@@ -882,8 +832,6 @@ var Rexbuilder_App = (function($) {
     $sections = Rexbuilder_Util.$rexContainer.find(".rexpansive_section");
     $grids = Rexbuilder_Util.$rexContainer.find(".grid-stack-row");
 
-    var gridInstances = [];
-
     /* -- Launching the grid -- */
     // $grids.find(".wrapper-expand-effect").expandEffect();
     if( $grids ) {
@@ -892,15 +840,23 @@ var Rexbuilder_App = (function($) {
           editorMode: Rexbuilder_Util.editorMode
         });
       } else {
-        var grids = Array.prototype.slice.call( document.getElementsByClassName( 'perfect-grid-gallery' ) );
-        var tot_grids = grids.length;
-        var i = 0;
+        // get layout information and set this information on the grids
+        var choosedLayout = Rexbuilder_Util.chooseLayout();
+        Rexbuilder_Util.handleLayoutChange( choosedLayout );
 
-        for ( i = 0; i < tot_grids; i++ ) {
-          var rexGridInstance = new RexGrid( grids[i] );
+      	// Launching RexGrid
+      	var grids = Array.prototype.slice.call( document.getElementsByClassName( 'perfect-grid-gallery' ) );
+      	var tot_grids = grids.length;
+      	var i = 0;
 
-          gridInstances.push( rexGridInstance );
+      	for ( i = 0; i < tot_grids; i++ ) {
+      		var rexGridInstance = new RexGrid( grids[ i ] );
+          
+      		gridInstances.push( rexGridInstance );
         }
+
+        // Launch fast load
+        window.FastLoad();
       }
     }
 
@@ -988,17 +944,21 @@ var Rexbuilder_App = (function($) {
 
     _linkDocumentListeners();
 
-    // Starting slider
-    RexSlider.init();
-
-    Rexbuilder_Util.launchVideoPlugins();
-
-    Rexbuilder_Util.playAllVideos();
-
-    launchAccordions();
+    if (Rexbuilder_Util.editorMode) {
+      // Starting slider
+      RexSlider.init();
+      
+      Rexbuilder_Util.launchVideoPlugins();
+      
+      Rexbuilder_Util.playAllVideos();
+      
+      launchAccordions();
+    }
   };
 
   var load = function() {
+    // console.log( 'load' );
+    
     // @bugfix on other layouts than desktop with mixed customization definitions
     // @deprecated i don't like this solution, too much expensive
     
@@ -1010,6 +970,22 @@ var Rexbuilder_App = (function($) {
     if ( Rexbuilder_Util.editorMode ) {
       Rexbuilder_Util_Editor.load();
       Rexbuilder_Live_Utilities.load();
+    } else {
+      var tot_grids = gridInstances.length;
+      var i = 0;
+
+      for ( i = 0; i < tot_grids; i++ ) {
+        gridInstances[i].fixAfterLoad();
+      }
+
+      // Starting slider
+      RexSlider.init();
+
+      Rexbuilder_Util.launchVideoPlugins();
+
+      Rexbuilder_Util.playAllVideos();
+
+      launchAccordions();
     }
 
     /* -- Launching the textfill -- */
@@ -1040,8 +1016,72 @@ var Rexbuilder_App = (function($) {
     Rexbuilder_Util.galleryPluginActive = true;
   };
 
+  /**
+   * Returns the instance of the grid DOM Element passed.
+   * @param  {Element} grid   DOM Element of the grid
+   * @return {RexGrid|null}   RexGrid instance if exists, null otherwise
+   * @since  2.0.4
+   */
+  function getRexGridInstance( grid ) {
+    var gridId = grid.getAttribute( 'data-rex-grid-id' );
+    
+    console.log( gridInstances );
+    
+
+  	var i = 0;
+  	var tot_instances = gridInstances.length;
+
+  	for ( i = 0; i < tot_instances; i++ ) {
+  		if ( gridId === gridInstances[ i ].properties.id && grid === gridInstances[ i ].element ) {
+  			return gridInstances[ i ];
+  		}
+  	}
+
+  	return null;
+  }
+
+  /**
+   * Handle front end resize
+   * @return {void}
+   */
+  function handleFrontEndResize() {
+    var actualLayout = Rexbuilder_Util.findFrontLayout();
+    var i;
+    var tot_grids = gridInstances.length;
+
+    // find actual layout
+    if( Rexbuilder_Util.startFrontLayout != actualLayout ) {
+      Rexbuilder_Util.changedFrontLayout = true;
+      Rexbuilder_Util.startFrontLayout = actualLayout;
+    }
+
+    // find and set new layout information
+    if( Rexbuilder_Util.changedFrontLayout ) {
+      var choosedLayout = Rexbuilder_Util.chooseLayout();
+      Rexbuilder_Util.handleLayoutChange( choosedLayout );
+
+      // _set_initial_grids_state( choosedLayout );
+      // setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
+    }
+
+    // fix heights and tops
+    for ( i = 0; i < tot_grids; i++ ) {
+      if( Rexbuilder_Util.changedFrontLayout ) {
+        gridInstances[i].updateGridBlocks();
+      }
+
+      gridInstances[i].endResize();
+    }
+
+    Rexbuilder_Util.changedFrontLayout = false;
+  }
+
   return {
     init: init,
-    load: load
+    load: load,
+    handleFrontEndResize: handleFrontEndResize,
+
+    // RexGrid functions
+    getRexGridInstance: getRexGridInstance
   };
 })(jQuery);

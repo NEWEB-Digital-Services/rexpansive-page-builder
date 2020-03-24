@@ -175,6 +175,7 @@
 
   /**
    * Fix video proprtion of a single element
+   * Used on live editor
    * @param  {Node} el block element
    * @return {void}
    * @since  2.0.2

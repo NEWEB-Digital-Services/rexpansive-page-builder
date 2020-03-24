@@ -93,7 +93,7 @@ class Rexbuilder_Section {
 		if ("" != $id_image_bg_section) {
 			$img_attrs = wp_get_attachment_image_src($id_image_bg_section, $image_size);
 			if ( 1 == $fast_load && !$editor ) {
-				$section_fast_load = 'data-src="' . $img_attrs[0] . '"';
+				$section_fast_load = ' data-res-lazy-loading="false" data-src="' . $img_attrs[0] . '"';
 			} else {
 				$section_style .= 'background-image:url(\'' . $img_attrs[0] . '\');';
 			}
@@ -182,7 +182,7 @@ class Rexbuilder_Section {
 			$bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
 			$bg_video_markup .= '<video class="rex-video-container"' . ( 1 == $fast_load && ! $editor ? ' preload="none"' : ' preload autoplay' ) . ' loop muted playsinline>';
 			if ( 1 == $fast_load && !$editor ) {
-				$bg_video_markup .= '<source type="video/mp4" data-src="' . $video_mp4_url . '" />';
+				$bg_video_markup .= '<source type="video/mp4" data-res-lazy-loading="false" data-src="' . $video_mp4_url . '" />';
 				$bg_video_markup .= '</video>';
 				// adding video controllers
 				$bg_video_markup .= '<div class="rex-video__controls"><div class="loader video-tool video-tool--view"></div><div class="pause video-tool"><div class="indicator"></div></div><div class="play video-tool"><div class="indicator"></div></div></div>';

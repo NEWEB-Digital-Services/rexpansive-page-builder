@@ -57,23 +57,28 @@
     bkgrSimulator.style.backgroundImage = 'url(' + src + ')';
   }
 
+  function onImageLoad( el ) {
+    if ( '' === el.style.backgroundImage ) {
+      el.style.backgroundImage = 'url(' + this.src + ')';
+      el.removeAttribute( 'data-src' );
+
+      if ( -1 !== el.className.indexOf( 'sticky-section' ) ) {
+        checkLazyStickySection( el );
+      }
+    }
+  }
+
   /**
    * Loading lazy a background image in an element
    * @param {Node} el element to lazy load a background image
    */
   var lazyLoadBkgrImg = function( el ) {
     var src = el.getAttribute('data-src');
+
     if ( null !== src && -1 === el.style.backgroundImage.indexOf( src ) ) {
       var tempImg = new Image();
-      tempImg.src = el.getAttribute('data-src');
-      tempImg.onload = function() {
-        el.style.backgroundImage = 'url(' + this.src + ')';
-        el.removeAttribute('data-src');
-
-        if ( -1 !== el.className.indexOf('sticky-section') ) {
-          checkLazyStickySection( el );
-        }
-      };
+      tempImg.src = src;
+      tempImg.onload = onImageLoad.bind( tempImg, el );
 
       // on case of loading error, repush the image on the visibile queue
       // so the next interval can be reprocessed
@@ -83,6 +88,62 @@
       };
     }
   }
+
+  /**
+   * Loading lazy a background image in an element
+   * @param {Node} el element to lazy load a background image
+   */
+  function lazyLoadBkgrImgPromise( el ) {
+  	var src = el.getAttribute( 'data-src' );
+  	var isLazyLoading = 'true' == el.getAttribute( 'data-res-lazy-loading' );
+
+  	if ( null !== src && -1 === el.style.backgroundImage.indexOf( src ) && !isLazyLoading ) {
+  		loadResource( src, el )
+  			.then( function() {} )
+  			.catch( function( err ) {
+  				console.error( err )
+  			} );
+  	}
+  }
+
+  function loadResource( src, el ) {
+    el.setAttribute('data-res-lazy-loading', true);
+
+    return new Promise( function( resolve, reject ) {
+  		// Standard XHR to load an image
+  		var request = new XMLHttpRequest();
+  		request.open( 'GET', src );
+  		request.responseType = 'blob';
+
+  		request.onload = function() {
+  			if ( request.status === 200 ) {
+          console.log( 'xhr onload' );
+          
+  				// If successful, resolve the promise by passing back the request response
+  				el.style.backgroundImage = 'url(' + src + ')';
+  				el.removeAttribute( 'data-src' );
+          el.setAttribute('data-res-lazy-loading', false);
+
+  				if ( -1 !== el.className.indexOf( 'sticky-section' ) ) {
+  					checkLazyStickySection( el );
+  				}
+  				resolve( request.response );
+  			} else {
+  				// If it fails, reject the promise with a error message
+  				reject( new Error( 'Image didn\'t load successfully; error code:' + request.statusText ) );
+  			}
+  		};
+
+  		request.onerror = function() {
+  			console.log( 'error' )
+  			imgVisibleQueue.push( el );
+  			reject( err );
+  		};
+
+  		// Send the request
+  		request.send();
+  	} );
+  };
 
   /**
    * Adding listeners to the video element to lazy load
@@ -179,7 +240,7 @@
   function sectionIntersectionObserverCallback(entries, observer) {
     var tot_entries = entries.length, i;
     var imgWrapper, videoWrapper;
-
+    
     for( i=0; i < tot_entries; i++ ) {
       imgWrapper = null;
       videoWrapper = null;
@@ -232,8 +293,9 @@
   function blockIntersectionObserverCallback(entries, observer) {
     var tot_entries = entries.length, i;
     var imgWrapper, videoWrapper;
-    
+
     for( i=0; i < tot_entries; i++ ) {
+      // console.log( entries[i].target );
       imgWrapper = null;
       videoWrapper = null;
 
@@ -249,7 +311,8 @@
 
         // check images background
         if ( imgWrapper ) {
-          lazyLoadBkgrImg( imgWrapper );
+          // lazyLoadBkgrImg( imgWrapper );
+          lazyLoadBkgrImgPromise( imgWrapper );
         }
 
         if ( videoWrapper ) {
@@ -437,6 +500,9 @@
     document.addEventListener('DOMContentLoaded', handlingQueues);
   }
 
-  window.addEventListener('load', handleIntersectionObserverSmart);
+  // window.addEventListener('load', handleIntersectionObserverSmart);
+  // document.addEventListener('DOMContentLoaded', handleIntersectionObserverSmart);
+
+  window.FastLoad = handleIntersectionObserverSmart;
   // window.addEventListener('load', barbarianLoad);
 }());

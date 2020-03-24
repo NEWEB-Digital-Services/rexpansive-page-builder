@@ -1546,9 +1546,9 @@ class Rexbuilder_Public
 		global $post;
 		if ( $this->builder_active_on_this_post_type() ) {
 			$meta = get_post_meta($post->ID, '_rexbuilder_custom_css', true);
-			if ($meta != ''):
+			if ( $meta != '' ) {
 				wp_add_inline_style( $this->plugin_name . '-style', $meta);
-			endif;
+			}
 		}
 	}
 	
