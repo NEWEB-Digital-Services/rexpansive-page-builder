@@ -1042,35 +1042,40 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   function handleFrontEndResize() {
-    var actualLayout = Rexbuilder_Util.findFrontLayout();
-    var i;
-    var tot_grids = gridInstances.length;
+  	var actualLayout = Rexbuilder_Util.findFrontLayout();
+  	var i;
+  	var tot_grids = gridInstances.length;
 
-    // find actual layout
-    if( Rexbuilder_Util.startFrontLayout != actualLayout ) {
-      Rexbuilder_Util.changedFrontLayout = true;
-      Rexbuilder_Util.startFrontLayout = actualLayout;
-    }
+  	// Find actual layout
+  	if ( Rexbuilder_Util.startFrontLayout != actualLayout ) {
+  		Rexbuilder_Util.changedFrontLayout = true;
+  		Rexbuilder_Util.startFrontLayout = actualLayout;
+  	}
 
-    // find and set new layout information
-    if( Rexbuilder_Util.changedFrontLayout ) {
-      var choosedLayout = Rexbuilder_Util.chooseLayout();
-      Rexbuilder_Util.handleLayoutChange( choosedLayout );
+  	// Find and set new layout information
+  	if ( Rexbuilder_Util.changedFrontLayout ) {
+  		var choosedLayout = Rexbuilder_Util.chooseLayout();
+  		Rexbuilder_Util.handleLayoutChange( choosedLayout );
 
-      // _set_initial_grids_state( choosedLayout );
-      // setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
-    }
+  		// _set_initial_grids_state( choosedLayout );
+  		// setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
+  	}
 
-    // fix heights and tops
-    for ( i = 0; i < tot_grids; i++ ) {
-      if( Rexbuilder_Util.changedFrontLayout ) {
-        gridInstances[i].updateGridBlocks();
-      }
+  	for ( i = 0; i < tot_grids; i++ ) {
+      if ( Rexbuilder_Util.changedFrontLayout ) {
+        // Fix blocks properties
+        gridInstances[ i ].updateGridBlocks();
 
-      gridInstances[i].endResize();
-    }
+        // Sorting blocks based on real order
+        // Needed because there could be blocks in different
+        // orders when changing layout
+  			gridInstances[ i ].sortBlocks();
+  		}
 
-    Rexbuilder_Util.changedFrontLayout = false;
+  		gridInstances[ i ].endResize();
+  	}
+
+  	Rexbuilder_Util.changedFrontLayout = false;
   }
 
   return {
