@@ -544,8 +544,6 @@
 	 * @since		1.0.0
 	 */
 	function _fixAllBlockPositionsFixed() {
-		console.log( '_fixAllBlockPositionsFixed' );
-
 		var i = 0;
 		var j = 0;
 
@@ -587,8 +585,6 @@
 	 * @return {void}
 	 */
 	function _fixAllBlockPositionsMasonry() {
-		console.log( '_fixAllBlockPositionsMasonry' );
-
 		var i = 0;
 
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
@@ -661,8 +657,8 @@
 
 		var gutter = this.options.gutter;
 
-		var originalWidth = parseInt( currentBlock.getAttribute( 'data-gs-width' ) );
-		var originalHeight = parseInt( currentBlock.getAttribute( 'data-gs-height' ) );
+		var originalWidth = gridBlockObj.w;
+		var originalHeight = gridBlockObj.h;
 		var spaceAvailable = originalHeight * this.properties.singleHeight;
 		var elRealFluid = parseInt( blockData.getAttribute( 'data-element_real_fluid' ) );
 
@@ -711,8 +707,7 @@
 				var imageWidth = parseInt( itemContent.getAttribute( "data-background_image_width" ) );
 				var imageHeight = parseInt( itemContent.getAttribute( "data-background_image_height" ) );
 
-				// Can cause a layout reflow
-				if ( currentBlock.offsetWidth < imageWidth ) {
+				if ( ( this.properties.singleWidth * gridBlockObj.w ) < imageWidth ) {
 					backgroundHeight = ( imageHeight * ( ( originalWidth * singleWidth ) - gutter ) ) / imageWidth;
 				} else {
 					backgroundHeight = imageHeight;
@@ -770,7 +765,7 @@
 		// fix occurs on first start and not in editor mode
 		if ( currentBlockTextHeight !== 0 ) {
 			if ( 'fixed' === this.properties.layout || ( 1 !== elRealFluid && 'masonry' === this.properties.layout ) ) {
-				if ( newH < spaceAvailable ) {
+				if ( newH <= spaceAvailable ) {
 					resizeNotNeeded = true;
 				}
 			}
@@ -779,7 +774,7 @@
 				resizeNotNeeded = true;
 			} else if ( 'masonry' === this.properties.layout ) {
 				if ( ( 'natural' === backImgType && 1 !== elRealFluid ) || 'full' === backImgType ) {
-					if ( newH < spaceAvailable ) {
+					if ( newH <= spaceAvailable ) {
 						resizeNotNeeded = true;
 					}
 				}

@@ -2756,7 +2756,7 @@
         x = parseInt( elem.getAttribute("data-gs-width") );
         y = parseInt( elem.getAttribute("data-gs-height") );
         if (this.settings.galleryLayout == "masonry") {
-          y = Math.round(y * this.properties.singleHeight);
+          y = Math.round(y * this.properties.singleHeight) - this.properties.gutter;
         }
       }
       var size_text = (x + " x " + y);
@@ -2780,10 +2780,13 @@
     },
 
     calculateHeightSizeViewer: function(block) {
-      if (this.settings.galleryLayout == "masonry") {
-        return block.offsetHeight;
+      var blockH = parseInt( block.getAttribute( 'data-gs-height' ) );
+      if ( this.settings.galleryLayout == "masonry" ) {
+        // height in pixel (of the content! not the block)
+        return ( ( blockH * this.properties.singleHeight ) - this.properties.gutter );
       } else {
-        return Math.round( block.offsetHeight / this.properties.singleHeight );
+        // height in twelfths
+        return blockH;
       }
     },
 
@@ -2890,7 +2893,8 @@
                 removeClass( imageWrapper, "small-width" );
               }
             }
-            gallery.updateSizeViewerText( event.target, Math.round(ui.size.width / gallery.properties.singleWidth), Math.round(ui.size.height / heightFactor), size_viewer, size_viewer_mobile );
+
+            gallery.updateSizeViewerText( event.target, Math.round(ui.size.width / gallery.properties.singleWidth), Math.round(ui.size.height / heightFactor) - ( 'masonry' === gallery.settings.galleryLayout ? gallery.properties.gutter : 0 ), size_viewer, size_viewer_mobile );
             // removed due to slowing paint/repaint on safari
             if ( ui.originalSize.width !== ui.size.width ) {
               gallery.checkBlockDimension(event.target, ui.size.width);
@@ -3599,7 +3603,7 @@
       // if ( this.properties.firstStartGrid || ! this.settings.editorMode ) {
         if ( textHeight !== 0 ) {
           if ( 'fixed' === this.settings.galleryLayout || ( 1 !== elRealFluid && 'masonry' === this.settings.galleryLayout ) ) {
-            if ( newH < spaceAvailable ) {
+            if ( newH <= spaceAvailable ) {
               resizeNotNeeded = true;
             }
           }
@@ -3608,7 +3612,7 @@
             resizeNotNeeded = true;
           } else if ( 'masonry' === this.settings.galleryLayout ) {
             if( ( 'natural' === backImgType && 1 !== elRealFluid ) || 'full' === backImgType ) {
-              if ( newH < spaceAvailable ) {
+              if ( newH <= spaceAvailable ) {
                 resizeNotNeeded = true;
               }
             }
