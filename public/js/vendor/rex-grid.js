@@ -1,5 +1,4 @@
-;
-( function( window, factory ) {
+;( function( window, factory ) {
 	'use strict';
 	window.RexGrid = factory( window );
 } )( 'undefined' !== typeof window ? window : this, function() {
@@ -42,6 +41,7 @@
 		 * @param  {Node}			el
 		 * @param  {String}		selector
 		 * @return {Boolean}	Does the element match the given selector?
+		 * @since  1.0.0
 		 */
 		matches: function( el, selector ) {
 			return ( el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector ).call( el, selector );
@@ -51,7 +51,8 @@
 		 * Search for parent ancestor element in vanillaJS
 		 * @param  {Node}					el
 		 * @param  {String}				selector
-		 * @return {Node | null}	Parent node that matches the given selector if does exist, null otherwise
+		 * @return {Node|null}	Parent node that matches the given selector if does exist, null otherwise
+		 * @since	 1.0.0
 		 */
 		parents: function( el, selector ) {
 			while ( el.parentNode ) {
@@ -68,7 +69,7 @@
 		 * representing a Number is even
 		 * and returns true if so.
 		 * @param  {Number | String} num		Number to check
-		 * @return {Boolean}							Is the number even?
+		 * @return {Boolean}								Is the number even?
 		 * @since  1.0.0
 		 */
 		isEven: function( num ) {
@@ -82,7 +83,13 @@
 				throw new Error( 'The value passed is not a Number or a String representing a Number' )
 			}
 		},
-
+		/**
+		 * Removing className if present, adding className if not present.
+		 * @param  {Element} 	el
+		 * @param  {String} 	className
+		 * @return {void}
+		 * @since  1.0.0
+		 */
 		toggleClass: function( el, className ) {
 			if ( hasClass( el, className ) ) {
 				Utils.removeClass( el, className );
@@ -106,7 +113,7 @@
 	/* ===== Global vars ===== */
 	var globalViewportSize = Utils.viewport();
 
-	/* ===== RexBlock ===== */
+	/* ===== RexBlock Constructor ===== */
 	function RexBlock( options ) {
 		this.el = options.el;
 		this.blockData = this.el.querySelector( '.rexbuilder-block-data' );
@@ -116,11 +123,38 @@
 		this.x = options.x;
 		this.y = options.y;
 		this.hide = options.hide;
+		this.domIndex = this.x + ( this.y * 12 );
 		this.toCheck = options.toCheck;
+	}
+
+	RexBlock.prototype.refreshProperties = function() {
+		this.refreshCoords();
+		this.refreshHide();
+		this.refreshDOMIndex();
+	}
+
+	RexBlock.prototype.refreshCoords = function() {
+		this.w = parseInt( this.el.getAttribute( 'data-gs-width' ) );
+		this.h = parseInt( this.el.getAttribute( 'data-gs-height' ) );
+
+		this.x = parseInt( this.el.getAttribute( 'data-gs-x' ) );
+		this.y = parseInt( this.el.getAttribute( 'data-gs-y' ) );
+	}
+
+	RexBlock.prototype.refreshHide = function() {
+		this.hide = Utils.hasClass( this.el, 'rex-hide-element' );
+	}
+
+	/**
+	 * Re-calculating DOMIndex.
+	 * @return 	{void}
+	 * @since		1.0.0
+	 */
+	RexBlock.prototype.refreshDOMIndex = function() {
 		this.domIndex = this.x + ( this.y * 12 );
 	}
 
-	/* ===== Plugin constructor ===== */
+	/* ===== RexGrid Plugin constructor ===== */
 	function RexGrid() {
 		/**
 		 * Grid DOM Element.
@@ -178,10 +212,10 @@
 			halfSeparatorRight: 0,
 			halfSeparatorBottom: 0,
 			halfSeparatorLeft: 0,
-			halfSeparatorElementTop: 0,
-			halfSeparatorElementRight: 0,
-			halfSeparatorElementBottom: 0,
-			halfSeparatorElementLeft: 0,
+			halfSeparatorBlockTop: 0,
+			halfSeparatorBlockRight: 0,
+			halfSeparatorBlockBottom: 0,
+			halfSeparatorBlockLeft: 0,
 			gridTopSeparator: null,
 			gridRightSeparator: null,
 			gridBottomSeparator: null,
@@ -229,14 +263,16 @@
 	/* ===== Private Methods ===== */
 	function _init() {
 		if ( this.sectionData.getAttribute( 'data-row_edited_live' ) != 'true' ) {
-			// @todo set to false on change layout
+			/** @todo set to false on change layout */
 			this.properties.editedFromBackend = true;
 		}
 
 		this.properties.oneColumnModeActive = 'true' == this.sectionData.getAttribute( 'data-collapse-grid' );
 
-		// Gutter functions
+		// Getting gutters from DOM attributes
 		_getDOMGutterOptions.call( this );
+
+		// Setting instance properties
 		_setGridGutterProperties.call( this );
 		_setBlocksGutterProperties.call( this );
 
@@ -259,13 +295,13 @@
 		// Applying blocks separators
 		_applyBlocksSeparators.call( this );
 
-		// Height and top calculations
+		// Calculations
 		this.calcAllBlocksHeights();
-		this.calcBlocksTop();
+		this.calcAllBlocksTops();
 
-		// Height and top fixings
+		// Fixings
 		// this.fixAllBlocksHeights();
-		// _fixBlockPositions.call( this );
+		// this.fixAllBlockPositions();
 
 		_setGridHeight.call( this );
 	}
@@ -305,10 +341,8 @@
 			this.gridBlocks.push( blockInstance );
 		}
 
-		// sort blocks array by ascending DOM order
-		this.gridBlocks.sort( function( bA, bB ) {
-			return ( bA.domIndex - bB.domIndex )
-		} );
+		// Sort blocks array by ascending DOM order
+		this.sortBlocks();
 
 		// Getting grid id
 		this.properties.id = this.element.dataset.rexGridId;
@@ -392,6 +426,11 @@
 			null;
 	}
 
+	/**
+	 * Sets instance grid separators (gutters) properties.
+	 * @return 	{void}
+	 * @since   1.0.0
+	 */
 	function _setGridGutterProperties() {
 		if ( Utils.isEven( this.options.gutter ) ) {
 			this.properties.halfSeparatorTop = this.options.gutter / 2;
@@ -406,20 +445,32 @@
 		}
 	}
 
+	/**
+	 * Sets instance blocks separators (gutters) properties.
+	 * Blocks properties are stored in RexGrid instance because
+	 * they're equal for all blocks inside the grid.
+	 * @return 	{void}
+	 * @since   1.0.0
+	 */
 	function _setBlocksGutterProperties() {
 		if ( Utils.isEven( this.options.gutter ) ) {
-			this.properties.halfSeparatorElementTop = this.options.gutter / 2;
-			this.properties.halfSeparatorElementRight = this.options.gutter / 2;
-			this.properties.halfSeparatorElementBottom = this.options.gutter / 2;
-			this.properties.halfSeparatorElementLeft = this.options.gutter / 2;
+			this.properties.halfSeparatorBlockTop = this.options.gutter / 2;
+			this.properties.halfSeparatorBlockRight = this.options.gutter / 2;
+			this.properties.halfSeparatorBlockBottom = this.options.gutter / 2;
+			this.properties.halfSeparatorBlockLeft = this.options.gutter / 2;
 		} else {
-			this.properties.halfSeparatorElementTop = Math.floor( this.options.gutter / 2 );
-			this.properties.halfSeparatorElementRight = Math.floor( this.options.gutter / 2 );
-			this.properties.halfSeparatorElementBottom = Math.ceil( this.options.gutter / 2 );
-			this.properties.halfSeparatorElementLeft = Math.ceil( this.options.gutter / 2 );
+			this.properties.halfSeparatorBlockTop = Math.floor( this.options.gutter / 2 );
+			this.properties.halfSeparatorBlockRight = Math.floor( this.options.gutter / 2 );
+			this.properties.halfSeparatorBlockBottom = Math.ceil( this.options.gutter / 2 );
+			this.properties.halfSeparatorBlockLeft = Math.ceil( this.options.gutter / 2 );
 		}
 	}
 
+	/**
+	 * Applies grid separators (paddings) on grid DOM Element.
+	 * @return 	{void}
+	 * @since		1.0.0
+	 */
 	function _applyGridSeparators() {
 		if ( !this.properties.setDesktopPadding ||
 			( !this.properties.setDesktopPadding &&
@@ -459,42 +510,36 @@
 		}
 	}
 
+	/**
+	 * Applies blocks separators (gutters) on block content DOM Element.
+	 * @return 	{void}
+	 * @since		1.0.0
+	 */
 	function _applyBlocksSeparators() {
 		var i = 0;
+		var currentBlock;
 
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
 			currentBlock = this.gridBlocks[ i ].el.querySelector( '.grid-stack-item-content' );
 
-			currentBlock.style.paddingTop = this.properties.halfSeparatorElementTop + 'px';
-			currentBlock.style.paddingRight = this.properties.halfSeparatorElementRight + 'px';
-			currentBlock.style.paddingBottom = this.properties.halfSeparatorElementBottom + 'px';
-			currentBlock.style.paddingLeft = this.properties.halfSeparatorElementLeft + 'px';
+			currentBlock.style.paddingTop = this.properties.halfSeparatorBlockTop + 'px';
+			currentBlock.style.paddingRight = this.properties.halfSeparatorBlockRight + 'px';
+			currentBlock.style.paddingBottom = this.properties.halfSeparatorBlockBottom + 'px';
+			currentBlock.style.paddingLeft = this.properties.halfSeparatorBlockLeft + 'px';
 		}
 	}
 
 	/**
-	 * Fixing the block positions according to heights
-	 * @return {void}
+	 * Fix blocks top positions for a fixed grid.
+	 * @return 	{void}
+	 * @since		1.0.0
 	 */
-	function _fixBlockPositions() {
-		switch ( this.properties.layout ) {
-			case 'masonry':
-				// If layout is masonry we set all the y to 0
-				_fixBlockPositionsMasonry.call( this );
-			default:
-				_fixBlockPositionsFixed.call( this );
-				break;
-		}
-	}
+	function _fixAllBlockPositionsFixed() {
+		console.log( '_fixAllBlockPositionsFixed' );
 
-	/**
-	 * Fix blocks top positions for a fixed grid
-	 * @return {void}
-	 */
-	function _fixBlockPositionsFixed() {
-		var i;
-		var j;
+		var i = 0;
+		var j = 0;
 
 		// check other blocks collapse
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
@@ -519,7 +564,7 @@
 
 					this.gridBlocks[ j ].el.style.top = ( ( newY ) * this.properties.singleHeight ) + 'px';
 					this.gridBlocks[ j ].y = newY;
-					this.gridBlocks[ j ].domIndex = this.gridBlocks[ j ].x + ( this.gridBlocks[ j ].y * 12 )
+					this.gridBlocks[ j ].domIndex = this.gridBlocks[ j ].x + ( this.gridBlocks[ j ].y * 12 );
 
 					this.gridBlocks[ j ].toCheck = true;
 				}
@@ -533,8 +578,10 @@
 	 * Fix blocks top positions for a masonry grid
 	 * @return {void}
 	 */
-	function _fixBlockPositionsMasonry() {
-		var i;
+	function _fixAllBlockPositionsMasonry() {
+		console.log( '_fixAllBlockPositionsMasonry' );
+
+		var i = 0;
 
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
 			this.gridBlocks[ i ].el.setAttribute( 'data-gs-y', 0 );
@@ -549,7 +596,9 @@
 	/**
 	 * Fix natural image with a proper class to style correctly 
 	 * the image in background as a natural image with IMG tag
-	 * @return {void}
+	 * @param		{RexBlock}	gridBlockObj	RexBlock instance of the block
+	 * 																		with the image to fix
+	 * @return 	{void}
 	 * @since 1.0.0
 	 */
 	function _fixNaturalImage( gridBlockObj ) {
@@ -654,6 +703,7 @@
 				var imageWidth = parseInt( itemContent.getAttribute( "data-background_image_width" ) );
 				var imageHeight = parseInt( itemContent.getAttribute( "data-background_image_height" ) );
 
+				// Can cause a layout reflow
 				if ( currentBlock.offsetWidth < imageWidth ) {
 					backgroundHeight = ( imageHeight * ( ( originalWidth * singleWidth ) - gutter ) ) / imageWidth;
 				} else {
@@ -662,7 +712,7 @@
 			}
 
 			// Calculate video height
-			// @todo check me to prevent video auto ratio-resize 
+			/** @todo check me to prevent video auto ratio-resize */
 			if ( blockHasYoutube || blockHasVideo || blockHasVimeo ) {
 				videoHeight = originalHeight * this.properties.singleHeight;
 			}
@@ -747,9 +797,9 @@
 
 	/**
 	 * Calculate single block height, based on the assume that is a collapse
-	 * and that the block properties are not defined for the collapse (no mobile layout saved)
-	 * @param  {RexBlock} gridBlockObj 	element to get the dimension
-	 * @return {Object}      						width and height of a collapsed block
+	 * and that the block properties are not defined for the collapse (no mobile layout saved).
+	 * @param  {RexBlock} gridBlockObj 	Block to get the dimension
+	 * @return {Number}      						Height of the collapsed block
 	 * @since	 1.0.0
 	 */
 	function _getBlockHeightOnCollapse( gridBlockObj ) {
@@ -855,7 +905,7 @@
 	 * Fix the height of a block, according to the builder contents rules
 	 * @param  {RexBlock} gridBlockObj RexBlock instance
 	 * @return {void}
-	 * @since  2.0.4
+	 * @since  1.0.0
 	 */
 	RexGrid.prototype.fixBlockHeight = function( gridBlockObj ) {
 		var newH;
@@ -881,10 +931,28 @@
 	}
 
 	/**
-	 * Calculating top of the grid blocks.
-	 * @since	1.0.0
+	 * Fixing the block positions according to heights
+	 * @return 	{void}
+	 * @since		1.0.0
 	 */
-	RexGrid.prototype.calcBlocksTop = function() {
+	RexGrid.prototype.fixAllBlockPositions = function() {
+		switch ( this.properties.layout ) {
+			case 'masonry':
+				// If layout is masonry we set all the y and x to 0,
+				// then the normal collision detection function is called
+				_fixAllBlockPositionsMasonry.call( this );
+			default:
+				_fixAllBlockPositionsFixed.call( this );
+				break;
+		}
+	}
+
+	/**
+	 * Calculating top of the grid blocks.
+	 * @return 	{void}
+	 * @since		1.0.0
+	 */
+	RexGrid.prototype.calcAllBlocksTops = function() {
 		var i = 0;
 
 		var currentBlock;
@@ -893,58 +961,79 @@
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
 			currentBlock = this.gridBlocks[ i ].el;
-
 			currentBlockRealTop = this.properties.singleHeight * this.gridBlocks[ i ].y;
-
 			currentBlock.style.top = currentBlockRealTop + 'px';
 		}
 	}
-
+	/**
+	 * Fixing of heights and positions that are necessary after
+	 * the 'load' Event has fired.
+	 * @return 	{void}
+	 * @since		1.0.0
+	 * @todo 		Change name?
+	 */
 	RexGrid.prototype.fixAfterLoad = function() {
 		// Fixings
 		this.fixAllBlocksHeights();
-		_fixBlockPositions.call( this );
+		this.fixAllBlockPositions();
 
 		_setGridHeight.call( this );
+
+		// Resetting min height that was set in _init function
 		this.element.style.minHeight = '';
+	}
+
+	/**
+	 * Update RexBlocks information reading from DOM attributes.
+	 * @return {void}
+	 * @since  1.0.0
+	 */
+	RexGrid.prototype.updateGridBlocks = function() {
+		console.log( 'updateGridBlocks' );
+
+		var i = 0;
+
+		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
+			this.gridBlocks[ i ].refreshProperties();
+		}
+	}
+
+	/**
+	 * Sorts blocks. Order based on block DOM Index,
+	 * so it has to be properly updated before calling
+	 * this function.
+	 * @return 	{void}
+	 * @since		1.0.0
+	 */
+	RexGrid.prototype.sortBlocks = function() {
+		this.gridBlocks.sort( function( blockA, blockB ) {
+			return ( blockA.domIndex - blockB.domIndex )
+		} );
 	}
 
 	/**
 	 * Fix the grid after a resize
 	 * @return {void}
+	 * @since	 1.0.0
+	 * @todo	 Change name?
 	 */
 	RexGrid.prototype.endResize = function() {
 		// Checking layout change and if the grid has to collapse
 		this.properties.layout = this.element.getAttribute( 'data-layout' );
 		this.properties.oneColumnModeActive = 'true' == this.sectionData.getAttribute( 'data-collapse-grid' );
 
-		// update grid single height and single width
+		// Update grid width, single height and single width
 		_calcGridBaseAttrs.call( this );
-		// Calculatione
+
+		// Calculations
 		this.calcAllBlocksHeights();
-		this.calcBlocksTop();
+		this.calcAllBlocksTops();
 
 		// Fixings
 		this.fixAllBlocksHeights();
-		_fixBlockPositions.call( this );
+		this.fixAllBlockPositions();
 
 		_setGridHeight.call( this );
-	}
-
-	/**
-	 * Update RexBlocks information
-	 * @return {void}
-	 * @since  2.0.4
-	 */
-	RexGrid.prototype.updateGridBlocks = function() {
-		var i;
-		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
-			this.gridBlocks[ i ].w = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-width' ) );
-			this.gridBlocks[ i ].h = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-height' ) );
-			this.gridBlocks[ i ].x = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-x' ) );
-			this.gridBlocks[ i ].y = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-y' ) );
-			this.gridBlocks[ i ].hide = Utils.hasClass( this.gridBlocks[ i ].el, 'rex-hide-element' );
-		}
 	}
 
 	return RexGrid;

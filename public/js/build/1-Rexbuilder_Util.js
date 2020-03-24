@@ -3842,8 +3842,6 @@ var Rexbuilder_Util = (function($) {
       defaultLayoutSections
     );
 
-    console.log( 'mergedEdits', mergedEdits );
-
     // removing collapsed from grid
     // Rexbuilder_Util.removeCollapsedGrids();
 
