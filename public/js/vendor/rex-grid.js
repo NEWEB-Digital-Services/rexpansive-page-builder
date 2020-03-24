@@ -129,6 +129,7 @@
 		this.h = options.h;
 		this.x = options.x;
 		this.y = options.y;
+		this.start_h = parseInt( this.blockData.getAttribute('data-gs_start_h') );
 		this.hide = options.hide;
 		this.domIndex = this.x + ( this.y * 12 );
 		this.toCheck = options.toCheck;
@@ -636,7 +637,7 @@
 		}
 
 		blockData.setAttribute( 'data-gs_height', newH );
-		blockData.setAttribute( 'data-gs_start_h', newH );
+		// blockData.setAttribute( 'data-gs_start_h', newH );
 		blockData.setAttribute( 'data-block_height_calculated', newH );
 	}
 	/**
@@ -650,7 +651,7 @@
 
 		// Properties
 		var blockData = gridBlockObj.blockData;
-		var startH = parseInt( blockData.getAttribute( 'data-gs_start_h' ) );
+		var startH = gridBlockObj.start_h;
 
 		var newH;
 		var singleWidth = this.properties.singleWidth;
@@ -658,8 +659,8 @@
 		var gutter = this.options.gutter;
 
 		var originalWidth = gridBlockObj.w;
-		var originalHeight = gridBlockObj.h;
-		var spaceAvailable = originalHeight * this.properties.singleHeight;
+		var originalHeight = gridBlockObj.start_h;
+		var spaceAvailable = ( originalHeight * this.properties.singleHeight ) - gutter;
 		var elRealFluid = parseInt( blockData.getAttribute( 'data-element_real_fluid' ) );
 
 		var backgroundHeight = 0;
@@ -759,29 +760,35 @@
 			);
 		}
 
-		var resizeNotNeeded = false;
+		var resizeNeeded = true;
+
+		console.log(newH, spaceAvailable, originalHeight, gridBlockObj.h)
 
 		// check if resize really needed
 		// fix occurs on first start and not in editor mode
 		if ( currentBlockTextHeight !== 0 ) {
 			if ( 'fixed' === this.properties.layout || ( 1 !== elRealFluid && 'masonry' === this.properties.layout ) ) {
-				if ( newH <= spaceAvailable ) {
-					resizeNotNeeded = true;
+				if ( newH <= spaceAvailable && originalHeight > gridBlockObj.h ) {
+					resizeNeeded = false;
 				}
 			}
 		} else if ( backgroundHeight !== 0 ) {
 			if ( 'fixed' === this.properties.layout ) {
-				resizeNotNeeded = true;
+				resizeNeeded = false;
 			} else if ( 'masonry' === this.properties.layout ) {
 				if ( ( 'natural' === backImgType && 1 !== elRealFluid ) || 'full' === backImgType ) {
 					if ( newH <= spaceAvailable ) {
-						resizeNotNeeded = true;
+						resizeNeeded = false;
 					}
 				}
 			}
+		} else if ( 0 !== videoHeight ) {
+			if ( 'masonry' === this.properties.layout ) {
+				resizeNeeded = false;
+			}
 		}
 
-		if ( resizeNotNeeded ) {
+		if ( ! resizeNeeded ) {
 			return null;
 		}
 

@@ -590,15 +590,15 @@ var Rexbuilder_Live_Utilities = (function($) {
 		Rexbuilder_Util.$document.on("rexlive:dropChanges", function(e) {
 			Rexbuilder_Util_Editor.startLoading();
 			var eventData = e.settings.data_to_send;
-			_restorePageStartingState(eventData);
+			Rexbuilder_Util_Editor.restorePageStartingState(eventData);
 		});
 
 		Rexbuilder_Util.$document.on("rexlive:lockRows", function(e) {
-			_lockRows();
+			Rexbuilder_Util_Editor.lockRows();
 		});
 
 		Rexbuilder_Util.$document.on("rexlive:unlockRows", function(e) {
-			_releaseRows();
+			Rexbuilder_Util_Editor.releaseRows();
 		});
 
 		Rexbuilder_Util.$document.on("rexlive:close_modal", function(e) {

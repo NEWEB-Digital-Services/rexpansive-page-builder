@@ -896,6 +896,7 @@ var Rexbuilder_Util_Editor = (function($) {
     synchGradient: _synchGradient,
     updateBlockContainerHeight: _updateBlockContainerHeight,
     updateContainerMargins: _updateContainerMargins,
-    sendUndoRedoInformation: _sendUndoRedoInformation
+    sendUndoRedoInformation: _sendUndoRedoInformation,
+    restorePageStartingState: _restorePageStartingState
   };
 })(jQuery);

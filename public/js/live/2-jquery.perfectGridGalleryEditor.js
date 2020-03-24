@@ -3617,6 +3617,10 @@
               }
             }
           }
+        } else if ( 0 !== videoHeight ) {
+          if ( 'masonry' === this.settings.galleryLayout ) {
+            resizeNotNeeded = true;
+          }
         }
       // }
 
