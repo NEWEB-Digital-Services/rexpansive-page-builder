@@ -1025,9 +1025,6 @@ var Rexbuilder_App = (function($) {
   function getRexGridInstance( grid ) {
     var gridId = grid.getAttribute( 'data-rex-grid-id' );
     
-    console.log( gridInstances );
-    
-
   	var i = 0;
   	var tot_instances = gridInstances.length;
 

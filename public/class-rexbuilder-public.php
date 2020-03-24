@@ -362,9 +362,8 @@ class Rexbuilder_Public
 			}
 
 			wp_enqueue_script('utilities', REXPANSIVE_BUILDER_URL . 'public/js/vendor/utilities.js', array('jquery'), $ver, true);
-			
-			wp_enqueue_script('3-velocity', REXPANSIVE_BUILDER_URL . 'public/js/vendor/3-velocity.min.js', array('jquery'), $ver, true);
-			wp_enqueue_script('3-velocityui', REXPANSIVE_BUILDER_URL . 'public/js/vendor/3-velocity.ui.min.js', array('jquery'), $ver, true);
+			wp_enqueue_script('animejs', REXPANSIVE_BUILDER_URL . 'public/js/vendor/anime.min.js', array(), $ver, true);
+
 			if( !Rexbuilder_Utilities::isBuilderLive() ) {
 				wp_enqueue_script('4-jqueryScrollify', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrollify.js', array('jquery'), $ver, true);
 			}
@@ -1474,7 +1473,7 @@ class Rexbuilder_Public
 						$custom_style = ' style="margin-top:' . $global_settings['container_distancer']['top'] . 'px;"';
 					}
 				}
-
+				do_action( 'rexpansive_builder_before_rexbuilder_live_content' );
 ?>
 	<div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing add-new-section--hide'.($fixTopMargins ? ' fix-tools-first-row' : '') : ''); ?>"<?php echo ( $editor && $fixTopMargins ? $custom_style : ''); ?>>
 		<?php

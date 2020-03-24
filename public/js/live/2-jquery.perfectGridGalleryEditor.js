@@ -4099,6 +4099,7 @@
      * Some filtering rule
      * @param {Object} options filtering information
      * @since 2.0.0
+     * @todo remove velocity and add anime, or remove completely the method (we need it only in the front(?))
      */
     filter: function(options) {
       // get the initial state of the grid

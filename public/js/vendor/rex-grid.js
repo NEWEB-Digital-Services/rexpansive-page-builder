@@ -89,7 +89,14 @@
 			} else {
 				Utils.addClass( el, className );
 			}
-		}
+		},
+
+		getCoord: function( val, maxWidth ) {
+			return {
+				x: val % maxWidth,
+				y: Math.floor( val / maxWidth )
+			}
+		},
 	}
 
 	// Class manipulation utils
@@ -156,7 +163,8 @@
 		// Default options values
 		var defaults = {
 			type: 'fixed',
-			gutter: 20
+			gutter: 20,
+			columns: 12
 		};
 
 		// Create options by extending defaults with the passed in arugments.
@@ -272,7 +280,7 @@
 
 	function _calcGridBaseAttrs() {
 		this.properties.gridWidth = this.element.offsetWidth; // Can cause a layout reflow
-		this.properties.singleWidth = this.properties.gridWidth / 12;
+		this.properties.singleWidth = this.properties.gridWidth / this.options.columns;
 
 		if ( 'fixed' === this.properties.layout ) {
 			this.properties.singleHeight = this.properties.singleWidth;
@@ -519,7 +527,7 @@
 
 					this.gridBlocks[ j ].el.style.top = ( ( newY ) * this.properties.singleHeight ) + 'px';
 					this.gridBlocks[ j ].y = newY;
-					this.gridBlocks[ j ].domIndex = this.gridBlocks[ j ].x + ( this.gridBlocks[ j ].y * 12 )
+					this.gridBlocks[ j ].domIndex = this.gridBlocks[ j ].x + ( this.gridBlocks[ j ].y * this.options.columns )
 
 					this.gridBlocks[ j ].toCheck = true;
 				}
@@ -644,7 +652,7 @@
 		var currentBlockTextHeight = _calculateTextWrapHeight.call( this, currentBlock );
 
 		if ( this.properties.oneColumnModeActive ) {
-			originalWidth = 12;
+			originalWidth = this.options.columns;
 		}
 
 		if ( 0 === currentBlockTextHeight ) {
@@ -945,6 +953,93 @@
 			this.gridBlocks[ i ].y = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-y' ) );
 			this.gridBlocks[ i ].hide = Utils.hasClass( this.gridBlocks[ i ].el, 'rex-hide-element' );
 		}
+	}
+
+	/**
+	 * Filter the grid elements by a certain rule
+	 * @param  {String} rule class to filter
+	 * @return {[type]}      [description]
+	 */
+	RexGrid.prototype.filter = function( rule ) {
+		var i;
+		var toMaintain = [];
+		var toMaintainCoords = [];
+		var toRemove = [];
+
+		var idx = new IndexedGrid( this.options.columns );
+
+		// get all elements
+		if ( '*' == rule ) {
+			for( i=0; i < this.gridBlocksTotal; i++ ) {
+				toMaintain.push( this.gridBlocks[i].el );
+				toMaintainCoords.push( { 
+					x:this.gridBlocks[i].x,
+					y:this.gridBlocks[i].y,
+					w:this.gridBlocks[i].w,
+					h:this.gridBlocks[i].h
+				} )
+				this.gridBlocks[i].hide = false;
+			}
+		} else {
+			// filter by a rule
+			for( i=0; i < this.gridBlocksTotal; i++ ) {
+				if ( Utils.hasClass( this.gridBlocks[i].el, rule ) ) {
+					toMaintain.push( this.gridBlocks[i].el );
+					toMaintainCoords.push( { 
+						x:0,
+						y:0,
+						w:this.gridBlocks[i].w,
+						h:this.gridBlocks[i].h
+					} )
+					this.gridBlocks[i].hide = false;
+				} else {
+					this.gridBlocks[i].hide = true;
+					toRemove.push( this.gridBlocks[i].el );
+				}
+			}
+
+			idx.setGrid( 0, 0, toMaintainCoords[0].w, toMaintainCoords[0].h );
+			var idx_pos;
+			var idx_cords;
+			for( i=1; i< toMaintainCoords.length; i++ ) {
+				idx_pos = idx.willFit( toMaintainCoords[i].w, toMaintainCoords[i].h );
+				if ( idx_pos ) {
+					idx_cords = Utils.getCoord( idx_pos, this.options.columns );
+					idx.setGrid( idx_cords.x, idx_cords.y, toMaintainCoords[i].w, toMaintainCoords[i].h )
+					toMaintainCoords[i].x = idx_cords.x;
+					toMaintainCoords[i].y = idx_cords.y;
+				}
+			}
+		}
+
+		var that = this;
+		var timeline = anime.timeline({
+			duration: 200,
+			easing: 'easeInOutQuad',
+			begin: function() {
+				// handle filter click here
+			},
+			complete: function(anim) {
+				// animation complete
+			}
+		});
+
+		timeline.add( {
+			targets: toMaintain,
+			scale: 1,
+			opacity: 1,
+			left: function( target, index ) {
+				// target.setAttribute('data-gs-x', toMaintainCoords[index].x);
+				return ( toMaintainCoords[index].x * that.properties.singleWidth ) + 'px';
+			},
+			top: function( target, index ) {
+				return ( toMaintainCoords[index].y * that.properties.singleHeight ) + 'px';
+			},
+		}).add( {
+			targets: toRemove,
+			scale: 0,
+			opacity: 0
+		}, '-=200' );
 	}
 
 	return RexGrid;

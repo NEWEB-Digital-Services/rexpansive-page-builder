@@ -243,8 +243,7 @@ var builderlive_public_editor = [
 	'public/js/vendor/jquery.rexAccordion.js',
 	'public/js/vendor/utilities.js',
 	'public/js/live/2-jquery.perfectGridGalleryEditor.js',
-	'public/js/vendor/3-velocity.min.js',
-	'public/js/vendor/3-velocity.ui.min.js',
+	'public/js/vendor/anime.min.js',
 	'public/js/build/99-Rexbuilder_App.js',
 	'public/js/rexbuilder-public.js'
 ];
@@ -291,8 +290,7 @@ var builderlive_public = [
 	'public/js/vendor/6-jquery.rexIndicator.js',
 	'public/js/vendor/utilities.js',
 	// 'public/js/live/2-jquery.perfectGridGalleryEditor.js',
-	'public/js/vendor/3-velocity.min.js',
-	'public/js/vendor/3-velocity.ui.min.js',
+	'public/js/vendor/anime.min.js',
 	'public/js/vendor/4-jquery.rexScrollify.js',
 	'public/js/build/99-Rexbuilder_App.js',
 	'public/js/rexbuilder-public.js'
