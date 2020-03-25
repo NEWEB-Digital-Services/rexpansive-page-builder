@@ -1925,8 +1925,8 @@
         var oldSingleHeight = this.properties.singleHeight;
         var newSingleHeight;
         if (this.settings.fullHeight.toString() == "true") {
-          this.properties.gridBlocksHeight = this._calculateGridHeight();
-          newSingleHeight = Rexbuilder_Util.globalViewport.height / this.properties.gridBlocksHeight;
+          this.properties.gridBlocksHeight = this._calculateGridHeight();     // single height in units
+          newSingleHeight = Rexbuilder_Util.globalViewport.height / this.properties.gridBlocksHeight;   // single height in pixels
         } else {
           newSingleHeight = this.properties.singleWidth;
         }

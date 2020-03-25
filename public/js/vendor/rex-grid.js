@@ -206,9 +206,8 @@
 
 		// Default options values
 		var defaults = {
-			type: 'fixed',
 			gutter: 20,
-			columns: 12
+			columns: 12,
 		};
 
 		// Create options by extending defaults with the passed in arugments.
@@ -223,6 +222,7 @@
 			id: '',
 			gridWidth: 0,
 			layout: 'fixed',
+			fullHeight: false,
 			singleWidth: 0,
 			singleHeight: 0,
 			halfSeparator: 0,
@@ -286,7 +286,8 @@
 			this.properties.editedFromBackend = true;
 		}
 
-		this.properties.oneColumnModeActive = 'true' == this.sectionData.getAttribute( 'data-collapse-grid' );
+		// get RexGrid options
+		_getGridAttributes.call( this );
 
 		// Getting gutters from DOM attributes
 		_getDOMGutterOptions.call( this );
@@ -298,8 +299,6 @@
 		// Applying grid separators
 		_applyGridSeparators.call( this );
 
-		this.properties.layout = this.element.getAttribute( 'data-layout' );
-
 		// Calculations of grid width. In this way it's possible to access to this
 		// value without causing a layout reflow
 		_calcGridBaseAttrs.call( this );
@@ -310,6 +309,9 @@
 
 		// Finding the blocks in the DOM
 		_getGridBlocks.call( this );
+
+		// check full height
+		_checkFullHeight.call( this );
 
 		// Applying blocks separators
 		_applyBlocksSeparators.call( this );
@@ -337,6 +339,15 @@
 			this.properties.singleHeight = this.properties.singleWidth;
 		} else if ( 'masonry' === this.properties.layout ) {
 			this.properties.singleHeight = 5;
+		}
+	}
+
+	function _checkFullHeight() {
+		if ( this.properties.fullHeight ) {
+			var heightInUnits = _calculateGridHeight.call( this );
+			if ( 0 !== heightInUnits ) {
+				this.properties.singleHeight = globalViewportSize.height / heightInUnits;
+			}
 		}
 	}
 
@@ -401,13 +412,13 @@
 	function _setGridHeight( info ) {
 		var newGridHeight = _calculateGridHeight.call( this, info );
 
-		this.element.style.height = newGridHeight + 'px';
+		this.element.style.height = ( newGridHeight * this.properties.singleHeight ) + 'px';
 	}
 
 	/**
 	 * Calculating grid DOM Element total height
 	 * @param {Array} info array of objects with the information to check
-	 * @return 	{Number}	Grid total height
+	 * @return 	{Number}	Grid total height in unit
 	 * @since		1.0.0
 	 */
 	function _calculateGridHeight( info ) {
@@ -427,8 +438,19 @@
 				}
 			}
 		}
-		return heightTot * this.properties.singleHeight;
+
+		return heightTot;
 	};
+
+	/**
+	 * Get some properties of the grid, from the data attributes
+	 * @return {void}
+	 */
+	function _getGridAttributes() {
+		this.properties.layout = this.element.getAttribute( 'data-layout' );
+		this.properties.oneColumnModeActive = 'true' === this.sectionData.getAttribute( 'data-collapse-grid' );
+	 	this.properties.fullHeight = 'true' === this.element.getAttribute("data-full-height");
+	}
 
 	function _getDOMGutterOptions() {
 		// Overriding blocks gutter value if there is the respective DOM Attribute
@@ -802,7 +824,6 @@
 				resizeNeeded = false;
 			} else if ( 'masonry' === this.properties.layout ) {
 				if ( ( 'natural' === backImgType && 1 !== elRealFluid ) || 'full' === backImgType ) {
-					console.log(newH,spaceAvailable)
 					if ( newH <= spaceAvailable ) {
 						resizeNeeded = false;
 					}
@@ -843,9 +864,6 @@
 	 * @since	 1.0.0
 	 */
 	function _getBlockHeightOnCollapse( gridBlockObj ) {
-
-		console.log( '_getBlockHeightOnCollapse' );
-		
 		var currentBlock = gridBlockObj.el;
 
 		var elemData = currentBlock.querySelector( '.rexbuilder-block-data' );
@@ -1092,6 +1110,9 @@
 
 		// Update grid width, single height and single width
 		_calcGridBaseAttrs.call( this );
+		
+		// check full height
+		_checkFullHeight.call( this );
 
 		if ( ! this.isFiltered() ) {
 			if ( '*' === this.properties.filterRule ) {
