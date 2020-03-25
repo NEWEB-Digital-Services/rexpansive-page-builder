@@ -1118,6 +1118,7 @@ var Rexbuilder_Util = (function($) {
           // default mobile section props
           layoutSelectedSections[i].targets[0].props.collapse_grid = true;
           layoutSelectedSections[i].targets[0].props.layout = "masonry";
+          layoutSelectedSections[i].targets[0].props.fullHeight = false;
           
           if ( !Rexbuilder_Util.editorMode ) {
             // Setting block properties if we are on mobile, no saved

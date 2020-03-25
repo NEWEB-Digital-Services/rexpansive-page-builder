@@ -1063,13 +1063,7 @@ var Rexbuilder_App = (function($) {
 
   	for ( i = 0; i < tot_grids; i++ ) {
       if ( Rexbuilder_Util.changedFrontLayout && ! gridInstances[ i ].isFiltered() ) {
-        // Fix blocks properties
-        gridInstances[ i ].updateGridBlocks();
-
-        // Sorting blocks based on real order
-        // Needed because there could be blocks in different
-        // orders when changing layout
-  			gridInstances[ i ].sortBlocks();
+        gridInstances[ i ].endChangeLayout();
   		}
 
   		gridInstances[ i ].endResize();

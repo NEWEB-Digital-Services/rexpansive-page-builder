@@ -448,7 +448,7 @@
 	 */
 	function _getGridAttributes() {
 		this.properties.layout = this.element.getAttribute( 'data-layout' );
-		this.properties.oneColumnModeActive = 'true' === this.sectionData.getAttribute( 'data-collapse-grid' );
+		this.properties.oneColumnModeActive = 'true' === this.sectionData.getAttribute('data-collapse-grid');
 	 	this.properties.fullHeight = 'true' === this.element.getAttribute("data-full-height");
 	}
 
@@ -1098,19 +1098,32 @@
 	}
 
 	/**
+	 * Fix the grid after change layout
+	 * @return {void}
+	 */
+	RexGrid.prototype.endChangeLayout = function() {
+		// get new grid props
+		_getGridAttributes.call( this );
+
+        // Fix blocks properties
+        this.updateGridBlocks();
+
+        // Sorting blocks based on real order
+        // Needed because there could be blocks in different
+        // orders when changing layout
+  		this.sortBlocks();
+	}
+
+	/**
 	 * Fix the grid after a resize
 	 * @return {void}
 	 * @since	 1.0.0
 	 * @todo	 Change name?
 	 */
 	RexGrid.prototype.endResize = function() {
-		// Checking layout change and if the grid has to collapse
-		this.properties.layout = this.element.getAttribute( 'data-layout' );
-		this.properties.oneColumnModeActive = 'true' == this.sectionData.getAttribute( 'data-collapse-grid' );
-
 		// Update grid width, single height and single width
 		_calcGridBaseAttrs.call( this );
-		
+
 		// check full height
 		_checkFullHeight.call( this );
 
