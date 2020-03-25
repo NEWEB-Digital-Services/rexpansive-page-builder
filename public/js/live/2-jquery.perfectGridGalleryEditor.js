@@ -341,23 +341,16 @@
       firstStartGrid: false,
       gridBlocksHeight: 0,
       editedFromBackend: false,
-      oneColumMode: false,
       oneColumModeActive: false,
       // gridstackBatchMode: false,
-      // updatingSection: false,
       oldLayout: "",
       oldCellHeight: 0,
       blocksBottomTop: null,
       updatingSectionSameGrid: false,
-      startingLayout: "",
-      oldFullHeight: "",
       blocksDimensions: [],
       reverseDataGridDisposition: {},
-      updatefullHeigth2Phases: false,
-      removingCollapsedElements: false,
       collapsingElements: false,
       lastIDBlock: 0,
-      updatingGridWidth: false,
       numberBlocksVisibileOnGrid: 0,
       beforeCollapseWasFixed: false,
       dispositionBeforeCollapsing: {},
@@ -422,11 +415,9 @@
             !Rexbuilder_Util_Editor.updatingSectionLayout &&
             !Rexbuilder_Util.domUpdaiting &&
             !Rexbuilder_Util.windowIsResizing &&
-            !that.properties.removingCollapsedElements &&
             !that.properties.collapsingElements &&
             !Rexbuilder_Util_Editor.addingNewBlocks &&
             !Rexbuilder_Util_Editor.removingBlocks &&
-            !that.properties.updatingGridWidth &&
             !Rexbuilder_Util_Editor.updatingImageBg &&
             !Rexbuilder_Util_Editor.updatingPaddingBlock &&
             !Rexbuilder_Util_Editor.updatingCollapsedGrid &&
@@ -474,8 +465,6 @@
       }
 
       this.saveStateGrid();
-
-      this.properties.startingLayout = this.settings.galleryLayout;
 
       // Creating layout before collapsing info for resize purpose
       var collapseGrid = this.section.getAttribute('data-rex-collapse-grid');
@@ -614,8 +603,6 @@
 
       this._launchGridStack();
 
-      this.properties.startingLayout = opts.galleryLayout;
-
       // Creating layout before collapsing info for resize purpose
       var collapseGrid = this.$section.attr("data-rex-collapse-grid");
       this.properties.dispositionBeforeCollapsing = this.createActionDataMoveBlocksGrid();
@@ -726,10 +713,7 @@
       this.properties.resizeHandle = "";
       this.properties.firstStartGrid = false;
       this.properties.editedFromBackend = false;
-      this.properties.oneColumMode = false;
       this.properties.oneColumModeActive = false;
-      this.properties.startingLayout = "";
-      this.properties.oldFullHeight = "";
       this.properties.updatingSectionSameGrid = false;
       this.properties.blocksBottomTop = null;
       // if i comment this, 
@@ -778,8 +762,6 @@
         this.removeCollapseElementsProperties();
         this.properties.oldCellHeight = this.properties.singleHeight;
         this.properties.oldLayout = this.settings.galleryLayout;
-        this.properties.oldFullHeight = this.settings.fullHeight;
-        // this.removeScrollbars();
         this.settings.galleryLayout = layout;
         this.settings.fullHeight = "false";
         this._defineDynamicPrivateProperties();
@@ -1787,7 +1769,6 @@
     // Updating elements properties
     updateAllElementsProperties: function() {
       this.properties.editedFromBackend = false;
-      this.properties.startingLayout = this.settings.galleryLayout;
       var $elem;
       var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item:not(.grid-stack-placeholder)') );
       var tot_items = items.length, i = 0;

@@ -238,40 +238,10 @@
 			gridRightSeparator: null,
 			gridBottomSeparator: null,
 			gridLeftSeparator: null,
-			// wrapWidth: 0,
 			setMobilePadding: false,
 			setDesktopPadding: false,
-			// elementStartingH: 0,
-			// resizeHandle: "",
-			sectionNumber: null,
-			// serializedData: [],
-			// firstStartGrid: false,
-			// gridBlocksHeight: 0,
 			editedFromBackend: false,
-			// oneColumMode: false,
 			oneColumnModeActive: false,
-			// updatingSection: false,
-			// oldLayout: "",
-			// oldCellHeight: 0,
-			// blocksBottomTop: null,
-			// updatingSectionSameGrid: false,
-			// startingLayout: "",
-			// oldFullHeight: "",
-			// blocksDimensions: [],
-			// reverseDataGridDisposition: {},
-			// updatefullHeigth2Phases: false,
-			// removingCollapsedElements: false,
-			// collapsingElements: false,
-			// lastIDBlock: 0,
-			// updatingGridWidth: false,
-			// numberBlocksVisibileOnGrid: 0,
-			beforeCollapseWasFixed: true,
-			// dispositionBeforeCollapsing: {},
-			// layoutBeforeCollapsing: {},
-			// initialStateGrid: null,
-			// mirrorStateGrid: null,
-			// fullWidthNaturalBackground: false,
-			// naturalBackground: false
 			filterRule: false,
 			filterCoords: []
 		};
@@ -281,11 +251,6 @@
 
 	/* ===== Private Methods ===== */
 	function _init() {
-		if ( this.sectionData.getAttribute( 'data-row_edited_live' ) != 'true' ) {
-			/** @todo set to false on change layout */
-			this.properties.editedFromBackend = true;
-		}
-
 		// get RexGrid options
 		_getGridAttributes.call( this );
 
@@ -447,6 +412,10 @@
 	 * @return {void}
 	 */
 	function _getGridAttributes() {
+		if ( this.sectionData.getAttribute( 'data-row_edited_live' ) != 'true' ) {
+			/** @todo set to false on change layout */
+			this.properties.editedFromBackend = true;
+		}
 		this.properties.layout = this.element.getAttribute( 'data-layout' );
 		this.properties.oneColumnModeActive = 'true' === this.sectionData.getAttribute('data-collapse-grid');
 	 	this.properties.fullHeight = 'true' === this.element.getAttribute("data-full-height");
@@ -771,11 +740,9 @@
 
 			// calculate default height (in case of block without content that pushes)
 			// or else update text height
-			if ( videoHeight == 0 && backgroundHeight == 0 && sliderHeight == 0 && ( Rexbuilder_Util_Editor.updatingSectionLayout || blockIsEmpty || blockHasSlider ) ) {
+			if ( videoHeight == 0 && backgroundHeight == 0 && sliderHeight == 0 && ( blockIsEmpty || blockHasSlider ) ) {
 				if ( this.properties.editedFromBackend && this.properties.layout == "masonry" ) {
 					defaultHeight = Math.round( singleWidth * startH );
-				} else if ( this.properties.oneColumnModeActive && this.properties.beforeCollapseWasFixed ) {
-					defaultHeight = startH * singleWidth;
 				} else {
 					defaultHeight = startH * this.properties.singleHeight;
 				}

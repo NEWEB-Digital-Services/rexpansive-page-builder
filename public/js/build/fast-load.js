@@ -58,7 +58,8 @@
   }
 
   function onImageLoad( el ) {
-    if ( '' === el.style.backgroundImage ) {
+    // if ( '' === el.style.backgroundImage ) {
+    if( -1 === el.style.backgroundImage.indexOf( this.src ) ) {
       el.style.backgroundImage = 'url(' + this.src + ')';
       el.removeAttribute( 'data-src' );
 
