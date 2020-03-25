@@ -755,7 +755,7 @@
 		// if the block has a full image background, without text
 		// maintain the old height
 		if ( !blockHasSlider && !blockHasYoutube && !blockHasVimeo && !blockHasVideo && ( ( ( 'full' === backImgType && 0 === currentBlockTextHeight ) || ( '' === backImgType && 0 === currentBlockTextHeight ) ) && !this.properties.oneColumnModeActive ) ) {
-			newH = startH * this.properties.singleHeight;
+			newH = ( startH * this.properties.singleHeight ) - gutter;
 		} else {
 			startH = 0;
 
@@ -777,7 +777,6 @@
 		if ( 0 !== currentBlockTextHeight ) {
 			if ( 'fixed' === this.properties.layout || ( 1 !== elRealFluid && 'masonry' === this.properties.layout ) ) {
 				if ( newH <= spaceAvailable ) {
-					console.log('fixblockheight', gridBlockObj.start_h)
 					if ( gridBlockObj.h > gridBlockObj.start_h ) {
 						// go back to initial height
 						goToStartH = true;
@@ -936,7 +935,6 @@
 	 * @since  1.0.0
 	 */
 	RexGrid.prototype.fixBlockHeight = function( gridBlockObj ) {
-		console.log('fixBlockHeight')
 		var newH;
 
 		if ( this.properties.oneColumnModeActive ) {
