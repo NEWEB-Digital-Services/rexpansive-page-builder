@@ -1062,7 +1062,7 @@ var Rexbuilder_App = (function($) {
   	}
 
   	for ( i = 0; i < tot_grids; i++ ) {
-      if ( Rexbuilder_Util.changedFrontLayout ) {
+      if ( Rexbuilder_Util.changedFrontLayout && ! gridInstances[ i ].isFiltered() ) {
         // Fix blocks properties
         gridInstances[ i ].updateGridBlocks();
 

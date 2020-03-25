@@ -272,6 +272,8 @@
 			// mirrorStateGrid: null,
 			// fullWidthNaturalBackground: false,
 			// naturalBackground: false
+			filterRule: false,
+			filterCoords: []
 		};
 
 		_init.call( this );
@@ -323,6 +325,10 @@
 		_setGridHeight.call( this );
 	}
 
+	/**
+	 * Calculate grid widht and single width and height
+	 * @return {void}
+	 */
 	function _calcGridBaseAttrs() {
 		this.properties.gridWidth = this.element.offsetWidth; // Can cause a layout reflow
 		this.properties.singleWidth = this.properties.gridWidth / this.options.columns;
@@ -388,28 +394,34 @@
 		return textHeight;
 	}
 
-	function _setGridHeight() {
-		var newGridHeight = _calculateGridHeight.call( this );
+	/**
+	 * Set the grid height in pixels
+	 * @param {Array} info array of objects with the information to check; can be undefined
+	 */
+	function _setGridHeight( info ) {
+		var newGridHeight = _calculateGridHeight.call( this, info );
 
 		this.element.style.height = newGridHeight + 'px';
 	}
 
 	/**
 	 * Calculating grid DOM Element total height
+	 * @param {Array} info array of objects with the information to check
 	 * @return 	{Number}	Grid total height
 	 * @since		1.0.0
 	 */
-	function _calculateGridHeight() {
+	function _calculateGridHeight( info ) {
+		info = 'undefined' !== typeof info ? info : this.gridBlocks;
 		var heightTot = 0;
 		var heightTemp;
 
 		var i = 0;
+		var tot = info.length;
 
 		// for native loop guarantees more performance efficiency
-		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
-			if ( !this.gridBlocks[ i ].hide ) {
-				heightTemp = parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-height' ) ) + parseInt( this.gridBlocks[ i ].el.getAttribute( 'data-gs-y' ) );
-
+		for ( i = 0; i < tot; i++ ) {
+			if ( !info[ i ].hide ) {
+				heightTemp = info[ i ].h + info[ i ].y;
 				if ( heightTemp > heightTot ) {
 					heightTot = heightTemp;
 				}
@@ -754,8 +766,8 @@
 
 		// if the block has a full image background, without text
 		// maintain the old height
-		if ( !blockHasSlider && !blockHasYoutube && !blockHasVimeo && !blockHasVideo && ( ( ( 'full' === backImgType && 0 === currentBlockTextHeight ) || ( '' === backImgType && 0 === currentBlockTextHeight ) ) && !this.properties.oneColumnModeActive ) ) {
-			newH = startH * this.properties.singleHeight;
+		if ( !blockHasSlider && !blockHasYoutube && !blockHasVimeo && !blockHasVideo && ( ( ( 'full' === backImgType && 0 === currentBlockTextHeight ) || ( '' === backImgType && 0 === currentBlockTextHeight ) ) ) ) {
+			newH = ( startH * this.properties.singleHeight ) - gutter;
 		} else {
 			startH = 0;
 
@@ -777,7 +789,6 @@
 		if ( 0 !== currentBlockTextHeight ) {
 			if ( 'fixed' === this.properties.layout || ( 1 !== elRealFluid && 'masonry' === this.properties.layout ) ) {
 				if ( newH <= spaceAvailable ) {
-					console.log('fixblockheight', gridBlockObj.start_h)
 					if ( gridBlockObj.h > gridBlockObj.start_h ) {
 						// go back to initial height
 						goToStartH = true;
@@ -791,6 +802,7 @@
 				resizeNeeded = false;
 			} else if ( 'masonry' === this.properties.layout ) {
 				if ( ( 'natural' === backImgType && 1 !== elRealFluid ) || 'full' === backImgType ) {
+					console.log(newH,spaceAvailable)
 					if ( newH <= spaceAvailable ) {
 						resizeNeeded = false;
 					}
@@ -899,6 +911,27 @@
 		return newH;
 	}
 
+	/**
+	 * 
+	 * @param  {[type]} toMaintainCoords [description]
+	 * @return {[type]}                  [description]
+	 */
+	function calcFilteredGrid( toMaintainCoords ) {
+		var idx = new IndexedGrid( this.options.columns );
+		idx.setGrid( 0, 0, toMaintainCoords[ 0 ].w, toMaintainCoords[ 0 ].h );
+		var idx_pos;
+		var idx_cords;
+		for ( i = 1; i < toMaintainCoords.length; i++ ) {
+			idx_pos = idx.willFit( toMaintainCoords[ i ].w, toMaintainCoords[ i ].h );
+			if ( idx_pos ) {
+				idx_cords = Utils.getCoord( idx_pos, this.options.columns );
+				idx.setGrid( idx_cords.x, idx_cords.y, toMaintainCoords[ i ].w, toMaintainCoords[ i ].h )
+				toMaintainCoords[ i ].x = idx_cords.x;
+				toMaintainCoords[ i ].y = idx_cords.y;
+			}
+		}
+	}
+
 	/* ===== Public Methods ===== */
 
 	/**
@@ -936,7 +969,6 @@
 	 * @since  1.0.0
 	 */
 	RexGrid.prototype.fixBlockHeight = function( gridBlockObj ) {
-		console.log('fixBlockHeight')
 		var newH;
 
 		if ( this.properties.oneColumnModeActive ) {
@@ -1058,16 +1090,56 @@
 		// Update grid width, single height and single width
 		_calcGridBaseAttrs.call( this );
 
-		// Calculations
-		// recalc height because on resize single height can change
-		this.calcAllBlocksHeights();
-		this.calcAllBlocksTops();
+		if ( ! this.isFiltered() ) {
+			if ( '*' === this.properties.filterRule ) {
+				for( var i=0; i < this.gridBlocksTotal; i++ ) {
+					this.gridBlocks[i].el.style.left = '';
+				}
+			}
+			// Calculations
+			// recalc height because on resize single height can change
+			this.calcAllBlocksHeights();
+			this.calcAllBlocksTops();
 
-		// Fixings
-		this.fixAllBlocksHeights();
-		this.fixAllBlockPositions();
+			// Fixings
+			this.fixAllBlocksHeights();
+			this.fixAllBlockPositions();
 
-		_setGridHeight.call( this );
+			_setGridHeight.call( this );
+		} else {
+			this.calcAllBlocksHeights();
+
+			// @todo check collapse (oneColumnMode)
+			/*this.fixAllBlocksHeights();
+			this.fixAllBlockPositions();
+
+			for( var i=0; i < this.gridBlocksTotal; i++ ) {
+				for( var j=0; j < this.properties.filterCoords.length; j++ ) {
+					if ( this.gridBlocks[i].el === this.properties.filterCoords[j].el ) {
+						this.properties.filterCoords[j].w = this.gridBlocks[i].w;
+						this.properties.filterCoords[j].h = this.gridBlocks[i].h;
+						this.properties.filterCoords[j].x = this.gridBlocks[i].x;
+						this.properties.filterCoords[j].y = this.gridBlocks[i].y;
+						continue;
+					}
+				}
+			}*/
+
+			// for the filters, i can use filterCoords
+			calcFilteredGrid.call( this, this.properties.filterCoords );
+			for( var i=0; i < this.properties.filterCoords.length; i++ ) {
+				this.properties.filterCoords[i].el.style.left = ( this.properties.filterCoords[ i ].x * this.properties.singleWidth ) + 'px';
+				this.properties.filterCoords[i].el.style.top = ( this.properties.filterCoords[ i ].y * this.properties.singleHeight ) + 'px';
+			}
+		}
+	}
+
+	/**
+	 * The grid is filterable?
+	 * @return {Boolean} true if the grid is filterable
+	 */
+	RexGrid.prototype.isFiltered = function() {
+		return 'string' === typeof ( this.properties.filterRule ) && '*' !== this.properties.filterRule;
 	}
 
 	/**
@@ -1081,7 +1153,7 @@
 		var toMaintainCoords = [];
 		var toRemove = [];
 
-		var idx = new IndexedGrid( this.options.columns );
+		this.properties.filterRule = rule;
 
 		// get all elements
 		if ( '*' == rule ) {
@@ -1092,7 +1164,7 @@
 					y: this.gridBlocks[ i ].y,
 					w: this.gridBlocks[ i ].w,
 					h: this.gridBlocks[ i ].h
-				} )
+				} );
 				this.gridBlocks[ i ].hide = false;
 			}
 		} else {
@@ -1101,6 +1173,7 @@
 				if ( Utils.hasClass( this.gridBlocks[ i ].el, rule ) ) {
 					toMaintain.push( this.gridBlocks[ i ].el );
 					toMaintainCoords.push( {
+						el: this.gridBlocks[ i ].el,
 						x: 0,
 						y: 0,
 						w: this.gridBlocks[ i ].w,
@@ -1113,19 +1186,10 @@
 				}
 			}
 
-			idx.setGrid( 0, 0, toMaintainCoords[ 0 ].w, toMaintainCoords[ 0 ].h );
-			var idx_pos;
-			var idx_cords;
-			for ( i = 1; i < toMaintainCoords.length; i++ ) {
-				idx_pos = idx.willFit( toMaintainCoords[ i ].w, toMaintainCoords[ i ].h );
-				if ( idx_pos ) {
-					idx_cords = Utils.getCoord( idx_pos, this.options.columns );
-					idx.setGrid( idx_cords.x, idx_cords.y, toMaintainCoords[ i ].w, toMaintainCoords[ i ].h )
-					toMaintainCoords[ i ].x = idx_cords.x;
-					toMaintainCoords[ i ].y = idx_cords.y;
-				}
-			}
+			calcFilteredGrid.call( this, toMaintainCoords );
 		}
+
+		this.properties.filterCoords = toMaintainCoords;
 
 		var that = this;
 		var timeline = anime.timeline( {
@@ -1136,6 +1200,7 @@
 			},
 			complete: function( anim ) {
 				// animation complete
+				_setGridHeight.call( that, toMaintainCoords );
 			}
 		} );
 
