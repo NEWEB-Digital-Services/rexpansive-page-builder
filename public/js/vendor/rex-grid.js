@@ -130,6 +130,8 @@
 		this.h = options.h;
 		this.x = options.x;
 		this.y = options.y;
+		this.start_x = this.x;
+		this.start_y = this.y;
 		this.start_h = parseInt( this.blockData.getAttribute('data-gs_start_h') );
 		this.hide = options.hide;
 		this.domIndex = this.x + ( this.y * 12 );
@@ -148,6 +150,12 @@
 
 		this.x = parseInt( this.el.getAttribute( 'data-gs-x' ) );
 		this.y = parseInt( this.el.getAttribute( 'data-gs-y' ) );
+
+		// WARNING: this reset must occur only on layout change!
+		// this.start_h = this.h;
+		this.start_h = parseInt( this.blockData.getAttribute('data-gs_start_h') );
+		this.start_x = this.x;
+		this.start_y = this.y;
 	}
 
 	RexBlock.prototype.refreshHide = function() {
@@ -242,7 +250,6 @@
 			editedFromBackend: false,
 			// oneColumMode: false,
 			oneColumnModeActive: false,
-			// gridstackBatchMode: false,
 			// updatingSection: false,
 			// oldLayout: "",
 			// oldCellHeight: 0,
@@ -641,6 +648,7 @@
 		// blockData.setAttribute( 'data-gs_start_h', newH );
 		blockData.setAttribute( 'data-block_height_calculated', newH );
 	}
+
 	/**
 	 * Getting the block height based on content or background
 	 * @param  {RexBlock} 		gridBlockObj
@@ -654,14 +662,14 @@
 		var blockData = gridBlockObj.blockData;
 		var startH = gridBlockObj.start_h;
 
-		var newH;
+		var newH;		// new height of the content block in pixels
+		var newHUnits;		// new height in twelfhs or 5 pixels
 		var singleWidth = this.properties.singleWidth;
 
 		var gutter = this.options.gutter;
 
 		var originalWidth = gridBlockObj.w;
-		var originalHeight = gridBlockObj.start_h;
-		var spaceAvailable = ( originalHeight * this.properties.singleHeight ) - gutter;
+		var spaceAvailable = ( gridBlockObj.start_h * this.properties.singleHeight ) - gutter;
 		var elRealFluid = parseInt( blockData.getAttribute( 'data-element_real_fluid' ) );
 
 		var backgroundHeight = 0;
@@ -719,12 +727,12 @@
 			// Calculate video height
 			/** @todo check me to prevent video auto ratio-resize */
 			if ( blockHasYoutube || blockHasVideo || blockHasVimeo ) {
-				videoHeight = originalHeight * this.properties.singleHeight;
+				videoHeight = gridBlockObj.start_h * this.properties.singleHeight;
 			}
 
 			// Calculate slider height
 			if ( blockHasSlider ) {
-				sliderHeight = originalHeight * this.properties.singleHeight;
+				sliderHeight = gridBlockObj.start_h * this.properties.singleHeight;
 			}
 
 			// calculate default height (in case of block without content that pushes)
@@ -762,13 +770,20 @@
 		}
 
 		var resizeNeeded = true;
+		var goToStartH = false;
 
 		// check if resize really needed
 		// fix occurs on first start and not in editor mode
 		if ( 0 !== currentBlockTextHeight ) {
 			if ( 'fixed' === this.properties.layout || ( 1 !== elRealFluid && 'masonry' === this.properties.layout ) ) {
-				if ( newH <= spaceAvailable && originalHeight > gridBlockObj.h ) {
-					resizeNeeded = false;
+				if ( newH <= spaceAvailable ) {
+					console.log('fixblockheight', gridBlockObj.start_h)
+					if ( gridBlockObj.h > gridBlockObj.start_h ) {
+						// go back to initial height
+						goToStartH = true;
+					} else {
+						resizeNeeded = false;
+					}
 				}
 			}
 		} else if ( 0 !== backgroundHeight ) {
@@ -787,21 +802,25 @@
 			}
 		}
 
+		if ( goToStartH ) {
+			return gridBlockObj.start_h;
+		}
+
 		if ( ! resizeNeeded ) {
 			return null;
 		}
 
 		if ( this.properties.layout == "fixed" ) {
 			if ( emptyBlockFlag || blockHasYoutube || blockHasVideo || blockHasVimeo ) {
-				newH = Math.round( ( newH + gutter ) / this.properties.singleHeight );
+				newHUnits = Math.round( ( newH + gutter ) / this.properties.singleHeight );
 			} else {
-				newH = Math.ceil( ( newH + gutter ) / this.properties.singleHeight );
+				newHUnits = Math.ceil( ( newH + gutter ) / this.properties.singleHeight );
 			}
 		} else {
-			newH = Math.ceil( ( newH + gutter ) / this.properties.singleHeight );
+			newHUnits = Math.ceil( ( newH + gutter ) / this.properties.singleHeight );
 		}
 
-		return newH;
+		return newHUnits;
 	}
 
 	/**
@@ -917,6 +936,7 @@
 	 * @since  1.0.0
 	 */
 	RexGrid.prototype.fixBlockHeight = function( gridBlockObj ) {
+		console.log('fixBlockHeight')
 		var newH;
 
 		if ( this.properties.oneColumnModeActive ) {
@@ -970,6 +990,12 @@
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
 			currentBlock = this.gridBlocks[ i ].el;
+			if ( 'fixed' === this.properties.layout ) {
+				// go back to initial block Y to prevent unwanted empty spaces
+				// between blocks
+				this.gridBlocks[ i ].y = this.gridBlocks[ i ].start_y;
+			}
+
 			currentBlockRealTop = this.properties.singleHeight * this.gridBlocks[ i ].y;
 			currentBlock.style.top = currentBlockRealTop + 'px';
 		}
@@ -1033,6 +1059,7 @@
 		_calcGridBaseAttrs.call( this );
 
 		// Calculations
+		// recalc height because on resize single height can change
 		this.calcAllBlocksHeights();
 		this.calcAllBlocksTops();
 
