@@ -843,6 +843,9 @@
 	 * @since	 1.0.0
 	 */
 	function _getBlockHeightOnCollapse( gridBlockObj ) {
+
+		console.log( '_getBlockHeightOnCollapse' );
+		
 		var currentBlock = gridBlockObj.el;
 
 		var elemData = currentBlock.querySelector( '.rexbuilder-block-data' );
@@ -868,10 +871,10 @@
 
 		// check height if the block has text
 		if ( textWrap ) {
-			if ( textWrap.innerText.trim().length > 0 && textWrap.childElementCount > 0 ) {
-				hasText = true;
-				spaceNeeded = textWrap.offsetHeight + this.options.gutter;
-			}
+			var textHeight = _calculateTextWrapHeight.call( this, gridBlockObj.el );
+
+			hasText = 0 !== textHeight;
+			spaceNeeded = textHeight + this.options.gutter;
 		}
 
 		// check height if is a masonry grid, with a natural image, without text
