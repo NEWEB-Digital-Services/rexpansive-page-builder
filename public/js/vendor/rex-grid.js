@@ -290,6 +290,8 @@
 		// this.fixAllBlockPositions();
 
 		_setGridHeight.call( this );
+
+		this.element.RexGridInstance = this;
 	}
 
 	/**
@@ -907,6 +909,8 @@
 	 */
 	function calcFilteredGrid( toMaintainCoords ) {
 		var idx = new IndexedGrid( this.options.columns );
+		toMaintainCoords[ 0 ].x = 0;
+		toMaintainCoords[ 0 ].y = 0;
 		idx.setGrid( 0, 0, toMaintainCoords[ 0 ].w, toMaintainCoords[ 0 ].h );
 		var idx_pos;
 		var idx_cords;
@@ -1116,30 +1120,33 @@
 
 			_setGridHeight.call( this );
 		} else {
+			
 			this.calcAllBlocksHeights();
 
-			// @todo check collapse (oneColumnMode)
-			/*this.fixAllBlocksHeights();
+			this.fixAllBlocksHeights();
 			this.fixAllBlockPositions();
-
+			
 			for( var i=0; i < this.gridBlocksTotal; i++ ) {
 				for( var j=0; j < this.properties.filterCoords.length; j++ ) {
-					if ( this.gridBlocks[i].el === this.properties.filterCoords[j].el ) {
+					if ( this.properties.filterCoords[j].el === this.gridBlocks[i].el ) {
 						this.properties.filterCoords[j].w = this.gridBlocks[i].w;
 						this.properties.filterCoords[j].h = this.gridBlocks[i].h;
 						this.properties.filterCoords[j].x = this.gridBlocks[i].x;
 						this.properties.filterCoords[j].y = this.gridBlocks[i].y;
-						continue;
+						break;
 					}
 				}
-			}*/
+			}
 
 			// for the filters, i can use filterCoords
 			calcFilteredGrid.call( this, this.properties.filterCoords );
+
 			for( var i=0; i < this.properties.filterCoords.length; i++ ) {
 				this.properties.filterCoords[i].el.style.left = ( this.properties.filterCoords[ i ].x * this.properties.singleWidth ) + 'px';
 				this.properties.filterCoords[i].el.style.top = ( this.properties.filterCoords[ i ].y * this.properties.singleHeight ) + 'px';
 			}
+
+			_setGridHeight.call( this, this.properties.filterCoords );
 		}
 	}
 

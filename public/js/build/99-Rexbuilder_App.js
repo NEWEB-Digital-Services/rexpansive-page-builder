@@ -1036,7 +1036,8 @@ var Rexbuilder_App = (function($) {
   	}
 
   	for ( i = 0; i < tot_grids; i++ ) {
-      if ( Rexbuilder_Util.changedFrontLayout && ! gridInstances[ i ].isFiltered() ) {
+      // if ( Rexbuilder_Util.changedFrontLayout && ! gridInstances[ i ].isFiltered() ) {
+      if ( Rexbuilder_Util.changedFrontLayout ) {
         gridInstances[ i ].endChangeLayout();
   		}
 
