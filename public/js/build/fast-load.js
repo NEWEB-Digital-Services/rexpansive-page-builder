@@ -14,6 +14,8 @@
     queuing = true;
   }
 
+  var PROMISE_EXISTS = typeof Promise !== "undefined" && Promise.toString().indexOf( "[native code]" ) !== -1;
+
   var scrollobserverSection;
   var scrollobserverBlock;
 
@@ -255,7 +257,11 @@
 
         // check images background
         if ( imgWrapper ) {
-          lazyLoadBkgrImgPromise( imgWrapper );
+          if ( PROMISE_EXISTS ) {
+            lazyLoadBkgrImgPromise( imgWrapper );
+          } else {
+            lazyLoadBkgrImg( imgWrapper );
+          }
         }
 
         // check video background
@@ -264,7 +270,6 @@
         }
         
         // stop observing section
-        // scrollobserverSection.unobserve(entries[i].target);
         sectionObserver.unobserve(entries[i].target);
       }
     }
@@ -275,7 +280,6 @@
     var imgWrapper, videoWrapper;
 
     for( i=0; i < tot_entries; i++ ) {
-      // console.log( entries[i].target );
       imgWrapper = null;
       videoWrapper = null;
 
@@ -291,8 +295,11 @@
 
         // check images background
         if ( imgWrapper ) {
-          // lazyLoadBkgrImg( imgWrapper );
-          lazyLoadBkgrImgPromise( imgWrapper );
+          if ( PROMISE_EXISTS ) {
+            lazyLoadBkgrImgPromise( imgWrapper );
+          } else {
+            lazyLoadBkgrImg( imgWrapper );
+          }
         }
 
         if ( videoWrapper ) {
