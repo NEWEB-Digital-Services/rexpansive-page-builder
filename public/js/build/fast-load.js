@@ -275,7 +275,7 @@
     }
   }
 
-  function blockIntersectionObserverCallback(entries, observer) {
+  function blockIntersectionObserverCallback(entries, blockObserver) {
     var tot_entries = entries.length, i;
     var imgWrapper, videoWrapper;
 
@@ -312,7 +312,7 @@
         }
 
         // stop observing block
-        // scrollobserverBlock.unobserve(entries[i].target);
+        blockObserver.unobserve(entries[i].target);
       } else {
         if ( videoWrapper ) {
           videoWrapper.pause();
