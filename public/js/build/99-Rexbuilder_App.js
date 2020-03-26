@@ -830,7 +830,7 @@ var Rexbuilder_App = (function($) {
         }
 
         // Launch fast load
-        window.FastLoad();
+        window.FastLoad.init();
       }
     }
 
@@ -1042,7 +1042,14 @@ var Rexbuilder_App = (function($) {
   		}
 
   		gridInstances[ i ].endResize();
-  	}
+    }
+    
+    if ( Rexbuilder_Util.changedFrontLayout ) {
+      // Resetting fast load (that contains IntersectionObserver)
+      window.FastLoad.destroy();
+      window.FastLoad.init();
+    }
+
 
   	Rexbuilder_Util.changedFrontLayout = false;
   }

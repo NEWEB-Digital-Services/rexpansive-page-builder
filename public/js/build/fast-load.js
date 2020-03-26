@@ -236,7 +236,9 @@
     }
   }
 
-  function sectionIntersectionObserverCallback(entries, observer) {
+  function sectionIntersectionObserverCallback(entries, sectionObserver) {
+    console.log( 'callback observer' );
+    
     var tot_entries = entries.length, i;
     var imgWrapper, videoWrapper;
     
@@ -257,35 +259,18 @@
 
         // check images background
         if ( imgWrapper ) {
-          lazyLoadBkgrImg( imgWrapper );
+          lazyLoadBkgrImgPromise( imgWrapper );
         }
 
+        // check video background
         if ( videoWrapper ) {
-          // if ( entries[i].intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused ) {
-          //   // console.log('potrei plaiare')
-          //   // videoWrapper.play();
-          // } else {
-          //   lazyLoadVideoHTML( videoWrapper );
-          // }
-
-          // if ( entries[i].intersectionRatio < 0.5 ) {
-            lazyLoadVideoHTML( videoWrapper );
-          // }
-
-          // if ( 0 !== videoWrapper.readyState && videoWrapper.paused ) {
-          //   videoWrapper.play();
-          // }
+          lazyLoadVideoHTML( videoWrapper );
         }
+        
+        // stop observing section
+        // scrollobserverSection.unobserve(entries[i].target);
+        sectionObserver.unobserve(entries[i].target);
       }
-      // element goes invisible 
-      else {
-        if ( videoWrapper && !videoWrapper.paused ) {
-          // videoWrapper.pause();
-        }
-      }
-
-      // stop observing section
-      // scrollobserverSection.unobserve(entries[i].target);
     }
   }
 
@@ -395,6 +380,26 @@
     }
   }
 
+  function destroyObservers() {
+  	if ( scrollobserverSection ) {
+  		scrollobserverSection.disconnect()
+  		scrollobserverSection = null
+  	}
+
+  	if ( scrollobserverBlock ) {
+  		scrollobserverBlock.disconnect()
+  		scrollobserverBlock = null
+  	}
+
+  	imgVisibleQueue = [];
+  	videoVisibleQueue = [];
+
+  	imgProcessingQueue = [];
+  	videoProcessingQueue = [];
+
+  	videoProcessingCounter = 0;
+  }
+
   /**
    * Handling lazy request within a queue
    */
@@ -499,9 +504,8 @@
     document.addEventListener('DOMContentLoaded', handlingQueues);
   }
 
-  // window.addEventListener('load', handleIntersectionObserverSmart);
-  // document.addEventListener('DOMContentLoaded', handleIntersectionObserverSmart);
-
-  window.FastLoad = handleIntersectionObserverSmart;
-  // window.addEventListener('load', barbarianLoad);
+  window.FastLoad = {
+  	init: handleIntersectionObserverSmart,
+  	destroy: destroyObservers
+  };
 }());
