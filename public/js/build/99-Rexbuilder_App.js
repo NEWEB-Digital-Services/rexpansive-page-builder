@@ -705,8 +705,8 @@ var Rexbuilder_App = (function($) {
     $otherAccordions = Rexbuilder_Util.$document.find('.rex-accordion').not( $builderAccordions );
 
     accordionSettings = {
-      durationOpen: 10,
-      durationClose: 300
+      // durationOpen: 10,
+      // durationClose: 300
     };
 
     if( Rexbuilder_Util.editorMode ) {
@@ -729,62 +729,36 @@ var Rexbuilder_App = (function($) {
       };
     } else {
       accordionSettings.open = {
-        completeClbk: function(data) {
-          var $grisdtack = data.properties.$content.parents('.grid-stack');
-          if ( 0 === $grisdtack.length ) {
-            return;
-          }
+        startClbk: function( data ) {
+        	var $grid = data.$element.parents( '.perfect-grid-gallery' );
+        	var $blocks = $grid.find( '.perfect-grid-item' );
 
-          var pgge = $grisdtack.data("plugin_perfectGridGalleryEditor");
+        	$blocks.addClass( 'accordion-animate-block' );
+        },
+        progressClbk: function( data ) {
+        	var grid = data.$element.parents( '.perfect-grid-gallery' ).get( 0 );
+        	var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
+        	var rexGridInstance = getRexGridInstance( grid );
 
-          if( pgge ) {              
-            var block = data.properties.$content.parents('.grid-stack-item')[0];
-            var block_height = data.$element.parents('.text-wrap')[0].offsetHeight;
-
-            var grid = pgge.properties.gridstackInstance;
-  
-            var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
-            grid.batchUpdate();
-            grid.resize(block,null,temp);
-            grid.commit();
-          }
-
-          data.properties.$content.addClass('rSlideInTop').one(Rexbuilder_Util._animationEvent, function() {
-            $(this).removeClass('rSlideInTop');
-          });
+        	rexGridInstance.reCalcBlockHeight( block );
         }
       };
       accordionSettings.close = {
-        startClbk: function(data) {
-          var $grisdtack = data.properties.$content.parents('.grid-stack');
-          if ( 0 === $grisdtack.length ) {
-            return;
-          }
+        progressClbk: function( data ) {
+        	var grid = data.$element.parents( '.perfect-grid-gallery' ).get( 0 );
+        	var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
+        	var rexGridInstance = getRexGridInstance( grid );
 
-          data.properties.$content.addClass('rSlideOutTop').one(Rexbuilder_Util._animationEvent, function() {
-            $(this).removeClass('rSlideOutTop');
-          });
+        	rexGridInstance.reCalcBlockHeight( block );
         },
-        completeClbk: function(data) {
-          var $grisdtack = data.properties.$content.parents('.grid-stack');
-          if ( 0 === $grisdtack.length ) {
-            return;
-          }
+        completeClbk: function( data ) {
+        	var $grid = data.$element.parents( '.perfect-grid-gallery' );
+        	var $blocks = $grid.find( '.perfect-grid-item' );
+        	var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
 
-          var pgge = $grisdtack.data("plugin_perfectGridGalleryEditor");
-
-          if( pgge ) {
-
-            var block_height = data.$element.parents('.text-wrap')[0].offsetHeight;
-            var block = data.properties.$content.parents('.grid-stack-item')[0];
-
-            var grid = pgge.properties.gridstackInstance;
-  
-            var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
-            grid.batchUpdate();
-            grid.resize(block,null,temp);
-            grid.commit();
-          }
+        	$( block ).one( Rexbuilder_Util._transitionEvent, function() {
+        		$blocks.removeClass( 'accordion-animate-block' );
+        	} );
         }
       };
     }

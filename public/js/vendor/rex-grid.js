@@ -574,6 +574,7 @@
 					this.gridBlocks[ i ].x + this.gridBlocks[ i ].w > this.gridBlocks[ j ].x &&
 					this.gridBlocks[ i ].y < this.gridBlocks[ j ].y + this.gridBlocks[ j ].h &&
 					this.gridBlocks[ i ].y + this.gridBlocks[ i ].h > this.gridBlocks[ j ].y ) {
+					// Collision detected
 					var newTop = ( this.gridBlocks[ i ].y + this.gridBlocks[ i ].h ) - this.gridBlocks[ j ].y;
 					var newY = this.gridBlocks[ j ].y + newTop;
 
@@ -972,6 +973,10 @@
 		_updateBlockDataHeightProperties.call( this, gridBlockObj.blockData, newH );
 
 		// Setting dimensions
+		_setBlockDimensions.call( this, gridBlockObj, newH );
+	}
+
+	function _setBlockDimensions( gridBlockObj, newH ) {
 		gridBlockObj.h = newH;
 		gridBlockObj.el.style.height = ( gridBlockObj.h * this.properties.singleHeight ) + 'px';
 		gridBlockObj.el.setAttribute( 'data-gs-height', gridBlockObj.h );
@@ -1138,6 +1143,34 @@
 		}
 	}
 
+	RexGrid.prototype.getRexBlockInstance = function( block ) {
+		var i = 0;
+
+		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
+			if ( block === this.gridBlocks[ i ].el ) {
+				return this.gridBlocks[ i ];
+			}
+		}
+
+		return null;
+	}
+
+	RexGrid.prototype.reCalcBlockHeight = function( block ) {
+		var gridBlockObj = this.getRexBlockInstance( block );
+		var textWrapHeight = _calculateTextWrapHeight.call( this, block );
+		var unitHeight = Math.ceil( ( textWrapHeight + this.options.gutter ) / this.properties.singleHeight );
+
+		// Updating DOM Attributes
+		_updateBlockDataHeightProperties.call( this, gridBlockObj.blockData, unitHeight );
+
+		// Setting dimensions
+		_setBlockDimensions.call( this, gridBlockObj, unitHeight );
+
+		this.fixAllBlockPositions();
+
+		_setGridHeight.call( this );
+	}
+
 	/**
 	 * The grid is filterable?
 	 * @return {Boolean} true if the grid is filterable
@@ -1149,7 +1182,6 @@
 	/**
 	 * Filter the grid elements by a certain rule
 	 * @param  {String} rule class to filter
-	 * @return {[type]}      [description]
 	 */
 	RexGrid.prototype.filter = function( rule ) {
 		var i;

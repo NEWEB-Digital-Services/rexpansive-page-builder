@@ -39,3 +39,9 @@
 	margin-left: auto;
 	margin-right: auto;
 }
+
+/* Accordion animations */
+
+.accordion-animate-block {
+	transition: height 150ms, top 150ms;
+}
