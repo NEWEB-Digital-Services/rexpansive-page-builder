@@ -829,8 +829,10 @@ var Rexbuilder_App = (function($) {
       		gridInstances.push( rexGridInstance );
         }
 
-        // Launch fast load
-        window.FastLoad.init();
+        if ( '1' === _plugin_frontend_settings.fast_load ) {
+          // Launch fast load
+          window.FastLoad.init();
+        }
       }
     }
 
@@ -1044,12 +1046,13 @@ var Rexbuilder_App = (function($) {
   		gridInstances[ i ].endResize();
     }
     
-    if ( Rexbuilder_Util.changedFrontLayout ) {
-      // Resetting fast load (that contains IntersectionObserver)
-      window.FastLoad.destroy();
-      window.FastLoad.init();
+    if ( '1' === _plugin_frontend_settings.fast_load ) {
+      if ( Rexbuilder_Util.changedFrontLayout ) {
+        // Resetting fast load (that contains IntersectionObserver)
+        window.FastLoad.destroy();
+        window.FastLoad.init();
+      }
     }
-
 
   	Rexbuilder_Util.changedFrontLayout = false;
   }

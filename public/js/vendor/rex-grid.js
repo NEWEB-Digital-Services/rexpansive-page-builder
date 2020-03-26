@@ -222,6 +222,8 @@
 			id: '',
 			gridWidth: 0,
 			layout: 'fixed',
+			oneColumnModeActive: false,
+			noMobileLayoutSaved: false,
 			fullHeight: false,
 			singleWidth: 0,
 			singleHeight: 0,
@@ -241,7 +243,6 @@
 			setMobilePadding: false,
 			setDesktopPadding: false,
 			editedFromBackend: false,
-			oneColumnModeActive: false,
 			filterRule: false,
 			filterCoords: []
 		};
@@ -419,6 +420,7 @@
 			this.properties.editedFromBackend = true;
 		}
 		this.properties.layout = this.element.getAttribute( 'data-layout' );
+		this.properties.noMobileLayoutSaved = 'true' === this.sectionData.getAttribute('data-no-mobile-layout');
 		this.properties.oneColumnModeActive = 'true' === this.sectionData.getAttribute('data-collapse-grid');
 	 	this.properties.fullHeight = 'true' === this.element.getAttribute("data-full-height");
 	}
@@ -1080,6 +1082,26 @@
 	RexGrid.prototype.endChangeLayout = function() {
 		// get new grid props
 		_getGridAttributes.call( this );
+
+		/**
+		 * Only if there isn't a mobile layout saved, re-order gridBlocks array
+		 * with the DOM order, to correctly order the elements
+		 */
+		if ( this.properties.noMobileLayoutSaved ) {
+			var domBlocks = Array.prototype.slice.call( this.element.getElementsByClassName( 'perfect-grid-item' ) );
+			var i, tot_domBlocks = domBlocks.length, j;
+			var temp = [];
+
+			for( i=0; i<tot_domBlocks; i++ ) {
+				for( j=0; j < this.gridBlocksTotal; j++ ) {
+					if ( domBlocks[i] === this.gridBlocks[j].el ) {
+						temp[i] = this.gridBlocks[j];
+					}
+				}
+			}
+
+			this.gridBlocks = temp;
+		}
 
         // Fix blocks properties
         this.updateGridBlocks();

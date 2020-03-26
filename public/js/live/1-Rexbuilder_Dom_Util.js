@@ -152,9 +152,10 @@ var Rexbuilder_Dom_Util = (function($) {
     $galleryElement.attr("data-row-separator-left", separatorLeft);
     $galleryElement.attr("data-layout", layout);
     $galleryElement.attr("data-full-height", fullHeight);
+
     $sectionData.attr("data-section_width", sectionWidth);
     $sectionData.attr("data-dimension", widthType);
-    // $sectionData.attr("data-layout", layout);
+    $sectionData.attr('data-no-mobile-layout', rowSettings.noMobileLayoutSaved);
     $sectionData.attr("data-responsive_collapse", collapseElements);
 
     $section.attr("data-rex-collapse-grid", collapseElements);

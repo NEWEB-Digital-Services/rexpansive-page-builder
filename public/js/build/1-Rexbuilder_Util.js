@@ -920,15 +920,8 @@ var Rexbuilder_Util = (function($) {
     var i, j, m, n;
     var tot_layoutSelectedSections, tot_defaultLayoutSections, tot_sectionCustom_targets, tot_sectionDefault_targets;
     var targetFounded;
+    
     // merging custom data with default data
-    // console.log(
-    //   "layoutSelectedSections",
-    //   jQuery.extend(true, [], layoutSelectedSections)
-    // );
-    // console.log(
-    //   "defaultLayoutSections",
-    //   jQuery.extend(true, [], defaultLayoutSections)
-    // );
     if (Rexbuilder_Util.activeLayout != "default") {
       for (i = 0, tot_layoutSelectedSections = layoutSelectedSections.length; i < tot_layoutSelectedSections; i++) {
         layoutSelectedSections[i].sectionFounded = false;
@@ -1111,12 +1104,12 @@ var Rexbuilder_Util = (function($) {
           ((Rexbuilder_Util.activeLayout != "default" &&
             layoutSelectedSections[i].defaultSection) ||
             Rexbuilder_Util.activeLayout == "default") &&
-          // _viewport().width <
           Rexbuilder_Util.globalViewport.width <
             _plugin_frontend_settings.defaultSettings.collapseWidth
         ) {
           // default mobile section props
           layoutSelectedSections[i].targets[0].props.collapse_grid = true;
+          layoutSelectedSections[i].targets[0].props.noMobileLayoutSaved = true;
           layoutSelectedSections[i].targets[0].props.layout = "masonry";
           layoutSelectedSections[i].targets[0].props.fullHeight = false;
           
@@ -2763,7 +2756,9 @@ var Rexbuilder_Util = (function($) {
       section_width: targetProps["section_width"],
       dimension: targetProps["dimension"],
 
-      collapse_grid: typeof targetProps["collapse_grid"] == "undefined" ? false : targetProps["collapse_grid"].toString() == "true" || forceCollapseElementsGrid
+      collapse_grid: typeof targetProps["collapse_grid"] == "undefined" ? false : targetProps["collapse_grid"].toString() == "true" || forceCollapseElementsGrid,
+
+      noMobileLayoutSaved: !!targetProps.noMobileLayoutSaved
     };
 
     Rexbuilder_Dom_Util.updateRow( $section, $sectionData, $gallery, rowSettings );
@@ -3838,10 +3833,15 @@ var Rexbuilder_Util = (function($) {
 
     Rexbuilder_Util_Editor.clearSectionsEdited();
 
+    console.log(JSON.parse(JSON.stringify(layoutSelectedSections)))
+    console.log(JSON.parse(JSON.stringify(defaultLayoutSections)))
+
     var mergedEdits = _mergeSections(
       layoutSelectedSections,
       defaultLayoutSections
     );
+
+    console.log(JSON.parse(JSON.stringify(mergedEdits)))
 
     // removing collapsed from grid
     // Rexbuilder_Util.removeCollapsedGrids();

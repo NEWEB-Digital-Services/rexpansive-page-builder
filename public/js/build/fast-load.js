@@ -185,8 +185,6 @@
   }
 
   var onCanPlayThroughCallback = function(event) {
-    // console.log('onCanPlayThroughCallback')
-    // console.log('fast-load.js - 112 - play()')
     event.currentTarget.play();
     if ( queuing ) { videoProcessingCounter--; }
     // remove data-src attribute only if the
@@ -237,8 +235,6 @@
   }
 
   function sectionIntersectionObserverCallback(entries, sectionObserver) {
-    console.log( 'callback observer' );
-    
     var tot_entries = entries.length, i;
     var imgWrapper, videoWrapper;
     
