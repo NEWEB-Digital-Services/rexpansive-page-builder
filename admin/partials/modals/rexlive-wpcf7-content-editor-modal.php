@@ -133,7 +133,7 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <div class="rexpansive-accordion close"> <!-- // Text -->
+            <div class="rex-accordion close"> <!-- // Text -->
                 <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                     <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
                         <div class="bl_d-iblock rex-wpcf7-accordion-plus-wrap">
@@ -218,7 +218,7 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <div class="rexpansive-accordion close"> <!-- // Select Text -->
+            <div class="rex-accordion close"> <!-- // Select Text -->
                 <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                     <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
                         <div class="bl_d-iblock rex-wpcf7-accordion-plus-wrap">
@@ -303,7 +303,7 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <div class="rexpansive-accordion close"> <!-- // Placeholder Color -->
+            <div class="rex-accordion close"> <!-- // Placeholder Color -->
                 <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                     <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
                         <div class="bl_d-iblock rex-wpcf7-accordion-plus-wrap">
@@ -447,7 +447,7 @@ defined('ABSPATH') or exit;
                                 <label id="rex-wpcf7-button-modal-preview"></label>
                             </div>
                         </div>
-                        <div class="rexpansive-accordion close"> <!-- // Button Text -->
+                        <div class="rex-accordion close"> <!-- // Button Text -->
                             <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                                 <div class="rexwpcf7-cont_row valign-wrapper">
                                     <span class="rex-accordion--toggle rex-wpcf7-accordion-plus-wrap">
@@ -512,7 +512,7 @@ defined('ABSPATH') or exit;
                                 </div>
                             </div>
                         </div>
-                        <div class="rexpansive-accordion close"> <!-- // Button Background Color -->
+                        <div class="rex-accordion close"> <!-- // Button Background Color -->
                             <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                                 <div class="rexwpcf7-cont_row valign-wrapper">
                                     <span class="rex-accordion--toggle rex-wpcf7-accordion-plus-wrap">
@@ -569,7 +569,7 @@ defined('ABSPATH') or exit;
                                 </div>
                             </div>
                         </div>
-                        <div class="rexpansive-accordion close"> <!-- // Button Border Color -->
+                        <div class="rex-accordion close"> <!-- // Button Border Color -->
                             <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                                 <div class="rexwpcf7-cont_row valign-wrapper">
                                     <span class="rex-accordion--toggle rex-wpcf7-accordion-plus-wrap">

@@ -267,7 +267,7 @@ defined('ABSPATH') or exit;
                                 </div>
                             </div>
                         </div>
-                        <div class="rexpansive-accordion close"> <!-- // Content Text -->
+                        <div class="rex-accordion close"> <!-- // Content Text -->
                             <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                                 <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
                                     <div class="bl_d-iblock rex-wpcf7-accordion-plus-wrap">
@@ -352,7 +352,7 @@ defined('ABSPATH') or exit;
                                 </div>
                             </div>
                         </div>
-                        <div class="rexpansive-accordion close"> <!-- // Content Background Color -->
+                        <div class="rex-accordion close"> <!-- // Content Background Color -->
                             <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                                 <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
                                     <div class="bl_d-iblock rex-wpcf7-accordion-plus-wrap">
@@ -433,7 +433,7 @@ defined('ABSPATH') or exit;
                                 </div>
                             </div>
                         </div>
-                        <div class="rexpansive-accordion close"> <!-- // Content Border -->
+                        <div class="rex-accordion close"> <!-- // Content Border -->
                             <div class="bl_modal-row modal-row-grey rex-wpcf7-modal-row-tall">
                                 <div class="rexwpcf7-cont_row bl_ai-c valign-wrapper">
                                     <div class="bl_d-iblock rex-wpcf7-accordion-plus-wrap">

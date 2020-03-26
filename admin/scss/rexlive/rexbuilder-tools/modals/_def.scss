@@ -14,7 +14,7 @@
 // Apply borderBottom when accordion row is in button editor.
 #rex-button-editor .rex-accordion--content{border-bottom: 1px solid #ddd;}
 #rex-button-editor .rex-accordion--content .rex-accordion--toggle:hover{cursor:pointer;}
-#rex-button-editor .rexpansive-accordion.open{
+#rex-button-editor .rex-accordion.open{
   .rex-accordion--toggle .l-svg-icons > svg{
     transform: rotate(90deg);
     width:20px !important;
