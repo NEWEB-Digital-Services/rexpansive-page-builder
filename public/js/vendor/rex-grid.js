@@ -171,6 +171,11 @@
 		this.domIndex = this.x + ( this.y * 12 );
 	}
 
+	RexBlock.prototype.destroy = function() {
+		this.el.style.top = '';
+		this.el.style.height = '';
+	}
+
 	/* ===== RexGrid Plugin constructor ===== */
 	function RexGrid() {
 		/**
@@ -208,6 +213,7 @@
 		var defaults = {
 			gutter: 20,
 			columns: 12,
+			isSplitScrollable: false
 		};
 
 		// Create options by extending defaults with the passed in arugments.
@@ -585,7 +591,9 @@
 					this.gridBlocks[ j ].el.setAttribute( 'data-gs-y', newY );
 					this.gridBlocks[ j ].blockData.setAttribute( 'data-gs-y', newY );
 
-					this.gridBlocks[ j ].el.style.top = ( ( newY ) * this.properties.singleHeight ) + 'px';
+					if ( ! this.options.isSplitScrollable ) {
+						this.gridBlocks[ j ].el.style.top = ( ( newY ) * this.properties.singleHeight ) + 'px';
+					}
 					this.gridBlocks[ j ].y = newY;
 					this.gridBlocks[ j ].domIndex = this.gridBlocks[ j ].x + ( this.gridBlocks[ j ].y * this.options.columns )
 
@@ -984,7 +992,9 @@
 
 	function _setBlockDimensions( gridBlockObj, newH ) {
 		gridBlockObj.h = newH;
-		gridBlockObj.el.style.height = ( gridBlockObj.h * this.properties.singleHeight ) + 'px';
+		if ( ! this.options.isSplitScrollable ) {
+			gridBlockObj.el.style.height = ( gridBlockObj.h * this.properties.singleHeight ) + 'px';
+		}
 		gridBlockObj.el.setAttribute( 'data-gs-height', gridBlockObj.h );
 		gridBlockObj.el.setAttribute( 'data-height', gridBlockObj.h );
 		gridBlockObj.toCheck = true;
@@ -1027,8 +1037,10 @@
 				this.gridBlocks[ i ].y = this.gridBlocks[ i ].start_y;
 			}
 
-			currentBlockRealTop = this.properties.singleHeight * this.gridBlocks[ i ].y;
-			currentBlock.style.top = currentBlockRealTop + 'px';
+			if ( ! this.options.isSplitScrollable ) {
+				currentBlockRealTop = this.properties.singleHeight * this.gridBlocks[ i ].y;
+				currentBlock.style.top = currentBlockRealTop + 'px';
+			}
 		}
 	}
 	/**
@@ -1092,7 +1104,7 @@
 			var i, tot_domBlocks = domBlocks.length, j;
 			var temp = [];
 
-			for( i=0; i<tot_domBlocks; i++ ) {
+			for( i=0; i < tot_domBlocks; i++ ) {
 				for( j=0; j < this.gridBlocksTotal; j++ ) {
 					if ( domBlocks[i] === this.gridBlocks[j].el ) {
 						temp[i] = this.gridBlocks[j];
@@ -1285,6 +1297,17 @@
 			scale: 0,
 			opacity: 0
 		}, '-=200' );
+	}
+
+	/**
+	 * Destroy a RexGrid instance
+	 * @return {void}
+	 */
+	RexGrid.prototype.destroy = function() {
+		var i;
+		for ( i=0; i < this.gridBlocksTotal; i++ ) {
+			this.gridBlocks[i].destroy();
+		}
 	}
 
 	return RexGrid;

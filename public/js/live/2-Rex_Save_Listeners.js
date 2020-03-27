@@ -1,7 +1,8 @@
 var Rex_Save_Listeners = (function($) {
   "use strict";
-  $(function() {
-    $(document).on("rexlive:savePage", function(e) {
+
+  function init() {
+    Rexbuilder_Util.$document.on("rexlive:savePage", function(e) {
       var eventData = e.settings.data_to_send;
       var i, j, k, m, p, q;
 
@@ -396,7 +397,7 @@ var Rex_Save_Listeners = (function($) {
         });
     });
 
-    $(document).on("rexlive:saveModel", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:saveModel", function(e) {
       if (!Rexbuilder_Util.$rexContainer.hasClass("editing-model")) {
         return;
       }
@@ -610,7 +611,9 @@ var Rex_Save_Listeners = (function($) {
           // whether the call succeeds or fails
         });
     });
-  });
+
+  }
+
 
   var createCustomization = function(layoutName) {
     var data = {
@@ -1701,6 +1704,7 @@ var Rex_Save_Listeners = (function($) {
   }
 
   return {
+    init: init,
     createSectionProperties: createSectionProperties,
     createTargets: createTargets,
     createBlockProperties: createBlockProperties,

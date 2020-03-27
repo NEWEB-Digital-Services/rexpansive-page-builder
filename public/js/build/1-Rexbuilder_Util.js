@@ -3833,15 +3833,10 @@ var Rexbuilder_Util = (function($) {
 
     Rexbuilder_Util_Editor.clearSectionsEdited();
 
-    console.log(JSON.parse(JSON.stringify(layoutSelectedSections)))
-    console.log(JSON.parse(JSON.stringify(defaultLayoutSections)))
-
     var mergedEdits = _mergeSections(
       layoutSelectedSections,
       defaultLayoutSections
     );
-
-    console.log(JSON.parse(JSON.stringify(mergedEdits)))
 
     // removing collapsed from grid
     // Rexbuilder_Util.removeCollapsedGrids();
@@ -4169,6 +4164,7 @@ var Rexbuilder_Util = (function($) {
     addClass: addClass,
     removeClass: removeClass,
     toggleClass: toggleClass,
+    parents: _parents,
     rtimeOut: rtimeOut,
     rInterval: rInterval,
     merge: _merge,

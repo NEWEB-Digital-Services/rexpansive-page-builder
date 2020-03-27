@@ -135,6 +135,11 @@
 		}
 	}
 
+	/**
+	 * Fix the height of the container of the opacity blocks
+	 * to stop the sticky effect inside the container
+	 * otherwise it goes on
+	 */
 	function fixStickyHeight() {
 		this.opacityElsWrapper.style.height = parseFloat( getComputedStyle( this.opacityEls[this.opacityEls.length-1], null ).top.replace("px", "") ) + 
 		( this.opacityEls[this.opacityEls.length-1].offsetHeight ) + 'px';
@@ -230,6 +235,11 @@
 		}
 	}
 
+	/**
+	 * deprecated
+	 * @param  {[type]} entry [description]
+	 * @return {[type]}       [description]
+	 */
 	function handleEntityObserve(entry) {
 		var entryIndex = parseInt( entry.target.getAttribute('data-scroll-el-index') );
 		this.scrollElsState[entryIndex] = entry;
@@ -274,7 +284,9 @@
 		this.scrollElsState[entryIndex] = entry;
 
 		if( entry.isIntersecting ) {
+			console.log(entry.intersectionRatio, entry.target)
 			if ( entry.intersectionRatio > 0.8  ) {
+				console.log('beccato', entryIndex)
 				activeElementOnScroll.call(this, entryIndex)
 			}
 		}

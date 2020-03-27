@@ -348,61 +348,63 @@ var Rexbuilder_App = (function($) {
    * Launch sticky sections if any
    */
   var launchStickySections = function() {
-    if ( 'undefined' !== typeof StickySection ) {
-      var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
-      var stickySections = [].slice.call( document.getElementsByClassName( 'sticky-section' ) );
-      var tot_stickySections = stickySections.length, i = 0;
-      var stickyElementSelector = '';
-      var overlayAnimation = false;
-      var videoEl, videoControls, stickyVideoControls;
+    if ( 'undefined' === typeof StickySection ) {
+      return;
+    }
 
-      for( i = 0; i < tot_stickySections; i++ ) {
-        if ( Rexbuilder_Util.hasClass( stickySections[i], 'mp4-player' ) ) {
-          stickyElementSelector = '.rex-video-wrap';
+    var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
+    var stickySections = [].slice.call( document.getElementsByClassName( 'sticky-section' ) );
+    var tot_stickySections = stickySections.length, i = 0;
+    var stickyElementSelector = '';
+    var overlayAnimation = false;
+    var videoEl, videoControls, stickyVideoControls;
 
-          // video controls fix
-          videoEl = stickySections[i].querySelector(stickyElementSelector);
-          videoControls = videoEl.querySelector('.rex-video__controls');
-          if ( videoControls ) {
-            stickyVideoControls = document.createElement('div');
-            Rexbuilder_Util.addClass( stickyVideoControls, 'sticky-video-controls' );
-            // Rexbuilder_Util.addClass( stickyVideoControls, 'rex-video__controls' );
-            // stickyVideoControls.innerHTML = '<div class="pause video-tool"><div class="indicator"></div></div><div class="play video-tool"><div class="indicator"></div></div>';
-            videoEl.insertAdjacentElement('afterend', stickyVideoControls);
-          }
-        } else if ( '' !== stickySections[i].style.backgroundImage ) {
-          stickyElementSelector = '.sticky-background-simulator';
-          var adjacent = stickySections[i].querySelector('.responsive-overlay');
-          adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
-          var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
+    for( i = 0; i < tot_stickySections; i++ ) {
+      if ( Rexbuilder_Util.hasClass( stickySections[i], 'mp4-player' ) ) {
+        stickyElementSelector = '.rex-video-wrap';
 
-          // if ( '1' === _plugin_frontend_settings.fast_load ) {
-          //   backgroundSimulator.setAttribute('data-src', stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section'));
-          // } else if ( '0' === _plugin_frontend_settings.fast_load ) {
-            backgroundSimulator.style.backgroundImage = stickySections[i].style.backgroundImage;
-          // }
-        } else if ( Rexbuilder_Util.hasClass( stickySections[i], 'section-w-image' ) ) {
-          stickyElementSelector = '.sticky-background-simulator';
-          var adjacent = stickySections[i].querySelector('.responsive-overlay');
-          adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
-          var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
-
-          if ( '1' === _plugin_frontend_settings.fast_load ) {
-            backgroundSimulator.setAttribute('data-src', stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section'));
-          } else if ( '0' === _plugin_frontend_settings.fast_load ) {
-            backgroundSimulator.style.backgroundImage = 'url(' + stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
-          }
+        // video controls fix
+        videoEl = stickySections[i].querySelector(stickyElementSelector);
+        videoControls = videoEl.querySelector('.rex-video__controls');
+        if ( videoControls ) {
+          stickyVideoControls = document.createElement('div');
+          Rexbuilder_Util.addClass( stickyVideoControls, 'sticky-video-controls' );
+          // Rexbuilder_Util.addClass( stickyVideoControls, 'rex-video__controls' );
+          // stickyVideoControls.innerHTML = '<div class="pause video-tool"><div class="indicator"></div></div><div class="play video-tool"><div class="indicator"></div></div>';
+          videoEl.insertAdjacentElement('afterend', stickyVideoControls);
         }
+      } else if ( '' !== stickySections[i].style.backgroundImage ) {
+        stickyElementSelector = '.sticky-background-simulator';
+        var adjacent = stickySections[i].querySelector('.responsive-overlay');
+        adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
+        var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
 
-        overlayAnimation = ( 'true' === stickySections[i].querySelector('.section-data').getAttribute('data-row_overlay_active') ? true : false );
+        // if ( '1' === _plugin_frontend_settings.fast_load ) {
+        //   backgroundSimulator.setAttribute('data-src', stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section'));
+        // } else if ( '0' === _plugin_frontend_settings.fast_load ) {
+          backgroundSimulator.style.backgroundImage = stickySections[i].style.backgroundImage;
+        // }
+      } else if ( Rexbuilder_Util.hasClass( stickySections[i], 'section-w-image' ) ) {
+        stickyElementSelector = '.sticky-background-simulator';
+        var adjacent = stickySections[i].querySelector('.responsive-overlay');
+        adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
+        var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
 
-        var stickySection = new StickySection(stickySections[i], {
-          borderAnimation: true,
-          stickyJS: stickyJS,
-          stickyElementSelector: stickyElementSelector,
-          overlayAnimation: overlayAnimation
-        });
+        if ( '1' === _plugin_frontend_settings.fast_load ) {
+          backgroundSimulator.setAttribute('data-src', stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section'));
+        } else if ( '0' === _plugin_frontend_settings.fast_load ) {
+          backgroundSimulator.style.backgroundImage = 'url(' + stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
+        }
       }
+
+      overlayAnimation = ( 'true' === stickySections[i].querySelector('.section-data').getAttribute('data-row_overlay_active') ? true : false );
+
+      var stickySection = new StickySection(stickySections[i], {
+        borderAnimation: true,
+        stickyJS: stickyJS,
+        stickyElementSelector: stickyElementSelector,
+        overlayAnimation: overlayAnimation
+      });
     }
   };
 
@@ -426,11 +428,12 @@ var Rexbuilder_App = (function($) {
    *
    */
   var launchDistanceAccordion = function() {
-    if ( 'undefined' !== typeof DistanceAccordion ) {
-      var togglers = document.getElementsByClassName('distance-accordion-toggle');
-      for ( var j=0, tot = togglers.length; j < tot; j++ ) {
-        var inst = new DistanceAccordion(togglers[j]);
-      }
+    if ( 'undefined' === typeof DistanceAccordion ) {
+      return;
+    }
+    var togglers = document.getElementsByClassName('distance-accordion-toggle');
+    for ( var j=0, tot = togglers.length; j < tot; j++ ) {
+      var inst = new DistanceAccordion(togglers[j]);
     }
   }
 
@@ -513,17 +516,26 @@ var Rexbuilder_App = (function($) {
     var grid = this.element.querySelector('.perfect-grid-gallery');
     var $grid = $(grid);
     var i;
+    var gutter = parseInt( grid.getAttribute('data-separator') );
+
+    // var gridInfo = getRexGridInstance( grid );
+    // if ( gridInfo ) {
+    //   gridInfo.instance.properties.isSplitScrollable = true;
+    // }
 
     for( i=0; i < this.totScrollEls; i++ ) {
-      this.scrollEls[i].style.height = this.scrollEls[i].offsetHeight + 'px';
+      this.scrollEls[i].querySelector('.grid-item-content').style.minHeight = ( parseInt( this.scrollEls[i].style.height ) - gutter ) + 'px';
+      // this.scrollEls[i].style.height = this.scrollEls[i].offsetHeight + 'px';
     }
 
     for( i=0; i < this.totOpacityEls; i++ ) {
-      this.opacityEls[i].style.height = this.opacityEls[i].offsetHeight + 'px';
+      this.opacityEls[i].querySelector('.grid-item-content').style.minHeight = ( parseInt( this.opacityEls[i].style.height ) - gutter ) + 'px';
+      // this.opacityEls[i].style.height = this.opacityEls[i].offsetHeight + 'px';
     }
 
     // destroy tha grid
-    $grid.data('plugin_perfectGridGalleryEditor').destroyGridGallery();
+    // $grid.data('plugin_perfectGridGalleryEditor').destroyGridGallery();
+    destroyRexGridInstance( grid );
     grid.style.height = '';
   };
 
@@ -533,10 +545,12 @@ var Rexbuilder_App = (function($) {
    * @param  {customScrollContainer} customScrollContainer container in which watch the scroll event
    * @return {void}
    */
-  var launchSplitScollable = function( context, customScrollContainer ) {
+  var launchSplitScrollable = function( context, customScrollContainer ) {
     if ( 'undefined' === typeof SplitScrollable ) {
       return;
     }
+    context = context || document;
+
     if ( Rexbuilder_Util.globalViewport.width >= _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
       var scrbls = Array.prototype.slice.call( context.getElementsByClassName('split-scrollable') );
       var tot_scrbls = scrbls.length, i;
@@ -596,58 +610,59 @@ var Rexbuilder_App = (function($) {
    * @date 26-02-2019
    */
   var launch_odometer = function( target ) {
-    if ( 'undefined' !== Odometer )
-    {
-      var fval = target.innerText;
-      // Check if user want yearly increment of value
-      if ( null !== target.getAttribute( 'data-yearly-inc' ) )
-      {
-        // if exists get the value, comparing today to the site date pubblication
-        if ( '' !== _plugin_frontend_settings.sitedate )
-        {
-          var siteDate = new Date( _plugin_frontend_settings.sitedate );
-          var today = new Date();
-          var mult = today.getFullYear() - siteDate.getFullYear();
-
-          var y_inc = target.getAttribute( 'data-yearly-inc' );
-          fval = parseInt( fval ) + ( parseInt( y_inc ) * mult );
-        }
-      }
-
-      if ( null !== target.getAttribute( 'data-montly-inc' ) )
-      {
-        // if exists get the value, comparing today to the site date pubblication
-        if ( '' !== _plugin_frontend_settings.sitedate )
-        {
-          var siteDate = new Date( _plugin_frontend_settings.sitedate );
-          var today = new Date();
-          var mult = today.getMonth() - siteDate.getMonth();
-
-          var m_inc = target.getAttribute( 'data-montly-inc' );
-          fval = parseInt( fval ) + ( parseInt( m_inc ) * mult );
-        }
-      }
-
-      target.setAttribute('data-final-value', fval);
-      var tval = target.getAttribute('data-start-value');
-      if ( null == tval )
-      {
-        tval = '';
-        // console.log(target.innerText, target.innerText.length);
-        for (var i=0, tot_nums = target.innerText.length; i<tot_nums; i++)
-        {
-          tval += "1";
-        }
-      }
-      var oElement = new Odometer({
-        el: target,
-        value: tval,
-        format: _plugin_frontend_settings.odometer.format,
-        theme: _plugin_frontend_settings.odometer.theme,
-      });
-      // odometers.push(oElement);
-      return oElement;
+    if ( 'undefined' === typeof Odometer ) {
+      return;
     }
+
+    var fval = target.innerText;
+    // Check if user want yearly increment of value
+    if ( null !== target.getAttribute( 'data-yearly-inc' ) )
+    {
+      // if exists get the value, comparing today to the site date pubblication
+      if ( '' !== _plugin_frontend_settings.sitedate )
+      {
+        var siteDate = new Date( _plugin_frontend_settings.sitedate );
+        var today = new Date();
+        var mult = today.getFullYear() - siteDate.getFullYear();
+
+        var y_inc = target.getAttribute( 'data-yearly-inc' );
+        fval = parseInt( fval ) + ( parseInt( y_inc ) * mult );
+      }
+    }
+
+    if ( null !== target.getAttribute( 'data-montly-inc' ) )
+    {
+      // if exists get the value, comparing today to the site date pubblication
+      if ( '' !== _plugin_frontend_settings.sitedate )
+      {
+        var siteDate = new Date( _plugin_frontend_settings.sitedate );
+        var today = new Date();
+        var mult = today.getMonth() - siteDate.getMonth();
+
+        var m_inc = target.getAttribute( 'data-montly-inc' );
+        fval = parseInt( fval ) + ( parseInt( m_inc ) * mult );
+      }
+    }
+
+    target.setAttribute('data-final-value', fval);
+    var tval = target.getAttribute('data-start-value');
+    if ( null == tval )
+    {
+      tval = '';
+      // console.log(target.innerText, target.innerText.length);
+      for (var i=0, tot_nums = target.innerText.length; i<tot_nums; i++)
+      {
+        tval += "1";
+      }
+    }
+    var oElement = new Odometer({
+      el: target,
+      value: tval,
+      format: _plugin_frontend_settings.odometer.format,
+      theme: _plugin_frontend_settings.odometer.theme,
+    });
+    // odometers.push(oElement);
+    return oElement;
   };
 
   function launchInlineGallery() {
@@ -689,7 +704,7 @@ var Rexbuilder_App = (function($) {
       // launch popUpContent
       launchPopUpContent();
       // launch splitScrollable
-      launchSplitScollable( document );
+      launchSplitScrollable();
 
       launchParticleSwarm();
 
@@ -740,7 +755,9 @@ var Rexbuilder_App = (function($) {
         	var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
         	var rexGridInstance = getRexGridInstance( grid );
 
-        	rexGridInstance.reCalcBlockHeight( block );
+          if ( rexGridInstance ) {
+            rexGridInstance.instance.reCalcBlockHeight( block );
+          }
         }
       };
       accordionSettings.close = {
@@ -749,7 +766,9 @@ var Rexbuilder_App = (function($) {
         	var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
         	var rexGridInstance = getRexGridInstance( grid );
 
-        	rexGridInstance.reCalcBlockHeight( block );
+          if ( rexGridInstance ) {
+            rexGridInstance.instance.reCalcBlockHeight( block );
+          }
         },
         completeClbk: function( data ) {
         	var $grid = data.$element.parents( '.perfect-grid-gallery' );
@@ -780,6 +799,7 @@ var Rexbuilder_App = (function($) {
     Rexbuilder_Rexwpcf7.init();
 
     if ( Rexbuilder_Util.editorMode ) {
+      Rex_Save_Listeners.init();
       Rexbuilder_Rexelement_Editor.init();
       Rexbuilder_Rexwpcf7_Editor.init();
       Rexbuilder_CreateBlocks.init();
@@ -824,7 +844,11 @@ var Rexbuilder_App = (function($) {
       	var i = 0;
 
       	for ( i = 0; i < tot_grids; i++ ) {
-      		var rexGridInstance = new RexGrid( grids[ i ] );
+      		// var rexGridInstance = new RexGrid( grids[ i ], {
+        //     isSplitScrollable: Rexbuilder_Util.hasClass( Rexbuilder_Util.parents( grids[ i ], '.rexpansive_section' ), 'split-scrollable')
+        //   } );
+
+          var rexGridInstance = new RexGrid( grids[ i ] );
           
       		gridInstances.push( rexGridInstance );
         }
@@ -858,13 +882,15 @@ var Rexbuilder_App = (function($) {
       var oindex, tot_odometersEls = odometersEls.length;
       for( oindex = 0; oindex < tot_odometersEls; oindex++ ) {
         var oElement = launch_odometer( odometersEls[oindex] );
-        odometers.push(oElement);
-        $(odometersEls[oindex]).rexScrolled({
-          callback: function(el)
-          {
-            el.innerHTML = el.getAttribute('data-final-value');
-          }
-        })
+        if ( oElement ) {
+          odometers.push(oElement);
+          $(odometersEls[oindex]).rexScrolled({
+            callback: function(el)
+            {
+              el.innerHTML = el.getAttribute('data-final-value');
+            }
+          })
+        }
       }
 
       /** -- Launching slideshow -- **/
@@ -1006,11 +1032,24 @@ var Rexbuilder_App = (function($) {
 
   	for ( i = 0; i < tot_instances; i++ ) {
   		if ( gridId === gridInstances[ i ].properties.id && grid === gridInstances[ i ].element ) {
-  			return gridInstances[ i ];
+  			return {
+          instance: gridInstances[ i ],
+          index: i
+        }
   		}
   	}
 
   	return null;
+  }
+
+  function destroyRexGridInstance( grid ) {
+    var gridInfo = getRexGridInstance( grid );
+    if ( null === gridInfo ) {
+      return;
+    }
+
+    gridInfo.instance.destroy();
+    gridInstances.splice( gridInfo.index, 1 );
   }
 
   /**
@@ -1063,6 +1102,7 @@ var Rexbuilder_App = (function($) {
     handleFrontEndResize: handleFrontEndResize,
 
     // RexGrid functions
-    getRexGridInstance: getRexGridInstance
+    getRexGridInstance: getRexGridInstance,
+    destroyRexGridInstance: destroyRexGridInstance
   };
 })(jQuery);
