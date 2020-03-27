@@ -476,8 +476,7 @@ class Rexbuilder_Public
 	 * @since   2.0.0
 	 * @date    26-03-2019
 	 */
-	private function get_plugin_frontend_settings()
-	{
+	private function get_plugin_frontend_settings() {
 		return array(
 			'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
 			'fast_load' => ( isset( $this->plugin_options['fast_load'] ) ? $this->plugin_options['fast_load'] : 0 ),

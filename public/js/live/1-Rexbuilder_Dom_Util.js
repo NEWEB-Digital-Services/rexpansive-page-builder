@@ -820,7 +820,7 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var _updateSectionName = function($section, newName) {
-    if ( null !== newName ) {
+    if ( null !== newName && '' !== newName ) {
       $section.attr("data-rexlive-section-name", newName);
       var newSafeName = newName.replace(/ /gm, "");
       Rex_Navigator.updateNavigatorItem($section, newSafeName, newName);
