@@ -584,22 +584,28 @@ var Rexbuilder_App = (function($) {
   }
 
   function disableGrids() {
-    var gridsToDisable = Array.prototype.slice.call( document.getElementsByClassName('disable-grid') );
-    var i, tot_gridsToDisable = gridsToDisable.length;
-    for( i=0; i<tot_gridsToDisable; i++ ) {
-      var bs = Array.prototype.slice.call( gridsToDisable[i].getElementsByClassName('grid-stack-item') );
-      var j, tot_bs = bs.length;
+  	var gridsToDisable = Array.prototype.slice.call( document.getElementsByClassName( 'disable-grid' ) );
+  	var i, tot_gridsToDisable = gridsToDisable.length;
 
-      for( j =0; j < tot_bs; j++ ) {
-        bs[j].style.height = window.getComputedStyle(bs[j]).height;
-      }
+  	for ( i = 0; i < tot_gridsToDisable; i++ ) {
+  		var grid = gridsToDisable[ i ].querySelector( '.perfect-grid-gallery' );
 
-      var pgg = gridsToDisable[i].querySelector('.perfect-grid-gallery');
-      $(pgg).perfectGridGalleryEditor('destroyGridGallery');
-      // $(pgg).perfectGridGalleryEditor('destroy');
-      Rexbuilder_Util.addClass(gridsToDisable[i], 'disabled');
-      pgg.style.height = '';
-    }
+  		var bs = Array.prototype.slice.call( gridsToDisable[ i ].getElementsByClassName( 'grid-stack-item' ) );
+  		var j, tot_bs = bs.length;
+  		var blocksHeights = [];
+
+  		for ( j = 0; j < tot_bs; j++ ) {
+  			blocksHeights.push( bs[ j ].style.height );
+  		}
+
+  		// Destroying RexGrid
+  		destroyRexGridInstance( grid );
+  		Rexbuilder_Util.addClass( gridsToDisable[ i ], 'disabled' );
+
+  		for ( j = 0; j < tot_bs; j++ ) {
+  			bs[ j ].style.height = blocksHeights[ j ];
+  		}
+  	}
   }
 
   /**

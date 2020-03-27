@@ -2669,6 +2669,9 @@ var Rexbuilder_Util = (function($) {
       typeVideo: type
     };
 
+    console.log( JSON.stringify(targetProps) );
+    
+
     // if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
       Rexbuilder_Dom_Util.updateSectionVideoBackground($section, videoOptions);
     // }
