@@ -975,6 +975,9 @@ var Rexbuilder_App = (function($) {
 
       for ( i = 0; i < tot_grids; i++ ) {
         gridInstances[i].fixAfterLoad();
+
+        // we call the function cause its already present on Rexbuilder_Dom_Util
+        Rexbuilder_Dom_Util.fixVideoProportion( gridInstances[i].section );
       }
 
       // Starting slider
@@ -1080,6 +1083,9 @@ var Rexbuilder_App = (function($) {
   		}
 
   		gridInstances[ i ].endResize();
+
+      // we call the function cause its already present on Rexbuilder_Dom_Util
+      // Rexbuilder_Dom_Util.fixVideoProportion( gridInstances[i].section );
     }
     
     if ( '1' === _plugin_frontend_settings.fast_load ) {
@@ -1100,6 +1106,6 @@ var Rexbuilder_App = (function($) {
 
     // RexGrid functions
     getRexGridInstance: getRexGridInstance,
-    destroyRexGridInstance: destroyRexGridInstance
+    destroyRexGridInstance: destroyRexGridInstance,
   };
 })(jQuery);

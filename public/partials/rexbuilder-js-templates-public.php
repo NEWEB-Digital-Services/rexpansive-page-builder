@@ -1,6 +1,6 @@
 <?php
 /**
- *
+ * Templates used on public face of the plugin
  * @link       htto://www.neweb.info
  * @since      x.x.x
  *

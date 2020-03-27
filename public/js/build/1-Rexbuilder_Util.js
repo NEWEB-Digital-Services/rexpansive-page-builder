@@ -3369,46 +3369,6 @@ var Rexbuilder_Util = (function($) {
     }
   };
 
-  var _launchVideoPlugins = function() {
-    /* -- Launching YouTube Video -- */
-
-    var ytVideos = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName( 'rex-youtube-wrap' ) );
-    var i, tot_ytVideos = ytVideos.length;
-    var $ytVideo, data_yt, url, id;
-
-    if ( ! jQuery.browser.mobile ) {
-      for( i=0; i < tot_ytVideos; i++ ) {
-        $ytVideo = $(ytVideos[i]);
-        if ( $ytVideo.YTPGetPlayer() === undefined && ! Rexbuilder_Util.hasClass( ytVideos[i], 'youtube-player-launching' ) ) {
-          $ytVideo.YTPlayer();
-          return;
-        }
-        Rexbuilder_Util.removeClass( ytVideos[i], 'youtube-player-launching' );
-      }
-    } else {
-      for( i=0; i < tot_ytVideos; i++ ) {
-        data_yt = eval("(" + ytVideos[i].getAttribute("data-property") + ")");
-        url = data_yt.videoURL;
-        id = getYoutubeID(url);
-
-        ytVideos[i].style.backgroundImage = "url(http://img.youtube.com/vi/" + id + "/0.jpg)";
-        ytVideos[i].addEventListener( 'click', handleYtbVideoMobileClick );
-      }
-      // $('.rex-video-wrap').getVideoThumbnail();
-    }
-
-    VimeoVideo.init();
-  };
-
-  function handleYtbVideoMobileClick(ev) {
-    ev.preventDefault();
-
-    var data_yt = eval("(" + this.getAttribute("data-property") + ")");
-    var url = data_yt.videoURL;
-
-    window.location.href = url;
-  }
-
   var setContainer = function($container) {
     this.$rexContainer = $container;
   };
@@ -3556,6 +3516,48 @@ var Rexbuilder_Util = (function($) {
   };
 
   /**
+   * Launch youtube and vimeo videos
+   * @return {[type]} [description]
+   */
+  var _launchVideoPlugins = function() {
+
+    var ytVideos = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName( 'rex-youtube-wrap' ) );
+    var i, tot_ytVideos = ytVideos.length;
+    var $ytVideo, data_yt, url, id;
+
+    if ( ! jQuery.browser.mobile ) {
+      for( i=0; i < tot_ytVideos; i++ ) {
+        $ytVideo = $(ytVideos[i]);
+        if ( $ytVideo.YTPGetPlayer() === undefined && ! Rexbuilder_Util.hasClass( ytVideos[i], 'youtube-player-launching' ) ) {
+          $ytVideo.YTPlayer();
+          return;
+        }
+        Rexbuilder_Util.removeClass( ytVideos[i], 'youtube-player-launching' );
+      }
+    } else {
+      for( i=0; i < tot_ytVideos; i++ ) {
+        data_yt = eval("(" + ytVideos[i].getAttribute("data-property") + ")");
+        url = data_yt.videoURL;
+        id = getYoutubeID(url);
+
+        ytVideos[i].style.backgroundImage = "url(http://img.youtube.com/vi/" + id + "/0.jpg)";
+        ytVideos[i].addEventListener( 'click', handleYtbVideoMobileClick );
+      }
+    }
+
+    VimeoVideo.init();
+  };
+
+  function handleYtbVideoMobileClick(ev) {
+    ev.preventDefault();
+
+    var data_yt = eval("(" + this.getAttribute("data-property") + ")");
+    var url = data_yt.videoURL;
+
+    window.location.href = url;
+  }
+
+  /**
    * todo to finish ( hide video did not start ) 
    */
   var _playAllVideos = function() {
@@ -3577,30 +3579,6 @@ var Rexbuilder_Util = (function($) {
     for( i=0; i<tot_ytbVideos; i++ ) {
       Rexbuilder_Util.playVideo( $( ytbVideos[i] ) );
     }
-
-    // Rexbuilder_Util.$rexContainer
-    //   .children(".rexpansive_section")
-    //   .each(function(i, section) {
-    //     var $section = $(section);
-    //     var $mp4Videos = $section.find(".mp4-player");
-    //     var $vimeoVideos = $section.find(".vimeo-player");
-    //     var $youtubeVideos = $section.find(".youtube-player");
-
-    //     if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
-    //       $.each($mp4Videos, function(i, video) {
-    //         Rexbuilder_Util.playVideo($(video));
-    //       });
-    //     }
-
-    //     $.each($vimeoVideos, function(i, video) {
-    //       Rexbuilder_Util.playVideo($(video));
-    //     });
-
-    //     $.each($youtubeVideos, function(i, video) {
-    //       Rexbuilder_Util.playVideo($(video));
-    //     });
-    //     Rexbuilder_Util.playVideo($section);
-    //   });
   };
 
   var _playVideo = function($target) {
@@ -3633,30 +3611,6 @@ var Rexbuilder_Util = (function($) {
         return;
       }
     }
-
-    // if ($target.hasClass("mp4-player")) {
-    //   var videoEl = $target.find("video")[0];
-    //   if ( videoEl )
-    //   {
-    //     videoEl.play();
-    //   }
-    // } else if ($target.hasClass("vimeo-player")) {
-    //   var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
-    //   if( vimeoPlugin ) {
-    //     vimeoPlugin.play();
-    //   }
-    // } else if ($target.hasClass("youtube-player")) {
-    //   if ($target.children(".rex-youtube-wrap").length != 0) {
-    //     if (
-    //       $target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined
-    //     ) {
-    //       return;
-    //     }
-    //     $target.children(".rex-youtube-wrap").YTPPlay();
-    //   } else {
-    //     return;
-    //   }
-    // }
   };
 
   var _getPaddingsDataString = function(paddingString) {
