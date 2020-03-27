@@ -23,3 +23,19 @@
     }
   }
 }
+
+.rex-accordion--content {
+  border-bottom: 1px solid #ddd;
+
+  .rex-accordion--toggle:hover {
+    cursor: pointer;
+  }
+
+  &.modal-row-default {
+    background-color: #FFF;
+
+    .l-svg-icons > svg {
+      background-color: #FFF;
+    }
+  }
+}

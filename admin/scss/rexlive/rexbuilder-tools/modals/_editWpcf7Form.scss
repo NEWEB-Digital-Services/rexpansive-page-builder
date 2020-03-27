@@ -116,40 +116,11 @@
         margin-right: 2px;
       }
     }
-
-    .rex-accordion--content {
-      border-bottom: 1px solid #ddd;
-
-      .rex-accordion--toggle:hover {
-        cursor: pointer;
-      }
-
-      &.modal-row-default {
-        background-color: #FFF;
-
-        .l-svg-icons > svg {
-          background-color: #FFF;
-        }
-      }
-    }
   }
 
   .rex-input-prefixed {
     label {
       padding-left: 4px;
-    }
-  }
-
-  .modal-row-grey {
-    background-color: $palette-color-6;
-
-    &:last-child {
-      border-bottom: 1px solid #ddd;
-    }
-
-    .active,
-    .l-svg-icons > svg {
-      background-color: $palette-color-6;
     }
   }
 
@@ -419,10 +390,10 @@
     margin-left: 54px;
   }
 
-  .rex-wpcf7-modal-row-tall {
-    padding-top: 15px;
-    padding-bottom: 15px;
-  }
+  // .rex-wpcf7-modal-row-tall {
+  //   padding-top: 15px;
+  //   padding-bottom: 15px;
+  // }
 
   .rex-wpcf7-modal-column-w30,
   .rex-wpcf7-modal-column-w50,

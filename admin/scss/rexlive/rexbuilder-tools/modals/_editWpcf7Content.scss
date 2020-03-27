@@ -138,22 +138,6 @@
         margin-right: 2px;
       }
     }
-
-    .rex-accordion--content {
-      border-bottom: 1px solid #ddd;
-
-      .rex-accordion--toggle:hover {
-        cursor: pointer;
-      }
-
-      &.modal-row-default {
-        background-color: #FFF;
-
-        .l-svg-icons > svg {
-          background-color: #FFF;
-        }
-      }
-    }
   }
 
   #wpcf7-default-check-wrap {
@@ -276,19 +260,6 @@
     width: 37px;
   }
 
-  .modal-row-grey {
-    background-color: $palette-color-6;
-
-    &:last-child {
-      border-bottom: 1px solid #ddd;
-    }
-
-    .active,
-    .l-svg-icons > svg {
-      background-color: $palette-color-6;
-    }
-  }
-
   .big-icon {
     .l-svg-icons {
       font-size: 30px;
@@ -390,10 +361,10 @@
     margin-left: 62px;
   }
 
-  .rex-wpcf7-modal-row-tall {
-    padding-top: 15px;
-    padding-bottom: 15px;
-  }
+  // .rex-wpcf7-modal-row-tall {
+  //   padding-top: 15px;
+  //   padding-bottom: 15px;
+  // }
 
   .with-text {
     input[type=text] {
