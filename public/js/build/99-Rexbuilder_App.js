@@ -704,28 +704,25 @@ var Rexbuilder_App = (function($) {
     $builderAccordions = Rexbuilder_Util.$rexContainer.find('.rex-accordion');
     $otherAccordions = Rexbuilder_Util.$document.find('.rex-accordion').not( $builderAccordions );
 
-    accordionSettings = {
-      // durationOpen: 10,
-      // durationClose: 300
-    };
+    accordionSettings = {};
 
     if( Rexbuilder_Util.editorMode ) {
       accordionSettings.open = {
-        progressClbk: function(data) {
-          // var content = data.properties.$content[0];
-          var block = data.properties.$content.parents('.grid-stack-item')[0];
-          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
-          grid.resize(block,null,Math.round( data.element.parentElement.offsetHeight / grid.opts.cellHeight ));
-        }
+      	progressClbk: function( data ) {
+      		// var content = data.properties.$content[0];
+      		var block = data.properties.$content.parents( '.grid-stack-item' )[ 0 ];
+      		var grid = data.properties.$content.parents( '.grid-stack' ).data( "gridstack" );
+      		grid.resize( block, null, Math.round( data.element.parentElement.offsetHeight / grid.opts.cellHeight ) );
+      	},
       };
       accordionSettings.close = {
-        progressClbk: function(data) {
-          // var content = data.properties.$content[0];
-          var block = data.properties.$content.parents('.grid-stack-item')[0];
-          var start_h = block.children[0].getAttribute('data-gs_start_h');
-          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
-          grid.resize(block,null,Math.round( parseInt(start_h) ));
-        }
+      	progressClbk: function( data ) {
+      		// var content = data.properties.$content[0];
+      		var block = data.properties.$content.parents( '.grid-stack-item' )[ 0 ];
+      		var start_h = block.children[ 0 ].getAttribute( 'data-gs_start_h' );
+      		var grid = data.properties.$content.parents( '.grid-stack' ).data( "gridstack" );
+      		grid.resize( block, null, Math.round( parseInt( start_h ) ) );
+      	}
       };
     } else {
       accordionSettings.open = {
