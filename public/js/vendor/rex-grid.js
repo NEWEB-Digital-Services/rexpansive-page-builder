@@ -171,6 +171,11 @@
 		this.domIndex = this.x + ( this.y * 12 );
 	}
 
+	/**
+	 * Destroy a RexBlock instance
+	 * @return 	{void}
+	 * @since		1.0.0
+	 */
 	RexBlock.prototype.destroy = function() {
 		this.el.style.top = '';
 		this.el.style.height = '';
@@ -1300,10 +1305,14 @@
 	}
 
 	/**
-	 * Destroy a RexGrid instance
-	 * @return {void}
+	 * Destroy a RexGrid instance destroying all instance RexBlocks
+	 * @return 	{void}
+	 * @since		1.0.0
 	 */
 	RexGrid.prototype.destroy = function() {
+		this.element.style.height = '';
+
+		// RexBlocks
 		var i;
 		for ( i=0; i < this.gridBlocksTotal; i++ ) {
 			this.gridBlocks[i].destroy();

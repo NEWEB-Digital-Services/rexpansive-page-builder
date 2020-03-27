@@ -472,6 +472,7 @@ var Rexbuilder_Dom_Util = (function($) {
       _removeMp4Video($target, true);
       $target.addClass("mp4-player");
       tmpl.arg = "video";
+      
       var mp4Tmpl = tmpl("tmpl-video-mp4", {
           url: mp4Data.linkMp4,
           width: mp4Data.width,
