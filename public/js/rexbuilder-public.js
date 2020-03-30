@@ -3,13 +3,9 @@
 
 	// Waiting until the ready of the DOM
 	document.addEventListener( 'DOMContentLoaded', Rexbuilder_App.init );
-	window.addEventListener( 'load', Rexbuilder_App.load );
-
+	
 	// Waiting for the complete load of the window
-	// window.addEventListener('load', function () {
-	// 	Rexbuilder_App.init();
-	// 	Rexbuilder_App.load();
-	// } );
+	window.addEventListener( 'load', Rexbuilder_App.load );
 
 	function debounce(func, wait, immediate) {
 		var timeout
