@@ -1531,7 +1531,6 @@ var Rexbuilder_Util = (function($) {
 			 * if not, data are already ok (they're changed in function _mergeSections)
 			 */
 			if (collapseGrid && mobileLayoutSaved) {
-				console.log( 'collasso appena fatto', targetProps['gs_width'], targetProps['gs_x'] );
 				// Block width
 				elem.setAttribute('data-gs-width', 12);
 				elem.setAttribute('data-width', 12);
