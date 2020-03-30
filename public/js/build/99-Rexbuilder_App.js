@@ -1073,8 +1073,10 @@ var Rexbuilder_App = (function($) {
   }
 
   /**
-   * Handle front end resize
-   * @return {void}
+   * Handle front end resize.
+	 * The function adjustes the grid and re-launches effects
+   * @return	{void}
+	 * @since		2.0.4
    */
   function handleFrontEndResize() {
   	var actualLayout = Rexbuilder_Util.findFrontLayout();
@@ -1084,7 +1086,7 @@ var Rexbuilder_App = (function($) {
   	if ( Rexbuilder_Util.startFrontLayout != actualLayout ) {
   		Rexbuilder_Util.changedFrontLayout = true;
   		Rexbuilder_Util.startFrontLayout = actualLayout;
-  	}
+		}
 
   	// Find and set new layout information
   	if ( Rexbuilder_Util.changedFrontLayout ) {
@@ -1096,7 +1098,6 @@ var Rexbuilder_App = (function($) {
     }
     
   	var i = 0;
-  	var j = 0;
 
   	for ( i = 0; i < tot_grids; i++ ) {
       // if ( Rexbuilder_Util.changedFrontLayout && ! gridInstances[ i ].isFiltered() ) {

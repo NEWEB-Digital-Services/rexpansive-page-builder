@@ -423,17 +423,19 @@
 
 	/**
 	 * Get some properties of the grid, from the data attributes
-	 * @return {void}
+	 * @return	{void}
+	 * @since		1.0.0
 	 */
 	function _getGridAttributes() {
 		if ( this.sectionData.getAttribute( 'data-row_edited_live' ) != 'true' ) {
 			/** @todo set to false on change layout */
 			this.properties.editedFromBackend = true;
 		}
+
 		this.properties.layout = this.element.getAttribute( 'data-layout' );
 		this.properties.noMobileLayoutSaved = 'true' === this.sectionData.getAttribute('data-no-mobile-layout');
 		this.properties.oneColumnModeActive = 'true' === this.sectionData.getAttribute('data-collapse-grid');
-	 	this.properties.fullHeight = 'true' === this.element.getAttribute("data-full-height");
+		this.properties.fullHeight = 'true' === this.element.getAttribute('data-full-height');
 	}
 
 	function _getDOMGutterOptions() {
