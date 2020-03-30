@@ -254,9 +254,10 @@
    * @return {void}
    */
   function handleCollapsFirstTimeout( reverseData ) {
-    this.batchGridstack();
+		this.batchGridstack();
     this.updateCollapsedBlocksHeight();
-    this.commitGridstack();
+		this.commitGridstack();
+		debugger
 
     // rtimeOut( handleCollapseSecondTimeout.bind( this, reverseData ), 500 );
     setTimeout( handleCollapseSecondTimeout.bind( this, reverseData ), 500 );
@@ -284,7 +285,7 @@
     // rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
     setTimeout( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
 
-    if ( !Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdaiting ) {
+    if ( !Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdating ) {
       $(document).trigger(event);
     }
   }
@@ -413,7 +414,7 @@
             !Rexbuilder_Util_Editor.updatingRowDistances &&
             !Rexbuilder_Util_Editor.updatingSectionMargins &&
             !Rexbuilder_Util_Editor.updatingSectionLayout &&
-            !Rexbuilder_Util.domUpdaiting &&
+            !Rexbuilder_Util.domUpdating &&
             !Rexbuilder_Util.windowIsResizing &&
             !that.properties.collapsingElements &&
             !Rexbuilder_Util_Editor.addingNewBlocks &&
@@ -565,7 +566,7 @@
       }
 
       if (this.settings.editorMode) {
-        if ( !Rexbuilder_Util.domUpdaiting && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying ) ) {
+        if ( !Rexbuilder_Util.domUpdating && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying ) ) {
           this.updateBlocksHeight();
         }
       } else {
@@ -815,7 +816,7 @@
       this.batchGridstack();
       this._defineDynamicPrivateProperties();
       this.updateGridstackStyles();
-      if ( !Rexbuilder_Util.domUpdaiting ) {
+      if ( !Rexbuilder_Util.domUpdating ) {
         this.updateBlocksHeight();
       }
       this.commitGridstack();
@@ -1344,7 +1345,7 @@
     },
 
     commitGridstack: function() {
-      if (!Rexbuilder_Util.domUpdaiting) {
+      if (!Rexbuilder_Util.domUpdating) {
         if (this.properties.gridstackInstance !== null) {
           this.properties.gridstackInstance.commit();
         }
@@ -3910,7 +3911,7 @@
       //         // that.updateSrollbars();
       //         rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
 
-      //         if ( !Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdaiting ) {
+      //         if ( !Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdating ) {
       //           $(document).trigger(event);
       //         }
       //       },
