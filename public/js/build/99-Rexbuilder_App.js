@@ -1094,12 +1094,15 @@ var Rexbuilder_App = (function($) {
       // Rexbuilder_Dom_Util.fixVideoProportion( gridInstances[i].section );
     }
     
-    if ( '1' === _plugin_frontend_settings.fast_load ) {
-      if ( Rexbuilder_Util.changedFrontLayout ) {
+    if ( Rexbuilder_Util.changedFrontLayout ) {
+      if ( '1' === _plugin_frontend_settings.fast_load ) {
         // Resetting fast load (that contains IntersectionObserver)
         window.FastLoad.destroy();
         window.FastLoad.init();
       }
+
+      // launch effects again
+      launchFrontEndEffects();
     }
 
   	Rexbuilder_Util.changedFrontLayout = false;
