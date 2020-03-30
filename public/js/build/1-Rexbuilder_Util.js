@@ -1605,10 +1605,10 @@ var Rexbuilder_Util = (function($) {
           typeof targetProps["video_mp4_url"] == "undefined"
             ? ""
             : targetProps["video_mp4_url"],
-        width: isNaN(parseInt(targetProps["video_bg_width"]))
+        width: ! isNaN(parseInt(targetProps["video_bg_width"]))
           ? parseInt(targetProps["video_bg_width"])
           : "",
-        height: isNaN(parseInt(targetProps["video_bg_height"]))
+        height: ! isNaN(parseInt(targetProps["video_bg_height"]))
           ? parseInt(targetProps["video_bg_height"])
           : ""
       },
@@ -2660,16 +2660,18 @@ var Rexbuilder_Util = (function($) {
           typeof targetProps["video_mp4_url"] == "undefined"
             ? ""
             : targetProps["video_mp4_url"],
-        width: "",
-        height: ""
+        width: typeof targetProps["video_bg_width_section"] == "undefined"
+            ? ""
+            : targetProps["video_bg_width_section"],
+        height: typeof targetProps["video_bg_height_section"] == "undefined"
+            ? ""
+            : targetProps["video_bg_height_section"],
       },
       vimeoUrl: vimeoUrl,
       youtubeUrl: youtubeUrl,
       audio: hasAudio,
       typeVideo: type
     };
-
-    console.log( JSON.stringify(targetProps) );
 
     // if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
       Rexbuilder_Dom_Util.updateSectionVideoBackground($section, videoOptions);

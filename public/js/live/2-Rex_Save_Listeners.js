@@ -904,6 +904,8 @@ var Rex_Save_Listeners = (function($) {
       image_bg_elem_active = true,
       video_mp4_url = "",
       video_bg_id = "",
+      video_bg_width = "",
+      video_bg_height = "",
       video_bg_url = "",
       video_bg_url_vimeo = "",
       linkurl = "",
@@ -961,6 +963,8 @@ var Rex_Save_Listeners = (function($) {
     image_bg_elem_active = itemData.getAttribute("data-image_bg_elem_active") != null ? itemData.getAttribute("data-image_bg_elem_active") : true;
 
     video_bg_id = itemData.getAttribute("data-video_bg_id") === null ? "" : itemData.getAttribute("data-video_bg_id");
+    video_bg_width = itemData.getAttribute("data-video_bg_width") === null ? "" : itemData.getAttribute("data-video_bg_width");
+    video_bg_height = itemData.getAttribute("data-video_bg_height") === null ? "" : itemData.getAttribute("data-video_bg_height");
     video_mp4_url = itemData.getAttribute("data-video_mp4_url") === null ? "" : itemData.getAttribute("data-video_mp4_url");
     video_bg_url = itemData.getAttribute("data-video_bg_url") === null ? "" : itemData.getAttribute("data-video_bg_url");
     video_bg_url_vimeo = itemData.getAttribute("data-video_bg_url_vimeo") === null ? "" : itemData.getAttribute("data-video_bg_url_vimeo");
@@ -1120,6 +1124,10 @@ var Rex_Save_Listeners = (function($) {
         image_bg_elem_active +
         '" video_bg_id="' +
         video_bg_id +
+        '" video_bg_width="' +
+        video_bg_width +
+        '" video_bg_height="' +
+        video_bg_height +
         '" video_mp4_url="' +
         video_mp4_url +
         '" video_bg_url="' +
@@ -1197,6 +1205,8 @@ var Rex_Save_Listeners = (function($) {
       props["image_height"] = image_height;
       props["id_image_bg"] = id_image_bg_block;
       props["video_bg_id"] = video_bg_id;
+      props["video_bg_width"] = video_bg_width;
+      props["video_bg_height"] = video_bg_height;
       props["video_mp4_url"] = video_mp4_url;
       props["video_bg_url_youtube"] = video_bg_url;
       props["video_bg_url_vimeo"] = video_bg_url_vimeo;
@@ -1241,6 +1251,8 @@ var Rex_Save_Listeners = (function($) {
       image_bg_section_active = "",
       video_bg_url_section = "",
       video_bg_id_section = "",
+      video_bg_width_section = "",
+      video_bg_height_section = "",
       video_mp4_url = "",
       video_bg_url_vimeo_section = "",
       full_height = "",
@@ -1302,6 +1314,8 @@ var Rex_Save_Listeners = (function($) {
     video_mp4_url = sectionData.getAttribute("data-video_mp4_url") === null ? "" : sectionData.getAttribute("data-video_mp4_url");
     video_bg_url_section = sectionData.getAttribute("data-video_bg_url_section") === null ? "" : sectionData.getAttribute("data-video_bg_url_section");
     video_bg_id_section = sectionData.getAttribute("data-video_bg_id_section") === null ? "" : sectionData.getAttribute("data-video_bg_id_section");
+    video_bg_width_section = sectionData.getAttribute("data-video_bg_width_section") === null ? "" : sectionData.getAttribute("data-video_bg_width_section");
+    video_bg_height_section = sectionData.getAttribute("data-video_bg_height_section") === null ? "" : sectionData.getAttribute("data-video_bg_height_section");
     video_bg_url_vimeo_section = sectionData.getAttribute("data-video_bg_url_vimeo_section") === null ? "" : sectionData.getAttribute("data-video_bg_url_vimeo_section");
 
     full_height = gridGallery.getAttribute("data-full-height") === null ? "" : gridGallery.getAttribute("data-full-height");
@@ -1396,6 +1410,10 @@ var Rex_Save_Listeners = (function($) {
         video_bg_url_section +
         '" video_bg_id_section="' +
         video_bg_id_section +
+        '" video_bg_width_section="' +
+        video_bg_width_section +
+        '" video_bg_height_section="' +
+        video_bg_height_section +
         '" video_bg_url_vimeo_section="' +
         video_bg_url_vimeo_section +
         '" full_height="' +
@@ -1475,6 +1493,8 @@ var Rex_Save_Listeners = (function($) {
       props["id_image_bg_section"] = id_image_bg_section;
       props["image_size"] = image_size;
       props["video_bg_id"] = video_bg_id_section;
+      props["video_bg_width_section"] = video_bg_width_section;
+      props["video_bg_height_section"] = video_bg_height_section;
       props["video_mp4_url"] = video_mp4_url;
       props["video_bg_url_section"] = video_bg_url_section;
       props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;

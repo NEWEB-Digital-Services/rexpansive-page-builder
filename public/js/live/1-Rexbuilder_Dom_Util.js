@@ -717,8 +717,10 @@ var Rexbuilder_Dom_Util = (function($) {
     }
 
     if (targetType == "section") {
-      $sectionData.attr("data-video_bg_id_section", videoOptions.mp4Data.idMp4);
       $sectionData.attr("data-video_mp4_url", videoOptions.mp4Data.linkMp4);
+      $sectionData.attr("data-video_bg_id_section", videoOptions.mp4Data.idMp4);
+      $sectionData.attr("data-video_bg_width_section", videoOptions.mp4Data.width);
+      $sectionData.attr("data-video_bg_height_section", videoOptions.mp4Data.height);
       $sectionData.attr("data-video_bg_url_section", videoOptions.youtubeUrl);
       $sectionData.attr("data-video_bg_url_vimeo_section",videoOptions.vimeoUrl);
       if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
@@ -726,8 +728,10 @@ var Rexbuilder_Dom_Util = (function($) {
       }
       Rexbuilder_Util_Editor.activeAddSection( $target );
     } else if (targetType == "block") {
-      $elemData.attr("data-video_bg_id", videoOptions.mp4Data.idMp4);
       $elemData.attr("data-video_mp4_url", videoOptions.mp4Data.linkMp4);
+      $elemData.attr("data-video_bg_id", videoOptions.mp4Data.idMp4);
+      $elemData.attr("data-video_bg_width", videoOptions.mp4Data.width);
+      $elemData.attr("data-video_bg_height", videoOptions.mp4Data.height);
       $elemData.attr("data-video_bg_url", videoOptions.youtubeUrl);
       $elemData.attr("data-video_bg_url_vimeo", videoOptions.vimeoUrl);
       $elemData.attr("data-video_has_audio", videoOptions.audio);

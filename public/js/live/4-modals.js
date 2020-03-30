@@ -898,6 +898,7 @@
 
       var $sectionData = $section.children(".section-data");
 
+      // data for undo/redo
       var mp4Video =
         typeof $sectionData.attr("data-video_mp4_url") == "undefined"
           ? ""
@@ -910,6 +911,14 @@
         typeof $sectionData.attr("data-video_bg_id_section") == "undefined"
           ? ""
           : $sectionData.attr("data-video_bg_id_section");
+      var mp4VideoWidth = 
+        typeof $sectionData.attr("data-video_bg_width_section") == "undefined"
+          ? ""
+          : $sectionData.attr("data-video_bg_width_section");
+      var mp4VideoHeight = 
+        typeof $sectionData.attr("data-video_bg_height_section") == "undefined"
+          ? ""
+          : $sectionData.attr("data-video_bg_height_section");
       var vimeoUrl =
         typeof $sectionData.attr("data-video_bg_url_vimeo_section") ==
         "undefined"
@@ -929,8 +938,8 @@
         mp4Data: {
           idMp4: mp4VideoID,
           linkMp4: mp4Video,
-          width: "",
-          height: ""
+          width: mp4VideoWidth,
+          height: mp4VideoHeight
         },
         vimeoUrl: vimeoUrl,
         youtubeUrl: youtubeVideo,
@@ -942,8 +951,8 @@
         mp4Data: {
           idMp4: data.videoMp4.idMp4,
           linkMp4: data.videoMp4.linkMp4,
-          width: "",
-          height: ""
+          width: data.videoMp4.width,
+          height: data.videoMp4.height
         },
         vimeoUrl: data.urlVimeo,
         youtubeUrl: data.urlYoutube,
@@ -958,8 +967,8 @@
         mp4Data: {
           idMp4: data.videoMp4.idMp4,
           linkMp4: data.videoMp4.linkMp4,
-          width: "",
-          height: ""
+          width: data.videoMp4.width,
+          height: data.videoMp4.height
         },
         vimeoUrl: data.urlVimeo,
         youtubeUrl: data.urlYoutube,

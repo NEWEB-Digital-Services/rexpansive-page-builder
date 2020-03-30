@@ -48,6 +48,8 @@ class Rexbuilder_Section {
 			"image_size" => "full",
 			'video_bg_url_section' => '',
 			'video_bg_id_section' => '',
+			'video_bg_width_section' => '',
+			'video_bg_height_section' => '',
 			'video_bg_url_vimeo_section' => '',
 			'full_height' => '',
 			"block_distance" => 20,
@@ -287,6 +289,12 @@ class Rexbuilder_Section {
 
 		echo '<div class="section-data" style="display: none;" ';
 		foreach ($atts as $property_name => $value_property) {
+			if ( 'video_bg_width_section' === $property_name && '' == $value_property && '' !== $videoMp4Width ) {
+				$value_property = $videoMp4Width;
+			}
+			if ( 'video_bg_height_section' === $property_name && '' == $value_property && '' !== $videoMp4Height ) {
+				$value_property = $videoMp4Height;
+			}
 			echo 'data-' . $property_name . '="' . ($value_property != "undefined"? $value_property : "" ). '" ';
 		}
 

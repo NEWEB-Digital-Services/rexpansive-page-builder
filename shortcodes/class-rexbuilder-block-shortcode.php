@@ -58,6 +58,8 @@ class Rexbuilder_Block
 			'image_bg_elem_active' => '',
 			'video_bg_id' => "",
 			"video_bg_url" => "",
+			'video_bg_width' => '',
+			'video_bg_height' => '',
 			"video_bg_url_vimeo" => "",
 			"type_bg_block" => "",
 			'image_size' => 'full',
