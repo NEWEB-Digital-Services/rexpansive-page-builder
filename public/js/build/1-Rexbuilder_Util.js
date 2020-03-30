@@ -2669,14 +2669,13 @@ var Rexbuilder_Util = (function($) {
       typeVideo: type
     };
 
-    console.log( JSON.stringify(targetProps) );
-
     // if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
       Rexbuilder_Dom_Util.updateSectionVideoBackground($section, videoOptions);
     // }
 
-    // @todo on RexGrid
-    // $gallery.perfectGridGalleryEditor('fixVideoProportion' );
+    if ( Rexbuilder_Util.editorMode ) {
+    	$gallery.perfectGridGalleryEditor( 'fixVideoProportion' );
+    }
 
     var imageOptions = {
       active:
@@ -3707,6 +3706,15 @@ var Rexbuilder_Util = (function($) {
    * @since  2.0.4
    */
   function handleLayoutChange( chosenLayoutName ) {
+    console.groupCollapsed( 'handle layout change' );
+    console.log( chosenLayoutName );
+    console.log( Rexbuilder_Util.activeLayout );
+    console.groupEnd();
+
+    // No change layout, simple resize
+    if ( chosenLayoutName == Rexbuilder_Util.activeLayout && chosenLayoutName == "default" ) {
+      return;
+    }
 
     Rexbuilder_Util.rexContainer.setAttribute( "data-rex-layout-selected", chosenLayoutName );
     Rexbuilder_Util.activeLayout = chosenLayoutName;
@@ -3716,6 +3724,7 @@ var Rexbuilder_Util = (function($) {
 
     var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll( '.rexpansive_section:not(.removing_section)' ) );
     var sIndex, tot_sections = sections.length;
+
     var temp_secObj;
     for ( sIndex = 0; sIndex < tot_sections; sIndex++ ) {
       // populate models ids array

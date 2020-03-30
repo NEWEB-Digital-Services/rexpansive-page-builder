@@ -530,14 +530,14 @@ var Rexbuilder_Dom_Util = (function($) {
   }
 
   var _findVideoMaxWidth = function(el) {
-    var c_w, c_h, v_w, v_h;    
+    var c_w, c_h, v_w, v_h;
     v_w = el.getAttribute('data-rex-video-width');
     v_h = el.getAttribute('data-rex-video-height');
     var maxWidth = '100%';
 
     c_w = el.offsetWidth;
     c_h = el.offsetHeight;
-
+    
     if ( ( v_w / v_h ) > ( c_w / c_h ) ) {
       maxWidth =  ( ( ( c_h * v_w ) / v_h ) * 100 ) / c_w;
       maxWidth = maxWidth + '%';

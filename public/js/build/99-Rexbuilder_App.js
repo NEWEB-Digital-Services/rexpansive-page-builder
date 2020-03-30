@@ -792,12 +792,33 @@ var Rexbuilder_App = (function($) {
     });
   }
 
-  var init = function() {
+  /**
+   * Fixing both section and blocks videos proportions.
+   * The function called is based on DOM attributes
+   * dimensions of the video.
+   * @return  {void}
+   * @since   2.0.4
+   */
+  function _fixVideos() {
+    var tot_grids = gridInstances.length;
+  	var i = 0;
+    var j = 0;
+
+  	for ( i = 0; i < tot_grids; i++ ) {
+  		// We call this function cause its already present on Rexbuilder_Dom_Util
+  		Rexbuilder_Dom_Util.fixVideoProportion( gridInstances[ i ].section );
+
+  		for ( j = 0; j < gridInstances[ i ].gridBlocksTotal; j++ ) {
+  			Rexbuilder_Dom_Util.fixVideoProportion( gridInstances[ i ].gridBlocks[ j ].el );
+  		}
+  	}
+  }
+
+  function init() {
     Rexbuilder_Util.init();
     Rexbuilder_Dom_Util.init();
     
     Rexbuilder_Rexbutton.init();
-    
     Rexbuilder_Rexelement.init();
     Rexbuilder_Rexwpcf7.init();
 
@@ -961,9 +982,7 @@ var Rexbuilder_App = (function($) {
     }
   };
 
-  var load = function() {
-    // console.log( 'load' );
-    
+  function load() {
     // @bugfix on other layouts than desktop with mixed customization definitions
     // @deprecated i don't like this solution, too much expensive
     
@@ -978,21 +997,16 @@ var Rexbuilder_App = (function($) {
     } else {
       var tot_grids = gridInstances.length;
       var i = 0;
+      var j = 0;
 
       for ( i = 0; i < tot_grids; i++ ) {
         gridInstances[i].fixAfterLoad();
-
-        // we call the function cause its already present on Rexbuilder_Dom_Util
-        Rexbuilder_Dom_Util.fixVideoProportion( gridInstances[i].section );
       }
-
-      // Starting slider
-      RexSlider.init();
-
+      
+      _fixVideos();       // Fixing video proportions
+      RexSlider.init();   // Starting slider
       Rexbuilder_Util.launchVideoPlugins();
-
       Rexbuilder_Util.playAllVideos();
-
       launchAccordions();
     }
 
@@ -1064,9 +1078,8 @@ var Rexbuilder_App = (function($) {
    */
   function handleFrontEndResize() {
   	var actualLayout = Rexbuilder_Util.findFrontLayout();
-  	var i;
-  	var tot_grids = gridInstances.length;
-
+    var tot_grids = gridInstances.length;
+    
   	// Find actual layout
   	if ( Rexbuilder_Util.startFrontLayout != actualLayout ) {
   		Rexbuilder_Util.changedFrontLayout = true;
@@ -1075,12 +1088,15 @@ var Rexbuilder_App = (function($) {
 
   	// Find and set new layout information
   	if ( Rexbuilder_Util.changedFrontLayout ) {
-  		var choosedLayout = Rexbuilder_Util.chooseLayout();
+      var choosedLayout = Rexbuilder_Util.chooseLayout();
   		Rexbuilder_Util.handleLayoutChange( choosedLayout );
 
   		// _set_initial_grids_state( choosedLayout );
   		// setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
-  	}
+    }
+    
+  	var i = 0;
+  	var j = 0;
 
   	for ( i = 0; i < tot_grids; i++ ) {
       // if ( Rexbuilder_Util.changedFrontLayout && ! gridInstances[ i ].isFiltered() ) {
@@ -1088,11 +1104,12 @@ var Rexbuilder_App = (function($) {
         gridInstances[ i ].endChangeLayout();
   		}
 
-  		gridInstances[ i ].endResize();
-
-      // we call the function cause its already present on Rexbuilder_Dom_Util
-      // Rexbuilder_Dom_Util.fixVideoProportion( gridInstances[i].section );
+      gridInstances[ i ].endResize();
     }
+
+    // Fixing video proportions, needed because videos
+    // must keep proportions between resizes
+    _fixVideos();
     
     if ( Rexbuilder_Util.changedFrontLayout ) {
       if ( '1' === _plugin_frontend_settings.fast_load ) {
