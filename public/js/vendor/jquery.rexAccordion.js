@@ -24,11 +24,12 @@
       selectors: {
         self: '.rex-accordion',
         toggle: '.rex-accordion--toggle',
-        content: '.rex-accordion--content'
+        content: '.rex-accordion--content',
       },
       duration: 150,
       durationOpen: null,
-      durationClose: null
+      durationClose: null,
+      noToggleClass: 'no-toggle',
     };
 
   // The actual plugin constructor
@@ -95,8 +96,10 @@
       this.updateState();
       
       this.properties.$toggle.each(function(i,el) {
-        $(el).on('click', function() {
-          that._handle_click(i);
+        $(el).on('click', function(ev) {
+          if ( ! $( ev.srcElement ).hasClass( that.settings.noToggleClass ) && 0 === $( ev.srcElement ).parents( '.' + that.settings.noToggleClass ).length ) {
+            that._handle_click(i);
+          }
         });
       });
     },
