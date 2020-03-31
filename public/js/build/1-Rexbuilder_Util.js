@@ -1441,8 +1441,6 @@ var Rexbuilder_Util = (function($) {
   };
 
   function handlingGridstackCommitEnd( galleryEditorInstance, collapse, targets, meIndex ) {
-		// console.log( 'timeout end commit', JSON.stringify(targets) );
-		
     Rexbuilder_Util.domUpdating = true;
     galleryEditorInstance.batchGridstack();
     if( galleryEditorInstance.properties.gridstackInstance ) {
@@ -1457,9 +1455,6 @@ var Rexbuilder_Util = (function($) {
       galleryEditorInstance.updateFullHeight();
 		}
 
-		
-		// console.log( JSON.stringify(targets[0].props) );
-		
 		// Collapsing blocks if needed
     if ( targets[0].props.collapse_grid ) {
       galleryEditorInstance.collapseElements();
@@ -1519,17 +1514,16 @@ var Rexbuilder_Util = (function($) {
 		var gridstackInstance = options.gridstackInstance;
 		var positionAndSize = options.positionAndSize || false;
 		var collapseGrid = options.collapseGrid || false;
-		var mobileLayoutSaved = options.mobileLayoutSaved || false;
 
     // Update block position and size
     if (positionAndSize) {
-			/** @todo What do if we're not on mobile but collapsing is needed?? */
 			/** @todo Need to check forceCollapseElementsGrid too? */
 			/*
 			 * Collapsing handling. Needed only if there's a mobile layout saved in DB because
 			 * if not, data are already ok (they're changed in function _mergeSections)
 			 */
-			if (collapseGrid && mobileLayoutSaved) {
+			if (collapseGrid) {
+				
 				// Block width
 				elem.setAttribute('data-gs-width', 12);
 				elem.setAttribute('data-width', 12);
@@ -3878,7 +3872,6 @@ var Rexbuilder_Util = (function($) {
    */
   function updateRexGrid( section, targets, forceCollapseElementsGrid ) {
 		var $section = $( section );
-		var sectionData = section.querySelector('.section-data');
 		var $gallery = $section.find( '.grid-stack-row' );
 
   	// Setting one column mode on the actual RexGrid instance
@@ -3905,9 +3898,7 @@ var Rexbuilder_Util = (function($) {
     	}
 		}
 		
-		// Vars needed for collapsing
 		var collapseGrid = targets[0].props.collapse_grid;
-		var mobileLayoutSaved = ! ('true' === sectionData.getAttribute('data-no-mobile-layout'));
 
     var targetName, targetProps;
     var $elem, $itemData, $itemContent;
@@ -3944,8 +3935,7 @@ var Rexbuilder_Util = (function($) {
 						$itemContent: $itemContent,
 						gridstackInstance: null,
 						positionAndSize: true,
-						collapseGrid: collapseGrid,
-						mobileLayoutSaved: mobileLayoutSaved
+						collapseGrid: collapseGrid
 					};
 
 					Rexbuilder_Util.updateDOMSingleElement(options);
@@ -3956,7 +3946,7 @@ var Rexbuilder_Util = (function($) {
     updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
 		
 		/** @todo Need to check forceCollapseElementsGrid too? */
-		if ( collapseGrid && mobileLayoutSaved ) {
+		if ( collapseGrid ) {
 			/*
 			 * Collapsing only if there's a mobile layout saved in DB
 			 * because if not, data are already ok (they're changed
