@@ -682,6 +682,8 @@ var Rexbuilder_App = (function($) {
    */
   function launchFrontEndEffects() {
     if( !Rexbuilder_Util.editorMode ) {
+			disableGrids();
+			
       Rexbuilder_Photoswipe.init('.photoswipe-gallery');
 
       // inline photoswipe
@@ -713,8 +715,6 @@ var Rexbuilder_App = (function($) {
       launchSplitScrollable();
 
       launchParticleSwarm();
-
-      disableGrids();
 
       // listen iframe events (for popupcontent)
       listenPopUpContentEvents();
@@ -811,7 +811,7 @@ var Rexbuilder_App = (function($) {
   }
 
   function init() {
-    Rexbuilder_Util.init();
+		Rexbuilder_Util.init();
     Rexbuilder_Dom_Util.init();
     
     Rexbuilder_Rexbutton.init();
@@ -868,7 +868,7 @@ var Rexbuilder_App = (function($) {
         //     isSplitScrollable: Rexbuilder_Util.hasClass( Rexbuilder_Util.parents( grids[ i ], '.rexpansive_section' ), 'split-scrollable')
         //   } );
 
-          var rexGridInstance = new RexGrid( grids[ i ] );
+					var rexGridInstance = new RexGrid(grids[i]);
           
       		gridInstances.push( rexGridInstance );
         }

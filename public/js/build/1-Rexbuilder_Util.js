@@ -3919,11 +3919,11 @@ var Rexbuilder_Util = (function($) {
 					tot_inlineImgs = inlineImgs.length;
 
 					if (!Rexbuilder_Util.editorMode && 0 !== tot_inlineImgs) {
-						var i;
+						var j;
 
-						for (i = 0; i < tot_inlineImgs; i++) {
-							if ('true' === inlineImgs[i].getAttribute('inline-photoswipe')) {
-								Rexbuilder_Photoswipe.addElementFromInline($(inlineImgs[i]));
+						for (j = 0; j < tot_inlineImgs; j++) {
+							if ('true' === inlineImgs[j].getAttribute('inline-photoswipe')) {
+								Rexbuilder_Photoswipe.addElementFromInline($(inlineImgs[j]));
 							}
 						}
 					}
