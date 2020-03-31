@@ -2822,8 +2822,7 @@
       var size_viewer;
       var size_viewer_mobile;
 
-      var blockHasPSWP;
-      var blockHasSlider;
+			var blockHasSlider;
       
       gallery.$element
         .on("resizestart", function(event, ui) {
@@ -2843,7 +2842,6 @@
             size_viewer = event.target.querySelector('.top-tools .el-size-viewer .el-size-viewer__val');
             size_viewer_mobile = event.target.querySelector('.mobile-tools .el-size-viewer .el-size-viewer__val');
 
-            blockHasPSWP = event.target.getElementsByClassName('pswp-item').length > 0 ? true : false;
             blockHasSlider = hasClass( event.target, 'block-has-slider' );
 
             imageWidth = isNaN( parseInt( blockContent.getAttribute("data-background_image_width")) ) ? 0 : parseInt( blockContent.getAttribute("data-background_image_width"));
@@ -2975,7 +2973,7 @@
             //waiting for transition end
             rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
           }
-        });
+				});
     },
 
     /**
