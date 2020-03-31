@@ -257,7 +257,6 @@
 		this.batchGridstack();
     this.updateCollapsedBlocksHeight();
 		this.commitGridstack();
-		debugger
 
     // rtimeOut( handleCollapseSecondTimeout.bind( this, reverseData ), 500 );
     setTimeout( handleCollapseSecondTimeout.bind( this, reverseData ), 500 );

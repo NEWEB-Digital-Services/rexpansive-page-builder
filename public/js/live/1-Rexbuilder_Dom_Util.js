@@ -523,9 +523,10 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var fixVideoProportion = function(el) {
-    var video = el.getElementsByClassName('rex-video-wrap');
-    if( video.length > 0 ) {
-      video[0].children[0].style.maxWidth = _findVideoMaxWidth(video[0]);
+    var video = Array.prototype.slice.call( el.getElementsByClassName('rex-video-wrap') );
+    var i, tot_video = video.length;
+    for ( i=0; i<tot_video; i++ ) {
+      video[i].children[0].style.maxWidth = _findVideoMaxWidth(video[i]);
     }
   }
 

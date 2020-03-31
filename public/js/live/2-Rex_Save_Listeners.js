@@ -934,6 +934,7 @@ var Rex_Save_Listeners = (function($) {
     var textWrap;
     var itemContent = elem.querySelector('.grid-item-content');
     var itemData = elem.querySelector('.rexbuilder-block-data');
+    var videoElem = elem.querySelector('.rex-video-wrap');
 
     id = elem.id;
     rex_id = elem.getAttribute("data-rexbuilder-block-id");
@@ -963,8 +964,23 @@ var Rex_Save_Listeners = (function($) {
     image_bg_elem_active = itemData.getAttribute("data-image_bg_elem_active") != null ? itemData.getAttribute("data-image_bg_elem_active") : true;
 
     video_bg_id = itemData.getAttribute("data-video_bg_id") === null ? "" : itemData.getAttribute("data-video_bg_id");
-    video_bg_width = itemData.getAttribute("data-video_bg_width") === null ? "" : itemData.getAttribute("data-video_bg_width");
-    video_bg_height = itemData.getAttribute("data-video_bg_height") === null ? "" : itemData.getAttribute("data-video_bg_height");
+    // video dimensions fixes (we do not save them, we must save!)
+    if ( videoElem ) {
+      if ( '' == itemData.getAttribute("data-video_bg_width") || itemData.getAttribute("data-video_bg_width") === null ) {
+        video_bg_width = videoElem.getAttribute('data-rex-video-width');
+      } else {
+        video_bg_width = itemData.getAttribute("data-video_bg_width");
+      }
+
+      if ( '' == itemData.getAttribute("data-video_bg_height") || itemData.getAttribute("data-video_bg_height") === null ) {
+        video_bg_height = videoElem.getAttribute('data-rex-video-height');
+      } else {
+        video_bg_height = itemData.getAttribute("data-video_bg_height");
+      }
+    }
+
+    // video_bg_width = itemData.getAttribute("data-video_bg_width") === null ? "" : itemData.getAttribute("data-video_bg_width");
+    // video_bg_height = itemData.getAttribute("data-video_bg_height") === null ? "" : itemData.getAttribute("data-video_bg_height");
     video_mp4_url = itemData.getAttribute("data-video_mp4_url") === null ? "" : itemData.getAttribute("data-video_mp4_url");
     video_bg_url = itemData.getAttribute("data-video_bg_url") === null ? "" : itemData.getAttribute("data-video_bg_url");
     video_bg_url_vimeo = itemData.getAttribute("data-video_bg_url_vimeo") === null ? "" : itemData.getAttribute("data-video_bg_url_vimeo");
@@ -1283,6 +1299,7 @@ var Rex_Save_Listeners = (function($) {
     var $gridGallery = $section.find(".grid-stack-row");
     var gridGallery = $gridGallery[0];
     var sectionData = section.querySelector('.section-data');
+    var videoElem = section.querySelector('.rex-video-wrap');
 
     var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
 
@@ -1314,8 +1331,24 @@ var Rex_Save_Listeners = (function($) {
     video_mp4_url = sectionData.getAttribute("data-video_mp4_url") === null ? "" : sectionData.getAttribute("data-video_mp4_url");
     video_bg_url_section = sectionData.getAttribute("data-video_bg_url_section") === null ? "" : sectionData.getAttribute("data-video_bg_url_section");
     video_bg_id_section = sectionData.getAttribute("data-video_bg_id_section") === null ? "" : sectionData.getAttribute("data-video_bg_id_section");
-    video_bg_width_section = sectionData.getAttribute("data-video_bg_width_section") === null ? "" : sectionData.getAttribute("data-video_bg_width_section");
-    video_bg_height_section = sectionData.getAttribute("data-video_bg_height_section") === null ? "" : sectionData.getAttribute("data-video_bg_height_section");
+
+    // video dimensions fixes (we do not save them, we must save!)
+    if ( videoElem ) {
+      if ( '' == sectionData.getAttribute("data-video_bg_width_section") || sectionData.getAttribute("data-video_bg_width_section") === null ) {
+        video_bg_width_section = videoElem.getAttribute('data-rex-video-width');
+      } else {
+        video_bg_width_section = sectionData.getAttribute("data-video_bg_width_section");
+      }
+
+      if ( '' == sectionData.getAttribute("data-video_bg_height_section") || sectionData.getAttribute("data-video_bg_height_section") === null ) {
+        video_bg_height_section = videoElem.getAttribute('data-rex-video-height');
+      } else {
+        video_bg_height_section = sectionData.getAttribute("data-video_bg_height_section");
+      }
+    }
+    
+    // video_bg_width_section = sectionData.getAttribute("data-video_bg_width_section") === null ? "" : sectionData.getAttribute("data-video_bg_width_section");
+    // video_bg_height_section = sectionData.getAttribute("data-video_bg_height_section") === null ? "" : sectionData.getAttribute("data-video_bg_height_section");
     video_bg_url_vimeo_section = sectionData.getAttribute("data-video_bg_url_vimeo_section") === null ? "" : sectionData.getAttribute("data-video_bg_url_vimeo_section");
 
     full_height = gridGallery.getAttribute("data-full-height") === null ? "" : gridGallery.getAttribute("data-full-height");

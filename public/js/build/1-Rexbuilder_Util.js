@@ -1118,7 +1118,7 @@ var Rexbuilder_Util = (function($) {
 			}
 
 			// console.log('section founded',layoutSelectedSections[i].sectionFounded)
-			console.log('section default',layoutSelectedSections[i].defaultSection)
+			// console.log('section default',layoutSelectedSections[i].defaultSection)
     }
     return jQuery.extend(true, {}, layoutSelectedSections);
   };
@@ -1151,7 +1151,6 @@ var Rexbuilder_Util = (function($) {
   }
   
   var _edit_dom_layout = function( chosenLayoutName ) {
-		console.trace()
     var response = {
       collapse_needed: false,
     };
@@ -1442,7 +1441,7 @@ var Rexbuilder_Util = (function($) {
   };
 
   function handlingGridstackCommitEnd( galleryEditorInstance, collapse, targets, meIndex ) {
-		console.log( 'timeout end commit', JSON.stringify(targets) );
+		// console.log( 'timeout end commit', JSON.stringify(targets) );
 		
     Rexbuilder_Util.domUpdating = true;
     galleryEditorInstance.batchGridstack();

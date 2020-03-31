@@ -1453,9 +1453,10 @@
       };
 
       Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
-      if (galleryEditorInstance.settings.galleryLayout == "masonry") {
+      Rexbuilder_Dom_Util.fixVideoProportion($itemContent);
+      // if (galleryEditorInstance.settings.galleryLayout == "masonry") {
         //galleryEditorInstance.updateElementHeight($elem[0]);
-      }
+      // }
 
       var actionData = {
         $itemContent: $itemContent,

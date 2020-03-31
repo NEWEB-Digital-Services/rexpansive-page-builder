@@ -807,10 +807,6 @@ var Rexbuilder_App = (function($) {
   	for ( i = 0; i < tot_grids; i++ ) {
   		// We call this function cause its already present on Rexbuilder_Dom_Util
   		Rexbuilder_Dom_Util.fixVideoProportion( gridInstances[ i ].section );
-
-  		for ( j = 0; j < gridInstances[ i ].gridBlocksTotal; j++ ) {
-  			Rexbuilder_Dom_Util.fixVideoProportion( gridInstances[ i ].gridBlocks[ j ].el );
-  		}
   	}
   }
 
