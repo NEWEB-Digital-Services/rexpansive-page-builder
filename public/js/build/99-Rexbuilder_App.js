@@ -360,6 +360,11 @@ var Rexbuilder_App = (function($) {
     var videoEl, videoControls, stickyVideoControls;
 
     for( i = 0; i < tot_stickySections; i++ ) {
+      // do not relaunch me
+      if ( 'undefined' !== typeof stickySections[i].StickySectionInstance ) {
+        continue;
+      }
+
       if ( Rexbuilder_Util.hasClass( stickySections[i], 'mp4-player' ) ) {
         stickyElementSelector = '.rex-video-wrap';
 
