@@ -587,6 +587,7 @@
 					continue;
 				}
 
+				// @todo do we need a check to this this.gridBlocks[ J ].hide ?
 				if ( this.gridBlocks[ i ].x < this.gridBlocks[ j ].x + this.gridBlocks[ j ].w &&
 					this.gridBlocks[ i ].x + this.gridBlocks[ i ].w > this.gridBlocks[ j ].x &&
 					this.gridBlocks[ i ].y < this.gridBlocks[ j ].y + this.gridBlocks[ j ].h &&
@@ -925,6 +926,10 @@
 	 * @return {[type]}                  [description]
 	 */
 	function calcFilteredGrid( toMaintainCoords ) {
+		if ( 0 === toMaintainCoords.length ) {
+			return;
+		}
+
 		var idx = new IndexedGrid( this.options.columns );
 		toMaintainCoords[ 0 ].x = 0;
 		toMaintainCoords[ 0 ].y = 0;
@@ -1161,7 +1166,6 @@
 
 			_setGridHeight.call( this );
 		} else {
-			
 			this.calcAllBlocksHeights();
 
 			this.fixAllBlocksHeights();
@@ -1269,9 +1273,10 @@
 					toRemove.push( this.gridBlocks[ i ].el );
 				}
 			}
-
-			calcFilteredGrid.call( this, toMaintainCoords );
 		}
+
+		// simulate grid and calc positions
+		calcFilteredGrid.call( this, toMaintainCoords );
 
 		this.properties.filterCoords = toMaintainCoords;
 
