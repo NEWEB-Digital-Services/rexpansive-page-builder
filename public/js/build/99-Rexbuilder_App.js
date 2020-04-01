@@ -518,10 +518,10 @@ var Rexbuilder_App = (function($) {
    */
   function fixScrollableGridGallery() {
     // destroyGridGallery
-    var grid = this.element.querySelector('.perfect-grid-gallery');
-    var $grid = $(grid);
+    var rexGrid = this.element.querySelector('.perfect-grid-gallery');
+    // var $grid = $(grid);
     var i;
-    var gutter = parseInt( grid.getAttribute('data-separator') );
+    var gutter = parseInt( rexGrid.getAttribute('data-separator') );
 
     // var gridInfo = getRexGridInstance( grid );
     // if ( gridInfo ) {
@@ -529,19 +529,19 @@ var Rexbuilder_App = (function($) {
     // }
 
     for( i=0; i < this.totScrollEls; i++ ) {
-      this.scrollEls[i].querySelector('.grid-item-content').style.minHeight = ( parseInt( this.scrollEls[i].style.height ) - gutter ) + 'px';
+      this.scrollEls[i].querySelector('.responsive-block-overlay').style.minHeight = ( parseInt( this.scrollEls[i].style.height ) - gutter ) + 'px';
       // this.scrollEls[i].style.height = this.scrollEls[i].offsetHeight + 'px';
     }
 
     for( i=0; i < this.totOpacityEls; i++ ) {
-      this.opacityEls[i].querySelector('.grid-item-content').style.minHeight = ( parseInt( this.opacityEls[i].style.height ) - gutter ) + 'px';
+      this.opacityEls[i].querySelector('.responsive-block-overlay').style.minHeight = ( parseInt( this.opacityEls[i].style.height ) - gutter ) + 'px';
       // this.opacityEls[i].style.height = this.opacityEls[i].offsetHeight + 'px';
     }
 
     // destroy tha grid
     // $grid.data('plugin_perfectGridGalleryEditor').destroyGridGallery();
-    destroyRexGridInstance( grid );
-    grid.style.height = '';
+    destroyRexGridInstance( rexGrid );
+    rexGrid.style.height = '';
   };
 
   /**

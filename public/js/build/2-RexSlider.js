@@ -88,7 +88,7 @@ var RexSlider = (function ($) {
     $sliderWrap.flickity(settings);
     $sliderWrap.flickity('stopPlayer');
 
-    //da fixare dopo per il resize
+    // @todo global handler
     Rexbuilder_Util.$window.on('resize', function () {
       if ($sliderWrap.data('flickity')) {
         $sliderWrap.flickity('resize');
