@@ -547,10 +547,9 @@ var Rexbuilder_App = (function($) {
   /**
    * If SplitScrollable plugin is defined, launch it on every intersted section
    * @param  {Element} context               where to search the sections
-   * @param  {customScrollContainer} customScrollContainer container in which watch the scroll event
    * @return {void}
    */
-  var launchSplitScrollable = function( context, customScrollContainer ) {
+  var launchSplitScrollable = function( context ) {
     if ( 'undefined' === typeof SplitScrollable ) {
       return;
     }
@@ -562,8 +561,7 @@ var Rexbuilder_App = (function($) {
       for( i=0; i < tot_scrbls; i++ ) {
         var inst = new SplitScrollable(scrbls[i], {
           scrollElsToWatchClass: 'text-wrap',
-          initializeComplete: fixScrollableGridGallery,
-          customScrollContainer: ( 'undefined' !== typeof customScrollContainer ? customScrollContainer : null )
+          initializeComplete: fixScrollableGridGallery
         });
       }
     }

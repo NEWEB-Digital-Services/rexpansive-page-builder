@@ -134,12 +134,12 @@
   				reject( new Error( 'Image didn\'t load successfully; error code:' + request.statusText ) );
   			}
   		};
-
+			
   		request.onerror = function() {
-  			console.log( 'error' )
-  			imgVisibleQueue.push( el );
-  			reject( err );
-  		};
+				console.error("XHR Request didn't go correctly!");
+				imgVisibleQueue.push(el);
+				reject();
+			};
 
   		// Send the request
   		request.send();
@@ -187,7 +187,10 @@
   }
 
   var onCanPlayThroughCallback = function(event) {
-    event.currentTarget.play();
+    event.currentTarget.play().then(function () {
+			// console.log( '2' );
+			
+		});
     if ( queuing ) { videoProcessingCounter--; }
     // remove data-src attribute only if the
     // video is correctly started
@@ -225,14 +228,17 @@
       for ( var source in el.children ) {
         var videoSource = el.children[source];
         if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
+					
           var src = videoSource.getAttribute('data-src');
           if ( src ) {
+						
             videoSource.src = src;
             // videoSource.removeAttribute('data-src');
           }
         }
-      }
-      el.load();
+			}
+			
+			el.load();
     }
   }
 
@@ -266,7 +272,8 @@
 
         // check video background
         if ( videoWrapper ) {
-          lazyLoadVideoHTML( videoWrapper );
+					// console.log( 'LAZY LOAD SECTION VIDEO' );
+					lazyLoadVideoHTML( videoWrapper );
         }
         
         // stop observing section
@@ -300,13 +307,20 @@
           } else {
             lazyLoadBkgrImg( imgWrapper );
           }
-        }
-
+				}
+				
         if ( videoWrapper ) {
+					// console.log( entries[i].intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused );
+					
           if ( entries[i].intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused ) {
             // console.log('fast-load.js - 375 - play()')
-            videoWrapper.play();
+            videoWrapper.play().then(function () {
+							// console.log( '1' );
+							
+						});
           } else {
+						// console.log( 'LAZY LOAD BLOCK VIDEO' );
+						
             lazyLoadVideoHTML( videoWrapper );
           }
         }
@@ -492,8 +506,9 @@
       var i = 0;
       var totPQ = videoProcessingQueue.length;
       while ( i < totPQ ) {
-        var temp = videoProcessingQueue.shift();
-        lazyLoadVideoHTML( temp );
+				var temp = videoProcessingQueue.shift();
+				// console.log( 'LAZY LOAD QUEUE VIDEO' );
+				lazyLoadVideoHTML( temp );
         i++;
         videoProcessingCounter++;
       }

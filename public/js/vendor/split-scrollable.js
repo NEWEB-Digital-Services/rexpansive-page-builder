@@ -1,5 +1,14 @@
-;(function() {
-	this.SplitScrollable = function() {
+;(function(window, factory) {
+	'use strict';
+	window.SplitScrollable = factory(window);
+})( 'undefined' !== typeof window ? window : this, function() {
+	// Callbacks arrays
+	var scrollCallbacksArray = [];
+	var resizeCallbacksArray = [];
+
+	var globalViewport = viewport();
+
+	function SplitScrollable() {
 		this.element = null;
 
 		this.splitScrollWrapper = null;
@@ -20,9 +29,6 @@
 		this.scrollObserver = null;
 		this.userScrolled = false;
 
-		this.viewportSizes = null;
-		this.scrollContainer = null;
-
 		if (arguments[0]) {
 			this.element = arguments[0];
 		}
@@ -37,8 +43,7 @@
 			opacityElsClass: 'opacity-block',
 			opacityFakeElClass: 'opacity-block-fake',
 			opacityElActiveClass: 'opacity-block-active',
-			initializeComplete: null,
-			customScrollContainer: null
+			initializeComplete: null
 		};
 
 		// Create options by extending defaults with the passed in arugments
@@ -48,6 +53,7 @@
 			this.options = defaults;
 		}
 
+		// De-comment for debugging
 		// this.debugEl = null;
 		// debugging.call(this);
 
@@ -60,16 +66,18 @@
 
 		fixStickyHeight.call(this);
 
-		attachListeners.call(this);
+		// check first scroll
+		handleScroll.call(this);
+		scrollCallbacksArray.push(handleScroll.bind(this));
+
+		// check first resize (needed?)
+		// handleResize.call(this);
+		// resizeCallbacksArray.push(handleResize.bind(this));
 
 		// simulateLast.call(this);
-
-		// attach plugin instance to dom element
-		this.element.DistanceAccordionInstance = this;
 	};
 
 	function initialize() {
-		var that = this;
 		this.scrollEls = [].slice.call( this.element.getElementsByClassName(this.options.scrollElsClass) );
 		this.totScrollEls = this.scrollEls.length;
 		if ( this.options.scrollElsClass === this.options.scrollElsToWatchClass ) {
@@ -88,14 +96,6 @@
 		for( i=0; i < this.totScrollEls; i++ ) {
 			this.scrollElsToWatch[i].setAttribute('data-scroll-el-index', i);
 			this.scrollElsState.push(null)
-		}
-
-		this.viewportSizes = viewport();
-
-		if ( this.options.customScrollContainer ) {
-			this.scrollContainer = this.options.customScrollContainer;
-		} else {
-			this.scrollContainer = window;
 		}
 	}
 
@@ -135,6 +135,12 @@
 		}
 	}
 
+	function updateGlobalViewport() {
+		globalViewport = viewport();
+	}
+
+	resizeCallbacksArray.push(updateGlobalViewport);
+
 	/**
 	 * Fix the height of the container of the opacity blocks
 	 * to stop the sticky effect inside the container
@@ -143,18 +149,6 @@
 	function fixStickyHeight() {
 		this.opacityElsWrapper.style.height = parseFloat( getComputedStyle( this.opacityEls[this.opacityEls.length-1], null ).top.replace("px", "") ) + 
 		( this.opacityEls[this.opacityEls.length-1].offsetHeight ) + 'px';
-	}
-
-	function attachListeners() {
-		// scroll event
-		// watchScroll.call(this);
-		// // check first scroll
-		// handleScroll.call(this);
-		
-		watchIntersectionObserver.call(this);
-
-		// resize event
-		watchResize.call(this);
 	}
 
 	/**
@@ -167,17 +161,18 @@
 	 */
 	function watchScroll() {
 		userScrolled = false;
-		var that = this;
 
 		function scrollHandler() {
 			userScrolled = true;
 		}
 
-		this.scrollContainer.addEventListener( 'scroll', scrollHandler);
+		window.addEventListener( 'scroll', scrollHandler);
 
-		rInterval( function() {
+		rInterval( function handleInterval() {
 			if ( userScrolled ) {
-				handleScroll.call(that);
+				scrollCallbacksArray.forEach(function (cb) {
+					cb.call();
+				});
 				userScrolled = false;
 			}
 		}, 150);
@@ -185,21 +180,21 @@
 
 	function handleScroll() {
 		var totscroll = scrollDocumentPositionTop();
-		var scrollOffset = 0;
-		var i, toSet, offsetEl, guessedIndex = null;
-		var generalCondition = false, firstElementCondition = false;
+		var scrollOffset = 0;		// Never set, not necessary I think
+		var i, offsetEl, guessedIndex = null;
+		var generalCondition = false;
 		// var heightFactor = ( this.aspectRatio >= 1 ? 0.5 : 0.2 );
 
-		this.debugEl.innerText = totscroll + ' + ' + this.viewportSizes.height + ' = ' + ( totscroll + this.viewportSizes.height ) + '\n';
-
+		// this.debugEl.innerText = totscroll + ' + ' + globalViewport.height + ' = ' + ( totscroll + globalViewport.height ) + '\n';
+		
 		for( i=0; i < this.totScrollElsToWatch; i++ ) {
 			if ( this.scrollElsToWatch[i] ) {
 				offsetEl = offsetAbsolute( this.scrollElsToWatch[i] );
 
-				this.debugEl.innerText += i + ' : ' + offsetEl.top + ' -- ' + offsetEl.height + ' ## ' + ( offsetEl.top - totscroll ) + '\n';
+				// this.debugEl.innerText += i + ' : ' + offsetEl.top + ' -- ' + offsetEl.height + ' ## ' + ( offsetEl.top - totscroll ) + '\n';
 
 				// view conditions
-				generalCondition = ( offsetEl.top - totscroll ) > 0 && ( ( offsetEl.top ) < ( totscroll + this.viewportSizes.height + scrollOffset ) ) && ( ( offsetEl.top + offsetEl.height ) > ( totscroll + scrollOffset ) );
+				generalCondition = ( (offsetEl.top > totscroll + scrollOffset) || ( offsetEl.top + offsetEl.height > totscroll + scrollOffset ) ) && ( offsetEl.top < totscroll + globalViewport.height + scrollOffset );
 
 				if ( generalCondition ) {
 					guessedIndex = this.scrollElsToWatch[i].getAttribute('data-scroll-el-index');
@@ -213,81 +208,6 @@
 			if ( this.actualScrollEl !== guessedIndex ) {
 				activateScrollEl.call( this, guessedIndex );
 				this.actualScrollEl = guessedIndex;
-			}
-		}
-	}
-
-	function watchIntersectionObserver() {
-		var that = this;
-		this.scrollObserver = new IntersectionObserver( function( entries, observer ) {
-			var tot_entries = entries.length, i = 0;
-			for( i=0; i < tot_entries; i++ ) {
-				// handleEntityObserve.call(that, entries[i]);
-				newHandleEntityObserve.call(that, entries[i]);
-			}
-		}, {
-			threshold: [0, 0.2, 0.4, 0.6, 0.8, 1]
-		});
-
-		var j = 0;
-		for( j=0; j < this.totScrollEls; j++ ) {
-			this.scrollObserver.observe( this.scrollElsToWatch[j] );
-		}
-	}
-
-	/**
-	 * deprecated
-	 * @param  {[type]} entry [description]
-	 * @return {[type]}       [description]
-	 */
-	function handleEntityObserve(entry) {
-		var entryIndex = parseInt( entry.target.getAttribute('data-scroll-el-index') );
-		this.scrollElsState[entryIndex] = entry;
-		if( entry.isIntersecting ) {
-
-			console.log(entryIndex)
-			console.log(this.scrollEls[entryIndex].previousElementSibling)
-
-			if ( entry.boundingClientRect.top > 0 && ( null === this.scrollEls[entryIndex].previousElementSibling || ! hasClass( this.scrollEls[entryIndex].previousElementSibling, this.options.scrollElActiveClass ) ) ) {
-				addClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
-				if ( this.opacityEls[entryIndex] ) {
-					addClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
-				}
-			} else {
-				removeClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
-				// if ( i+1 !== this.totOpacityEls ) {
-				if ( this.opacityEls[entryIndex] ) {
-					removeClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
-				}
-				// }
-
-				if ( this.scrollEls[entryIndex].nextElementSibling ) {
-					addClass( this.scrollEls[entryIndex].nextElementSibling, this.options.scrollElActiveClass );
-					// var i = parseInt( entry.target.nextElementSibling.getAttribute('data-scroll-el-index') );
-					// if( i+1 === this.totOpacityEls ) {
-					// 	removeClass( this.opacityEls[i], this.options.opacityElActiveClass );
-					// }
-				}
-			}
-		} else {
-			removeClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
-			// if ( i+1 !== this.totOpacityEls ) {
-			if( this.opacityEls[entryIndex] ) {
-				removeClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
-			}
-			// }
-		}
-	}
-
-	function newHandleEntityObserve(entry) {
-		var entryIndex = parseInt( entry.target.getAttribute('data-scroll-el-index') );
-		this.scrollElsState[entryIndex] = entry;
-
-		if( entry.isIntersecting ) {
-			console.log(entry.intersectionRatio, entry.target)
-			if ( entry.intersectionRatio > 0.8  ) {
-				console.log('beccato', entryIndex)
-				activeElementOnScroll.call(this, entryIndex)
 			}
 		}
 	}
@@ -322,33 +242,9 @@
 		}
 	}
 
-	function otherHandleEntityObserve(entry) {
-		var entryIndex = parseInt( entry.target.getAttribute('data-scroll-el-index') );
-		this.scrollElsState[entryIndex] = entry;
-
-		if( entry.isIntersecting ) {
-			// if( 0 === entryIndex ) {
-			// 	addClass( entry.target, this.options.scrollElActiveClass );
-			// 	addClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
-			// } else {
-				if ( this.scrollElsState[entryIndex].boundingClientRect.top > 0  ) {
-					addClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
-					addClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
-
-					// removeClass( this.scrollElsState[entryIndex-1].target, this.options.scrollElActiveClass );
-					// removeClass( this.opacityEls[entryIndex-1], this.options.opacityElActiveClass );
-				}
-			// }
-		} else {
-			removeClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
-			removeClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
-		}
-	}
-
 	// handle resize
 	function watchResize() {
 		userResized = false;
-		var that = this;
 
 		function resizeHandler() {
 			userResized = true;
@@ -358,14 +254,16 @@
 
 		rInterval( function() {
 			if ( userResized ) {
-				handleResize.call(that);
+				resizeCallbacksArray.forEach(function (cb) {
+					cb.call();
+				});
 				userResized = false;
 			}
 		}, 150);
 	}
 
 	function handleResize() {
-		this.viewportSizes = viewport();
+		// Resize stuff here
 	}
 
 	/**
@@ -527,4 +425,92 @@
 		}
 		return source;
 	}
-}());
+
+	/* ===== Deprecated functions ===== */
+
+	/**
+	 * @deprecated	2.0.4
+	 */
+	function intersectionObserverCallback(entries, observer) {
+		var entry;
+		var entryIndex;
+		
+		var tot_entries = entries.length;
+		var i = 0;
+		for (; i < tot_entries; i++) {
+			// handleEntityObserve.call(that, entries[i]);
+			// newHandleEntityObserve.call(that, entries[i]);	// è questa qua sotto
+
+			entry = entries[i];
+			entryIndex = parseInt(entry.target.getAttribute('data-scroll-el-index'));
+			this.scrollElsState[entryIndex] = entry;
+
+			if (entry.isIntersecting) {
+				if (entry.intersectionRatio > 0.8) {
+					// activeElementOnScroll.call(this, entryIndex)
+					entry.target.setAttribute('data-ratio-greater-08', 1);
+				} else {
+					entry.target.setAttribute('data-ratio-greater-08', 0);
+				}
+			} else {
+				entry.target.setAttribute('data-ratio-greater-08', 0);
+			}
+		}
+
+		for (i = 0; i < this.totScrollEls; i++) {
+			if (this.scrollElsToWatch[i].getAttribute('data-ratio-greater-08') == '1') {
+				// that.scrollElsToWatch[i].style.backgroundColor = 'red';
+				activeElementOnScroll.call(this, i);
+				console.log(this.scrollElsToWatch[i]);
+
+				// break;
+			} else {
+				// 	that.scrollElsToWatch[i].style.backgroundColor = '';
+			}
+		}
+	}
+
+	/**
+	 * @deprecated	2.0.4
+	 */
+	function watchIntersectionObserver() {
+		this.scrollObserver = new IntersectionObserver( intersectionObserverCallback.bind(this), {
+			// threshold: [0, 0.2, 0.4, 0.6, 0.8, 1]
+			threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+		});
+
+		var j = 0;
+		for( j=0; j < this.totScrollEls; j++ ) {
+			this.scrollObserver.observe( this.scrollElsToWatch[j] );
+		}
+	}
+
+	/**
+	 * @deprecated	2.0.4
+	 */
+	function handleEntityObserve(entry) {
+		var entryIndex = parseInt(entry.target.getAttribute('data-scroll-el-index'));
+		this.scrollElsState[entryIndex] = entry;
+
+		if (entry.isIntersecting) {
+			// console.log(entry.intersectionRatio, entry.target)
+			if (entry.intersectionRatio > 0.8) {
+				// console.log('beccato', entryIndex)
+				// activeElementOnScroll.call(this, entryIndex)
+				entry.target.setAttribute('data-ratio-greater-08', 1);
+				
+			} else {
+				entry.target.setAttribute('data-ratio-greater-08', 0);
+			}
+		} else {
+			entry.target.setAttribute('data-ratio-greater-08', 0);
+			// console.log('non intersecato', entry.target)
+		}
+	}
+
+	// Global Events watchers
+	watchScroll();
+	watchResize();
+
+	return SplitScrollable;
+});

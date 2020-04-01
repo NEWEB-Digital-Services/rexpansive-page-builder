@@ -1,5 +1,4 @@
-;
-( function( window, factory ) {
+;( function( window, factory ) {
 	'use strict';
 	window.RexGrid = factory( window );
 } )( 'undefined' !== typeof window ? window : this, function() {

@@ -22,16 +22,16 @@
 		// "wrap_line_length": 0 // Lines should wrap at next opportunity after this number of characters (0 disables)
 	},
 	"css": {
-		// "allowed_file_extensions": [ "css", "scss", "sass", "less" ],
-		// "end_with_newline": true, // End output with newline
-		// "indent_char": " ", // Indentation character
-		// "indent_size": 2, // Indentation size
-		// "indent_with_tabs": true, // Indent with tabs, overrides `indent_size` and `indent_char`
-		// "newline_between_rules": true, // Add a new line after every css rule
-		// "selector_separator": " ",
-		// "selector_separator_newline": true, // Separate selectors with newline or not (e.g. "a,\nbr" or "a, br")
-		// "preserve_newlines": true,
-		// "max_preserve_newlines": 10
+		"allowed_file_extensions": [ "css", "scss", "sass", "less" ],
+		"end_with_newline": true, // End output with newline
+		"indent_char": " ", // Indentation character
+		"indent_size": 2, // Indentation size
+		"indent_with_tabs": true, // Indent with tabs, overrides `indent_size` and `indent_char`
+		"newline_between_rules": true, // Add a new line after every css rule
+		"selector_separator": " ",
+		"selector_separator_newline": true, // Separate selectors with newline or not (e.g. "a,\nbr" or "a, br")
+		"preserve_newlines": true,
+		"max_preserve_newlines": 10
 	},
 	"js": {
 		// "eol": ";",
