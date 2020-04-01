@@ -3,6 +3,8 @@
 	window.RexGrid = factory( window );
 } )( 'undefined' !== typeof window ? window : this, function() {
 
+	var instances = [];
+
 	/* ===== Utilities ===== */
 	var Utils = {
 		/**
@@ -302,7 +304,9 @@
 
 		_setGridHeight.call( this );
 
-		this.element.RexGridInstance = this;
+		// this.element.RexGridInstance = this;
+
+		instances.push( this );
 	}
 
 	/**
@@ -1311,6 +1315,37 @@
 	}
 
 	/**
+	 * Remove an element from the grid
+	 * @param  {Element} el element to remove
+	 * @return {void}
+	 * @todo Remove element from DOM
+	 */
+	RexGrid.prototype.removeGridBlock = function(el) {
+		var i, found = null;
+		for( i=0; i<this.gridBlocksTotal; i++ ) {
+			if ( this.gridBlocks[i] === el ) {
+				found = i;
+				break;
+			}
+		}
+
+		if ( null === found ) return;
+
+		this.gridBlocks.splice( found, 1 );
+		this.gridBlocksTotal = this.gridBlocks.length;
+	}
+
+	/**
+	 * Remove all elements from the grid
+	 * @return {void}
+	 * @todo  remove elements from DOM
+	 */
+	RexGrid.prototype.removeAllGridBlocks = function() {
+		this.gridBlocks = [];
+		this.gridBlocksTotal = 0;
+	}
+
+	/**
 	 * Destroy a RexGrid instance destroying all instance RexBlocks
 	 * @return 	{void}
 	 * @since		1.0.0
@@ -1323,6 +1358,22 @@
 		for ( i=0; i < this.gridBlocksTotal; i++ ) {
 			this.gridBlocks[i].destroy();
 		}
+	}
+
+	/**
+	 * Function to grab an instance of the RexGrid based from an element
+	 * @param  {Element} el dom element
+	 * @return {RexGrid}    instance of RexGrid
+	 */
+	RexGrid.data = function( el ) {
+		var i=0, tot = instances.length;
+		for( i=0; i<tot; i++ ) {
+			if ( el === instances[i].element ) {
+				return instances[i];
+			}
+		}
+
+		return null;
 	}
 
 	return RexGrid;

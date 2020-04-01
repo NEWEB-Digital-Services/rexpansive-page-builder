@@ -3553,7 +3553,7 @@ var Rexbuilder_Util = (function($) {
         url = data_yt.videoURL;
         id = getYoutubeID(url);
 
-        ytVideos[i].style.backgroundImage = "url(http://img.youtube.com/vi/" + id + "/0.jpg)";
+        ytVideos[i].style.backgroundImage = "url(https://img.youtube.com/vi/" + id + "/0.jpg)";
         ytVideos[i].addEventListener( 'click', handleYtbVideoMobileClick );
       }
     }
