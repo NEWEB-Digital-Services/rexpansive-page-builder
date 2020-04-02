@@ -8,7 +8,7 @@
 	var scrollCallbacksArray = [];
 	var resizeCallbacksArray = [];
 
-	var globalViewport = viewport();
+	var globalViewport = _viewport();
 
 	function SplitScrollable() {
 		this.element = null;
@@ -59,26 +59,26 @@
 		// this.debugEl = null;
 		// debugging.call(this);
 
-		initialize.call(this);
-		addWrappers.call(this);
+		_initialize.call(this);
+		_addWrappers.call(this);
 
 		if ( 'function' === typeof this.options.initializeComplete ) {
 			this.options.initializeComplete.call(this);
 		}
 
-		// check first resize
-		handleResize.call(this);
-		resizeCallbacksArray.push(handleResize.bind(this));
+		_fixStickyHeight.call(this);
+		
+		resizeCallbacksArray.push(_handleResize.bind(this));
 
 		// check first scroll
-		handleScroll.call(this);
-		scrollCallbacksArray.push(handleScroll.bind(this));
+		_handleScroll.call(this);
+		scrollCallbacksArray.push(_handleScroll.bind(this));
 
 		// simulateLast.call(this);
 		instances.push( this );
 	};
 
-	function initialize() {
+	function _initialize() {
 		this.scrollEls = [].slice.call( this.element.getElementsByClassName(this.options.scrollElsClass) );
 		this.totScrollEls = this.scrollEls.length;
 		if ( this.options.scrollElsClass === this.options.scrollElsToWatchClass ) {
@@ -100,7 +100,7 @@
 		}
 	}
 
-	function addWrappers() {
+	function _addWrappers() {
 		if ( ! hasClass( this.scrollEls[0].parentNode, this.options.scrollElsWrapClass ) ) {
 			this.scrollElsWrapper = document.createElement('div');
 			addClass( this.scrollElsWrapper, this.options.scrollElsWrapClass );
@@ -136,31 +136,39 @@
 		}
 	}
 
-	function updateGlobalViewport() {
-		globalViewport = viewport();
+	/**
+	 * Updates global viewport
+	 * @returns	{void}
+	 * @since		1.1.0
+	 */
+	function _updateGlobalViewport() {
+		globalViewport = _viewport();
 	}
 
-	resizeCallbacksArray.push(updateGlobalViewport);
+	// In this way when resizing there will be
+	// a globalViewport update before all the
+	// resize operations
+	resizeCallbacksArray.push(_updateGlobalViewport);
 
 	/**
 	 * Fix the height of the container of the opacity blocks
 	 * to stop the sticky effect inside the container
-	 * otherwise it goes on
+	 * otherwise it goes on.
+	 * @returns	{void}
+	 * @since		1.0.0
 	 */
-	function fixStickyHeight() {
+	function _fixStickyHeight() {
 		this.opacityElsWrapper.style.height = parseFloat( getComputedStyle( this.opacityEls[this.opacityEls.length-1], null ).top.replace("px", "") ) + 
 		( this.opacityEls[this.opacityEls.length-1].offsetHeight ) + 'px';
 	}
 
-	/**
-	 * SCROLL HANDLING
-	 */
+	/* ===== Scroll handling ===== */
 	/**
 	 * Watching the browser scrolling, bouncing the event
 	 * every 150 ms to prevent event polling
 	 * @return {void}
 	 */
-	function watchScroll() {
+	function _watchScroll() {
 		userScrolled = false;
 
 		function scrollHandler() {
@@ -179,27 +187,48 @@
 		}, 150);
 	}
 
-	function guessIndex() {
+	/**
+	 * Guesses and sets the index to show in the viewport.
+	 * @returns		{void}
+	 * @since			1.0.0
+	 */
+	function _handleScroll() {
+		var guessedIndex = _guessIndex.call(this);
+
+		// get last guess
+		if ( guessedIndex ) {
+			if ( this.actualScrollEl !== guessedIndex ) {
+				_setGuessedIndex.call( this, guessedIndex );
+			}
+		}
+	}
+
+	/**
+	 * Retrieving the index of the element we want to see on the viewport.
+	 * @returns	The index of the element to show
+	 * @since		1.1.0
+	 */
+	function _guessIndex() {
 		var totscroll = scrollDocumentPositionTop();
 		var scrollOffset = 0;		// Never set, not necessary I think
 		var i, offsetEl, guessedIndex = null;
 		var generalCondition = false;
 		// var heightFactor = ( this.aspectRatio >= 1 ? 0.5 : 0.2 );
 
+		// De-comment for debugging
 		// this.debugEl.innerText = totscroll + ' + ' + globalViewport.height + ' = ' + ( totscroll + globalViewport.height ) + '\n';
 		
 		for( i=0; i < this.totScrollElsToWatch; i++ ) {
 			if ( this.scrollElsToWatch[i] ) {
 				offsetEl = offsetAbsolute( this.scrollElsToWatch[i] );
 
+				// De-comment for debugging
 				// this.debugEl.innerText += i + ' : ' + offsetEl.top + ' -- ' + offsetEl.height + ' ## ' + ( offsetEl.top - totscroll ) + '\n';
 
 				// view conditions
 				generalCondition = ( (offsetEl.top > totscroll + scrollOffset) || ( offsetEl.top + offsetEl.height > totscroll + scrollOffset ) ) && ( offsetEl.top < totscroll + globalViewport.height + scrollOffset );
 
 				if ( generalCondition ) {
-					// console.log( this.scrollElsToWatch[i] );
-					
 					guessedIndex = this.scrollElsToWatch[i].getAttribute('data-scroll-el-index');
 					break;
 				}
@@ -209,23 +238,24 @@
 		return guessedIndex;
 	}
 
-	function setGuessedIndex( index ) {
-		activateScrollEl.call( this, index );
+	/**
+	 * Setting the index of the element to show in the viewport.
+	 * @param		{Number}	index			The index of the element to show
+	 * @return	{void}
+	 * @since		1.1.0
+	 */
+	function _setGuessedIndex( index ) {
+		_activateScrollEl.call( this, index );
 		this.actualScrollEl = index;
 	}
 
-	function handleScroll() {
-		var guessedIndex = guessIndex.call(this);
-
-		// get last guess
-		if ( guessedIndex ) {
-			if ( this.actualScrollEl !== guessedIndex ) {
-				setGuessedIndex.call( this, guessedIndex );
-			}
-		}
-	}
-
-	function activateScrollEl( targetIndex ) {
+	/**
+	 * Shows the indexed element in the viewport
+	 * by adding specific classes. Hides other elements
+	 * @param		{Number}	targetIndex		The index of the element to show
+	 * @since		1.0.0
+	 */
+	function _activateScrollEl( targetIndex ) {
 		for( var i=0; i < this.totScrollEls; i++ ) {
 			if ( this.scrollElsToWatch[i].getAttribute('data-scroll-el-index') == targetIndex ) {
 				addClass( this.scrollEls[i], this.options.scrollElActiveClass );
@@ -237,26 +267,8 @@
 		}
 	}
 
-	function activeElementOnScroll( index ) {
-		for( var i=0; i < this.totScrollEls; i++ ) {
-			if ( index === i ) {
-				addClass( this.scrollEls[i], this.options.scrollElActiveClass );
-			} else {
-				removeClass( this.scrollEls[i], this.options.scrollElActiveClass );
-			}
-		}
-
-		for( var i=0; i < this.totOpacityEls; i++ ) {
-			if ( index === i ) {
-				addClass( this.opacityEls[i], this.options.opacityElActiveClass );
-			} else {
-				removeClass( this.opacityEls[i], this.options.opacityElActiveClass );
-			}
-		}
-	}
-
-	// handle resize
-	function watchResize() {
+	/* ===== Resize handling ===== */
+	function _watchResize() {
 		userResized = false;
 
 		function resizeHandler() {
@@ -275,24 +287,9 @@
 		}, 150);
 	}
 
-	function handleResize() {
-		// Resize stuff here
+	function _handleResize() {
 		// calculate sticky wrapper height
 		// fixStickyHeight.call(this);
-	}
-
-	/**
-	 * Simulating the last opacity block
-	 * @return {void}
-	 * @deprecated
-	 */
-	function simulateLast() {
-		var lastEl = this.opacityEls[this.totOpacityEls-1];
-		var fakeFirst = lastEl.cloneNode(true);
-		removeClass(fakeFirst, this.options.opacityElsClass);
-		addClass(fakeFirst, this.options.opacityFakeElClass);
-		this.opacityEls[0].parentNode.append(fakeFirst);
-		// this.opacityEls[0].parentNode.insertBefore(fakeFirst, this.opacityEls[0]);
 	}
 
 	function debugging() {
@@ -377,7 +374,7 @@
 	 * Calculate viewport window and height
 	 * @return {Object} width, height of the viewport
 	 */
-	function viewport() {
+	function _viewport() {
 		var e = window, a = 'inner';
 		if (!('innerWidth' in window)) {
 			a = 'client';
@@ -444,7 +441,7 @@
 	/* ===== Deprecated functions ===== */
 
 	/**
-	 * @deprecated	2.0.4
+	 * @deprecated	1.1.0
 	 */
 	function intersectionObserverCallback(entries, observer) {
 		var entry;
@@ -485,7 +482,7 @@
 	}
 
 	/**
-	 * @deprecated	2.0.4
+	 * @deprecated	1.1.0
 	 */
 	function watchIntersectionObserver() {
 		this.scrollObserver = new IntersectionObserver( intersectionObserverCallback.bind(this), {
@@ -500,7 +497,7 @@
 	}
 
 	/**
-	 * @deprecated	2.0.4
+	 * @deprecated	1.1.0
 	 */
 	function handleEntityObserve(entry) {
 		var entryIndex = parseInt(entry.target.getAttribute('data-scroll-el-index'));
@@ -519,33 +516,77 @@
 		}
 	}
 
-	SplitScrollable.prototype.callHandleScroll = function(){
-		var guessedIndex = guessIndex.call(this);
+	/**
+	 * Simulating the last opacity block
+	 * @return {void}
+	 * @deprecated	1.0.0
+	 */
+	function simulateLast() {
+		var lastEl = this.opacityEls[this.totOpacityEls-1];
+		var fakeFirst = lastEl.cloneNode(true);
+		removeClass(fakeFirst, this.options.opacityElsClass);
+		addClass(fakeFirst, this.options.opacityFakeElClass);
+		this.opacityEls[0].parentNode.append(fakeFirst);
+		// this.opacityEls[0].parentNode.insertBefore(fakeFirst, this.opacityEls[0]);
+	}
+
+	/**
+	 * @deprecated	1.1.0
+	 */
+	function activeElementOnScroll( index ) {
+		for( var i=0; i < this.totScrollEls; i++ ) {
+			if ( index === i ) {
+				addClass( this.scrollEls[i], this.options.scrollElActiveClass );
+			} else {
+				removeClass( this.scrollEls[i], this.options.scrollElActiveClass );
+			}
+		}
+
+		for( var i=0; i < this.totOpacityEls; i++ ) {
+			if ( index === i ) {
+				addClass( this.opacityEls[i], this.options.opacityElActiveClass );
+			} else {
+				removeClass( this.opacityEls[i], this.options.opacityElActiveClass );
+			}
+		}
+	}
+
+	/* ===== Exposed functions ===== */
+	SplitScrollable.prototype.refreshScrollableIndex = function() {
+		var guessedIndex = _guessIndex.call(this);
 
 		// get last guess
-		if ( guessedIndex ) {
-			setGuessedIndex.call( this, guessedIndex );
+		if (guessedIndex) {
+			_setGuessedIndex.call(this, guessedIndex);
 		}
 	};
 
 	SplitScrollable.prototype.callFixStickyHeight = function() {
-		fixStickyHeight.call(this);
+		_fixStickyHeight.call(this);
 	};
 
-	SplitScrollable.data = function( el ) {
-		var i=0, tot = instances.length;
-		for( i=0; i<tot; i++ ) {
-			if ( el === instances[i].element ) {
+	/**
+	 * Static function that retrieves the SplitScrollable
+	 * instance of the DOM Element passed.
+	 * @param		{Element}				el	Element to retrieve the instance
+	 * @returns	{Element|null}	SplitScrollable instance
+	 * @since		1.1.0
+	 */
+	SplitScrollable.data = function(el) {
+		var i = 0,
+			tot = instances.length;
+		for (i = 0; i < tot; i++) {
+			if (el === instances[i].element) {
 				return instances[i];
 			}
 		}
 
 		return null;
-	}
+	};
 
-	// Global Events watchers
-	watchScroll();
-	watchResize();
+	// Invoking global Events watchers
+	_watchScroll();
+	_watchResize();
 
 	return SplitScrollable;
 });

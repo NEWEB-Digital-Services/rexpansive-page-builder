@@ -1179,7 +1179,7 @@ var Rexbuilder_App = (function($) {
 						reorderScrollableEls(spl, gridInstances[i]);
 						reorderOpacityEls(spl, gridInstances[i]);
 
-						spl.callHandleScroll();
+						spl.refreshScrollableIndex();
 					}
 
 					spl.callFixStickyHeight();
