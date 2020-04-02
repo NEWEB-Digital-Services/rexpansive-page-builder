@@ -1370,7 +1370,7 @@ var Rexbuilder_Util = (function($) {
 				targetName = targets[i].name;
 				targetProps = targets[i].props;
 
-				$elem = $gallery.children('div[data-rexbuilder-block-id="' + targetName + '"]');
+				$elem = $gallery.find('.perfect-grid-item[data-rexbuilder-block-id="' + targetName + '"]');
 				elem = $elem[0];
 				$itemData = $elem.children('.rexbuilder-block-data');
 				$itemContent = $elem.find('.grid-item-content');
@@ -3909,7 +3909,7 @@ var Rexbuilder_Util = (function($) {
         targetName = targets[i].name;
         targetProps = targets[i].props;
         
-        $elem = $gallery.children( 'div[data-rexbuilder-block-id="' + targetName + '"]' );
+        $elem = $gallery.find( '.perfect-grid-item[data-rexbuilder-block-id="' + targetName + '"]' );
         elem = $elem[0];
         $itemData = $elem.children(".rexbuilder-block-data");
         $itemContent = $elem.find(".grid-item-content");

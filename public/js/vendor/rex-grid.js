@@ -137,6 +137,8 @@
 		this.hide = options.hide;
 		this.domIndex = this.x + ( this.y * 12 );
 		this.toCheck = options.toCheck;
+		this.setHeight = true;
+		this.setTop = true;
 	}
 
 	RexBlock.prototype.refreshProperties = function() {
@@ -218,8 +220,7 @@
 		// Default options values
 		var defaults = {
 			gutter: 20,
-			columns: 12,
-			isSplitScrollable: false
+			columns: 12
 		};
 
 		// Create options by extending defaults with the passed in arugments.
@@ -237,6 +238,7 @@
 			oneColumnModeActive: false,
 			noMobileLayoutSaved: false,
 			fullHeight: false,
+			gridHeightSettable: true,
 			singleWidth: 0,
 			singleHeight: 0,
 			halfSeparator: 0,
@@ -392,6 +394,8 @@
 	 * @param {Array} info array of objects with the information to check; can be undefined
 	 */
 	function _setGridHeight( info ) {
+		if ( ! this.properties.gridHeightSettable ) return;
+
 		var newGridHeight = _calculateGridHeight.call( this, info );
 
 		this.element.style.height = ( newGridHeight * this.properties.singleHeight ) + 'px';
@@ -602,7 +606,7 @@
 					this.gridBlocks[ j ].el.setAttribute( 'data-gs-y', newY );
 					this.gridBlocks[ j ].blockData.setAttribute( 'data-gs-y', newY );
 
-					if ( ! this.options.isSplitScrollable ) {
+					if ( this.gridBlocks[ j ].setTop ) {
 						this.gridBlocks[ j ].el.style.top = ( ( newY ) * this.properties.singleHeight ) + 'px';
 					}
 					this.gridBlocks[ j ].y = newY;
@@ -627,7 +631,9 @@
 			this.gridBlocks[ i ].el.setAttribute( 'data-gs-y', 0 );
 			this.gridBlocks[ i ].blockData.setAttribute( 'data-gs-y', 0 );
 
-			this.gridBlocks[ i ].el.style.top = '0px';
+			if ( this.gridBlocks[ i ].setTop ) {
+				this.gridBlocks[ i ].el.style.top = '0px';
+			}
 			this.gridBlocks[ i ].y = 0;
 			this.gridBlocks[ i ].toCheck = true;
 		}
@@ -961,7 +967,9 @@
 
 		// for native loop guarantees more performance efficiency
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
-			this.calcAndSetBlockHeight( this.gridBlocks[ i ] );
+			if ( this.gridBlocks[ i ].setHeight ) {
+				this.calcAndSetBlockHeight( this.gridBlocks[ i ] );
+			}
 		}
 	}
 
@@ -1007,7 +1015,7 @@
 
 	function _setBlockDimensions( gridBlockObj, newH ) {
 		gridBlockObj.h = newH;
-		if ( ! this.options.isSplitScrollable ) {
+		if ( gridBlockObj.setHeight ) {
 			gridBlockObj.el.style.height = ( gridBlockObj.h * this.properties.singleHeight ) + 'px';
 		}
 		gridBlockObj.el.setAttribute( 'data-gs-height', gridBlockObj.h );
@@ -1052,7 +1060,7 @@
 				this.gridBlocks[ i ].y = this.gridBlocks[ i ].start_y;
 			}
 
-			if ( ! this.options.isSplitScrollable ) {
+			if ( this.gridBlocks[ i ].setTop ) {
 				currentBlockRealTop = this.properties.singleHeight * this.gridBlocks[ i ].y;
 				currentBlock.style.top = currentBlockRealTop + 'px';
 			}
@@ -1099,7 +1107,7 @@
 	RexGrid.prototype.sortBlocks = function() {
 		this.gridBlocks.sort( function( blockA, blockB ) {
 			return ( blockA.domIndex - blockB.domIndex )
-		} );
+		} );		
 	}
 
 	/**

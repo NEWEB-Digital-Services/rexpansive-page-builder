@@ -2,6 +2,8 @@
 	'use strict';
 	window.SplitScrollable = factory(window);
 })( 'undefined' !== typeof window ? window : this, function() {
+	var instances = [];
+
 	// Callbacks arrays
 	var scrollCallbacksArray = [];
 	var resizeCallbacksArray = [];
@@ -64,17 +66,16 @@
 			this.options.initializeComplete.call(this);
 		}
 
-		fixStickyHeight.call(this);
+		// check first resize
+		handleResize.call(this);
+		resizeCallbacksArray.push(handleResize.bind(this));
 
 		// check first scroll
 		handleScroll.call(this);
 		scrollCallbacksArray.push(handleScroll.bind(this));
 
-		// check first resize (needed?)
-		// handleResize.call(this);
-		// resizeCallbacksArray.push(handleResize.bind(this));
-
 		// simulateLast.call(this);
+		instances.push( this );
 	};
 
 	function initialize() {
@@ -178,7 +179,7 @@
 		}, 150);
 	}
 
-	function handleScroll() {
+	function guessIndex() {
 		var totscroll = scrollDocumentPositionTop();
 		var scrollOffset = 0;		// Never set, not necessary I think
 		var i, offsetEl, guessedIndex = null;
@@ -203,11 +204,21 @@
 			}
 		}
 
+		return guessedIndex;
+	}
+
+	function setGuessedIndex( index ) {
+		activateScrollEl.call( this, index );
+		this.actualScrollEl = index;
+	}
+
+	function handleScroll() {
+		var guessedIndex = guessIndex.call(this);
+
 		// get last guess
 		if ( guessedIndex ) {
 			if ( this.actualScrollEl !== guessedIndex ) {
-				activateScrollEl.call( this, guessedIndex );
-				this.actualScrollEl = guessedIndex;
+				setGuessedIndex.call( this, guessedIndex );
 			}
 		}
 	}
@@ -264,6 +275,8 @@
 
 	function handleResize() {
 		// Resize stuff here
+		// calculate sticky wrapper height
+		fixStickyHeight.call(this);
 	}
 
 	/**
@@ -461,7 +474,6 @@
 			if (this.scrollElsToWatch[i].getAttribute('data-ratio-greater-08') == '1') {
 				// that.scrollElsToWatch[i].style.backgroundColor = 'red';
 				activeElementOnScroll.call(this, i);
-				console.log(this.scrollElsToWatch[i]);
 
 				// break;
 			} else {
@@ -493,9 +505,7 @@
 		this.scrollElsState[entryIndex] = entry;
 
 		if (entry.isIntersecting) {
-			// console.log(entry.intersectionRatio, entry.target)
 			if (entry.intersectionRatio > 0.8) {
-				// console.log('beccato', entryIndex)
 				// activeElementOnScroll.call(this, entryIndex)
 				entry.target.setAttribute('data-ratio-greater-08', 1);
 				
@@ -504,8 +514,31 @@
 			}
 		} else {
 			entry.target.setAttribute('data-ratio-greater-08', 0);
-			// console.log('non intersecato', entry.target)
 		}
+	}
+
+	SplitScrollable.prototype.callHandleScroll = function(){
+		var guessedIndex = guessIndex.call(this);
+
+		// get last guess
+		if ( guessedIndex ) {
+			setGuessedIndex.call( this, guessedIndex );
+		}
+	};
+
+	SplitScrollable.prototype.callFixStickyHeight = function() {
+		fixStickyHeight.call(this);
+	};
+
+	SplitScrollable.data = function( el ) {
+		var i=0, tot = instances.length;
+		for( i=0; i<tot; i++ ) {
+			if ( el === instances[i].element ) {
+				return instances[i];
+			}
+		}
+
+		return null;
 	}
 
 	// Global Events watchers

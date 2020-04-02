@@ -348,9 +348,7 @@ var Rexbuilder_App = (function($) {
    * Launch sticky sections if any
    */
   var launchStickySections = function() {
-    if ( 'undefined' === typeof StickySection ) {
-      return;
-    }
+    if ( 'undefined' === typeof StickySection ) return;
 
     var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
     var stickySections = [].slice.call( document.getElementsByClassName( 'sticky-section' ) );
@@ -517,48 +515,70 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   function fixScrollableGridGallery() {
-    // destroyGridGallery
-    var rexGrid = this.element.querySelector('.perfect-grid-gallery');
-    // var $grid = $(grid);
-    var i;
-    var gutter = parseInt( rexGrid.getAttribute('data-separator') );
+    var rexGridEl = this.element.querySelector('.perfect-grid-gallery');
+    var gridInfo = getRexGridInstance( rexGridEl );
+    var i, j;
 
-    // var gridInfo = getRexGridInstance( grid );
-    // if ( gridInfo ) {
-    //   gridInfo.instance.properties.isSplitScrollable = true;
-    // }
+    if ( ! gridInfo.instance ) return;
+
+    reorderOpacityEls( this, gridInfo.instance );
 
     for( i=0; i < this.totScrollEls; i++ ) {
-      this.scrollEls[i].querySelector('.responsive-block-overlay').style.minHeight = ( parseInt( this.scrollEls[i].style.height ) - gutter ) + 'px';
-      // this.scrollEls[i].style.height = this.scrollEls[i].offsetHeight + 'px';
+      // this.scrollEls[i].querySelector('.responsive-block-overlay').style.minHeight = ( parseInt( this.scrollEls[i].style.height ) - gutter ) + 'px';
+      this.scrollEls[i].style.height = '';
     }
 
     for( i=0; i < this.totOpacityEls; i++ ) {
-      this.opacityEls[i].querySelector('.responsive-block-overlay').style.minHeight = ( parseInt( this.opacityEls[i].style.height ) - gutter ) + 'px';
-      // this.opacityEls[i].style.height = this.opacityEls[i].offsetHeight + 'px';
+      // this.opacityEls[i].querySelector('.responsive-block-overlay').style.height = ( parseInt( this.opacityEls[i].style.height ) - gutter ) + 'px';
+      this.opacityEls[i].style.top = '';
     }
 
-    // destroy tha grid
-    // $grid.data('plugin_perfectGridGalleryEditor').destroyGridGallery();
-    destroyRexGridInstance( rexGrid );
-    rexGrid.style.height = '';
+    // set RexBlock options on scroll and opacity blocks
+    for( i=0; i < gridInfo.instance.gridBlocksTotal; i++ ) {
+      for( j=0; j<this.totScrollEls; j++ ) {
+        if ( this.scrollEls[j] === gridInfo.instance.gridBlocks[i].el ) {
+          gridInfo.instance.gridBlocks[i].setHeight = false;
+        }
+      }
+
+      for( j=0; j<this.totOpacityEls; j++ ) {
+        if ( this.opacityEls[j] === gridInfo.instance.gridBlocks[i].el ) {
+          gridInfo.instance.gridBlocks[i].setTop = false;
+        }
+      }
+    }    
+
+    // do not set the grid height, its uneccessary
+    rexGridEl.style.height = '';
+    gridInfo.instance.properties.gridHeightSettable = false;
   };
 
   /**
-   * If SplitScrollable plugin is defined, launch it on every intersted section
-   * @param  {Element} context               where to search the sections
+   * Reorder opacity blocks based on grid order for a SplitScrollable element
+   * @param  {SplitScrollable} splitScrollableInstance split scrollable instance passed by reference
+   * @param  {RexGrid} rexGridInstance         rexgrid instance passed by reference
    * @return {void}
    */
-  var launchSplitScrollable = function( context ) {
-    if ( 'undefined' === typeof SplitScrollable ) {
-      return;
-    }
-    context = context || document;
+  function reorderOpacityEls( splitScrollableInstance, rexGridInstance ) {
+    splitScrollableInstance.opacityEls = rexGridInstance.gridBlocks.filter( function( gridBlock ) {
+      return Rexbuilder_Util.hasClass( gridBlock.el, splitScrollableInstance.options.opacityElsClass );
+    }).map( function( gridBlock ) {
+      return gridBlock.el;
+    });
+  }
+
+  /**
+   * If SplitScrollable plugin is defined, launch it on every intersted section
+   * @return {void}
+   */
+  var launchSplitScrollable = function() {
+    if ( 'undefined' === typeof SplitScrollable ) return;
 
     if ( Rexbuilder_Util.globalViewport.width >= _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
-      var scrbls = Array.prototype.slice.call( context.getElementsByClassName('split-scrollable') );
+      var scrbls = Array.prototype.slice.call( document.getElementsByClassName('split-scrollable') );
       var tot_scrbls = scrbls.length, i;
       for( i=0; i < tot_scrbls; i++ ) {
+        if ( null !== SplitScrollable.data( scrbls[i] ) ) continue;
         var inst = new SplitScrollable(scrbls[i], {
           scrollElsToWatchClass: 'text-wrap',
           initializeComplete: fixScrollableGridGallery
@@ -658,7 +678,6 @@ var Rexbuilder_App = (function($) {
     if ( null == tval )
     {
       tval = '';
-      // console.log(target.innerText, target.innerText.length);
       for (var i=0, tot_nums = target.innerText.length; i<tot_nums; i++)
       {
         tval += "1";
@@ -1097,6 +1116,7 @@ var Rexbuilder_App = (function($) {
     }
     
   	var i = 0;
+    var spl;
 
   	for ( i = 0; i < tot_grids; i++ ) {
       // if ( Rexbuilder_Util.changedFrontLayout && ! gridInstances[ i ].isFiltered() ) {
@@ -1105,6 +1125,15 @@ var Rexbuilder_App = (function($) {
   		}
 
       gridInstances[ i ].endResize();
+
+      if ( 'undefined' !== typeof SplitScrollable && Rexbuilder_Util.changedFrontLayout ) {
+        spl = SplitScrollable.data( gridInstances[ i ].section );
+        if ( spl ) {
+          reorderOpacityEls( spl, gridInstances[ i ] );
+          spl.callHandleScroll();
+          spl.callFixStickyHeight();
+        }
+      }
     }
 
     // Fixing video proportions, needed because videos
