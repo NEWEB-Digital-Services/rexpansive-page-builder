@@ -581,14 +581,6 @@ var Rexbuilder_App = (function($) {
 		for (; i < rexGridInstance.gridBlocksTotal; i++) {
 			for (j = 0; j < splitScrollableInstance.totScrollEls; j++) {
 				if (splitScrollableInstance.scrollEls[j] === rexGridInstance.gridBlocks[i].el) {
-					// -webkit-box-ordinal-group: 2;
-					// -ms-flex-order: 1;
-					// 		order: 1;
-					// WebKit
-					// Moz
-					// O
-					// MS
-
 					splitScrollableInstance.scrollEls[j].style.WebKitBoxOrdinalGroup = count + 1;
 					splitScrollableInstance.scrollEls[j].style.MozFlexOrder = count;
 					splitScrollableInstance.scrollEls[j].style.OOrder = count;
@@ -621,12 +613,27 @@ var Rexbuilder_App = (function($) {
    * If SplitScrollable plugin is defined, launch it on every intersted section
    * @return {void}
    */
-  var launchSplitScrollable = function() {
+  function launchSplitScrollable() {
     if ( 'undefined' === typeof SplitScrollable ) return;
 
-    if ( Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
-      return;
-    }
+    if (Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.splitScrollable.minViewportWidth) {
+			// Destroy all SplitScrollable instances
+			SplitScrollable.destroyAll();
+
+			// Re-launch RexGrid
+			var grids = Array.prototype.slice.call(document.getElementsByClassName('perfect-grid-gallery'));
+			var tot_grids = grids.length;
+			var i = 0;
+
+			for (; i < tot_grids; i++) {
+				var rexGridInstance = new RexGrid(grids[i]);
+
+				gridInstances.push(rexGridInstance);
+
+				rexGridInstance.endResize();
+			}
+			return;
+		}
 
     // if ( Rexbuilder_Util.globalViewport.width >= _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
       var scrbls = Array.prototype.slice.call( document.getElementsByClassName('split-scrollable') );
@@ -1164,36 +1171,44 @@ var Rexbuilder_App = (function($) {
   	if ( Rexbuilder_Util.changedFrontLayout ) {
       var choosedLayout = Rexbuilder_Util.chooseLayout();
   		Rexbuilder_Util.handleLayoutChange( choosedLayout );
-    }
-    
-  	var i = 0;
-    var spl;
+		}
+		
+    // if (
+		// 	Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.splitScrollable.minViewportWidth &&
+		// 	'undefined' !== typeof SplitScrollable && Rexbuilder_Util.changedFrontLayout
+		// ) {
+			// @todo Destroy only grids with splitScrollable, change!!
+			// RexGrid.destroyAll();
+		// } else {
+			var i = 0;
+			var splitScrollableInstance;
 
-  	for ( i = 0; i < tot_grids; i++ ) {
-      if ( Rexbuilder_Util.changedFrontLayout ) {
-        gridInstances[ i ].endChangeLayout();
-  		}
+			for (i = 0; i < tot_grids; i++) {
+				if (Rexbuilder_Util.changedFrontLayout) {
+					gridInstances[i].endChangeLayout();
+				}
 
-      gridInstances[ i ].endResize();
+				gridInstances[i].endResize();
 
-      if ('undefined' !== typeof SplitScrollable) {
-				spl = SplitScrollable.data(gridInstances[i].section);
-				if (spl) {
-					if (Rexbuilder_Util.changedFrontLayout) {
-						reorderScrollableEls(spl, gridInstances[i]);
-						reorderOpacityEls(spl, gridInstances[i]);
+				if ('undefined' !== typeof SplitScrollable) {
+					splitScrollableInstance = SplitScrollable.data(gridInstances[i].section);
+					if (splitScrollableInstance) {
+						if (Rexbuilder_Util.changedFrontLayout) {
+							reorderScrollableEls(splitScrollableInstance, gridInstances[i]);
+							reorderOpacityEls(splitScrollableInstance, gridInstances[i]);
 
-						spl.refreshScrollableIndex();
+							splitScrollableInstance.refreshScrollableIndex();
+						}
+
+						splitScrollableInstance.callFixStickyHeight();
 					}
-
-					spl.callFixStickyHeight();
 				}
 			}
-    }
-
-    // Fixing video proportions, needed because videos
-    // must keep proportions between resizes
-    _fixVideos();
+			
+			// Fixing video proportions, needed because videos
+			// must keep proportions between resizes
+			_fixVideos();
+		// }
     
     if ( Rexbuilder_Util.changedFrontLayout ) {
       if ( '1' === _plugin_frontend_settings.fast_load ) {
@@ -1202,7 +1217,7 @@ var Rexbuilder_App = (function($) {
         window.FastLoad.init();
       }
 
-      // launch effects again
+      // re-launch effects
       launchFrontEndEffects();
     }
 

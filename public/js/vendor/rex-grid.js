@@ -996,7 +996,7 @@
 	 */
 	RexGrid.prototype.fixBlockHeight = function( gridBlockObj ) {
 		var newH;
-
+		
 		if ( this.properties.oneColumnModeActive ) {
 			newH = _getBlockHeightOnCollapse.call( this, gridBlockObj );
 		} else {
@@ -1018,6 +1018,7 @@
 		if ( gridBlockObj.setHeight ) {
 			gridBlockObj.el.style.height = ( gridBlockObj.h * this.properties.singleHeight ) + 'px';
 		}
+
 		gridBlockObj.el.setAttribute( 'data-gs-height', gridBlockObj.h );
 		gridBlockObj.el.setAttribute( 'data-height', gridBlockObj.h );
 		gridBlockObj.toCheck = true;
@@ -1066,6 +1067,7 @@
 			}
 		}
 	}
+
 	/**
 	 * Fixing of heights and positions that are necessary after
 	 * the 'load' Event has fired.
@@ -1367,10 +1369,18 @@
 			this.gridBlocks[i].destroy();
 		}
 
-		instances = instances.filter(function removeInstance(instance) {
+		function removeInstance(instance) {
 			return instance.element !== this.element;
-		});
+		}
+
+		instances = instances.filter(removeInstance.bind(this));
 	}
+
+	RexGrid.destroyAll = function() {
+		instances.forEach(function(instance) {
+			instance.destroy();
+		});
+	};
 
 	/**
 	 * Function to grab an instance of the RexGrid based from an element

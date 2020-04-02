@@ -3871,11 +3871,13 @@ var Rexbuilder_Util = (function($) {
    * @since		2.0.4
    */
   function updateRexGrid( section, targets, forceCollapseElementsGrid ) {
-		var $section = $( section );
-		var $gallery = $section.find( '.grid-stack-row' );
+		var $section = $(section);
+		var $gallery = $section.find('.grid-stack-row');
+		
+		var collapseGrid = targets[0].props.collapse_grid;
 
   	// Setting one column mode on the actual RexGrid instance
-  	section.querySelector( '.section-data' ).setAttribute( 'data-collapse-grid', targets[ 0 ].props.collapse_grid );
+  	section.querySelector( '.section-data' ).setAttribute( 'data-collapse-grid', collapseGrid );
 
   	if ( targets[ 0 ].props.gridEdited ) {
   		$gallery.attr( "data-rexlive-layout-changed", true );
@@ -3898,7 +3900,6 @@ var Rexbuilder_Util = (function($) {
     	}
 		}
 		
-		var collapseGrid = targets[0].props.collapse_grid;
 
     var targetName, targetProps;
     var $elem, $itemData, $itemContent;
