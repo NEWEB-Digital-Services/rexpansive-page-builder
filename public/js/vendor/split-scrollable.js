@@ -37,6 +37,7 @@
 
 		var defaults = {
 			splitScrollElClass: 'split-scrollable-container',
+			splitScrollActiveElClass: 'split-scrollable--active',
 			scrollElsWrapClass: 'scroll-block-wrapper',
 			scrollElsClass: 'scroll-block',
 			scrollElsToWatchClass: 'scroll-block',
@@ -98,6 +99,8 @@
 			this.scrollElsToWatch[i].setAttribute('data-scroll-el-index', i);
 			this.scrollElsState.push(null)
 		}
+
+		addClass( this.element, this.options.splitScrollActiveElClass );
 	}
 
 	function _addWrappers() {

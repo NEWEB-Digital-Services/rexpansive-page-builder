@@ -1366,6 +1366,10 @@
 		for ( i=0; i < this.gridBlocksTotal; i++ ) {
 			this.gridBlocks[i].destroy();
 		}
+
+		instances = instances.filter(function removeInstance(instance) {
+			return instance.element !== this.element;
+		});
 	}
 
 	/**

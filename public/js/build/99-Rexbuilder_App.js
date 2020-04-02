@@ -624,7 +624,11 @@ var Rexbuilder_App = (function($) {
   var launchSplitScrollable = function() {
     if ( 'undefined' === typeof SplitScrollable ) return;
 
-    if ( Rexbuilder_Util.globalViewport.width >= _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
+    if ( Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
+      return;
+    }
+
+    // if ( Rexbuilder_Util.globalViewport.width >= _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
       var scrbls = Array.prototype.slice.call( document.getElementsByClassName('split-scrollable') );
       var tot_scrbls = scrbls.length, i;
       for( i=0; i < tot_scrbls; i++ ) {
@@ -634,7 +638,7 @@ var Rexbuilder_App = (function($) {
           initializeComplete: fixScrollableGridGallery
         });
       }
-    }
+    // }
   };
 
   /**
