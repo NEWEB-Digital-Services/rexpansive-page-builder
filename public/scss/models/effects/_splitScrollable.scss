@@ -8,11 +8,7 @@ $first-block-top: 20vh;
 }
 
 .split-scrollable-container {
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flex;
-  display: -o-flex;
-  display: flex;
+	display: flex;
   justify-content: space-between;
   position: relative;
 
@@ -27,7 +23,9 @@ $first-block-top: 20vh;
 .scroll-block-wrapper {
   // width: 32.33333%;
   width: 50%;
-  // margin-top: 20vh;
+	// margin-top: 20vh;
+	display: flex;
+	flex-direction: column;
 }
 
 .scroll-block {

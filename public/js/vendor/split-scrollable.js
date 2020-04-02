@@ -198,6 +198,8 @@
 				generalCondition = ( (offsetEl.top > totscroll + scrollOffset) || ( offsetEl.top + offsetEl.height > totscroll + scrollOffset ) ) && ( offsetEl.top < totscroll + globalViewport.height + scrollOffset );
 
 				if ( generalCondition ) {
+					// console.log( this.scrollElsToWatch[i] );
+					
 					guessedIndex = this.scrollElsToWatch[i].getAttribute('data-scroll-el-index');
 					break;
 				}
@@ -276,7 +278,7 @@
 	function handleResize() {
 		// Resize stuff here
 		// calculate sticky wrapper height
-		fixStickyHeight.call(this);
+		// fixStickyHeight.call(this);
 	}
 
 	/**

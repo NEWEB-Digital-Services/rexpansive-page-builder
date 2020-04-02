@@ -521,6 +521,7 @@ var Rexbuilder_App = (function($) {
 
     if ( ! gridInfo.instance ) return;
 
+    reorderScrollableEls( this, gridInfo.instance );
     reorderOpacityEls( this, gridInfo.instance );
 
     for( i=0; i < this.totScrollEls; i++ ) {
@@ -537,13 +538,15 @@ var Rexbuilder_App = (function($) {
     for( i=0; i < gridInfo.instance.gridBlocksTotal; i++ ) {
       for( j=0; j<this.totScrollEls; j++ ) {
         if ( this.scrollEls[j] === gridInfo.instance.gridBlocks[i].el ) {
-          gridInfo.instance.gridBlocks[i].setHeight = false;
+					gridInfo.instance.gridBlocks[i].setHeight = false;
+					break;
         }
       }
-
+			
       for( j=0; j<this.totOpacityEls; j++ ) {
-        if ( this.opacityEls[j] === gridInfo.instance.gridBlocks[i].el ) {
-          gridInfo.instance.gridBlocks[i].setTop = false;
+				if ( this.opacityEls[j] === gridInfo.instance.gridBlocks[i].el ) {
+					gridInfo.instance.gridBlocks[i].setTop = false;
+					break;
         }
       }
     }    
@@ -551,7 +554,54 @@ var Rexbuilder_App = (function($) {
     // do not set the grid height, its uneccessary
     rexGridEl.style.height = '';
     gridInfo.instance.properties.gridHeightSettable = false;
-  };
+	};
+	
+	function reorderScrollableEls(splitScrollableInstance, rexGridInstance) {
+		// Reordering scrollable elements based on the already ordered gridBlocks
+		splitScrollableInstance.scrollEls = rexGridInstance.gridBlocks
+			.filter(function(gridBlock) {
+				return Rexbuilder_Util.hasClass(gridBlock.el, splitScrollableInstance.options.scrollElsClass);
+			})
+			.map(function(gridBlock) {
+				return gridBlock.el;
+			});
+
+		splitScrollableInstance.scrollElsToWatch = rexGridInstance.gridBlocks
+			.filter(function(gridBlock) {
+				return Rexbuilder_Util.hasClass(gridBlock.el, splitScrollableInstance.options.scrollElsClass);
+			})
+			.map(function(gridBlock) {
+				return gridBlock.el.querySelector('.' + splitScrollableInstance.options.scrollElsToWatchClass);
+			});
+
+		var i = 0;
+		var j = 0;
+		var count = 0;
+
+		for (; i < rexGridInstance.gridBlocksTotal; i++) {
+			for (j = 0; j < splitScrollableInstance.totScrollEls; j++) {
+				if (splitScrollableInstance.scrollEls[j] === rexGridInstance.gridBlocks[i].el) {
+					// -webkit-box-ordinal-group: 2;
+					// -ms-flex-order: 1;
+					// 		order: 1;
+					// WebKit
+					// Moz
+					// O
+					// MS
+
+					splitScrollableInstance.scrollEls[j].style.WebKitBoxOrdinalGroup = count + 1;
+					splitScrollableInstance.scrollEls[j].style.MozFlexOrder = count;
+					splitScrollableInstance.scrollEls[j].style.OOrder = count;
+					splitScrollableInstance.scrollEls[j].style.MSOrder = count;
+					splitScrollableInstance.scrollEls[j].style.order = count;
+					splitScrollableInstance.scrollElsToWatch[j].setAttribute('data-scroll-el-index', count);
+
+					count++;
+					break;
+				}
+			}
+		}
+	}
 
   /**
    * Reorder opacity blocks based on grid order for a SplitScrollable element
@@ -1110,30 +1160,31 @@ var Rexbuilder_App = (function($) {
   	if ( Rexbuilder_Util.changedFrontLayout ) {
       var choosedLayout = Rexbuilder_Util.chooseLayout();
   		Rexbuilder_Util.handleLayoutChange( choosedLayout );
-
-  		// _set_initial_grids_state( choosedLayout );
-  		// setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
     }
     
   	var i = 0;
     var spl;
 
   	for ( i = 0; i < tot_grids; i++ ) {
-      // if ( Rexbuilder_Util.changedFrontLayout && ! gridInstances[ i ].isFiltered() ) {
       if ( Rexbuilder_Util.changedFrontLayout ) {
         gridInstances[ i ].endChangeLayout();
   		}
 
       gridInstances[ i ].endResize();
 
-      if ( 'undefined' !== typeof SplitScrollable && Rexbuilder_Util.changedFrontLayout ) {
-        spl = SplitScrollable.data( gridInstances[ i ].section );
-        if ( spl ) {
-          reorderOpacityEls( spl, gridInstances[ i ] );
-          spl.callHandleScroll();
-          spl.callFixStickyHeight();
-        }
-      }
+      if ('undefined' !== typeof SplitScrollable) {
+				spl = SplitScrollable.data(gridInstances[i].section);
+				if (spl) {
+					if (Rexbuilder_Util.changedFrontLayout) {
+						reorderScrollableEls(spl, gridInstances[i]);
+						reorderOpacityEls(spl, gridInstances[i]);
+
+						spl.callHandleScroll();
+					}
+
+					spl.callFixStickyHeight();
+				}
+			}
     }
 
     // Fixing video proportions, needed because videos
