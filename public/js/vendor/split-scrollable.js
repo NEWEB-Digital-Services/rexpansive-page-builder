@@ -139,6 +139,13 @@
 		}
 	}
 
+	function _destroyWrappers() {
+		unwrap(this.scrollElsWrapper);
+		unwrap(this.opacityElsWrapper);
+
+		unwrap(this.splitScrollWrapper);
+	}
+
 	/**
 	 * Updates global viewport
 	 * @returns	{void}
@@ -332,6 +339,25 @@
 		} else {
 			addClass(el, className);
 		}
+	}
+
+	/**
+	 * Unwraps a DOM Element
+	 * @param		{Element}	element DOM Element to move children and delete
+	 * @returns	{void}
+	 * @since		1.1.0
+	 */
+	function unwrap(element) {
+		// Get the element's parent node
+		var parent = element.parentNode;
+
+		// Move all children out of the element
+		while (element.firstChild) {
+			parent.insertBefore(element.firstChild, element);
+		}
+
+		// Remove the empty element
+		parent.removeChild(element);
 	}
 
 	// scroll and size utilities
@@ -566,6 +592,25 @@
 
 	SplitScrollable.prototype.callFixStickyHeight = function() {
 		_fixStickyHeight.call(this);
+	};
+
+	SplitScrollable.prototype.destroy = function () {
+		removeClass(this.element, this.options.splitScrollActiveElClass);
+		
+		// Destroy wrappers
+		_destroyWrappers.call(this);
+
+		function removeInstance(instance) {
+			return instance.element !== this.element;
+		}
+
+		instances = instances.filter(removeInstance.bind(this));
+	}
+
+	SplitScrollable.destroyAll = function() {
+		instances.forEach(function(instance) {
+			instance.destroy();
+		});
 	};
 
 	/**
