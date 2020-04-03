@@ -1000,6 +1000,8 @@
 			newH = _getBlockHeight.call( this, gridBlockObj );
 		}
 
+		gridBlockObj.toCheck = true;
+
 		if ( null === newH ) {
 			return;
 		}
