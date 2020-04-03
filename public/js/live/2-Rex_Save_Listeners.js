@@ -787,20 +787,21 @@ var Rex_Save_Listeners = (function($) {
 
     var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
     var elementsOrdered = galleryIstance.getElementsTopBottom();
+    var i, tot = elementsOrdered.length;
 
     galleryIstance.updateAllElementsProperties();
-    $(elementsOrdered).each(function(i, el) {
-      var $elem = $(el);
-      if (!$elem.hasClass("removing_block")) {
-        var blockRexID = el.getAttribute("data-rexbuilder-block-id");
+
+    for( i=0; i<tot; i ++ ) {
+      if (! Rexbuilder_Util.hasClass(elementsOrdered[i], 'removing_block')) {
+        var blockRexID = elementsOrdered[i].getAttribute("data-rexbuilder-block-id");
         var block_props = {
           name: blockRexID,
           props: {}
         };
-        var check_edit = checkEditsElement(el);
+        var check_edit = checkEditsElement(elementsOrdered[i]);
 
         if ( layoutName == "default" || saveBlockDisposition || check_edit ) {
-          block_props.props = createBlockProperties( el, "customLayout", gridGallery );
+          block_props.props = createBlockProperties( elementsOrdered[i], "customLayout", gridGallery );
         }
 
         if (
@@ -812,9 +813,8 @@ var Rex_Save_Listeners = (function($) {
         }
 
         targets.push(block_props);
-        // console.log(block_props);
       }
-    });
+    }
     return targets;
   };
 

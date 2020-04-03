@@ -97,6 +97,7 @@
    * @param {Node} el element to lazy load a background image
    */
   function lazyLoadBkgrImgPromise( el ) {
+
   	var src = el.getAttribute( 'data-src' );
   	var isLazyLoading = 'true' == el.getAttribute( 'data-res-lazy-loading' );
 

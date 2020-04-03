@@ -181,15 +181,27 @@ var Rexbuilder_Dom_Util = (function($) {
       var $sectionData = $target.children(".section-data");
       if (data.idImage == "" || data.active.toString() != "true") {
         _resetImageSection($target, $sectionData);
+        if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+          $target.removeClass('section-w-image');
+        }
       } else {
         _updateImageSection($target, $sectionData, data);
+        if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+          $target.addClass('section-w-image');
+        }
       }
     } else if ($target.hasClass("grid-item-content")) {
       var $elem = $target.parents(".grid-stack-item");
       var $elemData = $elem.children(".rexbuilder-block-data");
       if (data.idImage == "" || data.active.toString() != "true") {
         _resetImageBlock($target, $elemData, data);
+        if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+          $elem.removeClass('block-w-image');
+        }
       } else {
+        if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+          $elem.addClass('block-w-image');
+        }
         _updateImageBlock($target, $elemData, data);
       }
     }
@@ -319,16 +331,13 @@ var Rexbuilder_Dom_Util = (function($) {
     section.setAttribute( "data-background_image_width", "" );
     section.setAttribute( "data-background_image_height", "" );
     section.style.backgroundImage = '';
-    // $section.attr("data-background_image_width", "");
-    // $section.attr("data-background_image_height", "");
-    // $section.css("background-image", "");
+
     if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
       Rexbuilder_Section_Editor.resetRowBackgroundImageTool( $section );
     }
   };
 
   var _resetImageBlock = function($itemContent, $elemData, data) {
-    // console.trace();
     $elemData.attr("data-id_image_bg_block", "");
     $elemData.attr("data-type_bg_block", "");
     $elemData.attr("data-image_bg_block", "");
@@ -336,9 +345,7 @@ var Rexbuilder_Dom_Util = (function($) {
     if ( $itemContent.parents('.grid-stack-item').hasClass('block-has-slider') )
     {
       $elemData.attr("data-photoswipe", data.photoswipe);
-    }
-    else
-    {
+    } else {
       $elemData.attr("data-photoswipe", "");
     }
     $elemData.attr("data-image_bg_elem_active", "");
@@ -686,17 +693,14 @@ var Rexbuilder_Dom_Util = (function($) {
       var $sectionData = $target.children(".section-data");
       targetType = "section";
     } else if ($target.hasClass("grid-item-content")) {
-      var $elemData = $target
-        .parents(".grid-stack-item")
-        .children(".rexbuilder-block-data");
+      var $el = $target.parents(".grid-stack-item")
+      var $elemData = $el.children(".rexbuilder-block-data");
       targetType = "block";
     } else if ($target.hasClass("rex-slider-video-wrapper")) {
       targetType = "slide";
     } else {
       return;
     }
-
-    
     
     var type = videoOptions.typeVideo;
     if (type == "") {
@@ -728,6 +732,11 @@ var Rexbuilder_Dom_Util = (function($) {
         Rexbuilder_Section_Editor.updateRowBackgroundVideo( $target, videoOptions );
       }
       Rexbuilder_Util_Editor.activeAddSection( $target );
+      if (type == "mp4") {
+        $target.addClass('section-w-html-video');
+      } else {
+        $target.removeClass('section-w-html-video');
+      }
     } else if (targetType == "block") {
       $elemData.attr("data-video_mp4_url", videoOptions.mp4Data.linkMp4);
       $elemData.attr("data-video_bg_id", videoOptions.mp4Data.idMp4);
@@ -736,6 +745,11 @@ var Rexbuilder_Dom_Util = (function($) {
       $elemData.attr("data-video_bg_url", videoOptions.youtubeUrl);
       $elemData.attr("data-video_bg_url_vimeo", videoOptions.vimeoUrl);
       $elemData.attr("data-video_has_audio", videoOptions.audio);
+      if (type == "mp4") {
+        $el.addClass('block-w-html-video');
+      } else {
+        $el.removeClass('block-w-html-video');
+      }
     } else if (targetType == "slide") {
     }
   };
