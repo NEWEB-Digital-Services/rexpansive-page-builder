@@ -1376,7 +1376,11 @@
 
 		instances = instances.filter(removeInstance.bind(this));
 	}
-
+	/**
+	 * Destroys all RexGrid instances.
+	 * @returns	{void}
+	 * @since		1.0.0
+	 */
 	RexGrid.destroyAll = function() {
 		instances.forEach(function(instance) {
 			instance.destroy();

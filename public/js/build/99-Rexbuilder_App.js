@@ -527,12 +527,10 @@ var Rexbuilder_App = (function($) {
     reorderOpacityEls( this, gridInfo.instance );
 
     for( i=0; i < this.totScrollEls; i++ ) {
-      // this.scrollEls[i].querySelector('.responsive-block-overlay').style.minHeight = ( parseInt( this.scrollEls[i].style.height ) - gutter ) + 'px';
       this.scrollEls[i].style.height = '';
     }
 
     for( i=0; i < this.totOpacityEls; i++ ) {
-      // this.opacityEls[i].querySelector('.responsive-block-overlay').style.height = ( parseInt( this.opacityEls[i].style.height ) - gutter ) + 'px';
       this.opacityEls[i].style.top = '';
     }
 
@@ -558,6 +556,14 @@ var Rexbuilder_App = (function($) {
     gridInfo.instance.properties.gridHeightSettable = false;
 	};
 	
+	/**
+	 * Orders the scrollable elements from SplitScrollable
+	 * based on the already ordered gridBlocks.
+	 * @param		{SplitScrollable}		splitScrollableInstance
+	 * @param		{RexGrid}						rexGridInstance
+	 * @returns	{void}
+	 * @since		2.0.4
+	 */
 	function reorderScrollableEls(splitScrollableInstance, rexGridInstance) {
 		// Reordering scrollable elements based on the already ordered gridBlocks
 		splitScrollableInstance.scrollEls = rexGridInstance.gridBlocks
@@ -1161,7 +1167,7 @@ var Rexbuilder_App = (function($) {
 		
 		var i = 0;
 		var j = 0;
-		var splitScrollableInstance;
+		var splitScrollableInstance = null;
 		
 		for (; i < tot_grids; i++) {
 			if (SPLIT_SCROLLABLE_IN_PAGE) {
@@ -1170,32 +1176,31 @@ var Rexbuilder_App = (function($) {
 
 			// Checking if we passed from a non-mobile layout to a mobile layout
 			if (
-				SPLIT_SCROLLABLE_IN_PAGE &&
 				splitScrollableInstance &&
 				Rexbuilder_Util.changedFrontLayout &&
 				Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.splitScrollable.minViewportWidth
 			) {
-				if (splitScrollableInstance) {
-					// Destroying SplitScrollable instance because it's not used on mobile
-					splitScrollableInstance.destroy();
-					splitScrollableInstance = null;
+				// Destroying SplitScrollable instance because it's not used on mobile
+				splitScrollableInstance.destroy();
+				splitScrollableInstance = null;
 
-					// Resetting RexGrid and RexBlock properties to make RexGrid work normally
-					gridInstances[i].properties.gridHeightSettable = true;
+				// Resetting RexGrid and RexBlock properties to make RexGrid work normally
+				gridInstances[i].properties.gridHeightSettable = true;
 
-					for (j = 0; j < gridInstances[i].gridBlocksTotal; j++) {
-						gridInstances[i].gridBlocks[j].setHeight = true;
-						gridInstances[i].gridBlocks[j].setTop = true;
-					}
+				for (j = 0; j < gridInstances[i].gridBlocksTotal; j++) {
+					gridInstances[i].gridBlocks[j].setHeight = true;
+					gridInstances[i].gridBlocks[j].setTop = true;
 				}
 			}
 
+			// RexGrid operations on resize
 			if (Rexbuilder_Util.changedFrontLayout) {
 				gridInstances[i].endChangeLayout();
 			}
 
 			gridInstances[i].endResize();
 
+			// SplitScrollable operations on resize
 			if (splitScrollableInstance) {
 				if (Rexbuilder_Util.changedFrontLayout) {
 					reorderScrollableEls(splitScrollableInstance, gridInstances[i]);
