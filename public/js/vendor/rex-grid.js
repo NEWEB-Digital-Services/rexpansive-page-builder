@@ -300,10 +300,6 @@
 		this.calcAllBlocksHeights();
 		this.calcAllBlocksTops();
 
-		// Fixings
-		// this.fixAllBlocksHeights();
-		// this.fixAllBlockPositions();
-
 		_setGridHeight.call( this );
 
 		// this.element.RexGridInstance = this;
@@ -1120,6 +1116,24 @@
 	RexGrid.prototype.endChangeLayout = function() {
 		// get new grid props
 		_getGridAttributes.call( this );
+
+		// Getting gutters from DOM attributes
+		_getDOMGutterOptions.call( this );
+
+		// Setting instance properties
+		_setGridGutterProperties.call( this );
+		_setBlocksGutterProperties.call( this );
+
+		this.properties.setDesktopPadding = false;
+
+		// Applying grid separators
+		_applyGridSeparators.call( this );
+
+		// check full height
+		_checkFullHeight.call( this );
+
+		// Applying blocks separators
+		_applyBlocksSeparators.call( this );
 
 		/**
 		 * Only if there isn't a mobile layout saved, re-order gridBlocks array

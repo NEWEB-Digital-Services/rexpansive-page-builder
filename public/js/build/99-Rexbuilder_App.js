@@ -956,7 +956,7 @@ var Rexbuilder_App = (function($) {
     }
 
     // listen one time to edit dom layout ending
-    Rexbuilder_Util.$document.one( 'rexlive:editDomLayoutEnd', launchFrontEndEffects );
+    // Rexbuilder_Util.$document.one( 'rexlive:editDomLayoutEnd', launchFrontEndEffects );
 
     Rexbuilder_Util.launchEditDomLayout();
 

@@ -834,6 +834,7 @@ var Rex_Save_Listeners = (function($) {
         case "block_dimensions_live_edited":
         // case "element_height_increased":
         case "element_real_fluid":
+        case "hide":
           break;
         case "element_edited":
           props["element_edited"] = false;
@@ -1761,7 +1762,6 @@ var Rex_Save_Listeners = (function($) {
     createSectionProperties: createSectionProperties,
     createTargets: createTargets,
     createBlockProperties: createBlockProperties,
-    clearPropsElem: clearPropsElem,
     createCustomization: createCustomization,
     updateModel: updateModel,
     _checkSpecialEffects: _checkSpecialEffects
