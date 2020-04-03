@@ -599,11 +599,11 @@
 		
 		// Destroy wrappers
 		_destroyWrappers.call(this);
-
+		
 		function removeInstance(instance) {
 			return instance.element !== this.element;
 		}
-
+		
 		instances = instances.filter(removeInstance.bind(this));
 	}
 

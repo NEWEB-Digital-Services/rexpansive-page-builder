@@ -799,7 +799,7 @@
 				sliderHeight
 			);
 		}
-
+		
 		var resizeNeeded = true;
 		var goToStartH = false;
 
@@ -839,6 +839,7 @@
 		if ( ! resizeNeeded ) {
 			return null;
 		}
+
 
 		if ( this.properties.layout == "fixed" ) {
 			if ( emptyBlockFlag || blockHasYoutube || blockHasVideo || blockHasVimeo ) {
@@ -1139,14 +1140,14 @@
 
 			this.gridBlocks = temp;
 		}
-
-        // Fix blocks properties
-        this.updateGridBlocks();
-
-        // Sorting blocks based on real order
-        // Needed because there could be blocks in different
-        // orders when changing layout
-  		this.sortBlocks();
+		
+		// Fix blocks properties
+		this.updateGridBlocks();
+		
+		// Sorting blocks based on real order
+		// Needed because there could be blocks in different
+		// orders when changing layout
+		this.sortBlocks();
 	}
 
 	/**

@@ -5,7 +5,9 @@
  * @since 1.1.3
  */
 var Rexbuilder_App = (function($) {
-  "use strict";
+	"use strict";
+	
+	var SPLIT_SCROLLABLE_IN_PAGE = 'undefined' !== typeof SplitScrollable;
 
   var $sections = null;
   var $grids = null;
@@ -614,38 +616,23 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   function launchSplitScrollable() {
-    if ( 'undefined' === typeof SplitScrollable ) return;
+  	if (!SPLIT_SCROLLABLE_IN_PAGE) return;
 
-    if (Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.splitScrollable.minViewportWidth) {
-			// Destroy all SplitScrollable instances
-			SplitScrollable.destroyAll();
+  	if (Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.splitScrollable.minViewportWidth) {
+  		return;
+  	}
 
-			// Re-launch RexGrid
-			var grids = Array.prototype.slice.call(document.getElementsByClassName('perfect-grid-gallery'));
-			var tot_grids = grids.length;
-			var i = 0;
+  	var scrbls = Array.prototype.slice.call(document.getElementsByClassName('split-scrollable'));
+  	var tot_scrbls = scrbls.length,
+  		i;
+  	for (i = 0; i < tot_scrbls; i++) {
+  		if (null !== SplitScrollable.data(scrbls[i])) continue;
 
-			for (; i < tot_grids; i++) {
-				var rexGridInstance = new RexGrid(grids[i]);
-
-				gridInstances.push(rexGridInstance);
-
-				rexGridInstance.endResize();
-			}
-			return;
-		}
-
-    // if ( Rexbuilder_Util.globalViewport.width >= _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
-      var scrbls = Array.prototype.slice.call( document.getElementsByClassName('split-scrollable') );
-      var tot_scrbls = scrbls.length, i;
-      for( i=0; i < tot_scrbls; i++ ) {
-        if ( null !== SplitScrollable.data( scrbls[i] ) ) continue;
-        var inst = new SplitScrollable(scrbls[i], {
-          scrollElsToWatchClass: 'text-wrap',
-          initializeComplete: fixScrollableGridGallery
-        });
-      }
-    // }
+  		new SplitScrollable(scrbls[i], {
+  			scrollElsToWatchClass: 'text-wrap',
+  			initializeComplete: fixScrollableGridGallery
+  		});
+  	}
   };
 
   /**
@@ -885,7 +872,6 @@ var Rexbuilder_App = (function($) {
   function _fixVideos() {
     var tot_grids = gridInstances.length;
   	var i = 0;
-    var j = 0;
 
   	for ( i = 0; i < tot_grids; i++ ) {
   		// We call this function cause its already present on Rexbuilder_Dom_Util
@@ -1173,43 +1159,59 @@ var Rexbuilder_App = (function($) {
   		Rexbuilder_Util.handleLayoutChange( choosedLayout );
 		}
 		
-    // if (
-		// 	Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.splitScrollable.minViewportWidth &&
-		// 	'undefined' !== typeof SplitScrollable && Rexbuilder_Util.changedFrontLayout
-		// ) {
-			// @todo Destroy only grids with splitScrollable, change!!
-			// RexGrid.destroyAll();
-		// } else {
-			var i = 0;
-			var splitScrollableInstance;
+		var i = 0;
+		var j = 0;
+		var splitScrollableInstance;
+		
+		for (; i < tot_grids; i++) {
+			if (SPLIT_SCROLLABLE_IN_PAGE) {
+				splitScrollableInstance = SplitScrollable.data(gridInstances[i].section);
+			}
 
-			for (i = 0; i < tot_grids; i++) {
-				if (Rexbuilder_Util.changedFrontLayout) {
-					gridInstances[i].endChangeLayout();
-				}
+			// Checking if we passed from a non-mobile layout to a mobile layout
+			if (
+				SPLIT_SCROLLABLE_IN_PAGE &&
+				splitScrollableInstance &&
+				Rexbuilder_Util.changedFrontLayout &&
+				Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.splitScrollable.minViewportWidth
+			) {
+				if (splitScrollableInstance) {
+					// Destroying SplitScrollable instance because it's not used on mobile
+					splitScrollableInstance.destroy();
+					splitScrollableInstance = null;
 
-				gridInstances[i].endResize();
+					// Resetting RexGrid and RexBlock properties to make RexGrid work normally
+					gridInstances[i].properties.gridHeightSettable = true;
 
-				if ('undefined' !== typeof SplitScrollable) {
-					splitScrollableInstance = SplitScrollable.data(gridInstances[i].section);
-					if (splitScrollableInstance) {
-						if (Rexbuilder_Util.changedFrontLayout) {
-							reorderScrollableEls(splitScrollableInstance, gridInstances[i]);
-							reorderOpacityEls(splitScrollableInstance, gridInstances[i]);
-
-							splitScrollableInstance.refreshScrollableIndex();
-						}
-
-						splitScrollableInstance.callFixStickyHeight();
+					for (j = 0; j < gridInstances[i].gridBlocksTotal; j++) {
+						gridInstances[i].gridBlocks[j].setHeight = true;
+						gridInstances[i].gridBlocks[j].setTop = true;
 					}
 				}
 			}
-			
-			// Fixing video proportions, needed because videos
-			// must keep proportions between resizes
-			_fixVideos();
-		// }
-    
+
+			if (Rexbuilder_Util.changedFrontLayout) {
+				gridInstances[i].endChangeLayout();
+			}
+
+			gridInstances[i].endResize();
+
+			if (splitScrollableInstance) {
+				if (Rexbuilder_Util.changedFrontLayout) {
+					reorderScrollableEls(splitScrollableInstance, gridInstances[i]);
+					reorderOpacityEls(splitScrollableInstance, gridInstances[i]);
+
+					splitScrollableInstance.refreshScrollableIndex();
+				}
+
+				splitScrollableInstance.callFixStickyHeight();
+			}
+		}
+
+		// Fixing video proportions, needed because videos
+		// must keep proportions between resizes
+		_fixVideos();
+
     if ( Rexbuilder_Util.changedFrontLayout ) {
       if ( '1' === _plugin_frontend_settings.fast_load ) {
         // Resetting fast load (that contains IntersectionObserver)
@@ -1217,7 +1219,7 @@ var Rexbuilder_App = (function($) {
         window.FastLoad.init();
       }
 
-      // re-launch effects
+      // Re-launch effects
       launchFrontEndEffects();
     }
 
