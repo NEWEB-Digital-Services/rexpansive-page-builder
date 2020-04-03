@@ -33,10 +33,13 @@ $first-block-top: 20vh;
 .split-scrollable--active {
 
   .scroll-block {
-  	// margin-top: 30vh;
-  	// color: #c8cacb;
   	opacity: 0.1 !important;
   	transition: opacity .24s;
+
+    // prevent rexScrollify uneccessary animation
+    &:not(:first-child) {
+      animation-name: none;
+    }
 
   	&.scroll-block-active {
       // color: #000;
@@ -115,6 +118,10 @@ $first-block-top: 20vh;
   .perfect-grid-item {
     &.opacity-block {
       transition: opacity .24s;
+      // prevent rexScrollify uneccessary animation
+      &:not(:first-child) {
+        animation-name: none;
+      }
     }
   }
 
