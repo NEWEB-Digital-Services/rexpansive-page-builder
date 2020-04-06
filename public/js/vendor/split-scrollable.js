@@ -268,11 +268,19 @@
 	function _activateScrollEl( targetIndex ) {
 		for( var i=0; i < this.totScrollEls; i++ ) {
 			if ( this.scrollElsToWatch[i].getAttribute('data-scroll-el-index') == targetIndex ) {
-				addClass( this.scrollEls[i], this.options.scrollElActiveClass );
-				addClass( this.opacityEls[i], this.options.opacityElActiveClass );
+				if (this.scrollEls[i]) {
+					addClass( this.scrollEls[i], this.options.scrollElActiveClass );
+				}
+				if (this.opacityEls[i]) {
+					addClass( this.opacityEls[i], this.options.opacityElActiveClass );
+				}
 			} else {
-				removeClass( this.scrollEls[i], this.options.scrollElActiveClass );
-				removeClass( this.opacityEls[i], this.options.opacityElActiveClass );
+				if (this.scrollEls[i]) {
+					removeClass( this.scrollEls[i], this.options.scrollElActiveClass );
+				}
+				if (this.opacityEls[i]) {
+					removeClass( this.opacityEls[i], this.options.opacityElActiveClass );
+				}
 			}
 		}
 	}

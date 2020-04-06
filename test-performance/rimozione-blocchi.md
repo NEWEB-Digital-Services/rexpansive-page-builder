@@ -69,7 +69,7 @@ Ho 3 blocchi in fixed su desktop.
 # Test 8
 
 - Vado su mobile
-- Cambio il colore di sfondos
+- Cambio il colore di sfondo
 - Restringo un blocco, cascata a 12x200
 - Restringo un blocco, fiore a 8x155
 - Aggiungo margin top sulla section di 50px
@@ -96,3 +96,12 @@ Ho 3 blocchi in fixed su desktop.
 - Ri-cambio colore sfondo
 - Salvo
 
+# Test 10
+
+- Mobile già salvato
+- Aggiungo immagine su desktop
+- Passo a mobile
+- Cambio l'immagine
+- Salvo
+- Sul front non si visualizza correttamente
+- Se torno sul builder e faccio resize sul blocco l'immagine sul front si aggiusta
