@@ -54,7 +54,8 @@
 
     if ( null === this.stickyElement ) {
       return;
-    }
+		}
+		
 
     this.stickyId = globalStickySectionIndex;
     stickySectionsDidScroll[this.stickyId] = false;
@@ -86,8 +87,8 @@
       }
       
       this.element.insertBefore(this.borderAnimationEl.el, this.element.firstChild);
-    }
-
+		}
+		
     if ( this.options.overlayAnimation ) {
 
       var originaloverlayEl = this.element.querySelector(this.options.originalOverlaySelector);
@@ -106,13 +107,10 @@
     if ( this.options.stickyJS ) {
       addClass( this.element, 'sticky-js' );
     } else {
-      var wrapper = document.createElement('div');
-      wrapper.className = 'sticky-element__wrapper';
       addClass( this.element, 'sticky-css' );
-      if ( this.stickyElement ) {
-        // wrap( this.stickyElement, wrapper );
-      }
-    }
+		}
+		
+		console.log( this.stickyElement.offsetHeight );
 
     // first load check
     handleSticky.call(this);
@@ -206,9 +204,9 @@
     var windowScrollBottom = windowScrollTop + windowInnerHeight;
 
     // element scroll information
-    var elScrollTop = offsetTop(this.element, windowScrollTop);
+		var elScrollTop = offsetTop(this.element, windowScrollTop);
     var elHeight = this.element.offsetHeight;
-    var elScrollBottom = elScrollTop + elHeight;
+		var elScrollBottom = elScrollTop + elHeight;
 
     // eventually offset
     var windowOffset = windowInnerHeight * this.options.offset;
@@ -218,8 +216,8 @@
     var topViewport = windowScrollTop >= elScrollTop;
     var bottomViewport = windowScrollBottom <= elScrollBottom;
     var beforeViewport = windowScrollTop <= elScrollTop;
-    var afterViewport = windowScrollBottom >= elScrollBottom;
-
+		var afterViewport = windowScrollBottom >= elScrollBottom;
+		
     if ( this.options.stickyJS ) {
       // stick section
       if ( topViewport && bottomViewport ) {
@@ -451,20 +449,51 @@
     } else {
       addClass(el, className);
     }
-  }
-
+	}
+	
+	/* ===== Exposed functions ===== */
+	/**
+	 * Destroys the instance on which is called the function.
+	 * @returns		{void}
+	 * @since			1.1.0
+	 */
   StickySection.prototype.destroy = function () {
-    var test = this.element.querySelector('.sticky-background-simulator');
-    test.parentNode.removeChild(test);
-
     function removeInstance(instance) {
       return instance.element !== this.element;
     }
     
     instances = instances.filter( removeInstance.bind(this) );
   }
+	
+	/**
+	 * Creates StickySection background simulators for images
+	 * or just controls for videos.
+	 * @param		{Element}		section		StickySection DOM Element
+	 * @returns	{void}
+	 * @since		1.1.0
+	 */
+	StickySection.prepare = function (section) {
+		var sectionData = section.querySelector('.section-data');
 
-  /**
+		if (hasClass(section, 'mp4-player')) {
+			// video controls fix
+			videoEl = section.querySelector('.rex-video-wrap');
+			videoControls = videoEl.querySelector('.rex-video__controls');
+			if (videoControls) {
+				stickyVideoControls = document.createElement('div');
+				addClass(stickyVideoControls, 'sticky-video-controls');
+				videoEl.insertAdjacentElement('afterend', stickyVideoControls);
+			}
+		} else if ('' !== section.style.backgroundImage || hasClass(section, 'section-w-image')) {
+			var adjacent = section.querySelector('.responsive-overlay');
+			adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
+			var backgroundSimulator = section.querySelector('.sticky-background-simulator');
+
+			backgroundSimulator.style.backgroundImage = 'url(' + sectionData.getAttribute('data-image_bg_section') + ')';
+		}
+	};
+
+	/**
    * Static function that retrieves the StickySection
    * instance of the DOM Element passed.
    * @param   {Element}       el  Element to retrieve the instance
@@ -481,7 +510,7 @@
     }
 
     return null;
-  };
+	};
 
   return StickySection;
 });

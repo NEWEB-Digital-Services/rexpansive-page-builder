@@ -46,7 +46,9 @@
    * @since  2.0.4
    */
   function checkLazyStickySection( section ) {
-    var bkgrSimulator = section.querySelector('.sticky-background-simulator');
+		return;
+		console.log('checkLazyStickySection fast load')
+		var bkgrSimulator = section.querySelector('.sticky-background-simulator');
     if ( null === bkgrSimulator ) {
       return;
     }
@@ -55,7 +57,8 @@
     if ( null === src ) {
       return;
     }
-
+		console.log( 'checkLazyStickySection fast load Applico il bg' );
+		
     bkgrSimulator.style.backgroundImage = 'url(' + src + ')';
   }
 

@@ -8,6 +8,7 @@ var Rexbuilder_App = (function($) {
 	"use strict";
 	
 	var SPLIT_SCROLLABLE_IN_PAGE = 'undefined' !== typeof SplitScrollable;
+	var STICKY_SECTION_IN_PAGE = 'undefined' !== typeof StickySection;
 
   var $sections = null;
   var $grids = null;
@@ -348,79 +349,35 @@ var Rexbuilder_App = (function($) {
 
   /**
    * Launch sticky sections if any
+	 * @returns	{void}
+	 * @since		2.0.?
+	 * @version	2.0.4		Refactor: removed simulation background blocks from here,
+	 * 									put them in StickySection.prepare
    */
-  var launchStickySections = function() {
-    if ( 'undefined' === typeof StickySection ) return;
+  function launchStickySections() {
+    if ( !STICKY_SECTION_IN_PAGE ) return;
 
     var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
-    var stickySections = [].slice.call( document.getElementsByClassName( 'sticky-section' ) );
+    var stickySections = Array.prototype.slice.call( document.getElementsByClassName( 'sticky-section' ) );
     var tot_stickySections = stickySections.length, i = 0;
     var stickyElementSelector = '';
     var overlayAnimation = false;
-    var videoEl, videoControls, stickyVideoControls;
 
     for( i = 0; i < tot_stickySections; i++ ) {
-      // do not relaunch me
-      if ( null !== StickySection.data( stickySections[i] ) ) {
-        StickySection.data( stickySections[i] ).destroy();
+      // Destroy before re-launching
+      if (null !== StickySection.data(stickySections[i])) {
+      	StickySection.data(stickySections[i]).destroy();
       }
 
-      if ( Rexbuilder_Util.hasClass( stickySections[i], 'mp4-player' ) ) {
-        stickyElementSelector = '.rex-video-wrap';
-
-        // video controls fix
-        videoEl = stickySections[i].querySelector(stickyElementSelector);
-        videoControls = videoEl.querySelector('.rex-video__controls');
-        if ( videoControls ) {
-          stickyVideoControls = document.createElement('div');
-          Rexbuilder_Util.addClass( stickyVideoControls, 'sticky-video-controls' );
-          // Rexbuilder_Util.addClass( stickyVideoControls, 'rex-video__controls' );
-          // stickyVideoControls.innerHTML = '<div class="pause video-tool"><div class="indicator"></div></div><div class="play video-tool"><div class="indicator"></div></div>';
-          videoEl.insertAdjacentElement('afterend', stickyVideoControls);
-        }
-      } else if ( '' !== stickySections[i].style.backgroundImage ) {
-        stickyElementSelector = '.sticky-background-simulator';
-        var adjacent = stickySections[i].querySelector('.responsive-overlay');
-        adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
-        var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
-
-        // if ( '1' === _plugin_frontend_settings.fast_load ) {
-        //   backgroundSimulator.setAttribute('data-src', stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section'));
-        // } else if ( '0' === _plugin_frontend_settings.fast_load ) {
-          backgroundSimulator.style.backgroundImage = 'url(' + stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
-        // }
-      } else if ( Rexbuilder_Util.hasClass( stickySections[i], 'section-w-image' ) ) {
-        stickyElementSelector = '.sticky-background-simulator';
-        var adjacent = stickySections[i].querySelector('.responsive-overlay');
-        adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
-        var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
-
-        if ( '1' === _plugin_frontend_settings.fast_load ) {
-          backgroundSimulator.setAttribute('data-src', stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section'));
-        } else if ( '0' === _plugin_frontend_settings.fast_load ) {
-          backgroundSimulator.style.backgroundImage = 'url(' + stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
-        }
+      if (Rexbuilder_Util.hasClass(stickySections[i], 'mp4-player')) {
+      	stickyElementSelector = '.rex-video-wrap';
+      } else if ('' !== stickySections[i].style.backgroundImage || Rexbuilder_Util.hasClass(stickySections[i], 'section-w-image')) {
+      	stickyElementSelector = '.sticky-background-simulator';
       }
-
-      // } else {
-      //   if ( '' !== sectionData.getAttribute('data-image_bg_section') ) {
-      //     stickyElementSelector = '.sticky-background-simulator';
-      //     var adjacent = stickySections[i].querySelector('.responsive-overlay');
-      //     adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
-      //     var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
-
-      //     if ( '1' === _plugin_frontend_settings.fast_load ) {
-      //       backgroundSimulator.setAttribute('data-src', sectionData.getAttribute('data-image_bg_section'));
-      //       // window.FastLoad.checkLazyStickySection(stickySections[i]);
-      //     } else {
-      //       backgroundSimulator.style.backgroundImage = 'url(' + sectionData.getAttribute('data-image_bg_section') + ')';
-      //     }
-      //   }
-      // }
 
       overlayAnimation = ( 'true' === stickySections[i].querySelector('.section-data').getAttribute('data-row_overlay_active') ? true : false );
 
-      var stickySection = new StickySection(stickySections[i], {
+      new StickySection(stickySections[i], {
         borderAnimation: true,
         stickyJS: stickyJS,
         stickyElementSelector: stickyElementSelector,
@@ -957,14 +914,15 @@ var Rexbuilder_App = (function($) {
       	var i = 0;
 
       	for ( i = 0; i < tot_grids; i++ ) {
-      		// var rexGridInstance = new RexGrid( grids[ i ], {
-        //     isSplitScrollable: Rexbuilder_Util.hasClass( Rexbuilder_Util.parents( grids[ i ], '.rexpansive_section' ), 'split-scrollable')
-        //   } );
-
 					var rexGridInstance = new RexGrid(grids[i]);
           
-      		gridInstances.push( rexGridInstance );
-        }
+					gridInstances.push( rexGridInstance );
+					
+					if (STICKY_SECTION_IN_PAGE) {
+						StickySection.prepare(rexGridInstance.section);
+					}
+				}
+				
 
         if ( '1' === _plugin_frontend_settings.fast_load ) {
           // Launch fast load
@@ -1228,6 +1186,21 @@ var Rexbuilder_App = (function($) {
 				}
 
 				splitScrollableInstance.callFixStickyHeight();
+			}
+
+			// StickySection operations on resize
+			// Creating sticky section background simulators.
+			// Need to create them before launching fast load to prevent
+			// fast load fixing happening before this operation.
+			if (STICKY_SECTION_IN_PAGE) {
+				var stickySectionInstance = StickySection.data(gridInstances[i].section);
+
+				if (stickySectionInstance) {
+					// Using static function beacuse it's used on load too
+					// In that case we still don't have SplitSrollable launched
+					StickySection.prepare(gridInstances[i].section);
+				}
+				
 			}
 		}
 
