@@ -2,8 +2,13 @@
  * PopUp Content plugin
  * 
  */
-;(function($) {
-	this.PopUpContent = function() {
+;(function(window, factory) {
+	'use strict';
+	window.PopUpContent = factory(window);
+})( 'undefined' !== typeof window ? window : this, function() {
+	var instances = [];
+
+	function PopUpContent() {
 		// call object (button)
 		this.element = null;
 		this.iframeContainer = null;
@@ -59,7 +64,7 @@
 
 		attachEventHandlers.call(this);
 
-		this.element.PopUpContentInstance = this;
+		instances.push( this );
 	};
 
 	function initialize() {
@@ -268,4 +273,39 @@
 		}
 		return source;
 	}
-}(jQuery));
+
+	// PopUpContent.prototype.destroy = function () {
+	// 	function removeInstance(instance) {
+	// 		return instance.element !== this.element;
+	// 	}
+		
+	// 	instances = instances.filter(removeInstance.bind(this));
+	// }
+
+	// PopUpContent.destroyAll = function() {
+	// 	instances.forEach(function(instance) {
+	// 		instance.destroy();
+	// 	});
+	// };
+
+	/**
+	 * Static function that retrieves the PopUpContent
+	 * instance of the DOM Element passed.
+	 * @param		{Element}				el	Element to retrieve the instance
+	 * @returns	{Element|null}	PopUpContent instance
+	 * @since		1.1.0
+	 */
+	PopUpContent.data = function(el) {
+		var i = 0,
+			tot = instances.length;
+		for (i = 0; i < tot; i++) {
+			if (el === instances[i].element) {
+				return instances[i];
+			}
+		}
+
+		return null;
+	};
+
+	return PopUpContent;
+});

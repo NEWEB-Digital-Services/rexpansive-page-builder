@@ -361,8 +361,8 @@ var Rexbuilder_App = (function($) {
 
     for( i = 0; i < tot_stickySections; i++ ) {
       // do not relaunch me
-      if ( 'undefined' !== typeof stickySections[i].StickySectionInstance ) {
-        continue;
+      if ( null !== StickySection.data( stickySections[i] ) ) {
+        StickySection.data( stickySections[i] ).destroy();
       }
 
       if ( Rexbuilder_Util.hasClass( stickySections[i], 'mp4-player' ) ) {
@@ -387,7 +387,7 @@ var Rexbuilder_App = (function($) {
         // if ( '1' === _plugin_frontend_settings.fast_load ) {
         //   backgroundSimulator.setAttribute('data-src', stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section'));
         // } else if ( '0' === _plugin_frontend_settings.fast_load ) {
-          backgroundSimulator.style.backgroundImage = stickySections[i].style.backgroundImage;
+          backgroundSimulator.style.backgroundImage = 'url(' + stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
         // }
       } else if ( Rexbuilder_Util.hasClass( stickySections[i], 'section-w-image' ) ) {
         stickyElementSelector = '.sticky-background-simulator';
@@ -401,6 +401,22 @@ var Rexbuilder_App = (function($) {
           backgroundSimulator.style.backgroundImage = 'url(' + stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
         }
       }
+
+      // } else {
+      //   if ( '' !== sectionData.getAttribute('data-image_bg_section') ) {
+      //     stickyElementSelector = '.sticky-background-simulator';
+      //     var adjacent = stickySections[i].querySelector('.responsive-overlay');
+      //     adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
+      //     var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
+
+      //     if ( '1' === _plugin_frontend_settings.fast_load ) {
+      //       backgroundSimulator.setAttribute('data-src', sectionData.getAttribute('data-image_bg_section'));
+      //       // window.FastLoad.checkLazyStickySection(stickySections[i]);
+      //     } else {
+      //       backgroundSimulator.style.backgroundImage = 'url(' + sectionData.getAttribute('data-image_bg_section') + ')';
+      //     }
+      //   }
+      // }
 
       overlayAnimation = ( 'true' === stickySections[i].querySelector('.section-data').getAttribute('data-row_overlay_active') ? true : false );
 
@@ -465,6 +481,8 @@ var Rexbuilder_App = (function($) {
     var tot_btns = btns.length, i = 0;
 
     for( i=0; i < tot_btns; i++ ) {
+      if (null !== PopUpContent.data(btns[i])) continue;
+
       new PopUpContent(btns[i], {
         // getPopUpContentComplete: launchAllAfterLoading,
         contentRetrieveMethod: 'iframe',

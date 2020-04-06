@@ -3,7 +3,13 @@
  * 
  * @version 1.0.0
  */
-; (function () {
+;(function(window, factory) {
+  'use strict';
+  window.StickySection = factory(window);
+})( 'undefined' !== typeof window ? window : this, function() {
+  // instances of StickySection initializated
+  var instances = [];
+
   var stickySectionsDidScroll = [];
   var stickySectionsHandlers = [];
   var globalStickySectionIndex = 0;
@@ -11,7 +17,7 @@
   var wInterval = true;
   var wCallbacks = false;
 
-  this.StickySection = function () {
+  function StickySection() {
     this.element = null;
     this.stickyElement = null;
     this.borderAnimationEl = {};
@@ -129,9 +135,7 @@
       window.addEventListener('scroll', handleSticky.bind(this));
     }
 
-
-    // attach the plugin instance to the dom element
-    this.element.StickySectionInstance = this;
+    instances.push( this );
   }
 
   if ( wInterval ) {
@@ -448,4 +452,36 @@
       addClass(el, className);
     }
   }
-}());
+
+  StickySection.prototype.destroy = function () {
+    var test = this.element.querySelector('.sticky-background-simulator');
+    test.parentNode.removeChild(test);
+
+    function removeInstance(instance) {
+      return instance.element !== this.element;
+    }
+    
+    instances = instances.filter( removeInstance.bind(this) );
+  }
+
+  /**
+   * Static function that retrieves the StickySection
+   * instance of the DOM Element passed.
+   * @param   {Element}       el  Element to retrieve the instance
+   * @returns {Element|null}  StickySection instance
+   * @since   1.1.0
+   */
+  StickySection.data = function(el) {
+    var i = 0,
+      tot = instances.length;
+    for (i = 0; i < tot; i++) {
+      if (el === instances[i].element) {
+        return instances[i];
+      }
+    }
+
+    return null;
+  };
+
+  return StickySection;
+});
