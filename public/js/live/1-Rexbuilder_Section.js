@@ -1221,7 +1221,7 @@ var Rexbuilder_Section = (function($) {
         .find(".rexpansive_section")
         .eq(0)
         .before($model_to_import.detach());
-    }
+		}
 
     $.ajax({
       type: "GET",
@@ -1242,7 +1242,8 @@ var Rexbuilder_Section = (function($) {
             modelID: response.data.id,
             customizationsData: response.data.customizations_data,
             customizationsNames: response.data.customizations_names
-          };
+					};
+					console.log( JSON.parse(JSON.stringify(response)) );
 
           Rexbuilder_Util_Editor.sectionCopying = true;
           Rexbuilder_Util_Editor.insertingModel = true;
@@ -1293,7 +1294,10 @@ var Rexbuilder_Section = (function($) {
 
           var $row = $newSection.find(".grid-stack-row");
 
-          $row.perfectGridGalleryEditor({editorMode:true});
+					$row.perfectGridGalleryEditor({editorMode:true});
+					
+					var $buttonsWrappers = $row.find('.rex-button-wrapper');
+					_replaceRexButtons($row, $buttonsWrappers, response);
 
           // Launching and Updating tools
           Rexbuilder_Live_Utilities.updateModelSectionTools( $newSection, $newSectionData );
@@ -1401,7 +1405,42 @@ var Rexbuilder_Section = (function($) {
       complete: function(response) {}
     });
     //$model_to_import.children().remove();
-  }
+	}
+	
+	/**
+	 * Replaces RexButtons in the model with 
+	 */
+	function _replaceRexButtons($row, $buttonsWrappers, response) {
+		// Keeping jQuery for consistency motivations
+		var buttonID = '';
+		var databaseButtonsArray = response.data.rexButtonsHTML;
+		var tot_databaseButtonsArray = databaseButtonsArray.length;
+		var databaseButton;
+		var i;
+
+		$buttonsWrappers.each(function (index, element) {
+			var $element = $(element);
+
+			buttonID = $element.attr('data-rex-button-id');
+
+			for (i = 0; i < tot_databaseButtonsArray; i++) {
+				databaseButton = databaseButtonsArray[i];
+				if (-1 !== databaseButton.search(buttonID)) {
+					$element.replaceWith(databaseButton);
+					// Not breaking the for 'cause there could be more than 1 button
+				}
+			}
+		});
+
+		// Refreshing the jQuery element because of the replacements
+		// Needed because when replacing, the jQuery object is not updated
+		// with the new DOM references
+		$buttonsWrappers = $row.find('.rex-button-wrapper');
+
+		$buttonsWrappers.each(function (index, element) {
+			Rexbuilder_Rexbutton.endFixingButtonImported($(element));
+		});
+	}
 
   var _addSectionToolboxListeners = function() {
     Rexbuilder_Util.$document.on("click", ".builder-delete-row", handleBuilderDeleteRow);

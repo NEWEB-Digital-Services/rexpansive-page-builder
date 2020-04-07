@@ -465,14 +465,16 @@ var Rexbuilder_Rexbutton = (function ($) {
                 flagButtonFound = true;
                 break;
             }
-        }
+				}
+
         if (!flagButtonFound) {
             _addButtonStyle($buttonWrapper);
             buttonsInPage.push({
                 id: buttonID,
                 number: 1
             });
-        }
+				}
+				
         _removeModelData($buttonWrapper);
 
         //removes medium editor placeholder if there
@@ -490,8 +492,14 @@ var Rexbuilder_Rexbutton = (function ($) {
     var _addButtonStyle = function ($buttonWrapper) {
         if ($buttonWrapper.find(".rex-button-data").eq(0).length != 0) {
             var buttonProperties = _generateButtonData($buttonWrapper, true);
-            var buttonID = buttonProperties.buttonInfo.buttonTarget.button_id;
-            _addCSSRules(buttonID, buttonProperties.buttonInfo);
+						var buttonID = buttonProperties.buttonInfo.buttonTarget.button_id;
+						
+						console.groupCollapsed( 'buttonID' );
+						console.log( buttonProperties );
+						console.trace(  );
+						console.groupEnd();
+
+						_addCSSRules(buttonID, buttonProperties.buttonInfo);
         }
     }
 
@@ -719,6 +727,8 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _removeModelData = function ($buttonWrapper) {
+			console.trace( '_removeModelData' );
+			
         var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0);
         $buttonData.removeAttr("data-text-color");
         $buttonData.removeAttr("data-text-size");
@@ -817,7 +827,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         buttonProperties.buttonTarget.button_id = $buttonContainer.attr("data-rex-button-id");
         buttonProperties.buttonTarget.button_number = parseInt($buttonContainer.attr("data-rex-button-number"));
         var buttonDataEl = $buttonData[0];
-        var separate = false;
+				var separate = false;
 
         if ($buttonContainer.hasClass("rex-separate-button") || getAllData) {
             buttonProperties.font_size = (buttonDataEl.getAttribute("data-text-size") ? buttonDataEl.getAttribute("data-text-size").toString() : '');
@@ -852,8 +862,8 @@ var Rexbuilder_Rexbutton = (function ($) {
         buttonProperties.link_target = $buttonData.attr("data-link-target");
         buttonProperties.link_type = $buttonData.attr("data-link-type");
         buttonProperties.classes = $buttonContainer.find("a.rex-button-container").eq(0).attr('class').replace('rex-button-container','').replace(/\s/,'');
-
-        var data = {
+				
+				var data = {
             separateButton: separate,
             buttonInfo: buttonProperties
         }
@@ -877,6 +887,8 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _updateButtonListInPage = function () {
+			console.log( '_updateButtonListInPage' );
+			
         var j;
         var flagButtonFound = false;
         Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper").each(function (i, button) {
@@ -957,7 +969,8 @@ var Rexbuilder_Rexbutton = (function ($) {
         updateButton: _updateButton,
         removeSeparateButton: _removeSeparateButton,
         separateRexButton: _separateRexButton,
-        generateButtonData: _generateButtonData,
+				generateButtonData: _generateButtonData,
+				endFixingButtonImported: _endFixingButtonImported,
 
         updateButtonContainerRule: _updateButtonContainerRule,
         updateButtonBackgroundRule: _updateButtonBackgroundRule,

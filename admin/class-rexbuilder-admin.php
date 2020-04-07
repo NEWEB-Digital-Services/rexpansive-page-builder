@@ -3161,8 +3161,19 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				$re = '/rexlive_section_id="([a-zA-Z0-9]+)"/m';
 				preg_match_all($re, $modelShortcode, $matches, PREG_SET_ORDER, 0);
 				$response['sectionRexID'] = $matches;
-
+				
 				$modelCustomizationsNames = get_post_meta($post->ID, '_rex_model_customization_names', true);
+				
+				// Getting buttons HTML in model
+				$regexpButton = '/data-rex-button-id="([a-zA-Z0-9]+)"/m';
+				preg_match_all($regexpButton, $modelShortcode, $buttonsFound, PREG_SET_ORDER, 0);
+				$temp = array();
+
+				foreach ($buttonsFound as $key => $value) {
+					array_push($temp, stripslashes(get_option("_rex_button_{$value[1]}_html")));
+				}
+
+				$response['rexButtonsHTML'] = $temp;
 				
 				if($modelCustomizationsNames == ""){
 					$modelCustomizationsNames = array();
