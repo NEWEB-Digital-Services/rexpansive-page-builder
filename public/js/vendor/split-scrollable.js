@@ -179,7 +179,7 @@
 	 * @return {void}
 	 */
 	function _watchScroll() {
-		userScrolled = false;
+		var userScrolled = false;
 
 		function scrollHandler() {
 			userScrolled = true;
@@ -287,7 +287,7 @@
 
 	/* ===== Resize handling ===== */
 	function _watchResize() {
-		userResized = false;
+		var userResized = false;
 
 		function resizeHandler() {
 			userResized = true;
