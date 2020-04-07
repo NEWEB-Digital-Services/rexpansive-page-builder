@@ -1629,10 +1629,11 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     var _init = function () {
         var $self = $("#rex-wpcf7-form-editor");
         var $outerAccordion = $self.find('.rexpansive-accordion-outer');
-        var $accordions = $self.find('.rexpansive-accordion');
+        var $accordions = $self.find('.rex-accordion');
         var $container = $self;
 
         $outerAccordion.rexAccordion({open:{},close:{}, selectors: {
+            self: '.rexpansive-accordion-outer',
             toggle: '.rex-accordion-outer--toggle',
             content: '.rex-accordion-outer--content'
         },});

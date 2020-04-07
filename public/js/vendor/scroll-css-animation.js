@@ -2,8 +2,13 @@
  * Activate animation on scroll and reveal of an element
  * @version 1.0.0
  */
-; (function () {
-  this.ScrollCSSAnimation = function () {
+;( function( window, factory ) {
+  'use strict';
+  window.ScrollCSSAnimation = factory( window );
+} )( 'undefined' !== typeof window ? window : this, function() {
+  var instances = [];
+
+  function ScrollCSSAnimation() {
     this.element = null;
     this.launched = false;
     // get element as first argument
@@ -28,6 +33,8 @@
 
     handleAnimation.call(this);
     window.addEventListener('scroll', handleAnimation.bind(this));
+
+    instances.push( this );
   }
 
   function handleAnimation() {
@@ -76,6 +83,26 @@
    */
   function scrollDocumentPositionTop() {
     return window.pageYOffset || document.documentElement.scrollTop;
+  }
+
+  ScrollCSSAnimation.prototype.launchForwardAnimation = function() {
+    if (!this.launched) {
+      addClass(this.element, this.options.forwardAnimationClass);
+      removeClass(this.element, this.options.backwardAnimationClass);
+      this.launched = true;
+    }
+  }
+
+  ScrollCSSAnimation.data = function(el) {
+    var i = 0,
+    tot = instances.length;
+    for (i = 0; i < tot; i++) {
+      if (el === instances[i].element) {
+        return instances[i];
+      }
+    }
+
+    return null;
   }
 
   /**
@@ -128,4 +155,6 @@
       addClass(el, className);
     }
   }
-}());
+
+  return ScrollCSSAnimation;
+} );

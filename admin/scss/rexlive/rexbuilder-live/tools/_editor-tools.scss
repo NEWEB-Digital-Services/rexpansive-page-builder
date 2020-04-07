@@ -1,5 +1,8 @@
-::selection {
-  background: rgba($palette-color-1, 0.5);
+// LIVE
+.text-wrap {
+  ::selection {
+    background: rgba($palette-color-1, 0.5);
+  }
 }
 
 .medium-editor-placeholder:after {

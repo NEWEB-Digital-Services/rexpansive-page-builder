@@ -20,3 +20,28 @@
 .rSlideOutTop {
 	animation: rSlideOutTop 0.25s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 }
+
+.alignleft {
+	display: inline;
+	float: left;
+	margin-right: 1.5em;
+}
+
+.alignright {
+	display: inline;
+	float: right;
+	margin-left: 1.5em;
+}
+
+.aligncenter {
+	clear: both;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Accordion animations */
+
+.accordion-animate-block {
+	transition: height 150ms, top 150ms;
+}

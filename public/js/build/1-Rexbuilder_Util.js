@@ -80,7 +80,6 @@ var Rexbuilder_Util = (function($) {
    */
   var editorMode = false;
   var windowIsResizing = false;
-  var firstResize = true;
   var responsiveLayouts;
   var defaultLayoutSections;
   var $modelsCustomizationsDataDiv;
@@ -654,7 +653,7 @@ var Rexbuilder_Util = (function($) {
 
     for (i = 0, tot_allLayoutsDimensions = allLayoutsDimensions.length; i < tot_allLayoutsDimensions; i++) {
       flag_insert = false;
-      //modelli
+      // models
       for (j = 0, tot_allModelsCustomizationsNames = allModelsCustomizationsNames.length; j < tot_allModelsCustomizationsNames; j++) {
         for (k = 0, tot_allModelsCustomizationsNames_names = allModelsCustomizationsNames[j].names.length; k < tot_allModelsCustomizationsNames_names; k++) {
           if (
@@ -687,11 +686,16 @@ var Rexbuilder_Util = (function($) {
     }
 
     var selectedLayoutName = "";
-    var ordered = _.sortBy(layoutsPageNames, [
-      function(o) {
-        return parseInt(o.min);
+
+    var sortBy = function (key) {
+      return function (a, b) {
+        return a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0
       }
-    ]);
+    };
+
+    // Creating a copy of layoutsPageNames and sorting it
+    var ordered = layoutsPageNames.concat();
+    ordered.concat().sort(sortBy('min'));
 
     for (i = 0, tot_ordered = ordered.length; i < tot_ordered; i++) {
       if (windowWidth >= ordered[i].min) {
@@ -915,16 +919,9 @@ var Rexbuilder_Util = (function($) {
   var _mergeSections = function(layoutSelectedSections, defaultLayoutSections) {
     var i, j, m, n;
     var tot_layoutSelectedSections, tot_defaultLayoutSections, tot_sectionCustom_targets, tot_sectionDefault_targets;
-    var targetFounded;
+		var targetFounded;
+		
     // merging custom data with default data
-    // console.log(
-    //   "layoutSelectedSections",
-    //   jQuery.extend(true, [], layoutSelectedSections)
-    // );
-    // console.log(
-    //   "defaultLayoutSections",
-    //   jQuery.extend(true, [], defaultLayoutSections)
-    // );
     if (Rexbuilder_Util.activeLayout != "default") {
       for (i = 0, tot_layoutSelectedSections = layoutSelectedSections.length; i < tot_layoutSelectedSections; i++) {
         layoutSelectedSections[i].sectionFounded = false;
@@ -943,7 +940,7 @@ var Rexbuilder_Util = (function($) {
               (typeof sectionCustom.sectionCleared != "undefined" &&
                 sectionCustom.sectionCleared)
             ) {
-              sectionCustom.defaultSection = true;
+							sectionCustom.defaultSection = true;
               sectionCustom.targets = jQuery.extend(
                 true,
                 [],
@@ -1018,11 +1015,16 @@ var Rexbuilder_Util = (function($) {
                     }
                   }
 
-                  sectionCustom.targets[m].props = _.merge(
-                    {},
+                  // sectionCustom.targets[m].props = _.merge(
+                  //   {},
+                  //   sectionDefault.targets[n].props,
+                  //   sectionCustom.targets[m].props
+                  // );
+                  sectionCustom.targets[m].props = Rexbuilder_Util.merge(
                     sectionDefault.targets[n].props,
                     sectionCustom.targets[m].props
                   );
+
                   break;
                 }
               }
@@ -1099,20 +1101,24 @@ var Rexbuilder_Util = (function($) {
         Rexbuilder_Util.activeLayout == "default"
       ) {
         if (
-          ((Rexbuilder_Util.activeLayout != "default" &&
-            layoutSelectedSections[i].defaultSection) ||
-            Rexbuilder_Util.activeLayout == "default") &&
-          // _viewport().width <
-          Rexbuilder_Util.globalViewport.width <
-            _plugin_frontend_settings.defaultSettings.collapseWidth
-        ) {
-          // default mobile section props
-          layoutSelectedSections[i].targets[0].props.collapse_grid = true;
-          layoutSelectedSections[i].targets[0].props.layout = "masonry";
-          // todo fix proposal
-          // layoutSelectedSections[i].targets[0].props.gridEdited = false;
-        }
-      }
+					((Rexbuilder_Util.activeLayout != 'default' && layoutSelectedSections[i].defaultSection) ||
+						Rexbuilder_Util.activeLayout == 'default') &&
+					_isMobile()
+				) {
+					// Setting block properties if we are on mobile, no saved
+					// mobile layout exists and if the collapsing is needed
+					layoutSelectedSections[i].targets[0].props.collapse_grid = true;
+					layoutSelectedSections[i].targets[0].props.noMobileLayoutSaved = true;
+					layoutSelectedSections[i].targets[0].props.layout = 'masonry';
+					layoutSelectedSections[i].targets[0].props.fullHeight = false;
+
+					// todo fix proposal
+					// layoutSelectedSections[i].targets[0].props.gridEdited = false;
+				}
+			}
+
+			// console.log('section founded',layoutSelectedSections[i].sectionFounded)
+			// console.log('section default',layoutSelectedSections[i].defaultSection)
     }
     return jQuery.extend(true, {}, layoutSelectedSections);
   };
@@ -1138,8 +1144,10 @@ var Rexbuilder_Util = (function($) {
   }
 
   var launchEditDomLayout = function() {
-    var l = Rexbuilder_Util.chooseLayout();
-    Rexbuilder_Util.edit_dom_layout(l);
+    var layout = Rexbuilder_Util.chooseLayout();
+    if ( Rexbuilder_Util.editorMode ) {
+      Rexbuilder_Util.edit_dom_layout(layout);
+    }
   }
   
   var _edit_dom_layout = function( chosenLayoutName ) {
@@ -1198,30 +1206,6 @@ var Rexbuilder_Util = (function($) {
       };
       sectionsPage.push( temp_secObj );
     }
-
-    // var $sections = Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)");
-
-    // Rexbuilder_Util.$rexContainer
-    //   .children(".rexpansive_section:not(.removing_section)")
-    //   .each(function(i, el) {
-    //     var $section = $(el);
-    //     if ($section.hasClass("rex-model-section")) {
-    //       modelsIDInPage.push(parseInt($section.attr("data-rexlive-model-id")));
-    //     }
-    //   });
-
-    // Rexbuilder_Util.$rexContainer
-    //   .children(".rexpansive_section:not(.removing_section)")
-    //   .each(function(i, el) {
-    //     var $section = $(el);
-    //     var secObj = {
-    //       rexID: $section.attr("data-rexlive-section-id"),
-    //       modelID: isNaN(parseInt($section.attr("data-rexlive-model-id")))
-    //         ? ""
-    //         : parseInt($section.attr("data-rexlive-model-id"))
-    //     };
-    //     sectionsPage.push(secObj);
-    //   });
 
     var i, j;
 
@@ -1287,15 +1271,11 @@ var Rexbuilder_Util = (function($) {
     // removing collapsed from grid
     Rexbuilder_Util.removeCollapsedGrids();
 
-    Rexbuilder_Util.domUpdaiting = true;
+    Rexbuilder_Util.domUpdating = true;
     var forceCollapseElementsGrid = false;
     var sectionDomOrder = [];
 
     var meIndex, section, $section;
-
-    // console.log(mergedEdits)
-    var updateDOMelementsResponse;
-    var updateDOMelementsTimeouts = [];
 
     for( meIndex in mergedEdits ) {
       if (!mergedEdits[meIndex].notInSection || chosenLayoutName == "default") {
@@ -1330,15 +1310,15 @@ var Rexbuilder_Util = (function($) {
           sectionDomOrder.push(sectionObj);
         }
       }
-    }
-    
+		}
+		
     Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
 
-    Rexbuilder_Util.domUpdaiting = false;
+    Rexbuilder_Util.domUpdating = false;
 
-    if ( ! Rexbuilder_Util.editorMode ) {
-      Rexbuilder_Photoswipe.init(".photoswipe-gallery");
-    }
+    // if ( ! Rexbuilder_Util.editorMode ) {
+    //   Rexbuilder_Photoswipe.init(".photoswipe-gallery");
+    // }
 
     return response;
   };
@@ -1386,31 +1366,41 @@ var Rexbuilder_Util = (function($) {
     var elem;
     var inlineImgs, tot_inlineImgs;
     for (i = 1; i < tot_targets; i++) {
-      if ( !targets[i].notDisplay || Rexbuilder_Util.activeLayout == "default" ) {
-        targetName = targets[i].name;
-        targetProps = targets[i].props;
-        
-        $elem = $gallery.children( 'div[data-rexbuilder-block-id="' + targetName + '"]' );
-        elem = $elem[0];
-        $itemData = $elem.children(".rexbuilder-block-data");
-        $itemContent = $elem.find(".grid-item-content");
+      if (!targets[i].notDisplay || Rexbuilder_Util.activeLayout == 'default') {
+				targetName = targets[i].name;
+				targetProps = targets[i].props;
 
-        if( $elem.length > 0 ) {
-          inlineImgs = [].slice.call( elem.getElementsByTagName('img') );
-          tot_inlineImgs = inlineImgs.length;
+				$elem = $gallery.find('.perfect-grid-item[data-rexbuilder-block-id="' + targetName + '"]');
+				elem = $elem[0];
+				$itemData = $elem.children('.rexbuilder-block-data');
+				$itemContent = $elem.find('.grid-item-content');
 
-          if( !Rexbuilder_Util.editorMode && 0 !== tot_inlineImgs ) {
-            var j;
+				if ($elem.length > 0) {
+					inlineImgs = [].slice.call(elem.getElementsByTagName('img'));
+					tot_inlineImgs = inlineImgs.length;
 
-            for ( j = 0; j < tot_inlineImgs; j++ ) {
-              if ( 'true' === inlineImgs[j].getAttribute('inline-photoswipe') ) {
-                Rexbuilder_Photoswipe.addElementFromInline( $( inlineImgs[j] ) );
-              }
-            }
-          }
-          _updateDOMSingleElement( $elem, targetProps, $itemData, $itemContent, gridstackInstance, { positionAndSize:true } );
-        }
-      } 
+					if (!Rexbuilder_Util.editorMode && 0 !== tot_inlineImgs) {
+						var j;
+
+						for (j = 0; j < tot_inlineImgs; j++) {
+							if ('true' === inlineImgs[j].getAttribute('inline-photoswipe')) {
+								Rexbuilder_Photoswipe.addElementFromInline($(inlineImgs[j]));
+							}
+						}
+					}
+
+					var options = {
+						$elem: $elem,
+						targetProps: targetProps,
+						$itemData: $itemData,
+						$itemContent: $itemContent,
+						gridstackInstance: gridstackInstance,
+						positionAndSize: true
+					};
+
+					Rexbuilder_Util.updateDOMSingleElement(options);
+				}
+			} 
       // else {
         // var $el = $gallery.children( 'div[data-rexbuilder-block-id="' + targetName + '"]' );
         // if ($el.length != 0) {}
@@ -1436,7 +1426,7 @@ var Rexbuilder_Util = (function($) {
       var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
       if ( 'undefined' !== typeof galleryEditorInstance ) {
         if ( 'undefined' !== typeof galleryEditorInstance.properties.gridstackInstance && galleryEditorInstance.properties.gridstackInstance ) {
-          Rexbuilder_Util.domUpdaiting = true;
+          Rexbuilder_Util.domUpdating = true;
 
           galleryEditorInstance.properties.gridstackInstance.commit();
           //waiting for gridstack updating blocks dimensions with saved data
@@ -1451,7 +1441,7 @@ var Rexbuilder_Util = (function($) {
   };
 
   function handlingGridstackCommitEnd( galleryEditorInstance, collapse, targets, meIndex ) {
-    Rexbuilder_Util.domUpdaiting = true;
+    Rexbuilder_Util.domUpdating = true;
     galleryEditorInstance.batchGridstack();
     if( galleryEditorInstance.properties.gridstackInstance ) {
       galleryEditorInstance.properties.gridstackInstance.batchUpdate();
@@ -1463,11 +1453,14 @@ var Rexbuilder_Util = (function($) {
       galleryEditorInstance.updateBlocksHeight();
     } else if ( galleryEditorInstance.settings.galleryLayout == "fixed" && galleryEditorInstance.settings.fullHeight.toString() == "true" ) {
       galleryEditorInstance.updateFullHeight();
-    }
+		}
+
+		// Collapsing blocks if needed
     if ( targets[0].props.collapse_grid ) {
       galleryEditorInstance.collapseElements();
       galleryEditorInstance.collapseElementsProperties();
-    }
+		}
+		
     // must use this launcher
     if ( galleryEditorInstance.properties.gridstackInstance ) {
       galleryEditorInstance.properties.gridstackInstance.commit();
@@ -1481,7 +1474,7 @@ var Rexbuilder_Util = (function($) {
   }
 
   function handlingRowReady( galleryEditorInstance, meIndex ) {
-    Rexbuilder_Util.domUpdaiting = false;
+    Rexbuilder_Util.domUpdating = false;
     galleryEditorInstance.properties.dispositionBeforeCollapsing = galleryEditorInstance.createActionDataMoveBlocksGrid();
     galleryEditorInstance._createFirstReverseStack();
     galleryEditorInstance._fixImagesDimension();
@@ -1498,26 +1491,66 @@ var Rexbuilder_Util = (function($) {
   }
 
   /**
-   * Updating a single block element according with the saved info
-   * @param {jQuery} $elem block to edit
-   * @param {Object} targetProps block properties
-   * @param {jQuery} $itemData properties object
-   * @param {jQuery} $itemContent block content
-   * @param {Object} gridstackInstance grid instance
-   * @since 2.0.0
+   * Updating a single block element according to the saved info.
+	 * @param		{Object}	options						contains the following parameters
+	 * 
+	 * The options param contains the following params:
+   * @param		{jQuery}	$elem							block to edit
+   * @param		{Object}	targetProps				block properties
+   * @param		{jQuery}	$itemData					properties object
+   * @param		{jQuery}	$itemContent			block content
+   * @param		{Object}	gridstackInstance	grid instance
+   * @param		{Object}	positionAndSize		need updating position and size of the block
+   * @since		2.0.0
+	 * @version	2.0.4			Switched parameters in options Object and added collapsing handling
    */
-  var _updateDOMSingleElement = function($elem,targetProps,$itemData,$itemContent,gridstackInstance,opts) {
+  function _updateDOMSingleElement( options ) {
+		var $elem = options.$elem;
+		var elem = $elem.get(0);
+		var targetProps = options.targetProps;
+		var $itemData = options.$itemData;
+		var itemData = $itemData.get(0);
+		var $itemContent = options.$itemContent;
+		var gridstackInstance = options.gridstackInstance;
+		var positionAndSize = options.positionAndSize || false;
+		var collapseGrid = options.collapseGrid || false;
+
     // Update block position and size
-    if( opts.positionAndSize ) {
+    if (positionAndSize) {
+			/** @todo Need to check forceCollapseElementsGrid too? */
+			/*
+			 * Collapsing handling. Needed only if there's a mobile layout saved in DB because
+			 * if not, data are already ok (they're changed in function _mergeSections)
+			 */
+			if (collapseGrid) {
+				
+				// Block width
+				elem.setAttribute('data-gs-width', 12);
+				elem.setAttribute('data-width', 12);
+				itemData.setAttribute('data-gs_width', 12);
+				itemData.setAttribute('data-size_x', 12);
+				targetProps['gs_width'] = '12';
+				targetProps['size_x'] = '12';
+
+				// Block position
+				elem.setAttribute('data-gs-x', 0);
+				elem.setAttribute('data-row', 1);
+				itemData.setAttribute('data-gs_x', 0);
+				itemData.setAttribute('data-row', 1);
+				targetProps['gs_x'] = '0';
+				targetProps['row'] = '1';
+			}
+
       var positionDataActive = {
-        x: $elem.attr("data-gs-x"),
-        y: $elem.attr("data-gs-y"),
-        w: $elem.attr("data-gs-width"),
-        h: $elem.attr("data-gs-height"),
-        startH: $itemData.attr("data-gs_start_h"),
-        // increaseHeight: $itemData.attr("data-element_height_increased"),
-        realFluid: $itemData.attr("data-element_real_fluid"),
-      };
+				x: elem.getAttribute('data-gs-x'),
+				y: elem.getAttribute('data-gs-y'),
+				w: elem.getAttribute('data-gs-width'),
+				h: elem.getAttribute('data-gs-height'),
+				startH: itemData.getAttribute('data-gs_start_h'),
+				// increaseHeight: itemData.getAttribute("data-element_height_increased"),
+				realFluid: itemData.getAttribute('data-element_real_fluid')
+			};
+			
       var positionData = {
         x:
           typeof targetProps["gs_x"] == "undefined"
@@ -1548,8 +1581,8 @@ var Rexbuilder_Util = (function($) {
         gridstackInstance: gridstackInstance
       };
       _updateElementDimensions($elem[0], $itemData[0], positionData);
-    }
-
+		}
+		
     // Update block video
     var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"]))
       ? parseInt(targetProps["video_bg_id"])
@@ -1579,10 +1612,10 @@ var Rexbuilder_Util = (function($) {
           typeof targetProps["video_mp4_url"] == "undefined"
             ? ""
             : targetProps["video_mp4_url"],
-        width: isNaN(parseInt(targetProps["video_bg_width"]))
+        width: ! isNaN(parseInt(targetProps["video_bg_width"]))
           ? parseInt(targetProps["video_bg_width"])
           : "",
-        height: isNaN(parseInt(targetProps["video_bg_height"]))
+        height: ! isNaN(parseInt(targetProps["video_bg_height"]))
           ? parseInt(targetProps["video_bg_height"])
           : ""
       },
@@ -1720,8 +1753,6 @@ var Rexbuilder_Util = (function($) {
         : targetProps["block_dimensions_live_edited"];
     $itemData.attr("data-block_dimensions_live_edited", blockEdited);
 
-    // console.log('updateDOMSingleElement', blockEdited);
-
     var hideBlock =
       typeof targetProps["hide"] == "undefined"
         ? false
@@ -1747,8 +1778,8 @@ var Rexbuilder_Util = (function($) {
         : targetProps["element_edited"].toString() == "true"
           ? true
           : false;
-    // $elem.attr("data-rexlive-element-edited", elementEdited);
-
+		$elem.attr("data-rexlive-element-edited", elementEdited);
+		
     for (var propName in targetProps) {
       switch (propName) {
         case "type":
@@ -1888,7 +1919,7 @@ var Rexbuilder_Util = (function($) {
   }
 
   var _updateModelsLive = function(idModel, targets, editedModelNumber) {
-    Rexbuilder_Util.domUpdaiting = true;
+    Rexbuilder_Util.domUpdating = true;
     var sections = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section') );
     var i, tot_sections = sections.length;
     var $section;
@@ -1900,7 +1931,7 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
-    Rexbuilder_Util.domUpdaiting = false;
+    Rexbuilder_Util.domUpdating = false;
   };
 
   var _saveCustomizationDomOrder = function( pageCustomizations ) {
@@ -1912,16 +1943,12 @@ var Rexbuilder_Util = (function($) {
       Rexbuilder_Util.addClass( divLayout, 'layout-sections' );
       divLayout.setAttribute( 'data-rex-layout-name', pageCustomizations[i].name );
 
-      // var $divLayout = $(document.createElement("div"));
-      // $divLayout.addClass("layout-sections");
-      // $divLayout.attr("data-rex-layout-name", pageCustomizations[i].name);
       sections = [];
       for (j = 0, tot_pageCustomizations_sections = pageCustomizations[i].sections.length; j < tot_pageCustomizations_sections; j++) {
         sections.push(pageCustomizations[i].sections[j]);
       }
 
       divLayout.textContent = JSON.stringify(sections);
-      // $divLayout.text(JSON.stringify(sections));
       $(divLayout).appendTo($layoutsDomOrder[0]);
     }
   };
@@ -2640,8 +2667,12 @@ var Rexbuilder_Util = (function($) {
           typeof targetProps["video_mp4_url"] == "undefined"
             ? ""
             : targetProps["video_mp4_url"],
-        width: "",
-        height: ""
+        width: typeof targetProps["video_bg_width_section"] == "undefined"
+            ? ""
+            : targetProps["video_bg_width_section"],
+        height: typeof targetProps["video_bg_height_section"] == "undefined"
+            ? ""
+            : targetProps["video_bg_height_section"],
       },
       vimeoUrl: vimeoUrl,
       youtubeUrl: youtubeUrl,
@@ -2653,7 +2684,9 @@ var Rexbuilder_Util = (function($) {
       Rexbuilder_Dom_Util.updateSectionVideoBackground($section, videoOptions);
     // }
 
-    $gallery.perfectGridGalleryEditor('fixVideoProportion' );
+    if ( Rexbuilder_Util.editorMode ) {
+    	$gallery.perfectGridGalleryEditor( 'fixVideoProportion' );
+    }
 
     var imageOptions = {
       active:
@@ -2735,7 +2768,9 @@ var Rexbuilder_Util = (function($) {
       section_width: targetProps["section_width"],
       dimension: targetProps["dimension"],
 
-      collapse_grid: typeof targetProps["collapse_grid"] == "undefined" ? false : targetProps["collapse_grid"].toString() == "true" || forceCollapseElementsGrid
+      collapse_grid: typeof targetProps["collapse_grid"] == "undefined" ? false : targetProps["collapse_grid"].toString() == "true" || forceCollapseElementsGrid,
+
+      noMobileLayoutSaved: !!targetProps.noMobileLayoutSaved
     };
 
     Rexbuilder_Dom_Util.updateRow( $section, $sectionData, $gallery, rowSettings );
@@ -2873,6 +2908,33 @@ var Rexbuilder_Util = (function($) {
     return { width: e[a + "Width"], height: e[a + "Height"] };
   };
 
+  var _merge = function (obj1, obj2) {
+    // Variables
+    var target = {};
+    var deep = false;
+    var i = 0;
+    // Merge the object into the target object
+    var merger = function (obj) {
+      for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+          if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
+            // If we're doing a deep merge 
+            // and the property is an object
+            target[prop] = merge(target[prop], obj[prop]);
+          } else {
+            // Otherwise, do a regular merge
+            target[prop] = obj[prop];
+          }
+        }
+      }
+    };
+    
+    merger(obj1);
+    merger(obj2);
+
+    return target;
+  };
+
   // function to find the youtube id based on an url
   var getYoutubeID = function(url) {
     var ID;
@@ -2944,8 +3006,8 @@ var Rexbuilder_Util = (function($) {
     }
   };
 
+  /** live resize */
   var addWindowListeners = function() {
-    Rexbuilder_Util.firstResize = true;
     var resizeTimeout;
     
     /**
@@ -2955,25 +3017,22 @@ var Rexbuilder_Util = (function($) {
      * @since  2.0.0
      */
     window.addEventListener('resize', function(event) {
-    // Rexbuilder_Util.$window.on("resize", function(event) {
       Rexbuilder_Util.globalViewport = Rexbuilder_Util.viewport();
 
-      if (!Rexbuilder_Util_Editor.elementIsResizing) {
-        // event.preventDefault();
-        // event.stopImmediatePropagation();
-        // event.stopPropagation();
+      if( Rexbuilder_Util.editorMode ) {
+        if ( !Rexbuilder_Util_Editor.elementIsResizing ) {
+          // event.preventDefault();
+          // event.stopImmediatePropagation();
+          // event.stopPropagation();
 
-        Rexbuilder_Util.windowIsResizing = true;
-        if ( Rexbuilder_Util.firstResize ) {
-          Rexbuilder_Util.firstResize = false;
-        }
+          Rexbuilder_Util.windowIsResizing = true;
 
-        // if( loadWidth !== Rexbuilder_Util.viewport().width ) {
-        if( loadWidth !== Rexbuilder_Util.globalViewport.width ) {
-          if( resizeTimeout ) {
-            clearTimeout( resizeTimeout );
+          if( loadWidth !== Rexbuilder_Util.globalViewport.width ) {
+            if( resizeTimeout ) {
+              clearTimeout( resizeTimeout );
+            }
+            resizeTimeout = setTimeout( Rexbuilder_Util.doneResizing, 1000 );
           }
-          resizeTimeout = setTimeout( Rexbuilder_Util.doneResizing, 1000 );
         }
       }
     });
@@ -2995,8 +3054,9 @@ var Rexbuilder_Util = (function($) {
       // If layout changed
       if ( Rexbuilder_Util_Editor.changedLayout ) {
         Rexbuilder_Util_Editor.changedLayout = false;
-        var resize_info = _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
-  
+				var resize_info = _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
+				
+
         if( 0 === resize_info.collapse_needed ) {
           Rexbuilder_Util_Editor.endLoading();
         } else {
@@ -3013,9 +3073,9 @@ var Rexbuilder_Util = (function($) {
       }
     } else {    // Front end resize logic
       var actualLayout = _findFrontLayout();
-      if( startFrontLayout != actualLayout ) {
+      if( Rexbuilder_Util.startFrontLayout != actualLayout ) {
         Rexbuilder_Util.changedFrontLayout = true;
-        startFrontLayout = actualLayout;
+        Rexbuilder_Util.startFrontLayout = actualLayout;
         Rexbuilder_Util_Editor.startLoading();
       }
 
@@ -3023,7 +3083,6 @@ var Rexbuilder_Util = (function($) {
         var choosedLayout = chooseLayout();
         _set_initial_grids_state( choosedLayout );
 
-        // Rexbuilder_Util.rtimeOut( changeLayouHandling.bind(null, choosedLayout), 300 );
         setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
       } else {
         var l = chooseLayout();
@@ -3033,8 +3092,6 @@ var Rexbuilder_Util = (function($) {
     }
 
     Rexbuilder_Util.windowIsResizing = false;
-    Rexbuilder_Util.firstResize = true;
-    // loadWidth =  Rexbuilder_Util.viewport().width;
     loadWidth =  Rexbuilder_Util.globalViewport.width;
   }
 
@@ -3325,46 +3382,6 @@ var Rexbuilder_Util = (function($) {
     }
   };
 
-  var _launchVideoPlugins = function() {
-    /* -- Launching YouTube Video -- */
-
-    var ytVideos = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName( 'rex-youtube-wrap' ) );
-    var i, tot_ytVideos = ytVideos.length;
-    var $ytVideo, data_yt, url, id;
-
-    if ( ! jQuery.browser.mobile ) {
-      for( i=0; i < tot_ytVideos; i++ ) {
-        $ytVideo = $(ytVideos[i]);
-        if ( $ytVideo.YTPGetPlayer() === undefined && ! Rexbuilder_Util.hasClass( ytVideos[i], 'youtube-player-launching' ) ) {
-          $ytVideo.YTPlayer();
-          return;
-        }
-        Rexbuilder_Util.removeClass( ytVideos[i], 'youtube-player-launching' );
-      }
-    } else {
-      for( i=0; i < tot_ytVideos; i++ ) {
-        data_yt = eval("(" + ytVideos[i].getAttribute("data-property") + ")");
-        url = data_yt.videoURL;
-        id = getYoutubeID(url);
-
-        ytVideos[i].style.backgroundImage = "url(http://img.youtube.com/vi/" + id + "/0.jpg)";
-        ytVideos[i].addEventListener( 'click', handleYtbVideoMobileClick );
-      }
-      // $('.rex-video-wrap').getVideoThumbnail();
-    }
-
-    VimeoVideo.init();
-  };
-
-  function handleYtbVideoMobileClick(ev) {
-    ev.preventDefault();
-
-    var data_yt = eval("(" + this.getAttribute("data-property") + ")");
-    var url = data_yt.videoURL;
-
-    window.location.href = url;
-  }
-
   var setContainer = function($container) {
     this.$rexContainer = $container;
   };
@@ -3512,6 +3529,48 @@ var Rexbuilder_Util = (function($) {
   };
 
   /**
+   * Launch youtube and vimeo videos
+   * @return {[type]} [description]
+   */
+  var _launchVideoPlugins = function() {
+
+    var ytVideos = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName( 'rex-youtube-wrap' ) );
+    var i, tot_ytVideos = ytVideos.length;
+    var $ytVideo, data_yt, url, id;
+
+    if ( ! jQuery.browser.mobile ) {
+      for( i=0; i < tot_ytVideos; i++ ) {
+        $ytVideo = $(ytVideos[i]);
+        if ( $ytVideo.YTPGetPlayer() === undefined && ! Rexbuilder_Util.hasClass( ytVideos[i], 'youtube-player-launching' ) ) {
+          $ytVideo.YTPlayer();
+          return;
+        }
+        Rexbuilder_Util.removeClass( ytVideos[i], 'youtube-player-launching' );
+      }
+    } else {
+      for( i=0; i < tot_ytVideos; i++ ) {
+        data_yt = eval("(" + ytVideos[i].getAttribute("data-property") + ")");
+        url = data_yt.videoURL;
+        id = getYoutubeID(url);
+
+        ytVideos[i].style.backgroundImage = "url(https://img.youtube.com/vi/" + id + "/0.jpg)";
+        ytVideos[i].addEventListener( 'click', handleYtbVideoMobileClick );
+      }
+    }
+
+    VimeoVideo.init();
+  };
+
+  function handleYtbVideoMobileClick(ev) {
+    ev.preventDefault();
+
+    var data_yt = eval("(" + this.getAttribute("data-property") + ")");
+    var url = data_yt.videoURL;
+
+    window.location.href = url;
+  }
+
+  /**
    * todo to finish ( hide video did not start ) 
    */
   var _playAllVideos = function() {
@@ -3533,30 +3592,6 @@ var Rexbuilder_Util = (function($) {
     for( i=0; i<tot_ytbVideos; i++ ) {
       Rexbuilder_Util.playVideo( $( ytbVideos[i] ) );
     }
-
-    // Rexbuilder_Util.$rexContainer
-    //   .children(".rexpansive_section")
-    //   .each(function(i, section) {
-    //     var $section = $(section);
-    //     var $mp4Videos = $section.find(".mp4-player");
-    //     var $vimeoVideos = $section.find(".vimeo-player");
-    //     var $youtubeVideos = $section.find(".youtube-player");
-
-    //     if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
-    //       $.each($mp4Videos, function(i, video) {
-    //         Rexbuilder_Util.playVideo($(video));
-    //       });
-    //     }
-
-    //     $.each($vimeoVideos, function(i, video) {
-    //       Rexbuilder_Util.playVideo($(video));
-    //     });
-
-    //     $.each($youtubeVideos, function(i, video) {
-    //       Rexbuilder_Util.playVideo($(video));
-    //     });
-    //     Rexbuilder_Util.playVideo($section);
-    //   });
   };
 
   var _playVideo = function($target) {
@@ -3589,30 +3624,6 @@ var Rexbuilder_Util = (function($) {
         return;
       }
     }
-
-    // if ($target.hasClass("mp4-player")) {
-    //   var videoEl = $target.find("video")[0];
-    //   if ( videoEl )
-    //   {
-    //     videoEl.play();
-    //   }
-    // } else if ($target.hasClass("vimeo-player")) {
-    //   var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
-    //   if( vimeoPlugin ) {
-    //     vimeoPlugin.play();
-    //   }
-    // } else if ($target.hasClass("youtube-player")) {
-    //   if ($target.children(".rex-youtube-wrap").length != 0) {
-    //     if (
-    //       $target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined
-    //     ) {
-    //       return;
-    //     }
-    //     $target.children(".rex-youtube-wrap").YTPPlay();
-    //   } else {
-    //     return;
-    //   }
-    // }
   };
 
   var _getPaddingsDataString = function(paddingString) {
@@ -3700,6 +3711,262 @@ var Rexbuilder_Util = (function($) {
     return res_pool;
   }
 
+  /**
+   * Handling front end change layout
+   * @param  {String}		chosenLayoutName	name of the layout
+   * @return {void}
+   * @since  2.0.4
+   */
+  function handleLayoutChange( chosenLayoutName ) {
+		var sections = Array.prototype.slice.call( Rexbuilder_Util.rexContainer.querySelectorAll( '.rexpansive_section:not(.removing_section)' ) );
+		var tot_sections = sections.length;
+
+    // No change between saved layout, simple resize
+    // if ( chosenLayoutName == Rexbuilder_Util.activeLayout && chosenLayoutName == "default" ) {
+    //   return;
+    // }
+
+    Rexbuilder_Util.rexContainer.setAttribute( "data-rex-layout-selected", chosenLayoutName );
+    Rexbuilder_Util.activeLayout = chosenLayoutName;
+
+    var modelsIDInPage = [];
+    var sectionsPage = [];
+
+    var sIndex;
+
+    var temp_secObj;
+    for ( sIndex = 0; sIndex < tot_sections; sIndex++ ) {
+      // populate models ids array
+      if ( Rexbuilder_Util.hasClass( sections[sIndex], 'rex-model-section' ) ) {
+        modelsIDInPage.push( parseInt( sections[sIndex].getAttribute( 'data-rexlive-model-id' ) ) );
+      }
+
+      // populate sections object array
+      temp_secObj = {
+        rexID: sections[sIndex].getAttribute( 'data-rexlive-section-id' ),
+        modelID: isNaN( parseInt( sections[sIndex].getAttribute( 'data-rexlive-model-id' ) ) )
+          ? ''
+          : parseInt( sections[sIndex].getAttribute( 'data-rexlive-model-id' ) )
+      };
+      sectionsPage.push( temp_secObj );
+    }
+
+    var i, j;
+
+    var layoutDataPage = Rexbuilder_Util.getPageCustomizations();
+
+    if ( Rexbuilder_Util.activeLayout == "default" ) {
+      Rexbuilder_Util.saveCustomizationDomOrder(jQuery.extend(true, [], layoutDataPage));
+    }
+
+    var layoutDataModels = Rexbuilder_Util.getModelsCustomizations();
+    var defaultLayoutSections;
+
+    if ( $defaultLayoutState.attr("data-empty-default-customization") == "true" ) {
+      defaultLayoutSections = Rexbuilder_Util.getDefaultPageLayout( layoutDataPage, layoutDataModels );
+      Rexbuilder_Util.createDefaultLayoutState(defaultLayoutSections);
+    } else {
+      Rexbuilder_Util.updateDefaultLayoutState({
+        modelsData: layoutDataModels
+      });
+      defaultLayoutSections = Rexbuilder_Util.getDefaultLayoutState();
+    }
+    var layoutSelectedSections = Rexbuilder_Util.getCustomLayoutSections(
+      layoutDataPage,
+      layoutDataModels,
+      defaultLayoutSections,
+      chosenLayoutName
+    );
+
+    //fixing models numbers
+    var modelsNumbers = [];
+    var flagModel;
+    for (i = 0; i < layoutSelectedSections; i++) {
+      if (layoutSelectedSections[i].section_is_model.toString() == "true") {
+        flagModel = false;
+        for (j = 0; j < modelsNumbers.length; j++) {
+          if (
+            modelsNumbers[j].id == layoutSelectedSections[i].section_model_id
+          ) {
+            modelsNumbers[j].number = modelsNumbers[j].number + 1;
+            layoutSelectedSections[i].section_model_number =
+              modelsNumbers[j].number;
+            flagModel = true;
+            break;
+          }
+        }
+        if (!flagModel) {
+          layoutSelectedSections[i].section_model_number = 1;
+          modelsNumbers.push({
+            id: layoutSelectedSections[i].section_model_id,
+            number: 1
+          });
+        }
+      }
+    }
+
+    Rexbuilder_Util_Editor.clearSectionsEdited();
+
+    var mergedEdits = _mergeSections(
+      layoutSelectedSections,
+      defaultLayoutSections
+		);
+		
+		// console.log( JSON.parse(JSON.stringify(mergedEdits)) );
+
+    // removing collapsed from grid
+    // Rexbuilder_Util.removeCollapsedGrids();
+
+    Rexbuilder_Util.domUpdating = true;
+    var forceCollapseElementsGrid = false;
+    var sectionDomOrder = [];
+
+    var meIndex, section;
+
+    for( meIndex in mergedEdits ) {
+      if (!mergedEdits[meIndex].notInSection || chosenLayoutName == "default") {
+        var sectionObj = {
+          rexID: mergedEdits[meIndex].section_rex_id,
+          modelID: -1,
+          modelNumber: -1
+        };
+
+        if ( mergedEdits[meIndex].section_is_model.toString() == "true" ) {
+          sectionObj.modelID = mergedEdits[meIndex].section_model_id;
+          sectionObj.modelNumber = mergedEdits[meIndex].section_model_number;
+          section = Rexbuilder_Util.rexContainer.querySelector( 
+            'section[data-rexlive-section-id="' +
+              mergedEdits[meIndex].section_rex_id +
+              '"][data-rexlive-model-number="' +
+              sectionObj.modelNumber +
+              '"]'
+            );
+        } else {
+          section = Rexbuilder_Util.rexContainer.querySelector( 'section[data-rexlive-section-id="' + mergedEdits[meIndex].section_rex_id + '"]' );
+        }
+
+        if ( section && ! Rexbuilder_Util.hasClass( section, 'removing_section' ) ) {
+          if ( 'undefined' !== typeof mergedEdits[meIndex].section_hide && 'true' == mergedEdits[meIndex].section_hide.toString() ) {
+            Rexbuilder_Util.addClass( section, 'rex-hide-section' );
+          } else {
+            Rexbuilder_Util.removeClass( section, 'rex-hide-section' );
+            updateRexGrid( section, mergedEdits[meIndex].targets, forceCollapseElementsGrid, meIndex );
+          }
+          sectionDomOrder.push(sectionObj);
+        }
+      }
+    }
+    
+		Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
+
+    Rexbuilder_Util.domUpdating = false;
+  };
+
+  /**
+   * Update grid infos based on the layout information
+   * @param		{Element}		section											section element
+   * @param		{JSON}			information									section information
+   * @param		{Boolean}		forceCollapseElementsGrid
+   * @return	{void}
+   * @since		2.0.4
+   */
+  function updateRexGrid( section, targets, forceCollapseElementsGrid ) {
+		var $section = $(section);
+		var $gallery = $section.find('.grid-stack-row');
+		
+		var collapseGrid = targets[0].props.collapse_grid;
+
+  	// Setting one column mode on the actual RexGrid instance
+  	section.querySelector( '.section-data' ).setAttribute( 'data-collapse-grid', collapseGrid );
+
+  	if ( targets[ 0 ].props.gridEdited ) {
+  		$gallery.attr( "data-rexlive-layout-changed", true );
+  	}
+
+    var i, tot_targets = targets.length;
+
+    for ( i = 1; i < tot_targets; i++ ) {
+    	var $elem = $gallery.children( 'div[data-rexbuilder-block-id="' + targets[ i ].name + '"]' );
+    	var hideElement =
+    		typeof targets[ i ].props.hide == 'undefined' ? false : targets[ i ].props.hide.toString() == 'true';
+    	if ( hideElement ) {
+    		if ( !$elem.hasClass( 'rex-hide-element' ) ) {
+    			$elem.addClass( 'rex-hide-element' );
+    		}
+    	} else {
+    		if ( $elem.hasClass( 'rex-hide-element' ) ) {
+    			$elem.removeClass( 'rex-hide-element' );
+    		}
+    	}
+		}
+		
+
+    var targetName, targetProps;
+    var $elem, $itemData, $itemContent;
+    var elem;
+    var inlineImgs, tot_inlineImgs;
+    for (i = 1; i < tot_targets; i++) {
+      if ( !targets[i].notDisplay || Rexbuilder_Util.activeLayout == "default" ) {
+        targetName = targets[i].name;
+        targetProps = targets[i].props;
+        
+        $elem = $gallery.find( '.perfect-grid-item[data-rexbuilder-block-id="' + targetName + '"]' );
+        elem = $elem[0];
+        $itemData = $elem.children(".rexbuilder-block-data");
+        $itemContent = $elem.find(".grid-item-content");
+
+        if ($elem.length > 0) {
+					inlineImgs = [].slice.call(elem.getElementsByTagName('img'));
+					tot_inlineImgs = inlineImgs.length;
+
+					if (!Rexbuilder_Util.editorMode && 0 !== tot_inlineImgs) {
+						var j;
+
+						for (j = 0; j < tot_inlineImgs; j++) {
+							if ('true' === inlineImgs[j].getAttribute('inline-photoswipe')) {
+								Rexbuilder_Photoswipe.addElementFromInline($(inlineImgs[j]));
+							}
+						}
+					}
+
+					var options = {
+						$elem: $elem,
+						targetProps: targetProps,
+						$itemData: $itemData,
+						$itemContent: $itemContent,
+						gridstackInstance: null,
+						positionAndSize: true,
+						collapseGrid: collapseGrid
+					};
+
+					Rexbuilder_Util.updateDOMSingleElement(options);
+				}
+      }
+    }
+
+    updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
+		
+		/** @todo Need to check forceCollapseElementsGrid too? */
+		if ( collapseGrid ) {
+			/*
+			 * Collapsing only if there's a mobile layout saved in DB
+			 * because if not, data are already ok (they're changed
+			 * in function _mergeSections) 
+			 */
+			
+			// Da qui in poi è preso da _mergeSections
+
+			// targets[0].props.collapse_grid = true;					// Already true
+			// targets[0].props.noMobileLayoutSaved = true;		// undefined
+			// targets[0].props.layout = "masonry";						// Already 'masonry'
+			// targets[0].props.fullHeight = false;						// undefined
+
+			// todo fix proposal
+			// layoutSelectedSections[i].targets[0].props.gridEdited = false;
+		}
+		
+  }
+
   // init the utilities
   var init = function() {
     this.globalViewport = Rexbuilder_Util.viewport();
@@ -3719,7 +3986,7 @@ var Rexbuilder_Util = (function($) {
       this.editorMode = false;
       var $availableDims = $("#layout-avaiable-dimensions");
       frontAvailableLayouts = ( $availableDims.length > 0 ? JSON.parse( $availableDims.text() ) : [] );
-      startFrontLayout = _findFrontLayout();
+      Rexbuilder_Util.startFrontLayout = _findFrontLayout();
     }
 
     this._transitionEvent = _whichTransitionEvent();
@@ -3757,7 +4024,7 @@ var Rexbuilder_Util = (function($) {
     this.lastSectionNumber = -1;
 
     this.activeLayout = "";
-    this.domUpdaiting = false;
+    this.domUpdating = false;
 
     // to fix, now considers only the first row, not the entire
     var oldResposiveBlockGrid = this.$rexContainer.children(".rexpansive_section").eq(0).attr("data-rex-collapse-grid");
@@ -3768,7 +4035,6 @@ var Rexbuilder_Util = (function($) {
 
     this.chosenLayoutData = null;
 
-    // loadWidth = Rexbuilder_Util.viewport().width;
     loadWidth = Rexbuilder_Util.globalViewport.width;
 
     _updateSectionsID();
@@ -3792,7 +4058,6 @@ var Rexbuilder_Util = (function($) {
     checkPost: _checkPost,
     editorMode: editorMode,
     windowIsResizing: windowIsResizing,
-    firstResize: firstResize,
     addWindowListeners: addWindowListeners,
     launchVideoPlugins: _launchVideoPlugins,
     stopPluginsSection: _stopPluginsSection,
@@ -3835,6 +4100,9 @@ var Rexbuilder_Util = (function($) {
     fixVideosAudioSection: _fixVideosAudioSection,
     fixVideoAudio: _fixVideoAudio,
     fixYoutube: _fixYoutube,
+    saveCustomizationDomOrder: _saveCustomizationDomOrder,
+    getDefaultPageLayout: _getDefaultPageLayout,
+    createDefaultLayoutState: _createDefaultLayoutState,
     getModelsCustomizations: _getModelsCustomizations,
     updateModelsCustomizationsData: _updateModelsCustomizationsData,
     getPageCustomizations: _getPageCustomizations,
@@ -3845,6 +4113,7 @@ var Rexbuilder_Util = (function($) {
     getSectionCustomLayouts: _getSectionCustomLayouts,
     getLayoutLiveSectionTargets: _getLayoutLiveSectionTargets,
     getGridLayoutLive: _getGridLayoutLive,
+    getCustomLayoutSections: _getCustomLayoutSections,
     updateSectionStateLive: _updateSectionStateLive,
     updatePageCustomizationsDomOrder: _updatePageCustomizationsDomOrder,
     getPageCustomizationsDom: _getPageCustomizationsDom,
@@ -3865,11 +4134,16 @@ var Rexbuilder_Util = (function($) {
     isMobile: _isMobile,
     cssPropertyValueSupported: _cssPropertyValueSupported,
     changedFrontLayout: changedFrontLayout,
+    startFrontLayout: startFrontLayout,
+    findFrontLayout: _findFrontLayout,
     hasClass: hasClass,
     addClass: addClass,
     removeClass: removeClass,
     toggleClass: toggleClass,
+    parents: _parents,
     rtimeOut: rtimeOut,
-    rInterval: rInterval
+    rInterval: rInterval,
+    merge: _merge,
+    handleLayoutChange: handleLayoutChange
   };
 })(jQuery);

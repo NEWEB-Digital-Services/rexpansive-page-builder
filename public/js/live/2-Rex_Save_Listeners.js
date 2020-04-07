@@ -1,7 +1,8 @@
 var Rex_Save_Listeners = (function($) {
   "use strict";
-  $(function() {
-    $(document).on("rexlive:savePage", function(e) {
+
+  function init() {
+    Rexbuilder_Util.$document.on("rexlive:savePage", function(e) {
       var eventData = e.settings.data_to_send;
       var i, j, k, m, p, q;
 
@@ -396,7 +397,7 @@ var Rex_Save_Listeners = (function($) {
         });
     });
 
-    $(document).on("rexlive:saveModel", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:saveModel", function(e) {
       if (!Rexbuilder_Util.$rexContainer.hasClass("editing-model")) {
         return;
       }
@@ -610,7 +611,9 @@ var Rex_Save_Listeners = (function($) {
           // whether the call succeeds or fails
         });
     });
-  });
+
+  }
+
 
   var createCustomization = function(layoutName) {
     var data = {
@@ -784,20 +787,21 @@ var Rex_Save_Listeners = (function($) {
 
     var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
     var elementsOrdered = galleryIstance.getElementsTopBottom();
+    var i, tot = elementsOrdered.length;
 
     galleryIstance.updateAllElementsProperties();
-    $(elementsOrdered).each(function(i, el) {
-      var $elem = $(el);
-      if (!$elem.hasClass("removing_block")) {
-        var blockRexID = el.getAttribute("data-rexbuilder-block-id");
+
+    for( i=0; i<tot; i ++ ) {
+      if (! Rexbuilder_Util.hasClass(elementsOrdered[i], 'removing_block')) {
+        var blockRexID = elementsOrdered[i].getAttribute("data-rexbuilder-block-id");
         var block_props = {
           name: blockRexID,
           props: {}
         };
-        var check_edit = checkEditsElement(el);
+        var check_edit = checkEditsElement(elementsOrdered[i]);
 
         if ( layoutName == "default" || saveBlockDisposition || check_edit ) {
-          block_props.props = createBlockProperties( el, "customLayout", gridGallery );
+          block_props.props = createBlockProperties( elementsOrdered[i], "customLayout", gridGallery );
         }
 
         if (
@@ -809,9 +813,8 @@ var Rex_Save_Listeners = (function($) {
         }
 
         targets.push(block_props);
-        // console.log(block_props);
       }
-    });
+    }
     return targets;
   };
 
@@ -831,6 +834,7 @@ var Rex_Save_Listeners = (function($) {
         case "block_dimensions_live_edited":
         // case "element_height_increased":
         case "element_real_fluid":
+        case "hide":
           break;
         case "element_edited":
           props["element_edited"] = false;
@@ -901,6 +905,8 @@ var Rex_Save_Listeners = (function($) {
       image_bg_elem_active = true,
       video_mp4_url = "",
       video_bg_id = "",
+      video_bg_width = "",
+      video_bg_height = "",
       video_bg_url = "",
       video_bg_url_vimeo = "",
       linkurl = "",
@@ -929,6 +935,7 @@ var Rex_Save_Listeners = (function($) {
     var textWrap;
     var itemContent = elem.querySelector('.grid-item-content');
     var itemData = elem.querySelector('.rexbuilder-block-data');
+    var videoElem = elem.querySelector('.rex-video-wrap');
 
     id = elem.id;
     rex_id = elem.getAttribute("data-rexbuilder-block-id");
@@ -958,6 +965,23 @@ var Rex_Save_Listeners = (function($) {
     image_bg_elem_active = itemData.getAttribute("data-image_bg_elem_active") != null ? itemData.getAttribute("data-image_bg_elem_active") : true;
 
     video_bg_id = itemData.getAttribute("data-video_bg_id") === null ? "" : itemData.getAttribute("data-video_bg_id");
+    // video dimensions fixes (we do not save them, we must save!)
+    if ( videoElem ) {
+      if ( '' == itemData.getAttribute("data-video_bg_width") || itemData.getAttribute("data-video_bg_width") === null ) {
+        video_bg_width = videoElem.getAttribute('data-rex-video-width');
+      } else {
+        video_bg_width = itemData.getAttribute("data-video_bg_width");
+      }
+
+      if ( '' == itemData.getAttribute("data-video_bg_height") || itemData.getAttribute("data-video_bg_height") === null ) {
+        video_bg_height = videoElem.getAttribute('data-rex-video-height');
+      } else {
+        video_bg_height = itemData.getAttribute("data-video_bg_height");
+      }
+    }
+
+    // video_bg_width = itemData.getAttribute("data-video_bg_width") === null ? "" : itemData.getAttribute("data-video_bg_width");
+    // video_bg_height = itemData.getAttribute("data-video_bg_height") === null ? "" : itemData.getAttribute("data-video_bg_height");
     video_mp4_url = itemData.getAttribute("data-video_mp4_url") === null ? "" : itemData.getAttribute("data-video_mp4_url");
     video_bg_url = itemData.getAttribute("data-video_bg_url") === null ? "" : itemData.getAttribute("data-video_bg_url");
     video_bg_url_vimeo = itemData.getAttribute("data-video_bg_url_vimeo") === null ? "" : itemData.getAttribute("data-video_bg_url_vimeo");
@@ -1117,6 +1141,10 @@ var Rex_Save_Listeners = (function($) {
         image_bg_elem_active +
         '" video_bg_id="' +
         video_bg_id +
+        '" video_bg_width="' +
+        video_bg_width +
+        '" video_bg_height="' +
+        video_bg_height +
         '" video_mp4_url="' +
         video_mp4_url +
         '" video_bg_url="' +
@@ -1194,6 +1222,8 @@ var Rex_Save_Listeners = (function($) {
       props["image_height"] = image_height;
       props["id_image_bg"] = id_image_bg_block;
       props["video_bg_id"] = video_bg_id;
+      props["video_bg_width"] = video_bg_width;
+      props["video_bg_height"] = video_bg_height;
       props["video_mp4_url"] = video_mp4_url;
       props["video_bg_url_youtube"] = video_bg_url;
       props["video_bg_url_vimeo"] = video_bg_url_vimeo;
@@ -1238,6 +1268,8 @@ var Rex_Save_Listeners = (function($) {
       image_bg_section_active = "",
       video_bg_url_section = "",
       video_bg_id_section = "",
+      video_bg_width_section = "",
+      video_bg_height_section = "",
       video_mp4_url = "",
       video_bg_url_vimeo_section = "",
       full_height = "",
@@ -1268,6 +1300,7 @@ var Rex_Save_Listeners = (function($) {
     var $gridGallery = $section.find(".grid-stack-row");
     var gridGallery = $gridGallery[0];
     var sectionData = section.querySelector('.section-data');
+    var videoElem = section.querySelector('.rex-video-wrap');
 
     var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
 
@@ -1299,6 +1332,24 @@ var Rex_Save_Listeners = (function($) {
     video_mp4_url = sectionData.getAttribute("data-video_mp4_url") === null ? "" : sectionData.getAttribute("data-video_mp4_url");
     video_bg_url_section = sectionData.getAttribute("data-video_bg_url_section") === null ? "" : sectionData.getAttribute("data-video_bg_url_section");
     video_bg_id_section = sectionData.getAttribute("data-video_bg_id_section") === null ? "" : sectionData.getAttribute("data-video_bg_id_section");
+
+    // video dimensions fixes (we do not save them, we must save!)
+    if ( videoElem ) {
+      if ( '' == sectionData.getAttribute("data-video_bg_width_section") || sectionData.getAttribute("data-video_bg_width_section") === null ) {
+        video_bg_width_section = videoElem.getAttribute('data-rex-video-width');
+      } else {
+        video_bg_width_section = sectionData.getAttribute("data-video_bg_width_section");
+      }
+
+      if ( '' == sectionData.getAttribute("data-video_bg_height_section") || sectionData.getAttribute("data-video_bg_height_section") === null ) {
+        video_bg_height_section = videoElem.getAttribute('data-rex-video-height');
+      } else {
+        video_bg_height_section = sectionData.getAttribute("data-video_bg_height_section");
+      }
+    }
+    
+    // video_bg_width_section = sectionData.getAttribute("data-video_bg_width_section") === null ? "" : sectionData.getAttribute("data-video_bg_width_section");
+    // video_bg_height_section = sectionData.getAttribute("data-video_bg_height_section") === null ? "" : sectionData.getAttribute("data-video_bg_height_section");
     video_bg_url_vimeo_section = sectionData.getAttribute("data-video_bg_url_vimeo_section") === null ? "" : sectionData.getAttribute("data-video_bg_url_vimeo_section");
 
     full_height = gridGallery.getAttribute("data-full-height") === null ? "" : gridGallery.getAttribute("data-full-height");
@@ -1393,6 +1444,10 @@ var Rex_Save_Listeners = (function($) {
         video_bg_url_section +
         '" video_bg_id_section="' +
         video_bg_id_section +
+        '" video_bg_width_section="' +
+        video_bg_width_section +
+        '" video_bg_height_section="' +
+        video_bg_height_section +
         '" video_bg_url_vimeo_section="' +
         video_bg_url_vimeo_section +
         '" full_height="' +
@@ -1472,6 +1527,8 @@ var Rex_Save_Listeners = (function($) {
       props["id_image_bg_section"] = id_image_bg_section;
       props["image_size"] = image_size;
       props["video_bg_id"] = video_bg_id_section;
+      props["video_bg_width_section"] = video_bg_width_section;
+      props["video_bg_height_section"] = video_bg_height_section;
       props["video_mp4_url"] = video_mp4_url;
       props["video_bg_url_section"] = video_bg_url_section;
       props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
@@ -1701,10 +1758,10 @@ var Rex_Save_Listeners = (function($) {
   }
 
   return {
+    init: init,
     createSectionProperties: createSectionProperties,
     createTargets: createTargets,
     createBlockProperties: createBlockProperties,
-    clearPropsElem: clearPropsElem,
     createCustomization: createCustomization,
     updateModel: updateModel,
     _checkSpecialEffects: _checkSpecialEffects

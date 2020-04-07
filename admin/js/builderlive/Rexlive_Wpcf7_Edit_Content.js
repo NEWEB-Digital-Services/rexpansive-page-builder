@@ -2394,11 +2394,12 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
     var _init = function() {
         var $self = $("#rex-wpcf7-content-editor");
-        var $accordions = $self.find('.rexpansive-accordion');
+        var $accordions = $self.find('.rex-accordion');
         var $outerAccordion = $self.find('.rexpansive-accordion-outer');
         var $container = $self;
 
         $outerAccordion.rexAccordion({open:{},close:{}, selectors: {
+            self: '.rexpansive-accordion-outer',
             toggle: '.rex-accordion-outer--toggle',
             content: '.rex-accordion-outer--content'
         },});

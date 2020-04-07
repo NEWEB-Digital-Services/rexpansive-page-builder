@@ -21,6 +21,15 @@
           justify-content: center;
         }
 
+        .wpcf7-add-new-form-content {
+          margin: auto 0;
+          display: none;
+        }
+
+        .wpcf7-add-new-row {
+          margin: auto 0;
+        }
+
         .wpcf7-column-content {
           width: 100%;
 
@@ -41,15 +50,6 @@
 
         .rex-wpcf7-column-content-data {
           display: none;
-        }
-
-        .wpcf7-add-new-form-content {
-          margin: auto 0;
-          display: none;
-        }
-
-        .wpcf7-add-new-row {
-          margin: auto 0;
         }
 
         .wpcf7-list-item {
@@ -103,24 +103,3 @@
     min-height: 40px;
   }
 }
-
-// div.wpcf7-response-output {
-//   margin: 2em 0.5em 1em;
-//   padding: 0.2em 1em;
-// }
-
-// div.wpcf7-mail-sent-ok {
-//   border: 2px solid #398f14;
-// }
-
-// div.wpcf7-mail-sent-ng {
-//   border: 2px solid #ff0000;
-// }
-
-// div.wpcf7-spam-blocked {
-//   border: 2px solid #ffa500;
-// }
-
-// div.wpcf7-validation-errors {
-//   border: 2px solid #f7e700;
-// }

@@ -269,7 +269,7 @@ $tool_button_classes = 'tool-button';
     <section class="rexpansive_section empty-section{% if( section.rowSeparatorTop < 25 ) { %} ui-tools--near-top {% } %}" data-rexlive-section-id="{%=section.rexID%}" data-rexlive-section-name="">
         <div class="section-data" style="display: none;" data-section_name="" data-type="perfect-grid" data-color_bg_section="" data-color_bg_section_active="true"
             data-dimension="{%=section.dimension%}" data-image_bg_section_active="true" data-image_bg_section="" data-id_image_bg_section=""
-            data-video_bg_url_section="" data-video_bg_id_section="" data-video_bg_url_vimeo_section="" data-full_height="{%=section.fullHeight%}"
+            data-video_bg_url_section="" data-video_bg_id_section="" data-video_bg_width_section="" data-video_bg_height_section="" data-video_bg_url_vimeo_section="" data-full_height="{%=section.fullHeight%}"
             data-block_distance="{%=section.blockDistance%}" data-layout="{%=section.layout%}" data-responsive_background="" data-custom_classes=""
             data-section_width="{%=section.sectionWidth%}" data-row_separator_top="{%=section.rowSeparatorTop%}" data-row_separator_bottom="{%=section.rowSeparatorBottom%}"
             data-row_separator_right="{%=section.rowSeparatorRight%}" data-row_separator_left="{%=section.rowSeparatorLeft%}" data-margin=""

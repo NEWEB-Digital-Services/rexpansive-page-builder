@@ -33,7 +33,8 @@
 	// visibility: hidden;
 	background-color:transparent;
 	width: 100%;
-	height: inherit;
+	// height: inherit;
+	height: 100%;
 	display: inherit;
 	@include align(inherit);
 	@include justify-content(inherit);

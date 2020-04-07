@@ -22,6 +22,28 @@ $pw-nav-color-1: #D8D8D8;
 $pw-nav-color-2: #A7ACAF;
 $blunt-slider-shadow: 0 2px 35px 0 rgba(0,0,0,0.7);
 
+//icons
+$icon-class: '.l-svg-icons';
+$icon-base-color: #979797;
+$icon-hover-color: #979797;
+$icon-active-color: #00ACFF;
+$icon-deactive-color: #979797;
+
+// main-palette
+$palette-color-1: #00ACFF;
+$palette-color-2: #979797;
+$palette-color-3: #FF0055;
+$palette-color-4: #424242;
+$palette-color-5: #daf3ff;
+$palette-color-6: #f4f4f4;
+$palette-color-7: #fafafa;
+$palette-color-8: #d8d8d8;
+$palette-color-9: #efefef;
+$palette-color-9b: #D6D6D6;
+$palette-color-10: #ccc;
+$palette-color-11: #81d7ff;
+$palette-color-12: #bdbdbd;
+
 /** ANIMATIONS **/
 $slide-duration: 1500ms;
 $slide-opacity-duration: 400ms;
@@ -46,6 +68,11 @@ $easeOutSine: cubic-bezier(0.39, 0.575, 0.565, 1);
 $easeOutCirc: cubic-bezier(0.075, 0.82, 0.165, 1);
 $easeInCubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
 $easeInCirc: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+
+// other eases
+$power4: cubic-bezier(0.215, 0.61, 0.355, 1);
+$soft: cubic-bezier(.165,.84,.44,1);
+$sosoft: cubic-bezier(.215,.61,.355,1);
 
 /** INDICATOR **/
 $indicator-dot-width: 11px;
@@ -106,6 +133,8 @@ $link-label-dim: 21px;
 
 .has-rs-animation {
 	opacity: 0;
+	animation-duration: 0.5s;
+	animation-timing-function: $easeOutSine;
 }
 
 @mixin card {

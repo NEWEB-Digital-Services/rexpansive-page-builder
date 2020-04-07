@@ -48,6 +48,8 @@ class Rexbuilder_Section {
 			"image_size" => "full",
 			'video_bg_url_section' => '',
 			'video_bg_id_section' => '',
+			'video_bg_width_section' => '',
+			'video_bg_height_section' => '',
 			'video_bg_url_vimeo_section' => '',
 			'full_height' => '',
 			"block_distance" => 20,
@@ -93,7 +95,7 @@ class Rexbuilder_Section {
 		if ("" != $id_image_bg_section) {
 			$img_attrs = wp_get_attachment_image_src($id_image_bg_section, $image_size);
 			if ( 1 == $fast_load && !$editor ) {
-				$section_fast_load = 'data-src="' . $img_attrs[0] . '"';
+				$section_fast_load = ' data-res-lazy-loading="false" data-src="' . $img_attrs[0] . '"';
 			} else {
 				$section_style .= 'background-image:url(\'' . $img_attrs[0] . '\');';
 			}
@@ -182,7 +184,7 @@ class Rexbuilder_Section {
 			$bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
 			$bg_video_markup .= '<video class="rex-video-container"' . ( 1 == $fast_load && ! $editor ? ' preload="none"' : ' preload autoplay' ) . ' loop muted playsinline>';
 			if ( 1 == $fast_load && !$editor ) {
-				$bg_video_markup .= '<source type="video/mp4" data-src="' . $video_mp4_url . '" />';
+				$bg_video_markup .= '<source type="video/mp4" data-res-lazy-loading="false" data-src="' . $video_mp4_url . '" />';
 				$bg_video_markup .= '</video>';
 				// adding video controllers
 				$bg_video_markup .= '<div class="rex-video__controls"><div class="loader video-tool video-tool--view"></div><div class="pause video-tool"><div class="indicator"></div></div><div class="play video-tool"><div class="indicator"></div></div></div>';
@@ -287,6 +289,12 @@ class Rexbuilder_Section {
 
 		echo '<div class="section-data" style="display: none;" ';
 		foreach ($atts as $property_name => $value_property) {
+			if ( 'video_bg_width_section' === $property_name && '' == $value_property && '' !== $videoMp4Width ) {
+				$value_property = $videoMp4Width;
+			}
+			if ( 'video_bg_height_section' === $property_name && '' == $value_property && '' !== $videoMp4Height ) {
+				$value_property = $videoMp4Height;
+			}
 			echo 'data-' . $property_name . '="' . ($value_property != "undefined"? $value_property : "" ). '" ';
 		}
 
@@ -322,7 +330,7 @@ class Rexbuilder_Section {
 
 		do_action('rexpansive_section_before_grid', array(&$parsed_atts));
 
-		echo '<div class="perfect-grid-gallery grid-stack grid-stack-row' . ( !empty( $grid_custom_classes ) ? ' ' . $grid_custom_classes : '' ) . '" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . (('true' == $full_height) ? 'true' : 'false') . '"' . $row_separators . '>';
+		echo '<div class="perfect-grid-gallery grid-stack grid-stack-row' . ( !empty( $grid_custom_classes ) ? ' ' . $grid_custom_classes : '' ) . '" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . (('true' == $full_height) ? 'true' : 'false') . '"' . $row_separators . ' data-rex-grid-id="' . $rexlive_section_id . '">';
 		echo '<div class="perfect-grid-sizer"></div>';
 		echo do_shortcode( $content );
 		echo '</div>';

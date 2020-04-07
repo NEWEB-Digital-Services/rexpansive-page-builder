@@ -1,3 +1,5 @@
+// LIVE
+
 // .grid-stack > .grid-stack-item > .ui-resizable-handle {
 //   visibility: hidden;
 //   overflow: visible;
@@ -7,6 +9,8 @@
 // }
 
 .grid-stack .grid-stack-placeholder > .placeholder-content {
+  left: 0px;
+  right: 0px;
   border: none;
   background-color: rgba(#000,0.1);
 }

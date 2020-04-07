@@ -1,17 +1,19 @@
 /**
  * Stick a the content of a section to the top of the screen
  * 
- * @version 1.0.0
+ * @version 1.1.0
  */
-; (function () {
-  var stickySectionsDidScroll = [];
-  var stickySectionsHandlers = [];
+;(function(window, factory) {
+  'use strict';
+  window.StickySection = factory(window);
+})( 'undefined' !== typeof window ? window : this, function() {
+  // instances of StickySection initializated
+  var instances = [];
+
+	var scrollCallbacksArray = [];
   var globalStickySectionIndex = 0;
 
-  var wInterval = true;
-  var wCallbacks = false;
-
-  this.StickySection = function () {
+  function StickySection() {
     this.element = null;
     this.stickyElement = null;
     this.borderAnimationEl = {};
@@ -48,11 +50,9 @@
 
     if ( null === this.stickyElement ) {
       return;
-    }
-
+		}
+		
     this.stickyId = globalStickySectionIndex;
-    stickySectionsDidScroll[this.stickyId] = false;
-
     globalStickySectionIndex++;
 
     // prepare border animation if prsents
@@ -80,8 +80,8 @@
       }
       
       this.element.insertBefore(this.borderAnimationEl.el, this.element.firstChild);
-    }
-
+		}
+		
     if ( this.options.overlayAnimation ) {
 
       var originaloverlayEl = this.element.querySelector(this.options.originalOverlaySelector);
@@ -100,95 +100,70 @@
     if ( this.options.stickyJS ) {
       addClass( this.element, 'sticky-js' );
     } else {
-      var wrapper = document.createElement('div');
-      wrapper.className = 'sticky-element__wrapper';
       addClass( this.element, 'sticky-css' );
-      if ( this.stickyElement ) {
-        // wrap( this.stickyElement, wrapper );
-      }
-    }
-
+		}
+		
     // first load check
-    handleSticky.call(this);
-    if ( this.options.requestAnimationFrame ) {
-      // debounce method
-      window.addEventListener('scroll', handleScroll.bind(this));
-    } else if ( wInterval ) {
-      // debounce classic method
-      var that = this;
-      setInterval(function() {
-        if( stickySectionsDidScroll[that.stickyId] ) {
-          stickySectionsDidScroll[that.stickyId] = false;
-          handleSticky.call(that);
-        }
-      }, 50);
-    } else if ( wCallbacks ) {
-      stickySectionsHandlers[this.stickyId] = handleSticky.bind(this);
-    } else {
-      // no debounce method
-      window.addEventListener('scroll', handleSticky.bind(this));
-    }
+		handleSticky.call(this);
+		scrollCallbacksArray.push(handleSticky.bind(this));
 
+		instances.push( this );
+	}
+	
+	/**
+	 * Watching the browser scrolling, bouncing the event
+	 * every 50 ms to prevent event polling
+	 * @return	{void}
+	 * @since		1.1.0
+	 */
+	function _watchScroll() {
+		userScrolled = false;
 
-    // attach the plugin instance to the dom element
-    this.element.StickySectionInstance = this;
-  }
+		function scrollHandler() {
+			userScrolled = true;
+		}
 
-  if ( wInterval ) {
-    window.addEventListener('scroll', debounceHandleScroll);
-  } else if ( wCallbacks ) {
-    window.addEventListener('scroll', callStickyHandlers);
-  }
+		window.addEventListener('scroll', scrollHandler);
+
+		function handleInterval() {
+			if (userScrolled) {
+				scrollCallbacksArray.forEach(function (cb) {
+					cb.call();
+				});
+				userScrolled = false;
+			}
+		}
+
+		setInterval(handleInterval.bind(this), 50);
+	}
+
+	/**
+	 * Watching the browser resizing, bouncing the event
+	 * every 150 ms to prevent event polling
+	 * @return	{void}
+	 * @since		1.1.0
+	 */
+	function _watchResize() {
+		userResized = false;
+
+		function resizeHandler() {
+			userResized = true;
+		}
+
+		window.addEventListener('resize', resizeHandler);
+
+		setInterval(function () {
+			if (userResized) {
+				updateWindowInnerHeight();
+				userResized = false;
+			}
+		}, 150);
+	}
 
   // private shared vars
-  var windowInnerHeight = document.documentElement.clientHeight;
-  window.addEventListener('resize', updateWindowInnerHeight);
-
+  var windowInnerHeight = _viewport().height;
   var transformCrossbrowser = ['-webkit-transform','-ms-transform','transform'];
   var totTransform = transformCrossbrowser.length;
-
-  /**
-   * On scroll call the callbacks of stickies
-   * registered inside an array
-   * @return {void}
-   */
-  function callStickyHandlers() {
-    var i, tot_sticky = stickySectionsHandlers.length;
-    for( i=0; i < tot_sticky; i++ ) {
-      stickySectionsHandlers[i].call();
-    }
-  }
-
-  /**
-   * On scroll set a true the scrolling for all the sticky sections
-   * instantiated
-   * @return {void}
-   */
-  function debounceHandleScroll() {
-    var i, tot_sticky = stickySectionsDidScroll.length;
-    for( i=0; i < tot_sticky; i++ ) {
-      stickySectionsDidScroll[i] = true;
-    }
-  }
-
-  /**
-   * Handling the scrolling with the aid of the request animation frame
-   * Performance controversial
-   */
-  function handleScroll(event) {
-    requestTicking.call(this);
-  }
-
-  /**
-   * If not ticketing, request the animation frame to handle the sticky section
-   * Performance controversial
-   */
-  function requestTicking() {
-    if ( !this.ticking ) {
-      requestAnimationFrame( handleSticky.bind(this) );
-    }
-    this.ticking = true;
-  }
 
   /**
    * Handling the scrolling of the viewport and the parallax logic
@@ -202,9 +177,9 @@
     var windowScrollBottom = windowScrollTop + windowInnerHeight;
 
     // element scroll information
-    var elScrollTop = offsetTop(this.element, windowScrollTop);
+		var elScrollTop = offsetTop(this.element, windowScrollTop);
     var elHeight = this.element.offsetHeight;
-    var elScrollBottom = elScrollTop + elHeight;
+		var elScrollBottom = elScrollTop + elHeight;
 
     // eventually offset
     var windowOffset = windowInnerHeight * this.options.offset;
@@ -214,15 +189,14 @@
     var topViewport = windowScrollTop >= elScrollTop;
     var bottomViewport = windowScrollBottom <= elScrollBottom;
     var beforeViewport = windowScrollTop <= elScrollTop;
-    var afterViewport = windowScrollBottom >= elScrollBottom;
-
+		var afterViewport = windowScrollBottom >= elScrollBottom;
+		
     if ( this.options.stickyJS ) {
       // stick section
       if ( topViewport && bottomViewport ) {
         // stick dynamic
 
         var val = windowScrollTop - elScrollTop;
-        // stickElement.call( this, val );
         stickElementTransform.call( this, val );
 
         addClass(this.element, 'will-change-rule');
@@ -230,11 +204,9 @@
         removeClass( this.element, 'will-change-rule' );
         if ( beforeViewport ) {
           // stick to top of the parent
-          // stickElement.call( this, 0 );
           stickElementTransform.call( this, 0 );
         } else if ( afterViewport ) {
           // stick at the end of the parent
-          // stickElement.call( this, elHeight - windowInnerHeight );
           stickElementTransform.call( this, elHeight - windowInnerHeight );
         }
       }      
@@ -310,25 +282,6 @@
     }
   };
 
-  // public methods
-  StickySection.prototype.hideBorder = function() {
-    scaleBorder.call(this, 0);
-  };
-
-  /**
-   * Set the top value of an element to sticky it to the top
-   * Optionally set also the bottom value
-   * @param {Integer} topVal value in pixel
-   * @param {Integer} bottomVal value in pixel
-   */
-  function stickElement(topVal, bottomVal) {
-    // console.log(topVal);
-    this.stickyElement.style.top = topVal + 'px';
-    if ( 'undefined' !== typeof bottomVal ) {
-      this.stickyElement.style.bottom = bottomVal + 'px';
-    }
-  }
-
   /**
    * Translate the element to stick, so it remains on 
    * the top viewport
@@ -351,41 +304,36 @@
       this.borderAnimationEl.br.style[transformCrossbrowser[i]] = 'scale(' + val + ',1)';
       this.borderAnimationEl.bl.style[transformCrossbrowser[i]] = 'scale(' + val + ',1)';
     }
-  }
+	}
+	
+	/* ===== Utilities ===== */
 
-  /**
+	/**
+	 * Calculate viewport window and height
+	 * @return {Object} width, height of the viewport
+	 */
+	function _viewport() {
+		var e = window, a = 'inner';
+		if (!('innerWidth' in window)) {
+			a = 'client';
+			e = document.documentElement || document.body;
+		}
+		return { width: e[a + 'Width'], height: e[a + 'Height'] };
+	}
+
+	/**
    * Updating the window inner height only if occurs a window resize
    * @param {ResizeEvent} event resize event
    */
   function updateWindowInnerHeight(event) {
-    windowInnerHeight = document.documentElement.clientHeight;
-  }
-
-  /**
-   * Find the viewport scroll values
-   */
-  function scrollDocumentPosition() {
-    var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-      scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    return { top: scrollTop, left: scrollLeft };
-  }
-
+    windowInnerHeight = _viewport().height;
+	}
+	
   /**
    * Find the viewport scroll top value
    */
   function scrollDocumentPositionTop() {
     return window.pageYOffset || document.documentElement.scrollTop;
-  }
-
-  /**
-   * Find the element offsets in the viewport
-   * @param {Element} el element to analize
-   */
-  function offset(el) {
-    var rect = el.getBoundingClientRect(),
-      scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
-      scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
   }
 
   /**
@@ -447,5 +395,95 @@
     } else {
       addClass(el, className);
     }
-  }
-}());
+	}
+
+	function removeElement(el) {
+		if (el && el.parentNode) {
+			el.parentNode.removeChild(el);
+		}
+	}
+	
+	/* ===== Exposed functions ===== */
+
+  StickySection.prototype.hideBorder = function() {
+    scaleBorder.call(this, 0);
+	};
+	
+	/**
+	 * Destroys the instance on which is called the function.
+	 * @returns		{void}
+	 * @since			1.1.0
+	 */
+  StickySection.prototype.destroy = function () {
+		removeElement(this.overlayAnimationEl);
+		removeElement(this.borderAnimationEl.el);
+		removeElement(this.stickyElement);
+
+    function removeInstance(instance) {
+      return instance.element !== this.element;
+    }
+    
+    instances = instances.filter( removeInstance.bind(this) );
+	}
+
+	StickySection.destroyHandlers = function (){
+		scrollCallbacksArray = [];
+	}
+	
+	/**
+	 * Creates StickySection background simulators for images
+	 * or just controls for videos.
+	 * @param		{Element}		section		StickySection DOM Element
+	 * @returns	{void}
+	 * @since		1.1.0
+	 */
+	StickySection.prepare = function (section) {
+		var sectionData = section.querySelector('.section-data');
+
+		if (hasClass(section, 'mp4-player')) {
+			// video controls fix
+			videoEl = section.querySelector('.rex-video-wrap');
+			videoControls = videoEl.querySelector('.rex-video__controls');
+			if (videoControls) {
+				stickyVideoControls = document.createElement('div');
+				addClass(stickyVideoControls, 'sticky-video-controls');
+				videoEl.insertAdjacentElement('afterend', stickyVideoControls);
+			}
+		} else if ('' !== section.style.backgroundImage || hasClass(section, 'section-w-image')) {
+			var adjacent = section.querySelector('.responsive-overlay');
+			adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
+			var backgroundSimulator = section.querySelector('.sticky-background-simulator');
+
+			/* if ( '1' === _plugin_frontend_settings.fast_load ) {
+				backgroundSimulator.setAttribute('data-src', sectionData.getAttribute('data-image_bg_section'));
+			} else  */if ( '0' === _plugin_frontend_settings.fast_load ) {
+				backgroundSimulator.style.backgroundImage = 'url(' + sectionData.getAttribute('data-image_bg_section') + ')';
+			}
+		}
+	};
+
+	/**
+   * Static function that retrieves the StickySection
+   * instance of the DOM Element passed.
+   * @param   {Element}       el  Element to retrieve the instance
+   * @returns {Element|null}  StickySection instance
+   * @since   1.1.0
+   */
+  StickySection.data = function(el) {
+    var i = 0,
+      tot = instances.length;
+    for (i = 0; i < tot; i++) {
+      if (el === instances[i].element) {
+        return instances[i];
+      }
+    }
+
+    return null;
+	};
+
+	// Invoking global Events watchers
+	_watchScroll();
+	_watchResize();
+
+  return StickySection;
+});

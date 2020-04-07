@@ -162,7 +162,9 @@ var Section_Video_Background_Modal = (function($) {
         ) == "undefined"
           ? ""
           : video_background_properties.$linkMp4.attr("data-rex-video-bg-url"),
-      idMp4: video_background_properties.$linkMp4.val()
+      idMp4: video_background_properties.$linkMp4.val(),
+      width: video_background_properties.$linkMp4.attr('data-rex-video-bg-width'),
+      height: video_background_properties.$linkMp4.attr('data-rex-video-bg-height')
     };
 
     var emptyMp4Data = {

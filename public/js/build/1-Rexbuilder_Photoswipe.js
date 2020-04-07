@@ -94,10 +94,18 @@ var Rexbuilder_Photoswipe = (function($){
 		// (children of gallerySelector)
 		var parseThumbnailElements = function(el) {
 		  //var thumbElements = el.childNodes,
-		  var thumbElements = $(el)
+		  if ( Rexbuilder_Util.hasClass( el, 'split-scrollable--active' ) ) {
+		  	var thumbElements = $(el)
+		  		.find('.opacity-block-active')
+			  	.find(".pswp-figure")
+			  	.get()
+		  } else {
+		  	var thumbElements = $(el)
 			  .find(".pswp-figure")
-			  .get(),
-			numNodes = thumbElements.length,
+			  .get();	
+		  }
+		  
+		var numNodes = thumbElements.length,
 			items = [],
 			figureEl,
 			linkEl,

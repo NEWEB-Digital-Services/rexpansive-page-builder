@@ -58,6 +58,8 @@ class Rexbuilder_Block
 			'image_bg_elem_active' => '',
 			'video_bg_id' => "",
 			"video_bg_url" => "",
+			'video_bg_width' => '',
+			'video_bg_height' => '',
 			"video_bg_url_vimeo" => "",
 			"type_bg_block" => "",
 			'image_size' => 'full',
@@ -173,7 +175,7 @@ class Rexbuilder_Block
 
 			$alt_value = get_post_meta($id_image_bg_block, '_wp_attachment_image_alt', true);
 			if ( 1 == $fast_load && ! $editor ) {
-				$background_img_style = ' data-src="' . $img_attrs[0] . '"';
+				$background_img_style = ' data-res-lazy-loading="false" data-src="' . $img_attrs[0] . '"';
 			} else {
 				$background_img_style = ' style="background-image:url(\'' . $img_attrs[0] . '\');"';
 			}
@@ -413,7 +415,7 @@ class Rexbuilder_Block
 			$bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
 			$bg_video_markup .= '<video class="rex-video-container"' . ( 1 == $fast_load && ! $editor ? ' preload="none"' : ' preload autoplay' ) . ' loop playsinline'. ($bg_video_toggle_audio_markup != "" ? "": " muted").'>';
 			if ( 1 == $fast_load && ! $editor ) {
-				$bg_video_markup .= '<source type="video/mp4" data-src="' . $video_mp4_url . '" />';
+				$bg_video_markup .= '<source type="video/mp4" data-res-lazy-loading="false" data-src="' . $video_mp4_url . '" />';
 			} else {
 				$bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
 			}

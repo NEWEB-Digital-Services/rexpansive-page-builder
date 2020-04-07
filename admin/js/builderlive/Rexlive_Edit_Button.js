@@ -1416,7 +1416,7 @@ var Button_Edit_Modal = (function ($) {
 
     var _init = function () {
         var $self = $("#rex-button-editor");
-        var $accordions = $self.find('.rexpansive-accordion');
+        var $accordions = $self.find('.rex-accordion');
         var $container = $self;
         button_editor_properties = {
             $self: $self,

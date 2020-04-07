@@ -1,16 +1,16 @@
+$first-block-top: 20vh;
+
 .split-scrollable {
-  .rex-row__dimension,
-  .perfect-grid-gallery {
-    overflow: visible;
+  &.split-scrollable--active {
+    .rex-row__dimension,
+    .perfect-grid-gallery {
+      overflow: visible;
+    }
   }
 }
 
 .split-scrollable-container {
-  display: -webkit-flex;
-  display: -moz-flex;
-  display: -ms-flex;
-  display: -o-flex;
-  display: flex;
+	display: flex;
   justify-content: space-between;
   position: relative;
 
@@ -25,70 +25,117 @@
 .scroll-block-wrapper {
   // width: 32.33333%;
   width: 50%;
+	// margin-top: 20vh;
+	display: flex;
+	flex-direction: column;
 }
 
-.scroll-block {
-  // margin-top: 30vh;
-  // color: #c8cacb;
-  opacity: 0.1!important;
-  transition: opacity .24s;
-}
+.split-scrollable--active {
 
-.scroll-block{
-  &.scroll-block-active {
-    // color: #000;
+  .scroll-block {
+  	opacity: 0.1 !important;
+  	transition: opacity .24s;
+
+    // prevent rexScrollify uneccessary animation
+    &:not(:first-child) {
+      animation-name: none;
+    }
+
+  	&.scroll-block-active {
+      // color: #000;
+      opacity: 1!important;
+    }
+
+  	// These before and after pseudo elements
+  	// are needed to make the js IntersectionObserver
+  	// work correctly
+  	&:first-child {
+  		// Arbitrary dimension
+  		@media (min-height:500px) {
+  			&::before {
+  				content: '';
+  				display: block;
+  				width: 100%;
+  				height: $first-block-top;
+  				background-color: transparent;
+  			}
+  		}
+  	}
+
+  	&:nth-child(n+2) {
+  		&::before {
+  			content: '';
+  			display: block;
+  			width: 100%;
+  			height: 40vh;
+  			background-color: transparent;
+  		}
+  	}
+
+  	&:last-child {
+  		&::after {
+  			content: '';
+  			display: block;
+  			width: 100%;
+  			height: 25vh;
+  			background-color: transparent;
+  		}
+  	}
+  }
+
+  .opacity-block-wrapper {
+    // width: 57.33333%;
+    width: 50%;
+    position: sticky;
+    align-self: flex-start;
+    top: 0;
+
+    &:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+  }
+
+  .opacity-block-fake,
+  .opacity-block {
+    width: 100%;
+    position: absolute;
+    top: $first-block-top;
+    right: 0;
+    opacity: 0!important;
+    z-index: 1;
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+  }
+
+  /**
+   * forcing transition
+   */
+  .perfect-grid-item {
+    &.opacity-block {
+      transition: opacity .24s;
+      // prevent rexScrollify uneccessary animation
+      &:not(:first-child) {
+        animation-name: none;
+      }
+    }
+  }
+
+  .opacity-block-fake {
     opacity: 1!important;
   }
-}
 
-.opacity-block-wrapper {
-  // width: 57.33333%;
-  width: 50%;
-  position: sticky;
-  align-self: flex-start;
-  top: 0;
-
-  &:after {
-    content: "";
-    display: table;
-    clear: both;
-  }
-}
-
-.opacity-block-fake,
-.opacity-block {
-  width: 100%;
-  position: absolute;
-  top: 20vh;
-  right: 0;
-  opacity: 0!important;
-  z-index: 1;
-
-  img {
-    max-width: 100%;
-    height: auto;
-  }
-}
-
-/**
- * forcing transition
- */
-.perfect-grid-item {
-  &.opacity-block {
-    transition: opacity .24s;
-  }
-}
-
-.opacity-block-fake {
-  opacity: 1!important;
-}
-
-.opacity-block {
-  &.opacity-block-active {
-    opacity: 1!important;
-    z-index: 2;
-    ~ .opacity-block-fake {
-      opacity: 0!important;
+  .opacity-block {
+    &.opacity-block-active {
+      opacity: 1!important;
+      z-index: 2;
+      ~ .opacity-block-fake {
+        opacity: 0!important;
+      }
     }
   }
 }

@@ -1,5 +1,16 @@
-;(function() {
-	this.SplitScrollable = function() {
+;(function(window, factory) {
+	'use strict';
+	window.SplitScrollable = factory(window);
+})( 'undefined' !== typeof window ? window : this, function() {
+	var instances = [];
+
+	// Callbacks arrays
+	var scrollCallbacksArray = [];
+	var resizeCallbacksArray = [];
+
+	var globalViewport = _viewport();
+
+	function SplitScrollable() {
 		this.element = null;
 
 		this.splitScrollWrapper = null;
@@ -20,15 +31,13 @@
 		this.scrollObserver = null;
 		this.userScrolled = false;
 
-		this.viewportSizes = null;
-		this.scrollContainer = null;
-
 		if (arguments[0]) {
 			this.element = arguments[0];
 		}
 
 		var defaults = {
 			splitScrollElClass: 'split-scrollable-container',
+			splitScrollActiveElClass: 'split-scrollable--active',
 			scrollElsWrapClass: 'scroll-block-wrapper',
 			scrollElsClass: 'scroll-block',
 			scrollElsToWatchClass: 'scroll-block',
@@ -37,8 +46,7 @@
 			opacityElsClass: 'opacity-block',
 			opacityFakeElClass: 'opacity-block-fake',
 			opacityElActiveClass: 'opacity-block-active',
-			initializeComplete: null,
-			customScrollContainer: null
+			initializeComplete: null
 		};
 
 		// Create options by extending defaults with the passed in arugments
@@ -48,28 +56,30 @@
 			this.options = defaults;
 		}
 
+		// De-comment for debugging
 		// this.debugEl = null;
 		// debugging.call(this);
 
-		initialize.call(this);
-		addWrappers.call(this);
+		_initialize.call(this);
+		_addWrappers.call(this);
 
 		if ( 'function' === typeof this.options.initializeComplete ) {
 			this.options.initializeComplete.call(this);
 		}
 
-		fixStickyHeight.call(this);
+		_fixStickyHeight.call(this);
+		
+		resizeCallbacksArray.push(_handleResize.bind(this));
 
-		attachListeners.call(this);
+		// check first scroll
+		_handleScroll.call(this);
+		scrollCallbacksArray.push(_handleScroll.bind(this));
 
 		// simulateLast.call(this);
-
-		// attach plugin instance to dom element
-		this.element.DistanceAccordionInstance = this;
+		instances.push( this );
 	};
 
-	function initialize() {
-		var that = this;
+	function _initialize() {
 		this.scrollEls = [].slice.call( this.element.getElementsByClassName(this.options.scrollElsClass) );
 		this.totScrollEls = this.scrollEls.length;
 		if ( this.options.scrollElsClass === this.options.scrollElsToWatchClass ) {
@@ -90,16 +100,10 @@
 			this.scrollElsState.push(null)
 		}
 
-		this.viewportSizes = viewport();
-
-		if ( this.options.customScrollContainer ) {
-			this.scrollContainer = this.options.customScrollContainer;
-		} else {
-			this.scrollContainer = window;
-		}
+		addClass( this.element, this.options.splitScrollActiveElClass );
 	}
 
-	function addWrappers() {
+	function _addWrappers() {
 		if ( ! hasClass( this.scrollEls[0].parentNode, this.options.scrollElsWrapClass ) ) {
 			this.scrollElsWrapper = document.createElement('div');
 			addClass( this.scrollElsWrapper, this.options.scrollElsWrapClass );
@@ -135,66 +139,104 @@
 		}
 	}
 
-	function fixStickyHeight() {
+	function _destroyWrappers() {
+		unwrap(this.scrollElsWrapper);
+		unwrap(this.opacityElsWrapper);
+
+		unwrap(this.splitScrollWrapper);
+	}
+
+	/**
+	 * Updates global viewport
+	 * @returns	{void}
+	 * @since		1.1.0
+	 */
+	function _updateGlobalViewport() {
+		globalViewport = _viewport();
+	}
+
+	// In this way when resizing there will be
+	// a globalViewport update before all the
+	// resize operations
+	resizeCallbacksArray.push(_updateGlobalViewport);
+
+	/**
+	 * Fix the height of the container of the opacity blocks
+	 * to stop the sticky effect inside the container
+	 * otherwise it goes on.
+	 * @returns	{void}
+	 * @since		1.0.0
+	 */
+	function _fixStickyHeight() {
 		this.opacityElsWrapper.style.height = parseFloat( getComputedStyle( this.opacityEls[this.opacityEls.length-1], null ).top.replace("px", "") ) + 
 		( this.opacityEls[this.opacityEls.length-1].offsetHeight ) + 'px';
 	}
 
-	function attachListeners() {
-		// scroll event
-		// watchScroll.call(this);
-		// // check first scroll
-		// handleScroll.call(this);
-		
-		watchIntersectionObserver.call(this);
-
-		// resize event
-		watchResize.call(this);
-	}
-
-	/**
-	 * SCROLL HANDLING
-	 */
+	/* ===== Scroll handling ===== */
 	/**
 	 * Watching the browser scrolling, bouncing the event
 	 * every 150 ms to prevent event polling
 	 * @return {void}
 	 */
-	function watchScroll() {
-		userScrolled = false;
-		var that = this;
+	function _watchScroll() {
+		var userScrolled = false;
 
 		function scrollHandler() {
 			userScrolled = true;
 		}
 
-		this.scrollContainer.addEventListener( 'scroll', scrollHandler);
+		window.addEventListener( 'scroll', scrollHandler);
 
-		rInterval( function() {
+		rInterval( function handleInterval() {
 			if ( userScrolled ) {
-				handleScroll.call(that);
+				scrollCallbacksArray.forEach(function (cb) {
+					cb.call();
+				});
 				userScrolled = false;
 			}
 		}, 150);
 	}
 
-	function handleScroll() {
+	/**
+	 * Guesses and sets the index to show in the viewport.
+	 * @returns		{void}
+	 * @since			1.0.0
+	 */
+	function _handleScroll() {
+		var guessedIndex = _guessIndex.call(this);
+
+		// get last guess
+		if ( guessedIndex ) {
+			if ( this.actualScrollEl !== guessedIndex ) {
+				_setGuessedIndex.call( this, guessedIndex );
+			}
+		}
+	}
+
+	/**
+	 * Retrieving the index of the element we want to see on the viewport.
+	 * @returns	The index of the element to show
+	 * @since		1.1.0
+	 */
+	function _guessIndex() {
 		var totscroll = scrollDocumentPositionTop();
-		var scrollOffset = 0;
-		var i, toSet, offsetEl, guessedIndex = null;
-		var generalCondition = false, firstElementCondition = false;
+		var scrollOffset = 0;		// Never set, not necessary I think
+		var i, offsetEl, guessedIndex = null;
+		var generalCondition = false;
 		// var heightFactor = ( this.aspectRatio >= 1 ? 0.5 : 0.2 );
 
-		this.debugEl.innerText = totscroll + ' + ' + this.viewportSizes.height + ' = ' + ( totscroll + this.viewportSizes.height ) + '\n';
-
+		// De-comment for debugging
+		// this.debugEl.innerText = totscroll + ' + ' + globalViewport.height + ' = ' + ( totscroll + globalViewport.height ) + '\n';
+		
 		for( i=0; i < this.totScrollElsToWatch; i++ ) {
 			if ( this.scrollElsToWatch[i] ) {
 				offsetEl = offsetAbsolute( this.scrollElsToWatch[i] );
 
-				this.debugEl.innerText += i + ' : ' + offsetEl.top + ' -- ' + offsetEl.height + ' ## ' + ( offsetEl.top - totscroll ) + '\n';
+				// De-comment for debugging
+				// this.debugEl.innerText += i + ' : ' + offsetEl.top + ' -- ' + offsetEl.height + ' ## ' + ( offsetEl.top - totscroll ) + '\n';
 
 				// view conditions
-				generalCondition = ( offsetEl.top - totscroll ) > 0 && ( ( offsetEl.top ) < ( totscroll + this.viewportSizes.height + scrollOffset ) ) && ( ( offsetEl.top + offsetEl.height ) > ( totscroll + scrollOffset ) );
+				generalCondition = ( (offsetEl.top > totscroll + scrollOffset) || ( offsetEl.top + offsetEl.height > totscroll + scrollOffset ) ) && ( offsetEl.top < totscroll + globalViewport.height + scrollOffset );
 
 				if ( generalCondition ) {
 					guessedIndex = this.scrollElsToWatch[i].getAttribute('data-scroll-el-index');
@@ -203,140 +245,49 @@
 			}
 		}
 
-		// get last guess
-		if ( guessedIndex ) {
-			if ( this.actualScrollEl !== guessedIndex ) {
-				activateScrollEl.call( this, guessedIndex );
-				this.actualScrollEl = guessedIndex;
-			}
-		}
+		return guessedIndex;
 	}
 
-	function watchIntersectionObserver() {
-		var that = this;
-		this.scrollObserver = new IntersectionObserver( function( entries, observer ) {
-			var tot_entries = entries.length, i = 0;
-			for( i=0; i < tot_entries; i++ ) {
-				// handleEntityObserve.call(that, entries[i]);
-				newHandleEntityObserve.call(that, entries[i]);
-			}
-		}, {
-			threshold: [0, 0.2, 0.4, 0.6, 0.8, 1]
-		});
-
-		var j = 0;
-		for( j=0; j < this.totScrollEls; j++ ) {
-			this.scrollObserver.observe( this.scrollElsToWatch[j] );
-		}
+	/**
+	 * Setting the index of the element to show in the viewport.
+	 * @param		{Number}	index			The index of the element to show
+	 * @return	{void}
+	 * @since		1.1.0
+	 */
+	function _setGuessedIndex( index ) {
+		_activateScrollEl.call( this, index );
+		this.actualScrollEl = index;
 	}
 
-	function handleEntityObserve(entry) {
-		var entryIndex = parseInt( entry.target.getAttribute('data-scroll-el-index') );
-		this.scrollElsState[entryIndex] = entry;
-		if( entry.isIntersecting ) {
-
-			console.log(entryIndex)
-			console.log(this.scrollEls[entryIndex].previousElementSibling)
-
-			if ( entry.boundingClientRect.top > 0 && ( null === this.scrollEls[entryIndex].previousElementSibling || ! hasClass( this.scrollEls[entryIndex].previousElementSibling, this.options.scrollElActiveClass ) ) ) {
-				addClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
-				if ( this.opacityEls[entryIndex] ) {
-					addClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
-				}
-			} else {
-				removeClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
-				// if ( i+1 !== this.totOpacityEls ) {
-				if ( this.opacityEls[entryIndex] ) {
-					removeClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
-				}
-				// }
-
-				if ( this.scrollEls[entryIndex].nextElementSibling ) {
-					addClass( this.scrollEls[entryIndex].nextElementSibling, this.options.scrollElActiveClass );
-					// var i = parseInt( entry.target.nextElementSibling.getAttribute('data-scroll-el-index') );
-					// if( i+1 === this.totOpacityEls ) {
-					// 	removeClass( this.opacityEls[i], this.options.opacityElActiveClass );
-					// }
-				}
-			}
-		} else {
-			removeClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
-			// if ( i+1 !== this.totOpacityEls ) {
-			if( this.opacityEls[entryIndex] ) {
-				removeClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
-			}
-			// }
-		}
-	}
-
-	function newHandleEntityObserve(entry) {
-		var entryIndex = parseInt( entry.target.getAttribute('data-scroll-el-index') );
-		this.scrollElsState[entryIndex] = entry;
-
-		if( entry.isIntersecting ) {
-			if ( entry.intersectionRatio > 0.8  ) {
-				activeElementOnScroll.call(this, entryIndex)
-			}
-		}
-	}
-
-	function activateScrollEl( targetIndex ) {
+	/**
+	 * Shows the indexed element in the viewport
+	 * by adding specific classes. Hides other elements
+	 * @param		{Number}	targetIndex		The index of the element to show
+	 * @since		1.0.0
+	 */
+	function _activateScrollEl( targetIndex ) {
 		for( var i=0; i < this.totScrollEls; i++ ) {
 			if ( this.scrollElsToWatch[i].getAttribute('data-scroll-el-index') == targetIndex ) {
-				addClass( this.scrollEls[i], this.options.scrollElActiveClass );
-				addClass( this.opacityEls[i], this.options.opacityElActiveClass );
-			} else {
-				removeClass( this.scrollEls[i], this.options.scrollElActiveClass );
-				removeClass( this.opacityEls[i], this.options.opacityElActiveClass );
-			}
-		}
-	}
-
-	function activeElementOnScroll( index ) {
-		for( var i=0; i < this.totScrollEls; i++ ) {
-			if ( index === i ) {
-				addClass( this.scrollEls[i], this.options.scrollElActiveClass );
-			} else {
-				removeClass( this.scrollEls[i], this.options.scrollElActiveClass );
-			}
-		}
-
-		for( var i=0; i < this.totOpacityEls; i++ ) {
-			if ( index === i ) {
-				addClass( this.opacityEls[i], this.options.opacityElActiveClass );
-			} else {
-				removeClass( this.opacityEls[i], this.options.opacityElActiveClass );
-			}
-		}
-	}
-
-	function otherHandleEntityObserve(entry) {
-		var entryIndex = parseInt( entry.target.getAttribute('data-scroll-el-index') );
-		this.scrollElsState[entryIndex] = entry;
-
-		if( entry.isIntersecting ) {
-			// if( 0 === entryIndex ) {
-			// 	addClass( entry.target, this.options.scrollElActiveClass );
-			// 	addClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
-			// } else {
-				if ( this.scrollElsState[entryIndex].boundingClientRect.top > 0  ) {
-					addClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
-					addClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
-
-					// removeClass( this.scrollElsState[entryIndex-1].target, this.options.scrollElActiveClass );
-					// removeClass( this.opacityEls[entryIndex-1], this.options.opacityElActiveClass );
+				if (this.scrollEls[i]) {
+					addClass( this.scrollEls[i], this.options.scrollElActiveClass );
 				}
-			// }
-		} else {
-			removeClass( this.scrollEls[entryIndex], this.options.scrollElActiveClass );
-			removeClass( this.opacityEls[entryIndex], this.options.opacityElActiveClass );
+				if (this.opacityEls[i]) {
+					addClass( this.opacityEls[i], this.options.opacityElActiveClass );
+				}
+			} else {
+				if (this.scrollEls[i]) {
+					removeClass( this.scrollEls[i], this.options.scrollElActiveClass );
+				}
+				if (this.opacityEls[i]) {
+					removeClass( this.opacityEls[i], this.options.opacityElActiveClass );
+				}
+			}
 		}
 	}
 
-	// handle resize
-	function watchResize() {
-		userResized = false;
-		var that = this;
+	/* ===== Resize handling ===== */
+	function _watchResize() {
+		var userResized = false;
 
 		function resizeHandler() {
 			userResized = true;
@@ -346,28 +297,17 @@
 
 		rInterval( function() {
 			if ( userResized ) {
-				handleResize.call(that);
+				resizeCallbacksArray.forEach(function (cb) {
+					cb.call();
+				});
 				userResized = false;
 			}
 		}, 150);
 	}
 
-	function handleResize() {
-		this.viewportSizes = viewport();
-	}
-
-	/**
-	 * Simulating the last opacity block
-	 * @return {void}
-	 * @deprecated
-	 */
-	function simulateLast() {
-		var lastEl = this.opacityEls[this.totOpacityEls-1];
-		var fakeFirst = lastEl.cloneNode(true);
-		removeClass(fakeFirst, this.options.opacityElsClass);
-		addClass(fakeFirst, this.options.opacityFakeElClass);
-		this.opacityEls[0].parentNode.append(fakeFirst);
-		// this.opacityEls[0].parentNode.insertBefore(fakeFirst, this.opacityEls[0]);
+	function _handleResize() {
+		// calculate sticky wrapper height
+		// fixStickyHeight.call(this);
 	}
 
 	function debugging() {
@@ -407,6 +347,25 @@
 		} else {
 			addClass(el, className);
 		}
+	}
+
+	/**
+	 * Unwraps a DOM Element
+	 * @param		{Element}	element DOM Element to move children and delete
+	 * @returns	{void}
+	 * @since		1.1.0
+	 */
+	function unwrap(element) {
+		// Get the element's parent node
+		var parent = element.parentNode;
+
+		// Move all children out of the element
+		while (element.firstChild) {
+			parent.insertBefore(element.firstChild, element);
+		}
+
+		// Remove the empty element
+		parent.removeChild(element);
 	}
 
 	// scroll and size utilities
@@ -452,7 +411,7 @@
 	 * Calculate viewport window and height
 	 * @return {Object} width, height of the viewport
 	 */
-	function viewport() {
+	function _viewport() {
 		var e = window, a = 'inner';
 		if (!('innerWidth' in window)) {
 			a = 'client';
@@ -515,4 +474,169 @@
 		}
 		return source;
 	}
-}());
+
+	/* ===== Deprecated functions ===== */
+
+	/**
+	 * @deprecated	1.1.0
+	 */
+	function intersectionObserverCallback(entries, observer) {
+		var entry;
+		var entryIndex;
+		
+		var tot_entries = entries.length;
+		var i = 0;
+		for (; i < tot_entries; i++) {
+			// handleEntityObserve.call(that, entries[i]);
+			// newHandleEntityObserve.call(that, entries[i]);	// è questa qua sotto
+
+			entry = entries[i];
+			entryIndex = parseInt(entry.target.getAttribute('data-scroll-el-index'));
+			this.scrollElsState[entryIndex] = entry;
+
+			if (entry.isIntersecting) {
+				if (entry.intersectionRatio > 0.8) {
+					// activeElementOnScroll.call(this, entryIndex)
+					entry.target.setAttribute('data-ratio-greater-08', 1);
+				} else {
+					entry.target.setAttribute('data-ratio-greater-08', 0);
+				}
+			} else {
+				entry.target.setAttribute('data-ratio-greater-08', 0);
+			}
+		}
+
+		for (i = 0; i < this.totScrollEls; i++) {
+			if (this.scrollElsToWatch[i].getAttribute('data-ratio-greater-08') == '1') {
+				// that.scrollElsToWatch[i].style.backgroundColor = 'red';
+				activeElementOnScroll.call(this, i);
+
+				// break;
+			} else {
+				// 	that.scrollElsToWatch[i].style.backgroundColor = '';
+			}
+		}
+	}
+
+	/**
+	 * @deprecated	1.1.0
+	 */
+	function watchIntersectionObserver() {
+		this.scrollObserver = new IntersectionObserver( intersectionObserverCallback.bind(this), {
+			// threshold: [0, 0.2, 0.4, 0.6, 0.8, 1]
+			threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1]
+		});
+
+		var j = 0;
+		for( j=0; j < this.totScrollEls; j++ ) {
+			this.scrollObserver.observe( this.scrollElsToWatch[j] );
+		}
+	}
+
+	/**
+	 * @deprecated	1.1.0
+	 */
+	function handleEntityObserve(entry) {
+		var entryIndex = parseInt(entry.target.getAttribute('data-scroll-el-index'));
+		this.scrollElsState[entryIndex] = entry;
+
+		if (entry.isIntersecting) {
+			if (entry.intersectionRatio > 0.8) {
+				// activeElementOnScroll.call(this, entryIndex)
+				entry.target.setAttribute('data-ratio-greater-08', 1);
+				
+			} else {
+				entry.target.setAttribute('data-ratio-greater-08', 0);
+			}
+		} else {
+			entry.target.setAttribute('data-ratio-greater-08', 0);
+		}
+	}
+
+	/**
+	 * Simulating the last opacity block
+	 * @return {void}
+	 * @deprecated	1.0.0
+	 */
+	function simulateLast() {
+		var lastEl = this.opacityEls[this.totOpacityEls-1];
+		var fakeFirst = lastEl.cloneNode(true);
+		removeClass(fakeFirst, this.options.opacityElsClass);
+		addClass(fakeFirst, this.options.opacityFakeElClass);
+		this.opacityEls[0].parentNode.append(fakeFirst);
+		// this.opacityEls[0].parentNode.insertBefore(fakeFirst, this.opacityEls[0]);
+	}
+
+	/**
+	 * @deprecated	1.1.0
+	 */
+	function activeElementOnScroll( index ) {
+		for( var i=0; i < this.totScrollEls; i++ ) {
+			if ( index === i ) {
+				addClass( this.scrollEls[i], this.options.scrollElActiveClass );
+			} else {
+				removeClass( this.scrollEls[i], this.options.scrollElActiveClass );
+			}
+		}
+
+		for( var i=0; i < this.totOpacityEls; i++ ) {
+			if ( index === i ) {
+				addClass( this.opacityEls[i], this.options.opacityElActiveClass );
+			} else {
+				removeClass( this.opacityEls[i], this.options.opacityElActiveClass );
+			}
+		}
+	}
+
+	/* ===== Exposed functions ===== */
+	SplitScrollable.prototype.refreshScrollableIndex = function() {
+		var guessedIndex = _guessIndex.call(this);
+
+		// get last guess
+		if (guessedIndex) {
+			_setGuessedIndex.call(this, guessedIndex);
+		}
+	};
+
+	SplitScrollable.prototype.callFixStickyHeight = function() {
+		_fixStickyHeight.call(this);
+	};
+
+	SplitScrollable.prototype.destroy = function () {
+		removeClass(this.element, this.options.splitScrollActiveElClass);
+		
+		// Destroy wrappers
+		_destroyWrappers.call(this);
+		
+		function removeInstance(instance) {
+			return instance.element !== this.element;
+		}
+		
+		instances = instances.filter(removeInstance.bind(this));
+	}
+	
+	/**
+	 * Static function that retrieves the SplitScrollable
+	 * instance of the DOM Element passed.
+	 * @param		{Element}				el	Element to retrieve the instance
+	 * @returns	{Element|null}	SplitScrollable instance
+	 * @since		1.1.0
+	 */
+	SplitScrollable.data = function(el) {
+		var i = 0,
+			tot = instances.length;
+		for (i = 0; i < tot; i++) {
+			if (el === instances[i].element) {
+				return instances[i];
+			}
+		}
+
+		return null;
+	};
+
+	// Invoking global Events watchers
+	_watchScroll();
+	_watchResize();
+
+	return SplitScrollable;
+});

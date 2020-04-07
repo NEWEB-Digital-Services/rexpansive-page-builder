@@ -19,7 +19,7 @@ defined('ABSPATH') or exit;
         <div class="modal-content">
             <?php include 'rexlive-loader-modal.php'; ?>
             <!-- ACCORDION 1 -->
-            <div class="rexpansive-accordion close">
+            <div class="rex-accordion close">
                 <!-- first row -->
                 <div class="bl_modal-row">
                     <div class="rexbutton-cont_row10">
@@ -79,7 +79,7 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <!-- ACCORDION 2 -->
-            <div class="rexpansive-accordion close">
+            <div class="rex-accordion close">
                 <!-- third row -->  
                 <div class="bl_modal-row">
                     <div class="rexbutton-cont_row10">
@@ -138,7 +138,7 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <!-- ACCORDION 3 -->
-            <div class="rexpansive-accordion close">
+            <div class="rex-accordion close">
                 <!-- fifth row -->
                 <div class="bl_modal-row">
                     <div class="rexbutton-cont_row10">

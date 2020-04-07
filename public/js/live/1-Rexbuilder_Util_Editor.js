@@ -128,7 +128,7 @@ var Rexbuilder_Util_Editor = (function($) {
       $parentContainer.removeClass("fix-tools-first-row");
     }
     $parentContainer.css("margin-top", data.distances.vals.top);
-    // @todo aggiungere il margin al container
+    // @todo add margin to container
   }
 
   var _pushAction = function($target, actionName, actionData, reverseData) {
@@ -896,6 +896,7 @@ var Rexbuilder_Util_Editor = (function($) {
     synchGradient: _synchGradient,
     updateBlockContainerHeight: _updateBlockContainerHeight,
     updateContainerMargins: _updateContainerMargins,
-    sendUndoRedoInformation: _sendUndoRedoInformation
+    sendUndoRedoInformation: _sendUndoRedoInformation,
+    restorePageStartingState: _restorePageStartingState
   };
 })(jQuery);

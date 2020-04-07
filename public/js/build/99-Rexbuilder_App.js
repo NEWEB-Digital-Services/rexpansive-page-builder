@@ -5,7 +5,10 @@
  * @since 1.1.3
  */
 var Rexbuilder_App = (function($) {
-  "use strict";
+	"use strict";
+	
+	var SPLIT_SCROLLABLE_IN_PAGE = 'undefined' !== typeof SplitScrollable;
+	var STICKY_SECTION_IN_PAGE = 'undefined' !== typeof StickySection;
 
   var $sections = null;
   var $grids = null;
@@ -13,6 +16,7 @@ var Rexbuilder_App = (function($) {
   var $otherAccordions = null;
   var odometers = [];
   var accordionSettings = {};
+  var gridInstances = [];
 
   /**
    * In case of RexButtons inside a block that is a link
@@ -345,63 +349,42 @@ var Rexbuilder_App = (function($) {
 
   /**
    * Launch sticky sections if any
+	 * @returns	{void}
+	 * @since		2.0.?
+	 * @version	2.0.4		Refactor: removed simulation background blocks from here,
+	 * 									put them in StickySection.prepare
    */
-  var launchStickySections = function() {
-    if ( 'undefined' !== typeof StickySection ) {
-      var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
-      var stickySections = [].slice.call( document.getElementsByClassName( 'sticky-section' ) );
-      var tot_stickySections = stickySections.length, i = 0;
-      var stickyElementSelector = '';
-      var overlayAnimation = false;
-      var videoEl, videoControls, stickyVideoControls;
+  function launchStickySections() {
+    if ( !STICKY_SECTION_IN_PAGE ) return;
 
-      for( i = 0; i < tot_stickySections; i++ ) {
-        if ( Rexbuilder_Util.hasClass( stickySections[i], 'mp4-player' ) ) {
-          stickyElementSelector = '.rex-video-wrap';
+    var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
+    var stickySections = Array.prototype.slice.call( document.getElementsByClassName( 'sticky-section' ) );
+    var tot_stickySections = stickySections.length, i = 0;
+    var stickyElementSelector = '';
+		var overlayAnimation = false;
 
-          // video controls fix
-          videoEl = stickySections[i].querySelector(stickyElementSelector);
-          videoControls = videoEl.querySelector('.rex-video__controls');
-          if ( videoControls ) {
-            stickyVideoControls = document.createElement('div');
-            Rexbuilder_Util.addClass( stickyVideoControls, 'sticky-video-controls' );
-            // Rexbuilder_Util.addClass( stickyVideoControls, 'rex-video__controls' );
-            // stickyVideoControls.innerHTML = '<div class="pause video-tool"><div class="indicator"></div></div><div class="play video-tool"><div class="indicator"></div></div>';
-            videoEl.insertAdjacentElement('afterend', stickyVideoControls);
-          }
-        } else if ( '' !== stickySections[i].style.backgroundImage ) {
-          stickyElementSelector = '.sticky-background-simulator';
-          var adjacent = stickySections[i].querySelector('.responsive-overlay');
-          adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
-          var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
+		StickySection.destroyHandlers();
 
-          // if ( '1' === _plugin_frontend_settings.fast_load ) {
-          //   backgroundSimulator.setAttribute('data-src', stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section'));
-          // } else if ( '0' === _plugin_frontend_settings.fast_load ) {
-            backgroundSimulator.style.backgroundImage = stickySections[i].style.backgroundImage;
-          // }
-        } else if ( Rexbuilder_Util.hasClass( stickySections[i], 'section-w-image' ) ) {
-          stickyElementSelector = '.sticky-background-simulator';
-          var adjacent = stickySections[i].querySelector('.responsive-overlay');
-          adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
-          var backgroundSimulator = stickySections[i].querySelector('.sticky-background-simulator');
-
-          if ( '1' === _plugin_frontend_settings.fast_load ) {
-            backgroundSimulator.setAttribute('data-src', stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section'));
-          } else if ( '0' === _plugin_frontend_settings.fast_load ) {
-            backgroundSimulator.style.backgroundImage = 'url(' + stickySections[i].querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
-          }
-        }
-
-        overlayAnimation = ( 'true' === stickySections[i].querySelector('.section-data').getAttribute('data-row_overlay_active') ? true : false );
-
-        var stickySection = new StickySection(stickySections[i], {
-          borderAnimation: true,
-          stickyJS: stickyJS,
-          stickyElementSelector: stickyElementSelector,
-          overlayAnimation: overlayAnimation
-        });
+    for( i = 0; i < tot_stickySections; i++ ) {
+      // Destroy before re-launching
+      if (null !== StickySection.data(stickySections[i])) {
+      	StickySection.data(stickySections[i]).destroy();
       }
+
+      if (Rexbuilder_Util.hasClass(stickySections[i], 'mp4-player')) {
+      	stickyElementSelector = '.rex-video-wrap';
+      } else if ('' !== stickySections[i].style.backgroundImage || Rexbuilder_Util.hasClass(stickySections[i], 'section-w-image')) {
+      	stickyElementSelector = '.sticky-background-simulator';
+      }
+			
+      overlayAnimation = ( 'true' === stickySections[i].querySelector('.section-data').getAttribute('data-row_overlay_active') ? true : false );
+
+      new StickySection(stickySections[i], {
+        borderAnimation: true,
+        stickyJS: stickyJS,
+        stickyElementSelector: stickyElementSelector,
+        overlayAnimation: overlayAnimation
+      });
     }
   };
 
@@ -425,65 +408,13 @@ var Rexbuilder_App = (function($) {
    *
    */
   var launchDistanceAccordion = function() {
-    if ( 'undefined' !== typeof DistanceAccordion ) {
-      var togglers = document.getElementsByClassName('distance-accordion-toggle');
-      for ( var j=0, tot = togglers.length; j < tot; j++ ) {
-        var inst = new DistanceAccordion(togglers[j]);
-      }
+    if ( 'undefined' === typeof DistanceAccordion ) {
+      return;
     }
-  }
-
-  /**
-   * Callback after load the pop up content
-   * @return {void}
-   */
-  var launchAllAfterLoading = function() {
-    var $popUpContent = $(this.target);
-    var $newGrids = $popUpContent.find(".grid-stack-row");
-    var $newSections = $popUpContent.find(".rexpansive_section");
-    var $newAccordions = $popUpContent.find('.rex-accordion');
-    var pageGrids = $grids.length;
-
-    // launch photoswipe
-    if ( $newSections.length > 0 ) {
-      var tot_newSections = $newSections.length, i;
-      for( i=0; i < tot_newSections; i++ ) {
-        $newSections[i].setAttribute( 'data-rexlive-section-number', pageGrids + i );
-        var pswchilds = $newSections[i].getElementsByClassName( "pswp-figure" );
-        if ( pswchilds.length === 0 ) {
-          Rexbuilder_Util.removeClass( $newSections[i], 'photoswipe-gallery' );
-        }
-      }
-      Rexbuilder_Photoswipe.init(".photoswipe-gallery");
+    var togglers = document.getElementsByClassName('distance-accordion-toggle');
+    for ( var j=0, tot = togglers.length; j < tot; j++ ) {
+      var inst = new DistanceAccordion(togglers[j]);
     }
-
-    // main grid
-    if( $newGrids.length > 0 ) {
-      $newGrids.perfectGridGalleryEditor({
-        editorMode: Rexbuilder_Util.editorMode
-      });
-    }
-
-    // accordions
-    if( $newAccordions.length > 0 ) {
-      $newAccordions.rexAccordion(accordionSettings);
-    }
-
-    // sliders
-    RexSlider.init();
-
-    // distance accordions
-    if ( 'undefined' !== typeof DistanceAccordion ) {
-      var togglers = this.target.getElementsByClassName('distance-accordion-toggle');
-      for ( var j=0, tot = togglers.length; j < tot; j++ ) {
-        var inst = new DistanceAccordion(togglers[j], {
-          context: this.target
-        });
-      }
-    }
-
-    // split scrolls
-    launchSplitScollable( this.target, this.target );
   }
 
   /**
@@ -509,6 +440,8 @@ var Rexbuilder_App = (function($) {
     var tot_btns = btns.length, i = 0;
 
     for( i=0; i < tot_btns; i++ ) {
+      if (null !== PopUpContent.data(btns[i])) continue;
+
       new PopUpContent(btns[i], {
         // getPopUpContentComplete: launchAllAfterLoading,
         contentRetrieveMethod: 'iframe',
@@ -561,45 +494,128 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   function fixScrollableGridGallery() {
-    // destroyGridGallery
-    var grid = this.element.querySelector('.perfect-grid-gallery');
-    var $grid = $(grid);
-    var i;
+    var rexGridEl = this.element.querySelector('.perfect-grid-gallery');
+    var gridInfo = getRexGridInstance( rexGridEl );
+    var i, j;
+
+    if ( ! gridInfo.instance ) return;
+
+    reorderScrollableEls( this, gridInfo.instance );
+    reorderOpacityEls( this, gridInfo.instance );
 
     for( i=0; i < this.totScrollEls; i++ ) {
-      this.scrollEls[i].style.height = this.scrollEls[i].offsetHeight + 'px';
+      this.scrollEls[i].style.height = '';
     }
 
     for( i=0; i < this.totOpacityEls; i++ ) {
-      this.opacityEls[i].style.height = this.opacityEls[i].offsetHeight + 'px';
+      this.opacityEls[i].style.top = '';
     }
 
-    // destroy tha grid
-    $grid.data('plugin_perfectGridGalleryEditor').destroyGridGallery();
-    grid.style.height = '';
-  };
+    // set RexBlock options on scroll and opacity blocks
+    for( i=0; i < gridInfo.instance.gridBlocksTotal; i++ ) {
+      for( j=0; j<this.totScrollEls; j++ ) {
+        if ( this.scrollEls[j] === gridInfo.instance.gridBlocks[i].el ) {
+					gridInfo.instance.gridBlocks[i].setHeight = false;
+					break;
+        }
+      }
+			
+      for( j=0; j<this.totOpacityEls; j++ ) {
+				if ( this.opacityEls[j] === gridInfo.instance.gridBlocks[i].el ) {
+					gridInfo.instance.gridBlocks[i].setTop = false;
+					break;
+        }
+      }
+    }    
+
+    // do not set the grid height, its uneccessary
+    rexGridEl.style.height = '';
+    gridInfo.instance.properties.gridHeightSettable = false;
+	};
+	
+	/**
+	 * Orders the scrollable elements from SplitScrollable
+	 * based on the already ordered gridBlocks.
+	 * @param		{SplitScrollable}		splitScrollableInstance
+	 * @param		{RexGrid}						rexGridInstance
+	 * @returns	{void}
+	 * @since		2.0.4
+	 */
+	function reorderScrollableEls(splitScrollableInstance, rexGridInstance) {
+		// Reordering scrollable elements based on the already ordered gridBlocks
+		splitScrollableInstance.scrollEls = rexGridInstance.gridBlocks
+			.filter(function(gridBlock) {
+				return Rexbuilder_Util.hasClass(gridBlock.el, splitScrollableInstance.options.scrollElsClass);
+			})
+			.map(function(gridBlock) {
+				return gridBlock.el;
+			});
+
+		splitScrollableInstance.scrollElsToWatch = rexGridInstance.gridBlocks
+			.filter(function(gridBlock) {
+				return Rexbuilder_Util.hasClass(gridBlock.el, splitScrollableInstance.options.scrollElsClass);
+			})
+			.map(function(gridBlock) {
+				return gridBlock.el.querySelector('.' + splitScrollableInstance.options.scrollElsToWatchClass);
+			});
+
+		var i = 0;
+		var j = 0;
+		var count = 0;
+
+		for (; i < rexGridInstance.gridBlocksTotal; i++) {
+			for (j = 0; j < splitScrollableInstance.totScrollEls; j++) {
+				if (splitScrollableInstance.scrollEls[j] === rexGridInstance.gridBlocks[i].el) {
+					splitScrollableInstance.scrollEls[j].style.WebKitBoxOrdinalGroup = count + 1;
+					splitScrollableInstance.scrollEls[j].style.MozFlexOrder = count;
+					splitScrollableInstance.scrollEls[j].style.OOrder = count;
+					splitScrollableInstance.scrollEls[j].style.MSOrder = count;
+					splitScrollableInstance.scrollEls[j].style.order = count;
+					splitScrollableInstance.scrollElsToWatch[j].setAttribute('data-scroll-el-index', count);
+
+					count++;
+					break;
+				}
+			}
+		}
+	}
+
+  /**
+   * Reorder opacity blocks based on grid order for a SplitScrollable element
+   * @param  {SplitScrollable} splitScrollableInstance split scrollable instance passed by reference
+   * @param  {RexGrid} rexGridInstance         rexgrid instance passed by reference
+   * @return {void}
+   */
+  function reorderOpacityEls( splitScrollableInstance, rexGridInstance ) {
+    splitScrollableInstance.opacityEls = rexGridInstance.gridBlocks.filter( function( gridBlock ) {
+      return Rexbuilder_Util.hasClass( gridBlock.el, splitScrollableInstance.options.opacityElsClass );
+    }).map( function( gridBlock ) {
+      return gridBlock.el;
+    });
+  }
 
   /**
    * If SplitScrollable plugin is defined, launch it on every intersted section
-   * @param  {Element} context               where to search the sections
-   * @param  {customScrollContainer} customScrollContainer container in which watch the scroll event
    * @return {void}
    */
-  var launchSplitScollable = function( context, customScrollContainer ) {
-    if ( 'undefined' === typeof SplitScrollable ) {
-      return;
-    }
-    if ( Rexbuilder_Util.globalViewport.width >= _plugin_frontend_settings.splitScrollable.minViewportWidth ) {
-      var scrbls = Array.prototype.slice.call( context.getElementsByClassName('split-scrollable') );
-      var tot_scrbls = scrbls.length, i;
-      for( i=0; i < tot_scrbls; i++ ) {
-        var inst = new SplitScrollable(scrbls[i], {
-          scrollElsToWatchClass: 'text-wrap',
-          initializeComplete: fixScrollableGridGallery,
-          customScrollContainer: ( 'undefined' !== typeof customScrollContainer ? customScrollContainer : null )
-        });
-      }
-    }
+  function launchSplitScrollable() {
+  	if (!SPLIT_SCROLLABLE_IN_PAGE) return;
+
+  	if (Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.splitScrollable.minViewportWidth) {
+  		return;
+  	}
+
+  	var scrbls = Array.prototype.slice.call(document.getElementsByClassName('split-scrollable'));
+  	var tot_scrbls = scrbls.length,
+  		i;
+  	for (i = 0; i < tot_scrbls; i++) {
+  		if (null !== SplitScrollable.data(scrbls[i])) continue;
+
+  		new SplitScrollable(scrbls[i], {
+  			scrollElsToWatchClass: 'text-wrap',
+  			initializeComplete: fixScrollableGridGallery
+  		});
+  	}
   };
 
   /**
@@ -622,22 +638,28 @@ var Rexbuilder_App = (function($) {
   }
 
   function disableGrids() {
-    var gridsToDisable = Array.prototype.slice.call( document.getElementsByClassName('disable-grid') );
-    var i, tot_gridsToDisable = gridsToDisable.length;
-    for( i=0; i<tot_gridsToDisable; i++ ) {
-      var bs = Array.prototype.slice.call( gridsToDisable[i].getElementsByClassName('grid-stack-item') );
-      var j, tot_bs = bs.length;
+  	var gridsToDisable = Array.prototype.slice.call( document.getElementsByClassName( 'disable-grid' ) );
+  	var i, tot_gridsToDisable = gridsToDisable.length;
 
-      for( j =0; j < tot_bs; j++ ) {
-        bs[j].style.height = window.getComputedStyle(bs[j]).height;
-      }
+  	for ( i = 0; i < tot_gridsToDisable; i++ ) {
+  		var grid = gridsToDisable[ i ].querySelector( '.perfect-grid-gallery' );
 
-      var pgg = gridsToDisable[i].querySelector('.perfect-grid-gallery');
-      $(pgg).perfectGridGalleryEditor('destroyGridGallery');
-      // $(pgg).perfectGridGalleryEditor('destroy');
-      Rexbuilder_Util.addClass(gridsToDisable[i], 'disabled');
-      pgg.style.height = '';
-    }
+  		var bs = Array.prototype.slice.call( gridsToDisable[ i ].getElementsByClassName( 'grid-stack-item' ) );
+  		var j, tot_bs = bs.length;
+  		var blocksHeights = [];
+
+  		for ( j = 0; j < tot_bs; j++ ) {
+  			blocksHeights.push( bs[ j ].style.height );
+  		}
+
+  		// Destroying RexGrid
+  		destroyRexGridInstance( grid );
+  		Rexbuilder_Util.addClass( gridsToDisable[ i ], 'disabled' );
+
+  		for ( j = 0; j < tot_bs; j++ ) {
+  			bs[ j ].style.height = blocksHeights[ j ];
+  		}
+  	}
   }
 
   /**
@@ -648,58 +670,58 @@ var Rexbuilder_App = (function($) {
    * @date 26-02-2019
    */
   var launch_odometer = function( target ) {
-    if ( 'undefined' !== Odometer )
-    {
-      var fval = target.innerText;
-      // Check if user want yearly increment of value
-      if ( null !== target.getAttribute( 'data-yearly-inc' ) )
-      {
-        // if exists get the value, comparing today to the site date pubblication
-        if ( '' !== _plugin_frontend_settings.sitedate )
-        {
-          var siteDate = new Date( _plugin_frontend_settings.sitedate );
-          var today = new Date();
-          var mult = today.getFullYear() - siteDate.getFullYear();
-
-          var y_inc = target.getAttribute( 'data-yearly-inc' );
-          fval = parseInt( fval ) + ( parseInt( y_inc ) * mult );
-        }
-      }
-
-      if ( null !== target.getAttribute( 'data-montly-inc' ) )
-      {
-        // if exists get the value, comparing today to the site date pubblication
-        if ( '' !== _plugin_frontend_settings.sitedate )
-        {
-          var siteDate = new Date( _plugin_frontend_settings.sitedate );
-          var today = new Date();
-          var mult = today.getMonth() - siteDate.getMonth();
-
-          var m_inc = target.getAttribute( 'data-montly-inc' );
-          fval = parseInt( fval ) + ( parseInt( m_inc ) * mult );
-        }
-      }
-
-      target.setAttribute('data-final-value', fval);
-      var tval = target.getAttribute('data-start-value');
-      if ( null == tval )
-      {
-        tval = '';
-        // console.log(target.innerText, target.innerText.length);
-        for (var i=0, tot_nums = target.innerText.length; i<tot_nums; i++)
-        {
-          tval += "1";
-        }
-      }
-      var oElement = new Odometer({
-        el: target,
-        value: tval,
-        format: _plugin_frontend_settings.odometer.format,
-        theme: _plugin_frontend_settings.odometer.theme,
-      });
-      // odometers.push(oElement);
-      return oElement;
+    if ( 'undefined' === typeof Odometer ) {
+      return;
     }
+
+    var fval = target.innerText;
+    // Check if user want yearly increment of value
+    if ( null !== target.getAttribute( 'data-yearly-inc' ) )
+    {
+      // if exists get the value, comparing today to the site date pubblication
+      if ( '' !== _plugin_frontend_settings.sitedate )
+      {
+        var siteDate = new Date( _plugin_frontend_settings.sitedate );
+        var today = new Date();
+        var mult = today.getFullYear() - siteDate.getFullYear();
+
+        var y_inc = target.getAttribute( 'data-yearly-inc' );
+        fval = parseInt( fval ) + ( parseInt( y_inc ) * mult );
+      }
+    }
+
+    if ( null !== target.getAttribute( 'data-montly-inc' ) )
+    {
+      // if exists get the value, comparing today to the site date pubblication
+      if ( '' !== _plugin_frontend_settings.sitedate )
+      {
+        var siteDate = new Date( _plugin_frontend_settings.sitedate );
+        var today = new Date();
+        var mult = today.getMonth() - siteDate.getMonth();
+
+        var m_inc = target.getAttribute( 'data-montly-inc' );
+        fval = parseInt( fval ) + ( parseInt( m_inc ) * mult );
+      }
+    }
+
+    target.setAttribute('data-final-value', fval);
+    var tval = target.getAttribute('data-start-value');
+    if ( null == tval )
+    {
+      tval = '';
+      for (var i=0, tot_nums = target.innerText.length; i<tot_nums; i++)
+      {
+        tval += "1";
+      }
+    }
+    var oElement = new Odometer({
+      el: target,
+      value: tval,
+      format: _plugin_frontend_settings.odometer.format,
+      theme: _plugin_frontend_settings.odometer.theme,
+    });
+    // odometers.push(oElement);
+    return oElement;
   };
 
   function launchInlineGallery() {
@@ -712,7 +734,11 @@ var Rexbuilder_App = (function($) {
    * @return {vodi}
    */
   function launchFrontEndEffects() {
-    if( false == _plugin_frontend_settings.user.editing ) {
+    if( !Rexbuilder_Util.editorMode ) {
+			disableGrids();
+			
+      Rexbuilder_Photoswipe.init('.photoswipe-gallery');
+
       // inline photoswipe
       launchInlineGallery();
 
@@ -739,11 +765,9 @@ var Rexbuilder_App = (function($) {
       // launch popUpContent
       launchPopUpContent();
       // launch splitScrollable
-      launchSplitScollable( document );
+      launchSplitScrollable();
 
       launchParticleSwarm();
-
-      disableGrids();
 
       // listen iframe events (for popupcontent)
       listenPopUpContentEvents();
@@ -754,87 +778,62 @@ var Rexbuilder_App = (function($) {
     $builderAccordions = Rexbuilder_Util.$rexContainer.find('.rex-accordion');
     $otherAccordions = Rexbuilder_Util.$document.find('.rex-accordion').not( $builderAccordions );
 
-    accordionSettings = {
-      durationOpen: 10,
-      durationClose: 300
-    };
+    accordionSettings = {};
 
     if( Rexbuilder_Util.editorMode ) {
       accordionSettings.open = {
-        progressClbk: function(data) {
-          // var content = data.properties.$content[0];
-          var block = data.properties.$content.parents('.grid-stack-item')[0];
-          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
-          grid.resize(block,null,Math.round( data.element.parentElement.offsetHeight / grid.opts.cellHeight ));
-        }
+      	progressClbk: function( data ) {
+      		// var content = data.properties.$content[0];
+      		var block = data.properties.$content.parents( '.grid-stack-item' )[ 0 ];
+      		var grid = data.properties.$content.parents( '.grid-stack' ).data( "gridstack" );
+      		grid.resize( block, null, Math.round( data.element.parentElement.offsetHeight / grid.opts.cellHeight ) );
+      	},
       };
       accordionSettings.close = {
-        progressClbk: function(data) {
-          // var content = data.properties.$content[0];
-          var block = data.properties.$content.parents('.grid-stack-item')[0];
-          var start_h = block.children[0].getAttribute('data-gs_start_h');
-          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
-          grid.resize(block,null,Math.round( parseInt(start_h) ));
-        }
+      	progressClbk: function( data ) {
+      		// var content = data.properties.$content[0];
+      		var block = data.properties.$content.parents( '.grid-stack-item' )[ 0 ];
+      		var start_h = block.children[ 0 ].getAttribute( 'data-gs_start_h' );
+      		var grid = data.properties.$content.parents( '.grid-stack' ).data( "gridstack" );
+      		grid.resize( block, null, Math.round( parseInt( start_h ) ) );
+      	}
       };
     } else {
       accordionSettings.open = {
-        completeClbk: function(data) {
-          var $grisdtack = data.properties.$content.parents('.grid-stack');
-          if ( 0 === $grisdtack.length ) {
-            return;
+        startClbk: function( data ) {
+        	var $grid = data.$element.parents( '.perfect-grid-gallery' );
+        	var $blocks = $grid.find( '.perfect-grid-item' );
+
+        	$blocks.addClass( 'accordion-animate-block' );
+        },
+        progressClbk: function( data ) {
+        	var grid = data.$element.parents( '.perfect-grid-gallery' ).get( 0 );
+        	var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
+        	var rexGridInstance = getRexGridInstance( grid );
+
+          if ( rexGridInstance ) {
+            rexGridInstance.instance.reCalcBlockHeight( block );
           }
-
-          var pgge = $grisdtack.data("plugin_perfectGridGalleryEditor");
-
-          if( pgge ) {              
-            var block = data.properties.$content.parents('.grid-stack-item')[0];
-            var block_height = data.$element.parents('.text-wrap')[0].offsetHeight;
-
-            var grid = pgge.properties.gridstackInstance;
-  
-            var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
-            grid.batchUpdate();
-            grid.resize(block,null,temp);
-            grid.commit();
-          }
-
-          data.properties.$content.addClass('rSlideInTop').one(Rexbuilder_Util._animationEvent, function() {
-            $(this).removeClass('rSlideInTop');
-          });
         }
       };
       accordionSettings.close = {
-        startClbk: function(data) {
-          var $grisdtack = data.properties.$content.parents('.grid-stack');
-          if ( 0 === $grisdtack.length ) {
-            return;
-          }
+        progressClbk: function( data ) {
+        	var grid = data.$element.parents( '.perfect-grid-gallery' ).get( 0 );
+        	var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
+        	var rexGridInstance = getRexGridInstance( grid );
 
-          data.properties.$content.addClass('rSlideOutTop').one(Rexbuilder_Util._animationEvent, function() {
-            $(this).removeClass('rSlideOutTop');
-          });
+          if ( rexGridInstance ) {
+            rexGridInstance.instance.reCalcBlockHeight( block );
+          }
         },
-        completeClbk: function(data) {
-          var $grisdtack = data.properties.$content.parents('.grid-stack');
-          if ( 0 === $grisdtack.length ) {
-            return;
-          }
+        completeClbk: function( data ) {
+        	var $grid = data.$element.parents( '.perfect-grid-gallery' );
+        	var $blocks = $grid.find( '.perfect-grid-item' );
+        	var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
 
-          var pgge = $grisdtack.data("plugin_perfectGridGalleryEditor");
-
-          if( pgge ) {
-
-            var block_height = data.$element.parents('.text-wrap')[0].offsetHeight;
-            var block = data.properties.$content.parents('.grid-stack-item')[0];
-
-            var grid = pgge.properties.gridstackInstance;
-  
-            var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
-            grid.batchUpdate();
-            grid.resize(block,null,temp);
-            grid.commit();
-          }
+        	$( block ).one( Rexbuilder_Util._transitionEvent, function() {
+        		$blocks.removeClass( 'accordion-animate-block' );
+        	} );
         }
       };
     }
@@ -846,16 +845,33 @@ var Rexbuilder_App = (function($) {
     });
   }
 
-  var init = function() {
-    Rexbuilder_Util.init();
+  /**
+   * Fixing both section and blocks videos proportions.
+   * The function called is based on DOM attributes
+   * dimensions of the video.
+   * @return  {void}
+   * @since   2.0.4
+   */
+  function _fixVideos() {
+    var tot_grids = gridInstances.length;
+  	var i = 0;
+
+  	for ( i = 0; i < tot_grids; i++ ) {
+  		// We call this function cause its already present on Rexbuilder_Dom_Util
+  		Rexbuilder_Dom_Util.fixVideoProportion( gridInstances[ i ].section );
+  	}
+  }
+
+  function init() {
+		Rexbuilder_Util.init();
     Rexbuilder_Dom_Util.init();
     
     Rexbuilder_Rexbutton.init();
-    
     Rexbuilder_Rexelement.init();
     Rexbuilder_Rexwpcf7.init();
 
     if ( Rexbuilder_Util.editorMode ) {
+      Rex_Save_Listeners.init();
       Rexbuilder_Rexelement_Editor.init();
       Rexbuilder_Rexwpcf7_Editor.init();
       Rexbuilder_CreateBlocks.init();
@@ -885,13 +901,40 @@ var Rexbuilder_App = (function($) {
     /* -- Launching the grid -- */
     // $grids.find(".wrapper-expand-effect").expandEffect();
     if( $grids ) {
-      $grids.perfectGridGalleryEditor({
-        editorMode: Rexbuilder_Util.editorMode
-      });
+      if ( Rexbuilder_Util.editorMode ) {
+        $grids.perfectGridGalleryEditor({
+          editorMode: Rexbuilder_Util.editorMode
+        });
+      } else {
+        // get layout information and set this information on the grids
+        var choosedLayout = Rexbuilder_Util.chooseLayout();
+        Rexbuilder_Util.handleLayoutChange( choosedLayout );
+
+      	// Launching RexGrid
+      	var grids = Array.prototype.slice.call( document.getElementsByClassName( 'perfect-grid-gallery' ) );
+      	var tot_grids = grids.length;
+      	var i = 0;
+
+      	for ( i = 0; i < tot_grids; i++ ) {
+					var rexGridInstance = new RexGrid(grids[i]);
+          
+					gridInstances.push( rexGridInstance );
+					
+					if (STICKY_SECTION_IN_PAGE) {
+						StickySection.prepare(rexGridInstance.section);
+					}
+				}
+				
+
+        if ( '1' === _plugin_frontend_settings.fast_load ) {
+          // Launch fast load
+          window.FastLoad.init();
+        }
+      }
     }
 
     // listen one time to edit dom layout ending
-    Rexbuilder_Util.$document.one( 'rexlive:editDomLayoutEnd', launchFrontEndEffects );
+    // Rexbuilder_Util.$document.one( 'rexlive:editDomLayoutEnd', launchFrontEndEffects );
 
     Rexbuilder_Util.launchEditDomLayout();
 
@@ -912,13 +955,15 @@ var Rexbuilder_App = (function($) {
       var oindex, tot_odometersEls = odometersEls.length;
       for( oindex = 0; oindex < tot_odometersEls; oindex++ ) {
         var oElement = launch_odometer( odometersEls[oindex] );
-        odometers.push(oElement);
-        $(odometersEls[oindex]).rexScrolled({
-          callback: function(el)
-          {
-            el.innerHTML = el.getAttribute('data-final-value');
-          }
-        })
+        if ( oElement ) {
+          odometers.push(oElement);
+          $(odometersEls[oindex]).rexScrolled({
+            callback: function(el)
+            {
+              el.innerHTML = el.getAttribute('data-final-value');
+            }
+          })
+        }
       }
 
       /** -- Launching slideshow -- **/
@@ -974,17 +1019,19 @@ var Rexbuilder_App = (function($) {
 
     _linkDocumentListeners();
 
-    // Starting slider
-    RexSlider.init();
-
-    Rexbuilder_Util.launchVideoPlugins();
-
-    Rexbuilder_Util.playAllVideos();
-
-    launchAccordions();
+    if (Rexbuilder_Util.editorMode) {
+      // Starting slider
+      RexSlider.init();
+      
+      Rexbuilder_Util.launchVideoPlugins();
+      
+      Rexbuilder_Util.playAllVideos();
+      
+      launchAccordions();
+    }
   };
 
-  var load = function() {
+  function load() {
     // @bugfix on other layouts than desktop with mixed customization definitions
     // @deprecated i don't like this solution, too much expensive
     
@@ -996,6 +1043,20 @@ var Rexbuilder_App = (function($) {
     if ( Rexbuilder_Util.editorMode ) {
       Rexbuilder_Util_Editor.load();
       Rexbuilder_Live_Utilities.load();
+    } else {
+      var tot_grids = gridInstances.length;
+      var i = 0;
+      var j = 0;
+
+      for ( i = 0; i < tot_grids; i++ ) {
+        gridInstances[i].fixAfterLoad();
+      }
+      
+      _fixVideos();       // Fixing video proportions
+      RexSlider.init();   // Starting slider
+      Rexbuilder_Util.launchVideoPlugins();
+      Rexbuilder_Util.playAllVideos();
+      launchAccordions();
     }
 
     /* -- Launching the textfill -- */
@@ -1021,13 +1082,155 @@ var Rexbuilder_App = (function($) {
       launchIndicators( $grids );
     }
 
-    // launchFrontEndEffects();
+    launchFrontEndEffects();
 
     Rexbuilder_Util.galleryPluginActive = true;
   };
 
+  /**
+   * Returns the instance of the grid DOM Element passed.
+   * @param  {Element} grid   DOM Element of the grid
+   * @return {RexGrid|null}   RexGrid instance if exists, null otherwise
+   * @since  2.0.4
+   */
+  function getRexGridInstance( grid ) {
+    var gridId = grid.getAttribute( 'data-rex-grid-id' );
+    
+  	var i = 0;
+  	var tot_instances = gridInstances.length;
+
+  	for ( i = 0; i < tot_instances; i++ ) {
+  		if ( gridId === gridInstances[ i ].properties.id && grid === gridInstances[ i ].element ) {
+  			return {
+          instance: gridInstances[ i ],
+          index: i
+        }
+  		}
+  	}
+
+  	return null;
+  }
+
+  function destroyRexGridInstance( grid ) {
+    var gridInfo = getRexGridInstance( grid );
+    if ( null === gridInfo ) {
+      return;
+    }
+
+    gridInfo.instance.destroy();
+    gridInstances.splice( gridInfo.index, 1 );
+  }
+
+  /**
+   * Handle front end resize.
+	 * The function adjustes the grid and re-launches effects
+   * @return	{void}
+	 * @since		2.0.4
+   */
+  function handleFrontEndResize() {
+  	var actualLayout = Rexbuilder_Util.findFrontLayout();
+    var tot_grids = gridInstances.length;
+    
+  	// Find actual layout
+  	if ( Rexbuilder_Util.startFrontLayout != actualLayout ) {
+  		Rexbuilder_Util.changedFrontLayout = true;
+  		Rexbuilder_Util.startFrontLayout = actualLayout;
+		}
+
+  	// Find and set new layout information
+  	if ( Rexbuilder_Util.changedFrontLayout ) {
+      var choosedLayout = Rexbuilder_Util.chooseLayout();
+  		Rexbuilder_Util.handleLayoutChange( choosedLayout );
+		}
+		
+		var i = 0;
+		var j = 0;
+		var splitScrollableInstance = null;
+		
+		for (; i < tot_grids; i++) {
+			if (SPLIT_SCROLLABLE_IN_PAGE) {
+				splitScrollableInstance = SplitScrollable.data(gridInstances[i].section);
+			}
+
+			// Checking if we passed from a non-mobile layout to a mobile layout
+			if (
+				splitScrollableInstance &&
+				Rexbuilder_Util.changedFrontLayout &&
+				Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.splitScrollable.minViewportWidth
+			) {
+				// Destroying SplitScrollable instance because it's not used on mobile
+				splitScrollableInstance.destroy();
+				splitScrollableInstance = null;
+
+				// Resetting RexGrid and RexBlock properties to make RexGrid work normally
+				gridInstances[i].properties.gridHeightSettable = true;
+
+				for (j = 0; j < gridInstances[i].gridBlocksTotal; j++) {
+					gridInstances[i].gridBlocks[j].setHeight = true;
+					gridInstances[i].gridBlocks[j].setTop = true;
+				}
+			}
+
+			// RexGrid operations on resize
+			if (Rexbuilder_Util.changedFrontLayout) {
+				gridInstances[i].endChangeLayout();
+			}
+
+			gridInstances[i].endResize();
+
+			// SplitScrollable operations on resize
+			if (splitScrollableInstance) {
+				if (Rexbuilder_Util.changedFrontLayout) {
+					reorderScrollableEls(splitScrollableInstance, gridInstances[i]);
+					reorderOpacityEls(splitScrollableInstance, gridInstances[i]);
+
+					splitScrollableInstance.refreshScrollableIndex();
+				}
+
+				splitScrollableInstance.callFixStickyHeight();
+			}
+
+			// StickySection operations on resize
+			// Creating sticky section background simulators.
+			// Need to create them before launching fast load to prevent
+			// fast load fixing happening before this operation.
+			if (STICKY_SECTION_IN_PAGE && Rexbuilder_Util.changedFrontLayout) {
+				var stickySectionInstance = StickySection.data(gridInstances[i].section);
+
+				if (stickySectionInstance) {
+					// Using static function beacuse it's used on load too
+					// In that case we still don't have SplitSrollable launched
+					StickySection.prepare(gridInstances[i].section);
+				}
+				
+			}
+		}
+
+		// Fixing video proportions, needed because videos
+		// must keep proportions between resizes
+		_fixVideos();
+
+    if ( Rexbuilder_Util.changedFrontLayout ) {
+      if ( '1' === _plugin_frontend_settings.fast_load ) {
+        // Resetting fast load (that contains IntersectionObserver)
+        window.FastLoad.destroy();
+        window.FastLoad.init();
+      }
+
+      // Re-launch effects
+      launchFrontEndEffects();
+    }
+
+  	Rexbuilder_Util.changedFrontLayout = false;
+  }
+
   return {
     init: init,
-    load: load
+    load: load,
+    handleFrontEndResize: handleFrontEndResize,
+
+    // RexGrid functions
+    getRexGridInstance: getRexGridInstance,
+    destroyRexGridInstance: destroyRexGridInstance,
   };
 })(jQuery);

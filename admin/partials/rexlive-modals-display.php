@@ -446,7 +446,7 @@ defined('ABSPATH') or exit;
                             <span class="bg-palette-button overlay-palette-orange" />
                         </div>
                         <div class="bg-palette-selector">
-                            <input class="bg-palette-value" type="hidden" value="rgba(156,39,176,0.6))" />
+                            <input class="bg-palette-value" type="hidden" value="rgba(156,39,176,0.6)" />
                             <span class="bg-palette-button overlay-palette-purple" />
                         </div>
                         <div class="bg-palette-selector">

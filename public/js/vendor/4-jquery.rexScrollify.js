@@ -21,7 +21,8 @@
   // Create the defaults once
   var pluginName = "rexScrollify",
     defaults = {
-      animation: "transition.slideUpBigIn",
+      // animation: "transition.slideUpBigIn",
+      animation: 'rexSlideUpBigIn',
       duration: "500",
       offset: 0,
       delay: 0,
@@ -37,6 +38,9 @@
   // so I can share it between the plugin instances and update it on the page resize
   var globalViewportSize = viewport();
   window.addEventListener('resize', updateGlobalViewportSize);
+
+  var transitionEvent = whichTransitionEvent();
+  var animationEvent = whichAnimationEvent();
 
   /**
    * Updating the viewport size only if occurs a window resize
@@ -70,6 +74,43 @@
       e = document.documentElement || document.body;
     }
     return { width: e[a + 'Width'], height: e[a + 'Height'] };
+  }
+
+  // find the animation/transition event names
+  function whichTransitionEvent() {
+    var t,
+      el = document.createElement("fakeelement");
+
+    var transitions = {
+      transition: "transitionend",
+      OTransition: "oTransitionEnd",
+      MozTransition: "transitionend",
+      WebkitTransition: "webkitTransitionEnd"
+    };
+
+    for (t in transitions) {
+      if (el.style[t] !== undefined) {
+        return transitions[t];
+      }
+    }
+  }
+
+  function whichAnimationEvent() {
+    var t,
+      el = document.createElement("fakeelement");
+
+    var animations = {
+      animation: "animationend",
+      OAnimation: "oAnimationEnd",
+      MozAnimation: "animationend",
+      WebkitAnimation: "webkitAnimationEnd"
+    };
+
+    for (t in animations) {
+      if (el.style[t] !== undefined) {
+        return animations[t];
+      }
+    }
   }
 
   function launchScrollingAnimation() {
@@ -168,6 +209,18 @@
     
     launchAnimation: function() {
       var that = this;
+
+      this.$element.one( animationEvent, function(e) {
+        that.element.style.opacity = 1;
+        that.$element.trigger('rs-animation-complete');
+        that.removeScrollHandler();
+      });
+
+      this.properties.launched = true;
+      this.$element.addClass( this.settings.animation );
+
+      /*
+      var that = this;
       this.$element.velocity(
         that.settings.animation,
         {
@@ -183,6 +236,7 @@
           }
         }
       );
+      */
     },
 
     removeScrollHandler: function() {
