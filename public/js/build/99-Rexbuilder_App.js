@@ -361,7 +361,9 @@ var Rexbuilder_App = (function($) {
     var stickySections = Array.prototype.slice.call( document.getElementsByClassName( 'sticky-section' ) );
     var tot_stickySections = stickySections.length, i = 0;
     var stickyElementSelector = '';
-    var overlayAnimation = false;
+		var overlayAnimation = false;
+
+		StickySection.destroyHandlers();
 
     for( i = 0; i < tot_stickySections; i++ ) {
       // Destroy before re-launching

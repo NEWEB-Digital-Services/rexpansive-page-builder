@@ -614,13 +614,7 @@
 		
 		instances = instances.filter(removeInstance.bind(this));
 	}
-
-	SplitScrollable.destroyAll = function() {
-		instances.forEach(function(instance) {
-			instance.destroy();
-		});
-	};
-
+	
 	/**
 	 * Static function that retrieves the SplitScrollable
 	 * instance of the DOM Element passed.

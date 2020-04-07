@@ -424,7 +424,11 @@
     }
     
     instances = instances.filter( removeInstance.bind(this) );
-  }
+	}
+
+	StickySection.destroyHandlers = function (){
+		scrollCallbacksArray = [];
+	}
 	
 	/**
 	 * Creates StickySection background simulators for images
