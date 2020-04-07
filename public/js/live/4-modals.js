@@ -487,6 +487,8 @@
       var data = e.settings.data_to_send;
       var $section;
 
+      console.log(data)
+
       if (data.sectionTarget.modelNumber != "") {
         $section = Rexbuilder_Util.$rexContainer.find(
           'section[data-rexlive-section-id="' +
