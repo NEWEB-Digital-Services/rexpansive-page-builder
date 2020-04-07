@@ -110,7 +110,7 @@
       addClass( this.element, 'sticky-css' );
 		}
 		
-		console.log( this.stickyElement.offsetHeight );
+		// console.log( this.stickyElement.offsetHeight );
 
     // first load check
     handleSticky.call(this);
@@ -133,7 +133,7 @@
       window.addEventListener('scroll', handleSticky.bind(this));
     }
 
-    instances.push( this );
+		instances.push( this );
   }
 
   if ( wInterval ) {
@@ -450,6 +450,12 @@
       addClass(el, className);
     }
 	}
+
+	function removeElement(el) {
+		if (el && el.parentNode) {
+			el.parentNode.removeChild(el);
+		}
+	}
 	
 	/* ===== Exposed functions ===== */
 	/**
@@ -458,6 +464,10 @@
 	 * @since			1.1.0
 	 */
   StickySection.prototype.destroy = function () {
+		removeElement(this.overlayAnimationEl);
+		removeElement(this.borderAnimationEl.el);
+		removeElement(this.stickyElement);
+
     function removeInstance(instance) {
       return instance.element !== this.element;
     }
@@ -489,7 +499,11 @@
 			adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
 			var backgroundSimulator = section.querySelector('.sticky-background-simulator');
 
-			backgroundSimulator.style.backgroundImage = 'url(' + sectionData.getAttribute('data-image_bg_section') + ')';
+			/* if ( '1' === _plugin_frontend_settings.fast_load ) {
+				backgroundSimulator.setAttribute('data-src', sectionData.getAttribute('data-image_bg_section'));
+			} else  */if ( '0' === _plugin_frontend_settings.fast_load ) {
+				backgroundSimulator.style.backgroundImage = 'url(' + sectionData.getAttribute('data-image_bg_section') + ')';
+			}
 		}
 	};
 

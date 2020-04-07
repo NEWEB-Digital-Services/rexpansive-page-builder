@@ -374,7 +374,7 @@ var Rexbuilder_App = (function($) {
       } else if ('' !== stickySections[i].style.backgroundImage || Rexbuilder_Util.hasClass(stickySections[i], 'section-w-image')) {
       	stickyElementSelector = '.sticky-background-simulator';
       }
-
+			
       overlayAnimation = ( 'true' === stickySections[i].querySelector('.section-data').getAttribute('data-row_overlay_active') ? true : false );
 
       new StickySection(stickySections[i], {
@@ -1192,7 +1192,7 @@ var Rexbuilder_App = (function($) {
 			// Creating sticky section background simulators.
 			// Need to create them before launching fast load to prevent
 			// fast load fixing happening before this operation.
-			if (STICKY_SECTION_IN_PAGE) {
+			if (STICKY_SECTION_IN_PAGE && Rexbuilder_Util.changedFrontLayout) {
 				var stickySectionInstance = StickySection.data(gridInstances[i].section);
 
 				if (stickySectionInstance) {
