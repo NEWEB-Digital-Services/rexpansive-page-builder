@@ -752,10 +752,10 @@ var Rex_Save_Listeners = (function($) {
 					continue;
 				}
 
-				// Scanning for all buttons IDs in the current block
 				sectionBlockButtonWrappers = Array.prototype.slice.call(sectionBlock.querySelectorAll('.rex-button-wrapper'));
 				tot_sectionBlockButtonWrappers = sectionBlockButtonWrappers.length;
-
+				
+				// Scanning for all buttons IDs in the current block
 				for (k = 0; k < tot_sectionBlockButtonWrappers; k++) {
 					sectionBlockButtonWrapper = sectionBlockButtonWrappers[k];
 

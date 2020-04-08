@@ -373,9 +373,9 @@ var Rexbuilder_Rexbutton = (function ($) {
         var $gridGallery = $buttonWrapper.parents(".grid-stack-row").eq(0);
         var $section = $buttonWrapper.parents(".rexpansive_section").eq(0);
         var buttonDimensionCalculated = jQuery.extend(true, {}, data.buttonDimensions);
-
+				
         // fix delete button bring back
-        $gridGallery.find('.button__element--delete').remove();
+        $gridGallery.find('.button-list__element__tools').remove();
 
         var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0);
         var margins = {
@@ -417,8 +417,8 @@ var Rexbuilder_Rexbutton = (function ($) {
             dropType = "inside-paragraph";
         } else {
             dropType = "inside-block";
-        }
-
+				}
+				
         switch (dropType) {
             case "inside-block":
                 $buttonWrapper.wrap("<p class=\"rex-buttons-paragraph\"></p>");
@@ -481,7 +481,8 @@ var Rexbuilder_Rexbutton = (function ($) {
         var $textWrap = $buttonWrapper.parents(".text-wrap");
         if ($textWrap.length != 0) {
             TextEditor.removePlaceholder($textWrap.eq(0));
-        }
+				}
+				
 
         // locking grid to prevent errors on focus right text node
         // var $element = $textWrap.parents(".grid-stack-item");
@@ -702,8 +703,8 @@ var Rexbuilder_Rexbutton = (function ($) {
         buttonsInPage.push({
             id: newID,
             number: 1
-        });
-
+				});
+				
         //if button was last of that model in page, remove it form buttonsInPage array
         if (Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]").length == 0) {
             var i;
