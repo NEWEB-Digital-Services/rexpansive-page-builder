@@ -887,8 +887,6 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _updateButtonListInPage = function () {
-			console.log( '_updateButtonListInPage' );
-			
         var j;
         var flagButtonFound = false;
         Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper").each(function (i, button) {

@@ -197,7 +197,7 @@ if ($sectionsIDsUsed == null) {
         }
     }
     ?></div>
-    <div class="available-layouts-names"><?php 
+    <div id="available-layouts-names"><?php 
     if($customizations_names != ""){
         echo json_encode($customizations_names); 
     }else{

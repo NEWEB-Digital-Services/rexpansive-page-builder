@@ -641,11 +641,11 @@ var Rexbuilder_Util = (function($) {
     var windowWidth = Rexbuilder_Util.globalViewport.width;
     var i, j, k;
     var tot_allLayoutsDimensions, tot_allModelsCustomizationsNames, tot_allModelsCustomizationsNames_names, tot_avaiableNames, tot_layoutsPageNames, tot_ordered;
-    var $availableDims = $("#layout-avaiable-dimensions");
-    var allLayoutsDimensions = ( $availableDims.length > 0 ? JSON.parse( $availableDims.text() ) : [] );
+    var availableDims = document.getElementById( 'layout-avaiable-dimensions' );
+    var allLayoutsDimensions = ( availableDims ? JSON.parse( availableDims.textContent ) : [] );
     var $availableModelsNames = $modelData.children(".available-models-customizations-names");
     var allModelsCustomizationsNames = ( $availableModelsNames.length > 0 ? JSON.parse( $availableModelsNames.text() ) : [] );
-    var $availableLayoutNames = $responsiveData.children(".available-layouts-names");
+    var $availableLayoutNames = $responsiveData.children("#available-layouts-names");
     var avaiableNames = ( $availableLayoutNames.length > 0 ? JSON.parse( $availableLayoutNames.text() ) : [] );
 
     var layoutsPageNames = [];
@@ -813,6 +813,77 @@ var Rexbuilder_Util = (function($) {
     return data;
   };
 
+  /**
+   * In case of a custom layout, guessing the correct layout from which
+   * retrieve the informations to set it
+   * @param  {[type]} layoutName [description]
+   * @return {[type]}            [description]
+   */
+  function guessLayout(layoutName) {
+    var allLayouts = document.getElementById('layout-avaiable-dimensions').textContent;
+    allLayouts = ( '' !== allLayouts ? JSON.parse( allLayouts ): [] );
+
+    var layoutInfo = allLayouts.filter( function( layout ) {
+      return ( layout.id === layoutName )
+    });
+
+    // something has goes wrong
+    if ( ! layoutInfo ) 'default';
+
+    layoutInfo = layoutInfo[0];
+
+    // it's standard layout, go with the classic rules
+    // maybe useless control
+    if ( 'standard' === layoutInfo.type ) 'default';
+
+    var layoutsInPage = $availableLayoutNames.text();
+
+    var layoutSavedInfo = allLayouts.filter( function( layout ) {
+      return ( -1 !== layoutsInPage.indexOf( layout.id ) );
+    });
+
+    var i, tot = layoutSavedInfo.length;
+    var guess = '';
+
+    // it's a mobile layout
+    if ( parseInt( layoutInfo.min ) < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+      for( i=0; i<tot; i++ ) {
+        if ( parseInt( layoutSavedInfo[i].min ) < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+          if ( parseInt( layoutInfo.min ) >= parseInt( layoutSavedInfo[i].min ) && ( "" === layoutSavedInfo[i].max || parseInt( layoutInfo.min ) <= parseInt( layoutSavedInfo[i].max ) ) ) {
+            guess = layoutSavedInfo[i].id;
+            break;
+          }
+        }
+      }
+
+      // no break, can be default
+    } else {
+      // it's another layout
+      for( i=0; i<tot; i++ ) {
+        if ( parseInt( layoutSavedInfo[i].min ) >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+          if ( parseInt( layoutInfo.min ) >= parseInt( layoutSavedInfo[i].min ) && ( "" === layoutSavedInfo[i].max || parseInt( layoutInfo.min ) <= parseInt( layoutSavedInfo[i].max ) ) ) {
+            guess = layoutSavedInfo[i].id;
+            break;
+          }
+        }
+      }
+    }
+
+    if ( '' === guess ) {
+      guess = 'default';
+    }
+
+    return guess;
+  }
+
+  /**
+   * Get custom layouts sections
+   * @param  {[type]} layoutDataPage        [description]
+   * @param  {[type]} layoutDataModels      [description]
+   * @param  {[type]} defaultLayoutSections [description]
+   * @param  {[type]} layoutName            [description]
+   * @return {[type]}                       [description]
+   */
   var _getCustomLayoutSections = function(
     layoutDataPage,
     layoutDataModels,
@@ -830,6 +901,7 @@ var Rexbuilder_Util = (function($) {
     var defaultDataModels = _getDefaultModelsLayout(layoutDataModels);
     var modelCustomization;
 
+    // search for edited layout
     for (i = 0, tot_layoutDataPage = layoutDataPage.length; i < tot_layoutDataPage; i++) {
       if (layoutDataPage[i].name == layoutName) {
         flagCustomLayoutPage = true;
@@ -916,6 +988,13 @@ var Rexbuilder_Util = (function($) {
     return layoutSelectedSections;
   };
 
+  /**
+   * Merging sections to found the correct saved layout, or generate a new one
+   * based on the available information
+   * @param  {Array} layoutSelectedSections (expected) sections settings on the selected layout
+   * @param  {Array} defaultLayoutSections  sections settings on default layout
+   * @return {Array}                        the correct expected layout
+   */
   var _mergeSections = function(layoutSelectedSections, defaultLayoutSections) {
     var i, j, m, n;
     var tot_layoutSelectedSections, tot_defaultLayoutSections, tot_sectionCustom_targets, tot_sectionDefault_targets;
@@ -940,6 +1019,9 @@ var Rexbuilder_Util = (function($) {
               (typeof sectionCustom.sectionCleared != "undefined" &&
                 sectionCustom.sectionCleared)
             ) {
+              console.log('nessun laiout salvadot')
+              // there isn't a layout saved, i set the default by default
+              // here i can check the nearest layout
 							sectionCustom.defaultSection = true;
               sectionCustom.targets = jQuery.extend(
                 true,
@@ -1105,6 +1187,7 @@ var Rexbuilder_Util = (function($) {
 						Rexbuilder_Util.activeLayout == 'default') &&
 					_isMobile()
 				) {
+          console.log('collasssssoo')
 					// Setting block properties if we are on mobile, no saved
 					// mobile layout exists and if the collapsing is needed
 					layoutSelectedSections[i].targets[0].props.collapse_grid = true;
@@ -1116,9 +1199,6 @@ var Rexbuilder_Util = (function($) {
 					// layoutSelectedSections[i].targets[0].props.gridEdited = false;
 				}
 			}
-
-			// console.log('section founded',layoutSelectedSections[i].sectionFounded)
-			// console.log('section default',layoutSelectedSections[i].defaultSection)
     }
     return jQuery.extend(true, {}, layoutSelectedSections);
   };
@@ -1218,8 +1298,9 @@ var Rexbuilder_Util = (function($) {
     var layoutDataModels = _getModelsCustomizations();
     var defaultLayoutSections;
 
+    // first load default layout state generation
     if ( $defaultLayoutState.attr("data-empty-default-customization") == "true" ) {
-      defaultLayoutSections = _getDefaultPageLayout( layoutDataPage, layoutDataModels );
+      defaultLayoutSections = Rexbuilder_Util.getDefaultPageLayout( layoutDataPage, layoutDataModels );
       _createDefaultLayoutState(defaultLayoutSections);
     } else {
       _updateDefaultLayoutState({
@@ -1227,7 +1308,8 @@ var Rexbuilder_Util = (function($) {
       });
       defaultLayoutSections = _getDefaultLayoutState();
     }
-    var layoutSelectedSections = _getCustomLayoutSections(
+
+    var layoutSelectedSections = Rexbuilder_Util.getCustomLayoutSections(
       layoutDataPage,
       layoutDataModels,
       defaultLayoutSections,
@@ -1263,8 +1345,27 @@ var Rexbuilder_Util = (function($) {
 
     Rexbuilder_Util_Editor.clearSectionsEdited();
 
+    // guess a different layout
+    // happens when the user selcts a custom layout, so we must guess
+    // whats setting to assing to contents
+    var probableLayout = guessLayout(chosenLayoutName);
+    var useThis;
+
+    if ( chosenLayoutName !== probableLayout ) {
+      useThis = layoutDataPage.filter( function(layout) {
+        return ( probableLayout === layout.name );
+      })
+
+      useThis = useThis[0].sections;
+    } else {
+      useThis = layoutSelectedSections;
+    }
+
+    console.log(probableLayout, chosenLayoutName)
+
     var mergedEdits = _mergeSections(
-      layoutSelectedSections,
+      // layoutSelectedSections,
+      useThis,
       defaultLayoutSections
     );
 
@@ -3072,23 +3173,23 @@ var Rexbuilder_Util = (function($) {
         return;
       }
     } else {    // Front end resize logic
-      var actualLayout = _findFrontLayout();
-      if( Rexbuilder_Util.startFrontLayout != actualLayout ) {
-        Rexbuilder_Util.changedFrontLayout = true;
-        Rexbuilder_Util.startFrontLayout = actualLayout;
-        Rexbuilder_Util_Editor.startLoading();
-      }
+      // var actualLayout = _findFrontLayout();
+      // if( Rexbuilder_Util.startFrontLayout != actualLayout ) {
+      //   Rexbuilder_Util.changedFrontLayout = true;
+      //   Rexbuilder_Util.startFrontLayout = actualLayout;
+      //   Rexbuilder_Util_Editor.startLoading();
+      // }
 
-      if( Rexbuilder_Util.changedFrontLayout ) {
-        var choosedLayout = chooseLayout();
-        _set_initial_grids_state( choosedLayout );
+      // if( Rexbuilder_Util.changedFrontLayout ) {
+      //   var choosedLayout = chooseLayout();
+      //   _set_initial_grids_state( choosedLayout );
 
-        setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
-      } else {
-        var l = chooseLayout();
-        var resize_info = _edit_dom_layout(chooseLayout());
-        _updateGridsHeights();
-      }
+      //   setTimeout( changeLayouHandling.bind(null, choosedLayout), 300 );
+      // } else {
+      //   var l = chooseLayout();
+      //   var resize_info = _edit_dom_layout(chooseLayout());
+      //   _updateGridsHeights();
+      // }
     }
 
     Rexbuilder_Util.windowIsResizing = false;
@@ -3099,23 +3200,24 @@ var Rexbuilder_Util = (function($) {
    * Handling change layout
    * @param  {string} choosedLayout new layout
    * @return {void}
+   * @deprecated 2.0.4  new front end resize logic
    */
-  function changeLayouHandling( choosedLayout ) {
-    var resize_info = _edit_dom_layout(choosedLayout);
-    _updateGridsHeights();
+  // function changeLayouHandling( choosedLayout ) {
+  //   var resize_info = _edit_dom_layout(choosedLayout);
+  //   _updateGridsHeights();
 
-    if( Rexbuilder_Util.changedFrontLayout ) {
-      if( 0 == resize_info.collapse_needed ) {
-        Rexbuilder_Util_Editor.endLoading();
-      } else {
-        Rexbuilder_Util.$document.one("rexlive:collapsingElementsEnded", function(e) {
-          Rexbuilder_Util_Editor.endLoading();
-        });
-      }
-    }
+  //   if( Rexbuilder_Util.changedFrontLayout ) {
+  //     if( 0 == resize_info.collapse_needed ) {
+  //       Rexbuilder_Util_Editor.endLoading();
+  //     } else {
+  //       Rexbuilder_Util.$document.one("rexlive:collapsingElementsEnded", function(e) {
+  //         Rexbuilder_Util_Editor.endLoading();
+  //       });
+  //     }
+  //   }
 
-    Rexbuilder_Util.changedFrontLayout = false;
-  }
+  //   Rexbuilder_Util.changedFrontLayout = false;
+  // }
 
   /**
    * Set the internal initial grid state for every row
@@ -3762,15 +3864,18 @@ var Rexbuilder_Util = (function($) {
     var layoutDataModels = Rexbuilder_Util.getModelsCustomizations();
     var defaultLayoutSections;
 
+    // first load default layout state generation
     if ( $defaultLayoutState.attr("data-empty-default-customization") == "true" ) {
       defaultLayoutSections = Rexbuilder_Util.getDefaultPageLayout( layoutDataPage, layoutDataModels );
       Rexbuilder_Util.createDefaultLayoutState(defaultLayoutSections);
     } else {
+      // on change layout, the default state may be change, get it updated
       Rexbuilder_Util.updateDefaultLayoutState({
         modelsData: layoutDataModels
       });
       defaultLayoutSections = Rexbuilder_Util.getDefaultLayoutState();
     }
+
     var layoutSelectedSections = Rexbuilder_Util.getCustomLayoutSections(
       layoutDataPage,
       layoutDataModels,
@@ -3807,8 +3912,27 @@ var Rexbuilder_Util = (function($) {
 
     Rexbuilder_Util_Editor.clearSectionsEdited();
 
+    // guess a different layout
+    // happens when the user selcts a custom layout, so we must guess
+    // whats setting to assing to contents
+    var probableLayout = guessLayout(chosenLayoutName);
+    var useThis;
+
+    if ( chosenLayoutName !== probableLayout ) {
+      useThis = layoutDataPage.filter( function(layout) {
+        return ( probableLayout === layout.name );
+      })
+
+      useThis = useThis[0].sections;
+    } else {
+      useThis = layoutSelectedSections;
+    }
+
+    console.log(chosenLayoutName, probableLayout)
+
     var mergedEdits = _mergeSections(
-      layoutSelectedSections,
+      // layoutSelectedSections,
+      useThis,
       defaultLayoutSections
 		);
 		
@@ -4004,7 +4128,7 @@ var Rexbuilder_Util = (function($) {
     // layouts initing
     $rexbuilderLayoutData = $(document.getElementById('rexbuilder-layout-data'));
     $rexbuilderModelData = $(document.getElementById('rexbuilder-model-data'));
-    $availableLayoutNames = $rexbuilderLayoutData.find('.available-layouts-names');
+    $availableLayoutNames = $(document.getElementById('available-layouts-names'));
 
     $modelsCustomizationsDataDiv = $("#rexbuilder-model-data").children(".models-customizations").eq(0);
     $pageCustomizationsDataDiv = $rexbuilderLayoutData.children(".layouts-customizations").eq(0);
