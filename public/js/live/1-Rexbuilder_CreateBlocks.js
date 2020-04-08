@@ -620,8 +620,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
     $newBlockData.attr("id", newBlockID + "-builder-data");
 
     sanitizeBlockContent( $newBlock[0] );
-
-    $newBlock.appendTo($gallery.eq(0));
+		
+		$newBlock.appendTo($gallery.eq(0));
 
     var w = parseInt($newBlock.attr("data-gs-width"));
     var h = parseInt($newBlock.attr("data-gs-height"));
@@ -648,7 +648,11 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     gridstack.batchUpdate();
     gridstack.update($newBlock[0], x, y, w, h);
-    gridstack.commit();
+		gridstack.commit();
+		
+		// RexButtons operations
+		Rexbuilder_Rexbutton.refreshNumbers();
+		Rexbuilder_Rexbutton.updateButtonListInPage();
 
     galleryEditorInstance._createFirstReverseStack();
     galleryEditorInstance.properties.numberBlocksVisibileOnGrid = galleryEditorInstance.properties.numberBlocksVisibileOnGrid + 1;

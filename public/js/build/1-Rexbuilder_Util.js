@@ -3947,25 +3947,26 @@ var Rexbuilder_Util = (function($) {
     updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
 		
 		/** @todo Need to check forceCollapseElementsGrid too? */
-		if ( collapseGrid ) {
-			/*
-			 * Collapsing only if there's a mobile layout saved in DB
-			 * because if not, data are already ok (they're changed
-			 * in function _mergeSections) 
-			 */
-			
-			// Da qui in poi è preso da _mergeSections
-
-			// targets[0].props.collapse_grid = true;					// Already true
-			// targets[0].props.noMobileLayoutSaved = true;		// undefined
-			// targets[0].props.layout = "masonry";						// Already 'masonry'
-			// targets[0].props.fullHeight = false;						// undefined
-
-			// todo fix proposal
-			// layoutSelectedSections[i].targets[0].props.gridEdited = false;
-		}
+		/* if ( collapseGrid ) {
+			// Collapsing only if there's a mobile layout saved in DB
+			// because if not, data are already ok (they're changed
+			// in function _mergeSections) 
+		} */
 		
-  }
+	}
+	
+	/**
+	 * Removes duplicate values from an Array.
+	 * Valid only with values that are comparable with ===.
+	 * @param		{Array}		array 	Array to work with
+	 * @returns	{Array}		The passed Array with unique values
+	 * @since		2.0.4
+	 */
+	function removeArrayDuplicates(array) {
+		return array.filter(function(value, index, self) {
+      return self.indexOf(value) === index;
+    })
+	}
 
   // init the utilities
   var init = function() {
@@ -4144,6 +4145,7 @@ var Rexbuilder_Util = (function($) {
     rtimeOut: rtimeOut,
     rInterval: rInterval,
     merge: _merge,
-    handleLayoutChange: handleLayoutChange
+		handleLayoutChange: handleLayoutChange,
+		removeArrayDuplicates: removeArrayDuplicates
   };
 })(jQuery);

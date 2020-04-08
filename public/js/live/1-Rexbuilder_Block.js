@@ -12,10 +12,15 @@ var Rexbuilder_Block = (function ($) {
 		$elem.attr("data-rexlive-element-edited", true);
 		Rexbuilder_Util_Editor.removingBlocks = false;
 
+		// WPCF7 operations
 		if ( 0 !== $elem.find('.wpcf7-form').length ) {
 			var formID = $elem.find('.rex-element-wrapper').attr('data-rex-element-id');
 			Rexbuilder_Rexwpcf7_Editor.removeFormInPage(formID);
 		}
+
+		// RexButtons operations
+		Rexbuilder_Rexbutton.refreshNumbers();
+		Rexbuilder_Rexbutton.updateButtonListInPage();
 
 		if ( 0 === $section.find('.perfect-grid-item').not('.rex-hide-element').length )
 		{

@@ -447,7 +447,6 @@ var Rexbuilder_Rexbutton = (function ($) {
                 break;
             case "inside-new-row":
                 // @todo
-                ;
                 break;
             default:
                 break;
@@ -455,25 +454,24 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _endFixingButtonImported = function ($buttonWrapper) {
-        var buttonID = $buttonWrapper.attr("data-rex-button-id");
-        var flagButtonFound = false;
-        $buttonWrapper.attr("data-rex-button-number", 1);
-        for (var i = 0; i < buttonsInPage.length; i++) {
-            if (buttonsInPage[i].id == buttonID) {
-                buttonsInPage[i].number += 1;
-                $buttonWrapper.attr("data-rex-button-number", buttonsInPage[i].number);
-                flagButtonFound = true;
-                break;
-            }
+        var buttonID = $buttonWrapper.attr('data-rex-button-id');
+				var flagButtonFound = false;
+				var i = 0;
+
+				for (; i < buttonsInPage.length; i++) {
+					if (buttonsInPage[i].id == buttonID) {
+						flagButtonFound = true;
+						break;
+					}
 				}
 
-        if (!flagButtonFound) {
-            _addButtonStyle($buttonWrapper);
-            buttonsInPage.push({
-                id: buttonID,
-                number: 1
-            });
+				if (!flagButtonFound) {
+					_addButtonStyle($buttonWrapper);
 				}
+
+				// Refreshing RexButtons numbers and buttonsInPage Object
+				refreshNumbers();
+				updateButtonListInPage();
 				
         _removeModelData($buttonWrapper);
 
@@ -482,12 +480,6 @@ var Rexbuilder_Rexbutton = (function ($) {
         if ($textWrap.length != 0) {
             TextEditor.removePlaceholder($textWrap.eq(0));
 				}
-				
-
-        // locking grid to prevent errors on focus right text node
-        // var $element = $textWrap.parents(".grid-stack-item");
-        // var $section = $element.parents(".rexpansive_section");
-        // Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
     }
 
     var _addButtonStyle = function ($buttonWrapper) {
@@ -862,12 +854,104 @@ var Rexbuilder_Rexbutton = (function ($) {
             buttonInfo: buttonProperties
         }
         return data;
-    }
+		}
+		
     var _lockSynchronize = function (data) {
         var buttonID = data.buttonTarget.button_id;
         var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
         $buttonWrapper.find(".rex-button-data").attr("data-synchronize", true);
-    }
+		}
+
+		/**
+		 * Scans all the sections and blocks inside them to find the
+		 * IDs of the RexButton that are actually in page.
+		 * @param			{Boolean}	scanRemovingElements		Do removing elements count when searching for IDs?
+		 * @returns		{Array}		Array with no repetitions of RexButtons IDs
+		 * @since			2.0.4
+		 */
+		function findIDsInPage(scanRemovingElements) {
+			// Setting the default to true
+			scanRemovingElements = scanRemovingElements || false;
+
+			var rexButtonsIDsInPage = [];
+
+			var sections = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section'));
+			var section;
+			var tot_sections = sections.length;
+
+			var sectionBlocks;
+			var sectionBlock;
+			var tot_sectionBlocks = 0;
+
+			var sectionBlockButtonWrappers;
+			var sectionBlockButtonWrapper;
+			var tot_sectionBlockButtonWrappers = 0;
+
+			var i = 0;
+			var j = 0;
+			var k = 0;
+
+			for (; i < tot_sections; i++) {
+				section = sections[i];
+				if (!scanRemovingElements && Rexbuilder_Util.hasClass(section, 'removing_section')) {
+					continue;
+				}
+
+				sectionBlocks = Array.prototype.slice.call(section.querySelectorAll('.perfect-grid-item'));
+				tot_sectionBlocks = sectionBlocks.length;
+
+				for (j = 0; j < tot_sectionBlocks; j++) {
+					sectionBlock = sectionBlocks[j];
+					if (!scanRemovingElements && Rexbuilder_Util.hasClass(sectionBlock, 'removing_block')) {
+						continue;
+					}
+
+					sectionBlockButtonWrappers = Array.prototype.slice.call(sectionBlock.querySelectorAll('.rex-button-wrapper'));
+					tot_sectionBlockButtonWrappers = sectionBlockButtonWrappers.length;
+					
+					// Scanning for all buttons IDs in the current block
+					for (k = 0; k < tot_sectionBlockButtonWrappers; k++) {
+						sectionBlockButtonWrapper = sectionBlockButtonWrappers[k];
+
+						rexButtonsIDsInPage.push(sectionBlockButtonWrapper.getAttribute('data-rex-button-id'));
+					}
+				}
+			}
+
+			// Filtering of the array to avoid repetitions
+			rexButtonsIDsInPage = Rexbuilder_Util.removeArrayDuplicates(rexButtonsIDsInPage);
+			
+			return rexButtonsIDsInPage;
+		}
+		
+		function refreshNumbers() {
+			var idsInPageArray = findIDsInPage(true);
+			var idsInPageObj = {}; // It may be useful in the future for other uses
+
+			idsInPageArray.forEach(function (id) {
+				idsInPageObj[id] = {
+					occurrencies: 0,
+				};
+			});
+
+			var rexButtons = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rex-button-wrapper'));
+			var currentButton;
+			var tot_rexButtons = rexButtons.length;
+
+			var currentButtonID;
+
+			var i = 0;
+
+			// Looping through all RexButtons to set its number
+			// based on RexButtons DOM order
+			for (; i < tot_rexButtons; i++) {
+				currentButton = rexButtons[i];
+				currentButtonID = currentButton.getAttribute('data-rex-button-id');
+
+				idsInPageObj[currentButtonID].occurrencies++;
+				currentButton.setAttribute('data-rex-button-number', idsInPageObj[currentButtonID].occurrencies);
+			}
+		}
 
     var _linkDocumentListeners = function () {
         Rexbuilder_Util.$document.on("rexlive:completeImportButton", function (e) {
@@ -880,37 +964,44 @@ var Rexbuilder_Rexbutton = (function ($) {
         });
     }
 
-    var _updateButtonListInPage = function () {
-        var j;
-        var flagButtonFound = false;
-        Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper").each(function (i, button) {
-            var $buttonWrapper = $(button);
-            var buttonID = $buttonWrapper.attr("data-rex-button-id");
-            var buttonNumber = parseInt($buttonWrapper.attr("data-rex-button-number"));
-            flagButtonFound = false;
-            for (j = 0; j < buttonsInPage.length; j++) {
-                if (buttonsInPage[j].id == buttonID) {
-                    flagButtonFound = true;
-                    break;
-                }
-            }
-            flagButtonFound = false;
-            if (!flagButtonFound) {
-                buttonsInPage.push({
-                    id: buttonID,
-                    number: buttonNumber
-                });
+		/**
+		 * Generates (or re-generates) buttonsInPage Array.
+		 * @returns	{void}
+		 * @since		?.?.?
+		 * @version	2.0.4		Added resetting of the buttonsInPage Array and removed jQuery
+		 */
+		function updateButtonListInPage() {
+			buttonsInPage = [];
 
-                if ($buttonWrapper.hasClass("rex-separate-button")) {
-                    // We are not editing a button model, but a separate button
-                    _addButtonStyle($buttonWrapper);
-                }
-            }
-            if (buttonsInPage[j].number < buttonNumber) {
-                buttonsInPage[j].number = buttonNumber;
-            }
-        });
-    }
+			var rexButtons = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rex-button-wrapper'));
+			var currentButton;
+			var tot_rexButtons = rexButtons.length;
+
+			var currentButtonID;
+			var currentButtonNumber;
+
+			var i = 0;
+
+			for (; i < tot_rexButtons; i++) {
+				currentButton = rexButtons[i];
+				currentButtonID = currentButton.getAttribute('data-rex-button-id');
+				currentButtonNumber = parseInt(currentButton.getAttribute('data-rex-button-number'));
+
+				buttonsInPage.push({
+					id: currentButtonID,
+					number: currentButtonNumber,
+				});
+
+				if (Rexbuilder_Util.hasClass(currentButton, 'rex-separate-button')) {
+					// We are not editing a button model, but a separate button
+					_addButtonStyle($(currentButton));
+				}
+
+				if (buttonsInPage[i].number < currentButtonNumber) {
+					buttonsInPage[i].number = currentButtonNumber;
+				}
+			}
+		}
 
     var _getButtonsInPage = function () {
         return buttonsInPage;
@@ -945,8 +1036,10 @@ var Rexbuilder_Rexbutton = (function ($) {
 
         this.$buttonsStyle = $("#rexpansive-builder-rexbutton-style-inline-css");
         _fixCustomStyleElement();
-
-        _updateButtonListInPage();
+				
+				// This refresh is put here to correct old pages that have wrong button numbers
+				refreshNumbers();
+        updateButtonListInPage();
 
         _linkDocumentListeners();
     };
@@ -963,6 +1056,9 @@ var Rexbuilder_Rexbutton = (function ($) {
         separateRexButton: _separateRexButton,
 				generateButtonData: _generateButtonData,
 				endFixingButtonImported: _endFixingButtonImported,
+				updateButtonListInPage: updateButtonListInPage,
+				findIDsInPage: findIDsInPage,
+				refreshNumbers: refreshNumbers,
 
         updateButtonContainerRule: _updateButtonContainerRule,
         updateButtonBackgroundRule: _updateButtonBackgroundRule,

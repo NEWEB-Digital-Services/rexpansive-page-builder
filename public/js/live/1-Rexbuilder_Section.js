@@ -399,7 +399,7 @@ var Rexbuilder_Section = (function($) {
       }
     }
 
-    if ( 'undefined' !== typeof Rexbuilder_Rexwpcf7 ) {
+    if ( 'undefined' !== typeof Rexbuilder_Rexwpcf7_Editor ) {
       var $elementsInSection = $section.find('.rex-element-wrapper').has('.wpcf7-form');
       $elementsInSection.each(function(index, el) {
         var $elem = $(el);
@@ -409,7 +409,11 @@ var Rexbuilder_Section = (function($) {
           Rexbuilder_Rexwpcf7_Editor.removeFormInPage(formID);
         }
       });
-    }
+		}
+
+		// RexButtons operations
+		Rexbuilder_Rexbutton.refreshNumbers();
+		Rexbuilder_Rexbutton.updateButtonListInPage();
 
     var reverseData = {
       show: true,
@@ -590,7 +594,10 @@ var Rexbuilder_Section = (function($) {
     var $row = $newSection.find(".grid-stack-row");
 
     // launch the grid on the new section
-    $row.perfectGridGalleryEditor({editorMode: true});
+		$row.perfectGridGalleryEditor({editorMode: true});
+		
+		Rexbuilder_Rexbutton.refreshNumbers();
+		Rexbuilder_Rexbutton.updateButtonListInPage();
 
     // relaunch sortable
     Rexbuilder_Util.$rexContainer.sortable("refresh");

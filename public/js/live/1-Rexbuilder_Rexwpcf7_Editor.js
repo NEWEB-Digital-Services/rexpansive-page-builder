@@ -260,7 +260,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function($) {
         break;
       default: break;
     }
-    // console.log('%c '+inputType+' '+propertyType, 'background: ' + newValue+';color: #000');
 
     switch (propertyType) {
         case "background-color":
@@ -966,7 +965,10 @@ var Rexbuilder_Rexwpcf7_Editor = (function($) {
 
     idsInPage = idsInPage.filter(function(value, index, self) {
       return self.indexOf(value) === index;
-    })
+		})
+		
+		// Check if ok
+		// idsInPage = Rexbuilder_Util.removeArrayDuplicates(idsInPage);
 
     $.ajax({
       type: "POST",
