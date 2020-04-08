@@ -1243,7 +1243,6 @@ var Rexbuilder_Section = (function($) {
             customizationsData: response.data.customizations_data,
             customizationsNames: response.data.customizations_names
 					};
-					console.log( JSON.parse(JSON.stringify(response)) );
 
           Rexbuilder_Util_Editor.sectionCopying = true;
           Rexbuilder_Util_Editor.insertingModel = true;
@@ -1427,7 +1426,7 @@ var Rexbuilder_Section = (function($) {
 				databaseButton = databaseButtonsArray[i];
 				if (-1 !== databaseButton.search(buttonID)) {
 					$element.replaceWith(databaseButton);
-					// Not breaking the for 'cause there could be more than 1 button
+					break;
 				}
 			}
 		});

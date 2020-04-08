@@ -66,12 +66,12 @@ var Rexbuilder_Rexbutton = (function ($) {
     //////////////////////////////////////////////////////////////////////////////////////////////
     // Adding rules
     var _addButtonContainerRule = function (buttonID, property) {
-        if ("insertRule" in styleSheet) {
-            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container{" + property + "}", styleSheet.cssRules.length);
-        }
-        else if ("addRule" in styleSheet) {
-            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container{" + property + "}", styleSheet.cssRules.length);
-        }
+			if ("insertRule" in styleSheet) {
+				styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container{" + property + "}", styleSheet.cssRules.length);
+			}
+			else if ("addRule" in styleSheet) {
+				styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container{" + property + "}", styleSheet.cssRules.length);
+			}
     }
 
     var _addButtonBackgroundRule = function (buttonID, property) {
@@ -494,11 +494,6 @@ var Rexbuilder_Rexbutton = (function ($) {
             var buttonProperties = _generateButtonData($buttonWrapper, true);
 						var buttonID = buttonProperties.buttonInfo.buttonTarget.button_id;
 						
-						console.groupCollapsed( 'buttonID' );
-						console.log( buttonProperties );
-						console.trace(  );
-						console.groupEnd();
-
 						_addCSSRules(buttonID, buttonProperties.buttonInfo);
         }
     }
@@ -727,8 +722,6 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _removeModelData = function ($buttonWrapper) {
-			console.trace( '_removeModelData' );
-			
         var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0);
         $buttonData.removeAttr("data-text-color");
         $buttonData.removeAttr("data-text-size");
@@ -887,8 +880,6 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _updateButtonListInPage = function () {
-			console.log( '_updateButtonListInPage' );
-			
         var j;
         var flagButtonFound = false;
         Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper").each(function (i, button) {

@@ -656,7 +656,7 @@ var Model_Import_Modal = (function($) {
             };
             Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
           } catch (e) {
-            console.log(e);
+						console.log(e);
           }
         }
       });

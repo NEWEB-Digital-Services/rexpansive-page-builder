@@ -50,25 +50,11 @@ var Rex_Save_Listeners = (function($) {
       Rexbuilder_Util.updatePageAvaiableLayoutsNames(layoutsNames);
       Rexbuilder_Util.updatePageCustomizationsData(newCustomization);
 
+			// Getting the RexButtons IDs in page scanning all the sections
+			var rexButtonsIDsInPage = _findRexButtonsIDsInPage();
+			
       var ajaxCalls = [];
-
-      //rex-buttons in page, removing duplicates
-      var rexButtonsInPage = Rexbuilder_Rexbutton.getButtonsInPage();
-      var rexButtonsIDsInPage = [];
-      var buttonFound = false;
-      var tot_rexButtonsInPage, tot_rexButtonsIDsInPage;
-      for (var i = 0, tot_rexButtonsInPage = rexButtonsInPage.length; i < tot_rexButtonsInPage; i++) {
-        for (var j = 0, tot_rexButtonsIDsInPage = rexButtonsIDsInPage.length; j < tot_rexButtonsIDsInPage; j++) {
-          if (rexButtonsInPage[i].id == rexButtonsIDsInPage[j]) {
-            buttonFound = true;
-          }
-        }
-        if (!buttonFound) {
-          rexButtonsIDsInPage.push(rexButtonsInPage[i].id);
-        }
-        buttonFound = false;
-      }
-
+			
       ajaxCalls.push(
         $.ajax({
           type: "POST",
@@ -724,7 +710,67 @@ var Rex_Save_Listeners = (function($) {
     model.customizations = customizations;
 
     return model;
-  };
+	};
+	
+	/**
+	 * Scans all the sections and blocks inside them to find the
+	 * IDs of the RexButton that are actually in page.
+	 * @returns		{Array}		Array with no repetitions of RexButtons IDs
+	 * @since			2.0.4
+	 */
+	function _findRexButtonsIDsInPage() {
+		var rexButtonsIDsInPage = [];
+
+		var sections = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section'));
+		var section;
+		var tot_sections = sections.length;
+
+		var sectionBlocks;
+		var sectionBlock;
+		var tot_sectionBlocks = 0;
+
+		var sectionBlockButtonWrappers;
+		var sectionBlockButtonWrapper;
+		var tot_sectionBlockButtonWrappers = 0;
+
+		var i = 0;
+		var j = 0;
+		var k = 0;
+
+		for (; i < tot_sections; i++) {
+			section = sections[i];
+			if (Rexbuilder_Util.hasClass(section, 'removing_section')) {
+				continue;
+			}
+
+			sectionBlocks = Array.prototype.slice.call(section.querySelectorAll('.perfect-grid-item'));
+			tot_sectionBlocks = sectionBlocks.length;
+
+			for (j = 0; j < tot_sectionBlocks; j++) {
+				sectionBlock = sectionBlocks[j];
+				if (Rexbuilder_Util.hasClass(sectionBlock, 'removing_block')) {
+					continue;
+				}
+
+				// Scanning for all buttons IDs in the current block
+				sectionBlockButtonWrappers = Array.prototype.slice.call(sectionBlock.querySelectorAll('.rex-button-wrapper'));
+				tot_sectionBlockButtonWrappers = sectionBlockButtonWrappers.length;
+
+				for (k = 0; k < tot_sectionBlockButtonWrappers; k++) {
+					sectionBlockButtonWrapper = sectionBlockButtonWrappers[k];
+
+					rexButtonsIDsInPage.push(sectionBlockButtonWrapper.getAttribute('data-rex-button-id'));
+				}
+			}
+		}
+
+		// Filtering of the array to avoid repetitions
+		rexButtonsIDsInPage = rexButtonsIDsInPage.filter(function (value, index, self) {
+			return self.indexOf(value) === index;
+		});
+
+		return rexButtonsIDsInPage;
+	}
 
   /*
     data-rexlive-section-edited="true"
