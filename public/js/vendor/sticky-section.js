@@ -117,7 +117,7 @@
 	 * @since		1.1.0
 	 */
 	function _watchScroll() {
-		userScrolled = false;
+		var userScrolled = false;
 
 		function scrollHandler() {
 			userScrolled = true;
@@ -144,7 +144,7 @@
 	 * @since		1.1.0
 	 */
 	function _watchResize() {
-		userResized = false;
+		var userResized = false;
 
 		function resizeHandler() {
 			userResized = true;

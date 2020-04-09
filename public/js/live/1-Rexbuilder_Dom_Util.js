@@ -478,14 +478,14 @@ var Rexbuilder_Dom_Util = (function($) {
     if ( ($videoWrap.length != 0 && tempSrcUrl != mp4Data.linkMp4) || $videoWrap.length == 0 ) {
       _removeMp4Video($target, true);
       $target.addClass("mp4-player");
-      tmpl.arg = "video";
-      
+			tmpl.arg = "video";
+			
       var mp4Tmpl = tmpl("tmpl-video-mp4", {
           url: mp4Data.linkMp4,
           width: mp4Data.width,
           height: mp4Data.height,
           fast_load: Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode
-        });
+			  });
 
       if ($target.is("section")) {
         var insert_after = "";

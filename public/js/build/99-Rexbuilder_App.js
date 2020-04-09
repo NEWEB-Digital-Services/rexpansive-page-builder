@@ -915,12 +915,12 @@ var Rexbuilder_App = (function($) {
       	var tot_grids = grids.length;
       	var i = 0;
 
-      	for ( i = 0; i < tot_grids; i++ ) {
+				for ( i = 0; i < tot_grids; i++ ) {
 					var rexGridInstance = new RexGrid(grids[i]);
-          
+
 					gridInstances.push( rexGridInstance );
 					
-					if (STICKY_SECTION_IN_PAGE) {
+					if (STICKY_SECTION_IN_PAGE && Rexbuilder_Util.hasClass(rexGridInstance.section, 'sticky-section')) {
 						StickySection.prepare(rexGridInstance.section);
 					}
 				}
@@ -1051,7 +1051,7 @@ var Rexbuilder_App = (function($) {
       for ( i = 0; i < tot_grids; i++ ) {
         gridInstances[i].fixAfterLoad();
       }
-      
+			
       _fixVideos();       // Fixing video proportions
       RexSlider.init();   // Starting slider
       Rexbuilder_Util.launchVideoPlugins();

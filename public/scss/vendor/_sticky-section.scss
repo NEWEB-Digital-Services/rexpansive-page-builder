@@ -2,10 +2,11 @@
   &.sticky-section {
     &.sticky-css {
       .rex-video-wrap {
-        @include safariFlickerFix;
+				@include safariFlickerFix;
         position: sticky;
         top: 0;
         z-index: 20;
+				height: 100vh;
       }
       .sticky-background-simulator {
         @include safariFlickerFix;
@@ -18,38 +19,32 @@
         background-position: center;
         background-repeat: no-repeat;
       }
+			&.will-change-rule {
+				.rex-video-wrap {
+					will-change: transform;
+				}
+			}
+			@media screen and (min-width: 768px) {
+				.perfect-grid-gallery {
+					// min-height: 100vh;
+					// margin-top: 100vh!important;
+					margin-bottom: 20vh!important;
+				}
+			}
+	
+			@media screen and (max-width: 767px) {
+				.perfect-grid-gallery {
+					margin-top: 50vh!important;
+					margin-bottom: 20vh!important;
+				}
+			}
+			.responsive-overlay {
+				&.rex-active-overlay {
+					visibility: hidden;
+				}
+			}
     }
 
-    &.will-change-rule {
-      .rex-video-wrap {
-        will-change: transform;
-      }
-    }
-    .rex-video-wrap {
-      // max-height: 100vh;
-      height: 100vh;
-    }
-
-    @media screen and (min-width: 768px) {
-      .perfect-grid-gallery {
-        // min-height: 100vh;
-        // margin-top: 100vh!important;
-        margin-bottom: 20vh!important;
-      }
-    }
-
-    @media screen and (max-width: 767px) {
-      .perfect-grid-gallery {
-        margin-top: 50vh!important;
-        margin-bottom: 20vh!important;
-      }
-    }
-
-    .responsive-overlay {
-      &.rex-active-overlay {
-        visibility: hidden;
-      }
-    }
   }
 
 }

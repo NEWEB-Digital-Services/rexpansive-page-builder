@@ -283,10 +283,6 @@
 		// value without causing a layout reflow
 		_calcGridBaseAttrs.call( this );
 
-		// Setting min-height to the grid for prevent loading of
-		// all images on mobile
-		this.element.style.minHeight = globalViewportSize.height + 'px';
-
 		// Finding the blocks in the DOM
 		_getGridBlocks.call( this );
 
@@ -301,8 +297,6 @@
 		this.calcAllBlocksTops();
 
 		_setGridHeight.call( this );
-
-		// this.element.RexGridInstance = this;
 
 		instances.push( this );
 	}
@@ -1080,9 +1074,6 @@
 		this.fixAllBlockPositions();
 
 		_setGridHeight.call( this );
-
-		// Resetting min height that was set in _init function
-		this.element.style.minHeight = '';
 	}
 
 	/**
