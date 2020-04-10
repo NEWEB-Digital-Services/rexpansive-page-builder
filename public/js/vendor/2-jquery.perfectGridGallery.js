@@ -93,7 +93,6 @@
             var that = this;
 
             this.$element.resize(function(e) {
-                // console.log('che è sta cosa?');
               if(that.properties.elementResizeEvent) {
                 that._defineDynamicPrivateProperties();
                 that._calculateBlockHeight();
@@ -118,9 +117,6 @@
         },
 
         refreshGrid: function() {
-            // console.log('refreshGrid');
-            // console.log(this.$element);
-
             this._defineDynamicPrivateProperties();
 
             this._setGridPadding();
@@ -130,11 +126,7 @@
 
             var G = this;
 
-            // this.$element.isotope('layout');
-
             setTimeout(function() {
-                // console.log(1);
-                // G.$element.isotope('layout');
                 G.relayoutGrid();
                 G.$element.trigger('rearrangeComplete');
                 G.$element.trigger('refreshComplete');
@@ -151,7 +143,6 @@
         },
 
         recalculateBlocks: function() {
-
             this.properties.wrapWidth = Math.round( this.$element.width() );
             this.properties.singleWidth = Math.round( this.properties.wrapWidth * this.settings.gridItemWidth );
 
@@ -159,7 +150,6 @@
         },
 
         relayoutGrid: function() {
-            //console.log('parte relayout');
             // this.$element.isotope('reloadItems');
             this.$element.isotope('layout');
 
@@ -368,13 +358,11 @@
 
         // Calculate the height of the blocks, depending on viewport size, and gallery type
         _calculateBlockHeight: function() {
-
             if( this.settings.galleryLayout == 'fixed' ) {
               if(this._viewport().width >= 768 || this._check_parent_class("rex-block-grid") ) {
                 if(this.settings.fullHeight == 'false') {
                     this._calculateBlockHeightFixed();
                 } else {;
-                    // console.log('bbb');
                     var wrap_height = this._viewport().height;
 
                     this.properties.singleWidth = wrap_height / ( this.properties.gridTotalArea / 12 );
