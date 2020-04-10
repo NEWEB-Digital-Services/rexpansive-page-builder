@@ -162,7 +162,7 @@ $tool_button_classes = 'tool-button';
 
 <script type="text/x-tmpl" id="tmpl-video-mp4">
     <div class="rex-video-wrap" data-rex-video-width="{%=video.width%}" data-rex-video-height="{%=video.height%}">
-        <video class="rex-video-container" preload autoplay loop muted>
+        <video width="{%=video.width%}" height="{%=video.height%}" class="rex-video-container" preload autoplay loop muted>
             <source type="video/mp4" src="{%=video.url%}">
         </video>
     </div>

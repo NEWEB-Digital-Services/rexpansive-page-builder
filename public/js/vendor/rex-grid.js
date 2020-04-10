@@ -268,34 +268,34 @@
 	function _init() {
 		// get RexGrid options
 		_getGridAttributes.call( this );
-
+		
 		// Getting gutters from DOM attributes
 		_getDOMGutterOptions.call( this );
-
+		
 		// Setting instance properties
 		_setGridGutterProperties.call( this );
 		_setBlocksGutterProperties.call( this );
-
+		
 		// Applying grid separators
 		_applyGridSeparators.call( this );
-
+		
 		// Calculations of grid width. In this way it's possible to access to this
 		// value without causing a layout reflow
 		_calcGridBaseAttrs.call( this );
-
+		
 		// Finding the blocks in the DOM
 		_getGridBlocks.call( this );
-
+		
 		// check full height
 		_checkFullHeight.call( this );
-
+		
 		// Applying blocks separators
 		_applyBlocksSeparators.call( this );
-
+		
 		// Calculations
 		this.calcAllBlocksHeights();
 		this.calcAllBlocksTops();
-
+		
 		_setGridHeight.call( this );
 
 		instances.push( this );
@@ -387,7 +387,7 @@
 		if ( ! this.properties.gridHeightSettable ) return;
 
 		var newGridHeight = _calculateGridHeight.call( this, info );
-
+		
 		this.element.style.height = ( newGridHeight * this.properties.singleHeight ) + 'px';
 	}
 

@@ -34,4 +34,15 @@
 	}
 
 	window.addEventListener('resize', debounce( handleResize, 100 ));
+
+	// Preventing <video> tag bug that auto scrolls window.
+	var IS_CHROME = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+
+	function onbeforeunloadHandler() {
+		if (IS_CHROME && !Rexbuilder_Util.editorMode) {
+			store.set('scrollPosition', window.pageYOffset || document.documentElement.scrollTop);
+		}
+	}
+
+	window.addEventListener('beforeunload', onbeforeunloadHandler);
 })();

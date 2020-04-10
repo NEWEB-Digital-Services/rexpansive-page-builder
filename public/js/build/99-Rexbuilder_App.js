@@ -6,7 +6,9 @@
  */
 var Rexbuilder_App = (function($) {
 	"use strict";
-	
+
+	// Constants
+	var IS_CHROME = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 	var SPLIT_SCROLLABLE_IN_PAGE = 'undefined' !== typeof SplitScrollable;
 	var STICKY_SECTION_IN_PAGE = 'undefined' !== typeof StickySection;
 
@@ -860,7 +862,28 @@ var Rexbuilder_App = (function($) {
   		// We call this function cause its already present on Rexbuilder_Dom_Util
   		Rexbuilder_Dom_Util.fixVideoProportion( gridInstances[ i ].section );
   	}
-  }
+	}
+	
+	/**
+	 * Prevents <video> tag bug that auto scrolls window.
+	 * Controls if the page is the same.
+	 * Sets the previously stored position.
+	 * @returns		{void}
+	 * @since			2.0.4
+	 */
+	function _fixWindowScrollPosition() {
+		var perfEntries = performance.getEntriesByType('navigation')[0];
+		var navigationType = perfEntries.type;
+
+		if ('navigate' === navigationType || 'prerender' === navigationType) { return; }
+
+		var scrld = store.get('scrollPosition');
+		if ('undefined' !== typeof scrld) {
+			setTimeout(function () {
+				window.scrollTo(0, scrld);
+			}, 0);
+		}
+	}
 
   function init() {
 		Rexbuilder_Util.init();
@@ -888,10 +911,10 @@ var Rexbuilder_App = (function($) {
     } else {
       // fixes for front end only
       fixRexButtons();
-    }
+	}
 
     Rex_Navigator.init();
-    //Rexbuilder_FormFixes.init();
+		//Rexbuilder_FormFixes.init();
 
     Rexbuilder_Util.addWindowListeners();
 
@@ -915,13 +938,16 @@ var Rexbuilder_App = (function($) {
       	var tot_grids = grids.length;
       	var i = 0;
 
-				for ( i = 0; i < tot_grids; i++ ) {
+				for (i = 0; i < tot_grids; i++) {
 					var rexGridInstance = new RexGrid(grids[i]);
 
-					gridInstances.push( rexGridInstance );
-					
-					if (STICKY_SECTION_IN_PAGE && Rexbuilder_Util.hasClass(rexGridInstance.section, 'sticky-section')) {
-						StickySection.prepare(rexGridInstance.section);
+					gridInstances.push(rexGridInstance);
+
+				}
+				
+				for (i = 0; i < tot_grids; i++) {
+					if (STICKY_SECTION_IN_PAGE && Rexbuilder_Util.hasClass(gridInstances[i].section, 'sticky-section')) {
+						StickySection.prepare(gridInstances[i].section);
 					}
 				}
 				
@@ -929,7 +955,7 @@ var Rexbuilder_App = (function($) {
         if ( '1' === _plugin_frontend_settings.fast_load ) {
           // Launch fast load
           window.FastLoad.init();
-        }
+			}
       }
     }
 
@@ -1046,7 +1072,6 @@ var Rexbuilder_App = (function($) {
     } else {
       var tot_grids = gridInstances.length;
       var i = 0;
-      var j = 0;
 
       for ( i = 0; i < tot_grids; i++ ) {
         gridInstances[i].fixAfterLoad();
@@ -1084,7 +1109,11 @@ var Rexbuilder_App = (function($) {
 
     launchFrontEndEffects();
 
-    Rexbuilder_Util.galleryPluginActive = true;
+		Rexbuilder_Util.galleryPluginActive = true;
+
+		if (IS_CHROME && !Rexbuilder_Util.editorMode) {
+			_fixWindowScrollPosition();
+		}
   };
 
   /**
