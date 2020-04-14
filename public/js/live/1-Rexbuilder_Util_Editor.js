@@ -358,27 +358,6 @@ var Rexbuilder_Util_Editor = (function($) {
     }
   };
 
-  /**
-   * Clear editing info for the sections
-   * Used at change layout
-   * 
-   * @since 2.0.0
-   */
-  var _clearSectionsEdited = function() {
-    Rexbuilder_Util.$rexContainer
-      .children(".rexpansive_section")
-      .each(function(i, sec) {
-        var $section = $(sec);
-        $section.attr("data-rexlive-section-edited", false);
-        $section
-          .find(".grid-stack-row")
-          .attr("data-rexlive-layout-changed", false);
-        $section
-          .find(".grid-stack-item")
-          .attr("data-rexlive-element-edited", false);
-      });
-  };
-
   var _restorePageStartingState = function(eventData) {
     if (Rexbuilder_Util.$rexContainer.hasClass("editing-model")) {
       var $button = Rexbuilder_Util.$rexContainer
@@ -882,7 +861,6 @@ var Rexbuilder_Util_Editor = (function($) {
     getTextWrapLength: _getTextWrapLength,
     rowAttrsObj: _rowAttrsObj,
     blockAttrsObj: _rowAttrsObj,
-    clearSectionsEdited: _clearSectionsEdited,
     startLoading: _startLoading,
     endLoading: _endLoading,
     builderEdited: _builderEdited,

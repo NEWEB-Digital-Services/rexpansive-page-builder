@@ -742,8 +742,7 @@ var Rexbuilder_Util = (function($) {
       if (
         targetsToEmpty[i].name == "self" &&
         // _viewport().width <
-        Rexbuilder_Util.globalViewport.width <
-          _plugin_frontend_settings.defaultSettings.collapseWidth
+        _isMobile()
       ) {
         emptyTarget.props.collapse_grid = true;
       }
@@ -1090,6 +1089,7 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
+		
     //updaiting dom custom layout
     _createPageCustomizationsDataLive(layoutSelectedSections);
 
@@ -1122,10 +1122,11 @@ var Rexbuilder_Util = (function($) {
   };
 
   /**
-   * Checks if viewport width is under collapsing width
+   * Checks if viewport width is under collapsing width.
+	 * @returns		{Boolean}		We are in mobile dimensions
+	 * @since			?.?.?
    */
-  var _isMobile = function(){
-    // return _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth;
+  function _isMobile() {
     return Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.defaultSettings.collapseWidth;
   }
 
@@ -1139,14 +1140,717 @@ var Rexbuilder_Util = (function($) {
     var d = document.createElement('div');
     d.style[prop] = value;
     return d.style[prop] === value;
+	}
+	
+	/**
+   * Scans all the DOM sections and (edits? reads?) data from them.
+   * @param   {String} chosenLayoutName   Name of actual page layout
+   * @returns {Object}
+   * @since   2.0.4
+   * @todo  06/03/2020 If possible remove returning
+   */
+  function scanDOM(chosenLayoutName) {
+		var response = {
+			collapse_needed: false
+		}
+		
+		Rexbuilder_Util.rexContainer.setAttribute('data-rex-layout-selected', chosenLayoutName);
+  	Rexbuilder_Util.activeLayout = chosenLayoutName;
+
+  	if (
+			$rexbuilderLayoutData.children('.layouts-customizations').attr('data-empty-customizations') == 'true' &&
+			$rexbuilderModelData.children('.models-customizations').attr('data-empty-models-customizations') == 'true'
+		) {
+			if (_isMobile()) {
+				if (!Rexbuilder_Util.blockGridUnder768) {
+					Rexbuilder_Util.collapseAllGrids();
+					response.collapse_needed = true;
+				}
+			} else {
+				Rexbuilder_Util.removeCollapsedGrids();
+			}
+			return response;
+		}
+
+  	var modelsIDsInPage = [];
+  	var sectionsPage = [];
+
+  	var sections = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section:not(.removing_section)'));
+  	var sIndex, tot_sections = sections.length;
+  	var temp_secObj;
+  	for (sIndex = 0; sIndex < tot_sections; sIndex++) {
+  		// Populate models ids array
+  		if (Rexbuilder_Util.hasClass(sections[sIndex], 'rex-model-section')) {
+  			modelsIDsInPage.push(parseInt(sections[sIndex].getAttribute('data-rexlive-model-id')));
+  		}
+
+  		// Populate sections object array
+  		temp_secObj = {
+  			rexID: sections[sIndex].getAttribute('data-rexlive-section-id'),
+  			modelID: isNaN(parseInt(sections[sIndex].getAttribute('data-rexlive-model-id'))) ?
+  				'' : parseInt(sections[sIndex].getAttribute('data-rexlive-model-id'))
+  		};
+  		sectionsPage.push(temp_secObj);
+  	}
+
+  	var i, j;
+
+  	var layoutDataPage = _getPageCustomizations();
+
+  	if (Rexbuilder_Util.activeLayout == "default") {
+  		var layoutDataPageCopy = jQuery.extend(true, [], layoutDataPage);
+  		_saveCustomizationDomOrder(layoutDataPageCopy);
+  	}
+
+  	var layoutDataModels = _getModelsCustomizations();
+  	var defaultLayoutSections;
+
+  	if ('true' === $defaultLayoutState.attr("data-empty-default-customization")) {
+  		defaultLayoutSections = _getDefaultPageLayout(layoutDataPage, layoutDataModels);
+  		_createDefaultLayoutState(defaultLayoutSections);
+  	} else {
+  		_updateDefaultLayoutState({ modelsData: layoutDataModels });
+  		defaultLayoutSections = _getDefaultLayoutState();
+  	}
+
+  	var layoutSelectedSections = _getCustomLayoutSections(
+  		layoutDataPage,
+  		layoutDataModels,
+  		defaultLayoutSections,
+  		chosenLayoutName
+  	);
+
+  	// Fixing models numbers
+  	var modelsNumbers = [];
+  	var flagModel;
+  	for (i = 0; i < layoutSelectedSections; i++) {
+  		if (layoutSelectedSections[i].section_is_model.toString() == "true") {
+  			flagModel = false;
+  			for (j = 0; j < modelsNumbers.length; j++) {
+  				if (
+  					modelsNumbers[j].id == layoutSelectedSections[i].section_model_id
+  				) {
+  					modelsNumbers[j].number = modelsNumbers[j].number + 1;
+  					layoutSelectedSections[i].section_model_number =
+  						modelsNumbers[j].number;
+  					flagModel = true;
+  					break;
+  				}
+  			}
+  			if (!flagModel) {
+  				layoutSelectedSections[i].section_model_number = 1;
+  				modelsNumbers.push({
+  					id: layoutSelectedSections[i].section_model_id,
+  					number: 1
+  				});
+  			}
+  		}
+  	}
+
+  	Rexbuilder_Util.clearSectionsEdited();
+
+  	var mergedEdits = _mergeSections(
+  		layoutSelectedSections,
+  		defaultLayoutSections
+  	);
+
+  	/** @todo Edit to make it just update DOM order */
+
+  	Rexbuilder_Util.domUpdating = true;
+  	var forceCollapseElementsGrid = false;
+  	var sectionDomOrder = [];
+  	var meIndex, section;
+
+  	for (meIndex in mergedEdits) {
+			if (!mergedEdits[meIndex].notInSection || 'default' === chosenLayoutName) {
+				var sectionObj = {
+					rexID: mergedEdits[meIndex].section_rex_id,
+					modelID: -1,
+					modelNumber: -1,
+				};
+
+				if (mergedEdits[meIndex].section_is_model.toString() == 'true') {
+					sectionObj.modelID = mergedEdits[meIndex].section_model_id;
+					sectionObj.modelNumber = mergedEdits[meIndex].section_model_number;
+					section = Rexbuilder_Util.rexContainer.querySelector(
+						'section[data-rexlive-section-id="' +
+							mergedEdits[meIndex].section_rex_id +
+							'"][data-rexlive-model-number="' +
+							sectionObj.modelNumber +
+							'"]'
+					);
+				} else {
+					section = Rexbuilder_Util.rexContainer.querySelector(
+						'section[data-rexlive-section-id="' + mergedEdits[meIndex].section_rex_id + '"]'
+					);
+				}
+
+				if (section && !Rexbuilder_Util.hasClass(section, 'removing_section')) {
+					// Hiding section if necessary
+					if (
+						'undefined' !== typeof mergedEdits[meIndex].section_hide &&
+						'true' == mergedEdits[meIndex].section_hide.toString()
+					) {
+						Rexbuilder_Util.addClass(section, 'rex-hide-section');
+					} else {
+						Rexbuilder_Util.removeClass(section, 'rex-hide-section');
+					}
+					sectionDomOrder.push(sectionObj);
+				}
+			}
+		}
+
+  	Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
+
+  	Rexbuilder_Util.domUpdating = false;
+	};
+	
+	/**
+   * Clear editing info for the sections
+   * Used at change layout
+   * 
+   * @since		2.0.0
+   * @version	2.0.4		Was in Rexbuilder_Util_Editor, moved here
+   * @todo		Make it vanilla JS
+   */
+  function clearSectionsEdited() {
+  	Rexbuilder_Util.$rexContainer
+  		.children(".rexpansive_section")
+  		.each(function(index, section) {
+  			var $section = $(section);
+  			$section.attr("data-rexlive-section-edited", false);
+  			$section
+  				.find(".grid-stack-row")
+  				.attr("data-rexlive-layout-changed", false);
+  			$section
+  				.find(".grid-stack-item")
+  				.attr("data-rexlive-element-edited", false);
+  		});
+	};
+	
+	/**
+   * Setups DOM Elements of sections with grid lazy loaded,
+   * based on current client layout.
+   * @param   {String} chosenLayoutName   Name of actual page layout
+   * @since   2.0.4
+   * @todo 06/03/2020 Put only functions that actually edit DOM, taken
+   *                  from _edit_dom_layout
+   */
+  function editDOMLoadedSection(section, chosenLayoutName) {
+		Rexbuilder_Util.domUpdating = true;
+		var forceCollapseElementsGrid = false;
+		var sectionID = section.getAttribute('data-rexlive-section-id');
+		var $sectionTargets = $liveDataContainer.find('[data-section-rex-id="' + sectionID + '"]');
+
+		if (0 === $sectionTargets.length) {
+			return;
+		}
+
+		var targets = JSON.parse($sectionTargets.text());
+
+		if (
+			!Rexbuilder_Util.hasClass(section, 'removing_section') &&
+			!Rexbuilder_Util.hasClass(section, 'rex-hide-section')
+		) {
+			_lazyUpdateDOMBlocks($(section), targets, forceCollapseElementsGrid /*, meIndex */);
+		}
+
+		// Controllo anche !Rexbuilder_Util.blockGridUnder768 ? Non ne capisco il funzionamento
+		// if ( 'mobile' === chosenLayoutName || _viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+		if (_isMobile() || 'mobile' === chosenLayoutName) {
+			Rexbuilder_Util.collapseSectionGrid(section);
+		}
+		Rexbuilder_Util.domUpdating = false;
+	}
+	
+	function _lazyUpdateDOMBlocks( $section, targets, forceCollapseElementsGrid, meIndex ) {
+    var $gallery = $section.find('.grid-stack-row');
+    var galleryData = $gallery.data();
+    var tot_targets = targets.length;
+    var $block = $();
+    var i = 0;
+    
+    // targets[0] is 'self', i.e. the section
+    if( targets[0].props.gridEdited ) {   
+      $gallery.attr('data-rexlive-layout-changed', true);
+    }
+    
+    if ( undefined !== galleryData ) {
+      var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
+      
+      if ( undefined !== galleryEditorInstance ) {
+        // Starting from 1 because the first target is always 'self'
+        for ( i = 1; i < tot_targets; i++ ) {
+          $block = $gallery.children( 'div[data-rexbuilder-block-id="' + targets[i].name + '"]' );
+          var hideElement = typeof targets[i].props.hide == 'undefined' ? false : targets[i].props.hide.toString() == 'true';
+
+          if ( hideElement ) {
+            if ( !$block.hasClass('rex-hide-element') ) {
+              $block.addClass('rex-hide-element');
+              galleryEditorInstance.removeBlock($block);
+            }
+          } else {
+            if ( $block.hasClass('rex-hide-element') ) {
+              $block.removeClass('rex-hide-element');
+              galleryEditorInstance.reAddBlock($block);
+            }
+          }
+        }
+
+        var gridstackInstance = galleryEditorInstance.properties.gridstackInstance;
+        galleryEditorInstance.batchGridstack();
+      }
+    }
+
+    // var i = 0;
+    var targetName, targetProps;
+    var $itemData, $itemContent;
+    var block;
+    var inlineImgs, tot_inlineImgs;
+
+    // Starting from 1 because the first target is always 'self'
+    for ( i = 1; i < tot_targets; i++ ) {
+      if ( !targets[i].notDisplay || Rexbuilder_Util.activeLayout == 'default' ) {
+        targetName = targets[i].name;
+        targetProps = targets[i].props;
+        
+        $block = $gallery.children( 'div[data-rexbuilder-block-id="' + targetName + '"]' );
+        block = $block[0];
+        
+        $itemData = $block.children('.rexbuilder-block-data');
+        $itemContent = $block.find('.grid-item-content');
+
+        if( $block.length > 0 ) {
+          inlineImgs = Array.prototype.slice.call( block.getElementsByTagName( 'img' ) );
+          tot_inlineImgs = inlineImgs.length;
+
+          if( !Rexbuilder_Util.editorMode && 0 !== tot_inlineImgs ) {
+            var j = 0;
+
+            for ( j = 0; j < tot_inlineImgs; j++ ) {
+              if ( 'true' === inlineImgs[j].getAttribute('inline-photoswipe') ) {
+                Rexbuilder_Photoswipe.addElementFromInline( $( inlineImgs[j] ) );
+              }
+            }
+          }
+          _lazyUpdateDOMSingleElement( $block, targetProps, $itemData, $itemContent, gridstackInstance, { positionAndSize:true } );
+        }
+      }
+    }
+    
+    updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
+    
+    if ( Rexbuilder_Util.editorMode ) {
+      updateSectionTools( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
+    }
+
+    var collapse = typeof targets[0].props.collapse_grid == "undefined" ?
+      false :
+      targets[0].props.collapse_grid.toString() == "true" || forceCollapseElementsGrid;
+      
+    // Committing changes on GridStack
+    if ( undefined !== galleryData ) {
+      var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
+
+      if ( undefined !== galleryEditorInstance ) {
+        Rexbuilder_Util.domUpdating = true;
+
+        // Not using galleryEditorInstance.commitGridstack() because
+        // of Rexbuilder_Util.domUpdating = true
+        galleryEditorInstance.properties.gridstackInstance.commit();
+
+        // Waiting for GridStack updating blocks dimensions with saved data
+        if (gridTimeouts) {
+          var handlingGridstackCommitEndTi = setTimeout( handlingGridstackCommitEnd.bind(null, galleryEditorInstance, collapse, targets, meIndex), 300 );
+        } else {
+          NEW_handlingGridstackCommitEnd(galleryEditorInstance, collapse, targets, meIndex)
+        }
+      }
+    }
+	}
+
+  var gridTimeouts = true;
+	
+	/**
+   * Updating a single block element according with the saved info
+   * @param {jQuery} $elem              block to edit
+   * @param {Object} targetProps        block properties
+   * @param {jQuery} $itemData          properties object
+   * @param {jQuery} $itemContent       block content
+   * @param {Object} gridstackInstance  grid instance
+   * @since 2.0.0
+   */
+  function _lazyUpdateDOMSingleElement($block,targetProps,$itemData,$itemContent,gridstackInstance,opts) {
+    // Update block position and size
+    if( opts.positionAndSize ) {
+      var positionDataActive = {
+        x: $block.attr("data-gs-x"),
+        y: $block.attr("data-gs-y"),
+        w: $block.attr("data-gs-width"),
+        h: $block.attr("data-gs-height"),
+        startH: $itemData.attr("data-gs_start_h"),
+        // increaseHeight: $itemData.attr("data-element_height_increased"),
+        realFluid: $itemData.attr("data-element_real_fluid"),
+			};
+			
+      var positionData = {
+        x:
+          typeof targetProps["gs_x"] == "undefined"
+            ? positionDataActive.x
+            : targetProps["gs_x"],
+        y:
+          typeof targetProps["gs_y"] == "undefined"
+            ? positionDataActive.y
+            : targetProps["gs_y"],
+        w:
+          typeof targetProps["gs_width"] == "undefined"
+            ? positionDataActive.w
+            : targetProps["gs_width"],
+        h:
+          typeof targetProps["gs_height"] == "undefined"
+            ? positionDataActive.h
+            : targetProps["gs_height"],
+        startH:
+          typeof targetProps["gs_start_h"] == "undefined"
+            ? positionDataActive.startH
+            : targetProps["gs_start_h"],
+        // increaseHeight: typeof targetProps["element_height_increased"] == "undefined"
+        //   ? positionDataActive.increaseHeight
+        //   : targetProps["element_height_increased"],
+        realFluid: typeof targetProps["element_real_fluid"] == "undefined"
+          ? positionDataActive.realFluid
+          : targetProps["element_real_fluid"],
+        gridstackInstance: gridstackInstance
+      };
+      _updateElementDimensions($block[0], $itemData[0], positionData);
+    }
+
+    // Update block video
+    var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"]))
+      ? parseInt(targetProps["video_bg_id"])
+      : "";
+    var youtubeUrl =
+      typeof targetProps["video_bg_url_youtube"] == "undefined"
+        ? ""
+        : targetProps["video_bg_url_youtube"];
+    var vimeoUrl =
+      typeof targetProps["video_bg_url_vimeo"] == "undefined"
+        ? ""
+        : targetProps["video_bg_url_vimeo"];
+    var type = "";
+
+    if (mp4ID != "") {
+      type = "mp4";
+    } else if (vimeoUrl != "") {
+      type = "vimeo";
+    } else if (youtubeUrl != "") {
+      type = "youtube";
+    }
+
+    var videoOptions = {
+      mp4Data: {
+        idMp4: mp4ID,
+        linkMp4:
+          typeof targetProps["video_mp4_url"] == "undefined"
+            ? ""
+            : targetProps["video_mp4_url"],
+        width: isNaN(parseInt(targetProps["video_bg_width"]))
+          ? parseInt(targetProps["video_bg_width"])
+          : "",
+        height: isNaN(parseInt(targetProps["video_bg_height"]))
+          ? parseInt(targetProps["video_bg_height"])
+          : ""
+      },
+      vimeoUrl: vimeoUrl,
+      youtubeUrl: youtubeUrl,
+      audio:
+        typeof targetProps["video_has_audio"] == "undefined"
+          ? ""
+          : targetProps["video_has_audio"] == "1" ||
+            targetProps["video_has_audio"].toString() == "true"
+            ? true
+            : false,
+      typeVideo: type
+    };
+
+    // if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+      Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
+    // }
+
+    // Update block image
+    var activeImage =
+      typeof targetProps["image_bg_elem_active"] == "undefined"
+        ? true
+        : targetProps["image_bg_elem_active"].toString() == "true";
+
+    var imageOptions = {
+      active: activeImage,
+      idImage: activeImage
+        ? !isNaN(parseInt(targetProps["id_image_bg"]))
+          ? parseInt(targetProps["id_image_bg"])
+          : ""
+        : "",
+      urlImage: activeImage ? targetProps["image_bg_url"] : "",
+      width: activeImage
+        ? !isNaN(parseInt(targetProps["image_width"]))
+          ? parseInt(targetProps["image_width"])
+          : ""
+        : "",
+      height: activeImage
+        ? !isNaN(parseInt(targetProps["image_height"]))
+          ? parseInt(targetProps["image_height"])
+          : ""
+        : "",
+      typeBGimage: activeImage ? targetProps["type_bg_image"] : "",
+      photoswipe: activeImage ? targetProps["photoswipe"] : ""
+    };
+
+    // Why check editor mode ???
+    // if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+      Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
+    // }
+
+    // Update block background
+    var bgColorOpt = {
+      $elem: $block,
+      color: targetProps["color_bg_block"],
+      active:
+        typeof targetProps["color_bg_block_active"] == "undefined"
+          ? true
+          : targetProps["color_bg_block_active"].toString()
+    };
+
+    if( -1 === bgColorOpt.color.indexOf("gradient") ) {
+      Rexbuilder_Dom_Util.updateBlockBackgroundColor(bgColorOpt);
+    } else {
+      Rexbuilder_Dom_Util.updateBlockBackgroundGradient(bgColorOpt);
+    }
+
+    // Update block overlay
+    var overlayBlockOpt = {
+      $elem: $block,
+      color: targetProps["overlay_block_color"],
+      active:
+        typeof targetProps["overlay_block_color_active"] == "undefined"
+          ? false
+          : targetProps["overlay_block_color_active"].toString()
+    };
+
+    if( -1 === overlayBlockOpt.color.indexOf("gradient") ) {
+      Rexbuilder_Dom_Util.updateBlockOverlay(overlayBlockOpt);
+    } else {
+      Rexbuilder_Dom_Util.updateBlockOverlayGradient(overlayBlockOpt);
+    }
+
+    // Update block padding
+    Rexbuilder_Dom_Util.updateBlockPaddings(
+      $block,
+      _getPaddingsDataString(
+        typeof targetProps["block_padding"] != "undefined"
+          ? targetProps["block_padding"]
+          : ""
+      )
+    );
+
+    // Update block custom classes
+    var newClasses =
+      typeof targetProps["block_custom_class"] == "undefined"
+        ? ""
+        : targetProps["block_custom_class"];
+    var classList = [];
+    if (newClasses != "") {
+      newClasses = newClasses.trim();
+      classList = newClasses.split(/\s+/);
+    }
+    Rexbuilder_Dom_Util.updateCustomClasses($block, classList);
+
+    // Update block content position
+    var pos =
+      typeof targetProps["block_flex_position"] != "undefined"
+        ? targetProps["block_flex_position"].split(" ")
+        : "";
+
+    var flexPosition = {
+      x: pos[0],
+      y: pos[1]
+    };
+
+    Rexbuilder_Dom_Util.updateFlexPostition($block, flexPosition);
+
+    var sliderRatio =
+      typeof targetProps["slider_dimension_ratio"] == "undefined"
+        ? ""
+        : targetProps["slider_dimension_ratio"];
+    $itemData.attr("data-slider_ratio", sliderRatio);
+
+    var blockRatio =
+      typeof targetProps["block_ratio"] == "undefined"
+        ? ""
+        : targetProps["block_ratio"];
+    $itemData.attr("data-block_ratio", blockRatio);
+
+    var blockEdited =
+      typeof targetProps["block_dimensions_live_edited"] == "undefined"
+        ? ""
+        : targetProps["block_dimensions_live_edited"];
+    $itemData.attr("data-block_dimensions_live_edited", blockEdited);
+
+    var hideBlock =
+      typeof targetProps["hide"] == "undefined"
+        ? false
+        : targetProps["hide"].toString() == "true"
+          ? true
+          : false;
+
+    if (hideBlock) {
+      if (!$block.hasClass("rex-hide-element")) {
+        $block.addClass("rex-hide-element");
+      }
+      Rexbuilder_Util.stopBlockVideos($block);
+    } else {
+      if ($block.hasClass("rex-hide-element")) {
+        $block.removeClass("rex-hide-element");
+      }
+      Rexbuilder_Util.playBlockVideos($block);
+    }
+
+    var elementEdited =
+      typeof targetProps["element_edited"] == "undefined"
+        ? false
+        : targetProps["element_edited"].toString() == "true"
+          ? true
+          : false;
+    // $elem.attr("data-rexlive-element-edited", elementEdited);
+
+    for (var propName in targetProps) {
+      switch (propName) {
+        case "type":
+          $itemData.attr("data-type", targetProps["type"]);
+          break;
+
+        case "size_x":
+          $block.attr("data-width", targetProps["size_x"]);
+          break;
+
+        case "size_y":
+          $block.attr("data-height", targetProps["size_y"]);
+          break;
+
+        case "row":
+          $block.attr("data-row", targetProps["row"]);
+          break;
+
+        case "col":
+          $block.attr("data-col", targetProps["col"]);
+          break;
+        case "photoswipe":
+          if (!Rexbuilder_Util.editorMode) {
+            if ('' === targetProps["linkurl"] && targetProps["photoswipe"] == "true") {
+              Rexbuilder_Photoswipe.addElement(
+                $itemContent,
+                targetProps["image_bg_block"],
+                parseInt(targetProps["image_width"]),
+                parseInt(targetProps["image_height"]),
+                targetProps["image_size"]
+              );
+              var $section = $block.parents('.rexpansive_section');
+              $section.addClass("photoswipe-gallery");
+            } else {
+              Rexbuilder_Photoswipe.removeElement($itemContent);
+            }
+            $itemData.attr("data-photoswipe", targetProps["photoswipe"]);
+          }
+          break;
+        case "linkurl":
+          if (!Rexbuilder_Util.editorMode) {
+            var $linkEl = $itemContent.parents(".element-link");
+            if (targetProps["linkurl"] != "") {
+              if ($linkEl.length != 0) {
+                //console.log("already a link");
+                $linkEl.attr("href", targetProps["linkurl"]);
+                $linkEl.attr("title", targetProps["linkurl"]);
+              } else {
+                //console.log("not a block link");
+                var $itemContentParent = $itemContent.parent();
+                tmpl.arg = "link";
+                $itemContentParent.append(
+                  tmpl("tmpl-link-block", {
+                    url: targetProps["linkurl"]
+                  })
+                );
+                var $link = $itemContentParent.children(".element-link");
+                $itemContent.detach().appendTo($link);
+              }
+            } else {
+              if ($linkEl.length != 0) {
+                $linkEl.children().unwrap();
+              }
+            }
+          }
+          Rexbuilder_Dom_Util.updateBlockUrl($block, targetProps["linkurl"]);
+          break;
+        case "zak_background":
+        case "zak_side":
+        case "zak_title":
+        case "zak_icon":
+        case "zak_foreground":
+          break;
+        case "block_animation":
+          break;
+        case "block_has_scrollbar":
+          break;
+        default:
+          break;
+      }
+    }
+	}
+	
+	function NEW_handlingGridstackCommitEnd( galleryEditorInstance, collapse, targets, meIndex ) {
+    Rexbuilder_Util.domUpdating = true;
+    if (gridTimeouts) {
+      galleryEditorInstance.batchGridstack();
+      if( galleryEditorInstance.properties.gridstackInstance ) {
+        galleryEditorInstance.properties.gridstackInstance.batchUpdate();
+      }
+    }
+
+    galleryEditorInstance.fixBlockDomOrder();
+    galleryEditorInstance.saveStateGrid();
+
+    // Updating blocks height for masonry
+    if ( galleryEditorInstance.settings.galleryLayout == 'masonry' && !collapse ) {
+      galleryEditorInstance.updateBlocksHeight();
+    } else if ( galleryEditorInstance.settings.galleryLayout == 'fixed' && galleryEditorInstance.settings.fullHeight.toString() == 'true' ) {
+      galleryEditorInstance.updateFullHeight();
+    }
+    if ( targets[0].props.collapse_grid ) {
+      if ( Rexbuilder_Util.editorMode ) {
+        galleryEditorInstance.collapseElements();
+      } else {
+        galleryEditorInstance.collapseElementsNew();
+      }
+      galleryEditorInstance.collapseElementsProperties();
+    }
+
+    // Not using galleryEditorInstance.commitGridstack() because
+    // of Rexbuilder_Util.domUpdating = true
+    if ( galleryEditorInstance.properties.gridstackInstance ) {
+      galleryEditorInstance.properties.gridstackInstance.commit();
+    }
+
+    // Row ready
+    if ( Rexbuilder_Util.editorMode ) {
+      var handlingRowReadyTi = setTimeout( handlingRowReady.bind( null, galleryEditorInstance, meIndex ), 200 );
+      edlTimeouts.push( handlingRowReadyTi );
+    } /* else {
+      _endEditingLazySection( galleryEditorInstance, meIndex );
+    } */
   }
 
-  var launchEditDomLayout = function() {
-    var layout = Rexbuilder_Util.chooseLayout();
-    if ( Rexbuilder_Util.editorMode ) {
-      Rexbuilder_Util.edit_dom_layout(layout);
-    }
-  }
+  var launchEditDomLayout = function () {
+		var layout = Rexbuilder_Util.chooseLayout();
+		Rexbuilder_Util.edit_dom_layout(layout);
+	};
   
   var _edit_dom_layout = function( chosenLayoutName ) {
     var response = {
@@ -1156,13 +1860,13 @@ var Rexbuilder_Util = (function($) {
     // No change layout, simple resize
     if ( chosenLayoutName == Rexbuilder_Util.activeLayout && chosenLayoutName == "default" ) {
       // if ( _viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
-      if ( Rexbuilder_Util.globalViewport.width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
-        Rexbuilder_Util.removeCollapsedGrids();
-      } else {
+      if ( _isMobile() ) {
         if (!Rexbuilder_Util.blockGridUnder768) {
           Rexbuilder_Util.collapseAllGrids();
           response.collapse_needed = true;
         }
+			} else {
+        Rexbuilder_Util.removeCollapsedGrids();
       }
       return response;
     }
@@ -1172,13 +1876,13 @@ var Rexbuilder_Util = (function($) {
 
     if ( $rexbuilderLayoutData.children(".layouts-customizations").attr("data-empty-customizations") == "true" && $rexbuilderModelData.children(".models-customizations").attr("data-empty-models-customizations") == "true" ) {
       // if ( _viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
-      if ( Rexbuilder_Util.globalViewport.width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
-        Rexbuilder_Util.removeCollapsedGrids();
-      } else {
+      if ( _isMobile() ) {
         if ( ! Rexbuilder_Util.blockGridUnder768 ) {
           Rexbuilder_Util.collapseAllGrids();
           response.collapse_needed = true;
         }
+			} else {
+        Rexbuilder_Util.removeCollapsedGrids();
       }
       return response;
     }
@@ -1259,7 +1963,7 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
-    Rexbuilder_Util_Editor.clearSectionsEdited();
+    Rexbuilder_Util.clearSectionsEdited();
 
     var mergedEdits = _mergeSections(
       layoutSelectedSections,
@@ -3770,7 +4474,7 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
-    Rexbuilder_Util_Editor.clearSectionsEdited();
+    Rexbuilder_Util.clearSectionsEdited();
 
     var mergedEdits = _mergeSections(
       layoutSelectedSections,
@@ -4110,6 +4814,11 @@ var Rexbuilder_Util = (function($) {
     rInterval: rInterval,
     merge: _merge,
 		handleLayoutChange: handleLayoutChange,
-		removeArrayDuplicates: removeArrayDuplicates
+		removeArrayDuplicates: removeArrayDuplicates,
+
+		// Grids lazy loading
+		scanDOM: scanDOM,
+		clearSectionsEdited: clearSectionsEdited,
+		editDOMLoadedSection: editDOMLoadedSection,
   };
 })(jQuery);

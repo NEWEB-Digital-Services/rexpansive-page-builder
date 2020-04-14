@@ -404,53 +404,59 @@
       // this.createScrollbars();
 
       if ( this.settings.editorMode ) {
-        var that = this;
-        this.$element.on("change", function(e, data) {
-          if (
-            that.element == e.target &&
-            !Rexbuilder_Util_Editor.undoActive &&
-            !Rexbuilder_Util_Editor.redoActive &&
-            !Rexbuilder_Util_Editor.updatingRowDistances &&
-            !Rexbuilder_Util_Editor.updatingSectionMargins &&
-            !Rexbuilder_Util_Editor.updatingSectionLayout &&
-            !Rexbuilder_Util.domUpdating &&
-            !Rexbuilder_Util.windowIsResizing &&
-            !that.properties.collapsingElements &&
-            !Rexbuilder_Util_Editor.addingNewBlocks &&
-            !Rexbuilder_Util_Editor.removingBlocks &&
-            !Rexbuilder_Util_Editor.updatingImageBg &&
-            !Rexbuilder_Util_Editor.updatingPaddingBlock &&
-            !Rexbuilder_Util_Editor.updatingCollapsedGrid &&
-            !Rexbuilder_Util_Editor.openingModel &&
-            !Rexbuilder_Util_Editor.blockCopying &&
-            !Rexbuilder_Util_Editor.savingPage &&
-            !Rexbuilder_Util_Editor.savingModel &&
-            Rexbuilder_Util_Editor.needToSave
-          ) {
-            var data = {
-              eventName: "rexlive:edited",
-              modelEdited: that.$section.hasClass("rex-model-section")
-            };
-            Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+        function handleChange(e, data) {
+					if (
+						this.element == e.target &&
+						!Rexbuilder_Util_Editor.undoActive &&
+						!Rexbuilder_Util_Editor.redoActive &&
+						!Rexbuilder_Util_Editor.updatingRowDistances &&
+						!Rexbuilder_Util_Editor.updatingSectionMargins &&
+						!Rexbuilder_Util_Editor.updatingSectionLayout &&
+						!Rexbuilder_Util.domUpdating &&
+						!Rexbuilder_Util.windowIsResizing &&
+						!this.properties.collapsingElements &&
+						!Rexbuilder_Util_Editor.addingNewBlocks &&
+						!Rexbuilder_Util_Editor.removingBlocks &&
+						!Rexbuilder_Util_Editor.updatingImageBg &&
+						!Rexbuilder_Util_Editor.updatingPaddingBlock &&
+						!Rexbuilder_Util_Editor.updatingCollapsedGrid &&
+						!Rexbuilder_Util_Editor.openingModel &&
+						!Rexbuilder_Util_Editor.blockCopying &&
+						!Rexbuilder_Util_Editor.savingPage &&
+						!Rexbuilder_Util_Editor.savingModel &&
+						Rexbuilder_Util_Editor.needToSave
+					) {
+						var data = {
+							eventName: 'rexlive:edited',
+							modelEdited: this.$section.hasClass('rex-model-section'),
+						};
+						Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
-            if (Rexbuilder_Util.activeLayout == "default") {
-              Rexbuilder_Util.updateDefaultLayoutStateSection(that.$section);
-            }
-            var actionData = that.createActionDataMoveBlocksGrid();
-            that.$element.attr("data-rexlive-layout-changed", true);
-            Rexbuilder_Util_Editor.pushAction(
-              that.$section,
-              "updateSectionBlocksDisposition",
-              $.extend(true, {}, actionData),
-              $.extend(true, {}, that.properties.reverseDataGridDisposition)
-            );
-            that.properties.reverseDataGridDisposition = actionData;
-          }
+						if (Rexbuilder_Util.activeLayout == 'default') {
+							Rexbuilder_Util.updateDefaultLayoutStateSection(this.$section);
+						}
+						var actionData = this.createActionDataMoveBlocksGrid();
+						this.$element.attr('data-rexlive-layout-changed', true);
+						Rexbuilder_Util_Editor.pushAction(
+							this.$section,
+							'updateSectionBlocksDisposition',
+							$.extend(true, {}, actionData),
+							$.extend(true, {}, this.properties.reverseDataGridDisposition)
+						);
+						this.properties.reverseDataGridDisposition = actionData;
+					}
 
-          if ( Rexbuilder_Util_Editor.addingNewBlocks || Rexbuilder_Util_Editor.updatingSectionLayout || that.properties.collapsingElements || Rexbuilder_Util_Editor.blockCopying ) {
-            that.fixVideoProportion();
-          }
-        });
+					if (
+						Rexbuilder_Util_Editor.addingNewBlocks ||
+						Rexbuilder_Util_Editor.updatingSectionLayout ||
+						this.properties.collapsingElements ||
+						Rexbuilder_Util_Editor.blockCopying
+					) {
+						this.fixVideoProportion();
+					}
+				}
+				
+				this.$element.on('change', handleChange.bind(this));
 
         // this._linkSectionEvents();
         this._updateElementsSizeViewers();

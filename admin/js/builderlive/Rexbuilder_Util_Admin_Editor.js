@@ -94,9 +94,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   };
 
   var _receiveMessage = function(event) {
-    if (event.data.rexliveEvent) {
+		if (event.data.rexliveEvent) {
       //do as on live, with the switch on the names of the events
-      var eventData = event.data;
+			var eventData = event.data;
       if (event.data.eventName == "rexlive:edited") {
         if (event.data.modelEdited) {
           modelSaved = false;
@@ -105,7 +105,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         }
         // get undo redo stack from iframe
         // console.log(event.data.undoRedoStacks);
-        $saveBtn.addClass("page-edited");
+				$saveBtn.addClass("page-edited");
         // Rexbuilder_Util_Admin_Editor.$body.addClass('page-edited');
       }
 
@@ -1422,7 +1422,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var _editPageProperties = function() {
 
     // Rexbuilder_Util_Admin_Editor.$body.addClass('page-edited');
-    $saveBtn.addClass("page-edited");
+		$saveBtn.addClass("page-edited");
   };
 
   /**
