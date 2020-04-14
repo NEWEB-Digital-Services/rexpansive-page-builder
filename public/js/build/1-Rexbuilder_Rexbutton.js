@@ -964,44 +964,44 @@ var Rexbuilder_Rexbutton = (function ($) {
         });
     }
 
-		/**
-		 * Generates (or re-generates) buttonsInPage Array.
-		 * @returns	{void}
-		 * @since		?.?.?
-		 * @version	2.0.4		Added resetting of the buttonsInPage Array and removed jQuery
-		 */
-		function updateButtonListInPage() {
-			buttonsInPage = [];
+	/**
+	 * Generates (or re-generates) buttonsInPage Array.
+	 * @returns	{void}
+	 * @since		?.?.?
+	 * @version	2.0.4		Added resetting of the buttonsInPage Array and removed jQuery
+	 */
+	function updateButtonListInPage() {
+		buttonsInPage = [];
 
-			var rexButtons = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rex-button-wrapper'));
-			var currentButton;
-			var tot_rexButtons = rexButtons.length;
+		var rexButtons = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rex-button-wrapper'));
+		var currentButton;
+		var tot_rexButtons = rexButtons.length;
 
-			var currentButtonID;
-			var currentButtonNumber;
+		var currentButtonID;
+		var currentButtonNumber;
 
-			var i = 0;
+		var i = 0;
 
-			for (; i < tot_rexButtons; i++) {
-				currentButton = rexButtons[i];
-				currentButtonID = currentButton.getAttribute('data-rex-button-id');
-				currentButtonNumber = parseInt(currentButton.getAttribute('data-rex-button-number'));
+		for (; i < tot_rexButtons; i++) {
+			currentButton = rexButtons[i];
+			currentButtonID = currentButton.getAttribute('data-rex-button-id');
+			currentButtonNumber = parseInt(currentButton.getAttribute('data-rex-button-number'));
 
-				buttonsInPage.push({
-					id: currentButtonID,
-					number: currentButtonNumber,
-				});
+			buttonsInPage.push({
+				id: currentButtonID,
+				number: currentButtonNumber,
+			});
 
-				if (Rexbuilder_Util.hasClass(currentButton, 'rex-separate-button')) {
-					// We are not editing a button model, but a separate button
-					_addButtonStyle($(currentButton));
-				}
+			if (Rexbuilder_Util.hasClass(currentButton, 'rex-separate-button')) {
+				// We are not editing a button model, but a separate button
+				_addButtonStyle($(currentButton));
+			}
 
-				if (buttonsInPage[i].number < currentButtonNumber) {
-					buttonsInPage[i].number = currentButtonNumber;
-				}
+			if (buttonsInPage[i].number < currentButtonNumber) {
+				buttonsInPage[i].number = currentButtonNumber;
 			}
 		}
+	}
 
     var _getButtonsInPage = function () {
         return buttonsInPage;
