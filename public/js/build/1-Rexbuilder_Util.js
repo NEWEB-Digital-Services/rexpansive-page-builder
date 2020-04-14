@@ -815,8 +815,8 @@ var Rexbuilder_Util = (function($) {
   /**
    * In case of a custom layout, guessing the correct layout from which
    * retrieve the informations to set it
-   * @param  {[type]} layoutName [description]
-   * @return {[type]}            [description]
+   * @param  {String} layoutName
+   * @return {String}
    */
   function guessLayout(layoutName) {
     var allLayouts = document.getElementById('layout-avaiable-dimensions').textContent;

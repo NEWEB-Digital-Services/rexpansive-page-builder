@@ -880,6 +880,9 @@ var Rexbuilder_App = (function($) {
 			Rexbuilder_Util.editDOMLoadedSection(section);
 
 			launchedGridsTotalHeight += gridToLaunch.getBoundingClientRect().height;
+
+			console.log( 'Griglia ' + (i+1) + ' lanciata!' );
+			
 		}
 
 		// Launching IntersectionObserver on grids that have not been launched yet
@@ -1125,6 +1128,9 @@ var Rexbuilder_App = (function($) {
 	var lazy;
 
   function init() {
+		console.log( '=== INIZIO INIT ===' );
+		
+		var perf1 = performance.now()
 		Rexbuilder_Util.init();
     Rexbuilder_Dom_Util.init();
     
@@ -1160,7 +1166,12 @@ var Rexbuilder_App = (function($) {
 
 		// $grids.find(".wrapper-expand-effect").expandEffect();
 
-		lazy = true;
+		var perf2 = performance.now()
+		console.log( 'Performance operazioni iniziali', perf2-perf1 );
+		
+		lazy = false;
+		console.log( 'Lazy', lazy );
+		
     if ($grids) {
 			if (Rexbuilder_Util.editorMode) {
 				if (INTSERSECTION_OBSERVER_IN_PAGE && lazy) {
@@ -1170,9 +1181,10 @@ var Rexbuilder_App = (function($) {
 					$grids.perfectGridGalleryEditor({
 						editorMode: Rexbuilder_Util.editorMode,
 					});
+
+					Rexbuilder_Util.launchEditDomLayout();
 				}
 
-				// Rexbuilder_Util.launchEditDomLayout();
 			} else {
 				// Get layout information and set this information on the grids
 				var choosedLayout = Rexbuilder_Util.chooseLayout();
@@ -1201,6 +1213,8 @@ var Rexbuilder_App = (function($) {
 				}
 			}
 		}
+		var perf3 = performance.now()
+		console.log( 'Performance lancio griglie', perf3-perf2 );
 
     /* ===== Launching plugins only on public side ===== */
     if ( !Rexbuilder_Util.editorMode ) {
@@ -1285,14 +1299,17 @@ var Rexbuilder_App = (function($) {
 
     if (Rexbuilder_Util.editorMode) {
       // Starting slider
-      RexSlider.init();
+			Rexbuilder_Util.$document.on( 'rexlive:editDomLayoutEnd', RexSlider.init );
+			// RexSlider.init();
       
       Rexbuilder_Util.launchVideoPlugins();
       
       Rexbuilder_Util.playAllVideos();
       
       launchAccordions();
-    }
+		}
+		var perf4 = performance.now()
+		console.log( 'Performance totale', perf3-perf1 );
   };
 
   function load() {
@@ -1315,13 +1332,13 @@ var Rexbuilder_App = (function($) {
         gridInstances[i].fixAfterLoad();
       }
 			
+			RexSlider.init();   // Starting slider
       _fixVideos();       // Fixing video proportions
-      RexSlider.init();   // Starting slider
       Rexbuilder_Util.launchVideoPlugins();
       Rexbuilder_Util.playAllVideos();
       launchAccordions();
-    }
-
+		}
+		
     /* -- Launching the textfill -- */
     var $textFillContainer = $(".text-fill-container-canvas");
     if ( $textFillContainer.length > 0 ) {
@@ -1390,7 +1407,7 @@ var Rexbuilder_App = (function($) {
 	
 	/**
    * Handles live resize.
-   * @return	{void}
+   * @returns	{void}
 	 * @since		2.0.4
    */
   function handleLiveResize() {
