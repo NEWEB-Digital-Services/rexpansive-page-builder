@@ -13,6 +13,8 @@
 	var scrollCallbacksArray = [];
   var globalStickySectionIndex = 0;
 
+  var windowScrollTop = scrollDocumentPositionTop();
+
   function StickySection() {
     this.element = null;
     this.stickyElement = null;
@@ -127,6 +129,7 @@
 
 		function handleInterval() {
 			if (userScrolled) {
+        windowScrollTop = scrollDocumentPositionTop();
 				scrollCallbacksArray.forEach(function (cb) {
 					cb.call();
 				});
@@ -173,7 +176,7 @@
     this.ticking = false;
     // var windowInnerHeight = document.documentElement.clientHeight;
 
-    var windowScrollTop = scrollDocumentPositionTop();
+    // var windowScrollTop = scrollDocumentPositionTop();
     var windowScrollBottom = windowScrollTop + windowInnerHeight;
 
     // element scroll information
