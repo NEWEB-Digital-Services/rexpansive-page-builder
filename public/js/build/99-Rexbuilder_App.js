@@ -911,12 +911,10 @@ var Rexbuilder_App = (function($) {
     } else {
       // fixes for front end only
       fixRexButtons();
-	}
+		}
 
     Rex_Navigator.init();
 		//Rexbuilder_FormFixes.init();
-
-    Rexbuilder_Util.addWindowListeners();
 
     $sections = Rexbuilder_Util.$rexContainer.find(".rexpansive_section");
     $grids = Rexbuilder_Util.$rexContainer.find(".grid-stack-row");
@@ -1148,7 +1146,24 @@ var Rexbuilder_App = (function($) {
 
     gridInfo.instance.destroy();
     gridInstances.splice( gridInfo.index, 1 );
-  }
+	}
+	
+	/**
+   * Handle live resize.
+   * @return	{void}
+	 * @since		2.0.4
+   */
+  function handleLiveResize() {
+		Rexbuilder_Util.globalViewport = Rexbuilder_Util.viewport();
+
+		if (!Rexbuilder_Util_Editor.elementIsResizing) {
+			Rexbuilder_Util.windowIsResizing = true;
+
+			if (Rexbuilder_Util.loadWidth !== Rexbuilder_Util.globalViewport.width) {
+				Rexbuilder_Util.doneResizing();
+			}
+		}
+	}
 
   /**
    * Handle front end resize.
@@ -1256,6 +1271,7 @@ var Rexbuilder_App = (function($) {
   return {
     init: init,
     load: load,
+    handleLiveResize: handleLiveResize,
     handleFrontEndResize: handleFrontEndResize,
 
     // RexGrid functions

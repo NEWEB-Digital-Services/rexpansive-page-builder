@@ -28,12 +28,16 @@
 	}
 
 	function handleResize() {
-		if ( ! Rexbuilder_Util.editorMode ) {
-			Rexbuilder_App.handleFrontEndResize()
+		if (Rexbuilder_Util.editorMode) {
+			Rexbuilder_App.handleLiveResize();
+		} else {
+			Rexbuilder_App.handleFrontEndResize();
 		}
 	}
 
-	window.addEventListener('resize', debounce( handleResize, 100 ));
+	var debounceTime = Rexbuilder_Util.editorMode ? 1000 : 100;
+
+	window.addEventListener('resize', debounce( handleResize, debounceTime ));
 
 	// Preventing <video> tag bug that auto scrolls window.
 	var IS_CHROME = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);

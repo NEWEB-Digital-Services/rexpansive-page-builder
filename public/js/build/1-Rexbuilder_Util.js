@@ -93,8 +93,6 @@ var Rexbuilder_Util = (function($) {
   var startFrontLayout;
   var changedFrontLayout;
 
-  var loadWidth;
-
   var $rexbuilderLayoutData;
   var $rexbuilderModelData;
   var $availableLayoutNames;
@@ -3006,38 +3004,6 @@ var Rexbuilder_Util = (function($) {
     }
   };
 
-  /** live resize */
-  var addWindowListeners = function() {
-    var resizeTimeout;
-    
-    /**
-     * Listen to browser screen resize
-     * @param  {ResizeEvent}
-     * @return {null}
-     * @since  2.0.0
-     */
-    window.addEventListener('resize', function(event) {
-      Rexbuilder_Util.globalViewport = Rexbuilder_Util.viewport();
-
-      if( Rexbuilder_Util.editorMode ) {
-        if ( !Rexbuilder_Util_Editor.elementIsResizing ) {
-          // event.preventDefault();
-          // event.stopImmediatePropagation();
-          // event.stopPropagation();
-
-          Rexbuilder_Util.windowIsResizing = true;
-
-          if( loadWidth !== Rexbuilder_Util.globalViewport.width ) {
-            if( resizeTimeout ) {
-              clearTimeout( resizeTimeout );
-            }
-            resizeTimeout = setTimeout( Rexbuilder_Util.doneResizing, 1000 );
-          }
-        }
-      }
-    });
-  };
-
   /**
    * Function launched at the end of the resize of the window
    * @since 2.0.0
@@ -3055,7 +3021,6 @@ var Rexbuilder_Util = (function($) {
       if ( Rexbuilder_Util_Editor.changedLayout ) {
         Rexbuilder_Util_Editor.changedLayout = false;
 				var resize_info = _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
-				
 
         if( 0 === resize_info.collapse_needed ) {
           Rexbuilder_Util_Editor.endLoading();
@@ -3092,7 +3057,7 @@ var Rexbuilder_Util = (function($) {
     }
 
     Rexbuilder_Util.windowIsResizing = false;
-    loadWidth =  Rexbuilder_Util.globalViewport.width;
+    Rexbuilder_Util.loadWidth =  Rexbuilder_Util.globalViewport.width;
   }
 
   /**
@@ -4036,7 +4001,7 @@ var Rexbuilder_Util = (function($) {
 
     this.chosenLayoutData = null;
 
-    loadWidth = Rexbuilder_Util.globalViewport.width;
+    this.loadWidth = Rexbuilder_Util.globalViewport.width;
 
     _updateSectionsID();
     Rexbuilder_Dom_Util.fixModelNumbers();
@@ -4059,7 +4024,6 @@ var Rexbuilder_Util = (function($) {
     checkPost: _checkPost,
     editorMode: editorMode,
     windowIsResizing: windowIsResizing,
-    addWindowListeners: addWindowListeners,
     launchVideoPlugins: _launchVideoPlugins,
     stopPluginsSection: _stopPluginsSection,
     playPluginsSection: _playPluginsSection,
