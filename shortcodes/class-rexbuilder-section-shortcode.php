@@ -90,6 +90,9 @@ class Rexbuilder_Section {
 		global $section_layout;
 		$section_layout = $layout;
 
+		$videoMp4Width = '';
+		$videoMp4Height = '';
+
 		$section_style = 'style="';
 		$section_fast_load = '';
 		if ("" != $id_image_bg_section) {
