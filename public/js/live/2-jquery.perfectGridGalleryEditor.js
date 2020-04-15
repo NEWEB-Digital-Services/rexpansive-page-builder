@@ -464,7 +464,7 @@
         this._linkDragEvents();
         this._linkDnDEvents();
 
-        this._launchTextEditor();
+        // this._launchTextEditor();
         this._createFirstReverseStack();
 
         this._updatePlaceholderPosition();
@@ -531,8 +531,13 @@
           },
           verticalMargin: 0,
           width: this.settings.numberCol
-        });
+				});
 
+				// var instance = this.$element.data("gridstack");
+				// this.$element.find('.grid-stack-item').each(function (index, gridStackItem) {
+				// 	instance.makeWidget(gridStackItem)
+				// })
+				
         this.$element.addClass("gridActive");
 
       } else {

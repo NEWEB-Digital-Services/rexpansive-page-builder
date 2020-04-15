@@ -28,6 +28,8 @@ var Rexbuilder_Section_Editor = (function($) {
      * @since 2.0.0
      */
     Rexbuilder_Util.$document.on('change', '.edit-row-width', function(e) {
+			console.log( e.target );
+			
       // var rexID = e.target.name.split('-')[2];
       // var $section_data = $(e.target).parents('.rexpansive_section').children('.section-data');
       var $section = $(e.target).parents(".rexpansive_section");
@@ -39,7 +41,9 @@ var Rexbuilder_Section_Editor = (function($) {
 
       var width = '';
       var type = '';
-      var vals = e.target.value.trim().split(/(\d+)/);
+			var vals = e.target.value.trim().split(/(\d+)/);
+			console.log( vals );
+			
       width = vals[1];
       type = vals[2];
       
@@ -1120,7 +1124,7 @@ var Rexbuilder_Section_Editor = (function($) {
     row_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum';
     _attachEvents();
     _setTools();
-    _listenRowDataChange();
+		_listenRowDataChange();
   };
 
   return {

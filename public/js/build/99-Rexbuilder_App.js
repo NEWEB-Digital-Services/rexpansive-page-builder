@@ -880,9 +880,6 @@ var Rexbuilder_App = (function($) {
 			Rexbuilder_Util.editDOMLoadedSection(section);
 
 			launchedGridsTotalHeight += gridToLaunch.getBoundingClientRect().height;
-
-			console.log( 'Griglia ' + (i+1) + ' lanciata!' );
-			
 		}
 
 		// Launching IntersectionObserver on grids that have not been launched yet
@@ -1009,8 +1006,6 @@ var Rexbuilder_App = (function($) {
 			expectedSectionsHeightArray.push(expectedSectionHeight);
 		}
 
-		// console.log( 'expectedSectionsHeightArray', expectedSectionsHeightArray );
-
 		return expectedSectionsHeightArray;
 	}
 
@@ -1125,66 +1120,20 @@ var Rexbuilder_App = (function($) {
 		}
 	}
 
-	var lazy;
-
-  function init() {
-		console.log( '=== INIZIO INIT ===' );
-		
-		var perf1 = performance.now()
-		Rexbuilder_Util.init();
-    Rexbuilder_Dom_Util.init();
-    
-    Rexbuilder_Rexbutton.init();
-    Rexbuilder_Rexelement.init();
-    Rexbuilder_Rexwpcf7.init();
-
-    if ( Rexbuilder_Util.editorMode ) {
-      Rex_Save_Listeners.init();
-      Rexbuilder_Rexelement_Editor.init();
-      Rexbuilder_Rexwpcf7_Editor.init();
-      Rexbuilder_CreateBlocks.init();
-      Rexbuilder_Util_Editor.init();
-      Rexbuilder_Color_Palette.init();
-      Rexbuilder_Overlay_Palette.init();
-      Rexbuilder_Section.init();
-      Rexbuilder_Section_Editor.init();
-      Rexbuilder_Block.init();
-      Rexbuilder_Block_Editor.init();
-      Rexbuilder_Live_Utilities.addBuilderListeners();
-      TextEditor.init();
-      Rexbuilder_Section_Editor.triggerRowDataChange();
-    } else {
-      // fixes for front end only
-      fixRexButtons();
-		}
-
-    Rex_Navigator.init();
-		//Rexbuilder_FormFixes.init();
-
-    $sections = Rexbuilder_Util.$rexContainer.find(".rexpansive_section");
-    $grids = Rexbuilder_Util.$rexContainer.find(".grid-stack-row");
-
-		// $grids.find(".wrapper-expand-effect").expandEffect();
-
-		var perf2 = performance.now()
-		console.log( 'Performance operazioni iniziali', perf2-perf1 );
-		
-		lazy = false;
-		console.log( 'Lazy', lazy );
-		
-    if ($grids) {
+	function _launchGrids() {
+		if ($grids) {
 			if (Rexbuilder_Util.editorMode) {
 				if (INTSERSECTION_OBSERVER_IN_PAGE && lazy) {
 					_lazyLoadGrids();
 				} else {
-					// Retro-compatibility
+					var perf1 = performance.now()
 					$grids.perfectGridGalleryEditor({
 						editorMode: Rexbuilder_Util.editorMode,
 					});
-
-					Rexbuilder_Util.launchEditDomLayout();
+					var perf2 = performance.now()
+					console.log( 'Performance lancio griglie', perf2-perf1 );
+					
 				}
-
 			} else {
 				// Get layout information and set this information on the grids
 				var choosedLayout = Rexbuilder_Util.chooseLayout();
@@ -1213,8 +1162,59 @@ var Rexbuilder_App = (function($) {
 				}
 			}
 		}
-		var perf3 = performance.now()
-		console.log( 'Performance lancio griglie', perf3-perf2 );
+		
+	}
+
+	var lazy;
+
+  function init() {
+		console.log( '=== INIZIO INIT ===' );
+		Rexbuilder_Util.init();
+		Rexbuilder_Dom_Util.init();
+
+		$sections = Rexbuilder_Util.$rexContainer.find('.rexpansive_section');
+		$grids = Rexbuilder_Util.$rexContainer.find('.grid-stack-row');
+
+		lazy = false;
+		_launchGrids();
+
+    Rexbuilder_Rexbutton.init();
+    Rexbuilder_Rexelement.init();
+    Rexbuilder_Rexwpcf7.init();
+
+    if ( Rexbuilder_Util.editorMode ) {
+      Rex_Save_Listeners.init();
+      Rexbuilder_Rexelement_Editor.init();
+      Rexbuilder_Rexwpcf7_Editor.init();
+      Rexbuilder_CreateBlocks.init();
+      Rexbuilder_Util_Editor.init();
+      Rexbuilder_Color_Palette.init();
+      Rexbuilder_Overlay_Palette.init();
+      Rexbuilder_Section.init();
+      Rexbuilder_Section_Editor.init();
+      Rexbuilder_Block.init();
+      Rexbuilder_Block_Editor.init();
+      Rexbuilder_Live_Utilities.addBuilderListeners();
+			TextEditor.init();
+      Rexbuilder_Section_Editor.triggerRowDataChange();
+    } else {
+      // fixes for front end only
+      fixRexButtons();
+		}
+
+    Rex_Navigator.init();
+		//Rexbuilder_FormFixes.init();
+
+		if (Rexbuilder_Util.editorMode) {
+			// Fix needed because grids are launched before TextEditor
+			$grids.each(function (index, grid) {
+				$(grid).data('plugin_perfectGridGalleryEditor')._launchTextEditor();
+			});
+		}
+			
+		if (!(INTSERSECTION_OBSERVER_IN_PAGE && lazy)) {
+			Rexbuilder_Util.launchEditDomLayout();
+		}
 
     /* ===== Launching plugins only on public side ===== */
     if ( !Rexbuilder_Util.editorMode ) {
@@ -1308,11 +1308,10 @@ var Rexbuilder_App = (function($) {
       
       launchAccordions();
 		}
-		var perf4 = performance.now()
-		console.log( 'Performance totale', perf3-perf1 );
   };
-
+	
   function load() {
+		
     // @bugfix on other layouts than desktop with mixed customization definitions
     // @deprecated i don't like this solution, too much expensive
     
@@ -1323,7 +1322,7 @@ var Rexbuilder_App = (function($) {
 
     if ( Rexbuilder_Util.editorMode ) {
       Rexbuilder_Util_Editor.load();
-      Rexbuilder_Live_Utilities.load();
+			Rexbuilder_Live_Utilities.load();
     } else {
       var tot_grids = gridInstances.length;
       var i = 0;

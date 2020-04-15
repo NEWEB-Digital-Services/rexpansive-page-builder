@@ -777,7 +777,8 @@ var Rexbuilder_Section = (function($) {
     var $newSection = $(newSection);
     var $newSectionData = $newSection.children(".section-data");
 
-    $newSectionData.after( tmpl("tmpl-toolbox-section", new_row_defaults) );
+		$newSectionData.after( tmpl("tmpl-toolbox-section", new_row_defaults) );
+		
     // add after the last row
     switch( newRowPosition ) {
       case 'bottom':
@@ -904,8 +905,8 @@ var Rexbuilder_Section = (function($) {
 
     $newSectionData.after(
       tmpl("tmpl-toolbox-section", new_row_defaults)
-    );
-    //per ora viene aggiunta dopo l'ultima section
+		);
+		// For now it's ok adding after the last section
     switch( newRowPosition ) {
       case 'bottom':
         var $prevRow = Rexbuilder_Util.$rexContainer.children("section:last");
@@ -1548,7 +1549,42 @@ var Rexbuilder_Section = (function($) {
 
     Rexbuilder_Util_Editor.sectionCopying = false;
     Rexbuilder_Util_Editor.insertingModel = false;
-  };
+	};
+	
+	function _prependToolBox() {
+		tmpl.arg = 'section';
+
+		var sectionToolboxTemplate = tmpl('tmpl-toolbox-section');
+
+		var new_row_defaults = {
+			rexID: '',
+			dimension: 'full',
+			dimensionClass: 'center-disposition',
+			sectionWidth: '100%',
+			fullHeight: 'false',
+			blockDistance: 20,
+			layout: 'fixed',
+			rowSeparatorTop: 20,
+			rowSeparatorBottom: 20,
+			rowSeparatorRight: 20,
+			rowSeparatorLeft: 20
+		};
+
+		var sections = Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section');
+		var section;
+		var sectionID;
+
+		var tot_sections = sections.length;
+		var i = 0;
+		for (; i < tot_sections; i++) {
+			section = sections[i];
+
+			sectionID = section.getAttribute('data-rexlive-section-id');
+			new_row_defaults.rexID = sectionID;
+
+			$(section).prepend(sectionToolboxTemplate(new_row_defaults));
+		}
+	}
 
   var init = function() {
     //Setting row number
@@ -1680,8 +1716,10 @@ var Rexbuilder_Section = (function($) {
 
         Rex_Navigator.fixNavigatorItemOrder($section);
       }
-    });
-
+		});
+		
+		_prependToolBox()
+		
     // linking listeners to row setting buttons
     _addSectionToolboxListeners();
   };

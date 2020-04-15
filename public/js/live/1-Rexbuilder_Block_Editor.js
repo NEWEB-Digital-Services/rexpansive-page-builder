@@ -1109,22 +1109,34 @@ var Rexbuilder_Block_Editor = (function($) {
 
   /**
    * Setting the block live color pickers for the background
-   * @since 2.0.0
+	 * @returns		{void}
+   * @since			2.0.0
+	 * @version		2.0.4		Transformed into vanilla js
    */
-  var _setBlockColorBackgroundPicker = function() {
-    $('input[name=edit-block-color-background]').each(function(i, el) {
-      _launchSpectrumPickerBackgorundColorBlock( el );
-    });
+  function _setBlockColorBackgroundPicker() {
+  	var inputs = Array.prototype.slice.call(document.querySelectorAll('input[name=edit-block-color-background]'));
+  	var tot_inputs = inputs.length;
+  	var i = 0;
+
+  	for (; i < tot_inputs; i++) {
+  		_launchSpectrumPickerBackgorundColorBlock(inputs[i]);
+  	}
   };
 
   /**
-   * Setting the block live colore pickers for the overlay
-   * @since 2.0.0
+   * Setting the block live color pickers for the overlay
+	 * @returns		{void}
+   * @since			2.0.0
+	 * @version		2.0.4		Transformed into vanilla js
    */
-  var _setBlockOverlayColorPicker = function() {
-    $('input[name=edit-block-overlay-color]').each(function(i, el) {
-      _launchSpectrumPickerOverlayColorBlock( el );
-    });
+  function _setBlockOverlayColorPicker() {
+  	var inputs = Array.prototype.slice.call(document.querySelectorAll('input[name=edit-block-overlay-color]'));
+  	var tot_inputs = inputs.length;
+  	var i = 0;
+
+  	for (; i < tot_inputs; i++) {
+  		_launchSpectrumPickerOverlayColorBlock(inputs[i]);
+  	}
   };
 
   /**
