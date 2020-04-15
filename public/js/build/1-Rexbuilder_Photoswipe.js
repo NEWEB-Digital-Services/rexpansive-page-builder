@@ -93,59 +93,59 @@ var Rexbuilder_Photoswipe = (function($){
 		// parse slide data (url, title, size ...) from DOM elements
 		// (children of gallerySelector)
 		var parseThumbnailElements = function(el) {
-		  //var thumbElements = el.childNodes,
-		  if ( Rexbuilder_Util.hasClass( el, 'split-scrollable--active' ) ) {
-		  	var thumbElements = $(el)
-		  		.find('.opacity-block-active')
-			  	.find(".pswp-figure")
-			  	.get()
-		  } else {
-		  	var thumbElements = $(el)
-			  .find(".pswp-figure")
-			  .get();	
-		  }
+			//var thumbElements = el.childNodes,
+			if ( Rexbuilder_Util.hasClass( el, 'split-scrollable--active' ) ) {
+				var thumbElements = $(el)
+					.find('.opacity-block-active')
+					.find(".pswp-figure")
+					.get()
+			} else {
+				var thumbElements = $(el)
+					.find(".pswp-figure")
+					.get();	
+			}
 		  
-		var numNodes = thumbElements.length,
-			items = [],
-			figureEl,
-			linkEl,
-			size,
-			item;
+			var numNodes = thumbElements.length,
+				items = [],
+				figureEl,
+				linkEl,
+				size,
+				item;
 
-		  for (var i = 0; i < numNodes; i++) {
-			figureEl = thumbElements[i]; // <figure> element
+			for (var i = 0; i < numNodes; i++) {
+				figureEl = thumbElements[i]; // <figure> element
 
-			// include only element nodes
-			if (figureEl.nodeType !== 1) {
-				continue;
+				// include only element nodes
+				if (figureEl.nodeType !== 1) {
+					continue;
+				}
+
+				linkEl = figureEl.children[0]; // <a> element
+
+				size = linkEl.getAttribute("data-size").replace("px", "").split("x");
+
+				// create slide object
+				item = {
+					src: linkEl.getAttribute("href"),
+					w: parseInt(size[0], 10),
+					h: parseInt(size[1], 10)
+				};
+
+				if (figureEl.children.length > 1) {
+					// <figcaption> content
+					item.title = figureEl.children[1].innerHTML;
+				}
+
+				if (linkEl.children.length > 0) {
+					// <img> thumbnail element, retrieving thumbnail url
+					item.msrc = linkEl.children[0].getAttribute("data-thumburl");
+				}
+
+				item.el = figureEl; // save link to element for getThumbBoundsFn
+				items.push(item);
 			}
 
-			linkEl = figureEl.children[0]; // <a> element
-
-			size = linkEl.getAttribute("data-size").replace("px", "").split("x");
-
-			// create slide object
-			item = {
-				src: linkEl.getAttribute("href"),
-				w: parseInt(size[0], 10),
-				h: parseInt(size[1], 10)
-			};
-
-			if (figureEl.children.length > 1) {
-				// <figcaption> content
-				item.title = figureEl.children[1].innerHTML;
-			}
-
-			if (linkEl.children.length > 0) {
-				// <img> thumbnail element, retrieving thumbnail url
-				item.msrc = linkEl.children[0].getAttribute("data-thumburl");
-			}
-
-			item.el = figureEl; // save link to element for getThumbBoundsFn
-			items.push(item);
-		  }
-
-		  return items;
+			return items;
 		};
 
 		// find nearest parent element
@@ -180,12 +180,10 @@ var Rexbuilder_Photoswipe = (function($){
 				$(e.target)
 					.parents(".perfect-grid-item")
 					.find(".element-link").length > 0 ||
-				$(e.target).is("a")
+					'a' === e.target.tagName.toUpperCase()
 				) {
 				return;
 			}
-
-			e.preventDefault ? e.preventDefault() : (e.returnValue = false);
 
 			var eTarget = e.target || e.srcElement;
 
@@ -194,68 +192,72 @@ var Rexbuilder_Photoswipe = (function($){
 				return el.tagName && el.tagName.toUpperCase() === "FIGURE";
 			});
 
-			if (!clickedListItem) {
+			if ( !clickedListItem) {
 				return;
 			}
 
-		  // find index of clicked item by looping through all child nodes
-		  // alternatively, you may define index via data- attribute
-		  // var clickedGallery = clickedListItem.parentNode,
-		  //var clickedGallery = findParentBySelector(clickedListItem, '.my-gallery'),
-		  var clickedGallery = $(clickedListItem).parents(gallerySelector)[0],
+			// prevent default click, if we found a correct pswp item
+			e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+
+			// find index of clicked item by looping through all child nodes
+			// alternatively, you may define index via data- attribute
+			// var clickedGallery = clickedListItem.parentNode,
+			//var clickedGallery = findParentBySelector(clickedListItem, '.my-gallery'),
+			var clickedGallery = $(clickedListItem).parents(gallerySelector)[0],
 			//childNodes = clickedListItem.parentNode.childNodes,
 			childNodes = $(clickedGallery)
-			  .find(".pswp-figure")
-			  .get(),
-			numChildNodes = childNodes.length,
-			nodeIndex = 0,
-			index;
+				.find(".pswp-figure")
+				.get(),
+				numChildNodes = childNodes.length,
+				nodeIndex = 0,
+				index;
 
-		  for (var i = 0; i < numChildNodes; i++) {
-			if (childNodes[i].nodeType !== 1) {
-			  continue;
+			for (var i = 0; i < numChildNodes; i++) {
+				if (childNodes[i].nodeType !== 1) {
+					continue;
+				}
+
+				if (childNodes[i] === clickedListItem) {
+					index = nodeIndex;
+					break;
+				}
+				nodeIndex++;
 			}
 
-			if (childNodes[i] === clickedListItem) {
-			  index = nodeIndex;
-			  break;
+			if (index >= 0) {
+				// open PhotoSwipe if valid index found
+				openPhotoSwipe(index, clickedGallery);
 			}
-			nodeIndex++;
-		  }
 
-		  if (index >= 0) {
-			// open PhotoSwipe if valid index found
-			openPhotoSwipe(index, clickedGallery);
-		  }
-		  return false;
+			return false;
 		};
 
 		// parse picture index and gallery index from URL (#&pid=1&gid=2)
 		var photoswipeParseHash = function() {
-		  var hash = window.location.hash.substring(1),
-			params = {};
+			var hash = window.location.hash.substring(1),
+				params = {};
 
-		  if (hash.length < 5) {
+			if (hash.length < 5) {
+				return params;
+			}
+
+			var vars = hash.split("&");
+			for (var i = 0; i < vars.length; i++) {
+				if (!vars[i]) {
+					continue;
+				}
+				var pair = vars[i].split("=");
+				if (pair.length < 2) {
+					continue;
+				}
+				params[pair[0]] = pair[1];
+			}
+
+			if (params.gid) {
+				params.gid = parseInt(params.gid, 10);
+			}
+
 			return params;
-		  }
-
-		  var vars = hash.split("&");
-		  for (var i = 0; i < vars.length; i++) {
-			if (!vars[i]) {
-			  continue;
-			}
-			var pair = vars[i].split("=");
-			if (pair.length < 2) {
-			  continue;
-			}
-			params[pair[0]] = pair[1];
-		  }
-
-		  if (params.gid) {
-			params.gid = parseInt(params.gid, 10);
-		  }
-
-		  return params;
 		};
 
 		var onOpenPhotoswipeInsideIframe = function() {
