@@ -42,7 +42,8 @@ var Rexbuilder_Overlay_Palette = (function($) {
         };
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
-        var item = tmpl("tmpl-palette-item",{});
+        // var item = tmpl("tmpl-palette-item",{});
+        var item = '<div class="palette-item"><div class="tool-button tool-button--deactivate palette-item__delete"><i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i></div></div>';
         var $item = $(item);
 
         props.$add_color.before( $item );

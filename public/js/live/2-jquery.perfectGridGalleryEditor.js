@@ -376,30 +376,79 @@
 
       this.properties.firstStartGrid = true;
 
+      console.log('--- start grid ---')
+
+      var p1 = performance.now()
       this._setGridID();
+      var p2 = performance.now()
+      console.log('_setGridID',p2-p1)
 
+      p1 = performance.now()
       this._updateBlocksRexID();
+      p2 = performance.now()
+      console.log('_updateBlocksRexID',p2-p1)
 
+      p1 = performance.now()
       this._countBlocks();
+      p2 = performance.now()
+      console.log('_countBlocks',p2-p1)
 
+      p1 = performance.now()
       this.clearStateGrid();
+      p2 = performance.now()
+      console.log('clearStateGrid',p2-p1)
 
+      p1 = performance.now()
       this._defineDataSettings();
+      p2 = performance.now()
+      console.log('_countBlocks',p2-p1)
+
+      p1 = performance.now()
       this._setGutter();
+      p2 = performance.now()
+      console.log('_setGutter',p2-p1)
+
+      p1 = performance.now()
       this._defineHalfSeparatorProperties();
+      p2 = performance.now()
+      console.log('_defineHalfSeparatorProperties',p2-p1)
+
+      p1 = performance.now()
       this._defineRowSeparator();
+      p2 = performance.now()
+      console.log('_defineRowSeparator',p2-p1)
+
+      p1 = performance.now()
       this._defineFullWidthNaturalBackground();
+      p2 = performance.now()
+      console.log('_defineFullWidthNaturalBackground',p2-p1)
+
+      p1 = performance.now()
       this._defineNaturalBackground();
+      p2 = performance.now()
+      console.log('_defineNaturalBackground',p2-p1)
 
+      p1 = performance.now()
       this._setGridPadding();
+      p2 = performance.now()
+      console.log('_setGridPadding',p2-p1)
 
+      p1 = performance.now()
       this._defineDynamicPrivateProperties();
+      p2 = performance.now()
+      console.log('_defineDynamicPrivateProperties',p2-p1)
 
       // this.setFullWidthNaturalBackground();
 
+      p1 = performance.now()
       this._prepareElements();
+      p2 = performance.now()
+      console.log('_prepareElements',p2-p1)
 
+      p1 = performance.now()
       this._launchGridStack();
+      p2 = performance.now()
+      console.log('_launchGridStack',p2-p1)
 
       // this.createScrollbars();
 
@@ -470,7 +519,10 @@
       //   this._updatePlaceholderPosition();
       // }
 
+      p1 = performance.now()
       this.saveStateGrid();
+      p2 = performance.now()
+      console.log('saveStateGrid',p2-p1)
 
       // Creating layout before collapsing info for resize purpose
       var collapseGrid = this.section.getAttribute('data-rex-collapse-grid');
@@ -494,12 +546,23 @@
         }
       }
       
+      p1 = performance.now()
       this.fix_natural_image_blocks();
+      p2 = performance.now()
+      console.log('fix_natural_image_blocks',p2-p1)
 
+      p1 = performance.now()
       this.save_grid_state();
+      p2 = performance.now()
+      console.log('save_grid_state',p2-p1)
 
+      p1 = performance.now()
       this.triggerGalleryReady();
+      p2 = performance.now()
+      console.log('triggerGalleryReady',p2-p1)
       this.properties.firstStartGrid = false;
+
+      console.log('--- end grid ---')
 		},
 		
 		launchHandlers: function () {
@@ -571,6 +634,7 @@
 
     _launchGridStack: function() {
       if (this.settings.editorMode) {
+        var p1 = performance.now()
         this.$element.gridstack({
           auto: true,
           autoHide: false,
@@ -600,6 +664,9 @@
           width: this.settings.numberCol
 				});
 
+        var p2 = performance.now();
+        console.log('gridstack', p2-p1)
+
 				// var instance = this.$element.data("gridstack");
 				// this.$element.find('.grid-stack-item').each(function (index, gridStackItem) {
 				// 	instance.makeWidget(gridStackItem)
@@ -628,9 +695,13 @@
         });
       }
 
+      p1 = performance.now();
       this.setGridstackIstanceNumber();
+      p2 = performance.now();
+      console.log('setGridstackIstanceNumber', p2-p1)
       this.properties.gridstackInstance = this.$element.data("gridstack");
 
+      p1 = performance.now();
       // Remove elements to hide
       var gridstack = this.properties.gridstackInstance;
       var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
@@ -641,7 +712,10 @@
           gridstack.removeWidget(items[i], false);
         }
       }
+      p2 = performance.now();
+      console.log('removeWidget', p2-p1)
 
+      p1 = performance.now();
       if (this.settings.editorMode) {
         if ( !Rexbuilder_Util.domUpdating && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying ) ) {
           this.updateBlocksHeight();
@@ -649,13 +723,21 @@
       } else {
         this.updateBlocksHeight();
       }
+      p2 = performance.now();
+      console.log('updateBlocksHeight', p2-p1)
 
+      p1 = performance.now();
       for( i=0; i < tot_items; i++ ) {
         var blockData = items[i].querySelector('.rexbuilder-block-data');
         this.updateElementDataHeightProperties( blockData, parseInt( items[i].getAttribute('data-gs-height') ) );
       }
+      p2 = performance.now();
+      console.log('updateElementDataHeightProperties', p2-p1)
 
+      p1 = performance.now();
       this.fixVideoProportion();
+      p2 = performance.now();
+      console.log('fixVideoProportion', p2-p1)
     },
 
     /**

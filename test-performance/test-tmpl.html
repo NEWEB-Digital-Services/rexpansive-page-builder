@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="../public/js/vendor/tmpl.min.js"></script>
+</head>
+<body>
+	<div id="result"></div>
+<script>
+;(function(){
+	function handleDOMContentLoaded() {
+		var data = {
+			title: 'JavaScript Templates',
+			license: {
+				name: 'MIT license',
+				url: 'https://opensource.org/licenses/MIT'
+			},
+			features: ['lightweight & fast', 'powerful', 'zero dependencies']
+		}
+		document.getElementById('result').innerHTML = tmpl('tmpl-demo', data)
+	}
+	document.addEventListener('DOMContentLoaded', handleDOMContentLoaded);
+}())
+</script>
+<script type="text/x-tmpl" id="tmpl-demo">
+  <h3>{%=o.title%}</h3>
+  <p>Released under the
+  <a href="{%=o.license.url%}">{%=o.license.name%}</a>.</p>
+  <h4>Features</h4>
+  <ul>
+  {% for (var i=0; i<o.features.length; i++) { %}
+      <li>{%=o.features[i]%}</li>
+  {% } %}
+  </ul>
+</script>
+</body>
+</html>

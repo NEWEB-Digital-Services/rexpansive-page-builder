@@ -22,7 +22,8 @@ var Rexbuilder_Live_Utilities = (function($) {
 	};
 
 	var _addSpectrumCustomSaveButton = function( $picker ) {
-		var choose = tmpl('tmpl-tool-save', {});
+		// var choose = tmpl('tmpl-tool-save', {});
+		var choose = '<div class="rex-modal__outside-footer"><div id="rex-model__add-new-model" class="tool-button tool-button--inline tool-button--save tippy" data-tippy-content="Create Model" tabindex="0"><span class="btn-save--edited"><i class="l-svg-icons"><svg><use xlink:href="#A006-Save"></use></svg></i></span><span class="btn-save--saved"><i class="l-svg-icons"><svg><use xlink:href="#A006-Save"></use></svg></i></span></div></div>';
 		var $choose = $(choose);
 		$picker.spectrum('container').append($choose);
 
@@ -34,7 +35,8 @@ var Rexbuilder_Live_Utilities = (function($) {
 	};
 
 	var _addSpectrumCustomCloseButton = function( $picker ) {
-		var close = tmpl('tmpl-tool-close', {});
+		// var close = tmpl('tmpl-tool-close', {});
+		var close = '<div class="tool-button tool-button--black tool-button--close rex-modal__close-button"><i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i></div>';
 		var $close = $(close);
 		$picker.spectrum('container').append($close);
 

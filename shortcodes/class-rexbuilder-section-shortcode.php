@@ -308,9 +308,9 @@ class Rexbuilder_Section {
 		}
 		echo '></div>';
 		
-		if ( $editor ) {
+		// if ( $editor ) {
 			// include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-section-tools.php";
-		}
+		// }
 
 		echo $bg_video_markup;
 		echo $bg_youtube_video_markup;

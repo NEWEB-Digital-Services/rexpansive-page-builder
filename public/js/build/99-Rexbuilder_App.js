@@ -1336,7 +1336,7 @@ var Rexbuilder_App = (function($) {
 		}
 		
 		var perf6 = performance.now()
-		console.log( 'Performance ', perf6-perf5 );
+		console.log( 'Performance attach listeners', perf6-perf5 );
 		console.log( 'Performance TOTALE init', perf6-perf1 );
 		
   };

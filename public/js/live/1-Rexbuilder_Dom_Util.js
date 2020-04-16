@@ -395,11 +395,14 @@ var Rexbuilder_Dom_Util = (function($) {
         $ytpWrapper.remove();
 
         tmpl.arg = "video";
-        $target.prepend(
-          tmpl("tmpl-video-youtube", { url: videoID, audio: false })
-        );
+        // $target.prepend(
+        //   tmpl("tmpl-video-youtube", { url: videoID, audio: false })
+        // );
+        $target.prepend('<div class="rex-youtube-wrap" data-property="{videoURL:\'' + videoID + '\',containment:\'self\',startAt:0,mute:' + false + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>');
+
         if (hadAudio && wasSlide) {
-          var $toggle = $(tmpl("tmpl-video-toggle-audio"));
+          // var $toggle = $(tmpl("tmpl-video-toggle-audio"));
+          var $toggle = $('<div class="rex-video-toggle-audio"><div class="rex-video-toggle-audio-shadow"></div></div>');
           $toggle.addClass("removing-toggle-audio");
           $toggle.appendTo($target.children(".rex-youtube-wrap")[0]);
         }
@@ -482,12 +485,14 @@ var Rexbuilder_Dom_Util = (function($) {
       $target.addClass("mp4-player");
 			tmpl.arg = "video";
 			
-      var mp4Tmpl = tmpl("tmpl-video-mp4", {
-          url: mp4Data.linkMp4,
-          width: mp4Data.width,
-          height: mp4Data.height,
-          fast_load: Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode
-			  });
+     //  var mp4Tmpl = tmpl("tmpl-video-mp4", {
+     //      url: mp4Data.linkMp4,
+     //      width: mp4Data.width,
+     //      height: mp4Data.height,
+     //      fast_load: Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode
+			  // });
+
+      var mp4Tmpl = '<div class="rex-video-wrap" data-rex-video-width="' + mp4Data.width + '" data-rex-video-height="' + mp4Data.height + '"><video width="' + mp4Data.width + '" height="' + mp4Data.height + '" class="rex-video-container" preload autoplay loop muted><source type="video/mp4" src="' + mp4Data.linkMp4 + '"></video></div>';
 
       if ($target.is("section")) {
         var insert_after = "";
@@ -520,7 +525,8 @@ var Rexbuilder_Dom_Util = (function($) {
 
     if ($toggleAudio.length == 0) {
       if (hasAudio) {
-        $target.append(tmpl("tmpl-video-toggle-audio"));
+        // $target.append(tmpl("tmpl-video-toggle-audio"));
+        $target.append('<div class="rex-video-toggle-audio"><div class="rex-video-toggle-audio-shadow"></div></div>');
       }
     } else {
       if (hasAudio) {
@@ -589,12 +595,14 @@ var Rexbuilder_Dom_Util = (function($) {
           setTimeout(
             function() {
               tmpl.arg = "video";
-              $target.prepend(
-                tmpl("tmpl-video-youtube", {
-                  url: urlYoutube,
-                  audio: !hasAudio
-                })
-              );
+              // $target.prepend(
+              //   tmpl("tmpl-video-youtube", {
+              //     url: urlYoutube,
+              //     audio: !hasAudio
+              //   })
+              // );
+              $target.prepend('<div class="rex-youtube-wrap" data-property="{videoURL:\'' + urlYoutube + '\',containment:\'self\',startAt:0,mute:' + !hasAudio + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>');
+
               $target.children(".rex-youtube-wrap").YTPlayer();
               var $toggleAudio = $target.children(".rex-video-toggle-audio");
               if ($toggleAudio.length == 0) {
@@ -623,16 +631,18 @@ var Rexbuilder_Dom_Util = (function($) {
       }
     } else {
       tmpl.arg = "video";
-      $target.prepend(
-        tmpl("tmpl-video-youtube", { url: urlYoutube, audio: !hasAudio })
-      );
+      // $target.prepend(
+      //   tmpl("tmpl-video-youtube", { url: urlYoutube, audio: !hasAudio })
+      // );
+      $target.prepend('<div class="rex-youtube-wrap" data-property="{videoURL:\'' + urlYoutube + '\',containment:\'self\',startAt:0,mute:' + !hasAudio + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>');
       $target.children(".rex-youtube-wrap").YTPlayer();
     }
 
     $target.addClass("youtube-player");
     if ($toggleAudio.length == 0) {
       if (hasAudio) {
-        $target.append(tmpl("tmpl-video-toggle-audio"));
+        // $target.append(tmpl("tmpl-video-toggle-audio"));
+        $target.append('<div class="rex-video-toggle-audio"><div class="rex-video-toggle-audio-shadow"></div></div>');
       }
     } else {
       if (hasAudio) {
@@ -664,7 +674,8 @@ var Rexbuilder_Dom_Util = (function($) {
           "?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=" +
           (hasAudio.toString() == "true" ? "0" : "1") +
           "&background=1";
-        $target.prepend(tmpl("tmpl-video-vimeo", { url: urlVimeo }));
+        // $target.prepend(tmpl("tmpl-video-vimeo", { url: urlVimeo }));
+        $target.prepend('<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block"><iframe src="' + urlVimeo + '" width="640" height="360" frameborder="0" allow="autoplay"  webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
         var vimeoFrame = $target
           .children(".rex-video-vimeo-wrap")
           .find("iframe")[0];
@@ -678,7 +689,8 @@ var Rexbuilder_Dom_Util = (function($) {
     }
     if ($toggleAudio.length == 0) {
       if (hasAudio) {
-        $target.append(tmpl("tmpl-video-toggle-audio"));
+        // $target.append(tmpl("tmpl-video-toggle-audio"));
+        $target.append('<div class="rex-video-toggle-audio"><div class="rex-video-toggle-audio-shadow"></div></div>');
       }
     } else {
       if (hasAudio) {
@@ -1493,13 +1505,15 @@ var Rexbuilder_Dom_Util = (function($) {
         $section
           .find(".grid-stack-row")
           .parent()
-          .prepend(tmpl("tmpl-div-block-grid", {}));
+          // .prepend(tmpl("tmpl-div-block-grid", {}));
+          .prepend('<div class="rexpansive-block-grid"></div>');
       }
       if ($section.find(".rexpansive-block-section-toolbox").length == 0) {
         $section
           .find(".section-toolBox")
           .parent()
-          .prepend(tmpl("tmpl-div-block-section-toolbox", {}));
+          // .prepend(tmpl("tmpl-div-block-section-toolbox", {}));
+          .prepend('<div class="rexpansive-block-section-toolbox"></div>');
       }
     } else {
       $section.removeClass("rex-model-section");
@@ -1545,13 +1559,15 @@ var Rexbuilder_Dom_Util = (function($) {
         $section
           .find(".grid-stack-row")
           .parent()
-          .prepend(tmpl("tmpl-div-block-grid", {}));
+          // .prepend(tmpl("tmpl-div-block-grid", {}));
+          .prepend('<div class="rexpansive-block-grid"></div>');
       }
       if ($section.find(".rexpansive-block-section-toolbox").length == 0) {
         $section
           .find(".section-toolBox")
           .parent()
-          .prepend(tmpl("tmpl-div-block-section-toolbox", {}));
+          // .prepend(tmpl("tmpl-div-block-section-toolbox", {}));
+          .prepend('<div class="rexpansive-block-section-toolbox"></div>');
       }
       $button.removeClass("unlocked");
       $button.addClass("locked");
