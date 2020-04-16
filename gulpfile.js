@@ -388,6 +388,8 @@ function minifyExternal(cb) {
 	cb();
 }
 
+exports.minifyExternal = minifyExternal;
+
 // FIX CF7
 function rxcf7(cb) {
 	return src('public/scss/rxcf7.scss')

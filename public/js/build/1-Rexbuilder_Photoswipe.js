@@ -31,7 +31,6 @@ var Rexbuilder_Photoswipe = (function($){
 	};
 
 	var _addElement = function($itemContent, url, w, h, t) {
-		console.trace()
 		if ( !$itemContent.parents('.grid-stack-item').hasClass('block-has-slider') ) {
 			tmpl.arg = "image";
 			var $gridstackItemContent = $itemContent.parents(".grid-stack-item-content");
@@ -93,18 +92,27 @@ var Rexbuilder_Photoswipe = (function($){
 	var _init = function(gallerySelector) {
 		// parse slide data (url, title, size ...) from DOM elements
 		// (children of gallerySelector)
-		var parseThumbnailElements = function(el) {
+		var parseThumbnailElements = function(el, index) {
 			//var thumbElements = el.childNodes,
-			if ( Rexbuilder_Util.hasClass( el, 'split-scrollable--active' ) ) {
+			/*if ( Rexbuilder_Util.hasClass( el, 'split-scrollable--active' ) ) {
 				var thumbElements = $(el)
 					.find('.opacity-block-active')
 					.find(".pswp-figure")
 					.get()
-			} else {
+			} else*if ( Rexbuilder_Util.hasClass( el, 'split-scrollable' ) && 'undefined' !== typeof index ) {
 				var thumbElements = $(el)
+					.find('.opacity-block')
+					.eq(index)
+					.find('.pswp-figure')
+					.get()
+			} else {*/
+				var thumbElements = $(el)
+					// .find(".pswp-figure")
 					.find(".pswp-figure")
 					.get();	
-			}
+			//}
+
+			var splitScrollableGallery = Rexbuilder_Util.hasClass( el, 'split-scrollable' );
 		  
 			var numNodes = thumbElements.length,
 				items = [],
@@ -114,11 +122,16 @@ var Rexbuilder_Photoswipe = (function($){
 				item;
 
 			for (var i = 0; i < numNodes; i++) {
-				figureEl = thumbElements[i]; // <figure> element
+				if ( splitScrollableGallery && 'undefined' !== typeof index ) {
+					// here handling splitscrollable
+					// @todo WORK HERE
+				} else {
+					figureEl = thumbElements[i]; // <figure> element
 
-				// include only element nodes
-				if (figureEl.nodeType !== 1) {
-					continue;
+					// include only element nodes
+					if (figureEl.nodeType !== 1) {
+						continue;
+					}
 				}
 
 				linkEl = figureEl.children[0]; // <a> element
@@ -204,14 +217,17 @@ var Rexbuilder_Photoswipe = (function($){
 			// alternatively, you may define index via data- attribute
 			// var clickedGallery = clickedListItem.parentNode,
 			//var clickedGallery = findParentBySelector(clickedListItem, '.my-gallery'),
-			var clickedGallery = $(clickedListItem).parents(gallerySelector)[0],
+			var clickedGallery = $(clickedListItem).parents(gallerySelector)[0];
 			//childNodes = clickedListItem.parentNode.childNodes,
-			childNodes = $(clickedGallery)
-				.find(".pswp-figure")
-				.get(),
-				numChildNodes = childNodes.length,
+			var childNodes = Array.prototype.slice.call( clickedGallery.getElementsByClassName('pswp-figure'))
+			// var childNodes = $(clickedGallery)
+			// 	.find(".pswp-figure")
+			// 	.get(),
+			var numChildNodes = childNodes.length,
 				nodeIndex = 0,
 				index;
+
+			console.log(clickedListItem.children[0].href)
 
 			for (var i = 0; i < numChildNodes; i++) {
 				if (childNodes[i].nodeType !== 1) {
@@ -283,7 +299,11 @@ var Rexbuilder_Photoswipe = (function($){
 				options,
 				items;
 
-			items = parseThumbnailElements(galleryElement);
+			console.log('openPhotoSwipe', index)
+
+			items = parseThumbnailElements(galleryElement, index);
+
+			console.log(items)
 
 			// define options (if needed)
 			options = {
@@ -291,6 +311,7 @@ var Rexbuilder_Photoswipe = (function($){
 				galleryUID: galleryElement.getAttribute("data-pswp-uid"),
 
 				getThumbBoundsFn: function(index) {
+					console.log('getThumbBoundsFn', index)
 					// See Options -> getThumbBoundsFn section of documentation for more info
 					var thumbnail = items[index].el.getElementsByClassName( "pswp-item-thumb" )[0], // find thumbnail
 						image_content = items[index].el.getElementsByClassName( "rex-custom-scrollbar" )[0],
