@@ -594,7 +594,7 @@ var Rexbuilder_Util_Editor = (function($) {
       }
     }, 250);
 
-    var $tracedHighlightRow;
+		var $tracedHighlightRow;
 
     /**
      * Check hover in on a row

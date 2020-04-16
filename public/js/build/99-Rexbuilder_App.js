@@ -1180,8 +1180,8 @@ var Rexbuilder_App = (function($) {
 
     Rexbuilder_Rexbutton.init();
     Rexbuilder_Rexelement.init();
-    Rexbuilder_Rexwpcf7.init();
-
+		Rexbuilder_Rexwpcf7.init();
+		
     if ( Rexbuilder_Util.editorMode ) {
       Rex_Save_Listeners.init();
       Rexbuilder_Rexelement_Editor.init();

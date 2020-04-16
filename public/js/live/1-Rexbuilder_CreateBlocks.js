@@ -406,7 +406,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
    * @since  2.0.3
    */
   function addListeners() {
-    Rexbuilder_Util.$document.on("click", ".add-new-block-empty", handleAddNewBlockEmpty);
+    // Rexbuilder_Util.$document.on("click", ".add-new-block-empty", handleAddNewBlockEmpty);
     Rexbuilder_Util.$document.on("click", ".add-new-block-text", handleNewBlockText);
 
     Rexbuilder_Util.$document.on("rexlive:insert_new_text_block", handleInsertNewTextBlock);

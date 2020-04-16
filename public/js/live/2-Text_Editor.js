@@ -1234,7 +1234,7 @@ var TextEditor = (function ($) {
       // Timeout is needed because anchor will stay under button for about 500-600 ms
       var showAnchorTimeout = null;
       var extensionIstance = this;
-      Rexbuilder_Util.$document.on("mouseenter", ".rex-button-wrapper", function (e) {
+      Rexbuilder_Util.$rexContainer.on("mouseenter", ".rex-button-wrapper", function (e) {
         extensionIstance.hideAnchorPreview();
         if (showAnchorTimeout !== null) {
           clearTimeout(showAnchorTimeout);
@@ -1242,7 +1242,7 @@ var TextEditor = (function ($) {
         }
       });
 
-      Rexbuilder_Util.$document.on("mouseleave", ".rex-button-wrapper", function (e) {
+      Rexbuilder_Util.$rexContainer.on("mouseleave", ".rex-button-wrapper", function (e) {
         showAnchorTimeout = setTimeout(extensionIstance.showAnchorPreview, 1000);
       });
 
@@ -3206,7 +3206,7 @@ var TextEditor = (function ($) {
       this.on(this.cloneFormColumnBtn, "click", this.handleClickCloneFormColumn.bind(this));
       this.on(this.deleteFormColumnBtn, "click", this.handleClickDeleteFormColumn.bind(this));
 
-      // Trace the cursor position
+			// Trace the cursor position
       this.subscribe("editableMouseover", this.handleMouseOver.bind(this));
 
       this.subscribe("blur", this.handleBlur.bind(this));

@@ -487,8 +487,6 @@
       var data = e.settings.data_to_send;
       var $section;
 
-      console.log(data)
-
       if (data.sectionTarget.modelNumber != "") {
         $section = Rexbuilder_Util.$rexContainer.find(
           'section[data-rexlive-section-id="' +
@@ -2165,8 +2163,8 @@
       };
 
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-    });
-
+		});
+		
     // Launch to the iframe parent the event to open the Media Uploader
     $document.on("click", ".add-new-block-image", function(e) {
       e.preventDefault();

@@ -131,7 +131,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * Create a rexlive:openLiveImageUploader message to send to iframe parent
      * @since 2.0.0
      */
-    Rexbuilder_Util.$document.on('click', '.edit-row-image-background', function(e) {
+    Rexbuilder_Util.$rexContainer.on('click', '.edit-row-image-background', function(e) {
       var $section = $(this).parents(".rexpansive_section");
       var sectionID = $section.attr("data-rexlive-section-id");
       var modelNumber =
@@ -161,7 +161,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * De-selecting the image on a background row
      * @since 2.0.0
      */
-    Rexbuilder_Util.$document.on('click', '.deactivate-row-image-background', function(e) {
+    Rexbuilder_Util.$rexContainer.on('click', '.deactivate-row-image-background', function(e) {
       var $section = $(e.target).parents(".rexpansive_section");
       var sectionID = $section.attr("data-rexlive-section-id");
       var modelNumber =
@@ -206,8 +206,8 @@ var Rexbuilder_Section_Editor = (function($) {
      * De-selecting the color on a background row
      * @since 2.0.0
      */
-    Rexbuilder_Util.$document.on('click', '.deactivate-row-color-background', function(e) {
-      var $btn = $(e.target);
+    Rexbuilder_Util.$rexContainer.on('click', '.deactivate-row-color-background', function(e) {
+			var $btn = $(e.target);
       var $section = $(e.target).parents(".rexpansive_section");
       // var $section_data = $section.children('.section-data');
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -245,8 +245,8 @@ var Rexbuilder_Section_Editor = (function($) {
     /**
      * De-selecting the overlay color on a background row
      */
-    Rexbuilder_Util.$document.on('click', '.deactivate-row-overlay-color', function(e) {
-      var $section = $(e.target).parents(".rexpansive_section");
+    Rexbuilder_Util.$rexContainer.on('click', '.deactivate-row-overlay-color', function(e) {
+			var $section = $(e.target).parents(".rexpansive_section");
       var $section_data = $section.children('.section-data');
       var sectionID = $section.attr("data-rexlive-section-id");
       var modelNumber =
@@ -284,7 +284,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * Open the modal to editing or insert a background video on a row
      * @since 2.0.0
      */
-    Rexbuilder_Util.$document.on('click', '.edit-row-video-background', function(e) {
+    Rexbuilder_Util.$rexContainer.on('click', '.edit-row-video-background', function(e) {
       e.preventDefault();
       var $section = $(e.target).parents(".rexpansive_section");
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -344,7 +344,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * Deactivating a video (everyone) on a background of a row
      * @since 2.0.0
      */
-    Rexbuilder_Util.$document.on('click', '.deactivate-row-video-background', function(e) {
+    Rexbuilder_Util.$rexContainer.on('click', '.deactivate-row-video-background', function(e) {
       e.preventDefault();
 
       var $section = $(e.target).parents(".rexpansive_section");
@@ -522,14 +522,15 @@ var Rexbuilder_Section_Editor = (function($) {
       // chooseText: ""
     });
 
-    var close = tmpl('tmpl-tool-close', {});
+		var close = tmpl('tmpl-tool-close', {});
+		
     var $close = $(close);
     $picker.spectrum('container').append($close);
 
     $close.on('click', function(e) {
       e.preventDefault();
       $picker.spectrum('hide');
-    });
+		});
 
     $picker.prev('.edit-row-color-background').on('click', function() {
       $picker.spectrum('show');

@@ -5,6 +5,8 @@
 var Rexbuilder_Live_Utilities = (function($) {
 	"use strict";
 
+	var PLATFORM_IS_MAC = window.navigator.platform.match('Mac');
+
 	var tippyCollection;
 
 	var _tooltips = function() {
@@ -415,57 +417,52 @@ var Rexbuilder_Live_Utilities = (function($) {
 			}
 		});
 
-		// if "ESC" pressed end editing element
-		Rexbuilder_Util.$window.on("keydown", function(event) {
-			if (Rexbuilder_Util_Editor.editingGallery && event.keyCode == 27) {
-				Rexbuilder_Util_Editor.endEditingElement();
-			}
-		});
-
-		// if "ESC" pressed tell the parent to close a window
-		Rexbuilder_Util.$document.on('keydown', function(e) {
-			if( e.keyCode === 27 ) {
-				var data = {
-					eventName: "rexlive:esc_pressed",
-				};
-				Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-			}
-		});
-
-		// capture save page
-		Rexbuilder_Util.$document.on('keydown', function(e) {
-			if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
+		function handleKeydown(e) {
+			if ((PLATFORM_IS_MAC ? e.metaKey : e.ctrlKey) && e.keyCode == 83) {
+				// SAVE PAGE
 				e.preventDefault();
 				// Process the event here (such as click on submit button)
-				// SAVE PAGE
 				var data = {
-					eventName: "rexlive:savePageWithButton",
+					eventName: 'rexlive:savePageWithButton'
 				};
 				Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-			}
-		});
-
-		// capture undo
-		Rexbuilder_Util.$document.on('keydown', function(e) {
-			if ( "BODY" == e.target.nodeName && (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && !e.shiftKey && e.keyCode == 90) {
+			} else if (
+				'BODY' == e.target.nodeName &&
+				(PLATFORM_IS_MAC ? e.metaKey : e.ctrlKey) &&
+				!e.shiftKey &&
+				e.keyCode == 90
+			) {
+				// UNDO
 				e.preventDefault();
 				var data = {
-					eventName: "rexlive:undoWithButton",
+					eventName: 'rexlive:undoWithButton'
 				};
 				Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-			}
-		});
-
-		// capture redo
-		Rexbuilder_Util.$document.on('keydown', function(e) {
-		if ( "BODY" == e.target.nodeName && ( ( (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.shiftKey && e.keyCode == 90 ) || ( (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.keyCode == 89 ) ) ) {
+			} else if (
+				'BODY' == e.target.nodeName &&
+				(((PLATFORM_IS_MAC ? e.metaKey : e.ctrlKey) && e.shiftKey && e.keyCode == 90) ||
+					((PLATFORM_IS_MAC ? e.metaKey : e.ctrlKey) && e.keyCode == 89))
+			) {
+				// REDO
 				e.preventDefault();
 				var data = {
-					eventName: "rexlive:redoWithButton",
+					eventName: 'rexlive:redoWithButton'
 				};
 				Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+			} else if (e.keyCode === 27) {
+				// ESC pressed
+				if (Rexbuilder_Util_Editor.editingGallery) {
+					Rexbuilder_Util_Editor.endEditingElement();
+				} else {
+					var data = {
+						eventName: 'rexlive:esc_pressed'
+					};
+					Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+				}
 			}
-		});
+		}
+
+		document.addEventListener('keydown', handleKeydown)
 
 		Rexbuilder_Util.$window.on("mousedown", function(event) {
 			Rexbuilder_Util_Editor.mouseDown = true;

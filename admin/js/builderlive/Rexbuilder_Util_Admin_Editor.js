@@ -467,10 +467,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
     // Save with keyboard
     Rexlive_Base_Settings.$document.on('keydown', function(e) {
-      if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
-        e.preventDefault();
+			if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
+				e.preventDefault();
         // Process the event here (such as click on submit button)
-        // SAVE PAGE
+				// SAVE PAGE
         $saveBtn.trigger('click');
       }
     });
@@ -479,8 +479,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     Rexlive_Base_Settings.$document.on('keydown', function(e) {
       if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && !e.shiftKey && e.keyCode == 90) {
         e.preventDefault();
-        // Process the event here (such as click on submit button)
-        // SAVE PAGE
+				// Process the event here (such as click on submit button)
         $undoBtn.trigger('click');
       }
     });
@@ -489,8 +488,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     Rexlive_Base_Settings.$document.on('keydown', function(e) {
       if ( ( (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.shiftKey && e.keyCode == 90 ) || ( (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.keyCode == 89 ) ) {
         e.preventDefault();
-        // Process the event here (such as click on submit button)
-        // SAVE PAGE
+				// Process the event here (such as click on submit button)
         $redoBtn.trigger('click');
       }
     });

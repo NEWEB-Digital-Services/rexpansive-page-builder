@@ -526,6 +526,8 @@ var Rexbuilder_Section = (function($) {
    * @since 2.0.0
    */
   function handleBuilderCopyRow(e) {
+		console.log( 'Copy row', e.target, e.currentTarget );
+		
     Rexbuilder_Util_Editor.sectionCopying = true;
     var $section = $(e.currentTarget).parents(".rexpansive_section");
     var $newSection = $section.clone(false);
@@ -1450,14 +1452,15 @@ var Rexbuilder_Section = (function($) {
 	}
 
   var _addSectionToolboxListeners = function() {
-    Rexbuilder_Util.$document.on("click", ".builder-delete-row", handleBuilderDeleteRow);
-    Rexbuilder_Util.$document.on("click", ".builder-copy-row", handleBuilderCopyRow);
-    Rexbuilder_Util.$document.on("click", ".collapse-grid", handleCollapseGrid);
-
+    Rexbuilder_Util.$rexContainer.on("click", ".builder-delete-row", handleBuilderDeleteRow);
+    Rexbuilder_Util.$rexContainer.on("click", ".builder-copy-row", handleBuilderCopyRow);
+		Rexbuilder_Util.$rexContainer.on("click", ".collapse-grid", handleCollapseGrid);
+		
+		Rexbuilder_Util.$document.on("click", ".add-new-section", handleAddNewSection);
+		
     Rexbuilder_Util.$document.on("rexlive:collapse_row", handleCollapseRow);
     Rexbuilder_Util.$document.on("rexlive:collapsingElementsEnded", handleCollapsingElementsEnded);
 
-    Rexbuilder_Util.$document.on("click", ".add-new-section", handleAddNewSection);
     Rexbuilder_Util.$document.on("rexlive:add_new_section_after", handleAddNewSectionAfter);
 
     Rexbuilder_Util.$document.on("rexlive:applyModelSection", handleApplyModelSection);

@@ -87,12 +87,9 @@ var Rexbuilder_Block = (function ($) {
 	}
 
 	var _addBlockToolboxListeners = function () {
-
-		Rexbuilder_Util.$document.on('click', '.builder-delete-block', handleBuilderDeleteBlock);
-
-		Rexbuilder_Util.$document.on("click", ".builder-edit-slider", handleBuilderEditSlider);
-
-		Rexbuilder_Util.$document.on('click', '.builder-copy-block', handleBuilderCopyBlock);
+		Rexbuilder_Util.$rexContainer.on('click', '.builder-delete-block', handleBuilderDeleteBlock);
+		Rexbuilder_Util.$rexContainer.on("click", ".builder-edit-slider", handleBuilderEditSlider);
+		Rexbuilder_Util.$rexContainer.on('click', '.builder-copy-block', handleBuilderCopyBlock);
 	}
 
 	var init = function () {
