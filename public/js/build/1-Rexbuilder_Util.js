@@ -1906,7 +1906,7 @@ var Rexbuilder_Util = (function($) {
             if ('' === targetProps["linkurl"] && targetProps["photoswipe"] == "true") {
               Rexbuilder_Photoswipe.addElement(
                 $itemContent,
-                targetProps["image_bg_block"],
+                targetProps["image_bg_url"],
                 parseInt(targetProps["image_width"]),
                 parseInt(targetProps["image_height"]),
                 targetProps["image_size"]

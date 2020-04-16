@@ -31,6 +31,7 @@ var Rexbuilder_Photoswipe = (function($){
 	};
 
 	var _addElement = function($itemContent, url, w, h, t) {
+		console.trace()
 		if ( !$itemContent.parents('.grid-stack-item').hasClass('block-has-slider') ) {
 			tmpl.arg = "image";
 			var $gridstackItemContent = $itemContent.parents(".grid-stack-item-content");

@@ -38,6 +38,15 @@ defined('ABSPATH') or exit;
     </div>
 </script>
 
+<script type="text/x-tmpl" id="tmpl-photoswipe-block">
+<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <a class="pswp-item" href="{%=image.link%}" itemprop="contentUrl" data-size="{%=image.width%}x{%=image.height%}">
+        <div class="pswp-item-thumb" data-thumb-image-type="{%=image.type%}" data-thumburl="{%=image.link%}" itemprop="thumbnail"></div>
+    </a>
+    <figcaption class="pswp-item-caption" itemprop="caption description"><?php do_action( 'rexbuilder_block_pswp_item_caption' ); ?></figcaption>
+</figure>
+</script>
+
 <script type="text/x-tmpl" id="tmpl-photoswipe-block-inline">
 <figure class="pswp-figure {%=image.align%}" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" style="width: {%=image.width%}; height:{%=image.height%}">
     <a class="pswp-item" href="{%=image.link%}" itemprop="contentUrl" data-size="{%=image.width%}x{%=image.height%}" style="width: {%=image.width%}; height:{%=image.height%}">
