@@ -11,7 +11,7 @@ var Rexbuilder_App = (function($) {
 	var IS_CHROME = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 	var SPLIT_SCROLLABLE_IN_PAGE = 'undefined' !== typeof SplitScrollable;
 	var STICKY_SECTION_IN_PAGE = 'undefined' !== typeof StickySection;
-	var INTSERSECTION_OBSERVER_IN_PAGE = 'IntersectionObserver' in window;
+	var INTERSECTION_OBSERVER_IN_PAGE = 'IntersectionObserver' in window;
 
   var $sections = null;
   var $grids = null;
@@ -1123,7 +1123,7 @@ var Rexbuilder_App = (function($) {
 	function _launchGrids() {
 		if ($grids) {
 			if (Rexbuilder_Util.editorMode) {
-				if (INTSERSECTION_OBSERVER_IN_PAGE && lazy) {
+				if (INTERSECTION_OBSERVER_IN_PAGE && lazy) {
 					_lazyLoadGrids();
 				} else {
 					var perf1 = performance.now()
@@ -1132,7 +1132,6 @@ var Rexbuilder_App = (function($) {
 					});
 					var perf2 = performance.now()
 					console.log( 'Performance lancio griglie', perf2-perf1 );
-					
 				}
 			} else {
 				// Get layout information and set this information on the grids
@@ -1165,10 +1164,23 @@ var Rexbuilder_App = (function($) {
 		
 	}
 
+	function _launchGridHandlers() {
+		var grids = Array.prototype.slice.call(document.getElementsByClassName('perfect-grid-gallery'));
+		var tot_grids = grids.length;
+		var i = 0;
+
+		for (; i < tot_grids; i++) {
+			$(grids[i]).data('plugin_perfectGridGalleryEditor').launchHandlers();
+		}
+	}
+
 	var lazy;
+	var perf1;
 
   function init() {
 		console.log( '=== INIZIO INIT ===' );
+		perf1 = performance.now();
+
 		Rexbuilder_Util.init();
 		Rexbuilder_Dom_Util.init();
 
@@ -1177,6 +1189,8 @@ var Rexbuilder_App = (function($) {
 
 		lazy = false;
 		_launchGrids();
+
+		var perf2 = performance.now()
 
     Rexbuilder_Rexbutton.init();
     Rexbuilder_Rexelement.init();
@@ -1201,6 +1215,9 @@ var Rexbuilder_App = (function($) {
       // fixes for front end only
       fixRexButtons();
 		}
+		var perf25 = performance.now()
+
+		console.log( 'Performance dopo inits', perf25-perf2 );
 
     Rex_Navigator.init();
 		//Rexbuilder_FormFixes.init();
@@ -1212,9 +1229,15 @@ var Rexbuilder_App = (function($) {
 			});
 		}
 			
-		if (!(INTSERSECTION_OBSERVER_IN_PAGE && lazy)) {
+		var perf3 = performance.now()
+		console.log( 'Performance _launchTextEditor', perf3-perf2 );
+
+		if (!(INTERSECTION_OBSERVER_IN_PAGE && lazy)) {
 			Rexbuilder_Util.launchEditDomLayout();
 		}
+		
+		var perf4 = performance.now()
+		console.log( 'Performance EDL', perf4-perf3 );
 
     /* ===== Launching plugins only on public side ===== */
     if ( !Rexbuilder_Util.editorMode ) {
@@ -1293,10 +1316,13 @@ var Rexbuilder_App = (function($) {
           return false;
         }
       };
-    }
+		}
+		
+		var perf5 = performance.now()
+		console.log( 'Performance dopo EDL', perf5-perf4 );
 
-    _linkDocumentListeners();
-
+		_linkDocumentListeners();
+		
     if (Rexbuilder_Util.editorMode) {
       // Starting slider
 			Rexbuilder_Util.$document.on( 'rexlive:editDomLayoutEnd', RexSlider.init );
@@ -1308,9 +1334,15 @@ var Rexbuilder_App = (function($) {
       
       launchAccordions();
 		}
+		
+		var perf6 = performance.now()
+		console.log( 'Performance ', perf6-perf5 );
+		console.log( 'Performance TOTALE init', perf6-perf1 );
+		
   };
 	
   function load() {
+		console.log( '=== INIZIO LOAD ===' );
 		
     // @bugfix on other layouts than desktop with mixed customization definitions
     // @deprecated i don't like this solution, too much expensive
@@ -1321,6 +1353,7 @@ var Rexbuilder_App = (function($) {
     // }
 
     if ( Rexbuilder_Util.editorMode ) {
+			_launchGridHandlers();
       Rexbuilder_Util_Editor.load();
 			Rexbuilder_Live_Utilities.load();
     } else {
@@ -1368,8 +1401,12 @@ var Rexbuilder_App = (function($) {
 		if (IS_CHROME && !Rexbuilder_Util.editorMode) {
 			_fixWindowScrollPosition();
 		}
-  };
 
+		var perf2 = performance.now();
+		console.log( 'Performance init + load:', perf2-perf1 );
+		
+	};
+	
   /**
    * Returns the instance of the grid DOM Element passed.
    * @param  {Element} grid   DOM Element of the grid

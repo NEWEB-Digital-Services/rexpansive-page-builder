@@ -169,7 +169,7 @@ var Rexlive_Modals_Utils = (function($) {
     $lean_overlay = $(".lean-overlay");
     $modals = $(".rex-modal-draggable");
     $modals.each(function(i, modal) {
-      var $modal = $(modal);
+			var $modal = $(modal);
       $modal.draggable({
         cancel:
           "input,textarea,button,select,option,.rex-check-icon, .input-field, .rex-slider__slide-edit, #rex-css-ace-editor, #rex-html-ace-editor, label, .no-draggable",

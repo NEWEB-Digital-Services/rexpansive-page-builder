@@ -403,72 +403,72 @@
 
       // this.createScrollbars();
 
-      if ( this.settings.editorMode ) {
-        function handleChange(e, data) {
-					if (
-						this.element == e.target &&
-						!Rexbuilder_Util_Editor.undoActive &&
-						!Rexbuilder_Util_Editor.redoActive &&
-						!Rexbuilder_Util_Editor.updatingRowDistances &&
-						!Rexbuilder_Util_Editor.updatingSectionMargins &&
-						!Rexbuilder_Util_Editor.updatingSectionLayout &&
-						!Rexbuilder_Util.domUpdating &&
-						!Rexbuilder_Util.windowIsResizing &&
-						!this.properties.collapsingElements &&
-						!Rexbuilder_Util_Editor.addingNewBlocks &&
-						!Rexbuilder_Util_Editor.removingBlocks &&
-						!Rexbuilder_Util_Editor.updatingImageBg &&
-						!Rexbuilder_Util_Editor.updatingPaddingBlock &&
-						!Rexbuilder_Util_Editor.updatingCollapsedGrid &&
-						!Rexbuilder_Util_Editor.openingModel &&
-						!Rexbuilder_Util_Editor.blockCopying &&
-						!Rexbuilder_Util_Editor.savingPage &&
-						!Rexbuilder_Util_Editor.savingModel &&
-						Rexbuilder_Util_Editor.needToSave
-					) {
-						var data = {
-							eventName: 'rexlive:edited',
-							modelEdited: this.$section.hasClass('rex-model-section'),
-						};
-						Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      // if ( this.settings.editorMode ) {
+      //   function handleChange(e, data) {
+			// 		if (
+			// 			this.element == e.target &&
+			// 			!Rexbuilder_Util_Editor.undoActive &&
+			// 			!Rexbuilder_Util_Editor.redoActive &&
+			// 			!Rexbuilder_Util_Editor.updatingRowDistances &&
+			// 			!Rexbuilder_Util_Editor.updatingSectionMargins &&
+			// 			!Rexbuilder_Util_Editor.updatingSectionLayout &&
+			// 			!Rexbuilder_Util.domUpdating &&
+			// 			!Rexbuilder_Util.windowIsResizing &&
+			// 			!this.properties.collapsingElements &&
+			// 			!Rexbuilder_Util_Editor.addingNewBlocks &&
+			// 			!Rexbuilder_Util_Editor.removingBlocks &&
+			// 			!Rexbuilder_Util_Editor.updatingImageBg &&
+			// 			!Rexbuilder_Util_Editor.updatingPaddingBlock &&
+			// 			!Rexbuilder_Util_Editor.updatingCollapsedGrid &&
+			// 			!Rexbuilder_Util_Editor.openingModel &&
+			// 			!Rexbuilder_Util_Editor.blockCopying &&
+			// 			!Rexbuilder_Util_Editor.savingPage &&
+			// 			!Rexbuilder_Util_Editor.savingModel &&
+			// 			Rexbuilder_Util_Editor.needToSave
+			// 		) {
+			// 			var data = {
+			// 				eventName: 'rexlive:edited',
+			// 				modelEdited: this.$section.hasClass('rex-model-section'),
+			// 			};
+			// 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
-						if (Rexbuilder_Util.activeLayout == 'default') {
-							Rexbuilder_Util.updateDefaultLayoutStateSection(this.$section);
-						}
-						var actionData = this.createActionDataMoveBlocksGrid();
-						this.$element.attr('data-rexlive-layout-changed', true);
-						Rexbuilder_Util_Editor.pushAction(
-							this.$section,
-							'updateSectionBlocksDisposition',
-							$.extend(true, {}, actionData),
-							$.extend(true, {}, this.properties.reverseDataGridDisposition)
-						);
-						this.properties.reverseDataGridDisposition = actionData;
-					}
+			// 			if (Rexbuilder_Util.activeLayout == 'default') {
+			// 				Rexbuilder_Util.updateDefaultLayoutStateSection(this.$section);
+			// 			}
+			// 			var actionData = this.createActionDataMoveBlocksGrid();
+			// 			this.$element.attr('data-rexlive-layout-changed', true);
+			// 			Rexbuilder_Util_Editor.pushAction(
+			// 				this.$section,
+			// 				'updateSectionBlocksDisposition',
+			// 				$.extend(true, {}, actionData),
+			// 				$.extend(true, {}, this.properties.reverseDataGridDisposition)
+			// 			);
+			// 			this.properties.reverseDataGridDisposition = actionData;
+			// 		}
 
-					if (
-						Rexbuilder_Util_Editor.addingNewBlocks ||
-						Rexbuilder_Util_Editor.updatingSectionLayout ||
-						this.properties.collapsingElements ||
-						Rexbuilder_Util_Editor.blockCopying
-					) {
-						this.fixVideoProportion();
-					}
-				}
+			// 		if (
+			// 			Rexbuilder_Util_Editor.addingNewBlocks ||
+			// 			Rexbuilder_Util_Editor.updatingSectionLayout ||
+			// 			this.properties.collapsingElements ||
+			// 			Rexbuilder_Util_Editor.blockCopying
+			// 		) {
+			// 			this.fixVideoProportion();
+			// 		}
+			// 	}
 				
-				this.$element.on('change', handleChange.bind(this));
+			// 	this.$element.on('change', handleChange.bind(this));
 
-        // this._linkSectionEvents();
-        this._updateElementsSizeViewers();
-        this._linkResizeEvents();
-        this._linkDragEvents();
-        this._linkDnDEvents();
+      //   // this._linkSectionEvents();
+      //   this._updateElementsSizeViewers();
+      //   this._linkResizeEvents();
+      //   this._linkDragEvents();
+      //   this._linkDnDEvents();
 
-        // this._launchTextEditor();
-        this._createFirstReverseStack();
+      //   // this._launchTextEditor();
+      //   this._createFirstReverseStack();
 
-        this._updatePlaceholderPosition();
-      }
+      //   this._updatePlaceholderPosition();
+      // }
 
       this.saveStateGrid();
 
@@ -500,7 +500,74 @@
 
       this.triggerGalleryReady();
       this.properties.firstStartGrid = false;
-    },
+		},
+		
+		launchHandlers: function () {
+			function handleChange(e, data) {
+				if (
+					this.element == e.target &&
+					!Rexbuilder_Util_Editor.undoActive &&
+					!Rexbuilder_Util_Editor.redoActive &&
+					!Rexbuilder_Util_Editor.updatingRowDistances &&
+					!Rexbuilder_Util_Editor.updatingSectionMargins &&
+					!Rexbuilder_Util_Editor.updatingSectionLayout &&
+					!Rexbuilder_Util.domUpdating &&
+					!Rexbuilder_Util.windowIsResizing &&
+					!this.properties.collapsingElements &&
+					!Rexbuilder_Util_Editor.addingNewBlocks &&
+					!Rexbuilder_Util_Editor.removingBlocks &&
+					!Rexbuilder_Util_Editor.updatingImageBg &&
+					!Rexbuilder_Util_Editor.updatingPaddingBlock &&
+					!Rexbuilder_Util_Editor.updatingCollapsedGrid &&
+					!Rexbuilder_Util_Editor.openingModel &&
+					!Rexbuilder_Util_Editor.blockCopying &&
+					!Rexbuilder_Util_Editor.savingPage &&
+					!Rexbuilder_Util_Editor.savingModel &&
+					Rexbuilder_Util_Editor.needToSave
+				) {
+					var data = {
+						eventName: 'rexlive:edited',
+						modelEdited: this.$section.hasClass('rex-model-section')
+					};
+					Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
+					if (Rexbuilder_Util.activeLayout == 'default') {
+						Rexbuilder_Util.updateDefaultLayoutStateSection(this.$section);
+					}
+					var actionData = this.createActionDataMoveBlocksGrid();
+					this.$element.attr('data-rexlive-layout-changed', true);
+					Rexbuilder_Util_Editor.pushAction(
+						this.$section,
+						'updateSectionBlocksDisposition',
+						$.extend(true, {}, actionData),
+						$.extend(true, {}, this.properties.reverseDataGridDisposition)
+					);
+					this.properties.reverseDataGridDisposition = actionData;
+				}
+
+				if (
+					Rexbuilder_Util_Editor.addingNewBlocks ||
+					Rexbuilder_Util_Editor.updatingSectionLayout ||
+					this.properties.collapsingElements ||
+					Rexbuilder_Util_Editor.blockCopying
+				) {
+					this.fixVideoProportion();
+				}
+			}
+
+			this.$element.on('change', handleChange.bind(this));
+
+			// this._linkSectionEvents();
+			this._updateElementsSizeViewers();
+			this._linkResizeEvents();
+			this._linkDragEvents();
+			this._linkDnDEvents();
+
+			// this._launchTextEditor();
+			this._createFirstReverseStack();
+
+			this._updatePlaceholderPosition();
+		},
 
     _launchGridStack: function() {
       if (this.settings.editorMode) {
