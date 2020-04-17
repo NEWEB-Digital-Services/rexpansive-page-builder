@@ -4044,9 +4044,9 @@ var Rexbuilder_Util = (function($) {
 					Rexbuilder_Util.updateDOMSingleElement(options);
 				}
       }
-    }
-
-    updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
+		}
+	
+		updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
 		
 		/** @todo Need to check forceCollapseElementsGrid too? */
 		/* if ( collapseGrid ) {

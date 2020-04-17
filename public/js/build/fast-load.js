@@ -12,8 +12,8 @@
   var queuing = false;
   if ( isMobile ) {
     queuing = true;
-  }
-
+	}
+	
   var PROMISE_EXISTS = typeof Promise !== "undefined" && Promise.toString().indexOf( "[native code]" ) !== -1;
 
   var scrollobserverSection;

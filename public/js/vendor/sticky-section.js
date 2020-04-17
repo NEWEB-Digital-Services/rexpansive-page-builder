@@ -452,7 +452,14 @@
   StickySection.prototype.destroy = function () {
 		removeElement(this.overlayAnimationEl);
 		removeElement(this.borderAnimationEl.el);
-		removeElement(this.stickyElement);
+		
+		if (!this.stickyElement.matches('.rex-video-wrap')) {
+			// Videos should not be destroyed, beacuse they
+			// are not re-inserted (as of 1.1.0, Rexpansive 2.0.4)
+			removeElement(this.stickyElement);
+		} else {
+			removeElement(this.element.querySelector('.sticky-video-controls'))
+		}
 
     function removeInstance(instance) {
       return instance.element !== this.element;

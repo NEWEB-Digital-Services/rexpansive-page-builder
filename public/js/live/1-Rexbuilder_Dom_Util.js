@@ -437,7 +437,7 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var _removeMp4Video = function($target, removeFromDom) {
-    var $videoWrap = $target.children(".rex-video-wrap");
+		var $videoWrap = $target.children(".rex-video-wrap");
     var $toggleAudio = $target.children(".rex-video-toggle-audio");
     if ($videoWrap.length != 0) {
       removeFromDom =
@@ -543,10 +543,12 @@ var Rexbuilder_Dom_Util = (function($) {
     var c_w, c_h, v_w, v_h;
     v_w = el.getAttribute('data-rex-video-width');
     v_h = el.getAttribute('data-rex-video-height');
-    var maxWidth = '100%';
-
+		var maxWidth = '100%';
+		
     c_w = el.offsetWidth;
     c_h = el.offsetHeight;
+	
+		// console.log( el, {c_w, c_h, v_w, v_h}, $(el).parents('.rexpansive_section')[0].getBoundingClientRect() );
     
     if ( ( v_w / v_h ) > ( c_w / c_h ) ) {
       maxWidth =  ( ( ( c_h * v_w ) / v_h ) * 100 ) / c_w;
