@@ -23,6 +23,15 @@ defined('ABSPATH') or exit;
         <video class="rex-video-container" preload autoplay loop muted>
             <source type="video/mp4" {% if ( true == video.fast_load ) { %}data-src="{%=video.url%}"{% } else { %}src="{%=video.url%}"{% } %}>
         </video>
+				<div class="rex-video__controls">
+				    <div class="loader video-tool video-tool--view"></div>
+				    <div class="pause video-tool">
+				        <div class="indicator"></div>
+				    </div>
+				    <div class="play video-tool">
+				        <div class="indicator"></div>
+				    </div>
+				</div>
     </div>
 </script>
 

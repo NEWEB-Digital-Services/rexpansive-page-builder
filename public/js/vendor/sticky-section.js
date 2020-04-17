@@ -458,7 +458,7 @@
 			// are not re-inserted (as of 1.1.0, Rexpansive 2.0.4)
 			removeElement(this.stickyElement);
 		} else {
-			removeElement(this.element.querySelector('.sticky-video-controls'))
+			// removeElement(this.element.querySelector('.sticky-video-controls'))
 		}
 
     function removeInstance(instance) {
@@ -484,8 +484,15 @@
 
 		if (hasClass(section, 'mp4-player')) {
 			// video controls fix
-			videoEl = section.querySelector('.rex-video-wrap');
-			videoControls = videoEl.querySelector('.rex-video__controls');
+			var stickyVideoControls = section.querySelector('.sticky-video-controls');
+
+			if (stickyVideoControls) {
+				return;
+			}
+			
+			var videoEl = section.querySelector('.rex-video-wrap');
+
+			var videoControls = videoEl.querySelector('.rex-video__controls');
 			if (videoControls) {
 				stickyVideoControls = document.createElement('div');
 				addClass(stickyVideoControls, 'sticky-video-controls');

@@ -61,12 +61,15 @@
 //   z-index: 40;
 // }
 
-// .rex-video__controls {
 .sticky-video-controls {
+	@media (max-width: 767px) {
+		display: none;
+	}
+	
   position: sticky!important;
   // bottom: auto;
   // right: auto;
-  left: calc( 100% - 70px);
+  right: calc( 100% - 20px);
   top: calc(100% - 70px);
   width: 40px;
   height: 40px;
@@ -74,7 +77,6 @@
   z-index: 50;
   cursor: pointer;
 }
-// }
 
 .sticky-element__wrapper {
   position: absolute;
