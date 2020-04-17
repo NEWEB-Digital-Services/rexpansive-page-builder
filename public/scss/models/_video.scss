@@ -181,7 +181,7 @@
 // }
 
 .rex-video__controls {
-	@media (max-width: 767px) {
+	@media (max-width: $small) {
 		display: none;
 	}
 
@@ -189,7 +189,7 @@
   left: 0;
   bottom: 0;
   margin-left: 20px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 	z-index: 50;
 	
   .video-tool {

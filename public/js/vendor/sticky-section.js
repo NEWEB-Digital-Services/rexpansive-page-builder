@@ -489,10 +489,10 @@
 			if (stickyVideoControls) {
 				return;
 			}
-			
-			var videoEl = section.querySelector('.rex-video-wrap');
 
+			var videoEl = section.querySelector('.rex-video-wrap');
 			var videoControls = videoEl.querySelector('.rex-video__controls');
+
 			if (videoControls) {
 				stickyVideoControls = document.createElement('div');
 				addClass(stickyVideoControls, 'sticky-video-controls');

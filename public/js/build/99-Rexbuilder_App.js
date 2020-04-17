@@ -953,7 +953,6 @@ var Rexbuilder_App = (function($) {
 						StickySection.prepare(gridInstances[i].section);
 					}
 				}
-				
 
         if ( '1' === _plugin_frontend_settings.fast_load ) {
           // Launch fast load
@@ -1117,7 +1116,7 @@ var Rexbuilder_App = (function($) {
 		launchFrontEndEffects();
 		
 		// Fixing video proportions
-		// _fixVideos();
+		_fixVideos();
 
 		Rexbuilder_Util.galleryPluginActive = true;
 
