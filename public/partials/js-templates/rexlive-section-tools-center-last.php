@@ -18,11 +18,11 @@ defined('ABSPATH') or exit;
         <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
     </div>
 
-    <div class="tool-button tool-button--flat tool-button__text--flat add-new-block-text tool-button--inline">
+    <div class="tool-button tool-button--flat tool-button__text--flat add-new-block-text tool-button--inline tippy" data-tippy-content="<?php _e('Insert Image','rexpansive-builder'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
     </div>
 
-    <div class="tool-button tool-button--flat tool-button--inline tool-button__video--flat add-new-block-video">
+    <div class="tool-button tool-button--flat tool-button--inline tool-button__video--flat add-new-block-video tippy" data-tippy-content="<?php _e('Insert Video','rexpansive-builder'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
     </div>
 

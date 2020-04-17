@@ -224,6 +224,28 @@ var Rexbuilder_App = (function($) {
   };
 
   /**
+   * Launch textFill plugin
+   * @return {void}
+   */
+  function launchTextFill() {
+    var $textFillContainer = $(".text-fill-container-canvas");
+    if ( $textFillContainer.length === 0 ) return;
+    
+    $textFillContainer.textFill({
+      relative: true,
+      relativeWrap: ".perfect-grid-item",
+      fontFamily: _plugin_frontend_settings.textFill.font_family,
+      fontWeight: _plugin_frontend_settings.textFill.font_weight
+    });
+
+    function resizeTextfillOnComplete() {
+      Rexbuilder_Util.$window.resize();
+    }
+
+    $textFillContainer.on("textfill-render-complete", resizeTextfillOnComplete);
+  }
+
+  /**
    * Launching indicators
    * @param  {jQuery} $grids grids
    * @return {void}
@@ -1178,7 +1200,8 @@ var Rexbuilder_App = (function($) {
 	var perf1;
 
   function init() {
-		console.log( '=== INIZIO INIT ===' );
+    var globalp2 = performance.now();
+		console.log( '=== INIZIO INIT ===', globalp2-globalP1 );
 		perf1 = performance.now();
 
 		Rexbuilder_Util.init();
@@ -1343,17 +1366,12 @@ var Rexbuilder_App = (function($) {
 	
   function load() {
 		console.log( '=== INIZIO LOAD ===' );
+    var pl1 = performance.now();
 		
     // @bugfix on other layouts than desktop with mixed customization definitions
     // @deprecated i don't like this solution, too much expensive
-    
-    // var chosenLayoutName = Rexbuilder_Util.chooseLayout();
-    // if ( 'default' !== chosenLayoutName ) {
-      // Rexbuilder_Util.edit_dom_layout(chosenLayoutName);
-    // }
 
     if ( Rexbuilder_Util.editorMode ) {
-			_launchGridHandlers();
       Rexbuilder_Util_Editor.load();
 			Rexbuilder_Live_Utilities.load();
     } else {
@@ -1372,20 +1390,7 @@ var Rexbuilder_App = (function($) {
 		}
 		
     /* -- Launching the textfill -- */
-    var $textFillContainer = $(".text-fill-container-canvas");
-    if ( $textFillContainer.length > 0 ) {
-      $textFillContainer.textFill({
-        relative: true,
-        relativeWrap: ".perfect-grid-item",
-        fontFamily: _plugin_frontend_settings.textFill.font_family,
-        fontWeight: _plugin_frontend_settings.textFill.font_weight
-      });
-
-      function resizeTextfillOnComplete() {
-        Rexbuilder_Util.$window.resize();
-      }
-      $textFillContainer.on("textfill-render-complete", resizeTextfillOnComplete);
-    }
+    launchTextFill();
 
     // autoplay sliders
     RexSlider.startAutoPlay();
@@ -1401,6 +1406,8 @@ var Rexbuilder_App = (function($) {
 		if (IS_CHROME && !Rexbuilder_Util.editorMode) {
 			_fixWindowScrollPosition();
 		}
+
+    console.log('Performace load', performance.now()-pl1)
 
 		var perf2 = performance.now();
 		console.log( 'Performance init + load:', perf2-perf1 );

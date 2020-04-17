@@ -569,6 +569,12 @@ class Rexbuilder_Public
 		}
 	}
 
+	public function footer_debug() {
+?>
+<script>var globalP1 = performance.now();</script>
+<?php
+	}
+
 	/**
 	 * Saves new form row in the DB
 	 * @return model with no image

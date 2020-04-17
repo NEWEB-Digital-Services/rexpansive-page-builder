@@ -2,6 +2,7 @@
   "use strict";
 
   var start = function() {
+    var t0 = performance.now();
     // base setting: tooltips and $document caching
     Rexlive_Base_Settings.init();
 
@@ -28,6 +29,8 @@
 
     // slider modal
     Rexbuilder_RexSlider.init();
+
+    console.log('Rexbuilder_Starting', performance.now()-t0);
   }
 
   var verify_saving = function(e){        

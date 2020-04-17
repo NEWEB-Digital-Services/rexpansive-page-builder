@@ -1255,7 +1255,6 @@ var TextEditor = (function ($) {
       // Link click listeners
       this.on(this.deleteRexbuttonBtn, "click", this.handleClickDeleteRexbutton.bind(this));
       this.on(this.editRexbuttonBtn, "click", this.handleClickEditRexbutton.bind(this));
-
     },
     
     hideAnchorPreview: function (event) {
