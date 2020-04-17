@@ -93,7 +93,7 @@ var Rexbuilder_Photoswipe = (function($){
 
 	// parse slide data (url, title, size ...) from DOM elements
 	// (children of gallerySelector)
-	var parseThumbnailElements = function(el, index) {
+	var parseThumbnailElements = function(el) {
 		var thumbElements = $(el).find(".pswp-figure").get();	
 
 		var numNodes = thumbElements.length,
@@ -132,6 +132,7 @@ var Rexbuilder_Photoswipe = (function($){
 				item.msrc = linkEl.children[0].getAttribute("data-thumburl");
 			}
 
+			// Unique identifier for URLs
 			item.pid = i;
 
 			item.el = figureEl; // save link to element for getThumbBoundsFn
@@ -271,16 +272,12 @@ var Rexbuilder_Photoswipe = (function($){
 	}
 
 	var openPhotoSwipe = function( index, galleryElement, disableAnimation, fromURL ) {
-		if ('string' === typeof index) {
-			index = parseInt(index);
-		}
-
 		var pswpElement = document.querySelectorAll(".pswp")[0],
 			gallery,
 			options,
 			items;
 
-		items = parseThumbnailElements(galleryElement, index);
+		items = parseThumbnailElements(galleryElement);
 
 		// define options (if needed)
 		options = {
@@ -330,6 +327,8 @@ var Rexbuilder_Photoswipe = (function($){
 		}
 
 		if (Rexbuilder_Util.hasClass(galleryElement, 'split-scrollable')) {
+			/* Searching the relative index, based on number of the current
+			opacity block photoswipe elements */
 			var elementsToShow = $(galleryElement)
 				.find('.pswp-figure')
 				.eq(index)
@@ -341,6 +340,7 @@ var Rexbuilder_Photoswipe = (function($){
 
 			options.index = elementsToShow.indexOf(searchedFigure);
 
+			/* Filtering items according to opacity block images */
 			items = items.filter(function (item) {
 				for (var i = 0; i < elementsToShow.length; i++) {
 					if (item.el === elementsToShow[i]) {
