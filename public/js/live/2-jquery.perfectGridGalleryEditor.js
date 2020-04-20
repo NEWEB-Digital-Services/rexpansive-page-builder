@@ -621,17 +621,11 @@
 
       this._setGridPadding();
 
-      p1 = performance.now()
       this._defineDynamicPrivateProperties();
-      p2 = performance.now()
-      console.log('_defineDynamicPrivateProperties',p2-p1)
 
       // this.setFullWidthNaturalBackground();
 
-      p1 = performance.now()
       this._prepareElements();
-      p2 = performance.now()
-      console.log('_prepareElements',p2-p1)
 
       p1 = performance.now()
       this._launchGridStack();
@@ -694,7 +688,6 @@
 		},
 
     _launchGridStack: function() {
-      var p1 = performance.now()
       this.$element.gridstack({
         auto: false,
         autoHide: false,
@@ -724,17 +717,12 @@
         width: this.settings.numberCol
 			});
 
-      var p2 = performance.now();
-      console.log('gridstack', p2-p1)
-
       this.$element.addClass("gridActive");
 
       this.setGridstackIstanceNumber();
       this.properties.gridstackInstance = this.$element.data("gridstack");
 
-      p1 = performance.now();
       this.makeWidgets();
-      console.log('makeWidgets', performance.now()-p1)
 
       // Remove elements to hide
       var gridstack = this.properties.gridstackInstance;
@@ -747,13 +735,9 @@
         }
       }
 
-      p1 = performance.now();
       if ( !Rexbuilder_Util.domUpdating && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying ) ) {
         this.updateBlocksHeight();
       }
-
-      p2 = performance.now();
-      console.log('updateBlocksHeight', p2-p1)
 
       for( i=0; i < tot_items; i++ ) {
         var blockData = items[i].querySelector('.rexbuilder-block-data');
@@ -1333,14 +1317,14 @@
     },
 
     batchGridstack: function() {
-      console.group('batchGridstack')
+      console.log('BATCH GRID', this.properties.gridstackInstanceID)
       if (this.properties.gridstackInstance !== null) {
         this.properties.gridstackInstance.batchUpdate();
       }
     },
 
     commitGridstack: function() {
-      console.groupEnd('batchGridstack')
+      console.log('COMMIT GRID', this.properties.gridstackInstanceID)
       if (!Rexbuilder_Util.domUpdating) {
         if (this.properties.gridstackInstance !== null) {
           this.properties.gridstackInstance.commit();
@@ -2269,6 +2253,9 @@
 
     _prepareElementEditing: function($elem) {
       addHandles($elem, "e, s, w, se, sw");
+
+      // add drag handler
+      $elem.find('.grid-item-content').prepend('<div class="rexlive-block-drag-handle"></div>');
 
       $elem.attr({
         "data-gs-min-width": 1,

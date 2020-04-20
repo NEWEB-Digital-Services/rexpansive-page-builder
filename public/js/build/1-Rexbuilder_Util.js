@@ -2019,8 +2019,6 @@ var Rexbuilder_Util = (function($) {
       chosenLayoutName
     );
 
-    console.log('getCustomLayoutSections', performance.now()-t0);
-
     //fixing models numbers
     var modelsNumbers = [];
     var flagModel;
@@ -2148,7 +2146,7 @@ var Rexbuilder_Util = (function($) {
       $gallery.attr("data-rexlive-layout-changed", true);
     }
 
-    galleryEditorInstance.batchGridstack();
+    // galleryEditorInstance.batchGridstack();
 
     if ( 'undefined' !== typeof galleryData ) {
       if ( 'undefined' !== typeof galleryEditorInstance ) {
@@ -2172,7 +2170,11 @@ var Rexbuilder_Util = (function($) {
             }
           }
         }
+
+        // batching grid before the heights of the blocks have changed
+        // so (tecnically) we see the changes on commit
         // galleryEditorInstance.batchGridstack();
+        galleryEditorInstance.properties.gridstackInstance.batchUpdate();
       }
     }
 
@@ -2254,7 +2256,7 @@ var Rexbuilder_Util = (function($) {
 
     console.groupEnd('_updateDOMelements')
 
-    galleryEditorInstance.commitGridstack();
+    // galleryEditorInstance.commitGridstack();
 
     return collapse;
   };
@@ -2264,7 +2266,7 @@ var Rexbuilder_Util = (function($) {
     var t0 = performance.now();
 
     Rexbuilder_Util.domUpdating = true;
-    galleryEditorInstance.batchGridstack();
+    // galleryEditorInstance.batchGridstack();
     if( galleryEditorInstance.properties.gridstackInstance ) {
       galleryEditorInstance.properties.gridstackInstance.batchUpdate();
     }
@@ -2292,7 +2294,7 @@ var Rexbuilder_Util = (function($) {
     var handlingRowReadyTi = setTimeout( handlingRowReady.bind( null, galleryEditorInstance, meIndex ), 200 );
     edlTimeouts.push( handlingRowReadyTi );
 
-    galleryEditorInstance.commitGridstack();
+    // galleryEditorInstance.commitGridstack();
 
     console.log(performance.now()-t0)
     console.groupEnd('handlingGridstackCommitEnd: 300ms');

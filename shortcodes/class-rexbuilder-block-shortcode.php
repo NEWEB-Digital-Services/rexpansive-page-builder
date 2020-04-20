@@ -468,26 +468,38 @@ class Rexbuilder_Block
 
 		echo '<div class="grid-stack-item-content">';
 		echo '<div class="grid-item-content-wrap">';
-		//do_shortcode( $content );
-		switch ($type):
+
+		switch ( $type ) {
 			case 'image':
-				echo ($floating_border == '' ? $block_link_pre : '');
-				echo '<div class="grid-item-content image-content ' . (($flex_positioned && !$block_has_slider) ? 'rex-flexbox ' : '');
+			case 'text':
+			case 'rexslider':
+			case 'video':
+			case 'empty':
+				echo ( $floating_border == '' ? $block_link_pre : '' );
+				echo '<div class="grid-item-content';
+				if ( 'image' == $type ) {
+					echo ' image-content ';
+				} else if ( 'empty' == $type ) {
+					echo ' empty-content ';
+				} else {
+					echo ' text-content ';
+				}
+				echo (($flex_positioned && !$block_has_slider) ? 'rex-flexbox ' : '');
 				echo $videoTypeActive;
 				echo $grid_item_content_cc;
 				echo '"'; // close class attribute
 				echo $block_background_style;
-				if ("" != $id_image_bg_block) {
+				if ( "" != $id_image_bg_block ) {
 					echo ' data-background_image_width="' . $img_attrs[1] . '" ';
 					echo ' data-background_image_height="' . $img_attrs[2]. '"';
 				}
-				echo '>';
+				echo '>';	// <\.grid-item-content>
 
-				if ( $editor ) {
-					echo '<div class="rexlive-block-drag-handle"></div>';
-				}
+				// if ( $editor ) {
+				// 	echo '<div class="rexlive-block-drag-handle"></div>';
+				// }
 
-				if ('full' == $type_bg_block) {
+				if ( 'full' == $type_bg_block ) {
 					echo "<div class=\"rex-image-wrapper full-image-background\"".$background_img_style;
 					echo $alt_tag;
 					echo "></div>";
@@ -504,65 +516,6 @@ class Rexbuilder_Block
 					echo "></div>";
 				}
 				echo '<div class="rex-custom-scrollbar' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '">';
-				// echo '<div class="' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '">';
-				echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
-				echo $floating_border;
-				echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable' : '');
-				echo $text_wrap_cc;
-				echo '"'; 
-				echo $block_style_padding;
-				echo '>';
-				if ("" != $content):
-					echo do_shortcode($content);
-				endif;
-				echo '</div>';
-				echo (($floating_border != '' && $block_link_before != '') ? $block_link_before : '');
-				echo '</div>';
-				echo '</div>';
-				if ($videoTypeActive != '') {
-					echo $bg_video_toggle_audio_markup;
-				}
-				echo '</div>';
-				echo ($floating_border == '' ? $block_link_before : '');
-				break;
-			case 'text':
-			case 'rexslider':
-			case 'video':
-				echo ($floating_border == '' ? $block_link_pre : '');
-				echo '<div class="grid-item-content text-content ' . (($flex_positioned && !$block_has_slider) ? 'rex-flexbox ' : '');
-				echo $videoTypeActive != "" ? $videoTypeActive . " " : "";
-				echo $grid_item_content_cc;
-				echo '"'; // close class attr
-				echo $block_background_style;
-				if ("" != $id_image_bg_block) {
-					echo ' data-background_image_width="' . $img_attrs[1] . '" ';
-					echo ' data-background_image_height="' . $img_attrs[2]. '"';
-				}
-				echo '>';
-
-				if ( $editor ) {
-					echo '<div class="rexlive-block-drag-handle"></div>';
-				}
-
-				if ('full' == $type_bg_block) {
-					echo "<div class=\"rex-image-wrapper full-image-background\"".$background_img_style;
-					echo $alt_tag;
-					echo "></div>";
-				}
-
-				echo $bg_video_markup;
-				echo $bg_video_vimeo_markup;
-				echo $bg_youtube_video_markup;
-
-				echo '<div class="responsive-block-overlay"'.($overlay_block_color != "" ? ' style="background-color:' .  $overlay_block_color . ';"' : ''). '>';
-				if('natural' == $type_bg_block){
-					echo "<div class=\"rex-image-wrapper natural-image-background\"".$background_img_style;
-					echo $alt_tag;
-					echo "></div>";
-				}
-				echo '<div class="rex-custom-scrollbar' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '"';
-				// echo '<div class="' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '"';
-				echo '>';
 				echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
 				echo $floating_border;
 				echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable' : '');
@@ -570,75 +523,18 @@ class Rexbuilder_Block
 				echo '"';
 				echo $block_style_padding;
 				echo '>';
-				if ("" != $content) {
+				if ( "" != $content ) {
 					echo do_shortcode($content);
 				}
 				echo '</div>';
 				echo (($floating_border != '' && $block_link_before != '') ? $block_link_before : '');
 				echo '</div>';
 				echo '</div>';
-				if ($videoTypeActive != '') {
+				if ( $videoTypeActive != '' ) {
 					echo $bg_video_toggle_audio_markup;
 				}
 				echo '</div>';
-				echo ($floating_border == '' ? $block_link_before : '');
-				break;
-			case 'empty':
-				echo ($floating_border == '' ? $block_link_pre : '');
-				echo '<div class="grid-item-content empty-content';
-				echo (("" == $block_background_style && "" == $id_image_bg_block && "" == $content) ? ' real-empty' : '');
-				echo ($flex_positioned && !$block_has_slider)? ' rex-flexbox ' : ' ';
-				echo $videoTypeActive;
-				echo $grid_item_content_cc;
-				echo '"'; // close class attr
-				echo $block_background_style;
-				if ("" != $id_image_bg_block) {
-					echo ' data-background_image_width="' . $img_attrs[1] . '" ';
-					echo ' data-background_image_height="' . $img_attrs[2]. '"';
-				}
-				echo '>';
-
-				if ( $editor ) {
-					echo '<div class="rexlive-block-drag-handle"></div>';
-				}
-
-				if ('full' == $type_bg_block) {
-					echo "<div class=\"rex-image-wrapper full-image-background\"".$background_img_style;
-					echo $alt_tag;
-					echo "></div>";
-				}
-
-				echo $bg_video_markup;
-				echo $bg_video_vimeo_markup;
-				echo $bg_youtube_video_markup;
-
-				echo '<div class="responsive-block-overlay"'.($overlay_block_color != "" ? ' style="background-color:' .  $overlay_block_color . ';"' : ''). '>';
-				if('natural' == $type_bg_block){
-					echo "<div class=\"rex-image-wrapper natural-image-background\"".$background_img_style;
-					echo $alt_tag;
-					echo "></div>";
-				}
-				echo '<div class="rex-custom-scrollbar' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '">';
-				// echo '<div class="' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '">';
-				echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
-				echo $floating_border;
-				if ("" != $content):
-					echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable' : '');
-					echo $text_wrap_cc;
-					echo '"';
-					echo $block_style_padding;
-					echo '>';
-					echo do_shortcode( $content );
-					echo '</div>';
-				endif;
-				echo (($floating_border != '' && $block_link_before != '') ? $block_link_before : '');
-				echo '</div>';
-				echo '</div>';
-				if ($videoTypeActive != '') {
-					echo $bg_video_toggle_audio_markup;
-				}
-				echo '</div>';
-				echo ($floating_border == '' ? $block_link_before : '');
+				echo ( $floating_border == '' ? $block_link_before : '' );
 				break;
 			case 'expand':
 				echo '<div class="expand-effect-content" ' . $block_background_style . '>';
@@ -679,7 +575,7 @@ class Rexbuilder_Block
 				break;
 			default:
 				break;
-		endswitch;
+		}
 
 		echo '</div>';
 		echo '</div>';
