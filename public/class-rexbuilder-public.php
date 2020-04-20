@@ -237,6 +237,7 @@ class Rexbuilder_Public
 				wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . 'public/js/vendor/medium-editor-toolbar-states.min.js', array('jquery'), $ver, true);
 
 				// Rexbuilder
+				wp_enqueue_script('0-Rexbuilder_Live_Templates', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Templates.js', array('jquery'), $ver, true);
 				wp_enqueue_script('0-Rexbuilder_Live_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Utilities.js', array('jquery'), $ver, true);
 				
 				wp_enqueue_script('0-Rexbuilder_Array_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Array_Utilities.js', array('jquery'), $ver, true);
@@ -477,7 +478,7 @@ class Rexbuilder_Public
 	 * @date    26-03-2019
 	 */
 	private function get_plugin_frontend_settings() {
-		return array(
+		$settings = array(
 			'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
 			'fast_load' => ( isset( $this->plugin_options['fast_load'] ) ? $this->plugin_options['fast_load'] : 0 ),
 			'textFill' => array(
@@ -508,6 +509,45 @@ class Rexbuilder_Public
 			),
 			'old_builder' => Rexbuilder_Utilities::postSavedFromBackend()
 		);
+
+		if ( Rexbuilder_Utilities::isBuilderLive() ) {
+			$settings['labels'] = array(
+				'gradient' => __( 'Gradient', 'rexpansive-builder' ),
+				'accordion' => __( 'Accordion', 'rexpansive-builder' ),
+				'slideshow' => __( 'Slideshow', 'rexpansive-builder' ),
+				'copy_block' => __( 'Copy block', 'rexpansive-builder' ),
+				'block_settings' => __( 'Block settings', 'rexpansive-builder' ),
+				'background_image' => __( 'Background Image', 'rexpansive-builder' ),
+				'background_color' => __( 'Background Color', 'rexpansive-builder' ),
+				'overlay' => __( 'Overlay', 'rexpansive-builder' ),
+				'background_video' => __( 'Background Video', 'rexpansive-builder' ),
+				'rexslider' => __( 'RexSlider', 'rexpansive-builder' ),
+				'delete_block' => __( 'Delete block', 'rexpansive-builder' ),
+				'image_settings' => __( 'Image Settings', 'rexpansive-builder' ),
+				'full' => __( 'Full','rexpansive-builder' ),
+				'boxed' => __( 'Boxed','rexpansive-builder' ),
+				'grid' => __( 'Grid','rexpansive-builder' ),
+				'masonry' => __( 'Masonry','rexpansive-builder' ),
+				'grid_on_off' => __( 'Grid off/on','rexpansive-builder' ),
+				'collapse' => __( 'Collapse','rexpansive-builder' ),
+				'insert_image' => __( 'Insert Image','rexpansive-builder' ),
+				'insert_text' => __( 'Insert Text','rexpansive-builder' ),
+				'insert_video' => __( 'Insert Video','rexpansive-builder' ),
+				'slider' => __( 'Slider','rexpansive-builder' ),
+				'insert_row' => __( 'Insert Row','rexpansive-builder' ),
+				'model' => __( 'Model','rexpansive-builder' ),
+				'copy_row' => __( 'Copy row', 'rexpansive-builder' ),
+				'move_row' => __( 'Move row', 'rexpansive-builder' ),
+				'row_settings' => __( 'Row settings', 'rexpansive-builder' ),
+				'delete_row' => __( 'Delete row', 'rexpansive-builder' ),
+				'text' => __( 'Text','rexpansive-builder' ),
+				'content_position' => __( 'Content Position','rexpansive-builder' ),
+				'copy_block' => __( 'Copy block', 'rexpansive-builder' ),
+				'block_settings' => __( 'Block settings', 'rexpansive-builder' ),
+			);
+		}
+
+		return $settings;
 	}
 
 	/**

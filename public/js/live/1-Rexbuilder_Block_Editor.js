@@ -877,7 +877,8 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     // var close = tmpl('tmpl-tool-close', {});
-    var close = '<div class="tool-button tool-button--black tool-button--close rex-modal__close-button"><i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i></div>';
+    // var close = '<div class="tool-button tool-button--black tool-button--close rex-modal__close-button"><i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i></div>';
+    var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
     var $close = $(close);
     $picker.spectrum('container').append($close);
 
@@ -1029,7 +1030,8 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     // var close = tmpl('tmpl-tool-close', {});
-    var close = '<div class="tool-button tool-button--black tool-button--close rex-modal__close-button"><i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i></div>';
+    // var close = '<div class="tool-button tool-button--black tool-button--close rex-modal__close-button"><i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i></div>';
+    var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
     var $close = $(close);
     $picker.spectrum('container').append($close);
 

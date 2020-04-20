@@ -684,17 +684,17 @@ class Rexbuilder_Block
 		echo '</div>';
 		echo '</div>';
 		
-		if ( $editor ) {
-			$not_has_image = ( ! isset( $image_bg_elem_active ) || 'true' != $image_bg_elem_active || "" == $id_image_bg_block );
-			$not_has_overlay = ( 'true' != $overlay_block_color_active || "" == $overlay_block_color );
-			$not_has_video = ( '' == $video_bg_id && '' == $video_bg_url && '' == $video_bg_url_vimeo );
+		// if ( $editor ) {
+		// 	$not_has_image = ( ! isset( $image_bg_elem_active ) || 'true' != $image_bg_elem_active || "" == $id_image_bg_block );
+		// 	$not_has_overlay = ( 'true' != $overlay_block_color_active || "" == $overlay_block_color );
+		// 	$not_has_video = ( '' == $video_bg_id && '' == $video_bg_url && '' == $video_bg_url_vimeo );
 
-			echo '<div class="ui-focused-element-highlight">';
-			include REXPANSIVE_BUILDER_PATH . 'public/partials/rexlive-block-tools-top.php';
-			include REXPANSIVE_BUILDER_PATH . 'public/partials/rexlive-block-tools-bottom.php';
-			include REXPANSIVE_BUILDER_PATH . 'public/partials/rexlive-block-tools-mobile.php';
-			echo '</div>';
-		}
+		// 	echo '<div class="ui-focused-element-highlight">';
+		// 	include REXPANSIVE_BUILDER_PATH . 'public/partials/rexlive-block-tools-top.php';
+		// 	include REXPANSIVE_BUILDER_PATH . 'public/partials/rexlive-block-tools-bottom.php';
+		// 	include REXPANSIVE_BUILDER_PATH . 'public/partials/rexlive-block-tools-mobile.php';
+		// 	echo '</div>';
+		// }
 
 		echo '</div>';
 

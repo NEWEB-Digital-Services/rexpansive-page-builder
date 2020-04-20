@@ -419,6 +419,104 @@
     }
   }
 
+  /**
+   * On Blur event on medium editor, check if there is text
+   * @since 2.0.0
+   * @version 2.0.4   moved outisde the class object
+   */
+  function handleBlur(e) {
+    var $current_textWrap = $(e.currentTarget);
+    var $top_tools = $current_textWrap.parents('.grid-stack-item').find('.block-toolBox__editor-tools');
+    var $T_tool = $top_tools.find('.edit-block-content');
+    var $content_position_tool = $top_tools.find('.edit-block-content-position');
+    if( 0 == calculateTextWrapHeightNew($current_textWrap) ) {
+      $T_tool.removeClass('tool-button--hide');
+      $content_position_tool.addClass('tool-button--hide');
+    } else {
+      $T_tool.addClass('tool-button--hide');
+      $content_position_tool.removeClass('tool-button--hide');
+    }
+  }
+
+  /**
+   * On double click event, place correctly the medium editor caret
+   * @param  {Event} e dobule click event
+   * @return {void}
+   * @since  2.0.4    move the handler oustide the plugin declaration
+   */
+  function handleDbClick(e) {
+    if (
+      !(
+        Rexbuilder_Util_Editor.editingElement ||
+        Rexbuilder_Util_Editor.elementIsResizing ||
+        Rexbuilder_Util_Editor.elementIsDragging
+      ) ||
+      (Rexbuilder_Util_Editor.editingElement &&
+        Rexbuilder_Util_Editor.editedElement.data(
+          "rexbuilder-block-id"
+        ) != e.currentTarget.getAttribute('rexbuilder-block-id'))
+    ) {
+      var $elem = $(e.currentTarget);
+      var $textWrap = $elem.find(".text-wrap");
+      Rexbuilder_Util_Editor.editingElement = true;
+      Rexbuilder_Util_Editor.editedElement = $elem;
+      Rexbuilder_Util_Editor.editedTextWrap = $textWrap;
+      Rexbuilder_Util_Editor.editingGallery = true;
+      Rexbuilder_Util_Editor.editedGallery = this;
+      if ( !$textWrap.is(":focus") ) {
+        var caretPosition;
+        if (hasClass(e.currentTarget,"rex-flex-top")) {
+          caretPosition = "end";
+        } else if (hasClass(e.currentTarget,"rex-flex-middle")) {
+          var textHeight = $textWrap.innerHeight();
+          var maxBlockHeight;
+          if ( e.currentTarget.getAttribute('data-gs-height') ) {
+            var maxBlockHeight = ( parseInt( e.currentTarget.getAttribute('data-gs-height') ) * this.properties.singleHeight ) - this.properties.gutter;
+          } else {
+            var maxBlockHeight = $elem.innerHeight();
+          }
+
+          if ( e.offsetY < maxBlockHeight / 2 - textHeight / 2 ) {
+            caretPosition = "begin";
+          } else {
+            caretPosition = "end";
+          }
+        } else if (hasClass(e.currentTarget,"rex-flex-bottom")) {
+          caretPosition = "begin";
+        } else {
+          caretPosition = "end";
+        }
+
+        if (caretPosition == "begin") {
+          $textWrap.focus();
+        } else {
+          Rexbuilder_Live_Utilities.setEndOfContenteditable($textWrap[0]);
+        }
+      }
+      Rexbuilder_Util_Editor.startEditingElement();
+    }
+  }
+
+  /**
+   * Handle click of a single element inside a row
+   * @param  {Event} e click event
+   * @return {void}
+   * @since  2.0.4
+   */
+  function handleClick(e) {
+    if (!Rexbuilder_Util_Editor.elementDraggingTriggered) {
+      if (
+        Rexbuilder_Util_Editor.editingElement &&
+        Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") !=
+          e.currentTarget.getAttribute('rexbuilder-block-id')
+      ) {
+        Rexbuilder_Util_Editor.activateElementFocus = false;
+        Rexbuilder_Util_Editor.endEditingElement();
+        Rexbuilder_Util_Editor.activateElementFocus = true;
+      }
+    }
+  }
+
   // The actual plugin constructor
   function perfectGridGalleryEditor(element, options) {
     this.element = element;
@@ -540,7 +638,17 @@
       p2 = performance.now()
       console.log('_launchGridStack',p2-p1)
 			
+      /**
+       * Add listeners to the row
+       */
       this.$element.on('change', handleChange.bind(this));
+
+      // add double click listener to the row, it's useless on the single element
+      this.$element.on('dblclick', '.perfect-grid-item', handleDbClick.bind(this));
+      // add the click listener to the row, it's useless on the single element
+      this.$element.on('click', '.perfect-grid-item', handleClick);
+      // add the blur listener to the row, it's useless on the single element
+      this.$element.on('blur','.medium-editor-element', handleBlur);
 
       this._updateElementsSizeViewers();
       this._linkResizeEvents();
@@ -1640,7 +1748,8 @@
       // $newEl.append(tmpl("tmpl-toolbox-block-floating"));
       $newEl.append(tmpl("tmpl-toolbox-block-wrap",tools_info));
 
-      $newEl.find(".grid-item-content").prepend(tmpl("tmpl-block-drag-handle"));
+      // $newEl.find(".grid-item-content").prepend(tmpl("tmpl-block-drag-handle"));
+      $newEl.find(".grid-item-content").prepend('<div class="rexlive-block-drag-handle"></div>');
 
       var newEl = $newEl[0];
 
@@ -2168,19 +2277,23 @@
       });
 
       // adding text wrap element if it's not there
-      if ($elem.find(".rex-slider-wrap").length === 0) {
+      var hasSlider = $elem[0].querySelector('.rex-slider-wrap');
+      if ( null === hasSlider ) {
         var $textWrap = $elem.find(".text-wrap");
         if ($textWrap.length == 0) {
           var textWrapEl;
           textWrapEl = document.createElement("div");
-          $(textWrapEl).addClass("text-wrap");
+          addClass( textWrapEl, 'text-wrap' );
+          // $(textWrapEl).addClass("text-wrap");
           $elem.find(".rex-custom-scrollbar").append(textWrapEl);
         } else if ($textWrap.children(".text-editor-span-fix").length == 0) {
           // if there is text wrap, adding a span element to fix the text
           // editor
           var spanEl = document.createElement("span");
-          $(spanEl).css("display", "none");
-          $(spanEl).addClass("text-editor-span-fix");
+          spanEl.style.display = 'none';
+          addClass(spanEl, 'text-editor-span-fix');
+          // $(spanEl).css("display", "none");
+          // $(spanEl).addClass("text-editor-span-fix");
           $textWrap.append(spanEl);
         }
       }
@@ -2324,65 +2437,6 @@
         }
       }
 
-      function handleDbClick(e) {
-        if (
-          !(
-            Rexbuilder_Util_Editor.editingElement ||
-            Rexbuilder_Util_Editor.elementIsResizing ||
-            Rexbuilder_Util_Editor.elementIsDragging
-          ) ||
-          (Rexbuilder_Util_Editor.editingElement &&
-            Rexbuilder_Util_Editor.editedElement.data(
-              "rexbuilder-block-id"
-            ) != $elem.data("rexbuilder-block-id"))
-        ) {
-          Rexbuilder_Util_Editor.editingElement = true;
-          Rexbuilder_Util_Editor.editedElement = $elem;
-          Rexbuilder_Util_Editor.editedTextWrap = $textWrap;
-          Rexbuilder_Util_Editor.editingGallery = true;
-          Rexbuilder_Util_Editor.editedGallery = gallery;
-          if (!$textWrap.is(":focus")) {
-            var caretPosition;
-            if ($elem.hasClass("rex-flex-top")) {
-              caretPosition = "end";
-            } else if ($elem.hasClass("rex-flex-middle")) {
-              var textHeight = $textWrap.innerHeight();
-              var maxBlockHeight = $elem.innerHeight();
-              if (e.offsetY < maxBlockHeight / 2 - textHeight / 2) {
-                caretPosition = "begin";
-              } else {
-                caretPosition = "end";
-              }
-            } else if ($elem.hasClass("rex-flex-bottom")) {
-              caretPosition = "begin";
-            } else {
-              caretPosition = "end";
-            }
-
-            if (caretPosition == "begin") {
-              $textWrap.focus();
-            } else {
-              Rexbuilder_Live_Utilities.setEndOfContenteditable($textWrap[0]);
-            }
-          }
-          Rexbuilder_Util_Editor.startEditingElement();
-        }
-      }
-
-      function handleClick(e) {
-        if (!Rexbuilder_Util_Editor.elementDraggingTriggered) {
-          if (
-            Rexbuilder_Util_Editor.editingElement &&
-            Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") !=
-              $elem.data("rexbuilder-block-id")
-          ) {
-            Rexbuilder_Util_Editor.activateElementFocus = false;
-            Rexbuilder_Util_Editor.endEditingElement();
-            Rexbuilder_Util_Editor.activateElementFocus = true;
-          }
-        }
-      }
-
       function handleHoverIn(e) {
         if (
           !(
@@ -2419,20 +2473,6 @@
         }
       }
 
-      function handleBlur(e) {
-        var $current_textWrap = $(e.currentTarget);
-        var $top_tools = $current_textWrap.parents('.grid-stack-item').find('.block-toolBox__editor-tools');
-        var $T_tool = $top_tools.find('.edit-block-content');
-        var $content_position_tool = $top_tools.find('.edit-block-content-position');
-        if( 0 == calculateTextWrapHeightNew($current_textWrap) ) {
-          $T_tool.removeClass('tool-button--hide');
-          $content_position_tool.addClass('tool-button--hide');
-        } else {
-          $T_tool.addClass('tool-button--hide');
-          $content_position_tool.removeClass('tool-button--hide');
-        }
-      }
-
       // mouse down on another element
       $elem.on('mousedown', handleMouseDown);
       $elem.on('mouseup', handleMouseUp);
@@ -2440,18 +2480,14 @@
       /**
        * Listen double click on a block to edit the text content
        */
-      $elem.on('dblclick', handleDbClick);
+      // $elem.on('dblclick', handleDbClick.bind(this));
 
-      $elem.on('click', handleClick);
+      // $elem.on('click', handleClick);
 
       $elem.on('mouseenter', handleHoverIn);
       $elem.on('mouseleave', handlerHoverOut);
 
-      /**
-       * On Blur event on medium editor, check if there is text
-       * @since 2.0.0
-       */
-      $elem.on('blur','.medium-editor-element', handleBlur);
+      // $elem.on('blur','.medium-editor-element', handleBlur);
     },
 
     unFocusElementEditing: function($elem) {

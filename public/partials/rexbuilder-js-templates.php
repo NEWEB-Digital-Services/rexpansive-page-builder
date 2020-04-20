@@ -213,10 +213,6 @@ $tool_button_classes = 'tool-button';
     </div>
 </script>
 
-<script type="text/x-tmpl" id="tmpl-block-drag-handle">
-    <div class="rexlive-block-drag-handle"></div>
-</script>
-
 <script type="text/x-tmpl" id="tmpl-new-block">
     <div id="block_{%=block.id%}" class="perfect-grid-item grid-stack-item w{%=block.gsWidth%} rex-text-editable{% if( block.block_type === 'text' ) { %} insert-block-animation{% } %}" data-height="{%=block.backendHeight%}" data-width="{%=block.backendWidth%}" data-row="{%=block.backendY%}" data-col="{%=block.backendX%}" data-gs-height="{%=block.gsHeight%}" data-gs-width="{%=block.gsWidth%}" data-gs-y="{%=block.gsY%}" data-gs-x="{%=block.gsX%}" data-rexbuilder-block-id="{%=block.rexID%}">
         <div id="block_{%=block.id%}-builder-data" class="rexbuilder-block-data" data-id="block_{%=block.id%}" data-rexbuilder_block_id="{%=block.rexID%}" data-type="" data-size_x="{%=block.backendWidth%}" data-size_y="{%=block.backendHeight%}" data-row="{%=block.backendY%}" data-col="{%=block.backendX%}" data-gs_start_h="{%=block.gsHeight%}" data-gs_width="{%=block.gsWidth%}" data-gs_height="{%=block.gsHeight%}" data-gs_y="{%=block.gsY%}" data-gs_x="{%=block.gsX%}" data-color_bg_block="" data-image_bg_block="" data-id_image_bg_block="" data-video_bg_id="" data-video_mp4_url="" data-video_bg_url="" data-video_bg_url_vimeo="" data-type_bg_block="" data-image_size="" data-photoswipe="" data-linkurl="" data-block_custom_class="" data-block_padding="{% if(block.block_type == 'rexslider') { %}0px;0px;0px;0px;{% } %}" data-overlay_block_color="" data-zak_background="" data-zak_side="" data-zak_title="" data-zak_icon="" data-zak_foreground="" data-block_animation="fadeInUpBig" data-video_has_audio="" data-block_has_scrollbar="false" data-block_dimensions_live_edited="" data-block_height_masonry="" data-block_height_fixed="" data-block_height_calculated="{%=block.gsHeight%}"></div>
@@ -287,18 +283,6 @@ $tool_button_classes = 'tool-button';
     </section>
 </script>
 
-<script type="text/x-tmpl" id="tmpl-div-block-grid">
-    <div class="rexpansive-block-grid"></div>
-</script>
-
-<script type="text/x-tmpl" id="tmpl-div-block-section-toolbox">
-    <div class="rexpansive-block-section-toolbox"></div>
-</script>
-
-<script type="text/x-tmpl" id="tmpl-div-lock-section">
-    <div class="rexpansive-lock-section"></div>
-</script>
-
 <script type="text/x-tmpl" id="tmpl-tool-close">
 <div class="tool-button tool-button--black tool-button--close rex-modal__close-button">
 <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
@@ -307,8 +291,7 @@ $tool_button_classes = 'tool-button';
 
 <script type="text/x-tmpl" id="tmpl-tool-save">
 <div class="rex-modal__outside-footer">
-    <div id="rex-model__add-new-model" class="tool-button tool-button--inline tool-button--save tippy"
-        data-tippy-content="Create Model" tabindex="0">
+    <div id="rex-model__add-new-model" class="tool-button tool-button--inline tool-button--save">
         <span class="btn-save--edited"> 
         <?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?>
         </span>
@@ -488,8 +471,7 @@ $tool_button_classes = 'tool-button';
 </script>
 
 <script type="text/x-tmpl" id="tmpl-link-block">
-    <a class="element-link hovered" href="{%=link.url%}" title="{%=link.url%}">
-    </a>
+<a class="element-link hovered" href="{%=link.url%}" title="{%=link.url%}"></a>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-navigator-item">

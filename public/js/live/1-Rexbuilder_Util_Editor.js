@@ -380,7 +380,7 @@ var Rexbuilder_Util_Editor = (function($) {
         var $sec = $(sec);
         $sec.wrap("<div></div>");
         $sec.parent().attr("style", "position:relative;");
-        $sec.parent().append(tmpl("tmpl-div-lock-section", {}));
+        $sec.parent().append('<div class="rexpansive-lock-section"></div>');
       });
   };
 

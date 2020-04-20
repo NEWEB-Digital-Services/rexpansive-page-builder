@@ -1853,11 +1853,12 @@ var Rexbuilder_Util = (function($) {
                 //console.log("not a block link");
                 var $itemContentParent = $itemContent.parent();
                 tmpl.arg = "link";
-                $itemContentParent.append(
-                  tmpl("tmpl-link-block", {
-                    url: targetProps["linkurl"]
-                  })
-                );
+                // $itemContentParent.append(
+                //   tmpl("tmpl-link-block", {
+                //     url: targetProps["linkurl"]
+                //   })
+                // );
+                $itemContentParent.append( '<a class="element-link hovered" href="' + targetProps['linkurl'] + '" title="' + targetProps['linkurl'] + '"></a>' );
                 var $link = $itemContentParent.children(".element-link");
                 $itemContent.detach().appendTo($link);
               }
@@ -2652,11 +2653,12 @@ var Rexbuilder_Util = (function($) {
                 //console.log("not a block link");
                 var $itemContentParent = $itemContent.parent();
                 tmpl.arg = "link";
-                $itemContentParent.append(
-                  tmpl("tmpl-link-block", {
-                    url: targetProps["linkurl"]
-                  })
-                );
+                // $itemContentParent.append(
+                //   tmpl("tmpl-link-block", {
+                //     url: targetProps["linkurl"]
+                //   })
+                // );
+                $itemContentParent.append( '<a class="element-link hovered" href="' + targetProps['linkurl'] + '" title="' + targetProps['linkurl'] + '"></a>' );
                 var $link = $itemContentParent.children(".element-link");
                 $itemContent.detach().appendTo($link);
               }

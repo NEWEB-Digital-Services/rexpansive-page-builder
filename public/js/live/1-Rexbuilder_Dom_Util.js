@@ -607,7 +607,8 @@ var Rexbuilder_Dom_Util = (function($) {
               var $toggleAudio = $target.children(".rex-video-toggle-audio");
               if ($toggleAudio.length == 0) {
                 if (hasAudio) {
-                  $target.append(tmpl("tmpl-video-toggle-audio"));
+                  // $target.append(tmpl("tmpl-video-toggle-audio"));
+                  $target.append('<div class="rex-video-toggle-audio"><div class="rex-video-toggle-audio-shadow"></div></div>');
                 }
               } else {
                 if (hasAudio) {
@@ -1505,14 +1506,12 @@ var Rexbuilder_Dom_Util = (function($) {
         $section
           .find(".grid-stack-row")
           .parent()
-          // .prepend(tmpl("tmpl-div-block-grid", {}));
           .prepend('<div class="rexpansive-block-grid"></div>');
       }
       if ($section.find(".rexpansive-block-section-toolbox").length == 0) {
         $section
           .find(".section-toolBox")
           .parent()
-          // .prepend(tmpl("tmpl-div-block-section-toolbox", {}));
           .prepend('<div class="rexpansive-block-section-toolbox"></div>');
       }
     } else {
@@ -1559,14 +1558,12 @@ var Rexbuilder_Dom_Util = (function($) {
         $section
           .find(".grid-stack-row")
           .parent()
-          // .prepend(tmpl("tmpl-div-block-grid", {}));
           .prepend('<div class="rexpansive-block-grid"></div>');
       }
       if ($section.find(".rexpansive-block-section-toolbox").length == 0) {
         $section
           .find(".section-toolBox")
           .parent()
-          // .prepend(tmpl("tmpl-div-block-section-toolbox", {}));
           .prepend('<div class="rexpansive-block-section-toolbox"></div>');
       }
       $button.removeClass("unlocked");

@@ -27,9 +27,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * At the width selection, create a rexlive:set_section_width event with all the needed data
      * @since 2.0.0
      */
-    Rexbuilder_Util.$document.on('change', '.edit-row-width', function(e) {
-			console.log( e.target );
-			
+    Rexbuilder_Util.$document.on('change', '.edit-row-width', function(e) {			
       // var rexID = e.target.name.split('-')[2];
       // var $section_data = $(e.target).parents('.rexpansive_section').children('.section-data');
       var $section = $(e.target).parents(".rexpansive_section");
@@ -42,7 +40,6 @@ var Rexbuilder_Section_Editor = (function($) {
       var width = '';
       var type = '';
 			var vals = e.target.value.trim().split(/(\d+)/);
-			console.log( vals );
 			
       width = vals[1];
       type = vals[2];

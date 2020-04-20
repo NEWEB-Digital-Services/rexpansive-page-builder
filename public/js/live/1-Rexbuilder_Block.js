@@ -86,6 +86,50 @@ var Rexbuilder_Block = (function ($) {
 		Rexbuilder_Util_Editor.blockCopying = false;
 	}
 
+	/**
+	 * Adding the block toolbar via js
+	 */
+	function _addToolbox() {
+		var blocks = Array.prototype.slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.perfect-grid-item') );
+		var tot_blocks = blocks.length;
+		var blockData;
+	    var i;
+
+	    var not_has_image, not_has_overlay, not_has_video;
+	    var data = {
+	    	not_has_image: false,
+	    	not_has_overlay: false,
+	    	not_has_video: false,
+	    	has_content: false,
+	    	overlay: ''
+	    };
+
+	    var textWrap;
+	    var blockTools;
+
+	    for (i=0; i < tot_blocks; i++) {
+	    	blockData = blocks[i].querySelector('.rexbuilder-block-data');
+	    	data.not_has_image = ( null === blockData.getAttribute('data-image_bg_elem_active') || 'true' != blockData.getAttribute('data-image_bg_elem_active') || '' == blockData.getAttribute('data-id_image_bg_block') );
+
+	    	data.not_has_overlay = ( 'true' != blockData.getAttribute('data-overlay_block_color_active') || '' == blockData.getAttribute('data-overlay_block_color'))
+
+	    	data.not_has_video = ( '' == blockData.getAttribute('data-video_bg_id') && '' == blockData.getAttribute('data-video_bg_url') && '' == blockData.getAttribute('data-video_bg_url_vimeo') );
+
+	    	textWrap = blocks[i].querySelector('.text-wrap');
+	    	if ( 0 == textWrap.childElementCount || ( 1 == textWrap.childElementCount && Rexbuilder_Util.hasClass( textWrap.children[0], 'text-editor-span-fix' ) ) ) {
+	    		data.has_content = false;
+	    	} else {
+				data.has_content = true;
+	    	}
+
+	    	data.overlay = ( null !== blockData.getAttribute('data-overlay_block_color') ? blockData.getAttribute('data-overlay_block_color') : '' );
+
+	    	blockTools = Rexbuilder_Live_Templates.getTemplate( 'tmpl-toolbox-block-wrap-clean', data );
+
+	    	blockData.nextElementSibling.insertAdjacentHTML('afterend',blockTools);
+	    }
+	}
+
 	var _addBlockToolboxListeners = function () {
 		Rexbuilder_Util.$rexContainer.on('click', '.builder-delete-block', handleBuilderDeleteBlock);
 		Rexbuilder_Util.$rexContainer.on("click", ".builder-edit-slider", handleBuilderEditSlider);
@@ -93,6 +137,7 @@ var Rexbuilder_Block = (function ($) {
 	}
 
 	var init = function () {
+		_addToolbox();
 		_addBlockToolboxListeners();
 	}
 

@@ -18,7 +18,7 @@ defined('ABSPATH') or exit;
         <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
     </div>
 
-    <div class="tool-button tool-button--flat tool-button__text--flat add-new-block-text tool-button--inline tippy" data-tippy-content="<?php _e('Insert Image','rexpansive-builder'); ?>">
+    <div class="tool-button tool-button--flat tool-button__text--flat add-new-block-text tool-button--inline tippy" data-tippy-content="<?php _e('Insert Text','rexpansive-builder'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
     </div>
 
