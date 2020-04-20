@@ -1320,7 +1320,7 @@ var Rexbuilder_Dom_Util = (function($) {
    * @param {Object} color overlay color info
    */
   var _updateBlockOverlayColorLive = function(data, color) {
-    var $target;
+		var $target;
     if (data.modelNumber != "") {
       var section_selector = 'section[data-rexlive-section-id="' + data.sectionID + '"][data-rexlive-model-number="' + data.modelNumber + '"]';
       var block_selector = 'div [data-rexbuilder-block-id="' + data.rexID + '"] .responsive-block-overlay';
@@ -1339,12 +1339,29 @@ var Rexbuilder_Dom_Util = (function($) {
           'div [data-rexbuilder-block-id="' +
             data.rexID +
             '"] .responsive-block-overlay'
-        );
+				);
+				
+			var $overlayTargets = Rexbuilder_Util.$rexContainer.find(
+				'[data-rexbuilder-block-id="' + data.rexID + '"] .slider-overlay'
+			);
+
       if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
         $target.css("background","");
-      }
-      $target
-        .css("background-color", color);
+			}
+
+			$target.css("background-color", color);
+
+			console.log( $overlayTargets.length );
+			
+			if (0 === $overlayTargets.length) {
+				var $sliderElements = Rexbuilder_Util.$rexContainer.find(
+					'[data-rexbuilder-block-id="' + data.rexID + '"] .rex-slider-element'
+				);
+
+				$sliderElements.append('<div class="slider-overlay" style="background-color:' + color + '"></div>')
+			} else {
+				$overlayTargets.css('background-color', color);
+			}
     }
 
     if( 'undefined' !== typeof Rexbuilder_Block_Editor ) {
@@ -1375,7 +1392,7 @@ var Rexbuilder_Dom_Util = (function($) {
     }
     elemOverlay.style.backgroundColor = color;
 
-    $elemData.attr("data-overlay_block_color", color);
+		$elemData.attr("data-overlay_block_color", color);
     $elemData.attr("data-overlay_block_color_active", active);
 
     if (active.toString() == "true") {
