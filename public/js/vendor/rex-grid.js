@@ -319,8 +319,11 @@
 	function _checkFullHeight() {
 		if ( this.properties.fullHeight ) {
 			var heightInUnits = _calculateGridHeight.call( this );
+			var topSeparator = this.properties.gridTopSeparator - this.properties.halfSeparatorTop
+			var bottomSeparator = this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom
+
 			if ( 0 !== heightInUnits ) {
-				this.properties.singleHeight = globalViewportSize.height / heightInUnits;
+				this.properties.singleHeight = (globalViewportSize.height - (topSeparator + bottomSeparator)) / heightInUnits;
 			}
 		}
 	}
@@ -387,7 +390,7 @@
 		if ( ! this.properties.gridHeightSettable ) return;
 
 		var newGridHeight = _calculateGridHeight.call( this, info );
-		
+
 		this.element.style.height = ( newGridHeight * this.properties.singleHeight ) + 'px';
 	}
 
