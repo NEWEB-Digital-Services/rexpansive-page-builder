@@ -32,14 +32,14 @@ var Rex_Navigator = (function ($) {
     $sections.each(function () {
       $this = $(this);
       if ( null !== this.getAttribute('id') && this.getAttribute('id') != '') {
-        activeSection = document.querySelector('.vertical-nav a[href="#' + this.getAttribute('id') + '"]');
+				activeSection = document.querySelector('.vertical-nav a[href="#' + this.getAttribute('id') + '"]');
         if ( activeSection ) {
           activeSectionIndex = activeSection.getAttribute('data-number') - 1;
           // if (($this.offset().top - Rexbuilder_Util.$window.height() / 2 < Rexbuilder_Util.$window.scrollTop()) && ($this.offset().top + $this.height() - Rexbuilder_Util.$window.height() / 2 > Rexbuilder_Util.$window.scrollTop())) {
           if (($this.offset().top - Rexbuilder_Util.globalViewport.height / 2 < Rexbuilder_Util.$window.scrollTop()) && ($this.offset().top + $this.height() - Rexbuilder_Util.globalViewport.height / 2 > Rexbuilder_Util.$window.scrollTop())) {
-            navigationItems.eq(activeSection).addClass('is-selected');
+            navigationItems.eq(activeSectionIndex).addClass('is-selected');
           } else {
-            navigationItems.eq(activeSection).removeClass('is-selected');
+            navigationItems.eq(activeSectionIndex).removeClass('is-selected');
           }
         }
       }
@@ -172,8 +172,8 @@ var Rex_Navigator = (function ($) {
       _updateNavigatorDom($navigatorWrap);
     }
 
-    verticalNav = document.querySelector('.vertical-nav');
-
+		verticalNav = document.querySelector('.vertical-nav');
+		
     if ( verticalNav ) {
       Rexbuilder_Util.$window.on('scroll', function () {
         updateNavigation();
