@@ -102,11 +102,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
           modelSaved = false;
         } else {
           Rexbuilder_Util_Admin_Editor.pageSaved = false;
-        }
-        // get undo redo stack from iframe
-        // console.log(event.data.undoRedoStacks);
-        $saveBtn.addClass("page-edited");
-        // Rexbuilder_Util_Admin_Editor.$body.addClass('page-edited');
+				}
+				
+				$saveBtn.addClass("page-edited");
       }
 
       /**

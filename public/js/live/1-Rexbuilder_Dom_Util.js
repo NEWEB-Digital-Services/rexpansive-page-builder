@@ -919,40 +919,62 @@ var Rexbuilder_Dom_Util = (function($) {
 
   /**
    * Add photoswipe to all blocks of a section
-   * @param {jQuery Object} $section section to edit
-   * @since 2.0.0
+   * @param		{jQuery}	$section	section to edit
+   * @since		2.0.0
+	 * @version	2.0.4			Changed to vanilla js
    */
-  var _enablePhotoswipeAllBlocksSection = function($section) {
-		var $gallery = $section.find(".grid-stack-row");
-		var elHasSlider;
-    $gallery
-      .children(".grid-stack-item:not(.removing_block)")
-      .each(function(i, el) {
-        var $elData = $(el).children(".rexbuilder-block-data");
-				var textWrapLength = Rexbuilder_Util_Editor.getTextWrapLength($(el));
-				elHasSlider = $(el).hasClass('block-has-slider');
+  function _enablePhotoswipeAllBlocksSection($section) {
+		var section = $section.get(0);
+		var sectionBlocks = section.querySelectorAll('.grid-stack-item:not(.removing_block)');
+		var sectionBlock;
+		var tot_sectionBlocks = sectionBlocks.length;
 
-        if (($elData.attr("data-image_bg_block") != "" && textWrapLength == 0) || elHasSlider) {
-          $elData.attr("data-photoswipe", true);
-        }
-      });
-  };
+		var blockData;
+		var blockHasSlider;
+		var blockHasText;
+		var blockHasBackgroundImage;
+
+		var i = 0;
+
+		for (; i < tot_sectionBlocks; i++) {
+			sectionBlock = sectionBlocks[i];
+			blockData = sectionBlock.querySelector('.rexbuilder-block-data');
+
+			blockHasSlider = Rexbuilder_Util.hasClass(sectionBlock, 'block-has-slider');
+			blockHasText = 0 !== Rexbuilder_Util_Editor.getTextWrapLength($(sectionBlock));
+			blockHasBackgroundImage = '' !== blockData.getAttribute('data-image_bg_block');
+
+			sectionBlock.setAttribute('data-rexlive-element-edited', true);
+
+			if ((blockHasBackgroundImage && !blockHasText) || blockHasSlider) {
+				blockData.setAttribute('data-photoswipe', true);
+			}
+		}
+	}
 
   /**
    * Remove photoswipe from all blocks of a section
-   * @param {jQuery Object} $section section to edit
-   * @since 2.0.0
-   * @date 16-05-2019
+   * @param		{jQuery}	$section	section to edit
+   * @since		2.0.0
+   * @date		16-05-2019
+	 * @version	2.0.4		Changed to vanilla js
    */
-  var _removePhotoswipeAllBlocksSection = function($section) {
-    var $gallery = $section.find(".grid-stack-row");
-    $gallery
-      .children(".grid-stack-item:not(.removing_block)")
-      .each(function(i, el) {
-        var $elData = $(el).children(".rexbuilder-block-data");
-        $elData.attr("data-photoswipe", false);
-      });
-  };
+  function _removePhotoswipeAllBlocksSection($section) {
+		var section = $section.get(0);
+		var sectionBlocks = section.querySelectorAll('.grid-stack-item:not(.removing_block)');
+		var tot_sectionBlocks = sectionBlocks.length;
+
+		var blockData;
+
+		var i = 0;
+
+		for (; i < tot_sectionBlocks; i++) {
+			blockData = sectionBlocks[i].querySelector('.rexbuilder-block-data');
+
+			sectionBlocks[i].setAttribute('data-rexlive-element-edited', true);
+			blockData.setAttribute('data-photoswipe', false);
+		}
+	}
 
   var _updateSectionPhotoswipe = function(elements) {
     for (var i = 0; i < elements.length; i++) {

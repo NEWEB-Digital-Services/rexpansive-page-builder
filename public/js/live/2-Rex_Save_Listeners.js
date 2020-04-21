@@ -823,6 +823,7 @@ var Rex_Save_Listeners = (function($) {
         // case "element_height_increased":
         case "element_real_fluid":
         case "hide":
+        case "photoswipe":
           break;
         case "element_edited":
           props["element_edited"] = false;
