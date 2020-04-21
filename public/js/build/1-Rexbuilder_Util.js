@@ -1879,7 +1879,7 @@ var Rexbuilder_Util = (function($) {
           ? true
           : false;
 		$elem.attr("data-rexlive-element-edited", elementEdited);
-		
+
     for (var propName in targetProps) {
       switch (propName) {
         case "type":
@@ -1915,9 +1915,10 @@ var Rexbuilder_Util = (function($) {
               $section.addClass("photoswipe-gallery");
             } else {
               Rexbuilder_Photoswipe.removeElement($itemContent);
-            }
-						$itemData.attr("data-photoswipe", targetProps["photoswipe"]);
-          }
+						}
+					}
+					$itemData.attr("data-photoswipe", targetProps["photoswipe"]);
+					
           break;
         case "linkurl":
           if (!Rexbuilder_Util.editorMode) {
@@ -3355,7 +3356,6 @@ var Rexbuilder_Util = (function($) {
       var mp4video = $target.children(".rex-video-wrap").find("video")[0];
       mp4video.currentTime = 0;
       mp4video.pause();
-      // console.log("_stopVideo: faccio pause del video");
     } else if ($target.hasClass("vimeo-player")) {
       var maybePlayer = VimeoVideo.findVideo(
         $target.children(".rex-video-vimeo-wrap").find("iframe")[0]
@@ -3615,7 +3615,6 @@ var Rexbuilder_Util = (function($) {
         .children(".rex-video-wrap")
         .find("video")[0]
         .pause();
-      // console.log("_pauseVideo: faccio pause del video");
     } else if ($target.hasClass("vimeo-player")) {
       var vimeoPlugin = VimeoVideo.findVideo(
         $target.find(".rex-video-vimeo-wrap").find("iframe")[0]

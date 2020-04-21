@@ -285,7 +285,6 @@ var Rexbuilder_Photoswipe = (function($){
 			galleryUID: galleryElement.getAttribute("data-pswp-uid"),
 
 			getThumbBoundsFn: function(index) {
-				// console.log('getThumbBoundsFn', index)
 				// See Options -> getThumbBoundsFn section of documentation for more info
 				var thumbnail = items[index].el.getElementsByClassName( "pswp-item-thumb" )[0], // find thumbnail
 					image_content = items[index].el.getElementsByClassName( "rex-custom-scrollbar" )[0],

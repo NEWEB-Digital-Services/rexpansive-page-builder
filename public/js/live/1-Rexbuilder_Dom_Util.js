@@ -238,8 +238,8 @@ var Rexbuilder_Dom_Util = (function($) {
     $elemData.attr("data-id_image_bg_block", data.idImage);
     $elemData.attr("data-type_bg_block", data.typeBGimage);
     $elemData.attr("data-image_bg_block", data.urlImage);
-    $elemData.attr("data-image_size", data.sizeImage);
-    $elemData.attr("data-photoswipe", data.photoswipe);
+		$elemData.attr("data-image_size", data.sizeImage);
+		$elemData.attr("data-photoswipe", data.photoswipe)
     $elemData.attr("data-image_bg_elem_active", data.active);
 
     if (data.typeBGimage == "full") {
@@ -923,13 +923,16 @@ var Rexbuilder_Dom_Util = (function($) {
    * @since 2.0.0
    */
   var _enablePhotoswipeAllBlocksSection = function($section) {
-    var $gallery = $section.find(".grid-stack-row");
+		var $gallery = $section.find(".grid-stack-row");
+		var elHasSlider;
     $gallery
       .children(".grid-stack-item:not(.removing_block)")
       .each(function(i, el) {
         var $elData = $(el).children(".rexbuilder-block-data");
-        var textWrapLength = Rexbuilder_Util_Editor.getTextWrapLength($(el));
-        if ($elData.attr("data-image_bg_block") != "" && textWrapLength == 0) {
+				var textWrapLength = Rexbuilder_Util_Editor.getTextWrapLength($(el));
+				elHasSlider = $(el).hasClass('block-has-slider');
+
+        if (($elData.attr("data-image_bg_block") != "" && textWrapLength == 0) || elHasSlider) {
           $elData.attr("data-photoswipe", true);
         }
       });
@@ -1069,7 +1072,6 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _updateSectionBackgroundColorLive = function(data, color) {
     var $target;
-    // console.log(data);
 
     if (data.modelNumber != "") {
       $target = Rexbuilder_Util.$rexContainer
@@ -1080,7 +1082,6 @@ var Rexbuilder_Dom_Util = (function($) {
             data.modelNumber +
             '"]'
         );
-      // console.log(Rexbuilder_Util.$rexContainer, $target);
       if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
         $target.css("background","");
       }
@@ -1223,7 +1224,6 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _updateSectionOverlayColorLive = function(data, color) {
     var $target;
-    // console.log(data);
     if (data.modelNumber != "") {
       $target = Rexbuilder_Util.$rexContainer
         .find(
@@ -1261,8 +1261,6 @@ var Rexbuilder_Dom_Util = (function($) {
     var $overlayElem = $section.children(".responsive-overlay");
     var overlayElem = $overlayElem[0];
     var $sectionData = $section.children(".section-data");
-
-    // console.log($section);
 
     if( -1 !== getComputedStyle(overlayElem)['background'].indexOf('linear-gradient') ) {
       overlayElem.style.background = '';
