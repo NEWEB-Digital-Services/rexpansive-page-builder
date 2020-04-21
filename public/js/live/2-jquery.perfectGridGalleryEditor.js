@@ -722,6 +722,7 @@
       this.setGridstackIstanceNumber();
       this.properties.gridstackInstance = this.$element.data("gridstack");
 
+      // does a batch and a commit
       this.makeWidgets();
 
       // Remove elements to hide
@@ -735,6 +736,7 @@
         }
       }
 
+      // does a batch and a commit
       if ( !Rexbuilder_Util.domUpdating && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying ) ) {
         this.updateBlocksHeight();
       }
@@ -2539,7 +2541,7 @@
     updateSizeViewerSizes: function(block) {
       this.updateSizeViewerText(
         block,
-        Math.round( block.offsetWidth / this.properties.singleWidth ),
+        block.getAttribute('data-gs-width'),
         this.calculateHeightSizeViewer(block)
       );
     },

@@ -5,23 +5,6 @@ var Rexbuilder_Section = (function($) {
     $section.children(".section-toolBox").addClass("tool-box-active");
   };
 
-  var _hideSectionToolBox = function($section) {
-    // $section.children(".section-toolBox").removeClass("tool-box-active");
-  };
-
-  var _linkHoverSection = function($section) {
-    // $section.hover(
-    //   function(event) {
-    //     Rexbuilder_Section.showSectionToolBox($section);
-    //   },
-    //   function(event) {
-    //     if ($(event.toElement).parents(".medium-editor-toolbar").length == 0) {
-    //       Rexbuilder_Section.hideSectionToolBox($section);
-    //     }
-    //   }
-    // );
-  };
-
   /**
    * Position correctly the section to toolbox
    * If in mobile, take care of an eventually section margin
@@ -1777,8 +1760,6 @@ var Rexbuilder_Section = (function($) {
     init: init,
     prepareSectionCopied: _prepareSectionCopied,
     showSectionToolBox: _showSectionToolBox,
-    // hideSectionToolBox: _hideSectionToolBox,
-    // linkHoverSection: _linkHoverSection,
     updateModelsHtmlLive: _updateModelsHtmlLive,
     fixSectionToolbox : _fixSectionToolbox,
     fixBlockToolsAccordingToSeparator: _fixBlockToolsAccordingToSeparator

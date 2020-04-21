@@ -2231,7 +2231,7 @@ var Rexbuilder_Util = (function($) {
       updateSectionTools( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
     }
 
-    console.log('updateSectionTools', performance.now()-t0)
+    console.log('updateSection + updateSectionTools', performance.now()-t0)
     t0 = performance.now();
 
     var collapse =

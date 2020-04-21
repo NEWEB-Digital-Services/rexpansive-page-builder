@@ -251,9 +251,9 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   function launchIndicators( $grids ) {
-    if ( 'undefined' !== typeof rexIndicator ) {
-      $grids.find(".rex-indicator__placeholder").rexIndicator();
-    }
+    if ( 'undefined' === typeof rexIndicator ) return;
+    
+    $grids.find(".rex-indicator__placeholder").rexIndicator();
   }
 
   /**
@@ -1329,9 +1329,6 @@ var Rexbuilder_App = (function($) {
         }
       };
 		}
-		
-		var perf5 = performance.now()
-		console.log( 'Performance dopo EDL', perf5-perf4 );
 
 		_linkDocumentListeners();
 		
@@ -1348,7 +1345,6 @@ var Rexbuilder_App = (function($) {
 		}
 		
 		var perf6 = performance.now()
-		console.log( 'Performance attach listeners', perf6-perf5 );
 		console.log( 'Performance TOTALE init', perf6-perf1 );
 		
   };
