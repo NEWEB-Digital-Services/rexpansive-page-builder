@@ -943,7 +943,7 @@ var Rexbuilder_Block_Editor = (function($) {
       ) {
         overlayActive = true;
       }
-    }
+		}
 
     var settings = {
       data_to_send: {
@@ -993,7 +993,7 @@ var Rexbuilder_Block_Editor = (function($) {
         settings.data_to_send.active = true;
 				settings.data_to_send.color =  color.toRgbString();
 				
-        if( overlayActive || 'true' === $elemData.attr('data-overlay_block_color_active') ) {
+        if( overlayActive ) {
           var event = jQuery.Event("rexlive:change_block_overlay_color");
         } else {
           var event = jQuery.Event("rexlive:change_block_overlay");

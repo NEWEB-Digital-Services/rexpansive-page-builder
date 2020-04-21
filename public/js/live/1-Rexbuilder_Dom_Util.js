@@ -1351,8 +1351,6 @@ var Rexbuilder_Dom_Util = (function($) {
 
 			$target.css("background-color", color);
 
-			console.log( $overlayTargets.length );
-			
 			if (0 === $overlayTargets.length) {
 				var $sliderElements = Rexbuilder_Util.$rexContainer.find(
 					'[data-rexbuilder-block-id="' + data.rexID + '"] .rex-slider-element'
@@ -1377,20 +1375,24 @@ var Rexbuilder_Dom_Util = (function($) {
     var color = data.color;
     var active = data.active;
 
-    var $elem = data.$elem;
+		var $elem = data.$elem;
     var $elemData = $elem.children(".rexbuilder-block-data");
     var $elemOverlay = $elem.find(".responsive-block-overlay");
-    var elemOverlay = $elemOverlay[0];
-    // var actualOverlay = $elemOverlay.css("background");
+		var elemOverlay = $elemOverlay[0];
+		var $sliderOverlays = $elemOverlay.find('.slider-overlay');
 
-    // if( -1 !== actualOverlay.indexOf("linear-gradient") ) {
-    //   $elemOverlay.css("background","");
-    // }
-    // $elemOverlay.css("background-color", color);
     if( -1 !== getComputedStyle(elemOverlay)['background'].indexOf('linear-gradient') ) {
       elemOverlay.style.background = '';
     }
-    elemOverlay.style.backgroundColor = color;
+		elemOverlay.style.backgroundColor = color;
+
+		if (0 === $sliderOverlays.length) {
+			var $sliderElements = $elem.find('.rex-slider-element');
+
+			$sliderElements.append('<div class="slider-overlay" style="background-color:' + color + '"></div>');
+		} else {
+			$sliderOverlays.css('background-color', color);
+		}
 
 		$elemData.attr("data-overlay_block_color", color);
     $elemData.attr("data-overlay_block_color_active", active);

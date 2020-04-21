@@ -603,8 +603,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var $newBlock;
 
     $newBlock = $elem.clone(false);
-    var $newBlockData = $newBlock.children(".rexbuilder-block-data");
-
+		var $newBlockData = $newBlock.children(".rexbuilder-block-data");
+		
     galleryEditorInstance._removeHandles($newBlock);
 
     var newRexID = Rexbuilder_Util.createBlockID();
@@ -670,10 +670,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
     Rexbuilder_Util.startVideoPlugin($itemContent);
 
-    var $textWrap = $newBlock.find(".text-wrap");
-
+		var $textWrap = $newBlock.find(".text-wrap");
+		
     if ($elem.hasClass("block-has-slider")) {
-      var $oldSlider = $elem.find(".text-wrap").children(".rex-slider-wrap[data-rex-slider-active=\"true\"]");
+      var $oldSlider = $elem.find('.text-wrap').children('.rex-slider-wrap[data-rex-slider-active="true"]');
       $textWrap.children().remove();
       var sectionID = $section.attr("data-rexlive-section-id");
       var modelNumber = typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
@@ -693,7 +693,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
       // }
       var newBlock = $newBlock[0];
       TextEditor.addElementToTextEditor( newBlock.querySelector(".text-wrap") );
-    }
+		}
+		
     // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
     // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($newBlock.find('input[name=edit-block-overlay-color]')[0]);
     Rexbuilder_Block_Editor.updateBlockTools($newBlock);
@@ -701,7 +702,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
-    }
+		}
   }
 
   /**
