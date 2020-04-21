@@ -1172,6 +1172,96 @@ var Rexbuilder_Block_Editor = (function($) {
     });
   };
 
+  /** GLOBAL SPECTRUM LOGIC */
+
+  var $spGlBlockBackground;   // spectrum global block background
+  var $spGlBlockOverlay;      // spectrum global block overlay
+
+  var $actualBlock;             // actual edited section
+  var $actualBlockData;         // actual edited section data
+
+  function _setGlobalPickers() {
+    // setting globals
+    $spGlBlockBackground = $(document.getElementById('global-spectrum-block-background'));
+    $spGlBlockOverlay = $(document.getElementById('global-spectrum-block-overlay'));
+
+    $actualBlock = null;
+    $actualBlockData = null;
+
+    // close button HTML
+    var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
+
+    $spGlBlockBackground.spectrum({
+      color: 'transparent',
+      showAlpha: true,
+      // replacerClassName: 'spectrum-placeholder',
+      preferredFormat: "hex",
+      showPalette: false,
+      showInput: true,
+      showButtons: false,
+      beforeShow: function() {
+        Rexbuilder_Color_Palette.show({
+          $target: $spGlBlockBackground,
+          action: "background",
+          object: "block"
+        });
+      },
+      move: spBlockBackgroundOnMove,
+      hide: spBlockBackgroundOnHide
+    });
+
+    $spGlBlockOverlay.spectrum({
+      color: 'transparent',
+      showAlpha: true,
+      // replacerClassName: 'spectrum-placeholder',
+      preferredFormat: "hex",
+      showPalette: false,
+      showInput: true,
+      showButtons: false,
+      beforeShow: function() {
+        Rexbuilder_Color_Palette.show({
+          $target: $spGlBlockOverlay,
+          action: "background",
+          object: "block"
+        });
+      },
+      move: spBlockOverlayOnMove,
+      hide: spBlockOverlayOnHide
+    });
+
+    // create close button for background color
+    var $spBlockBkgrClose = $(close);
+    $spGlBlockBackground.spectrum('container').append($spBlockBkgrClose);
+
+    $spBlockBkgrClose.on('click', function(e) {
+      e.preventDefault();
+      $spGlBlockBackground.spectrum('hide');
+    });
+
+    // create close button for overlay color
+    var $spBlockOverlayClose = $(close);
+    $spGlBlockOverlay.spectrum('container').append($spBlockOverlayClose);
+
+    $spBlockOverlayClose.on('click', function(e) {
+      e.preventDefault();
+      $spGlBlockOverlay.spectrum('hide');
+    });
+  }
+
+  function spBlockBackgroundOnMove(color) {
+    settings.data_to_send.color = settings.data_to_send.active
+      ? color.toRgbString()
+      : "";
+
+    var event = jQuery.Event("rexlive:change_block_bg_color");
+    event.settings = settings;
+    Rexbuilder_Util.$document.trigger(event);
+  }
+  
+  function spBlockBackgroundOnHide(color) {}
+  function spBlockOverlayOnMove(color) {}
+  function spBlockOverlayOnHide(color) {}
+
   var _updateBlockBackgroundImageTool = function( $target, data ) {
     // var $tool_top = $target
     //   .parents('.grid-stack-item')
@@ -1456,7 +1546,8 @@ var Rexbuilder_Block_Editor = (function($) {
   var init = function() {
     block_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum';
     _attachEvents();
-    _setTools();
+    // _setTools();
+    _setGlobalPickers();
   };
 
   return {

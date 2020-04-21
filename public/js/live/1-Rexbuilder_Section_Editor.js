@@ -384,6 +384,7 @@ var Rexbuilder_Section_Editor = (function($) {
   /**
    * Setting the row live color pickers for the background
    * @since 2.0.0
+   * @deprecated 2.0.4
    */
   var _setRowColorBackgroundPicker = function() {
     $('input[name=edit-row-color-background]').each(function(i, el) {
@@ -394,6 +395,7 @@ var Rexbuilder_Section_Editor = (function($) {
   /**
    * Setting the row live color pickers for the overlay
    * @since 2.0.0
+   * @deprecated 2.0.4
    */
   var _setRowOverlayColorPicker = function() {
     $('input[name=edit-row-overlay-color]').each(function(i, el) {
@@ -405,6 +407,7 @@ var Rexbuilder_Section_Editor = (function($) {
    * Launching the spectrum color picker on an input element, for the row background color
    * @param {DOM element} el input element in which launch the color picker
    * @since 2.0.0
+   * @deprecated 2.0.4
    */
   var _launchSpectrumPickerBackgorundColorRow = function( el ) {
     var $picker = $(el);
@@ -535,6 +538,7 @@ var Rexbuilder_Section_Editor = (function($) {
    * Launching the spectrum color picker on an input element, for the row overlay color
    * @param {DOM element} el input element in which launch the color picker
    * @since 2.0.0
+   * @deprecated 2.0.4
    */
   var _launchSpectrumPickerOverlayColorRow = function( el ) {
     var $picker = $(el);
@@ -653,6 +657,7 @@ var Rexbuilder_Section_Editor = (function($) {
   /**
    * Setting the row tools that need some logic
    * @since 2.0.0
+   * @deprecated 2.0.4
    */
   var _setTools = function() {
     _setRowColorBackgroundPicker();
@@ -662,6 +667,7 @@ var Rexbuilder_Section_Editor = (function($) {
   /**
    * Launch the row tools
    * @param {jQuery element} $row new row
+   * @deprecated 2.0.4
    */
   var _updateRowTools = function( $row ) {
     $row.find('input[name=edit-row-color-background]').each(function(i,el) {
@@ -1374,9 +1380,9 @@ var Rexbuilder_Section_Editor = (function($) {
 
   return {
     init: init,
-    launchSpectrumPickerBackgorundColorRow: _launchSpectrumPickerBackgorundColorRow,
-    launchSpectrumPickerOverlayColorRow: _launchSpectrumPickerOverlayColorRow,
-    updateRowTools: _updateRowTools,
+    // launchSpectrumPickerBackgorundColorRow: _launchSpectrumPickerBackgorundColorRow,
+    // launchSpectrumPickerOverlayColorRow: _launchSpectrumPickerOverlayColorRow,
+    // updateRowTools: _updateRowTools,
     updateSectionDimensionTool: _updateSectionDimensionTool,
     updateSectionLayoutTool: _updateSectionLayoutTool,
     updateRowBackgroundImageTool: _updateRowBackgroundImageTool,

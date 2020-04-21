@@ -591,7 +591,7 @@ var Rexbuilder_Section = (function($) {
     Rexbuilder_Util.$rexContainer.sortable("refresh");
     
     // update the tools
-    Rexbuilder_Section_Editor.updateRowTools( $newSection );
+    // Rexbuilder_Section_Editor.updateRowTools( $newSection );
     Rexbuilder_Block_Editor.updateBlockToolsOnRow( $newSection );
     Rexbuilder_Live_Utilities.launchTooltips();
 
@@ -796,7 +796,7 @@ var Rexbuilder_Section = (function($) {
 
     Rexbuilder_Util.$rexContainer.sortable("refresh");
 
-    Rexbuilder_Section_Editor.updateRowTools( $newSection );
+    // Rexbuilder_Section_Editor.updateRowTools( $newSection );
     Rexbuilder_Live_Utilities.launchTooltips();
 
     var reverseData = {
@@ -926,7 +926,7 @@ var Rexbuilder_Section = (function($) {
 
     Rexbuilder_Util.$rexContainer.sortable("refresh");
 
-    Rexbuilder_Section_Editor.updateRowTools( $newSection );
+    // Rexbuilder_Section_Editor.updateRowTools( $newSection );
     Rexbuilder_Live_Utilities.launchTooltips();
 
     var reverseData = {

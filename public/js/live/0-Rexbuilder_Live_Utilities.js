@@ -52,7 +52,7 @@ var Rexbuilder_Live_Utilities = (function($) {
 
 	var _removeColorPicker = function($elem) {
 		$elem.find(".tool-button--spectrum").remove();
-		$elem.find("input.spectrum-input-element").spectrum("destroy");
+		// $elem.find("input.spectrum-input-element").spectrum("destroy");
 	};
 
 	var _removeTextEditor = function($elem) {
@@ -359,7 +359,7 @@ var Rexbuilder_Live_Utilities = (function($) {
 			videoOptions.typeVideo = "youtube";
 		}
 
-		Rexbuilder_Section_Editor.updateRowTools( $section );
+		// Rexbuilder_Section_Editor.updateRowTools( $section );
 		Rexbuilder_Section_Editor.updateSectionDimensionTool( $section, sectionDataObj );
 		Rexbuilder_Section_Editor.updateSectionLayoutTool( $section, sectionDataObj );
 
