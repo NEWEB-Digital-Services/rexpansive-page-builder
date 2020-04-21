@@ -486,12 +486,13 @@ var Rexbuilder_CreateBlocks = (function ($) {
     } else {
       $el = $elem;
       $textWrap = $el.find(".text-wrap");
-    }
+		}
+		
+		var $elData = $el.children('.rexbuilder-block-data');
 
-    $el.addClass("block-has-slider");
-    $el.find('.block-toolBox__editor-tools').find('.edit-block-content').addClass('tool-button--hide');
-    // $el.find('.block-toolBox__config-tools').find('.builder-edit-slider').addClass('tool-button--hide');
-    $el.children(".rexbuilder-block-data").attr("data-type", "rexslider");
+		$el.addClass('block-has-slider');
+		$el.find('.block-toolBox__editor-tools').find('.edit-block-content').addClass('tool-button--hide');
+		$elData.attr('data-type', 'rexslider');
 
 		var $sliderWrap = _createSliderWrap($textWrap, sliderData);
 

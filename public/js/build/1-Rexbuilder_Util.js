@@ -1916,7 +1916,7 @@ var Rexbuilder_Util = (function($) {
             } else {
               Rexbuilder_Photoswipe.removeElement($itemContent);
             }
-            $itemData.attr("data-photoswipe", targetProps["photoswipe"]);
+						$itemData.attr("data-photoswipe", targetProps["photoswipe"]);
           }
           break;
         case "linkurl":

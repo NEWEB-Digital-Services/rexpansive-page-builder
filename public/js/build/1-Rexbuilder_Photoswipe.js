@@ -375,16 +375,57 @@ var Rexbuilder_Photoswipe = (function($){
 		}
 	};
 
+	/**
+	 * Loops through all galleries and through all slider elements and moves slider
+	 * overlays inside photoswipe items, only if both are present
+	 * @param		{NodeList}	galleryElements
+	 * @returns {void}
+	 * @since		2.0.4
+	 */
+	function _fixSliderOverlay(galleryElements) {
+		var gallerySliderElements;
+		var tot_gallerySliderElements;
+
+		var gallerySliderPhotoswipeItem;
+		var gallerySliderOverlayElement;
+
+		var tot_galleryElements = galleryElements.length;
+		var i = 0;
+		var j = 0;
+
+		// Through all galleries (sections)
+		for (; i < tot_galleryElements; i++) {
+			gallerySliderElements = Array.prototype.slice.call(galleryElements[i].querySelectorAll('.rex-slider-element'));
+			tot_gallerySliderElements = gallerySliderElements.length;
+
+			// Through all RexSlider elements
+			for (j = 0; j < tot_gallerySliderElements; j++) {
+				gallerySliderPhotoswipeItem = gallerySliderElements[j].querySelector('.pswp-item');
+				gallerySliderOverlayElement = gallerySliderElements[j].querySelector('.slider-overlay');
+
+				if (gallerySliderPhotoswipeItem && gallerySliderOverlayElement) {
+					// Moves overlay element
+					gallerySliderPhotoswipeItem.appendChild(gallerySliderOverlayElement);
+				}
+			}
+		}
+	}
+
 	var _init = function(gallerySelector) {
 		gallerySelectorGlobal = gallerySelector;
 		
-		// loop through all gallery elements and bind events
 		var galleryElements = document.querySelectorAll(gallerySelector);
 
-		for (var i = 0, l = galleryElements.length; i < l; i++) {
-			galleryElements[i].setAttribute("data-pswp-uid", i + 1);
+		var tot_galleryElements = galleryElements.length;
+		var i = 0;
+
+		// loop through all gallery elements and bind events
+		for (; i < tot_galleryElements; i++) {
+			galleryElements[i].setAttribute('data-pswp-uid', i + 1);
 			galleryElements[i].onclick = onThumbnailsClick;
 		}
+
+		_fixSliderOverlay(galleryElements);
 
 		// Parse URL and open gallery if it contains #&pid=3&gid=1
 		var hashData = photoswipeParseHash();
