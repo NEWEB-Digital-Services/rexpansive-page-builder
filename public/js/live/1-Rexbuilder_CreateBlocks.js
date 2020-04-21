@@ -493,12 +493,22 @@ var Rexbuilder_CreateBlocks = (function ($) {
     // $el.find('.block-toolBox__config-tools').find('.builder-edit-slider').addClass('tool-button--hide');
     $el.children(".rexbuilder-block-data").attr("data-type", "rexslider");
 
-    var $sliderWrap = _createSliderWrap($textWrap, sliderData);
+		var $sliderWrap = _createSliderWrap($textWrap, sliderData);
+
+		var blockHasOverlay = 0 !== $textWrap.parents('.responsive-block-overlay').length;
+
+		if (blockHasOverlay) {
+			var overlayColor = $textWrap.parents('.responsive-block-overlay').css('background-color');
+		}
 
     for (var i = 0; i < slides.length; i++) {
       tmpl.arg = "slide";
 
-      var $slide = $(tmpl("tmpl-new-slider-element", {}));
+			var $slide = $(tmpl("tmpl-new-slider-element", {}));
+
+			if (blockHasOverlay) {
+				$slide.append('<div class="slider-overlay" style="background-color:' + overlayColor + '"></div>');
+			}
 
       if (slides[i].slide_image_url != "none") {
         $slide.css("background-image", "url(" + slides[i].slide_image_url + ")");
@@ -523,7 +533,6 @@ var Rexbuilder_CreateBlocks = (function ($) {
       }
 
       if (slides[i].slide_video_type != "") {
-
         tmpl.arg = "video";
         var $videoElement = $slide.children(".rex-slider-video-wrapper");
 

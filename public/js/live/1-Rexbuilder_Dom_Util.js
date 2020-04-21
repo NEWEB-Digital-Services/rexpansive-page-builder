@@ -548,8 +548,6 @@ var Rexbuilder_Dom_Util = (function($) {
     c_w = el.offsetWidth;
     c_h = el.offsetHeight;
 	
-		// console.log( el, {c_w, c_h, v_w, v_h}, $(el).parents('.rexpansive_section')[0].getBoundingClientRect() );
-    
     if ( ( v_w / v_h ) > ( c_w / c_h ) ) {
       maxWidth =  ( ( ( c_h * v_w ) / v_h ) * 100 ) / c_w;
       maxWidth = maxWidth + '%';

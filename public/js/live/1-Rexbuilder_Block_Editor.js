@@ -921,8 +921,6 @@ var Rexbuilder_Block_Editor = (function($) {
           ? JSON.parse( $elemData.attr("data-overlay_block_color_active") )
           : false;
 		}
-		
-		
 
     if (!overlayActive) {
       if (
@@ -955,8 +953,8 @@ var Rexbuilder_Block_Editor = (function($) {
           rexID: rex_block_id
         },
       }
-    };
-
+		};
+		
     $picker.spectrum({
       replacerClassName: block_picker_classes,
       preferredFormat: "hex",
