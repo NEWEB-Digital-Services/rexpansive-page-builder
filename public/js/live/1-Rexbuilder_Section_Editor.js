@@ -10,16 +10,6 @@ var Rexbuilder_Section_Editor = (function($) {
   // var $row_overlay_color_pickers = null;
   var row_picker_classes;
 
-  /**
-   * Caching some elements
-   * @since 2.0.0
-   * @deprecated  decide if useless
-   */
-  var _cache_elements = function() {
-    // $row_backgrond_color_pickers = $('input[name=edit-row-color-background]');
-    // $row_overlay_color_pickers = $('input[name=edit-row-overlay-color]');
-  };
-
   var _attachEvents = function() {
     /**
      * Event attached on change row dimension radio buttons
@@ -204,6 +194,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * @since 2.0.0
      */
     Rexbuilder_Util.$rexContainer.on('click', '.deactivate-row-color-background', function(e) {
+      e.stopPropagation()
 			var $btn = $(e.target);
       var $section = $(e.target).parents(".rexpansive_section");
       // var $section_data = $section.children('.section-data');
@@ -243,6 +234,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * De-selecting the overlay color on a background row
      */
     Rexbuilder_Util.$rexContainer.on('click', '.deactivate-row-overlay-color', function(e) {
+      e.stopPropagation()
 			var $section = $(e.target).parents(".rexpansive_section");
       var $section_data = $section.children('.section-data');
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -383,6 +375,10 @@ var Rexbuilder_Section_Editor = (function($) {
       };
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
+
+    // global spectrum logic -> click handlers on color tools
+    Rexbuilder_Util.$rexContainer.on("click", ".edit-row-color-background", handleSectionBackgroundColorTool);
+    Rexbuilder_Util.$rexContainer.on("click", ".edit-row-overlay-color", handleSectionOverlayColorTool);
   };
 
   /**
@@ -519,7 +515,8 @@ var Rexbuilder_Section_Editor = (function($) {
       // chooseText: ""
     });
 
-		var close = tmpl('tmpl-tool-close', {});
+		// var close = tmpl('tmpl-tool-close', {});
+    var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
 		
     var $close = $(close);
     $picker.spectrum('container').append($close);
@@ -640,7 +637,8 @@ var Rexbuilder_Section_Editor = (function($) {
       // chooseText: ""
     });
 
-    var close = tmpl('tmpl-tool-close', {});
+    // var close = tmpl('tmpl-tool-close', {});
+    var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close')
     var $close = $(close);
     $picker.spectrum('container').append($close);
 
@@ -673,6 +671,255 @@ var Rexbuilder_Section_Editor = (function($) {
       _launchSpectrumPickerOverlayColorRow(el);
     });
   };
+
+  /** GLOBAL SPECTRUM LOGIC */
+
+  var $spGlRowBackground;   // spectrum global row background
+  var $spGlRowOverlay;      // spectrum global row overlay
+
+  var $actualSection;             // actual edited section
+  var $actualSectionData;         // actual edited section data
+  var bgColorActive;              // is background color active on the actual edited section?
+  var overlayColorActive;         // is overlay color active on the actual edited section?
+
+  var backgroundColorEventSettings;   // setting object for the background color event
+  var overlayColorEventSettings;      // setting object for the overlay color event
+
+  function _setGlobalPickers() {
+    // setting globals
+    $spGlRowBackground = $(document.getElementById('global-spectrum-row-background'));
+    $spGlRowOverlay = $(document.getElementById('global-spectrum-row-overlay'));
+
+    $actualSection = null;
+    $actualSectionData = null;
+
+    backgroundColorEventSettings = {
+      data_to_send: {
+        color: null,
+        sectionTarget: {
+          sectionID: '',
+          modelNumber: ''
+        }
+      },
+    };
+
+    overlayColorEventSettings = {
+      data_to_send: {
+        color: null,
+        active: false,
+        sectionTarget: {
+          sectionID: '',
+          modelNumber: ''
+        }
+      }
+    };
+
+    // close button HTML
+    var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
+
+    // launch spectrum for row background
+    $spGlRowBackground.spectrum({
+      color: 'transparent',
+      showAlpha: true,
+      replacerClassName: 'spectrum-placeholder',
+      preferredFormat: "hex",
+      showPalette: false,
+      showInput: true,
+      showButtons: false,
+      beforeShow: function() {
+        Rexbuilder_Color_Palette.show({
+          $target: $spGlRowBackground,
+          object: "section",
+          action: "background"
+        });
+      },
+      move: spRowBackgroundOnMove,
+      hide: spRowBackgroundOnHide
+    });
+
+    // launch spectrum for row overlay
+    $spGlRowOverlay.spectrum({
+      color: 'transparent',
+      showAlpha: true,
+      replacerClassName: 'spectrum-placeholder',
+      preferredFormat: "hex",
+      showPalette: false,
+      showInput: true,
+      showButtons: false,
+      beforeShow: function() {
+        Rexbuilder_Overlay_Palette.show({
+          $target: $spGlRowOverlay,
+          object: "section",
+          action: "overlay"
+        });
+      },
+      move: spRowOverlayOnMove,
+      hide: spRowOverlayOnHide
+    });
+
+    // create close button for background color
+    var $spRowBkgrClose = $(close);
+    $spGlRowBackground.spectrum('container').append($spRowBkgrClose);
+
+    $spRowBkgrClose.on('click', function(e) {
+      e.preventDefault();
+      $spGlRowBackground.spectrum('hide');
+    });
+
+    // create close button for overlay color
+    var $spRowOverlayClose = $(close);
+    $spGlRowOverlay.spectrum('container').append($spRowOverlayClose);
+
+    $spRowOverlayClose.on('click', function(e) {
+      e.preventDefault();
+      $spGlRowOverlay.spectrum('hide');
+    });
+  }
+
+  // spectrum handlers
+  function spRowBackgroundOnMove(color) {
+    backgroundColorEventSettings.data_to_send.color = bgColorActive
+      ? color.toRgbString()
+      : "";
+    
+    var event = jQuery.Event("rexlive:change_section_bg_color");
+    event.settings = backgroundColorEventSettings;
+    Rexbuilder_Util.$document.trigger(event);
+  }
+
+  function spRowBackgroundOnHide(color) {
+    // send data to row
+    var colorActive = color.toRgbString();
+
+    backgroundColorEventSettings.data_to_send.color = ( bgColorActive ? colorActive : "" );
+    backgroundColorEventSettings.data_to_send.active = bgColorActive;
+
+    var event = jQuery.Event("rexlive:apply_background_color_section");
+    event.settings = backgroundColorEventSettings;
+    Rexbuilder_Util.$document.trigger(event);
+
+    // Synch Top Toolbar
+    var data = {
+      eventName: "rexlive:updateTopToolbar",
+      updateInfo: {
+        color_bg_section: colorActive,
+        color_bg_section_active: bgColorActive
+      }
+    };
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
+    // hide section tools
+    // Rexbuilder_Color_Palette.hide();
+    Rexbuilder_Live_Utilities.hideAllTools();
+
+    $spGlRowOverlay.spectrum('set','transparent');
+    // clear global vars
+
+    $actualSection = null;
+    $actualSectionData = null;
+  }
+
+  function spRowOverlayOnMove(color) {
+    overlayColorEventSettings.data_to_send.active = true;
+    overlayColorEventSettings.data_to_send.color = color.toRgbString();
+    if( overlayColorActive ) {
+      var event = jQuery.Event("rexlive:change_section_overlay_color");
+    } else {
+      var event = jQuery.Event("rexlive:change_section_overlay");
+    }
+    event.settings = overlayColorEventSettings;
+    Rexbuilder_Util.$document.trigger(event);
+  }
+
+  function spRowOverlayOnHide(color) {
+    overlayColorEventSettings.data_to_send.color = color.toRgbString();
+    overlayColorEventSettings.data_to_send.active = true;
+
+    var event = jQuery.Event("rexlive:change_section_overlay");
+    event.settings = overlayColorEventSettings;
+    Rexbuilder_Util.$document.trigger(event);
+
+    // Synch Top Toolbar
+    var data = {
+      eventName: "rexlive:updateTopToolbar",
+      updateInfo: {
+        row_overlay_color: overlayColorEventSettings.data_to_send.color,
+        row_overlay_active: true
+      }
+    };
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
+    // Rexbuilder_Color_Palette.hide();
+    Rexbuilder_Live_Utilities.hideAllTools();
+
+    $spGlRowBackground.spectrum('set','transparent');
+    // clear global vars
+
+    $actualSection = null;
+    $actualSectionData = null;
+  }
+
+  // section tools color handlers
+  function handleSectionBackgroundColorTool(ev) {
+    ev.preventDefault()
+
+    // set some globals to prevent useless element search
+    $actualSection = $(ev.currentTarget).parents(".rexpansive_section");
+    $actualSectionData = $actualSection.children('.section-data');
+    backgroundColorEventSettings.data_to_send.sectionTarget.sectionID = $actualSection.attr("data-rexlive-section-id");
+    backgroundColorEventSettings.data_to_send.sectionTarget.modelNumber =
+      typeof $actualSection.attr("data-rexlive-model-number") != "undefined"
+        ? $actualSection.attr("data-rexlive-model-number")
+        : "";
+
+    // retrieving actual color background, if any
+    bgColorActive = ( 'undefined' !== typeof $actualSectionData.attr('data-color_bg_section_active') ? $actualSectionData.attr('data-color_bg_section_active') : 'true' );
+    var colorActive = $actualSectionData.attr('data-color_bg_section');
+
+    // maintain tools visible
+    $actualSection.addClass('activeRowTools');
+    $(ev.currentTarget).parents('.tool-button-floating').addClass('tool-button-floating--active');
+
+    $spGlRowBackground.spectrum('set',colorActive);
+
+    $spGlRowBackground.spectrum('show');
+    $spGlRowBackground.spectrum('container').css('top', ev.pageY + 'px');
+    $spGlRowBackground.spectrum('container').css('left', ev.pageX + 'px');
+    _fixPickerContainerPosition( $spGlRowBackground );
+
+    return false;
+  }
+
+  function handleSectionOverlayColorTool(ev) {
+    ev.preventDefault()
+
+    // set some globals to prevent useless element search
+
+    $actualSection = $(ev.currentTarget).parents(".rexpansive_section");
+    $actualSectionData = $actualSection.children('.section-data');
+    overlayColorEventSettings.data_to_send.sectionTarget.sectionID = $actualSection.attr("data-rexlive-section-id");
+    overlayColorEventSettings.data_to_send.sectionTarget.modelNumber =
+      typeof $actualSection.attr("data-rexlive-model-number") != "undefined"
+        ? $actualSection.attr("data-rexlive-model-number")
+        : "";
+
+    overlayColorActive = JSON.parse( ( 'undefined' !== typeof $actualSectionData.attr('data-row_overlay_active') ? $actualSectionData.attr('data-row_overlay_active') : false ) );
+    var overlayValue = $actualSectionData.attr('data-row_overlay_color');
+
+    // maintain tools visible
+    $actualSection.addClass('activeRowTools');
+    $(ev.currentTarget).parents('.tool-button-floating').addClass('tool-button-floating--active');
+
+    // retrieving actual color background, if any
+    $spGlRowOverlay.spectrum('set',overlayValue);
+
+    $spGlRowOverlay.spectrum('show');
+    $spGlRowOverlay.spectrum('container').css('top', ev.pageY + 'px');
+    $spGlRowOverlay.spectrum('container').css('left', ev.pageX + 'px');
+    _fixPickerContainerPosition( $spGlRowOverlay );
+
+    return false;
+  }
 
   /**
    * Setting section dimension tools
@@ -770,15 +1017,15 @@ var Rexbuilder_Section_Editor = (function($) {
   var _updateRowBackgroundColorTool = function( $target, color ) {
     var $picker_fast = $target
       .find('.row-toolBox__fast-configuration')
-      .find('input[name=edit-row-color-background]');
+      .find('.edit-row-color-background');
     var $picker_standard = $target
       .find('.row-toolBox__standard-configuration')
-      .find('input[name=edit-row-color-background]');
+      .find('.edit-row-color-background');
 
     if( "" != color ) {
-      $picker_fast
-        .val(color)
-        .spectrum('set',color);
+      // $picker_fast
+      //   .val(color)
+      //   .spectrum('set',color);
       $picker_fast
         .parent()
         .addClass('tool-button--picker-preview')
@@ -788,8 +1035,8 @@ var Rexbuilder_Section_Editor = (function($) {
         .css('background-color',color);
 
       $picker_standard
-        .val(color)
-        .spectrum('set',color)
+        // .val(color)
+        // .spectrum('set',color)
         .parent()
         .addClass('tool-button--hide');
     } else {
@@ -810,15 +1057,15 @@ var Rexbuilder_Section_Editor = (function($) {
   var _updateRowBackgroundGradientTool = function( $target, color ) {
     var $picker_fast = $target
       .find('.row-toolBox__fast-configuration')
-      .find('input[name=edit-row-color-background]');
+      .find('.edit-row-color-background');
     var $picker_standard = $target
       .find('.row-toolBox__standard-configuration')
-      .find('input[name=edit-row-color-background]');
+      .find('.edit-row-color-background');
 
     if( "" != color ) {
-      $picker_fast
-        .val(color)
-        .spectrum('set',color);
+      // $picker_fast
+      //   .val(color)
+      //   .spectrum('set',color);
       $picker_fast
         .parent()
         .addClass('tool-button--picker-preview')
@@ -828,8 +1075,8 @@ var Rexbuilder_Section_Editor = (function($) {
         .css('background',color);
 
       $picker_standard
-        .val(color)
-        .spectrum('set',color)
+        // .val(color)
+        // .spectrum('set',color)
         .parent()
         .addClass('tool-button--hide');
     } else {
@@ -849,11 +1096,11 @@ var Rexbuilder_Section_Editor = (function($) {
    */
   var _updateRowBackgroundColorToolLive = function( $target, color ) {
     var $picker = $target
-      .find('input[name=edit-row-color-background]');
+      .find('.edit-row-color-background');
     // Set live picker
-    $picker
-      .val(color)
-      .spectrum('set',color);
+    // $picker
+    //   .val(color)
+    //   .spectrum('set',color);
     $picker
       .parent()
       .addClass('tool-button--picker-preview')
@@ -871,15 +1118,15 @@ var Rexbuilder_Section_Editor = (function($) {
   var _updateRowOverlayColorTool = function( $target, overlay_data ) {
     var $picker_fast = $target
       .find('.row-toolBox__fast-configuration')
-      .find('input[name=edit-row-overlay-color]');
+      .find('.edit-row-overlay-color');
     var $picker_standard = $target
       .find('.row-toolBox__standard-configuration')
-      .find('input[name=edit-row-overlay-color]');
+      .find('.edit-row-overlay-color');
 
     if( overlay_data.active.toString() == "true" ) {
-      $picker_fast
-        .val(overlay_data.color)
-        .spectrum("set",overlay_data.color)
+      // $picker_fast
+      //   .val(overlay_data.color)
+      //   .spectrum("set",overlay_data.color)
 
       $picker_fast
         .parent()
@@ -890,8 +1137,8 @@ var Rexbuilder_Section_Editor = (function($) {
         .css('background-color',overlay_data.color);
 
       $picker_standard
-        .val(overlay_data.color)
-        .spectrum('set',overlay_data.color)
+        // .val(overlay_data.color)
+        // .spectrum('set',overlay_data.color)
         .parent()
         .addClass('tool-button--hide');
     } else {
@@ -912,15 +1159,15 @@ var Rexbuilder_Section_Editor = (function($) {
   var _updateRowOverlayGradientTool = function( $target, overlay_data ) {
     var $picker_fast = $target
       .find('.row-toolBox__fast-configuration')
-      .find('input[name=edit-row-overlay-color]');
+      .find('.edit-row-overlay-color');
     var $picker_standard = $target
       .find('.row-toolBox__standard-configuration')
-      .find('input[name=edit-row-overlay-color]');
+      .find('.edit-row-overlay-color');
 
     if( overlay_data.active.toString() == "true" ) {
-      $picker_fast
-        .val(overlay_data.color)
-        .spectrum("set",overlay_data.color)
+      // $picker_fast
+      //   .val(overlay_data.color)
+      //   .spectrum("set",overlay_data.color)
 
       $picker_fast
         .parent()
@@ -931,8 +1178,8 @@ var Rexbuilder_Section_Editor = (function($) {
         .css('background',overlay_data.color);
 
       $picker_standard
-        .val(overlay_data.color)
-        .spectrum('set',overlay_data.color)
+        // .val(overlay_data.color)
+        // .spectrum('set',overlay_data.color)
         .parent()
         .addClass('tool-button--hide');
     } else {
@@ -947,11 +1194,11 @@ var Rexbuilder_Section_Editor = (function($) {
 
   var _updateRowOverlayColorToolLive = function( $target, color ) {
     var $picker = $target
-      .find('input[name=edit-row-overlay-color]');
+      .find('.edit-row-overlay-color');
 
-    $picker
-      .val(color)
-      .spectrum("set",color)
+    // $picker
+    //   .val(color)
+    //   .spectrum("set",color)
     
     $picker
       .parent()
@@ -1041,14 +1288,14 @@ var Rexbuilder_Section_Editor = (function($) {
    */
   var _listenRowDataChange = function() {
     // Select the data nodes to observe
-    Rexbuilder_Section_Editor.dataNodes = document.getElementsByClassName('section-data');
+    Rexbuilder_Section_Editor.dataNodes = Array.prototype.slice.call( document.getElementsByClassName('section-data') );
 
     // Callback
     var callback = function(mutationsList, observer) {
       if( ( "false" == mutationsList[0].target.getAttribute("data-color_bg_section_active") || "" == mutationsList[0].target.getAttribute("data-color_bg_section") ) && ( "false" == mutationsList[0].target.getAttribute('data-image_bg_section_active') || "" == mutationsList[0].target.getAttribute("data-id_image_bg_section") ) && ( "false" == mutationsList[0].target.getAttribute("data-row_overlay_active") || "" == mutationsList[0].target.getAttribute("data-row_overlay_color") ) && "" == mutationsList[0].target.getAttribute("data-video_bg_url_section") && "" == mutationsList[0].target.getAttribute("data-video_bg_id_section") && "" == mutationsList[0].target.getAttribute("data-video_bg_url_vimeo_section") ) {
-        $(mutationsList[0].target.parentNode).addClass('rowTools__hide-fast-data');
+        Rexbuilder_Util.addClass( mutationsList[0].target.parentNode, 'rowTools__hide-fast-data' );
       } else {
-        $(mutationsList[0].target.parentNode).removeClass('rowTools__hide-fast-data');
+        Rexbuilder_Util.removeClass( mutationsList[0].target.parentNode, 'rowTools__hide-fast-data' );
       }
     };
 
@@ -1108,7 +1355,6 @@ var Rexbuilder_Section_Editor = (function($) {
    * Initing the row toolbar
    */
   var init = function() {
-    // _cache_elements();
     this.dataObserver = null;
     this.dataNodes = null;
     // Config the observer
@@ -1121,7 +1367,8 @@ var Rexbuilder_Section_Editor = (function($) {
 
     row_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum';
     _attachEvents();
-    _setTools();
+    // _setTools();
+    _setGlobalPickers();
 		_listenRowDataChange();
   };
 

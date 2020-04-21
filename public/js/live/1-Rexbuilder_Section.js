@@ -1578,7 +1578,7 @@ var Rexbuilder_Section = (function($) {
       new_row_defaults.rexID = sectionID;
       var string = Rexbuilder_Live_Templates.getTemplate('tmpl-toolbox-section', new_row_defaults);
 
-      $(section).prepend(string);
+      $(section).find('.section-data').after(string);
     }
   }
 	

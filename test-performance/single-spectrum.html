@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>SINGLE SPECTRUMZS</title>
+	<link rel="stylesheet" href="../public/css/spectrum.css">
+	<style>
+		.spectrum-placeholder {
+			display: none;
+		}
+		.stool {
+			display: block;
+			width: 30px;
+			height: 30px;
+			border-radius: 50%;
+			border: 1px dotted grey;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<input type="hidden" id="spectrum-placeholder">
+	</div>
+	<div>
+		<div class="stool" data-color-value="#3533cc" style="background-color:#3533cc"></div>
+		<div class="stool" data-color-value="#ab781b" style="background-color:#ab781b"></div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="../public/js/vendor/spectrum.js"></script>
+	<script>
+;(function($){
+	var $spectrumPlaceholder;
+	var globalPicker;
+
+	function spectrumOnHide(color) {
+		globalPicker = null;
+	}
+
+	function spectrumOnMove(color) {
+		if ( null == globalPicker ) return;
+		
+		globalPicker.style.backgroundColor = color.toRgbString();
+		globalPicker.setAttribute('data-color-value', color.toRgbString());
+	}
+
+	function handleDOMContentLoaded() {
+		globalPicker = null;
+
+		$spectrumPlaceholder = $('#spectrum-placeholder');
+		$spectrumPlaceholder.spectrum({
+			color: 'transparent',
+			showAlpha: true,
+			replacerClassName: 'spectrum-placeholder',
+			preferredFormat: "hex",
+			showPalette: false,
+			showInput: true,
+			showButtons: false,
+			hide: spectrumOnHide,
+			move: spectrumOnMove
+		});
+
+		$(document).on('click', '.stool', handleStoolClick);
+	}
+
+	function handleStoolClick(ev) {
+		ev.preventDefault();
+
+		globalPicker = ev.currentTarget;
+
+		var c = ev.currentTarget.getAttribute('data-color-value');
+		$spectrumPlaceholder.spectrum('set',c);
+		$spectrumPlaceholder.spectrum('show');
+		$spectrumPlaceholder.spectrum('container').css('top', ev.pageY + 'px');
+		$spectrumPlaceholder.spectrum('container').css('left', ev.pageX + 'px');
+		return false;
+	}
+
+	document.addEventListener('DOMContentLoaded', handleDOMContentLoaded);
+}(jQuery));
+	</script>
+</body>
+</html>

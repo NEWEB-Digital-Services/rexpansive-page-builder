@@ -240,10 +240,9 @@
 .tool-button--opacity-preview {
   .tool-button {
     &.tool-button--color {
-  
-      &.sp-replacer {
+      // &.sp-replacer {
         opacity: 0.5;
-      }
+      // }
     }
   }
 }

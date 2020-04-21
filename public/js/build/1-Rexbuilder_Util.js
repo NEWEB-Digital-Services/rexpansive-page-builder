@@ -2135,12 +2135,10 @@ var Rexbuilder_Util = (function($) {
    * @return {[type]}                           [description]
    */
   var _updateDOMelements = function( $section, targets, forceCollapseElementsGrid, meIndex ) {
-    console.group('_updateDOMelements')
-
     var $gallery = $section.find(".grid-stack-row");
     var galleryData = $gallery.data();
     var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
-    var gridstackInstance = galleryEditorInstance.properties.gridstackInstance;
+    var gridstackInstance;
 
     if( targets[0].props.gridEdited ) {
       $gallery.attr("data-rexlive-layout-changed", true);

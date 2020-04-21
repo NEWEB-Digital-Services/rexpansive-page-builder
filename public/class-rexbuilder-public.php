@@ -1543,6 +1543,7 @@ class Rexbuilder_Public
 				</div>
 			</div>
 			<?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-loader.php"; ?>
+			<?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-color-pickers.php"; ?>
 			<?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-color-palette.php"; ?>
 			<?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-overlay-palette.php"; ?>
 		<?php

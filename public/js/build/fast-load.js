@@ -344,8 +344,6 @@
    * 
    */
   var handleIntersectionObserverSmart = function() {
-		console.log( 'ci sono' );
-		
     if ('0' === _plugin_frontend_settings.fast_load ) {
       return;
     }
