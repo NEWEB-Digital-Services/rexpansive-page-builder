@@ -424,13 +424,15 @@
    * On Blur event on medium editor, check if there is text
    * @since 2.0.0
    * @version 2.0.4   moved outisde the class object
+   * @deprecated 2.0.4
    */
   function handleBlur(e) {
     var $current_textWrap = $(e.currentTarget);
     var $top_tools = $current_textWrap.parents('.grid-stack-item').find('.block-toolBox__editor-tools');
     var $T_tool = $top_tools.find('.edit-block-content');
     var $content_position_tool = $top_tools.find('.edit-block-content-position');
-    if( 0 == calculateTextWrapHeightNew($current_textWrap) ) {
+    var temp = calculateTextWrapHeightNew($current_textWrap);
+    if( 0 == temp ) {
       $T_tool.removeClass('tool-button--hide');
       $content_position_tool.addClass('tool-button--hide');
     } else {
@@ -464,6 +466,7 @@
       Rexbuilder_Util_Editor.editedTextWrap = $textWrap;
       Rexbuilder_Util_Editor.editingGallery = true;
       Rexbuilder_Util_Editor.editedGallery = this;
+
       if ( !$textWrap.is(":focus") ) {
         var caretPosition;
         if (hasClass(e.currentTarget,"rex-flex-top")) {
@@ -643,7 +646,7 @@
       // add the click listener to the row, it's useless on the single element
       this.$element.on('click', '.perfect-grid-item', handleClick);
       // add the blur listener to the row, it's useless on the single element
-      this.$element.on('blur','.medium-editor-element', handleBlur);
+      // this.$element.on('blur','.medium-editor-element', handleBlur.bind(this));
 
       this._updateElementsSizeViewers();
       this._linkResizeEvents();
@@ -1733,7 +1736,7 @@
       // $newEl.append(tmpl("tmpl-toolbox-block-wrap",tools_info));
       $newEl.append(Rexbuilder_Live_Templates.getTemplate( "tmpl-toolbox-block-wrap",tools_info ) );
 
-      $newEl.find(".grid-item-content").prepend('<div class="rexlive-block-drag-handle"></div>');
+      // $newEl.find(".grid-item-content").prepend('<div class="rexlive-block-drag-handle"></div>');
 
       var newEl = $newEl[0];
 

@@ -3813,13 +3813,15 @@ var TextEditor = (function ($) {
     // });
   };
 
+  /**
+   * Add handlers to text editor events
+   * @since  2.0.0
+   * @version  2.0.4  Listen on focus and blur events, to handling the
+   *                   draggability of the parent grid
+   */
   var _addEditableInputEvents = function () {
-    editorInstance.subscribe("editableInput", function (e, elem) {
+    editorInstance.subscribe("editableInput", function (event, elem) {
       var $elem = $(elem).parents(".grid-stack-item");
-      // var galleryInstance = $elem.parent().data()
-      //   .plugin_perfectGridGalleryEditor;
-      // galleryInstance.fixElementTextSize($elem[0], null, null);
-
       var data = {
         eventName: "rexlive:edited",
         modelEdited: $elem
@@ -3828,7 +3830,71 @@ var TextEditor = (function ($) {
       };
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
+
+    /**
+     * On text editor focus, disable the drag of the blocks
+     * @param  {Event} event focus event
+     * @param  {Node} elem    html element of the text editor
+     * @return {void}
+     * @since  2.0.4
+     */
+    editorInstance.subscribe("focus", function (event, elem) {
+      console.log('focus elemento')
+      var pgge = $(elem).parents('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
+      if ( ! pgge ) return;
+
+      // disable dragging on gristack
+      pgge.properties.gridstackInstance.enableMove(false);
+    });
+
+    /**
+     * On text editor blur, enable the drag of the blocks
+     * @param  {Event} event blur event
+     * @param  {Node} elem    html element of the text editor
+     * @return {void}
+     * @since  2.0.4
+     */
+    editorInstance.subscribe("blur", function (event, elem) {
+      // view or hide the little T icon
+      var $current_textWrap = $(elem);
+      var $top_tools = $current_textWrap.parents('.grid-stack-item').find('.block-toolBox__editor-tools');
+      var $T_tool = $top_tools.find('.edit-block-content');
+      var $content_position_tool = $top_tools.find('.edit-block-content-position');
+
+      if ( textContentEmpty( elem ) ) {
+        $T_tool.removeClass('tool-button--hide');
+        $content_position_tool.addClass('tool-button--hide');
+      } else {
+        $T_tool.addClass('tool-button--hide');
+        $content_position_tool.removeClass('tool-button--hide');
+      }
+
+      // get perfect grid gallery instance
+      var pgge = $current_textWrap.parents('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
+      if ( ! pgge ) return;
+
+      // enable dragging on gristack
+      pgge.properties.gridstackInstance.enableMove(true);
+    });
   };
+
+  /**
+   * Check if a text wrap is empty
+   * 
+   * @param  {Element} elem text element
+   * @return {Boolean}      is empty or not
+   * @since  2.0.4
+   */
+  function textContentEmpty( elem ) {
+    if ( 0 === elem.childElementCount ) return true;
+    if ( '' === elem.textContent.trim() && 1 === elem.childElementCount && elem.querySelector('.text-editor-span-fix') ) return true;
+
+    var totImgs = Array.prototype.slice.call( elem.getElementsByTagName('img') ).length;
+    var totSvgs = Array.prototype.slice.call( elem.getElementsByTagName('svg') ).length;
+    var totIframes = Array.prototype.slice.call( elem.getElementsByTagName('iframe') ).length;
+
+    return ( 0 === ( totImgs + totSvgs + totIframes ) && '' === elem.textContent.trim() );
+  }
 
   var _createToolbarContainer = function () {
     var id = "textEditorToolbar";

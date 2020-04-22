@@ -391,9 +391,9 @@ var Rexbuilder_Block_Editor = (function($) {
       var $elem = $btn.parents(".grid-stack-item");
       
       var event = jQuery.Event("dblclick");
-      event.target = $elem.find(".rexlive-block-drag-handle");
+      event.target = $elem.get(0);
       event.offsetY = 0;
-      $elem.trigger(event);
+      $elem.parents('.perfect-grid-gallery').trigger(event);
     });
 
     /**
@@ -1135,6 +1135,7 @@ var Rexbuilder_Block_Editor = (function($) {
 	 * @returns		{void}
    * @since			2.0.0
 	 * @version		2.0.4		Transformed into vanilla js
+   * @deprecated 2.0.4 
    */
   function _setBlockOverlayColorPicker() {
   	var inputs = Array.prototype.slice.call(document.querySelectorAll('input[name=edit-block-overlay-color]'));
@@ -1768,10 +1769,10 @@ var Rexbuilder_Block_Editor = (function($) {
 
   return {
     init: init,
-    launchSpectrumPickerBackgorundColorBlock: _launchSpectrumPickerBackgorundColorBlock,
-    launchSpectrumPickerOverlayColorBlock: _launchSpectrumPickerOverlayColorBlock,
-    updateBlockToolsOnRow: _updateBlockToolsOnRow,
-    updateBlockTools: _updateBlockTools,
+    // launchSpectrumPickerBackgorundColorBlock: _launchSpectrumPickerBackgorundColorBlock,
+    // launchSpectrumPickerOverlayColorBlock: _launchSpectrumPickerOverlayColorBlock,
+    // updateBlockToolsOnRow: _updateBlockToolsOnRow,
+    // updateBlockTools: _updateBlockTools,
     updateBlockBackgroundImageTool: _updateBlockBackgroundImageTool,
     updateBlockImagePositionTool: _updateBlockImagePositionTool,
     updateBlockBackgroundColorToolLive: _updateBlockBackgroundColorToolLive,

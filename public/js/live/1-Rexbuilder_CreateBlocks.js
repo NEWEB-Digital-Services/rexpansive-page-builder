@@ -81,9 +81,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
     Rexbuilder_Live_Utilities.launchTooltips();
 
     var event = jQuery.Event("dblclick");
-    event.target = $el.find(".rexlive-block-drag-handle");
+    // event.target = $el.find(".rexlive-block-drag-handle");
+    event.target = el;
     event.offsetY = 0;
-    $el.trigger(event);
+    galleryInstance.$element.trigger(event);
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -140,9 +141,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
     // Rexbuilder_Block_Editor.updateBlockTools($el);
     Rexbuilder_Live_Utilities.launchTooltips();
     var event = jQuery.Event("dblclick");
-    event.target = $el.find(".rexlive-block-drag-handle");
+    // event.target = $el.find(".rexlive-block-drag-handle");
+    event.target = el;
     event.offsetY = 0;
-    $el.trigger(event);
+    galleryInstance.$element.trigger(event);
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);

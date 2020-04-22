@@ -2212,7 +2212,7 @@ var Rexbuilder_Util = (function($) {
 						targetProps: targetProps,
 						$itemData: $itemData,
 						$itemContent: $itemContent,
-						gridstackInstance: gridstackInstance,
+						gridstackInstance: ( Rexbuilder_Util.editorMode ? galleryEditorInstance.properties.gridstackInstance : null ),
 						positionAndSize: true
 					};
 
@@ -2285,7 +2285,10 @@ var Rexbuilder_Util = (function($) {
 		
     // must use this launcher
     if ( galleryEditorInstance.properties.gridstackInstance ) {
-      galleryEditorInstance.properties.gridstackInstance.commit();
+      // usefull??
+      setTimeout(function() {
+        galleryEditorInstance.properties.gridstackInstance.commit();
+      },0);
     }
 
     // row ready
