@@ -215,11 +215,12 @@ class Rexbuilder_Public
 
 			$fast_load = ( isset( $this->plugin_options['fast_load'] ) ? $this->plugin_options['fast_load'] : 0 );
 
-			wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
 			if( Rexbuilder_Utilities::isBuilderLive() ) {
+				wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
+				
 				//include media libray
 				wp_enqueue_media();
-				
+
 				// TIPPY
 				wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tippy.all.min.js', array( 'jquery' ), null, true );
 	
@@ -254,6 +255,12 @@ class Rexbuilder_Public
 			}
 			else
 			{
+				$vimeo_necessary = $this->check_vimeo_video_in_page();
+
+				if ($vimeo_necessary) {
+					wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
+				}
+
 				wp_enqueue_script('0-Rexbuilder_Array_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Array_Utilities.js', array('jquery'), $ver, true);
 				wp_enqueue_script('intersection-observer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/intersection-observer.js', array(), $ver, true);
 			}
@@ -409,15 +416,21 @@ class Rexbuilder_Public
 			$customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
 			$fast_load = ( isset( $this->plugin_options['fast_load'] ) ? $this->plugin_options['fast_load'] : 0 );
 			
-			wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
-
 			if( Rexbuilder_Utilities::isBuilderLive() ) {
+				wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
+
 				if ( false !== strpos( $customEffects, 'rex-indicator__placeholder' ) ) {
 					wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
 				}
 				wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-editor.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
 
 			} else {
+				$vimeo_necessary = $this->check_vimeo_video_in_page();
+
+				if ($vimeo_necessary) {
+					wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
+				}
+
 				if ( false !== strpos( $customEffects, 'rex-effect' ) ) {
 					wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . 'public/js/vendor/pixi.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
 					wp_enqueue_script('effect', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexEffect.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
@@ -508,6 +521,57 @@ class Rexbuilder_Public
 			),
 			'old_builder' => Rexbuilder_Utilities::postSavedFromBackend()
 		);
+	}
+
+	/**
+	 * Checking saved data of the page to know if a Vimeo video is present.
+	 * @return	Boolean    Is there a Vimeo video in page?
+	 * @since		2.0.4
+	 */
+	private function check_vimeo_video_in_page()
+	{
+		global $post;
+		$customizations_array = array();
+		$customizations_names = get_post_meta($post->ID, '_rex_responsive_layouts_names', true);
+
+		if (!empty($customizations_names)) {
+			foreach ($customizations_names as $name) {
+				$customization = array();
+				$customization["name"] = $name;
+				$customizationSectionsJSON = get_post_meta($post->ID, '_rex_customization_' . $name, true);
+				$sectionsDecoded = json_decode($customizationSectionsJSON, true);
+				$customization["sections"] = $sectionsDecoded;
+				array_push($customizations_array, $customization);
+			}
+		}
+
+		$vimeo_necessary = false;
+
+		foreach ( $customizations_array as $customization ) {
+			$sections = $customization["sections"];
+
+			foreach($sections as $section_targets){
+				$targets = $section_targets["targets"];
+
+				foreach($targets as $target){
+					$target_props = $target["props"];
+					$target_name = $target["name"];
+
+					if($target_props["video_bg_url_vimeo_section"] != ""){
+						$vimeo_necessary = true;
+						break;
+					}
+	
+					if($target_props["video_bg_url_vimeo"] != ""){
+						$vimeo_necessary = true;
+						break;
+					}
+
+				}
+			}
+		}
+
+		return $vimeo_necessary;
 	}
 
 	/**

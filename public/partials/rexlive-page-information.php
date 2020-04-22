@@ -150,7 +150,7 @@ if ($sectionsIDsUsed == null) {
     if (!$flag_page_customization) {
         echo ' data-empty-customizations="true">';
     } else {?>>
-        <?php
+				<?php
         foreach ( $customizations_array as $customization ) {
             $customization_name = $customization['name'];
             echo '<div class="customization-wrap" data-customization-name="'.$customization_name.'">';
