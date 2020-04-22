@@ -28,6 +28,7 @@
 	}
 
 	function handleResize() {
+		Rexbuilder_Util.globalViewport = Rexbuilder_Util.viewport();
 		if (Rexbuilder_Util.editorMode) {
 			Rexbuilder_App.handleLiveResize();
 		} else {

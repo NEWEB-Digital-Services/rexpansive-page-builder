@@ -1439,7 +1439,7 @@ var Rexbuilder_App = (function($) {
 	 * @since		2.0.4
    */
   function handleLiveResize() {
-		Rexbuilder_Util.globalViewport = Rexbuilder_Util.viewport();
+		// Rexbuilder_Util.globalViewport = Rexbuilder_Util.viewport();
 
 		if (!Rexbuilder_Util_Editor.elementIsResizing) {
 			Rexbuilder_Util.windowIsResizing = true;

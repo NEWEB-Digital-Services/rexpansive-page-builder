@@ -1224,7 +1224,8 @@ var TextEditor = (function ($) {
       this.rexbuttonTools.contentEditable = false;
       this.rexbuttonTools.classList.add("rexbutton-tools");
       this.rexbuttonTools.style.display = "none";
-      this.rexbuttonTools.innerHTML = tmpl("tmpl-rexbutton-tools", {});
+      // this.rexbuttonTools.innerHTML = tmpl("tmpl-rexbutton-tools", {});
+      this.rexbuttonTools.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-rexbutton-tools");
       $(document.getElementsByTagName("body")[0]).append(this.rexbuttonTools);
 
       this.deleteRexbuttonBtn = $(this.rexbuttonTools).find(".rex-delete-button")[0];
@@ -1659,14 +1660,16 @@ var TextEditor = (function ($) {
       this.imageEditToolbar.id = "me-edit-inline-image-toolbar";
       this.imageEditToolbar.classList.add("medium-editor-toolbar");
       this.imageEditToolbar.classList.add("medium-toolbar-arrow-under");
-      this.imageEditToolbar.innerHTML = tmpl("tmpl-me-image-edit", {});
+      // this.imageEditToolbar.innerHTML = tmpl("tmpl-me-image-edit", {});
+      this.imageEditToolbar.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-me-image-edit");
       $(document.getElementsByTagName("body")[0]).append(this.imageEditToolbar);
 
       this.inlineSVGEditToolbar = document.createElement("div");
       this.inlineSVGEditToolbar.id = "me-edit-inline-svg-toolbar";
       this.inlineSVGEditToolbar.classList.add("medium-editor-toolbar");
       this.inlineSVGEditToolbar.classList.add("medium-toolbar-arrow-under");
-      this.inlineSVGEditToolbar.innerHTML = tmpl("tmpl-me-inline-svg-edit",{});
+      // this.inlineSVGEditToolbar.innerHTML = tmpl("tmpl-me-inline-svg-edit",{});
+      this.inlineSVGEditToolbar.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-me-inline-svg-edit");
       $(document.getElementsByTagName("body")[0]).append(this.inlineSVGEditToolbar);
 
       initPicker( $(this.inlineSVGEditToolbar).find('.me-svg-color')[0], this.applySVGColor );
@@ -1676,7 +1679,8 @@ var TextEditor = (function ($) {
       this.videoEditToolbar.id = "me-edit-inline-image-toolbar";
       this.videoEditToolbar.classList.add("medium-editor-toolbar");
       this.videoEditToolbar.classList.add("medium-toolbar-arrow-under");
-      this.videoEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
+      // this.videoEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
+      this.videoEditToolbar.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-me-image-edit");
       document.getElementsByTagName("body")[0].append(this.videoEditToolbar);
 
       // Create insert media button, that stays at bottom-right of a text content
@@ -1685,7 +1689,8 @@ var TextEditor = (function ($) {
       this.mediaBtn.contentEditable = false;
       this.mediaBtn.classList.add("me-insert-media-button");
       this.mediaBtn.style.display = "none";
-      this.mediaBtn.innerHTML = tmpl("tmpl-me-insert-media-button", {});
+      // this.mediaBtn.innerHTML = tmpl("tmpl-me-insert-media-button", {});
+      this.mediaBtn.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-me-insert-media-button");
       $(document.getElementsByTagName("body")[0]).append(this.mediaBtn);
       //$(document.getElementsByTagName("body")[0]).append(this.mediaBtn);
 
@@ -2678,11 +2683,6 @@ var TextEditor = (function ($) {
      * @date 27-02-2019
      */
     handleInlineSVGInsertReplace: function(event) {
-      // Get the icon HTML
-      // var icon_html = tmpl('tmpl-insert-inline-svg',{
-      //   class: event.svg_class,
-      //   icon: event.svg_ID
-      // });
       // Use html string due to tmpl bugs
       var icon_html = '<i class="' + event.svg_class + '"><svg><use xlink:href="#' + event.svg_ID + '"></use></svg></i>';
 
@@ -2825,7 +2825,8 @@ var TextEditor = (function ($) {
       this.rexelementTools.contentEditable = false;
       this.rexelementTools.classList.add("rexelement-tools");
       this.rexelementTools.style.display = "none";
-      this.rexelementTools.innerHTML = tmpl("tmpl-rexelement-tools", {});
+      // this.rexelementTools.innerHTML = tmpl("tmpl-rexelement-tools", {});
+      this.rexelementTools.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-rexelement-tools");
       $(document.getElementsByTagName("body")[0]).append(this.rexelementTools);
 
       this.deleteRexelementBtn = $(this.rexelementTools).find(".rex-delete-element")[0];
@@ -3166,7 +3167,8 @@ var TextEditor = (function ($) {
       this.formRowTools.contentEditable = false;
       this.formRowTools.classList.add("rexwpcf7-row-tools");
       this.formRowTools.style.display = "none";
-      this.formRowTools.innerHTML = tmpl("tmpl-rexwpcf7-row-tools", {});
+      // this.formRowTools.innerHTML = tmpl("tmpl-rexwpcf7-row-tools", {});
+      this.formRowTools.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-rexwpcf7-row-tools");
       $(document.getElementsByTagName("body")[0]).append(this.formRowTools);
 
       // Creating the tools displayed on a form column
@@ -3174,7 +3176,8 @@ var TextEditor = (function ($) {
       this.formColumnTools.contentEditable = false;
       this.formColumnTools.classList.add("rexwpcf7-column-tools");
       this.formColumnTools.style.display = "none";
-      this.formColumnTools.innerHTML = tmpl("tmpl-rexwpcf7-column-tools", {});
+      // this.formColumnTools.innerHTML = tmpl("tmpl-rexwpcf7-column-tools", {});
+      this.formColumnTools.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-rexwpcf7-column-tools");
       $(document.getElementsByTagName("body")[0]).append(this.formColumnTools);
 
       // Creating the columns selection toolbar
@@ -3182,14 +3185,15 @@ var TextEditor = (function ($) {
       this.formSelectColumnsToolbar.id = "wpcf7-select-columns-number";
       this.formSelectColumnsToolbar.classList.add("medium-editor-toolbar");
       this.formSelectColumnsToolbar.classList.add("medium-toolbar-arrow-over");
-      this.formSelectColumnsToolbar.innerHTML = tmpl("tmpl-wpcf7-select-columns", {});
+      // this.formSelectColumnsToolbar.innerHTML = tmpl("tmpl-wpcf7-select-columns", {});
+      this.formSelectColumnsToolbar.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-wpcf7-select-columns");
       $(document.getElementsByTagName("body")[0]).append(this.formSelectColumnsToolbar);
 
       this.addRowBtn = $(this.formTools).find(".wpcf7-add-new-row")[0];
 
       this.cloneFormRowBtn = $(this.formRowTools).find(".rex-wpcf7-row-clone")[0];
       this.deleteFormRowBtn = $(this.formRowTools).find(".rex-wpcf7-row-delete")[0];
-      
+
       this.settingsFormColumnBtn = $(this.formColumnTools).find(".rex-wpcf7-column-settings")[0];
       this.cloneFormColumnBtn = $(this.formColumnTools).find(".rex-wpcf7-column-clone")[0];
       this.deleteFormColumnBtn = $(this.formColumnTools).find(".rex-wpcf7-column-delete")[0];
@@ -3221,7 +3225,8 @@ var TextEditor = (function ($) {
       $columnToInsert.addClass("wpcf7-column with-button");
       $columnToInsert.attr("wpcf7-column-number", 1);
 
-      var plusButton = tmpl("tmpl-rexwpcf7-tools", {});
+      // var plusButton = tmpl("tmpl-rexwpcf7-tools", {});
+      var plusButton = Rexbuilder_Live_Templates.getTemplate("tmpl-rexwpcf7-tools");
       $columnToInsert.append(plusButton);
       $formTools.append($columnToInsert);
 

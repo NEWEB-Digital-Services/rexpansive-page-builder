@@ -487,10 +487,10 @@ $tool_button_classes = 'tool-button';
 
 <script type="text/x-tmpl" id="tmpl-rexbutton-tools">
     <div class="rex-button-tools-container">        
-        <div class="tool-button tool-button_list--item tippy rex-edit-button" data-tippy-content="<?php _e('Config', 'rexpansive'); ?>">
+        <div class="tool-button tool-button_list--item tippy rex-edit-button" data-tippy-content="<?php _e('Config', 'rexpansive-builder'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
         </div>
-        <div class="tool-button rex-delete-button tippy" data-tippy-content="<?php _e('Delete', 'rexpansive'); ?>">
+        <div class="tool-button rex-delete-button tippy" data-tippy-content="<?php _e('Delete', 'rexpansive-builder'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
         </div>
     </div>
@@ -510,10 +510,10 @@ $tool_button_classes = 'tool-button';
 
 <script type="text/x-tmpl" id="tmpl-rexelement-tools">
     <div class="rex-element-tools-container tools-area tool-area--side">
-        <div class="tool-button tool-button--blue rex-edit-element tippy" data-tippy-content="<?php _e('Form Settings', 'rexpansive'); ?>">
+        <div class="tool-button tool-button--blue rex-edit-element tippy" data-tippy-content="<?php _e('Form Settings', 'rexpansive-builder'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
         </div>
-        <div class="tool-button tool-button--black rex-delete-element tippy" data-tippy-content="<?php _e('Delete', 'rexpansive'); ?>">
+        <div class="tool-button tool-button--black rex-delete-element tippy" data-tippy-content="<?php _e('Delete', 'rexpansive-builder'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
         </div>
     </div>
@@ -527,7 +527,7 @@ $tool_button_classes = 'tool-button';
 -->
 
 <script type="text/x-tmpl" id="tmpl-rexwpcf7-tools">
-    <div class="tool-button tool-button--flat tool-button--add-big wpcf7-add-new-row tippy" data-tippy-content="<?php _e('Add Row', 'rexpansive'); ?>">
+    <div class="tool-button tool-button--flat tool-button--add-big wpcf7-add-new-row tippy" data-tippy-content="<?php _e('Add Row', 'rexpansive-builder'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
     </div>
 </script>
@@ -540,13 +540,13 @@ $tool_button_classes = 'tool-button';
 
 <script type="text/x-tmpl" id="tmpl-rexwpcf7-row-tools">
     <div class="rex-wpcf7-row-tools-container">
-        <div class="tool-button rex-wpcf7-row-drag tippy" data-tippy-content="<?php _e('Drag', 'rexpansive'); ?>">
+        <div class="tool-button rex-wpcf7-row-drag tippy" data-tippy-content="<?php _e('Drag', 'rexpansive-builder'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
         </div>
-        <div class="tool-button rex-wpcf7-row-clone tippy" data-tippy-content="<?php _e('Clone', 'rexpansive'); ?>">
+        <div class="tool-button rex-wpcf7-row-clone tippy" data-tippy-content="<?php _e('Clone', 'rexpansive-builder'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
         </div>
-        <div class="tool-button tool-button--black rex-wpcf7-row-delete tippy" data-tippy-content="<?php _e('Delete', 'rexpansive'); ?>">
+        <div class="tool-button tool-button--black rex-wpcf7-row-delete tippy" data-tippy-content="<?php _e('Delete', 'rexpansive-builder'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
         </div>
     </div>
@@ -554,13 +554,13 @@ $tool_button_classes = 'tool-button';
 
 <script type="text/x-tmpl" id="tmpl-rexwpcf7-column-tools">
     <div class="rex-wpcf7-column-tools-container">
-        <div class="tool-button tool-button--pink rex-wpcf7-column-settings tippy" data-tippy-content="<?php _e('Settings', 'rexpansive'); ?>">
+        <div class="tool-button tool-button--pink rex-wpcf7-column-settings tippy" data-tippy-content="<?php _e('Settings', 'rexpansive-builder'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
         </div>
-        <div class="tool-button rex-wpcf7-column-clone tippy" data-tippy-content="<?php _e('Clone', 'rexpansive'); ?>">
+        <div class="tool-button rex-wpcf7-column-clone tippy" data-tippy-content="<?php _e('Clone', 'rexpansive-builder'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
         </div>
-        <div class="tool-button tool-button--black rex-wpcf7-column-delete tippy" data-tippy-content="<?php _e('Delete', 'rexpansive'); ?>">
+        <div class="tool-button tool-button--black rex-wpcf7-column-delete tippy" data-tippy-content="<?php _e('Delete', 'rexpansive-builder'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
         </div>
     </div>
