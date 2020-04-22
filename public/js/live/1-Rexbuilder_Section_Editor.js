@@ -823,6 +823,7 @@ var Rexbuilder_Section_Editor = (function($) {
 
     $actualSection = null;
     $actualSectionData = null;
+    bgColorActive = false;
   }
 
   function spRowOverlayOnMove(color) {
@@ -863,6 +864,7 @@ var Rexbuilder_Section_Editor = (function($) {
 
     $actualSection = null;
     $actualSectionData = null;
+    overlayColorActive = false;
   }
 
   // section tools color handlers
@@ -886,6 +888,7 @@ var Rexbuilder_Section_Editor = (function($) {
     $actualSection.addClass('activeRowTools');
     $(ev.currentTarget).parents('.tool-button-floating').addClass('tool-button-floating--active');
 
+    // set and open spectrum
     $spGlRowBackground.spectrum('set',colorActive);
 
     $spGlRowBackground.spectrum('show');
@@ -916,7 +919,7 @@ var Rexbuilder_Section_Editor = (function($) {
     $actualSection.addClass('activeRowTools');
     $(ev.currentTarget).parents('.tool-button-floating').addClass('tool-button-floating--active');
 
-    // retrieving actual color background, if any
+    // set and open spectrum
     $spGlRowOverlay.spectrum('set',overlayValue);
 
     $spGlRowOverlay.spectrum('show');

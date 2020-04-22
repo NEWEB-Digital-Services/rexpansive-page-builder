@@ -392,15 +392,16 @@
    * @since  2.0.4
    */
   function handleGridstackDragstart(event, ui) {
-    if (typeof ui !== "undefined") {
-      Rexbuilder_Util_Editor.elementIsDragging = true;
-      ui.helper
-        .eq(0)
-        .find(".text-wrap")
-        .blur();
-      if (Rexbuilder_Util_Editor.editingElement) {
-        Rexbuilder_Util_Editor.endEditingElement();
-      }
+    if (typeof ui === "undefined") return;
+
+    Rexbuilder_Util_Editor.elementIsDragging = true;
+    ui.helper
+      .eq(0)
+      .find(".text-wrap")
+      .blur();
+
+    if (Rexbuilder_Util_Editor.editingElement) {
+      Rexbuilder_Util_Editor.endEditingElement();
     }
   }
 
@@ -412,11 +413,11 @@
    * @since  2.0.4
    */
   function handleGridstackDragstop(event, ui) {
-    if (typeof ui !== "undefined") {
-      this.updateAllElementsProperties();
-      Rexbuilder_Util_Editor.elementIsDragging = false;
-      clearTimeout(this.doubleDownTimer);
-    }
+    if (typeof ui === "undefined") return;
+
+    this.updateAllElementsProperties();
+    Rexbuilder_Util_Editor.elementIsDragging = false;
+    clearTimeout(this.doubleDownTimer);
   }
 
   /**
@@ -1729,12 +1730,9 @@
         block_type: block_type
       };
 
-      // $newEl.append(tmpl("tmpl-toolbox-block",tools_info));
-      // $newEl.append(tmpl("tmpl-toolbox-block-bottom",tools_info));
-      // $newEl.append(tmpl("tmpl-toolbox-block-floating"));
-      $newEl.append(tmpl("tmpl-toolbox-block-wrap",tools_info));
+      // $newEl.append(tmpl("tmpl-toolbox-block-wrap",tools_info));
+      $newEl.append(Rexbuilder_Live_Templates.getTemplate( "tmpl-toolbox-block-wrap",tools_info ) );
 
-      // $newEl.find(".grid-item-content").prepend(tmpl("tmpl-block-drag-handle"));
       $newEl.find(".grid-item-content").prepend('<div class="rexlive-block-drag-handle"></div>');
 
       var newEl = $newEl[0];

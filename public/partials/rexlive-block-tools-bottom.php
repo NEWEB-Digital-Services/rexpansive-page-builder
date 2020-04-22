@@ -29,7 +29,7 @@ defined( 'ABSPATH' ) or exit;
 			</div>
 
 			<div class="tool-button--double-icon--wrap tippy" data-tippy-content="<?php _e('Background Color','rexpansive-builder'); ?>">
-				<input class="spectrum-input-element" type="text" name="edit-block-color-background" value="">
+				<span class="edit-block-color-background tool-button tool-button--inline tool-button--empty tool-button--color"></span>
 				<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
 				<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
 				<div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-color-background">
@@ -38,7 +38,7 @@ defined( 'ABSPATH' ) or exit;
 			</div><!-- // Change Block color background -->
 
 			<div class="tool-button--double-icon--wrap tool-button--opacity-preview<?php echo ( $not_has_overlay ? ' tool-button--hide' : ' tool-button--picker-preview' ); ?> tippy" data-tippy-content="<?php _e('Overlay','rexpansive-builder'); ?>">
-				<input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="<?php echo ( isset( $atts['overlay_block_color'] ) ? esc_attr( $atts['overlay_block_color'] ) : '' ); ?>">
+				<span class="edit-block-overlay-color tool-button tool-button--inline tool-button--empty tool-button--color"></span>
 				<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"<?php echo ( !$not_has_overlay ? ' style="background-color:' . $atts['overlay_block_color'] . ';"' : '' ); ?>></div>
 				<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
 				<div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-overlay-color">

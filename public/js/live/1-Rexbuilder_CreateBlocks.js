@@ -23,7 +23,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     // }
     // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
     // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($el.find('input[name=edit-block-overlay-color]')[0]);
-    Rexbuilder_Block_Editor.updateBlockTools($el);
+    // Rexbuilder_Block_Editor.updateBlockTools($el);
 
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
@@ -77,7 +77,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     // }
     TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
 
-    Rexbuilder_Block_Editor.updateBlockTools($el);
+    // Rexbuilder_Block_Editor.updateBlockTools($el);
     Rexbuilder_Live_Utilities.launchTooltips();
 
     var event = jQuery.Event("dblclick");
@@ -137,7 +137,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var el = $el[0];
     TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
 
-    Rexbuilder_Block_Editor.updateBlockTools($el);
+    // Rexbuilder_Block_Editor.updateBlockTools($el);
     Rexbuilder_Live_Utilities.launchTooltips();
     var event = jQuery.Event("dblclick");
     event.target = $el.find(".rexlive-block-drag-handle");
@@ -276,7 +276,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
       var el = $el[0];
       TextEditor.addElementToTextEditor(el.querySelector(".text-wrap"));
 
-      Rexbuilder_Block_Editor.updateBlockTools($el);
+      // Rexbuilder_Block_Editor.updateBlockTools($el);
       Rexbuilder_Live_Utilities.launchTooltips();
     }
     Rexbuilder_Util.updateSectionStateLive($section);
@@ -366,7 +366,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         }
       }
     }
-    Rexbuilder_Block_Editor.updateBlockTools($el);
+    // Rexbuilder_Block_Editor.updateBlockTools($el);
     Rexbuilder_Live_Utilities.launchTooltips();
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
@@ -387,7 +387,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     } else {
       $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + e.settings.data_to_send.target.sectionID + '"]');
     }
-    Rexbuilder_Block_Editor.updateBlockTools($el);
+    // Rexbuilder_Block_Editor.updateBlockTools($el);
     Rexbuilder_Live_Utilities.launchTooltips();
 
     Rexbuilder_Util.updateSectionStateLive($section);
@@ -696,7 +696,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
     // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
     // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($newBlock.find('input[name=edit-block-overlay-color]')[0]);
-    Rexbuilder_Block_Editor.updateBlockTools($newBlock);
+    // Rexbuilder_Block_Editor.updateBlockTools($newBlock);
     Rexbuilder_Live_Utilities.launchTooltips();
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
@@ -871,7 +871,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
       }
       // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
       // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($newBlock.find('input[name=edit-block-overlay-color]')[0]);
-      Rexbuilder_Block_Editor.updateBlockTools($newBlock);
+      // Rexbuilder_Block_Editor.updateBlockTools($newBlock);
       Rexbuilder_Live_Utilities.launchTooltips();
 
       Rexbuilder_Util.updateSectionStateLive($section);
@@ -1002,7 +1002,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
     // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
     // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($newBlock.find('input[name=edit-block-overlay-color]')[0]);
-    Rexbuilder_Block_Editor.updateBlockTools($newBlock);
+    // Rexbuilder_Block_Editor.updateBlockTools($newBlock);
     Rexbuilder_Live_Utilities.launchTooltips();
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {

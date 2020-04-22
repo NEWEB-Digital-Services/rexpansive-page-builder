@@ -63,11 +63,11 @@ defined('ABSPATH') or exit;
                     </div><!-- // Change Block image background -->
 
                     <div class="tool-button--double-icon--wrap tool-button_list--item tippy" data-tippy-content="<?php _e('Background Color','rexpansive-builder'); ?>">
-                        <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="">
+                        <span class="edit-block-color-background tool-button tool-button--inline tool-button--empty tool-button--color"></span>
                     </div><!-- // Change Block color background -->
 
                     <div class="tool-button--double-icon--wrap tool-button--opacity-preview tool-button_list--item tippy" data-tippy-content="<?php _e('Overlay','rexpansive-builder'); ?>">
-                        <input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="">
+                        <span class="edit-block-overlay-color tool-button tool-button--inline tool-button--empty tool-button--color"></span>
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
                     </div><!-- // Change Block overlay color -->
 

@@ -386,7 +386,7 @@ var Rexbuilder_Live_Utilities = (function($) {
 		}
 
 		Rexbuilder_Section_Editor.updateRowBackgroundVideo( $section, videoOptions );
-		Rexbuilder_Block_Editor.updateBlockToolsOnRow( $section );
+		// Rexbuilder_Block_Editor.updateBlockToolsOnRow( $section );
 
 		$section.find(".perfect-grid-item").each(function(i,el) {
 			var $el = $(el);

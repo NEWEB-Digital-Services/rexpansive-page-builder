@@ -592,7 +592,7 @@ var Rexbuilder_Section = (function($) {
     
     // update the tools
     // Rexbuilder_Section_Editor.updateRowTools( $newSection );
-    Rexbuilder_Block_Editor.updateBlockToolsOnRow( $newSection );
+    // Rexbuilder_Block_Editor.updateBlockToolsOnRow( $newSection );
     Rexbuilder_Live_Utilities.launchTooltips();
 
     var reverseData = {

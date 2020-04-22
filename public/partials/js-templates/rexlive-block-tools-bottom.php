@@ -29,14 +29,14 @@ defined('ABSPATH') or exit;
             </div>
 
             <div class="tool-button--double-icon--wrap tool-button--hide">
-                <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="">
+                <span class="edit-block-color-background tool-button tool-button--inline tool-button--empty tool-button--color"></span>
                 <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-color-background">
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>
             </div><!-- // Change Block color background -->
 
             <div class="tool-button--double-icon--wrap tool-button--hide">
-                <input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="">
+                <span class="edit-block-overlay-color tool-button tool-button--inline tool-button--empty tool-button--color"></span>
                 <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-overlay-color">
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>
