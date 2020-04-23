@@ -1334,7 +1334,10 @@ var Rexbuilder_App = (function($) {
 		
     if (Rexbuilder_Util.editorMode) {
       // Starting slider
-			Rexbuilder_Util.$document.on( 'rexlive:editDomLayoutEnd', RexSlider.init );
+			Rexbuilder_Util.$document.on( 'rexlive:editDomLayoutEnd', function() {
+        RexSlider.init();
+        console.log('è tutto finito')
+      });
 			// RexSlider.init();
       
       Rexbuilder_Util.launchVideoPlugins();
@@ -1352,6 +1355,10 @@ var Rexbuilder_App = (function($) {
   function load() {
 		console.log( '=== INIZIO LOAD ===' );
     var pl1 = performance.now();
+
+    // if (!(INTERSECTION_OBSERVER_IN_PAGE && lazy)) {
+    //   Rexbuilder_Util.launchEditDomLayout();
+    // }
 		
     // @bugfix on other layouts than desktop with mixed customization definitions
     // @deprecated i don't like this solution, too much expensive
@@ -1395,7 +1402,7 @@ var Rexbuilder_App = (function($) {
     console.log('Performace load', performance.now()-pl1)
 
 		var perf2 = performance.now();
-		console.log( 'Performance init + load:', perf2-perf1 );
+		console.log( 'Performance init + load: one batch/commit removed', perf2-perf1 );
 		
 	};
 	

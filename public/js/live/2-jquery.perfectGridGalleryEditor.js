@@ -283,6 +283,7 @@
    * @return {void}
    */
   function handleCollapsFirstTimeout( reverseData ) {
+    console.log('**************handleCollapsFirstTimeout')
 		this.batchGridstack();
     this.updateCollapsedBlocksHeight();
 		this.commitGridstack();
@@ -302,18 +303,19 @@
     this._updateElementsSizeViewers();
     this._createFirstReverseStack();
     this._fixImagesDimension();
-    var event = jQuery.Event("rexlive:collapsingElementsEnded");
     var $section = this.$section;
-    event.settings = {
-      galleryEditorInstance: this,
-      $section: $section,
-      reverseData: reverseData
-    };
     // this.updateSrollbars();
     // rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
     setTimeout( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
 
+    console.log('domUpdating', Rexbuilder_Util.domUpdating)
     if ( !Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdating ) {
+      var event = jQuery.Event("rexlive:collapsingElementsEnded");
+      event.settings = {
+        galleryEditorInstance: this,
+        $section: $section,
+        reverseData: reverseData
+      };
       $(document).trigger(event);
     }
   }
@@ -333,6 +335,7 @@
    * @since  2.0.4
    */
   function handleChange(e, data) {
+    console.log('domUpdating', Rexbuilder_Util.domUpdating)
     if (
       this.element == e.target &&
       !Rexbuilder_Util_Editor.undoActive &&
@@ -734,7 +737,6 @@
       var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
       var tot_items = items.length, i = 0;
       for( i=0; i<tot_items; i++ ) {
-        // if ( -1 !== items[i].className.indexOf('rex-hide-element') ) {
         if ( hasClass( items[i], 'rex-hide-element' ) ) {
           gridstack.removeWidget(items[i], false);
         }
@@ -756,6 +758,8 @@
     makeWidgets: function() {
       var items = Array.prototype.slice.call(this.element.getElementsByClassName('grid-stack-item'));
       var tot_items = items.length, i = 0;
+      if ( 0 === items ) return;
+
       this.properties.gridstackInstance.batchUpdate();
       for( i=0; i<tot_items; i++ ) {
         this.properties.gridstackInstance.makeWidget(items[i]);
@@ -997,6 +1001,7 @@
       this.batchGridstack();
       this._defineDynamicPrivateProperties();
       this.updateGridstackStyles();
+      console.log('domUpdating', Rexbuilder_Util.domUpdating)
       if ( !Rexbuilder_Util.domUpdating ) {
         this.updateBlocksHeight();
       }
@@ -1324,6 +1329,7 @@
 
     batchGridstack: function() {
       if (this.properties.gridstackInstance !== null) {
+        console.log('domUpdating', Rexbuilder_Util.domUpdating)
         console.log('BATCH GRID', this.properties.gridstackInstanceID)
         this.properties.gridstackInstance.batchUpdate();
       }
@@ -2932,17 +2938,20 @@
      * @since  2.0.0
      * @version 2.0.1   Height calc general review
      */
-    updateBlocksHeight: function () {
-      var $elem;    
+    updateBlocksHeight: function () {  
       var gridstack = this.properties.gridstackInstance;
       if ( typeof gridstack === "null" ) return;
       
-      this.properties.blocksBottomTop = this.getElementBottomTop();
+      console.log(!this.properties.updatingSectionSameGrid || Rexbuilder_Util.windowIsResizing)
+      console.log(this.properties.updatingSectionSameGrid && ! Rexbuilder_Util.windowIsResizing)
       if ( !this.properties.updatingSectionSameGrid || Rexbuilder_Util.windowIsResizing ) {
-        this.batchGridstack();
 
+        this.properties.blocksBottomTop = this.getElementBottomTop();
         var items = [].slice.call( this.properties.blocksBottomTop );
         var tot_items = items.length, i = 0;
+
+        // this.batchGridstack();
+
         for( i=0; i < tot_items; i++ ) {
           if ( Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid || this.properties.firstStartGrid ) {
             if ( ! ( hasClass( items[i], "rex-hide-element" ) || hasClass( items[i], "removing_block" ) || hasClass( items[i], "block-has-slider" ) ) ) {
@@ -2957,7 +2966,7 @@
         // if ( !Rexbuilder_Util.windowIsResizing && !this.properties.updatingSection )
 
         if ( !Rexbuilder_Util.windowIsResizing ) {
-          this.commitGridstack();
+          // this.commitGridstack();
         }
       }
     },

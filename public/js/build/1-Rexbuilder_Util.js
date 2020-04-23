@@ -1336,7 +1336,7 @@ var Rexbuilder_Util = (function($) {
 
   	/** @todo Edit to make it just update DOM order */
 
-  	Rexbuilder_Util.domUpdating = true;
+  	Rexbuilder_Util.domUpdating = true;    // @deprecated
   	var forceCollapseElementsGrid = false;
   	var sectionDomOrder = [];
   	var meIndex, section;
@@ -1382,7 +1382,7 @@ var Rexbuilder_Util = (function($) {
 
   	Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
 
-  	Rexbuilder_Util.domUpdating = false;
+  	Rexbuilder_Util.domUpdating = false;   // @deprecated
 	};
 	
 	/**
@@ -1394,6 +1394,19 @@ var Rexbuilder_Util = (function($) {
    * @todo		Make it vanilla JS
    */
   function clearSectionsEdited() {
+    var sections = Array.prototype.slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section') );
+    var i, tot_sections = sections.length;
+    for( i=0; i<tot_sections; i++ ) {
+      sections[i].setAttribute('data-rexlive-section-edited', false);
+      sections[i].querySelector('.grid-stack-row').setAttribute('data-rexlive-layout-changed', false);
+      var blocks = Array.prototype.slice.call( sections[i].getElementsByClassName( 'grid-stack-item' ) );
+      var j, tot_blocks = blocks.length;
+      for( j=0; j<tot_blocks; j++ ) {
+        blocks[j].setAttribute('data-rexlive-element-edited', false);
+      }
+    }
+
+    /**
   	Rexbuilder_Util.$rexContainer
   		.children(".rexpansive_section")
   		.each(function(index, section) {
@@ -1406,6 +1419,7 @@ var Rexbuilder_Util = (function($) {
   				.find(".grid-stack-item")
   				.attr("data-rexlive-element-edited", false);
   		});
+      **/
 	};
 	
 	/**
@@ -1417,7 +1431,7 @@ var Rexbuilder_Util = (function($) {
    *                  from _edit_dom_layout
    */
   function editDOMLoadedSection(section, chosenLayoutName) {
-		Rexbuilder_Util.domUpdating = true;
+		Rexbuilder_Util.domUpdating = true;     // @depreacted
 		var forceCollapseElementsGrid = false;
 		var sectionID = section.getAttribute('data-rexlive-section-id');
 		var $sectionTargets = $liveDataContainer.find('[data-section-rex-id="' + sectionID + '"]');
@@ -1440,7 +1454,7 @@ var Rexbuilder_Util = (function($) {
 		if (_isMobile() || 'mobile' === chosenLayoutName) {
 			Rexbuilder_Util.collapseSectionGrid(section);
 		}
-		Rexbuilder_Util.domUpdating = false;
+		Rexbuilder_Util.domUpdating = false;    // @depreacted
 	}
 	
 	function _lazyUpdateDOMBlocks( $section, targets, forceCollapseElementsGrid, meIndex ) {
@@ -1533,7 +1547,7 @@ var Rexbuilder_Util = (function($) {
       var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
 
       if ( undefined !== galleryEditorInstance ) {
-        Rexbuilder_Util.domUpdating = true;
+        Rexbuilder_Util.domUpdating = true;     // @deprecated
 
         // Not using galleryEditorInstance.commitGridstack() because
         // of Rexbuilder_Util.domUpdating = true
@@ -1887,7 +1901,7 @@ var Rexbuilder_Util = (function($) {
 	}
 	
 	function NEW_handlingGridstackCommitEnd( galleryEditorInstance, collapse, targets, meIndex ) {
-    Rexbuilder_Util.domUpdating = true;
+    Rexbuilder_Util.domUpdating = true;     // @deprecated
     if (gridTimeouts) {
       galleryEditorInstance.batchGridstack();
       if( galleryEditorInstance.properties.gridstackInstance ) {
@@ -2073,8 +2087,9 @@ var Rexbuilder_Util = (function($) {
 
     // removing collapsed from grid
     Rexbuilder_Util.removeCollapsedGrids();
+    console.log('domUpdating', Rexbuilder_Util.domUpdating)
 
-    Rexbuilder_Util.domUpdating = true;
+    Rexbuilder_Util.domUpdating = true;         // edit_dom_layout
     var forceCollapseElementsGrid = false;
     var sectionDomOrder = [];
 
@@ -2121,7 +2136,8 @@ var Rexbuilder_Util = (function($) {
 		
     Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
 
-    Rexbuilder_Util.domUpdating = false;
+    Rexbuilder_Util.domUpdating = false;          // edit_dom_layout
+    console.log('domUpdating', Rexbuilder_Util.domUpdating)
 
     return response;
   };
@@ -2186,7 +2202,6 @@ var Rexbuilder_Util = (function($) {
 
         // batching grid before the heights of the blocks have changed
         // so (tecnically) we see the changes on commit
-        // galleryEditorInstance.batchGridstack();
         galleryEditorInstance.properties.gridstackInstance.batchUpdate();
       }
     }
@@ -2256,11 +2271,12 @@ var Rexbuilder_Util = (function($) {
     if ( 'undefined' !== typeof galleryData ) {
       if ( 'undefined' !== typeof galleryEditorInstance ) {
         if ( 'undefined' !== typeof galleryEditorInstance.properties.gridstackInstance && galleryEditorInstance.properties.gridstackInstance ) {
-          Rexbuilder_Util.domUpdating = true;
+          Rexbuilder_Util.domUpdating = true;       // updateDOMElements
 
           galleryEditorInstance.properties.gridstackInstance.commit();
           //waiting for gridstack updating blocks dimensions with saved data
-          var handlingGridstackCommitEndTi = setTimeout( handlingGridstackCommitEnd.bind(null, galleryEditorInstance, collapse, targets, meIndex), 300 );
+          // var handlingGridstackCommitEndTi = setTimeout( handlingGridstackCommitEnd.bind(null, galleryEditorInstance, collapse, targets, meIndex), 300 );
+          handlingGridstackCommitEnd( galleryEditorInstance, collapse, targets, meIndex);
         }
       }
     }
@@ -2278,8 +2294,9 @@ var Rexbuilder_Util = (function($) {
     console.group('handlingGridstackCommitEnd: 300ms')
     var t0 = performance.now();
 
-    Rexbuilder_Util.domUpdating = true;
-    galleryEditorInstance.batchGridstack();
+    Rexbuilder_Util.domUpdating = true;       // handlingGridstackCommitEnd
+    console.log('domUpdating', Rexbuilder_Util.domUpdating)
+    // galleryEditorInstance.batchGridstack();
     if( galleryEditorInstance.properties.gridstackInstance ) {
       galleryEditorInstance.properties.gridstackInstance.batchUpdate();
     }
@@ -2300,14 +2317,12 @@ var Rexbuilder_Util = (function($) {
 		
     // must use this launcher
     if ( galleryEditorInstance.properties.gridstackInstance ) {
-      // usefull??
-      // setTimeout(function() {
         galleryEditorInstance.properties.gridstackInstance.commit();
-      // },0);
     }
 
     // row ready
     var handlingRowReadyTi = setTimeout( handlingRowReady.bind( null, galleryEditorInstance, meIndex ), 200 );
+    // var handlingRowReadyTi = setTimeout( handlingRowReady.bind( null, galleryEditorInstance, meIndex ), 0 );
     edlTimeouts.push( handlingRowReadyTi );
 
     // galleryEditorInstance.commitGridstack();
@@ -2317,7 +2332,8 @@ var Rexbuilder_Util = (function($) {
   }
 
   function handlingRowReady( galleryEditorInstance, meIndex ) {
-    Rexbuilder_Util.domUpdating = false;
+    Rexbuilder_Util.domUpdating = false;        // handlingRowReady
+    console.log('domUpdating', Rexbuilder_Util.domUpdating)
     galleryEditorInstance.properties.dispositionBeforeCollapsing = galleryEditorInstance.createActionDataMoveBlocksGrid();
     galleryEditorInstance._createFirstReverseStack();
     galleryEditorInstance._fixImagesDimension();
@@ -2472,9 +2488,7 @@ var Rexbuilder_Util = (function($) {
       typeVideo: type
     };
 
-    // if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
-      Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
-    // }
+    Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
 
     // Update block image
     var activeImage =
@@ -2504,10 +2518,8 @@ var Rexbuilder_Util = (function($) {
       photoswipe: activeImage ? targetProps["photoswipe"] : ""
     };
 
-    // @todo why check editor mode ???
-    // if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
-      Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
-    // }
+    Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
+
     // Update block background
     var bgColorOpt = {
       $elem: $elem,
@@ -2760,7 +2772,8 @@ var Rexbuilder_Util = (function($) {
   }
 
   var _updateModelsLive = function(idModel, targets, editedModelNumber) {
-    Rexbuilder_Util.domUpdating = true;
+    Rexbuilder_Util.domUpdating = true;       // _updateModelsLive
+    console.log('domUpdating', Rexbuilder_Util.domUpdating)
     var sections = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section') );
     var i, tot_sections = sections.length;
     var $section;
@@ -2772,7 +2785,8 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
-    Rexbuilder_Util.domUpdating = false;
+    Rexbuilder_Util.domUpdating = false;        // _updateModelsLive
+    console.log('domUpdating', Rexbuilder_Util.domUpdating)
   };
 
   var _saveCustomizationDomOrder = function( pageCustomizations ) {
@@ -4586,7 +4600,8 @@ var Rexbuilder_Util = (function($) {
     // removing collapsed from grid
     // Rexbuilder_Util.removeCollapsedGrids();
 
-    Rexbuilder_Util.domUpdating = true;
+    Rexbuilder_Util.domUpdating = true;     // handleLayoutChange FRONTEND
+    console.log('domUpdating', Rexbuilder_Util.domUpdating)
     var forceCollapseElementsGrid = false;
     var sectionDomOrder = [];
 
@@ -4628,7 +4643,8 @@ var Rexbuilder_Util = (function($) {
     
 		Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
 
-    Rexbuilder_Util.domUpdating = false;
+    Rexbuilder_Util.domUpdating = false;        // handleLayoutChange FRONTEND
+    console.log('domUpdating', Rexbuilder_Util.domUpdating)
   };
 
   /**
@@ -4802,7 +4818,7 @@ var Rexbuilder_Util = (function($) {
     this.lastSectionNumber = -1;
 
     this.activeLayout = "";
-    this.domUpdating = false;
+    this.domUpdating = false;         // init
 
     // to fix, now considers only the first row, not the entire
     var oldResposiveBlockGrid = this.$rexContainer.children(".rexpansive_section").eq(0).attr("data-rex-collapse-grid");

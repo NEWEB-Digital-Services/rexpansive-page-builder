@@ -864,6 +864,13 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
+  /**
+   * Reordering the DOM
+   * @param  {Array} newOrder     array of sections
+   * @param  {bool} domUpdating  @deprecated ?
+   * @param  {bool} sectionMoved the section was moved
+   * @return {vodi}
+   */
   var _fixSectionDomOrder = function(newOrder, domUpdating, sectionMoved) {
     var sections = [];
     var $section, $sec;
@@ -883,21 +890,6 @@ var Rexbuilder_Dom_Util = (function($) {
       };
       sections.push(sectionObj);
     }
-
-    // Rexbuilder_Util.$rexContainer
-    //   .children(".rexpansive_section")
-    //   .each(function(i, sec) {
-    //     $sec = $(sec);
-    //     var sectionObj = {
-    //       rexID: $sec.attr("data-rexlive-section-id"),
-    //       section_is_model: $sec.hasClass("rex-model-section"),
-    //       section_model_id: $sec.attr("data-rexlive-model-id"),
-    //       section_model_number: $sec.attr("data-rexlive-model-number"),
-    //       $section: $sec.detach()
-    //     };
-    //     console.log(sectionObj)
-    //     sections.push(sectionObj);
-    //   });
 
     for (i = 0; i < newOrder.length; i++) {
       for (j = 0; j < sections.length; j++) {
