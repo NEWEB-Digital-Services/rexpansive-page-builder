@@ -78,7 +78,7 @@ class Rexbuilder_Section {
 		extract($parsed_atts);
 
 		$options = get_option($this->plugin_name . '_options');
-		$fast_load = ( isset( $options['fast_load'] ) ? apply_filters( 'rexbuilder_fast_load', $options['fast_load'] ) : 0 );
+		// $fast_load = ( isset( $options['fast_load'] ) ? apply_filters( 'rexbuilder_fast_load', $options['fast_load'] ) : 0 );
 		$editor = Rexbuilder_Utilities::isBuilderLive();
 
 		// Applying a filter to the content
@@ -97,7 +97,7 @@ class Rexbuilder_Section {
 		$section_fast_load = '';
 		if ("" != $id_image_bg_section) {
 			$img_attrs = wp_get_attachment_image_src($id_image_bg_section, $image_size);
-			if ( 1 == $fast_load && !$editor ) {
+			if ( /* 1 == $fast_load && */ !$editor ) {
 				$section_fast_load = ' data-res-lazy-loading="false" data-src="' . $img_attrs[0] . '"';
 			} else {
 				$section_style .= 'background-image:url(\'' . $img_attrs[0] . '\');';
@@ -185,8 +185,8 @@ class Rexbuilder_Section {
 			$videoMp4Height = $videoMP4Data["height"];
 
 			$bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
-			$bg_video_markup .= '<video class="rex-video-container"' . ( 1 == $fast_load && ! $editor ? ' preload="none"' : ' preload autoplay' ) . ' loop muted playsinline>';
-			if ( 1 == $fast_load && !$editor ) {
+			$bg_video_markup .= '<video class="rex-video-container"' . ( /* 1 == $fast_load && */ ! $editor ? ' preload="none"' : ' preload autoplay' ) . ' loop muted playsinline>';
+			if ( /* 1 == $fast_load &&*/  !$editor ) {
 				$bg_video_markup .= '<source type="video/mp4" data-res-lazy-loading="false" data-src="' . $video_mp4_url . '" />';
 				$bg_video_markup .= '</video>';
 				// adding video controllers
@@ -250,8 +250,8 @@ class Rexbuilder_Section {
 		echo ((false !== $row_has_accordion) ? ' rex-section-has-accordion' : '');
 		echo ( $editor ? ( $row_separator_top < 25 ? ' ui-tools--near-top' : '' ) : '' );
 
-		echo ( $fast_load && ! $editor && '' !== $id_image_bg_section ? ' section-w-image' : '' );
-		echo ( $fast_load && ! $editor && '' != $video_bg_id_section && 'undefined' != $video_bg_id_section ? ' section-w-html-video' : '' );
+		echo ( /* $fast_load && */ ! $editor && '' !== $id_image_bg_section ? ' section-w-image' : '' );
+		echo ( /* $fast_load && */ ! $editor && '' != $video_bg_id_section && 'undefined' != $video_bg_id_section ? ' section-w-html-video' : '' );
 		// custom classes filter
 		echo apply_filters('rexpansive_builder_section_class', '', $parsed_atts) . '"';
 

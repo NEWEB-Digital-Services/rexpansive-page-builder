@@ -344,9 +344,9 @@
    * 
    */
   var handleIntersectionObserverSmart = function() {
-    if ('0' === _plugin_frontend_settings.fast_load ) {
-      return;
-    }
+    // if ('0' === _plugin_frontend_settings.fast_load ) {
+    //   return;
+    // }
 
     if ( ! "IntersectionObserver" in window) {
       return;

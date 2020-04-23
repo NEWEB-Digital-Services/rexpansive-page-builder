@@ -181,12 +181,12 @@ var Rexbuilder_Dom_Util = (function($) {
       var $sectionData = $target.children(".section-data");
       if (data.idImage == "" || data.active.toString() != "true") {
         _resetImageSection($target, $sectionData);
-        if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+        if ( /* Rexbuilder_Util.fast_load && */ ! Rexbuilder_Util.editorMode ) {
           $target.removeClass('section-w-image');
         }
       } else {
         _updateImageSection($target, $sectionData, data);
-        if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+        if ( /* Rexbuilder_Util.fast_load && */ ! Rexbuilder_Util.editorMode ) {
           $target.addClass('section-w-image');
         }
       }
@@ -195,11 +195,11 @@ var Rexbuilder_Dom_Util = (function($) {
       var $elemData = $elem.children(".rexbuilder-block-data");
       if (data.idImage == "" || data.active.toString() != "true") {
         _resetImageBlock($target, $elemData, data);
-        if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+        if ( /* Rexbuilder_Util.fast_load && */ ! Rexbuilder_Util.editorMode ) {
           $elem.removeClass('block-w-image');
         }
       } else {
-        if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+        if ( /* Rexbuilder_Util.fast_load && */ ! Rexbuilder_Util.editorMode ) {
           $elem.addClass('block-w-image');
         }
         _updateImageBlock($target, $elemData, data);
@@ -217,7 +217,7 @@ var Rexbuilder_Dom_Util = (function($) {
     }
     var section = $section[0];
 
-    if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+    if ( /* Rexbuilder_Util.fast_load && */ ! Rexbuilder_Util.editorMode ) {
       section.setAttribute('data-src', data.urlImage)
     } else {
       section.style.backgroundImage = "url(" + data.urlImage + ")";
@@ -273,7 +273,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var imageDiv = $imageDiv[0];
 
     $imageDiv.addClass("natural-image-background");
-    if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+    if ( /* Rexbuilder_Util.fast_load && */ ! Rexbuilder_Util.editorMode ) {
       imageDiv.setAttribute('data-src', data.urlImage);
     } else {
       imageDiv.style.backgroundImage = "url(" + data.urlImage + ")";
@@ -316,7 +316,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var imageDiv = $imageDiv[0];
 
     $imageDiv.addClass("full-image-background");
-    if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+    if ( /* Rexbuilder_Util.fast_load && */ ! Rexbuilder_Util.editorMode ) {
       imageDiv.setAttribute('data-src', data.urlImage);
     } else {
       imageDiv.style.backgroundImage = "url(" + data.urlImage + ")";
@@ -473,7 +473,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var $toggleAudio = $target.children(".rex-video-toggle-audio");
 
     var tempSrc = $videoWrap.find("source");
-		var tempSrcUrl = ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ? tempSrc.attr('data-src') : tempSrc.attr('src') );
+		var tempSrcUrl = ( /* Rexbuilder_Util.fast_load && */ ! Rexbuilder_Util.editorMode ? tempSrc.attr('data-src') : tempSrc.attr('src') );
 		
 		
     if ( ($videoWrap.length != 0 && tempSrcUrl != mp4Data.linkMp4) || $videoWrap.length == 0 ) {
@@ -486,7 +486,7 @@ var Rexbuilder_Dom_Util = (function($) {
           url: mp4Data.linkMp4,
           width: mp4Data.width,
           height: mp4Data.height,
-          fast_load: Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode
+          fast_load: /* Rexbuilder_Util.fast_load && */ ! Rexbuilder_Util.editorMode
 			  });
 
       if ($target.is("section")) {
@@ -513,7 +513,7 @@ var Rexbuilder_Dom_Util = (function($) {
       }
     } else if ($videoWrap.length != 0) {
       $videoWrap.removeClass("removing-video-mp4");
-      if ( ! ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) ) {
+      if ( ! ( /* Rexbuilder_Util.fast_load && */ ! Rexbuilder_Util.editorMode ) ) {
         $videoWrap.find("video")[0].play();
       }
     }

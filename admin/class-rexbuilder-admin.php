@@ -872,7 +872,7 @@ class Rexbuilder_Admin {
 
 		//$valid['post_types'] = $input['post_types'];
 		$valid['animation'] = ( isset( $input['animation'] ) && !empty( $input['animation'] ) ) ? 1 : 0;
-		$valid['fast_load'] = ( isset( $input['fast_load'] ) && !empty( $input['fast_load'] ) ) ? 1 : 0;
+		// $valid['fast_load'] = ( isset( $input['fast_load'] ) && !empty( $input['fast_load'] ) ) ? 1 : 0;
 
 		return $valid;
 	}

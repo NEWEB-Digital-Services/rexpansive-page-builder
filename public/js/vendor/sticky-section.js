@@ -503,11 +503,11 @@
 			adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
 			var backgroundSimulator = section.querySelector('.sticky-background-simulator');
 
-			/* if ( '1' === _plugin_frontend_settings.fast_load ) {
-				backgroundSimulator.setAttribute('data-src', sectionData.getAttribute('data-image_bg_section'));
-			} else  */if ( '0' === _plugin_frontend_settings.fast_load ) {
+			//  if ( '1' === _plugin_frontend_settings.fast_load ) {
+				// backgroundSimulator.setAttribute('data-src', sectionData.getAttribute('data-image_bg_section'));
+			// } else  if ( '0' === _plugin_frontend_settings.fast_load ) {
 				backgroundSimulator.style.backgroundImage = 'url(' + sectionData.getAttribute('data-image_bg_section') + ')';
-			}
+			// }
 		}
 	};
 

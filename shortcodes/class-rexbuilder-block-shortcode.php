@@ -97,7 +97,7 @@ class Rexbuilder_Block
 
 		$options = get_option( $this->plugin_name . '_options' );
 		$animation = apply_filters('rexbuilder_animation_enabled', $options['animation']);
-		$fast_load = ( isset( $options['fast_load'] ) ? apply_filters( 'rexbuilder_fast_load', $options['fast_load'] ) : 0 );
+		// $fast_load = ( isset( $options['fast_load'] ) ? apply_filters( 'rexbuilder_fast_load', $options['fast_load'] ) : 0 );
 
 		$element_link_cc = apply_filters('rexpansive_block_element_link_custom_class', '');
 		$grid_item_content_cc = apply_filters('rexpansive_block_grid_item_content_custom_class', '');
@@ -174,7 +174,7 @@ class Rexbuilder_Block
 			$img_attrs = wp_get_attachment_image_src($id_image_bg_block, $image_size);
 
 			$alt_value = get_post_meta($id_image_bg_block, '_wp_attachment_image_alt', true);
-			if ( 1 == $fast_load && ! $editor ) {
+			if ( /* 1 == $fast_load && */ ! $editor ) {
 				$background_img_style = ' data-res-lazy-loading="false" data-src="' . $img_attrs[0] . '"';
 			} else {
 				$background_img_style = ' style="background-image:url(\'' . $img_attrs[0] . '\');"';
@@ -317,8 +317,8 @@ class Rexbuilder_Block
 		}
 		echo ' w' . $size_x;
 
-		echo ( $fast_load && ! $editor && '' !== $id_image_bg_block ? ' block-w-image' : '' );
-		echo ( $fast_load && ! $editor && '' != $video_bg_id && 'undefined' != $video_bg_id ? ' block-w-html-video' : '' );
+		echo ( /* $fast_load && */ ! $editor && '' !== $id_image_bg_block ? ' block-w-image' : '' );
+		echo ( /* $fast_load && */ ! $editor && '' != $video_bg_id && 'undefined' != $video_bg_id ? ' block-w-html-video' : '' );
 
 		// adding class for text editor
 		echo ( $block_has_slider ? ' block-has-slider' : ( $editor ? ' rex-text-editable' : '' ) );
@@ -413,8 +413,8 @@ class Rexbuilder_Block
 			$videoMp4Width = $videoMP4Data["width"];
 			$videoMp4Height = $videoMP4Data["height"];
 			$bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
-			$bg_video_markup .= '<video class="rex-video-container"' . ( 1 == $fast_load && ! $editor ? ' preload="none"' : ' preload autoplay' ) . ' loop playsinline'. ($bg_video_toggle_audio_markup != "" ? "": " muted").'>';
-			if ( 1 == $fast_load && ! $editor ) {
+			$bg_video_markup .= '<video class="rex-video-container"' . ( /* 1 == $fast_load && */ ! $editor ? ' preload="none"' : ' preload autoplay' ) . ' loop playsinline'. ($bg_video_toggle_audio_markup != "" ? "": " muted").'>';
+			if ( /* 1 == $fast_load &&*/  ! $editor ) {
 				$bg_video_markup .= '<source type="video/mp4" data-res-lazy-loading="false" data-src="' . $video_mp4_url . '" />';
 			} else {
 				$bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
