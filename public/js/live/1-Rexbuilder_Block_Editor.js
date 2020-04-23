@@ -1044,6 +1044,7 @@ var Rexbuilder_Block_Editor = (function($) {
   };
 
   var _openBlockBackgroundGradient = function( $elem ) {
+    $elem = ( 0 === $elem.length ? $actualBlock : $elem );
     var $section = $elem.parents(".rexpansive_section");
     var rex_block_id = $elem.attr("data-rexbuilder-block-id");
     var $elemData = $elem.children(".rexbuilder-block-data");
@@ -1079,6 +1080,7 @@ var Rexbuilder_Block_Editor = (function($) {
   };
 
   var _openBlockOverlayGradient = function( $elem ) {
+    $elem = ( 0 === $elem.length ? $actualBlock : $elem );
     var $section = $elem.parents(".rexpansive_section");
     var rex_block_id = $elem.attr("data-rexbuilder-block-id");
     var $elemData = $elem.children(".rexbuilder-block-data");
@@ -1191,6 +1193,9 @@ var Rexbuilder_Block_Editor = (function($) {
   var $spGlBlockBackground;   // spectrum global block background
   var $spGlBlockOverlay;      // spectrum global block overlay
 
+  var backgroundPickerUsed;   // global flags to check if the background picker is used
+  var overlayPickerUsed;      // global flags to check if the overlay picker is used
+
   var $actualBlock;             // actual edited block
   var $actualBlockData;         // actual edited block data
   var $actualSection;           // actual edited section
@@ -1210,6 +1215,9 @@ var Rexbuilder_Block_Editor = (function($) {
 
     $actualBlock = null;
     $actualBlockData = null;
+
+    backgroundPickerUsed = false;
+    overlayPickerUsed = false;
 
     backgroundColorEventSettings = {
       data_to_send: {
@@ -1239,8 +1247,9 @@ var Rexbuilder_Block_Editor = (function($) {
     var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
 
     $spGlBlockBackground.spectrum({
-      color: 'transparent',
+      color: '',
       showAlpha: true,
+      allowEmpty:true,
       replacerClassName: 'spectrum-placeholder',
       preferredFormat: "hex",
       showPalette: false,
@@ -1258,17 +1267,18 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     $spGlBlockOverlay.spectrum({
-      color: 'transparent',
+      color: '',
       showAlpha: true,
+      allowEmpty:true,
       replacerClassName: 'spectrum-placeholder',
       preferredFormat: "hex",
       showPalette: false,
       showInput: true,
       showButtons: false,
       beforeShow: function() {
-        Rexbuilder_Color_Palette.show({
+        Rexbuilder_Overlay_Palette.show({
           $target: $spGlBlockOverlay,
-          action: "background",
+          action: "overlay",
           object: "block"
         });
       },
@@ -1296,9 +1306,11 @@ var Rexbuilder_Block_Editor = (function($) {
   }
 
   function spBlockBackgroundOnMove(color) {
+    backgroundPickerUsed = true;
+
     backgroundColorEventSettings.data_to_send.active = true;
     backgroundColorEventSettings.data_to_send.color = backgroundColorEventSettings.data_to_send.active
-      ? color.toRgbString()
+      ? ( color ? color.toRgbString() : '' )
       : "";
 
     var event = jQuery.Event("rexlive:change_block_bg_color");
@@ -1307,25 +1319,23 @@ var Rexbuilder_Block_Editor = (function($) {
   }
   
   function spBlockBackgroundOnHide(color) {
+    if ( backgroundPickerUsed && color ) {
+      if( $actualBlockContainerTools.hasClass('top-tools') ) {
+        $actualBtn.parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+        $actualBtn.parents('.grid-stack-item').find('.rexlive-block-toolbox.bottom-tools').find('.edit-block-color-background').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+      }
 
-    // Rexbuilder_Color_Palette.hide();
-    var colorActive = color.toRgbString();
+      backgroundColorEventSettings.data_to_send.color = color.toRgbString();
 
-    if( $actualBlockContainerTools.hasClass('top-tools') ) {
-      $actualBtn.parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
-      $actualBtn.parents('.grid-stack-item').find('.rexlive-block-toolbox.bottom-tools').find('.edit-block-color-background').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+      var event = jQuery.Event("rexlive:apply_background_color_block");
+      event.settings = backgroundColorEventSettings;
+      Rexbuilder_Util.$document.trigger(event);
     }
-
-    backgroundColorEventSettings.data_to_send.color = colorActive;
-
-    var event = jQuery.Event("rexlive:apply_background_color_block");
-    event.settings = backgroundColorEventSettings;
-    Rexbuilder_Util.$document.trigger(event);
 
     // hide block tools
     Rexbuilder_Live_Utilities.hideAllTools();
 
-    $spGlBlockBackground.spectrum('set','transparent');
+    $spGlBlockBackground.spectrum('set','');
 
     // clear globs
     $actualBlock = null;
@@ -1334,11 +1344,14 @@ var Rexbuilder_Block_Editor = (function($) {
     $actualBtn = null;
     $actualBlockContainerTools = null;
     bgColorActive = false;
+
+    backgroundPickerUsed = false;
   }
 
   function spBlockOverlayOnMove(color) {
+    overlayPickerUsed = true;
     overlayColorEventSettings.data_to_send.active = true;
-    overlayColorEventSettings.data_to_send.color =  color.toRgbString();
+    overlayColorEventSettings.data_to_send.color =  ( color ? color.toRgbString() : '' );
 
     if( overlayActive ) {
       var event = jQuery.Event("rexlive:change_block_overlay_color");
@@ -1351,23 +1364,24 @@ var Rexbuilder_Block_Editor = (function($) {
   }
 
   function spBlockOverlayOnHide(color) {
+    if ( overlayPickerUsed && color ) {
+      overlayColorEventSettings.data_to_send.active = true;
+      overlayColorEventSettings.data_to_send.color = color.toRgbString();
 
-    overlayColorEventSettings.data_to_send.active = true;
-    overlayColorEventSettings.data_to_send.color = color.toRgbString();
+      if( $actualBlockContainerTools.hasClass('top-tools') ) {
+        $actualBtn.parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+        $actualBtn.parents('.grid-stack-item').find('.rexlive-block-toolbox.bottom-tools').find('.edit-block-overlay-color').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+      }
 
-    if( $actualBlockContainerTools.hasClass('top-tools') ) {
-      $actualBtn.parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
-      $actualBtn.parents('.grid-stack-item').find('.rexlive-block-toolbox.bottom-tools').find('.edit-block-overlay-color').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+      var event = jQuery.Event("rexlive:change_block_overlay");
+      event.settings = overlayColorEventSettings;
+      Rexbuilder_Util.$document.trigger(event);
     }
-
-    var event = jQuery.Event("rexlive:change_block_overlay");
-    event.settings = overlayColorEventSettings;
-    Rexbuilder_Util.$document.trigger(event);
 
     // hide block tools
     Rexbuilder_Live_Utilities.hideAllTools();
 
-    $spGlBlockOverlay.spectrum('set','transparent');
+    $spGlBlockOverlay.spectrum('set','');
 
     // clear globs
     $actualBlock = null;
@@ -1376,6 +1390,8 @@ var Rexbuilder_Block_Editor = (function($) {
     $actualBtn = null;
     $actualBlockContainerTools = null;
     overlayActive = false;
+
+    overlayPickerUsed = false;
   }
 
   function handleBlockBackgroundColorTool(ev) {
@@ -1403,6 +1419,7 @@ var Rexbuilder_Block_Editor = (function($) {
     $actualBtn.parents('.tool-button-floating').addClass('tool-button-floating--active');
 
     // set and open spectrum
+    backgroundPickerUsed = false;
     $spGlBlockBackground.spectrum('set',colorActive);
 
     $spGlBlockBackground.spectrum('show');
@@ -1469,6 +1486,7 @@ var Rexbuilder_Block_Editor = (function($) {
     $actualBtn.parents('.tool-button-floating').addClass('tool-button-floating--active');
 
     // set and open spectrum
+    overlayPickerUsed = false;
     $spGlBlockOverlay.spectrum('set',colorActive);
 
     $spGlBlockOverlay.spectrum('show');
