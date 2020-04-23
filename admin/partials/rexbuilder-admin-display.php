@@ -25,7 +25,6 @@
 				$post_to_activate = $options['post_types'];
 			endif;
 			$animation = $options['animation'];
-			// $fast_load = ( isset( $options['fast_load'] ) ? $options['fast_load'] : 0 );
 
 			settings_fields( $this->plugin_name . '_options' );
 			do_settings_sections( $this->plugin_name . '_options' );
@@ -62,17 +61,6 @@
 					</p>
 				</td>
 			</tr>
-			<!-- <tr>
-				<th><?php _e( 'Fast Load', $this->plugin_name ); ?></th>
-				<td>
-					<label for="rex-enable-fast_load">
-						<input type="checkbox" id="rex-enable-fast_load" 
-							name="<?php echo $this->plugin_name; ?>_options[fast_load]" value="1" 
-							<?php checked( $fast_load, 1 ); ?> />
-						<span><?php _e( 'ON / OFF', $this->plugin_name ); ?></span>
-					</label>
-				</td>
-			</tr> -->
 			<tr>
 				<th><?php _e( 'Animations ON/OFF', $this->plugin_name ); ?></th>
 				<td>

@@ -954,10 +954,8 @@ var Rexbuilder_App = (function($) {
 					}
 				}
 
-        // if ( '1' === _plugin_frontend_settings.fast_load ) {
-          // Launch fast load
-          window.FastLoad.init();
-				// }
+				// Launch fast load
+				window.FastLoad.init();
       }
     }
 
@@ -1249,11 +1247,9 @@ var Rexbuilder_App = (function($) {
 		_fixVideos();
 
     if ( Rexbuilder_Util.changedFrontLayout ) {
-      // if ( '1' === _plugin_frontend_settings.fast_load ) {
-        // Resetting fast load (that contains IntersectionObserver)
-        window.FastLoad.destroy();
-        window.FastLoad.init();
-      // }
+			// Resetting fast load (that contains IntersectionObserver)
+			window.FastLoad.destroy();
+			window.FastLoad.init();
 
       // Re-launch effects
       launchFrontEndEffects();

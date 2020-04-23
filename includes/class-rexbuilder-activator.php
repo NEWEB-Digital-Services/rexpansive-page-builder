@@ -55,7 +55,6 @@ class Rexbuilder_Activator {
 				'rex_model' => 1
 			),
 			'animation'		=>	0
-			// 'fast_load'		=>  0
 		);
 
 		// If there aren't options, set the defaults
