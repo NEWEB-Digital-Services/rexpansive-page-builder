@@ -226,9 +226,9 @@ var Rexlive_MediaUploader = (function($) {
       var state = image_uploader_frame_direct.state("live-image");
       var sectionTarget = state.get("liveTarget");
       var eventName = state.get("eventName");
-      var data_to_send = state.get("data_to_send");
-
+			var data_to_send = state.get("data_to_send");
       var selection = state.get("selection");
+			
       var data = {
         eventName: eventName,
         data_to_send: {
@@ -286,7 +286,9 @@ var Rexlive_MediaUploader = (function($) {
       });
       Rexbuilder_Util_Admin_Editor.updateBkgrImgTool();
 
-      data.data_to_send.tools = data_to_send.tools;
+			data.data_to_send.tools = data_to_send.tools;
+			
+      data.data_to_send.updateBlockHeight = data_to_send.updateBlockHeight;
 
       // Launch image insert event to the iframe
       Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);

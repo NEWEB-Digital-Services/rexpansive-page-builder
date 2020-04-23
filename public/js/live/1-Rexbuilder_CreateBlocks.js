@@ -241,8 +241,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
       } else {
         blockW = Math.max(Math.round(w * 6 / gridWidth), 1);
       }
-      blockH = Math.max(Math.round(h * blockW / w), 1);
-
+			blockH = Math.max(Math.round(h * blockW / w), 1);
+			
       if (galleryInstance.settings.galleryLayout == "fixed") {
         $el = galleryInstance.createNewBlock("fixed", blockW, blockH, "image");
         type = "full";
@@ -256,7 +256,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
         blockH = Math.max(Math.round(blockH / masonryHeight), 1);
         $el = galleryInstance.createNewBlock("masonry", blockW, blockH, "image");
         type = "natural";
-      }
+			}
+			
+			console.log( blockW, blockH );
+
 
       var dataImage = {
         idImage: idImage,
@@ -1036,7 +1039,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
     createCopyBlock: _createCopyBlock,
     insertHTMLBlock: _insertHTMLBlock,
     moveBlockToOtherSection: _moveBlockToOtherSection,
-    sanitizeBlockContent: sanitizeBlockContent
+		sanitizeBlockContent: sanitizeBlockContent,
+		handleInsertImage: handleInsertImage
   };
 
 })(jQuery);

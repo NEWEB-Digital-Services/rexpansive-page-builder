@@ -945,7 +945,6 @@ var Rexbuilder_App = (function($) {
 					var rexGridInstance = new RexGrid(grids[i]);
 
 					gridInstances.push(rexGridInstance);
-
 				}
 				
 				for (i = 0; i < tot_grids; i++) {

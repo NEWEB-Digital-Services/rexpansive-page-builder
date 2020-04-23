@@ -1404,7 +1404,8 @@ var Rexbuilder_Util = (function($) {
             Rexbuilder_Util.addClass( section, 'rex-hide-section' );
           } else {
             Rexbuilder_Util.removeClass( section, 'rex-hide-section' );
-            $section = $(section);
+						$section = $(section);
+						
             response.collapse_needed += _updateDOMelements( $section, mergedEdits[meIndex].targets, forceCollapseElementsGrid, meIndex );
           }
           sectionDomOrder.push(sectionObj);

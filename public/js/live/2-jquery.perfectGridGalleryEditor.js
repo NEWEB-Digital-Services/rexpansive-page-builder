@@ -3375,6 +3375,8 @@
      * @since 2.0.0
      */
     updateElementHeight: function(elem, blockRatio, editingBlock) {
+			console.log( 'perfect updateElementHeight' );
+			
       editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
 
       if (this.settings.editorMode && !this.properties.oneColumModeActive) {
@@ -3578,12 +3580,13 @@
         //   collapsedHeight = Math.ceil(newH / this.properties.singleHeight);
         // }
 
+				console.log( 'esce prima', collapsedHeight );
         return {
           height: collapsedHeight,
           empty: emptyBlockFlag
         };
-      }
-
+			}
+			
       if( typeof blockRatio != "undefined" && blockRatio !=0 ) {
         newH = w * sw * blockRatio;
       }
@@ -3619,7 +3622,8 @@
       if ( resizeNotNeeded ) {
         if ( this.settings.editorMode ) {
           Rexbuilder_Util_Editor.elementIsResizing = false;
-        }
+				}
+				console.log( 'resize not needed' );
         return;
       }
 
@@ -3634,19 +3638,52 @@
       }
 
       this.updateElementDataHeightProperties( blockData, newH );
-
+			console.log( 'arrivo qua' );
+			
       this.resizeBlock( elem, w, newH );
 
       if ( this.settings.editorMode ) {
         Rexbuilder_Util_Editor.elementIsResizing = false;
       }
-    },
+		},
+		
+		resetBgImage: function (block) {
+			var itemContent = block.querySelector('.grid-item-content');
+
+			var gridWidth = this.properties.wrapWidth;
+
+			var imgWidth = itemContent.getAttribute('data-background_image_width');
+			var blockWidth = 1;
+
+			var imgHeight = itemContent.getAttribute('data-background_image_height');
+			var blockHeight = 1;
+
+			if (imgWidth > gridWidth) {
+				blockWidth = 6;
+			} else {
+				blockWidth = Math.max(Math.round((imgWidth * 6) / gridWidth), 1);
+			}
+			blockHeight = Math.max(Math.round((imgHeight * blockWidth) / imgWidth), 1);
+
+			if ('masonry' === this.settings.galleryLayout) {
+				if (blockWidth * this.properties.singleWidth < imgWidth) {
+					blockHeight = (imgHeight * blockWidth * this.properties.singleWidth) / imgWidth;
+				} else {
+					blockHeight = imgHeight + this.properties.gutter;
+				}
+				blockHeight = Math.max(Math.round(blockHeight / this.settings.cellHeightMasonry), 1);
+			}
+
+			this.resizeBlock(block, blockWidth, blockHeight);
+			this.fix_natural_image_blocks()
+		},
 
     /**
      * update height of a block with a new one 
      * check previous valus to prevent bugs between different grid layouts
      * usually, occurs when a section is hidden (like for an accordion)
      * @param  {Node} el     element to resize
+     * @param  {float} width width to set
      * @param  {float} height height to set
      * @return {void}        
      * @since  2.0.1

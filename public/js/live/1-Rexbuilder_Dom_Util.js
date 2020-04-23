@@ -242,11 +242,11 @@ var Rexbuilder_Dom_Util = (function($) {
 		$elemData.attr("data-photoswipe", data.photoswipe)
     $elemData.attr("data-image_bg_elem_active", data.active);
 
-    if (data.typeBGimage == "full") {
-      _addImageFullBgBlock($itemContent, data);
-    } else if (data.typeBGimage == "natural") {
-      _addImageNaturalBgBlock($itemContent, data);
-    }
+    if (data.typeBGimage == 'full') {
+			_addImageFullBgBlock($itemContent, data);
+		} else if (data.typeBGimage == 'natural') {
+			_addImageNaturalBgBlock($itemContent, data);
+		}
 
     $itemContent.attr("data-background_image_width", data.width);
     $itemContent.attr("data-background_image_height", data.height);
@@ -254,9 +254,9 @@ var Rexbuilder_Dom_Util = (function($) {
     if( 'undefined' !== typeof Rexbuilder_Block_Editor ) {
       Rexbuilder_Block_Editor.updateBlockBackgroundImageTool($itemContent, data);
       Rexbuilder_Block_Editor.updateBlockImagePositionTool($itemContent, data);
-    }
-  };
-
+		}
+	};
+	
   var _addImageNaturalBgBlock = function($itemContent, data) {
     var $imageDiv = $itemContent.find(".rex-image-wrapper");
     var $overlayDiv = $itemContent.find(".responsive-block-overlay");
@@ -273,10 +273,10 @@ var Rexbuilder_Dom_Util = (function($) {
     var imageDiv = $imageDiv[0];
 
     $imageDiv.addClass("natural-image-background");
-    if ( ! Rexbuilder_Util.editorMode ) {
-      imageDiv.setAttribute('data-src', data.urlImage);
-    } else {
+    if ( Rexbuilder_Util.editorMode ) {
       imageDiv.style.backgroundImage = "url(" + data.urlImage + ")";
+		} else {
+      imageDiv.setAttribute('data-src', data.urlImage);
     }
     // $imageDiv.css("background-image", "url(" + data.urlImage + ")");
     var $elem = $itemContent.parents(".grid-stack-item");
@@ -287,7 +287,7 @@ var Rexbuilder_Dom_Util = (function($) {
       } else {
         $imageDiv.removeClass("small-width");
       }
-    }
+		}
   };
 
   var _removeImageBlock = function($itemContent) {
