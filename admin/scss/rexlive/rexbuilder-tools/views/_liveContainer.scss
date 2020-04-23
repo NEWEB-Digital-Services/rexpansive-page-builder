@@ -1,7 +1,9 @@
 #rexpansive-builder-backend-wrapper {
   background-color: #fff;
-  padding-top: 50px;
-  transition: padding-top 300ms;
+	// padding-top: 50px;
+	overflow: hidden;
+	transition: padding-top 300ms;
+
   .rexpansive-live-frame-container {
     transition: width 300ms;
   }
@@ -20,4 +22,8 @@
   height: 100vh;
   margin: 0 auto;
   z-index: 0;
+}
+
+#rexpansive-live-frame {
+	margin-top: 50px;
 }

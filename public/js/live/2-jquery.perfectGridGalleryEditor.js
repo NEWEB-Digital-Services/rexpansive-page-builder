@@ -3375,8 +3375,6 @@
      * @since 2.0.0
      */
     updateElementHeight: function(elem, blockRatio, editingBlock) {
-			console.log( 'perfect updateElementHeight' );
-			
       editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
 
       if (this.settings.editorMode && !this.properties.oneColumModeActive) {
@@ -3442,29 +3440,20 @@
       }
 
       // calculate text content height
-      // textHeight = calculateTextWrapHeight($textWrap);
       textHeight = calculateTextWrapHeightNew( $textWrap, this.settings.editorMode );
 
       if (this.properties.oneColumModeActive) {
         w = 12;
       }
 
-      // check for custom type of blocks
-      // seems irrelevant, always 0
-      // var trueHeight = ( null !== blockData.getAttribute('data-calc_true_height') ? blockData.getAttribute('data-calc_true_height') : "0" );
-      
       if ( textHeight == 0 ) {
 
         // calculating background image height
         if ( null !== imageWrapper ) {
           var imageWidth = parseInt( itemContent.getAttribute("data-background_image_width") );
           var imageHeight = parseInt( itemContent.getAttribute("data-background_image_height") );
-          /*
-          if ($imageWrapper.hasClass('full-image-background')) {
-              backgroundHeight = (imageHeight * w * sw) / imageWidth;
-          } else if ($imageWrapper.hasClass('natural-image-background')) {
-          }*/
-          if ( elem.offsetWidth < imageWidth ) {
+					
+					if ( elem.offsetWidth < imageWidth ) {
             backgroundHeight = ( imageHeight * ( ( w * sw ) - gutter ) ) / imageWidth;
           } else {
             backgroundHeight = imageHeight;
@@ -3476,23 +3465,8 @@
         // calculate video height
         // @todo check me to prevent video auto ratio-resize 
         if ( blockHasYoutube || blockHasVideo || blockHasVimeo ) {
-          // videoHeight = Math.round( w * sw * defaultRatio );
-          // if ( Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
-          //   videoHeight = Math.round( w * sw * defaultRatio );
-          // } else {
-            videoHeight = originalH * this.properties.singleHeight;
-          // }
+					videoHeight = originalH * this.properties.singleHeight;
         }
-
-        // calculate slider height
-        // var sliderRatio = parseFloat( blockData.getAttribute( 'data-slider_ratio' ) );
-        // if ( blockHasSlider && !isNaN( sliderRatio ) ) {
-        //   if ( Rexbuilder_Util.globalViewport.width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
-        //     sliderHeight = w * sw * defaultRatio;
-        //   } else {
-        //     sliderHeight = w * sw * sliderRatio;
-        //   }
-        // }
 
         // calculate slider height
         if ( blockHasSlider ) {
@@ -3504,8 +3478,6 @@
         if ( videoHeight == 0 && backgroundHeight == 0 && sliderHeight == 0 && ( Rexbuilder_Util_Editor.updatingSectionLayout || blockIsEmpty || this.properties.firstStartGrid || blockHasSlider ) ) {
           if ( this.properties.editedFromBackend && this.settings.galleryLayout == "masonry" ) {
             defaultHeight = Math.round(sw * startH);
-          // } else if ( this.properties.oldCellHeight != 0 && this.properties.oldCellHeight != this.properties.singleHeight ) {
-          //   defaultHeight = startH * this.properties.oldCellHeight;
           } else if ( this.properties.oneColumModeActive && this.properties.beforeCollapseWasFixed ) {
             defaultHeight = startH * this.properties.singleWidth;
           } else {
@@ -3521,16 +3493,7 @@
       // if the block has a full image background, without text
       // maintain the old height
       if ( !blockHasSlider && !blockHasYoutube && !blockHasVimeo && !blockHasVideo && ( ( ( 'full' === backImgType && 0 === textHeight ) || ( '' === backImgType && 0 === textHeight ) ) && ! this.properties.oneColumModeActive ) ) {
-        // if ( this.settings.editorMode ) {
-        //   newH = startH * this.properties.oldCellHeight;
-        // } else {
-          newH = startH * this.properties.singleHeight;
-        // }
-
-        // fix
-        // if ( 0 === newH ) {
-        //   newH = backgroundHeight;
-        // }
+				newH = startH * this.properties.singleHeight;
       } else {
         if ( editingBlock ) {
           startH *= this.properties.singleHeight;
@@ -3548,8 +3511,6 @@
         );
       }
 
-      // console.trace();
-
       // console.table({
       //   startH: startH,
       //   blockRatio: blockRatio,
@@ -3565,22 +3526,11 @@
       //   spaceAvailable:spaceAvailable,
       //   newH:newH,
       //   gutter:gutter
-      // });
+			// });
 
       if ( this.properties.oneColumModeActive && ! Rexbuilder_Util.windowIsResizing ) {
         var collapsedHeight = newH;
 
-        // if (this.settings.galleryLayout == "fixed") {
-        //   if ( emptyBlockFlag || blockHasYoutube || blockHasVideo || blockHasVimeo ) {
-        //     collapsedHeight = Math.round(newH / this.properties.singleHeight);
-        //   } else {
-        //     collapsedHeight = Math.ceil(newH / this.properties.singleHeight);
-        //   }
-        // } else {
-        //   collapsedHeight = Math.ceil(newH / this.properties.singleHeight);
-        // }
-
-				console.log( 'esce prima', collapsedHeight );
         return {
           height: collapsedHeight,
           empty: emptyBlockFlag
@@ -3623,7 +3573,6 @@
         if ( this.settings.editorMode ) {
           Rexbuilder_Util_Editor.elementIsResizing = false;
 				}
-				console.log( 'resize not needed' );
         return;
       }
 
@@ -3637,8 +3586,7 @@
         newH = Math.ceil((newH+gutter) / this.properties.singleHeight);
       }
 
-      this.updateElementDataHeightProperties( blockData, newH );
-			console.log( 'arrivo qua' );
+			this.updateElementDataHeightProperties( blockData, newH );
 			
       this.resizeBlock( elem, w, newH );
 

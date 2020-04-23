@@ -281,51 +281,6 @@ var TextEditor = (function ($) {
   });
 
   /**
-   * Handling the text editing
-   * @since x.x.x
-   */
-  var TextEditingExtension = MediumEditor.Extension.extend({
-    name: 'textEditing',
-
-    init: function () {
-      this.keyCode = MediumEditor.util.keyCode;
-      // this.subscribe("editableKeyup", this.handleEventKeyUp.bind(this));
-      this.subscribe("editableInput", this.handleEditableInput.bind(this));
-    },
-
-    handleEditableInput: function (event, target) {
-      // Not using keyup event.
-      // Pros of keyup: it's called less times than input event.
-      // Cons:  when pasting on a p, the text stays black for less than a second,
-      //        but the user can see it.
-      //        When pressing CTRL+V and releasing CTRL before, the if condition
-      //        results false.
-      // if (MediumEditor.util.isKey(event, this.keyCode.V) && MediumEditor.util.isMetaCtrlKey(event)) {
-        var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
-        var $node = $(nodeToFix);
-
-
-        Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
-
-        if ($node[0].tagName.toLowerCase() == "span" || $node[0].tagName.toLowerCase() == "p") {
-          if ($node.parent()[0].tagName.toLowerCase() != "h1" && 
-            $node.parent()[0].tagName.toLowerCase() != "h2" &&
-            $node.parent()[0].tagName.toLowerCase() != "h3" &&
-            $node.parent()[0].tagName.toLowerCase() != "h4" &&
-            $node.parent()[0].tagName.toLowerCase() != "h5" &&
-            $node.parent()[0].tagName.toLowerCase() != "h6") {
-            var prevNodeColor = $node.prev().css("color");
-            setCurrentTextColor(prevNodeColor);
-          }
-        } else {
-          var lastChildNodeColor = $node.children().last().css("color");
-          setCurrentTextColor(lastChildNodeColor);
-        }
-      // }
-    },
-  });
-
-  /**
    * Handling the set of a gradient text
    * @since 2.0.0
    */
@@ -1378,9 +1333,11 @@ var TextEditor = (function ($) {
       var $node = $(nodeToFix);
 
       // If text is pasted need to update block height
-      if (MediumEditor.util.isKey(event, this.keyCode.V) && MediumEditor.util.isMetaCtrlKey(event)) {
-        Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
-      }
+      // if (MediumEditor.util.isKey(event, this.keyCode.V) && MediumEditor.util.isMetaCtrlKey(event)) {
+			// 	console.log( 'incollo', target );
+				
+      //   Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
+      // }
 
       if (MediumEditor.util.isKey(event, this.keyCode.ENTER) && this.insideRexButton(nodeToFix)) {
         var mediumEditorOffsetRight = MediumEditor.selection.getCaretOffsets(nodeToFix).right;
@@ -3815,8 +3772,11 @@ var TextEditor = (function ($) {
   };
 
   var _addEditableInputEvents = function () {
-    editorInstance.subscribe("editableInput", function (e, elem) {
-      var $elem = $(elem).parents(".grid-stack-item");
+    editorInstance.subscribe("editableInput", function (event, elem) {
+			event.preventDefault();
+			event.stopPropagation();
+
+			var $elem = $(elem).parents(".grid-stack-item");
       // var galleryInstance = $elem.parent().data()
       //   .plugin_perfectGridGalleryEditor;
       // galleryInstance.fixElementTextSize($elem[0], null, null);
@@ -3826,9 +3786,40 @@ var TextEditor = (function ($) {
         modelEdited: $elem
           .parents(".rexpansive_section")
           .hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-    });
+			};
+			
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+		});
+
+		editorInstance.subscribe('editablePaste', function (event, target) {
+			/** @todo Remove timeout */
+			setTimeout(function () {
+				Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
+			}, 0);
+
+			var nodeToFix = MediumEditor.selection.getSelectionStart(editorInstance.options.ownerDocument);
+			var $node = $(nodeToFix);
+			var nodeTag = nodeToFix.tagName.toLowerCase();
+
+			if (nodeTag === 'span' || nodeTag === 'p') {
+				var parentNodeTag = nodeToFix.parentNode.tagName.toLowerCase();
+
+				if (
+					parentNodeTag !== 'h1' &&
+					parentNodeTag !== 'h2' &&
+					parentNodeTag !== 'h3' &&
+					parentNodeTag !== 'h4' &&
+					parentNodeTag !== 'h5' &&
+					parentNodeTag !== 'h6'
+				) {
+					var prevNodeColor = $node.prev().css('color');
+					setCurrentTextColor(prevNodeColor);
+				}
+			} else {
+				var lastChildNodeColor = $node.children().last().css('color');
+				setCurrentTextColor(lastChildNodeColor);
+			}
+		});
   };
 
   var _createToolbarContainer = function () {
@@ -3908,7 +3899,6 @@ var TextEditor = (function ($) {
         'rexelement-input': new RexElementExtension(),
         'rexwpcf7-input' : rexWpcf7ExtensionInstance,
         onlySVGFixExtension : new OnlySVGFixExtension(),
-        textEditing: new TextEditingExtension(),
       },
       paste: {
         forcePlainText: false,
@@ -3917,7 +3907,8 @@ var TextEditor = (function ($) {
         text: "Type here your text",
         hideOnClick: false
       },
-    });
+		});
+		
     _addEditableInputEvents();
   };
 

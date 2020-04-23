@@ -1480,8 +1480,8 @@ var Button_Edit_Modal = (function ($) {
             $button_class: $container.find("#rex-button__class"),
 
             $button_name: $container.find("#rex-button__name")
-        };
-
+				};
+				
         rexButtonsJSON = JSON.parse($("#rex-buttons-json-css").text());
         buttonsIDsUsed = JSON.parse($("#rex-buttons-ids-used").text());
         _linkDocumentListeners();
