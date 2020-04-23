@@ -1467,7 +1467,7 @@ var Rexbuilder_Util = (function($) {
           if ( hideElement ) {
             if ( !$block.hasClass('rex-hide-element') ) {
               $block.addClass('rex-hide-element');
-              galleryEditorInstance.removeBlock($block);
+              galleryEditorInstance.removeBlock($block.get(0));
             }
           } else {
             if ( $block.hasClass('rex-hide-element') ) {
@@ -2136,12 +2136,13 @@ var Rexbuilder_Util = (function($) {
    */
   var _updateDOMelements = function( $section, targets, forceCollapseElementsGrid, meIndex ) {
     var $gallery = $section.find(".grid-stack-row");
+    var gallery = $gallery.get(0);
     var galleryData = $gallery.data();
     var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
     var gridstackInstance;
 
     if( targets[0].props.gridEdited ) {
-      $gallery.attr("data-rexlive-layout-changed", true);
+      gallery.setAttribute('data-rexlive-layout-changed', true);
     }
 
     // galleryEditorInstance.batchGridstack();
@@ -2149,24 +2150,38 @@ var Rexbuilder_Util = (function($) {
     if ( 'undefined' !== typeof galleryData ) {
       if ( 'undefined' !== typeof galleryEditorInstance ) {
         for (var i = 1, tot_target = targets.length; i < tot_target; i++) {
-          var $elem = $gallery.children(
-            'div[data-rexbuilder-block-id="' + targets[i].name + '"]'
-          );
-          var hideElement =
-            typeof targets[i].props.hide == "undefined"
-              ? false
-              : targets[i].props.hide.toString() == "true";
-          if (hideElement) {
-            if ( !$elem.hasClass("rex-hide-element") ) {
-              $elem.addClass("rex-hide-element");
-              galleryEditorInstance.removeBlock($elem);
+          var elem = gallery.querySelector('div[data-rexbuilder-block-id="' + targets[i].name + '"]');
+          var hideElement = typeof targets[i].props.hide == "undefined" ? false : targets[i].props.hide.toString() == "true";
+          if ( hideElement ) {
+            if ( ! Rexbuilder_Util.hasClass( elem, 'rex-hide-element' ) ) {
+              Rexbuilder_Util.addClass( elem, 'rex-hide-element' );
+              galleryEditorInstance.removeBlock( elem );
             }
           } else {
-            if ( $elem.hasClass("rex-hide-element") ) {
-              $elem.removeClass("rex-hide-element");
-              galleryEditorInstance.reAddBlock($elem);
+            if ( Rexbuilder_Util.hasClass( elem, 'rex-hide-element' ) ) {
+              Rexbuilder_Util.removeClass( elem, 'rex-hide-element' );
+              galleryEditorInstance.reAddBlock( $(elem) );
             }
           }
+
+          // var $elem = $gallery.children(
+          //   'div[data-rexbuilder-block-id="' + targets[i].name + '"]'
+          // );
+          // var hideElement =
+          //   typeof targets[i].props.hide == "undefined"
+          //     ? false
+          //     : targets[i].props.hide.toString() == "true";
+          // if (hideElement) {
+          //   if ( !$elem.hasClass("rex-hide-element") ) {
+          //     $elem.addClass("rex-hide-element");
+          //     galleryEditorInstance.removeBlock($elem);
+          //   }
+          // } else {
+          //   if ( $elem.hasClass("rex-hide-element") ) {
+          //     $elem.removeClass("rex-hide-element");
+          //     galleryEditorInstance.reAddBlock($elem);
+          //   }
+          // }
         }
 
         // batching grid before the heights of the blocks have changed
@@ -2221,7 +2236,7 @@ var Rexbuilder_Util = (function($) {
 			} 
     }
 
-    console.log('updateDOMSingleElement', performance.now()-t0)
+    console.log( 'updateDOMSingleElement', performance.now()-t0 )
     t0 = performance.now();
 
     updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
@@ -2264,7 +2279,7 @@ var Rexbuilder_Util = (function($) {
     var t0 = performance.now();
 
     Rexbuilder_Util.domUpdating = true;
-    // galleryEditorInstance.batchGridstack();
+    galleryEditorInstance.batchGridstack();
     if( galleryEditorInstance.properties.gridstackInstance ) {
       galleryEditorInstance.properties.gridstackInstance.batchUpdate();
     }
@@ -2286,9 +2301,9 @@ var Rexbuilder_Util = (function($) {
     // must use this launcher
     if ( galleryEditorInstance.properties.gridstackInstance ) {
       // usefull??
-      setTimeout(function() {
+      // setTimeout(function() {
         galleryEditorInstance.properties.gridstackInstance.commit();
-      },0);
+      // },0);
     }
 
     // row ready
@@ -3463,7 +3478,7 @@ var Rexbuilder_Util = (function($) {
   var updateSection = function( $section, $gallery, targetProps, forceCollapseElementsGrid ) {
     var $sectionData = $section.children(".section-data");
 
-    var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"]))
+    var mp4ID = !isNaN( parseInt( targetProps["video_bg_id"] ) )
       ? parseInt(targetProps["video_bg_id"])
       : "";
     var youtubeUrl =

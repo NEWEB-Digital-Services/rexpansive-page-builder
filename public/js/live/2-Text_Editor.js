@@ -3844,7 +3844,6 @@ var TextEditor = (function ($) {
      * @since  2.0.4
      */
     editorInstance.subscribe("focus", function (event, elem) {
-      console.log('focus elemento')
       var pgge = $(elem).parents('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
       if ( ! pgge ) return;
 

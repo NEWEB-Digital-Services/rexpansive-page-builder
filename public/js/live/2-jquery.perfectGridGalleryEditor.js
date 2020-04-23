@@ -1323,16 +1323,16 @@
     },
 
     batchGridstack: function() {
-      console.log('BATCH GRID', this.properties.gridstackInstanceID)
       if (this.properties.gridstackInstance !== null) {
+        console.log('BATCH GRID', this.properties.gridstackInstanceID)
         this.properties.gridstackInstance.batchUpdate();
       }
     },
 
     commitGridstack: function() {
-      console.log('COMMIT GRID', this.properties.gridstackInstanceID)
       if (!Rexbuilder_Util.domUpdating) {
         if (this.properties.gridstackInstance !== null) {
+          console.log('COMMIT GRID', this.properties.gridstackInstanceID)
           this.properties.gridstackInstance.commit();
         }
       }
@@ -1535,14 +1535,14 @@
       return emptyBlocks;
     },
 
-    removeBlock: function($elem) {
+    removeBlock: function(elem) {
       this.properties.numberBlocksVisibileOnGrid--;
 
-      this.properties.gridstackInstance.removeWidget($elem[0], false);
+      this.properties.gridstackInstance.removeWidget(elem, false);
       if (Rexbuilder_Util.activeLayout == "default") {
-        $elem.addClass("removing_block");
+        addClass( elem, 'removing_block' );
       }
-      $elem.addClass("rex-hide-element");
+      addClass( elem, 'rex-hide-element' );
     },
 
     reAddBlock: function($elem) {
@@ -1579,7 +1579,7 @@
         )
       };
 
-      this.removeBlock($elem);
+      this.removeBlock($elem.get(0));
 
       this._createFirstReverseStack();
 
@@ -2329,7 +2329,6 @@
       var $dragHandle = $elem.find(".rexlive-block-drag-handle");
       var $textWrap = $elem.find(".text-wrap");
       var dragHandle = $dragHandle[0];
-      var useDBclick = false;
 
       function handleMouseDown(e) {
         var $target = $(e.target);
@@ -2346,7 +2345,6 @@
           e.toElement = dragHandle;
         } else {
           if ($target.parents(".tool-button").length == 0) {
-            useDBclick = false;
             Rexbuilder_Util_Editor.mouseDownEvent = e;
             if (
               !(
@@ -2570,7 +2568,7 @@
     checkBlockDimension: function( block, block_width )
     {
       // checking block dimension to correctly display the tools
-      block_width = 'undefined' !== typeof block_width ? block_width : block.offsetWidth;
+      block_width = 'undefined' !== typeof block_width ? block_width : ( parseInt( block.getAttribute('data-gs-width') ) * this.properties.singleWidth );
 
       if ( block_width < 190 ) {
         addClass( block, 'ui-tools--view-mobile' );

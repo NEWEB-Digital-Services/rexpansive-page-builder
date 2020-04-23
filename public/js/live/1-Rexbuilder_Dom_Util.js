@@ -838,7 +838,7 @@ var Rexbuilder_Dom_Util = (function($) {
     galleryEditorInstance
   ) {
     if (hasToBeRemoved) {
-      galleryEditorInstance.removeBlock($elem);
+      galleryEditorInstance.removeBlock($elem.get(0));
       Rexbuilder_Util.stopBlockVideos($elem);
     } else {
       galleryEditorInstance.reAddBlock($elem);
