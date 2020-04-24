@@ -85,16 +85,15 @@ var VimeoVideo = (function ($) {
      * @param {DOM object} el 
      */
     var _findVideo = function (el) {
-				var tot_blockVideos = this.blockVideos.length;
-        if (this.blockVideos !== undefined) {
-            for (var i = 0; i < tot_blockVideos; i++) {
-                if (this.blockVideos[i].el === el) {
-                    return this.blockVideos[i].player;
-                }
-            }
-        }
-        return null;
-    };
+			if (this.blockVideos !== undefined) {
+				for (var i = 0, tot_blockVideos = this.blockVideos.length; i < tot_blockVideos; i++) {
+					if (this.blockVideos[i].el === el) {
+						return this.blockVideos[i].player;
+					}
+				}
+			}
+			return null;
+		};
 
     var _removePlayer = function (el) {
 				var playerRemoved = false;

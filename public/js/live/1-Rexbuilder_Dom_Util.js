@@ -181,12 +181,12 @@ var Rexbuilder_Dom_Util = (function($) {
       var $sectionData = $target.children(".section-data");
       if (data.idImage == "" || data.active.toString() != "true") {
         _resetImageSection($target, $sectionData);
-        if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+        if ( ! Rexbuilder_Util.editorMode ) {
           $target.removeClass('section-w-image');
         }
       } else {
         _updateImageSection($target, $sectionData, data);
-        if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+        if ( ! Rexbuilder_Util.editorMode ) {
           $target.addClass('section-w-image');
         }
       }
@@ -195,11 +195,11 @@ var Rexbuilder_Dom_Util = (function($) {
       var $elemData = $elem.children(".rexbuilder-block-data");
       if (data.idImage == "" || data.active.toString() != "true") {
         _resetImageBlock($target, $elemData, data);
-        if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+        if ( ! Rexbuilder_Util.editorMode ) {
           $elem.removeClass('block-w-image');
         }
       } else {
-        if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+        if ( ! Rexbuilder_Util.editorMode ) {
           $elem.addClass('block-w-image');
         }
         _updateImageBlock($target, $elemData, data);
@@ -217,7 +217,7 @@ var Rexbuilder_Dom_Util = (function($) {
     }
     var section = $section[0];
 
-    if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+    if ( ! Rexbuilder_Util.editorMode ) {
       section.setAttribute('data-src', data.urlImage)
     } else {
       section.style.backgroundImage = "url(" + data.urlImage + ")";
@@ -238,15 +238,15 @@ var Rexbuilder_Dom_Util = (function($) {
     $elemData.attr("data-id_image_bg_block", data.idImage);
     $elemData.attr("data-type_bg_block", data.typeBGimage);
     $elemData.attr("data-image_bg_block", data.urlImage);
-    $elemData.attr("data-image_size", data.sizeImage);
-    $elemData.attr("data-photoswipe", data.photoswipe);
+		$elemData.attr("data-image_size", data.sizeImage);
+		$elemData.attr("data-photoswipe", data.photoswipe)
     $elemData.attr("data-image_bg_elem_active", data.active);
 
-    if (data.typeBGimage == "full") {
-      _addImageFullBgBlock($itemContent, data);
-    } else if (data.typeBGimage == "natural") {
-      _addImageNaturalBgBlock($itemContent, data);
-    }
+    if (data.typeBGimage == 'full') {
+			_addImageFullBgBlock($itemContent, data);
+		} else if (data.typeBGimage == 'natural') {
+			_addImageNaturalBgBlock($itemContent, data);
+		}
 
     $itemContent.attr("data-background_image_width", data.width);
     $itemContent.attr("data-background_image_height", data.height);
@@ -254,9 +254,9 @@ var Rexbuilder_Dom_Util = (function($) {
     if( 'undefined' !== typeof Rexbuilder_Block_Editor ) {
       Rexbuilder_Block_Editor.updateBlockBackgroundImageTool($itemContent, data);
       Rexbuilder_Block_Editor.updateBlockImagePositionTool($itemContent, data);
-    }
-  };
-
+		}
+	};
+	
   var _addImageNaturalBgBlock = function($itemContent, data) {
     var $imageDiv = $itemContent.find(".rex-image-wrapper");
     var $overlayDiv = $itemContent.find(".responsive-block-overlay");
@@ -273,10 +273,10 @@ var Rexbuilder_Dom_Util = (function($) {
     var imageDiv = $imageDiv[0];
 
     $imageDiv.addClass("natural-image-background");
-    if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
-      imageDiv.setAttribute('data-src', data.urlImage);
-    } else {
+    if ( Rexbuilder_Util.editorMode ) {
       imageDiv.style.backgroundImage = "url(" + data.urlImage + ")";
+		} else {
+      imageDiv.setAttribute('data-src', data.urlImage);
     }
     // $imageDiv.css("background-image", "url(" + data.urlImage + ")");
     var $elem = $itemContent.parents(".grid-stack-item");
@@ -287,7 +287,7 @@ var Rexbuilder_Dom_Util = (function($) {
       } else {
         $imageDiv.removeClass("small-width");
       }
-    }
+		}
   };
 
   var _removeImageBlock = function($itemContent) {
@@ -316,7 +316,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var imageDiv = $imageDiv[0];
 
     $imageDiv.addClass("full-image-background");
-    if ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) {
+    if ( ! Rexbuilder_Util.editorMode ) {
       imageDiv.setAttribute('data-src', data.urlImage);
     } else {
       imageDiv.style.backgroundImage = "url(" + data.urlImage + ")";
@@ -440,7 +440,7 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var _removeMp4Video = function($target, removeFromDom) {
-    var $videoWrap = $target.children(".rex-video-wrap");
+		var $videoWrap = $target.children(".rex-video-wrap");
     var $toggleAudio = $target.children(".rex-video-toggle-audio");
     if ($videoWrap.length != 0) {
       removeFromDom =
@@ -476,7 +476,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var $toggleAudio = $target.children(".rex-video-toggle-audio");
 
     var tempSrc = $videoWrap.find("source");
-		var tempSrcUrl = ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ? tempSrc.attr('data-src') : tempSrc.attr('src') );
+		var tempSrcUrl = ( ! Rexbuilder_Util.editorMode ? tempSrc.attr('data-src') : tempSrc.attr('src') );
 		
 		
     if ( ($videoWrap.length != 0 && tempSrcUrl != mp4Data.linkMp4) || $videoWrap.length == 0 ) {
@@ -484,13 +484,6 @@ var Rexbuilder_Dom_Util = (function($) {
 			
       $target.addClass("mp4-player");
 			tmpl.arg = "video";
-			
-     //  var mp4Tmpl = tmpl("tmpl-video-mp4", {
-     //      url: mp4Data.linkMp4,
-     //      width: mp4Data.width,
-     //      height: mp4Data.height,
-     //      fast_load: Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode
-			  // });
 
       var mp4Tmpl = '<div class="rex-video-wrap" data-rex-video-width="' + mp4Data.width + '" data-rex-video-height="' + mp4Data.height + '"><video width="' + mp4Data.width + '" height="' + mp4Data.height + '" class="rex-video-container" preload autoplay loop muted><source type="video/mp4" src="' + mp4Data.linkMp4 + '"></video></div>';
 
@@ -518,7 +511,7 @@ var Rexbuilder_Dom_Util = (function($) {
       }
     } else if ($videoWrap.length != 0) {
       $videoWrap.removeClass("removing-video-mp4");
-      if ( ! ( Rexbuilder_Util.fast_load && ! Rexbuilder_Util.editorMode ) ) {
+      if ( Rexbuilder_Util.editorMode ) {
         $videoWrap.find("video")[0].play();
       }
     }
@@ -549,11 +542,11 @@ var Rexbuilder_Dom_Util = (function($) {
     var c_w, c_h, v_w, v_h;
     v_w = el.getAttribute('data-rex-video-width');
     v_h = el.getAttribute('data-rex-video-height');
-    var maxWidth = '100%';
-
+		var maxWidth = '100%';
+		
     c_w = el.offsetWidth;
     c_h = el.offsetHeight;
-    
+	
     if ( ( v_w / v_h ) > ( c_w / c_h ) ) {
       maxWidth =  ( ( ( c_h * v_w ) / v_h ) * 100 ) / c_w;
       maxWidth = maxWidth + '%';
@@ -924,37 +917,62 @@ var Rexbuilder_Dom_Util = (function($) {
 
   /**
    * Add photoswipe to all blocks of a section
-   * @param {jQuery Object} $section section to edit
-   * @since 2.0.0
+   * @param		{jQuery}	$section	section to edit
+   * @since		2.0.0
+	 * @version	2.0.4			Changed to vanilla js
    */
-  var _enablePhotoswipeAllBlocksSection = function($section) {
-    var $gallery = $section.find(".grid-stack-row");
-    $gallery
-      .children(".grid-stack-item:not(.removing_block)")
-      .each(function(i, el) {
-        var $elData = $(el).children(".rexbuilder-block-data");
-        var textWrapLength = Rexbuilder_Util_Editor.getTextWrapLength($(el));
-        if ($elData.attr("data-image_bg_block") != "" && textWrapLength == 0) {
-          $elData.attr("data-photoswipe", true);
-        }
-      });
-  };
+  function _enablePhotoswipeAllBlocksSection($section) {
+		var section = $section.get(0);
+		var sectionBlocks = section.querySelectorAll('.grid-stack-item:not(.removing_block)');
+		var sectionBlock;
+		var tot_sectionBlocks = sectionBlocks.length;
+
+		var blockData;
+		var blockHasSlider;
+		var blockHasText;
+		var blockHasBackgroundImage;
+
+		var i = 0;
+
+		for (; i < tot_sectionBlocks; i++) {
+			sectionBlock = sectionBlocks[i];
+			blockData = sectionBlock.querySelector('.rexbuilder-block-data');
+
+			blockHasSlider = Rexbuilder_Util.hasClass(sectionBlock, 'block-has-slider');
+			blockHasText = 0 !== Rexbuilder_Util_Editor.getTextWrapLength($(sectionBlock));
+			blockHasBackgroundImage = '' !== blockData.getAttribute('data-image_bg_block');
+
+			sectionBlock.setAttribute('data-rexlive-element-edited', true);
+
+			if ((blockHasBackgroundImage && !blockHasText) || blockHasSlider) {
+				blockData.setAttribute('data-photoswipe', true);
+			}
+		}
+	}
 
   /**
    * Remove photoswipe from all blocks of a section
-   * @param {jQuery Object} $section section to edit
-   * @since 2.0.0
-   * @date 16-05-2019
+   * @param		{jQuery}	$section	section to edit
+   * @since		2.0.0
+   * @date		16-05-2019
+	 * @version	2.0.4		Changed to vanilla js
    */
-  var _removePhotoswipeAllBlocksSection = function($section) {
-    var $gallery = $section.find(".grid-stack-row");
-    $gallery
-      .children(".grid-stack-item:not(.removing_block)")
-      .each(function(i, el) {
-        var $elData = $(el).children(".rexbuilder-block-data");
-        $elData.attr("data-photoswipe", false);
-      });
-  };
+  function _removePhotoswipeAllBlocksSection($section) {
+		var section = $section.get(0);
+		var sectionBlocks = section.querySelectorAll('.grid-stack-item:not(.removing_block)');
+		var tot_sectionBlocks = sectionBlocks.length;
+
+		var blockData;
+
+		var i = 0;
+
+		for (; i < tot_sectionBlocks; i++) {
+			blockData = sectionBlocks[i].querySelector('.rexbuilder-block-data');
+
+			sectionBlocks[i].setAttribute('data-rexlive-element-edited', true);
+			blockData.setAttribute('data-photoswipe', false);
+		}
+	}
 
   var _updateSectionPhotoswipe = function(elements) {
     for (var i = 0; i < elements.length; i++) {
@@ -1074,7 +1092,6 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _updateSectionBackgroundColorLive = function(data, color) {
     var $target;
-    // console.log(data);
 
     if (data.modelNumber != "") {
       $target = Rexbuilder_Util.$rexContainer
@@ -1085,7 +1102,6 @@ var Rexbuilder_Dom_Util = (function($) {
             data.modelNumber +
             '"]'
         );
-      // console.log(Rexbuilder_Util.$rexContainer, $target);
       if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
         $target.css("background","");
       }
@@ -1228,7 +1244,6 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _updateSectionOverlayColorLive = function(data, color) {
     var $target;
-    // console.log(data);
     if (data.modelNumber != "") {
       $target = Rexbuilder_Util.$rexContainer
         .find(
@@ -1266,8 +1281,6 @@ var Rexbuilder_Dom_Util = (function($) {
     var $overlayElem = $section.children(".responsive-overlay");
     var overlayElem = $overlayElem[0];
     var $sectionData = $section.children(".section-data");
-
-    // console.log($section);
 
     if( -1 !== getComputedStyle(overlayElem)['background'].indexOf('linear-gradient') ) {
       overlayElem.style.background = '';
@@ -1323,7 +1336,7 @@ var Rexbuilder_Dom_Util = (function($) {
    * @param {Object} color overlay color info
    */
   var _updateBlockOverlayColorLive = function(data, color) {
-    var $target;
+		var $target;
     if (data.modelNumber != "") {
       var section_selector = 'section[data-rexlive-section-id="' + data.sectionID + '"][data-rexlive-model-number="' + data.modelNumber + '"]';
       var block_selector = 'div [data-rexbuilder-block-id="' + data.rexID + '"] .responsive-block-overlay';
@@ -1342,12 +1355,27 @@ var Rexbuilder_Dom_Util = (function($) {
           'div [data-rexbuilder-block-id="' +
             data.rexID +
             '"] .responsive-block-overlay'
-        );
+				);
+				
+			var $overlayTargets = Rexbuilder_Util.$rexContainer.find(
+				'[data-rexbuilder-block-id="' + data.rexID + '"] .slider-overlay'
+			);
+
       if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
         $target.css("background","");
-      }
-      $target
-        .css("background-color", color);
+			}
+
+			$target.css("background-color", color);
+
+			if (0 === $overlayTargets.length) {
+				var $sliderElements = Rexbuilder_Util.$rexContainer.find(
+					'[data-rexbuilder-block-id="' + data.rexID + '"] .rex-slider-element'
+				);
+
+				$sliderElements.append('<div class="slider-overlay" style="background-color:' + color + '"></div>')
+			} else {
+				$overlayTargets.css('background-color', color);
+			}
     }
 
     if( 'undefined' !== typeof Rexbuilder_Block_Editor ) {
@@ -1363,22 +1391,26 @@ var Rexbuilder_Dom_Util = (function($) {
     var color = data.color;
     var active = data.active;
 
-    var $elem = data.$elem;
+		var $elem = data.$elem;
     var $elemData = $elem.children(".rexbuilder-block-data");
     var $elemOverlay = $elem.find(".responsive-block-overlay");
-    var elemOverlay = $elemOverlay[0];
-    // var actualOverlay = $elemOverlay.css("background");
+		var elemOverlay = $elemOverlay[0];
+		var $sliderOverlays = $elemOverlay.find('.slider-overlay');
 
-    // if( -1 !== actualOverlay.indexOf("linear-gradient") ) {
-    //   $elemOverlay.css("background","");
-    // }
-    // $elemOverlay.css("background-color", color);
     if( -1 !== getComputedStyle(elemOverlay)['background'].indexOf('linear-gradient') ) {
       elemOverlay.style.background = '';
     }
-    elemOverlay.style.backgroundColor = color;
+		elemOverlay.style.backgroundColor = color;
 
-    $elemData.attr("data-overlay_block_color", color);
+		if (0 === $sliderOverlays.length) {
+			var $sliderElements = $elem.find('.rex-slider-element');
+
+			$sliderElements.append('<div class="slider-overlay" style="background-color:' + color + '"></div>');
+		} else {
+			$sliderOverlays.css('background-color', color);
+		}
+
+		$elemData.attr("data-overlay_block_color", color);
     $elemData.attr("data-overlay_block_color_active", active);
 
     if (active.toString() == "true") {

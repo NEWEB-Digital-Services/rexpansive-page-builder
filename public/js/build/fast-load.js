@@ -12,8 +12,8 @@
   var queuing = false;
   if ( isMobile ) {
     queuing = true;
-  }
-
+	}
+	
   var PROMISE_EXISTS = typeof Promise !== "undefined" && Promise.toString().indexOf( "[native code]" ) !== -1;
 
   var scrollobserverSection;
@@ -344,10 +344,6 @@
    * 
    */
   var handleIntersectionObserverSmart = function() {
-    if ('0' === _plugin_frontend_settings.fast_load ) {
-      return;
-    }
-
     if ( ! "IntersectionObserver" in window) {
       return;
     }

@@ -923,7 +923,7 @@ var Rexbuilder_Block_Editor = (function($) {
         typeof $elemData.attr("data-overlay_block_color_active") != "undefined" && "" !== $elemData.attr("data-overlay_block_color_active")
           ? JSON.parse( $elemData.attr("data-overlay_block_color_active") )
           : false;
-    }
+		}
 
     if (!overlayActive) {
       if (
@@ -944,7 +944,7 @@ var Rexbuilder_Block_Editor = (function($) {
       ) {
         overlayActive = true;
       }
-    }
+		}
 
     var settings = {
       data_to_send: {
@@ -956,8 +956,8 @@ var Rexbuilder_Block_Editor = (function($) {
           rexID: rex_block_id
         },
       }
-    };
-
+		};
+		
     $picker.spectrum({
       replacerClassName: block_picker_classes,
       preferredFormat: "hex",
@@ -992,8 +992,8 @@ var Rexbuilder_Block_Editor = (function($) {
       },
       move: function(color) {
         settings.data_to_send.active = true;
-        settings.data_to_send.color =  color.toRgbString();
-
+				settings.data_to_send.color =  color.toRgbString();
+				
         if( overlayActive ) {
           var event = jQuery.Event("rexlive:change_block_overlay_color");
         } else {

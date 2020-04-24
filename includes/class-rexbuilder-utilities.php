@@ -414,4 +414,31 @@ class Rexbuilder_Utilities {
 		}
 		return $new_post_id;
 	}
+
+	/**
+	 * Checking saved data of the page to know if a Vimeo video is present.
+	 * @return	Boolean    Is there a Vimeo video in page?
+	 * @since		2.0.4
+	 */
+	public static function check_vimeo_video_in_page()
+	{
+		global $post;
+		$customizations_array = array();
+		$customizations_names = get_post_meta($post->ID, '_rex_responsive_layouts_names', true);
+
+		if ( empty( $customizations_names ) ) return false;
+
+		$customizationsString = '';
+
+		foreach ($customizations_names as $name) {
+			$customizationSectionsJSON = get_post_meta($post->ID, '_rex_customization_' . $name, true);
+			$customizationsString .= $customizationSectionsJSON;
+		}
+
+		$re = '/(video_bg_url_vimeo_section|video_bg_url_vimeo)\":\"\S[^\",]+\"/m';
+
+		preg_match($re, $customizationsString, $matches, PREG_OFFSET_CAPTURE, 0);
+
+		return ( ! empty( $matches ) );
+	}
 }

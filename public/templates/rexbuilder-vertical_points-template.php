@@ -10,6 +10,7 @@
  * @subpackage Rexbuilder/admin/partials
  */
 ?>
+<p id="vertical-nav-label" class="label"></p>
 <nav class="vertical-nav">
 	<ul>
 	<?php
@@ -23,7 +24,6 @@
 					<span class="dot-cont">
 						<span class="dot"></span>
 					</span>
-					<p class="label white-black"><?php echo $title; ?></p>
 				</a>
 			</li>
 			<?php

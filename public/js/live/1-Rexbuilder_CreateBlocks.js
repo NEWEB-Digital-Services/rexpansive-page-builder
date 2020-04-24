@@ -244,8 +244,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
       } else {
         blockW = Math.max(Math.round(w * 6 / gridWidth), 1);
       }
-      blockH = Math.max(Math.round(h * blockW / w), 1);
-
+			blockH = Math.max(Math.round(h * blockW / w), 1);
+			
       if (galleryInstance.settings.galleryLayout == "fixed") {
         $el = galleryInstance.createNewBlock("fixed", blockW, blockH, "image");
         type = "full";
@@ -259,7 +259,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         blockH = Math.max(Math.round(blockH / masonryHeight), 1);
         $el = galleryInstance.createNewBlock("masonry", blockW, blockH, "image");
         type = "natural";
-      }
+			}
 
       var dataImage = {
         idImage: idImage,
@@ -489,19 +489,30 @@ var Rexbuilder_CreateBlocks = (function ($) {
     } else {
       $el = $elem;
       $textWrap = $el.find(".text-wrap");
-    }
+		}
+		
+		var $elData = $el.children('.rexbuilder-block-data');
 
-    $el.addClass("block-has-slider");
-    $el.find('.block-toolBox__editor-tools').find('.edit-block-content').addClass('tool-button--hide');
-    // $el.find('.block-toolBox__config-tools').find('.builder-edit-slider').addClass('tool-button--hide');
-    $el.children(".rexbuilder-block-data").attr("data-type", "rexslider");
+		$el.addClass('block-has-slider');
+		$el.find('.block-toolBox__editor-tools').find('.edit-block-content').addClass('tool-button--hide');
+		$elData.attr('data-type', 'rexslider');
 
-    var $sliderWrap = _createSliderWrap($textWrap, sliderData);
+		var $sliderWrap = _createSliderWrap($textWrap, sliderData);
+
+		var blockHasOverlay = 0 !== $textWrap.parents('.responsive-block-overlay').length;
+
+		if (blockHasOverlay) {
+			var overlayColor = $textWrap.parents('.responsive-block-overlay').css('background-color');
+		}
 
     for (var i = 0; i < slides.length; i++) {
       tmpl.arg = "slide";
 
-      var $slide = $(tmpl("tmpl-new-slider-element", {}));
+			var $slide = $(tmpl("tmpl-new-slider-element", {}));
+
+			if (blockHasOverlay) {
+				$slide.append('<div class="slider-overlay" style="background-color:' + overlayColor + '"></div>');
+			}
 
       if (slides[i].slide_image_url != "none") {
         $slide.css("background-image", "url(" + slides[i].slide_image_url + ")");
@@ -526,7 +537,6 @@ var Rexbuilder_CreateBlocks = (function ($) {
       }
 
       if (slides[i].slide_video_type != "") {
-
         tmpl.arg = "video";
         var $videoElement = $slide.children(".rex-slider-video-wrapper");
 
@@ -606,8 +616,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var $newBlock;
 
     $newBlock = $elem.clone(false);
-    var $newBlockData = $newBlock.children(".rexbuilder-block-data");
-
+		var $newBlockData = $newBlock.children(".rexbuilder-block-data");
+		
     galleryEditorInstance._removeHandles($newBlock);
 
     var newRexID = Rexbuilder_Util.createBlockID();
@@ -673,10 +683,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
     Rexbuilder_Util.startVideoPlugin($itemContent);
 
-    var $textWrap = $newBlock.find(".text-wrap");
-
+		var $textWrap = $newBlock.find(".text-wrap");
+		
     if ($elem.hasClass("block-has-slider")) {
-      var $oldSlider = $elem.find(".text-wrap").children(".rex-slider-wrap[data-rex-slider-active=\"true\"]");
+      var $oldSlider = $elem.find('.text-wrap').children('.rex-slider-wrap[data-rex-slider-active="true"]');
       $textWrap.children().remove();
       var sectionID = $section.attr("data-rexlive-section-id");
       var modelNumber = typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
@@ -696,7 +706,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
       // }
       var newBlock = $newBlock[0];
       TextEditor.addElementToTextEditor( newBlock.querySelector(".text-wrap") );
-    }
+		}
+		
     // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
     // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($newBlock.find('input[name=edit-block-overlay-color]')[0]);
     // Rexbuilder_Block_Editor.updateBlockTools($newBlock);
@@ -704,7 +715,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
-    }
+		}
   }
 
   /**
@@ -1028,7 +1039,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     createCopyBlock: _createCopyBlock,
     insertHTMLBlock: _insertHTMLBlock,
     moveBlockToOtherSection: _moveBlockToOtherSection,
-    sanitizeBlockContent: sanitizeBlockContent
+		sanitizeBlockContent: sanitizeBlockContent,
   };
 
 })(jQuery);

@@ -68,7 +68,7 @@ $elementsIDsJSON = stripslashes($elementsIDsJSON);
 $elementsIDsUsed = json_decode($elementsIDsJSON, true);
 ?>
 <div id="rexpansive-builder-backend-wrapper" class="top-fast-tools--hide" data-rex-edited-backend="<?php echo $backendEditing;?>">
-	<div>
+	<div style="display: none;">
 		<div id="rex-buttons-json-css" style="display: none;"><?php
 			if ($buttonsStylesArray == null) {
                 echo "[]";

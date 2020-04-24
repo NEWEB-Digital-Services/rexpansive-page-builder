@@ -735,10 +735,10 @@ var Rexbuilder_RexSlider = (function($) {
             };
             // console.log(data);
             if (!saveNew) {
-              if (block_to_edit) {
-                data.eventName = "rexlive:updateSlider";
+							if (block_to_edit) {
+								data.eventName = "rexlive:updateSlider";
               } else {
-                data.eventName = "rexlive:insert_new_slider";
+								data.eventName = "rexlive:insert_new_slider";
               }
               // Update Slider List
             } else {

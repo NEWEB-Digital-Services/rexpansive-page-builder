@@ -48,7 +48,8 @@
   display: inline-block;
 }
 
-.medium-editor-action {
+ // More specificity to avoid themes conflicts
+.rexbuilder-live-active .medium-editor-action {
   text-transform: uppercase;
   font-weight: normal;
   background-color: #000;

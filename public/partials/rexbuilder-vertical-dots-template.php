@@ -27,6 +27,7 @@ foreach( $content_shortcodes[3] as $attrs ) {
 
 if( count($titles) > 0 ) {
 ?>
+<p id="vertical-nav-label" class="label white-black"></p>
 <nav class="vertical-nav">
 	<ul>
 	<?php
@@ -40,7 +41,6 @@ if( count($titles) > 0 ) {
 					<span class="dot-cont">
 						<span class="dot"></span>
 					</span>
-					<p class="label white-black"><?php echo $title; ?></p>
 				</a>
 			</li>
 			<?php

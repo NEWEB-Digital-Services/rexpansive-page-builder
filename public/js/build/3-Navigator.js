@@ -32,14 +32,14 @@ var Rex_Navigator = (function ($) {
     $sections.each(function () {
       $this = $(this);
       if ( null !== this.getAttribute('id') && this.getAttribute('id') != '') {
-        activeSection = document.querySelector('.vertical-nav a[href="#' + this.getAttribute('id') + '"]');
+				activeSection = document.querySelector('.vertical-nav a[href="#' + this.getAttribute('id') + '"]');
         if ( activeSection ) {
           activeSectionIndex = activeSection.getAttribute('data-number') - 1;
           // if (($this.offset().top - Rexbuilder_Util.$window.height() / 2 < Rexbuilder_Util.$window.scrollTop()) && ($this.offset().top + $this.height() - Rexbuilder_Util.$window.height() / 2 > Rexbuilder_Util.$window.scrollTop())) {
           if (($this.offset().top - Rexbuilder_Util.globalViewport.height / 2 < Rexbuilder_Util.$window.scrollTop()) && ($this.offset().top + $this.height() - Rexbuilder_Util.globalViewport.height / 2 > Rexbuilder_Util.$window.scrollTop())) {
-            navigationItems.eq(activeSection).addClass('is-selected');
+            navigationItems.eq(activeSectionIndex).addClass('is-selected');
           } else {
-            navigationItems.eq(activeSection).removeClass('is-selected');
+            navigationItems.eq(activeSectionIndex).removeClass('is-selected');
           }
         }
       }
@@ -164,7 +164,59 @@ var Rex_Navigator = (function ($) {
       $(this).find('.rex-label').addClass('fadeInAndOut');
       Rexbuilder_Util.$document.find('.touch .vertical-nav').removeClass('open');
     });
-  }
+	}
+
+	var targetsPositions = {}
+	
+	function _updateNavigationDotsPositions() {
+		var navigationLinks = Array.prototype.slice.call(Rexbuilder_Util.$document.get(0).querySelectorAll('.vertical-nav-link[href]'));
+		var tot_navigationLinks = navigationLinks.length;
+
+		var i = 0;
+
+		for (i = 0; i < tot_navigationLinks; i++) {
+			var linkHref = navigationLinks[i].getAttribute('href');
+			var boundingRect = navigationLinks[i].getBoundingClientRect();
+
+			targetsPositions[linkHref] = {
+				x: boundingRect.x,
+				y: boundingRect.y,
+				width: boundingRect.width,
+				height: boundingRect.height,
+				top: boundingRect.top,
+				right: boundingRect.right,
+				bottom: boundingRect.bottom,
+				left: boundingRect.left
+			};
+		}
+	}
+
+	function _prepareNavigationLabel() {
+		_updateNavigationDotsPositions();
+
+		var navigationLabel = Rexbuilder_Util.$document.get(0).getElementById('vertical-nav-label');
+		var navigationLinks = Array.prototype.slice.call(Rexbuilder_Util.$document.get(0).querySelectorAll('.vertical-nav-link[href]'));
+		var tot_navigationLinks = navigationLinks.length;
+
+		var i = 0;
+
+		for (i = 0; i < tot_navigationLinks; i++) {
+			navigationLinks[i].addEventListener('mouseenter', function (event) {
+				var targetHref = event.target.getAttribute('href');
+
+				navigationLabel.innerText = targetHref.replace('#', '');
+				navigationLabel.style.display = 'inline';
+				navigationLabel.style.opacity = '1';
+				navigationLabel.style.top = targetsPositions[targetHref].top - 2 + 'px';
+				navigationLabel.style.right = targetsPositions[targetHref].width * 1.5 + 'px';
+			});
+
+			navigationLinks[i].addEventListener('mouseleave', function (event) {
+				navigationLabel.style.display = 'none';
+				navigationLabel.style.opacity = '0';
+			});
+		}
+	}
 
   var init = function () {
     var $navigatorWrap = Rexbuilder_Util.$document.find("nav[class*=\"vertical-nav\"]");
@@ -172,8 +224,8 @@ var Rex_Navigator = (function ($) {
       _updateNavigatorDom($navigatorWrap);
     }
 
-    verticalNav = document.querySelector('.vertical-nav');
-
+		verticalNav = document.querySelector('.vertical-nav');
+		
     if ( verticalNav ) {
       Rexbuilder_Util.$window.on('scroll', function () {
         updateNavigation();
@@ -182,7 +234,9 @@ var Rex_Navigator = (function ($) {
       linkDocumentEvents();
     }
 
-    updateNavigator();
+		updateNavigator();
+		
+		_prepareNavigationLabel();
   }
 
   return {

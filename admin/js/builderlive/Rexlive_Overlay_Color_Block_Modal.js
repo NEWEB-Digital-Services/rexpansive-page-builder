@@ -52,7 +52,7 @@ var Overlay_Color_block_Modal = (function($) {
         color: null,
         target: {}
       }
-    };
+		};
 
     overlay_block_properties.$overlay_color_value.spectrum({
       replacerClassName: "btn-floating",
@@ -64,6 +64,8 @@ var Overlay_Color_block_Modal = (function($) {
       containerClassName:
         "rexbuilder-materialize-wrap block-overlay-color-picker",
       move: function(color) {
+				console.log( color );
+				
         overlay_block_properties.$overlay_color_preview_icon.hide();
         changeColorEvent.data_to_send.color = color.toRgbString();
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(changeColorEvent);

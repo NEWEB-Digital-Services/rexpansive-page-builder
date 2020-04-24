@@ -1422,7 +1422,8 @@ var Rexbuilder_Util = (function($) {
             Rexbuilder_Util.addClass( section, 'rex-hide-section' );
           } else {
             Rexbuilder_Util.removeClass( section, 'rex-hide-section' );
-            $section = $(section);
+						$section = $(section);
+						
             response.collapse_needed += _updateDOMelements( $section, mergedEdits[meIndex].targets, forceCollapseElementsGrid, meIndex );
           }
           sectionDomOrder.push(sectionObj);
@@ -1908,7 +1909,7 @@ var Rexbuilder_Util = (function($) {
           ? true
           : false;
 		$elem.attr("data-rexlive-element-edited", elementEdited);
-		
+
     for (var propName in targetProps) {
       switch (propName) {
         case "type":
@@ -1935,7 +1936,7 @@ var Rexbuilder_Util = (function($) {
             if ('' === targetProps["linkurl"] && targetProps["photoswipe"] == "true") {
               Rexbuilder_Photoswipe.addElement(
                 $itemContent,
-                targetProps["image_bg_block"],
+                targetProps["image_bg_url"],
                 parseInt(targetProps["image_width"]),
                 parseInt(targetProps["image_height"]),
                 targetProps["image_size"]
@@ -1944,9 +1945,10 @@ var Rexbuilder_Util = (function($) {
               $section.addClass("photoswipe-gallery");
             } else {
               Rexbuilder_Photoswipe.removeElement($itemContent);
-            }
-            $itemData.attr("data-photoswipe", targetProps["photoswipe"]);
-          }
+						}
+					}
+					$itemData.attr("data-photoswipe", targetProps["photoswipe"]);
+					
           break;
         case "linkurl":
           if (!Rexbuilder_Util.editorMode) {
@@ -2808,7 +2810,7 @@ var Rexbuilder_Util = (function($) {
       typeVideo: type
     };
 
-    // if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+    // if ( Rexbuilder_Util.editorMode ) {
       Rexbuilder_Dom_Util.updateSectionVideoBackground($section, videoOptions);
     // }
 
@@ -2837,7 +2839,7 @@ var Rexbuilder_Util = (function($) {
           : targetProps["row_overlay_active"].toString()
     };
 
-    // if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+    // if ( Rexbuilder_Util.editorMode ) {
     Rexbuilder_Dom_Util.updateImageBG($section, imageOptions);
     // }
 
@@ -3289,7 +3291,7 @@ var Rexbuilder_Util = (function($) {
     var $vimeoVideos = $section.find(".vimeo-player");
     var $youtubeVideos = $section.find(".youtube-player");
 
-    if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+    if ( Rexbuilder_Util.editorMode ) {
       $.each($mp4Videos, function(i, video) {
         Rexbuilder_Util.playVideoFromBegin( $(video) );
       });
@@ -3632,7 +3634,7 @@ var Rexbuilder_Util = (function($) {
     var ytbVideos = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('youtube-player') );
     var i, tot_mp4Videos = mp4Videos.length, tot_vimeoVideos = vimeoVideos.length, tot_ytbVideos = ytbVideos.length;
 
-    if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+    if ( Rexbuilder_Util.editorMode ) {
       for( i=0; i<tot_mp4Videos; i++ ) {
         Rexbuilder_Util.playVideo( $( mp4Videos[i] ) );
       }
@@ -3996,9 +3998,9 @@ var Rexbuilder_Util = (function($) {
 					Rexbuilder_Util.updateDOMSingleElement(options);
 				}
       }
-    }
-
-    updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
+		}
+	
+		updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
 		
 		/** @todo Need to check forceCollapseElementsGrid too? */
 		/* if ( collapseGrid ) {
@@ -4026,7 +4028,6 @@ var Rexbuilder_Util = (function($) {
   var init = function() {
     this.globalViewport = Rexbuilder_Util.viewport();
 
-    this.fast_load = ( '1' == _plugin_frontend_settings.fast_load );
     this.firstStart = true;
 
     this.isIframe = ( window.location !== window.parent.location );

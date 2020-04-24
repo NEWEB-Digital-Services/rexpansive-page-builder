@@ -109,6 +109,8 @@
 	.popup-content--view {
 		.popup-content-close-wrapper {
 			opacity: 0;
+			z-index: -9999;
+			visibility: hidden;
 		}
 	}
 }

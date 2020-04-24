@@ -823,6 +823,7 @@ var Rex_Save_Listeners = (function($) {
         // case "element_height_increased":
         case "element_real_fluid":
         case "hide":
+        case "photoswipe":
           break;
         case "element_edited":
           props["element_edited"] = false;
@@ -949,7 +950,7 @@ var Rex_Save_Listeners = (function($) {
     var defaultTypeImage = gridGallery.getAttribute("data-layout") == "fixed" ? "full" : "natural";
     type_bg_block = itemData.getAttribute("data-type_bg_block") == null ? defaultTypeImage : itemData.getAttribute("data-type_bg_block");
     image_size = itemData.getAttribute("data-image_size") == null ? "full" : itemData.getAttribute("data-image_size");
-    photoswipe = itemData.getAttribute("data-photoswipe") === null ? "" : itemData.getAttribute("data-photoswipe");
+		photoswipe = itemData.getAttribute("data-photoswipe") === null ? "" : itemData.getAttribute("data-photoswipe");
     image_bg_elem_active = itemData.getAttribute("data-image_bg_elem_active") != null ? itemData.getAttribute("data-image_bg_elem_active") : true;
 
     video_bg_id = itemData.getAttribute("data-video_bg_id") === null ? "" : itemData.getAttribute("data-video_bg_id");

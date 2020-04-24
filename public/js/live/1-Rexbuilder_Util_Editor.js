@@ -20,18 +20,22 @@ var Rexbuilder_Util_Editor = (function($) {
 
   /**
    * @param {jQuery} $textWrap Text-wrap whose container block height has to be update
+	 * @param	{Boolean}		needToSave
    */
   var _updateBlockContainerHeight = function($textWrap, needToSave){
     needToSave = undefined === needToSave ? true : needToSave;
-    this.needToSave = needToSave;
+		this.needToSave = needToSave;
+		
     var galleryInstance = Rexbuilder_Util.getGalleryInstance($textWrap.parents(".rexpansive_section").eq(0));
     galleryInstance.updateElementHeight($textWrap.parents(".grid-stack-item")[0]);
-    // updating insertButton position
+		
+		// updating insertButton position
     var insertButton = TextEditor.getEditorInstance().getExtensionByName('insert-media');
     if (insertButton) {
-      var $wrapper = $textWrap.parents(".grid-item-content-wrap");
+			var $wrapper = $textWrap.parents(".grid-item-content-wrap");
       insertButton.placeMediaBtn($wrapper);
-    }
+		}
+		
     this.needToSave = true;
   }
 

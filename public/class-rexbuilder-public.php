@@ -213,13 +213,12 @@ class Rexbuilder_Public
 			$ver = null;
 			$customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
 
-			$fast_load = ( isset( $this->plugin_options['fast_load'] ) ? $this->plugin_options['fast_load'] : 0 );
-
-			wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
 			if( Rexbuilder_Utilities::isBuilderLive() ) {
+				wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
+				
 				//include media libray
 				wp_enqueue_media();
-				
+
 				// TIPPY
 				wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tippy.all.min.js', array( 'jquery' ), null, true );
 	
@@ -255,6 +254,12 @@ class Rexbuilder_Public
 			}
 			else
 			{
+				$vimeo_necessary = Rexbuilder_Utilities::check_vimeo_video_in_page();
+
+				if ($vimeo_necessary) {
+					wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
+				}
+
 				wp_enqueue_script('0-Rexbuilder_Array_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Array_Utilities.js', array('jquery'), $ver, true);
 				wp_enqueue_script('intersection-observer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/intersection-observer.js', array(), $ver, true);
 			}
@@ -378,7 +383,7 @@ class Rexbuilder_Public
 			wp_enqueue_script('rex-grid', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rex-grid.js', array(), $ver, true);
 			wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . 'public/js/rexbuilder-public.js', array('jquery'), $ver, true);
 
-			if( !Rexbuilder_Utilities::isBuilderLive() && 1 == $fast_load ) {
+			if( !Rexbuilder_Utilities::isBuilderLive() ) {
 				wp_enqueue_script('fast-load', REXPANSIVE_BUILDER_URL . 'public/js/build/fast-load.js', array('intersection-observer'), $ver, true);
 			}
 
@@ -408,17 +413,22 @@ class Rexbuilder_Public
 		global $post;
 		if ( $this->builder_active_on_this_post_type() ) {
 			$customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
-			$fast_load = ( isset( $this->plugin_options['fast_load'] ) ? $this->plugin_options['fast_load'] : 0 );
 			
-			wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
-
 			if( Rexbuilder_Utilities::isBuilderLive() ) {
+				wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
+
 				if ( false !== strpos( $customEffects, 'rex-indicator__placeholder' ) ) {
 					wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
 				}
 				wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-editor.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
 
 			} else {
+				$vimeo_necessary = Rexbuilder_Utilities::check_vimeo_video_in_page();
+
+				if ($vimeo_necessary) {
+					wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
+				}
+
 				if ( false !== strpos( $customEffects, 'rex-effect' ) ) {
 					wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . 'public/js/vendor/pixi.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
 					wp_enqueue_script('effect', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexEffect.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
@@ -461,7 +471,7 @@ class Rexbuilder_Public
 
 				wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-public.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
 
-				if( !Rexbuilder_Utilities::isBuilderLive() && 1 == $fast_load ) {
+				if( !Rexbuilder_Utilities::isBuilderLive() ) {
 					wp_enqueue_script('fast-load', REXPANSIVE_BUILDER_URL . 'public/js/vendor/fast-load.min.js', array( $this->plugin_name ), REXPANSIVE_BUILDER_VERSION, true);
 				}
 			}
@@ -480,7 +490,6 @@ class Rexbuilder_Public
 	private function get_plugin_frontend_settings() {
 		$settings = array(
 			'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
-			'fast_load' => ( isset( $this->plugin_options['fast_load'] ) ? $this->plugin_options['fast_load'] : 0 ),
 			'textFill' => array(
 				'font_family' => 'sans-serif',
 				'font_weight' => 'bold',
@@ -1426,7 +1435,6 @@ class Rexbuilder_Public
 		$query = new WP_Query( $argsQuery );
 
 		if ( $query->have_posts() ) {
-			add_filter( 'rexbuilder_fast_load', function() { return 0; } );
 			add_filter( 'rexbuilder_animation_enabled', function() { return false; } );
 			while ( $query->have_posts() ) {
 				$query->the_post();

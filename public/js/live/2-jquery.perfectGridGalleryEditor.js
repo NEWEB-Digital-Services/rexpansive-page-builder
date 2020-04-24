@@ -3174,6 +3174,7 @@
         if ( null !== imageWrapper ) {
           var imageWidth = parseInt( itemContent.getAttribute("data-background_image_width") );
           var imageHeight = parseInt( itemContent.getAttribute("data-background_image_height") );
+
           if ( ( this.properties.singleWidth * elem.getAttribute('data-gs-width') ) < imageWidth ) {
             backgroundHeight = ( imageHeight * ( ( w * sw ) - gutter ) ) / imageWidth;
           } else {
@@ -3186,7 +3187,7 @@
         // calculate video height
         // @todo check me to prevent video auto ratio-resize 
         if ( blockHasYoutube || blockHasVideo || blockHasVimeo ) {
-            videoHeight = originalH * this.properties.singleHeight;
+          videoHeight = originalH * this.properties.singleHeight;
         }
 
         // calculate slider height
@@ -3232,8 +3233,6 @@
         );
       }
 
-      // console.trace();
-
       // console.table({
       //   startH: startH,
       //   blockRatio: blockRatio,
@@ -3249,7 +3248,7 @@
       //   spaceAvailable:spaceAvailable,
       //   newH:newH,
       //   gutter:gutter
-      // });
+			// });
 
       if ( this.properties.oneColumModeActive && ! Rexbuilder_Util.windowIsResizing ) {
         var collapsedHeight = newH;
@@ -3258,8 +3257,8 @@
           height: collapsedHeight,
           empty: emptyBlockFlag
         };
-      }
-
+			}
+			
       if( typeof blockRatio != "undefined" && blockRatio !=0 ) {
         newH = w * sw * blockRatio;
       }
@@ -3304,18 +3303,50 @@
         newH = Math.ceil((newH+gutter) / this.properties.singleHeight);
       }
 
-      this.updateElementDataHeightProperties( blockData, newH );
-
+			this.updateElementDataHeightProperties( blockData, newH );
+			
       this.resizeBlock( elem, w, newH );
-
+      
       Rexbuilder_Util_Editor.elementIsResizing = false;
     },
+		
+		resetBgImage: function (block) {
+			var itemContent = block.querySelector('.grid-item-content');
+
+			var gridWidth = this.properties.wrapWidth;
+
+			var imgWidth = itemContent.getAttribute('data-background_image_width');
+			var blockWidth = 1;
+
+			var imgHeight = itemContent.getAttribute('data-background_image_height');
+			var blockHeight = 1;
+
+			if (imgWidth > gridWidth) {
+				blockWidth = 6;
+			} else {
+				blockWidth = Math.max(Math.round((imgWidth * 6) / gridWidth), 1);
+			}
+			blockHeight = Math.max(Math.round((imgHeight * blockWidth) / imgWidth), 1);
+
+			if ('masonry' === this.settings.galleryLayout) {
+				if (blockWidth * this.properties.singleWidth < imgWidth) {
+					blockHeight = (imgHeight * blockWidth * this.properties.singleWidth) / imgWidth;
+				} else {
+					blockHeight = imgHeight + this.properties.gutter;
+				}
+				blockHeight = Math.max(Math.round(blockHeight / this.settings.cellHeightMasonry), 1);
+			}
+
+			this.resizeBlock(block, blockWidth, blockHeight);
+			this.fix_natural_image_blocks()
+		},
 
     /**
      * update height of a block with a new one 
      * check previous valus to prevent bugs between different grid layouts
      * usually, occurs when a section is hidden (like for an accordion)
      * @param  {Node} el     element to resize
+     * @param  {float} width width to set
      * @param  {float} height height to set
      * @return {void}        
      * @since  2.0.1
@@ -3337,23 +3368,6 @@
         gridstack.update(el, x, y, w, h);
       } else {
         gridstack.resize(el, width, height);
-      }
-    },
-
-    /**
-     *  Launching MediumEditor inside the blocks that can have it
-     */
-    _launchTextEditor: function() {
-      var editors = [].slice.call( this.element.getElementsByClassName('rex-text-editable') );
-      var tot_editors = editors.length, i = 0;
-      var hasPswp, hasSlider, textWrap;
-      for( i=0; i < tot_editors; i++ ) {
-        hasPswp = editors[i].getElementsByClassName('pswp-figure');
-        hasSlider = editors[i].getElementsByClassName('rex-slider-wrap');
-        if ( 0 === hasPswp.length && 0 === hasSlider.length ) {
-          textWrap = editors[i].querySelector('.text-wrap');
-          TextEditor.addElementToTextEditor( textWrap );
-        }
       }
     },
 

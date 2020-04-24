@@ -23,6 +23,15 @@ defined('ABSPATH') or exit;
         <video class="rex-video-container" preload autoplay loop muted>
             <source type="video/mp4" {% if ( true == video.fast_load ) { %}data-src="{%=video.url%}"{% } else { %}src="{%=video.url%}"{% } %}>
         </video>
+				<div class="rex-video__controls">
+				    <div class="loader video-tool video-tool--view"></div>
+				    <div class="pause video-tool">
+				        <div class="indicator"></div>
+				    </div>
+				    <div class="play video-tool">
+				        <div class="indicator"></div>
+				    </div>
+				</div>
     </div>
 </script>
 
@@ -36,6 +45,15 @@ defined('ABSPATH') or exit;
         <div class="rex-video-toggle-audio-shadow">
         </div>
     </div>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-photoswipe-block">
+<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <a class="pswp-item" href="{%=image.link%}" itemprop="contentUrl" data-size="{%=image.width%}x{%=image.height%}">
+        <div class="pswp-item-thumb" data-thumb-image-type="{%=image.type%}" data-thumburl="{%=image.link%}" itemprop="thumbnail"></div>
+    </a>
+    <figcaption class="pswp-item-caption" itemprop="caption description"><?php do_action( 'rexbuilder_block_pswp_item_caption' ); ?></figcaption>
+</figure>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-photoswipe-block-inline">

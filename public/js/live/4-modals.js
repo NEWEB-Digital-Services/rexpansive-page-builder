@@ -1234,7 +1234,9 @@
         $elem = Rexbuilder_Util.$rexContainer
           .find('section[data-rexlive-section-id="' + target.sectionID + '"]')
           .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
-      }
+			}
+			
+      var elem = $elem.get(0);
 
       var $itemContent = $elem.find(".grid-item-content");
       var $elemData = $elem.children(".rexbuilder-block-data");
@@ -1313,13 +1315,22 @@
         height: data.height,
         typeBGimage: data.typeBGimage,
         photoswipe: data.photoswipe
-      };
+			};
+			
+			Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOpt);
+			
+      if (data.updateBlockHeight) {
+				// var blockWidth = parseInt(elem.getAttribute('data-gs-width'));
+				// var result = galleryEditorInstance.updateElementHeight(elem);
 
-      Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOpt);
-      // if ( galleryEditorInstance.settings.galleryLayout == "masonry" ) {
-      if ( galleryEditorInstance.settings.galleryLayout == "masonry" && true === data.updateBlockHeight ) {
-        galleryEditorInstance.updateElementHeight($elem[0]);
-      }
+				galleryEditorInstance.resetBgImage(elem);
+
+				// if (result) {
+				// 	var newH = galleryEditorInstance.settings.galleryLayout == 'masonry' ? result.height / 5 : result;
+
+				// 	galleryEditorInstance.resizeBlock(elem, blockWidth, newH);
+				// }
+			}
 
       var actionData = {
         $itemContent: $itemContent,

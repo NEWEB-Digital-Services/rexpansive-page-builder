@@ -382,28 +382,31 @@ var Rexbuilder_App = (function($) {
     if ( !STICKY_SECTION_IN_PAGE ) return;
 
     var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
-    var stickySections = Array.prototype.slice.call( document.getElementsByClassName( 'sticky-section' ) );
+		var stickySections = Array.prototype.slice.call( document.getElementsByClassName( 'sticky-section' ) );
+		var stickySection;
     var tot_stickySections = stickySections.length, i = 0;
     var stickyElementSelector = '';
 		var overlayAnimation = false;
-
+		
 		StickySection.destroyHandlers();
 
     for( i = 0; i < tot_stickySections; i++ ) {
+			stickySection = stickySections[i];
+
       // Destroy before re-launching
-      if (null !== StickySection.data(stickySections[i])) {
-      	StickySection.data(stickySections[i]).destroy();
+      if (null !== StickySection.data(stickySection)) {
+      	StickySection.data(stickySection).destroy();
       }
 
-      if (Rexbuilder_Util.hasClass(stickySections[i], 'mp4-player')) {
+      if (Rexbuilder_Util.hasClass(stickySection, 'mp4-player')) {
       	stickyElementSelector = '.rex-video-wrap';
-      } else if ('' !== stickySections[i].style.backgroundImage || Rexbuilder_Util.hasClass(stickySections[i], 'section-w-image')) {
+      } else if ('' !== stickySection.style.backgroundImage || Rexbuilder_Util.hasClass(stickySection, 'section-w-image')) {
       	stickyElementSelector = '.sticky-background-simulator';
       }
 			
-      overlayAnimation = ( 'true' === stickySections[i].querySelector('.section-data').getAttribute('data-row_overlay_active') ? true : false );
-
-      new StickySection(stickySections[i], {
+      overlayAnimation = ( 'true' === stickySection.querySelector('.section-data').getAttribute('data-row_overlay_active') ? true : false );
+			
+      new StickySection(stickySection, {
         borderAnimation: true,
         stickyJS: stickyJS,
         stickyElementSelector: stickyElementSelector,
@@ -940,10 +943,7 @@ var Rexbuilder_App = (function($) {
 				}
 			}
 
-			if ('1' === _plugin_frontend_settings.fast_load) {
-				// Launch fast load
-				window.FastLoad.init();
-			}
+			window.FastLoad.init();
 		}
 	}
 
@@ -983,10 +983,10 @@ var Rexbuilder_App = (function($) {
     Rex_Navigator.init();
 		//Rexbuilder_FormFixes.init();
 
-		if (Rexbuilder_Util.editorMode) {
+		if ( Rexbuilder_Util.editorMode ) {
 			// Fix needed because grids are launched before TextEditor
 			$grids.each(function (index, grid) {
-				$(grid).data('plugin_perfectGridGalleryEditor')._launchTextEditor();
+        TextEditor.launchTextEditors( grid );
 			});
 		}
 
@@ -1097,12 +1097,13 @@ var Rexbuilder_App = (function($) {
       var tot_grids = gridInstances.length;
       var i = 0;
 
-      for ( i = 0; i < tot_grids; i++ ) {
+      for (; i < tot_grids; i++) {
         gridInstances[i].fixAfterLoad();
       }
 			
-			RexSlider.init();   // Starting slider
       _fixVideos();       // Fixing video proportions
+			RexSlider.init();   // Starting slider
+      
       Rexbuilder_Util.launchVideoPlugins();
       Rexbuilder_Util.playAllVideos();
       launchAccordions();
@@ -1118,7 +1119,10 @@ var Rexbuilder_App = (function($) {
       launchIndicators( $grids );
     }
 
-    launchFrontEndEffects();
+		launchFrontEndEffects();
+		
+		// Fixing video proportions
+		_fixVideos();
 
 		Rexbuilder_Util.galleryPluginActive = true;
 
@@ -1232,7 +1236,7 @@ var Rexbuilder_App = (function($) {
 			if (Rexbuilder_Util.changedFrontLayout) {
 				gridInstances[i].endChangeLayout();
 			}
-
+			
 			gridInstances[i].endResize();
 
 			// SplitScrollable operations on resize
@@ -1259,20 +1263,18 @@ var Rexbuilder_App = (function($) {
 					// In that case we still don't have SplitSrollable launched
 					StickySection.prepare(gridInstances[i].section);
 				}
-				
 			}
 		}
+
 
 		// Fixing video proportions, needed because videos
 		// must keep proportions between resizes
 		_fixVideos();
 
     if ( Rexbuilder_Util.changedFrontLayout ) {
-      if ( '1' === _plugin_frontend_settings.fast_load ) {
-        // Resetting fast load (that contains IntersectionObserver)
-        window.FastLoad.destroy();
-        window.FastLoad.init();
-      }
+			// Resetting fast load (that contains IntersectionObserver)
+			window.FastLoad.destroy();
+			window.FastLoad.init();
 
       // Re-launch effects
       launchFrontEndEffects();
