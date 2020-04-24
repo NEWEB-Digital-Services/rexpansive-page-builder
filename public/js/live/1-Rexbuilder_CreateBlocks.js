@@ -85,6 +85,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     event.target = el;
     event.offsetY = 0;
     galleryInstance.$element.trigger(event);
+
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);

@@ -283,7 +283,6 @@
    * @return {void}
    */
   function handleCollapsFirstTimeout( reverseData ) {
-    console.log('**************handleCollapsFirstTimeout')
 		this.batchGridstack();
     this.updateCollapsedBlocksHeight();
 		this.commitGridstack();
@@ -308,7 +307,6 @@
     // rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
     setTimeout( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
 
-    console.log('domUpdating', Rexbuilder_Util.domUpdating)
     if ( !Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdating ) {
       var event = jQuery.Event("rexlive:collapsingElementsEnded");
       event.settings = {
@@ -335,7 +333,6 @@
    * @since  2.0.4
    */
   function handleChange(e, data) {
-    console.log('domUpdating', Rexbuilder_Util.domUpdating)
     if (
       this.element == e.target &&
       !Rexbuilder_Util_Editor.undoActive &&
@@ -475,13 +472,14 @@
         if (hasClass(e.currentTarget,"rex-flex-top")) {
           caretPosition = "end";
         } else if (hasClass(e.currentTarget,"rex-flex-middle")) {
-          var textHeight = $textWrap.innerHeight();
           var maxBlockHeight;
           if ( e.currentTarget.getAttribute('data-gs-height') ) {
             var maxBlockHeight = ( parseInt( e.currentTarget.getAttribute('data-gs-height') ) * this.properties.singleHeight ) - this.properties.gutter;
           } else {
             var maxBlockHeight = $elem.innerHeight();
           }
+
+          var textHeight = $textWrap.innerHeight();
 
           if ( e.offsetY < maxBlockHeight / 2 - textHeight / 2 ) {
             caretPosition = "begin";
@@ -604,8 +602,6 @@
 
       this.properties.firstStartGrid = true;
 
-      console.log('--- start grid ---')
-      var p1,p2;
       this._setGridID();
 
       this._updateBlocksRexID();
@@ -634,10 +630,7 @@
 
       this._prepareElements();
 
-      p1 = performance.now()
       this._launchGridStack();
-      p2 = performance.now()
-      console.log('_launchGridStack',p2-p1)
 			
       /**
        * Add listeners to the row
@@ -690,8 +683,6 @@
 
       this.triggerGalleryReady();
       this.properties.firstStartGrid = false;
-
-      console.log('--- end grid ---')
 		},
 
     _launchGridStack: function() {
@@ -1001,7 +992,6 @@
       this.batchGridstack();
       this._defineDynamicPrivateProperties();
       this.updateGridstackStyles();
-      console.log('domUpdating', Rexbuilder_Util.domUpdating)
       if ( !Rexbuilder_Util.domUpdating ) {
         this.updateBlocksHeight();
       }
@@ -1329,8 +1319,6 @@
 
     batchGridstack: function() {
       if (this.properties.gridstackInstance !== null) {
-        console.log('domUpdating', Rexbuilder_Util.domUpdating)
-        console.log('BATCH GRID', this.properties.gridstackInstanceID)
         this.properties.gridstackInstance.batchUpdate();
       }
     },
@@ -1338,7 +1326,6 @@
     commitGridstack: function() {
       if (!Rexbuilder_Util.domUpdating) {
         if (this.properties.gridstackInstance !== null) {
-          console.log('COMMIT GRID', this.properties.gridstackInstanceID)
           this.properties.gridstackInstance.commit();
         }
       }
@@ -2942,8 +2929,6 @@
       var gridstack = this.properties.gridstackInstance;
       if ( typeof gridstack === "null" ) return;
       
-      console.log(!this.properties.updatingSectionSameGrid || Rexbuilder_Util.windowIsResizing)
-      console.log(this.properties.updatingSectionSameGrid && ! Rexbuilder_Util.windowIsResizing)
       if ( !this.properties.updatingSectionSameGrid || Rexbuilder_Util.windowIsResizing ) {
 
         this.properties.blocksBottomTop = this.getElementBottomTop();

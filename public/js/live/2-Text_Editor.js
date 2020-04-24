@@ -1754,8 +1754,8 @@ var TextEditor = (function ($) {
         // Method 4)
         this.traceEditor = this.base.getFocusedElement();
         // This function draws the cursor once it has interacted with the editor. -A
-        var editor = this.base.getFocusedElement();
-        this.traceSelection = rangy.getSelection().saveCharacterRanges(editor);
+        // var editor = this.base.getFocusedElement();
+        this.traceSelection = rangy.getSelection().saveCharacterRanges(this.traceEditor);
       }
       this.placeMediaBtn();
     },

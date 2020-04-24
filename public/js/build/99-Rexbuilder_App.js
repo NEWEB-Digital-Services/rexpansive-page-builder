@@ -11,7 +11,6 @@ var Rexbuilder_App = (function($) {
 	var IS_CHROME = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
 	var SPLIT_SCROLLABLE_IN_PAGE = 'undefined' !== typeof SplitScrollable;
 	var STICKY_SECTION_IN_PAGE = 'undefined' !== typeof StickySection;
-	var INTERSECTION_OBSERVER_IN_PAGE = 'IntersectionObserver' in window;
 
   var $sections = null;
   var $grids = null;
@@ -870,240 +869,6 @@ var Rexbuilder_App = (function($) {
     }
   }
 
-  function _lazyLoadGrids() {
-		// Necessary before launching grids
-		var choosedLayout = Rexbuilder_Util.chooseLayout();
-		Rexbuilder_Util.scanDOM(choosedLayout);
-
-		var grids = Array.prototype.slice.call(document.getElementsByClassName('perfect-grid-gallery'));
-		var tot_grids = grids.length;
-		var gridHeightsArray = _computeExpectedSectionsHeight(grids);
-
-		var i;
-
-		for (i = 0; i < tot_grids; i++) {
-			grids[i].style.height = gridHeightsArray[i].toString() + 'px';
-			grids[i].setAttribute('data-grid-lazy', false);
-		}
-
-		// Threshold to check grids to launch
-		var THRESHOLD = 3 * Rexbuilder_Util.globalViewport.height;
-		
-		var gridToLaunch;
-		var section;
-		var launchedGridsTotalHeight = 0;
-
-		for (i = 0; launchedGridsTotalHeight < THRESHOLD && i <= tot_grids - 1; i++) {
-			gridToLaunch = grids[i];
-
-			section = $(gridToLaunch).parents('.rexpansive_section').get(0);
-
-			_launchPerfectGrid(gridToLaunch);
-			Rexbuilder_Util.editDOMLoadedSection(section);
-
-			launchedGridsTotalHeight += gridToLaunch.getBoundingClientRect().height;
-		}
-
-		// Launching IntersectionObserver on grids that have not been launched yet
-		_observeNotLaunchedGrids(grids);
-	}
-
-	/**
-	 * Calculating the expected height of the grids passed.
-	 * @param  {Array} grids
-	 * @return {Array} Expected of every grid passed
-	 * @since  2.0.4
-	 */
-	function _computeExpectedSectionsHeight(grids) {
-		var layout;
-		var tot_blocks;
-		var tot_grids = grids.length;
-
-		// DOM Elements needed
-		var blocks;
-		var $section;
-		var section;
-		var sectionData;
-
-		// Variables for the computing
-		var maxY = 0;
-		var blockY = 0;
-		var maxYBlockHeight = 0;
-		var gridWidth = 0;
-		var gridUnit = 0;
-		var blockYPixels = 0;
-		var blockHeightPixels = 0;
-		var expectedSectionHeight = 0;
-		var sectionMarginTop = 0;
-		var sectionMarginBottom = 0;
-		var sectionPaddingTop = 0;
-		var sectionPaddingBottom = 0;
-		var sectionPaddingLeft = 0;
-		var sectionPaddingRight = 0;
-		var sectionGutter = 0;
-		var isEmptySection = false;
-		var isStickySection = false;
-
-		// Loops indexes
-		var i = 0;
-		var j = 0;
-
-		// Constants
-		var MASONRY_SINGLE_HEIGHT = 5;
-		var EMPTY_SECTION_HEIGHT = 100;
-
-		// Returned Array
-		var expectedSectionsHeightArray = [];
-
-		for (i = 0; i < tot_grids; i++) {
-			expectedSectionHeight = 0;
-
-			blocks = Array.prototype.slice.call(grids[i].querySelectorAll('.perfect-grid-item'));
-			tot_blocks = blocks.length;
-			maxY = 0;
-
-			// Looping through all blocks in search of the most down positioned (= has bigger Y)
-			for (j = 0; j < tot_blocks; j++) {
-				blockY = parseInt(blocks[j].getAttribute('data-gs-y'));
-
-				if (blockY >= maxY) {
-					maxY = blockY;
-					maxYBlockHeight = parseInt(blocks[j].getAttribute('data-gs-height'));
-				}
-			}
-
-			// Section DOM Elements
-			$section = $(grids[i]).parents('.rexpansive_section');
-			section = $section.get(0);
-			sectionData = $section.children('.section-data').get(0);
-
-			// Section margins
-			sectionMarginTop = parseInt(sectionData.getAttribute('data-row_margin_top'));
-			sectionMarginBottom = parseInt(sectionData.getAttribute('data-row_margin_bottom'));
-
-			// Section paddings
-			sectionPaddingTop = sectionData.getAttribute('data-row_separator_top');
-			sectionPaddingBottom = sectionData.getAttribute('data-row_separator_bottom');
-			sectionPaddingLeft = sectionData.getAttribute('data-row_separator_left');
-			sectionPaddingRight = sectionData.getAttribute('data-row_separator_right');
-			sectionGutter = sectionData.getAttribute('data-block_distance');
-
-			expectedSectionHeight += sectionMarginTop;
-			expectedSectionHeight += sectionMarginBottom;
-			expectedSectionHeight += sectionPaddingTop - sectionGutter / 2;
-			expectedSectionHeight += sectionPaddingBottom - sectionGutter / 2;
-
-			isEmptySection = Rexbuilder_Util.hasClass(section, 'empty-section');
-
-			if (isEmptySection) {
-				expectedSectionHeight += EMPTY_SECTION_HEIGHT;
-			} else {
-				layout = sectionData.getAttribute('data-layout');
-
-				if ('fixed' === layout) {
-					// Base numbers
-					gridWidth =
-						grids[i].offsetWidth - (sectionPaddingLeft - sectionGutter / 2) - (sectionPaddingRight - sectionGutter / 2);
-					gridUnit = gridWidth / 12;
-
-					blockYPixels = gridUnit * maxY;
-					blockHeightPixels = gridUnit * maxYBlockHeight;
-
-					expectedSectionHeight += blockYPixels + blockHeightPixels;
-				} else if ('masonry' === layout) {
-					blockYPixels = MASONRY_SINGLE_HEIGHT * maxY;
-					blockHeightPixels = MASONRY_SINGLE_HEIGHT * maxYBlockHeight;
-
-					expectedSectionHeight += blockYPixels + blockHeightPixels;
-				}
-			}
-
-			isStickySection = Rexbuilder_Util.hasClass(section, 'sticky-section');
-
-			if (isStickySection) {
-				expectedSectionHeight +=
-					2 * Rexbuilder_Util.globalViewport.height + 0.2 * Rexbuilder_Util.globalViewport.height;
-			}
-
-			expectedSectionsHeightArray.push(expectedSectionHeight);
-		}
-
-		return expectedSectionsHeightArray;
-	}
-
-	/**
-	 * Launches perfectGridGalleryEditor plugin
-	 * for the passed .perfect-grid-gallery element
-	 * @param  {Element} grid   Grid to launch
-	 * @return {Boolean}        Loading ok?
-	 * @since  2.0.4
-	 */
-	function _launchPerfectGrid(grid) {
-		grid.setAttribute('data-grid-lazy', true);
-
-		// Launching perfectGrid plugin for the new grid
-		var $loadedGrid = $(grid).perfectGridGalleryEditor({
-			editorMode: Rexbuilder_Util.editorMode,
-		});
-
-		var hasLoadingSucceded = 0 !== $loadedGrid.length;
-
-		return hasLoadingSucceded;
-	}
-
-	function _observeNotLaunchedGrids(grids) {
-		var observerOptions = {
-			root: null,
-			threshold: [0, 0.5, 1],
-			rootMargin: '100% 0% 100% 0%',
-		};
-
-		var gridObserver = new IntersectionObserver(_gridIntersectionObserverCallback, observerOptions);
-
-		var tot_grids = grids.length;
-		var i = 0;
-		var gridToObserve;
-
-		for (i = 0; i < tot_grids; i++) {
-			gridToObserve = grids[i];
-
-			if (gridToObserve.hasAttribute('data-grid-lazy') && 'false' == gridToObserve.getAttribute('data-grid-lazy')) {
-				gridObserver.observe(gridToObserve);
-			}
-		}
-	}
-
-	/**
-	 * Handler of the intersection of grids. Launches
-	 * intersected grids that need launching.
-	 * @param  {Array}  entries   Grids intersected by the IntersectionObserver
-	 * @param  {Object} observer  Instance of the IntersectionObserver
-	 * @since  2.0.4
-	 */
-	function _gridIntersectionObserverCallback(entries) {
-		var tot_entries = entries.length,
-			i;
-		var gridToLaunch;
-		var section;
-
-		for (i = 0; i < tot_entries; i++) {
-			if (entries[i].isIntersecting) {
-				if (-1 !== entries[i].target.className.indexOf('perfect-grid-gallery')) {
-					gridToLaunch = entries[i].target;
-				}
-
-				if (gridToLaunch) {
-					if (!gridToLaunch.hasAttribute('data-grid-lazy') || 'false' === gridToLaunch.getAttribute('data-grid-lazy')) {
-						section = $(gridToLaunch).parents('section').get(0);
-
-						_launchPerfectGrid(gridToLaunch);
-						Rexbuilder_Util.editDOMLoadedSection(section);
-					}
-				}
-			}
-		}
-	}
-
   /**
    * Fixing both section and blocks videos proportions.
    * The function called is based on DOM attributes
@@ -1150,16 +915,9 @@ var Rexbuilder_App = (function($) {
 		if ( 0 === $grids.length ) return;
 
 		if ( Rexbuilder_Util.editorMode ) {
-			if (INTERSECTION_OBSERVER_IN_PAGE && lazy) {
-				_lazyLoadGrids();
-			} else {
-				var perf1 = performance.now()
-				$grids.perfectGridGalleryEditor({
-					editorMode: Rexbuilder_Util.editorMode,
-				});
-				var perf2 = performance.now()
-				console.log( 'Performance lancio griglie', perf2-perf1 );
-			}
+			$grids.perfectGridGalleryEditor({
+				editorMode: Rexbuilder_Util.editorMode,
+			});
 		} else {
 			// Get layout information and set this information on the grids
 			var choosedLayout = Rexbuilder_Util.chooseLayout();
@@ -1189,24 +947,14 @@ var Rexbuilder_App = (function($) {
 		}
 	}
 
-	var lazy;
-	var perf1;
-
   function init() {
-    var globalp2 = performance.now();
-		console.log( '=== INIZIO INIT ===', globalp2-globalP1 );
-		perf1 = performance.now();
-
 		Rexbuilder_Util.init();
 		Rexbuilder_Dom_Util.init();
 
 		$sections = Rexbuilder_Util.$rexContainer.find('.rexpansive_section');
 		$grids = Rexbuilder_Util.$rexContainer.find('.grid-stack-row');
 
-		lazy = false;
 		_launchGrids();
-
-		var perf2 = performance.now()
 
     Rexbuilder_Rexbutton.init();
     Rexbuilder_Rexelement.init();
@@ -1242,14 +990,7 @@ var Rexbuilder_App = (function($) {
 			});
 		}
 
-    var perf3 = performance.now();
-
-		if (!(INTERSECTION_OBSERVER_IN_PAGE && lazy)) {
-			Rexbuilder_Util.launchEditDomLayout();
-		}
-		
-		var perf4 = performance.now()
-		console.log( 'Performance EDL', perf4-perf3 );
+		Rexbuilder_Util.launchEditDomLayout();
 
     /* ===== Launching plugins only on public side ===== */
     if ( !Rexbuilder_Util.editorMode ) {
@@ -1334,10 +1075,7 @@ var Rexbuilder_App = (function($) {
 		
     if (Rexbuilder_Util.editorMode) {
       // Starting slider
-			Rexbuilder_Util.$document.on( 'rexlive:editDomLayoutEnd', function() {
-        RexSlider.init();
-        console.log('è tutto finito')
-      });
+			Rexbuilder_Util.$document.on( 'rexlive:editDomLayoutEnd', RexSlider.init );
 			// RexSlider.init();
       
       Rexbuilder_Util.launchVideoPlugins();
@@ -1345,21 +1083,10 @@ var Rexbuilder_App = (function($) {
       Rexbuilder_Util.playAllVideos();
       
       launchAccordions();
-		}
-		
-		var perf6 = performance.now()
-		console.log( 'Performance TOTALE init', perf6-perf1 );
-		
+		}		
   };
 	
   function load() {
-		console.log( '=== INIZIO LOAD ===' );
-    var pl1 = performance.now();
-
-    // if (!(INTERSECTION_OBSERVER_IN_PAGE && lazy)) {
-    //   Rexbuilder_Util.launchEditDomLayout();
-    // }
-		
     // @bugfix on other layouts than desktop with mixed customization definitions
     // @deprecated i don't like this solution, too much expensive
 
@@ -1398,12 +1125,6 @@ var Rexbuilder_App = (function($) {
 		if (IS_CHROME && !Rexbuilder_Util.editorMode) {
 			_fixWindowScrollPosition();
 		}
-
-    console.log('Performace load', performance.now()-pl1)
-
-		var perf2 = performance.now();
-		console.log( 'Performance init + load: one batch/commit removed', perf2-perf1 );
-		
 	};
 	
   /**

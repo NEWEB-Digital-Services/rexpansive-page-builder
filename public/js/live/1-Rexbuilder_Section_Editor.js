@@ -915,7 +915,7 @@ var Rexbuilder_Section_Editor = (function($) {
     $spGlRowBackground.spectrum('show');
     $spGlRowBackground.spectrum('container').css('top', ev.pageY + 'px');
     $spGlRowBackground.spectrum('container').css('left', ev.pageX + 'px');
-    _fixPickerContainerPosition( $spGlRowBackground );
+    _fixPickerContainerPosition( $spGlRowBackground, ev.currentTarget );
 
     return false;
   }
@@ -947,7 +947,7 @@ var Rexbuilder_Section_Editor = (function($) {
     $spGlRowOverlay.spectrum('show');
     $spGlRowOverlay.spectrum('container').css('top', ev.pageY + 'px');
     $spGlRowOverlay.spectrum('container').css('left', ev.pageX + 'px');
-    _fixPickerContainerPosition( $spGlRowOverlay );
+    _fixPickerContainerPosition( $spGlRowOverlay, ev.currentTarget );
 
     return false;
   }
@@ -1365,11 +1365,16 @@ var Rexbuilder_Section_Editor = (function($) {
    * Fix the picker container positon to a correctly view
    * @since 2.0.0
    */
-  var _fixPickerContainerPosition = function( $picker ) {
+  var _fixPickerContainerPosition = function( $picker, pickerTool ) {
     var container = $picker.spectrum('container')[0];
     var containerInfo = container.getBoundingClientRect();
     var topPosition = containerInfo.top
-    var pickerInfo = $picker[0].parentNode.getBoundingClientRect();
+    var pickerInfo;
+    if ( 'undefined' !== typeof pickerTool ) {
+      pickerInfo = pickerTool.parentNode.getBoundingClientRect();
+    } else {
+      pickerInfo = $picker[0].parentNode.getBoundingClientRect();
+    }
 
     var leftPosition = parseInt( container.style.left );
 
@@ -1380,7 +1385,11 @@ var Rexbuilder_Section_Editor = (function($) {
     }
 
     if ( leftPosition + container.offsetWidth + 15 >= document.body.offsetWidth ) {
-      container.style.left = ( leftPosition - 75 ) + 'px';
+      if ( leftPosition - container.offsetWidth < 0 ) {
+        container.style.left = '15px';
+      } else {
+        container.style.left = ( leftPosition - container.offsetWidth ) + 'px';
+      }
     }
   }
 

@@ -124,7 +124,6 @@
         },
 
         relayoutGrid: function() {
-            //console.log('parte relayout');
             // this.$element.isotope('reloadItems');
             this.$element.isotope('layout');
 

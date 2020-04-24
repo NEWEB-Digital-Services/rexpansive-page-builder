@@ -754,8 +754,6 @@ var Rexbuilder_Block_Editor = (function($) {
         data: e.settings.data_to_send, 
         editable: null
       });
-      //console.log("1-Rexbuilder_Block_Editor.js >> transfer\n", e.settings.data_to_send)
-      //console.log("passed:0672 || 1-Rexbuilder_Block_Editor.js");
     });
 
     /**
@@ -1425,7 +1423,7 @@ var Rexbuilder_Block_Editor = (function($) {
     $spGlBlockBackground.spectrum('show');
     $spGlBlockBackground.spectrum('container').css('top', ev.pageY + 'px');
     $spGlBlockBackground.spectrum('container').css('left', ev.pageX + 'px');
-    _fixPickerContainerPosition( $spGlBlockBackground );
+    _fixPickerContainerPosition( $spGlBlockBackground, ev.currentTarget );
 
     return false;
   }
@@ -1492,7 +1490,7 @@ var Rexbuilder_Block_Editor = (function($) {
     $spGlBlockOverlay.spectrum('show');
     $spGlBlockOverlay.spectrum('container').css('top', ev.pageY + 'px');
     $spGlBlockOverlay.spectrum('container').css('left', ev.pageX + 'px');
-    _fixPickerContainerPosition( $spGlBlockOverlay );
+    _fixPickerContainerPosition( $spGlBlockOverlay, ev.currentTarget );
 
     return false;
   }
@@ -1756,11 +1754,16 @@ var Rexbuilder_Block_Editor = (function($) {
    * Fix the picker container positon to a correctly view
    * @since 2.0.0
    */
-  var _fixPickerContainerPosition = function( $picker ) {
+  var _fixPickerContainerPosition = function( $picker, pickerTool ) {
     var container = $picker.spectrum('container')[0];
     var containerInfo = container.getBoundingClientRect();
-    var topPosition = containerInfo.top
-    var pickerInfo = $picker[0].parentNode.getBoundingClientRect();
+    var topPosition = containerInfo.top;
+    var pickerInfo;
+    if ( 'undefined' !== typeof pickerTool ) {
+      pickerInfo = pickerTool.parentNode.getBoundingClientRect();
+    } else {
+      pickerInfo = $picker[0].parentNode.getBoundingClientRect();
+    }
 
     var leftPosition = parseInt( container.style.left );
 
@@ -1771,7 +1774,11 @@ var Rexbuilder_Block_Editor = (function($) {
     }
 
     if ( leftPosition + container.offsetWidth + 15 >= document.body.offsetWidth ) {
-      container.style.left = ( leftPosition - 75 ) + 'px';
+      if ( leftPosition - container.offsetWidth < 0 ) {
+        container.style.left = '15px';
+      } else {
+        container.style.left = ( leftPosition - container.offsetWidth ) + 'px';
+      }
     }
   };
 
