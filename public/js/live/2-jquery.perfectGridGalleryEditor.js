@@ -508,12 +508,12 @@
    * @return {void}
    * @since  2.0.4
    */
-  function handleClick(e) {
+  function handleClick(event) {
     if (!Rexbuilder_Util_Editor.elementDraggingTriggered) {
       if (
         Rexbuilder_Util_Editor.editingElement &&
         Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") !=
-          e.currentTarget.getAttribute('rexbuilder-block-id')
+          event.currentTarget.getAttribute('data-rexbuilder-block-id')
       ) {
         Rexbuilder_Util_Editor.activateElementFocus = false;
         Rexbuilder_Util_Editor.endEditingElement();
@@ -2449,7 +2449,7 @@
               "rexbuilder-block-id"
             ) != $elem.data("rexbuilder-block-id"))
         ) {
-          Rexbuilder_Util_Editor.focusedElement;
+          Rexbuilder_Util_Editor.focusedElement = $elem;
           gallery.unFocusElement(Rexbuilder_Util_Editor.focusedElement);
         }
       }
@@ -2472,16 +2472,22 @@
     },
 
     unFocusElementEditing: function($elem) {
-      $elem.removeClass("focused");
+      if ( $elem.length > 0 ) {
+        $elem.removeClass("focused");
+      }
     },
 
     focusElement: function($elem) {
-      $elem.addClass("focused");
+      if ( $elem.length > 0 ) {
+        $elem.addClass("focused");
+      }
       this.$section.addClass("focusedRow");
     },
 
     unFocusElement: function($elem) {
-      $elem.removeClass("focused");
+      if ( $elem.length > 0 ) {
+        $elem.removeClass("focused");
+      }
       this.$section.removeClass("focusedRow");
     },
 

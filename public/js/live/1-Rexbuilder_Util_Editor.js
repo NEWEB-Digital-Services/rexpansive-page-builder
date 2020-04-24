@@ -95,6 +95,8 @@ var Rexbuilder_Util_Editor = (function($) {
   };
 
   var endEditingElement = function() {
+    console.log('endEditingElement')
+    console.trace()
     var galleryEditorInstance = Rexbuilder_Util_Editor.editedGallery;
 
     clearTimeout(galleryEditorInstance.doubleDownTimer);
@@ -111,10 +113,12 @@ var Rexbuilder_Util_Editor = (function($) {
   };
 
   var startEditingElement = function() {
+    console.log('startEditingElement')
     if (
       Rexbuilder_Util_Editor.editingElement &&
       Rexbuilder_Util_Editor.editingGallery
     ) {
+      console.log('POSSIBLE startEditingElement')
       var gallery = Rexbuilder_Util_Editor.editedGallery;
       var $elem = Rexbuilder_Util_Editor.editedElement;
       gallery.unFocusElementEditing($elem);
