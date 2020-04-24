@@ -3,10 +3,14 @@
  *  LIVE
  */
 #{$rexclassic-class} {
-  .section-toolBox {
-    .tools {
-      margin-left: 5px;
-      margin-right: 5px;
-    }
-  }
+	&#{$builder-active} {
+		overflow-x: hidden;
+	}
+	
+	.section-toolBox {
+		.tools {
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+	}
 }

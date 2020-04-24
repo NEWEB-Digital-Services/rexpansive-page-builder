@@ -1145,9 +1145,10 @@ var TextEditor = (function ($) {
       //   cleanAttrs: ['dir'],
       // });
 
+      console.log(event)
+
       var index = this.base.exportSelection().editableElementIndex;
       this.base.setContent(event.customHTML, index);
-      
     }
   });
 
@@ -1184,7 +1185,7 @@ var TextEditor = (function ($) {
       this.traceBTN = null;
       this.traceEditor = null;
 
-      this.subscribe("editableInput", this.handleEventInput.bind(this));
+      // this.subscribe("editableInput", this.handleEventInput.bind(this));
       this.subscribe("editableKeydown", this.handleEventKeyDown.bind(this));
       this.subscribe("editableKeyup", this.handleEventKeyUp.bind(this));
       this.subscribe("keyup", this.handleEventKeyUp.bind(this));
@@ -1341,7 +1342,7 @@ var TextEditor = (function ($) {
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     },
 
-    handleEventInput: function (eventObj, target) {},
+    // handleEventInput: function (eventObj, target) {},
 
     handleEventKeyUp: function (event, target) {
       // Check if has to update height always on update height of text-wrap
@@ -3800,8 +3801,10 @@ var TextEditor = (function ($) {
    */
   var _addEditableInputEvents = function () {
     editorInstance.subscribe("editableInput", function (event, elem) {
-			event.preventDefault();
-			event.stopPropagation();
+     //  if ( event instanceof Event ) {
+  			// event.preventDefault();
+  			// event.stopPropagation();
+     //  }
 
 			var $elem = $(elem).parents(".grid-stack-item");
 
