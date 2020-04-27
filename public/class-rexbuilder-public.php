@@ -1643,6 +1643,10 @@ class Rexbuilder_Public
 	 *    @since    1.0.0
 	 */
 	public function print_vertical_dots() {
+		$dots_active = apply_filters('rexbuilder_dots_active', true);
+
+		if (!$dots_active) return;
+
 		global $post;
 
 		if ( ! $this->builder_active_on_this_post_type() ) return;
