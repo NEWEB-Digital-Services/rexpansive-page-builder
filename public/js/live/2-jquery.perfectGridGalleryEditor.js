@@ -400,9 +400,9 @@
       .find(".text-wrap")
       .blur();
 
-    if (Rexbuilder_Util_Editor.editingElement) {
-      Rexbuilder_Util_Editor.endEditingElement();
-    }
+    // if (Rexbuilder_Util_Editor.editingElement) {
+    //   Rexbuilder_Util_Editor.endEditingElement();
+    // }
   }
 
   /**
@@ -448,6 +448,8 @@
    * @since  2.0.4    move the handler oustide the plugin declaration
    */
   function handleDbClick(e) {
+    if ( 'default' !== Rexbuilder_Util.activeLayout ) return false;
+
     if (
       !(
         Rexbuilder_Util_Editor.editingElement ||
@@ -2477,6 +2479,12 @@
       }
     },
 
+    focusElementEditing: function($elem) {
+      if ( $elem.length > 0 ) {
+        $elem.addClass("focused");
+      }
+    },
+
     focusElement: function($elem) {
       if ( $elem.length > 0 ) {
         $elem.addClass("focused");
@@ -2610,9 +2618,9 @@
 
       function resizeStartHandler(event, ui) {
         if (!ui.element.is("span")) {
-          if (Rexbuilder_Util_Editor.editingElement) {
-            Rexbuilder_Util_Editor.endEditingElement();
-          }
+          // if (Rexbuilder_Util_Editor.editingElement) {
+          //   Rexbuilder_Util_Editor.endEditingElement();
+          // }
           gallery.properties.resizeHandle = $(event.toElement).attr( "data-axis" );
           block = event.target;
           blockContent = event.target.querySelector('.grid-item-content');
@@ -2807,8 +2815,6 @@
         $pholder.css('transform','scale(0.5)');                             // scale the popup
         $pholder.css('transformOrigin','top left');                         // move the scale origin point
 
-        //console.log("$section\n",gallery.$section);
-
         var rex_block_id = $originalElement.attr("data-rexbuilder-block-id");
         var sectionID = gallery.$section.attr("data-rexlive-section-id");
         var modelNumber =
@@ -2822,7 +2828,6 @@
         };
 
         e.originalEvent.dataTransfer.setData("text/plain", JSON.stringify(sectionTarget));
-        // console.log("Status: START\ngallery.$element.on('dragstart', '.drag-to-section', function(e)\n{",event.clientX,event.clientY,"(x,y)}");
       });
 
       /**
@@ -2830,7 +2835,6 @@
        * @since 2.0.0
        */
       gallery.$element.on('drag', '.drag-to-section', function(e) {
-        //console.log("Status: DEFINE DRAG STYLE\ngallery.$element.on('drag', '.drag-to-section', function(e) { ... }")
         if (Rexbuilder_Util_Editor.dragAndDropFromParent) {
           return;
         }

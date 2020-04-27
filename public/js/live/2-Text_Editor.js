@@ -942,30 +942,22 @@ var TextEditor = (function ($) {
 
     handleKeydown: function (event, editable) {
       // If the user hits escape, toggle the data-allow-context-menu attribute
-      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ESCAPE)) {
-        var $elem = $(editable).parents('.grid-stack-item');
-        var $gallery = $elem.parents('.perfect-grid-gallery');
-        var gallery = $gallery.data('plugin_perfectGridGalleryEditor');
+      if ( !MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ESCAPE)) return false;
 
-        Rexbuilder_Util_Editor.focusedElement = $elem;
-        Rexbuilder_Util_Editor.elementIsDragging = false;
+      editable.removeAttribute('data-medium-focused');
 
-        TextEditor.triggerMEEvent({
-          "name": "blur",
-          "data": event,
-          editable: editable
-        });
+      var $elem = $(editable).parents('.grid-stack-item');
+      var $gallery = $elem.parents('.perfect-grid-gallery');
+      var gallery = $gallery.data('plugin_perfectGridGalleryEditor');
 
-        if (Rexbuilder_Util_Editor.editedTextWrap) {
-          Rexbuilder_Util_Editor.editedTextWrap.blur();
-        }
-        gallery.focusElement($elem);
-        Rexbuilder_Util_Editor.editingGallery = false;
-        Rexbuilder_Util_Editor.editedGallery = null;
-        Rexbuilder_Util_Editor.editingElement = false;
-        Rexbuilder_Util_Editor.editedElement = null;
-        Rexbuilder_Util_Editor.editedTextWrap = null;
-      }
+      Rexbuilder_Util_Editor.focusedElement = $elem;
+      Rexbuilder_Util_Editor.elementIsDragging = false;
+
+      TextEditor.triggerMEEvent({
+        "name": "blur",
+        "data": event,
+        editable: editable
+      });
     }
   });
 
@@ -1139,14 +1131,6 @@ var TextEditor = (function ($) {
     },
 
     handleHtmlEditorSave: function(event) {
-
-      // this.base.pasteHTML(event.customHTML, {
-      //   cleanPastedHTML: false,
-      //   cleanAttrs: ['dir'],
-      // });
-
-      console.log(event)
-
       var index = this.base.exportSelection().editableElementIndex;
       this.base.setContent(event.customHTML, index);
     }
@@ -1155,18 +1139,18 @@ var TextEditor = (function ($) {
   var HideRowToolsOnEditing = MediumEditor.Extension.extend({
     name: 'hide-row-tools-on-editing',
     init: function () {
-      this.subscribe("blur", this.handleBlur.bind(this));
       this.subscribe("focus", this.handleFocus.bind(this));
-    },
-
-    handleBlur: function(event,editable) {
-      $(editable).parents('.grid-stack-item').removeClass('item--me-focus');
-      $(editable).parents('.rexpansive_section').removeClass('block-editing');
+      this.subscribe("blur", this.handleBlur.bind(this));
     },
 
     handleFocus: function(event,editable) {
       $(editable).parents('.grid-stack-item').addClass('item--me-focus');
       $(editable).parents('.rexpansive_section').addClass('block-editing');
+    },
+
+    handleBlur: function(event,editable) {
+      $(editable).parents('.grid-stack-item').removeClass('item--me-focus');
+      $(editable).parents('.rexpansive_section').removeClass('block-editing');
     }
   });
 
@@ -1352,8 +1336,6 @@ var TextEditor = (function ($) {
 
       // If text is pasted need to update block height
       // if (MediumEditor.util.isKey(event, this.keyCode.V) && MediumEditor.util.isMetaCtrlKey(event)) {
-			// 	console.log( 'incollo', target );
-				
       //   Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
       // }
 
@@ -1611,21 +1593,25 @@ var TextEditor = (function ($) {
       this.traceEditor = null;
       this.method = 4;
       this.submethod = 3;
+      this.toolbarWrapClass = 'me-insert-media-button';
 
       // Create a mirror image to handling the resize of an inline image
       this.mirrorResize = document.createElement('img');
       this.mirrorResize.classList.add("me-resize-mirror");
-      $(document.getElementsByTagName("body")[0]).append(this.mirrorResize);
+      document.body.appendChild(this.mirrorResize);
+      // $(document.getElementsByTagName("body")[0]).append(this.mirrorResize);
 
       // Create a mirror span to handling the resize of an inline embed
       this.mirrorVideoResize = document.createElement('span');
       this.mirrorVideoResize.classList.add("me-resize-mirror");
-      $(document.getElementsByTagName("body")[0]).append(this.mirrorVideoResize);
+      document.body.appendChild(this.mirrorVideoResize);
+      // $(document.getElementsByTagName("body")[0]).append(this.mirrorVideoResize);
 
       // Create a mirror span to handling the resize of an inline svg
       this.mirrorSVGResize = document.createElement('span');
       this.mirrorSVGResize.classList.add("me-resize-mirror");
-      $(document.getElementsByTagName("body")[0]).append(this.mirrorSVGResize);
+      document.body.appendChild(this.mirrorSVGResize);
+      // $(document.getElementsByTagName("body")[0]).append(this.mirrorSVGResize);
 
       this.resizeSizes = document.createElement('span');
       this.resizeSizes.classList.add("me-resize-sizes");
@@ -1637,7 +1623,8 @@ var TextEditor = (function ($) {
       this.imageEditToolbar.classList.add("medium-toolbar-arrow-under");
       // this.imageEditToolbar.innerHTML = tmpl("tmpl-me-image-edit", {});
       this.imageEditToolbar.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-me-image-edit");
-      $(document.getElementsByTagName("body")[0]).append(this.imageEditToolbar);
+      document.body.appendChild(this.imageEditToolbar);
+      // $(document.getElementsByTagName("body")[0]).append(this.imageEditToolbar);
 
       this.inlineSVGEditToolbar = document.createElement("div");
       this.inlineSVGEditToolbar.id = "me-edit-inline-svg-toolbar";
@@ -1645,9 +1632,10 @@ var TextEditor = (function ($) {
       this.inlineSVGEditToolbar.classList.add("medium-toolbar-arrow-under");
       // this.inlineSVGEditToolbar.innerHTML = tmpl("tmpl-me-inline-svg-edit",{});
       this.inlineSVGEditToolbar.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-me-inline-svg-edit");
-      $(document.getElementsByTagName("body")[0]).append(this.inlineSVGEditToolbar);
+      document.body.appendChild(this.inlineSVGEditToolbar);
+      // $(document.getElementsByTagName("body")[0]).append(this.inlineSVGEditToolbar);
 
-      initPicker( $(this.inlineSVGEditToolbar).find('.me-svg-color')[0], this.applySVGColor );
+      initPicker( this.inlineSVGEditToolbar.querySelector('.me-svg-color'), this.applySVGColor );
 
       // Creation of the Inline Video Management Toolbar
       this.videoEditToolbar = document.createElement("div");
@@ -1656,23 +1644,24 @@ var TextEditor = (function ($) {
       this.videoEditToolbar.classList.add("medium-toolbar-arrow-under");
       // this.videoEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
       this.videoEditToolbar.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-me-image-edit");
-      document.getElementsByTagName("body")[0].append(this.videoEditToolbar);
+      document.body.appendChild(this.videoEditToolbar);
 
       // Create insert media button, that stays at bottom-right of a text content
       // Append it to the body, to reuse it instead of multiple create id
       this.mediaBtn = document.createElement("div");
       this.mediaBtn.contentEditable = false;
-      this.mediaBtn.classList.add("me-insert-media-button");
+      this.mediaBtn.classList.add( this.toolbarWrapClass );
       this.mediaBtn.style.display = "none";
       // this.mediaBtn.innerHTML = tmpl("tmpl-me-insert-media-button", {});
       this.mediaBtn.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-me-insert-media-button");
-      $(document.getElementsByTagName("body")[0]).append(this.mediaBtn);
+      document.body.appendChild(this.mediaBtn);
+      // $(document.getElementsByTagName("body")[0]).append(this.mediaBtn);
       //$(document.getElementsByTagName("body")[0]).append(this.mediaBtn);
 
-      this.mediaLibraryBtn = $(this.mediaBtn).find(".me-insert-image")[0];
-      this.mediaEmbedBtn = $(this.mediaBtn).find(".me-insert-embed")[0];
-      this.mediaEmbedInput = $(this.mediaBtn).find(".me-insert-embed__value")[0];
-      this.inlineSVGBtn = $(this.mediaBtn).find('.me-insert-inline-svg')[0];
+      this.mediaLibraryBtn = this.mediaBtn.querySelector(".me-insert-image");
+      this.mediaEmbedBtn = this.mediaBtn.querySelector(".me-insert-embed");
+      this.mediaEmbedInput = this.mediaBtn.querySelector(".me-insert-embed__value");
+      this.inlineSVGBtn = this.mediaBtn.querySelector('.me-insert-inline-svg');
 
       // View/Hide the Media Insert button
       this.subscribe("blur", this.handleBlur.bind(this));
@@ -2212,10 +2201,6 @@ var TextEditor = (function ($) {
         $el = $el.parents(".medium-editor-action");
       }
 
-      if( $el.hasClass("me-svg-color") ) {
-
-      }
-
       if( $el.hasClass("me-svg-replace") ) {
         var svg_ID = this.traceSVG.getAttribute('xlink:href').replace('#','');
         var data = {
@@ -2237,14 +2222,6 @@ var TextEditor = (function ($) {
         this.hideEditInlineSVGToolbar();
       }
     },
-
-    /*handleVideoEdit: function(event) {
-      var $vdl = $(event.target);
-      if( $vdl.hasClass("me-image-delete") ) {
-          $(this.traceVideo).remove();
-          this.hideEditVideoToolbar();
-      }
-    },*/
 
     viewEditImgToolbar: function(target) {
       this.traceImg = target;
@@ -2396,7 +2373,6 @@ var TextEditor = (function ($) {
         },
         start: function(event, ui) {
           that.resizeSizes.style.display = "block";
-          //console.log("START Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
         },
         resize: function(event,ui) {
           that.placeMirrorVideo(event.target);
@@ -2406,7 +2382,6 @@ var TextEditor = (function ($) {
         },
         stop: function(event, ui) {
           that.resizeSizes.style.display = "none";
-          //console.log("STOP Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
         },
       });
     },
@@ -2438,21 +2413,18 @@ var TextEditor = (function ($) {
 
       el.style.top = imageCoords.top + window.scrollY + "px";
       el.style.left = imageCoords.left + window.scrollX + "px";
-      // console.log(el.style.top,"\n",el.style.left)
     },
 
     placeMirrorVideo: function(el) {
       var videoCoords = this.traceVideo.getBoundingClientRect();
       el.style.top = videoCoords.top + window.scrollY + "px";
       el.style.left = videoCoords.left + window.scrollX + "px";
-      // console.log(el.style.top,"\n",el.style.left)
     },
 
     placeMirrorSVG: function(el) {
       var svgCoords = this.traceSVG.getBoundingClientRect();
       el.style.top = svgCoords.top + window.scrollY + "px";
       el.style.left = svgCoords.left + window.scrollX + "px";
-      // console.log(el.style.top,"\n",el.style.left)
     },
 
     placeEditImgToolbar: function () {
@@ -3840,6 +3812,9 @@ var TextEditor = (function ($) {
      * @since  2.0.4
      */
     editorInstance.subscribe("blur", function (event, elem) {
+      // if user click on a media btn, do not blur
+      if ( 'click' == event.type && 'undefined' !== typeof editorInstance.getExtensionByName('insert-media') && 0 !== $(event.srcElement).parents('.' + editorInstance.getExtensionByName('insert-media').toolbarWrapClass).length ) return false;
+
       // view or hide the little T icon
       var $current_textWrap = $(elem);
       var $top_tools = $current_textWrap.parents('.grid-stack-item').find('.block-toolBox__editor-tools');
@@ -3860,6 +3835,10 @@ var TextEditor = (function ($) {
 
       // enable dragging on gristack
       pgge.properties.gridstackInstance.enableMove(true);
+
+      Rexbuilder_Util_Editor.activateElementFocus = false;
+      Rexbuilder_Util_Editor.endEditingElement();
+      Rexbuilder_Util_Editor.activateElementFocus = true;
     });
 
 		editorInstance.subscribe('editablePaste', function (event, target) {
@@ -3901,13 +3880,17 @@ var TextEditor = (function ($) {
    * @since  2.0.4
    */
   function textContentEmpty( elem ) {
+    // no childre, text element empty
     if ( 0 === elem.childElementCount ) return true;
+
+    // no text, one children as the span fix
     if ( '' === elem.textContent.trim() && 1 === elem.childElementCount && elem.querySelector('.text-editor-span-fix') ) return true;
 
     var totImgs = Array.prototype.slice.call( elem.getElementsByTagName('img') ).length;
     var totSvgs = Array.prototype.slice.call( elem.getElementsByTagName('svg') ).length;
     var totIframes = Array.prototype.slice.call( elem.getElementsByTagName('iframe') ).length;
 
+    // text empty and no images, icons or embed as childrens
     return ( 0 === ( totImgs + totSvgs + totIframes ) && '' === elem.textContent.trim() );
   }
 

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>text editor: foucs & blur</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+	<style>
+		.wrap {
+			padding: 50px;
+			max-width: 1024px;
+			margin: 0 auto;
+			background: beige;
+		}
+		#editor {
+			outline: 1px dotted #000;
+		}
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div id="editor"></div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+	<script>
+;(function() {
+	function handleDOMContentLoaded(event) {
+		var editor = document.getElementById('editor');
+		window.mdEditor = new MediumEditor( editor );
+
+		window.mdEditor.subscribe('focus', function(event, element) {
+			console.log('handle focus')
+			editor.style.outlineStyle = 'solid';
+		});
+
+		window.mdEditor.subscribe('blur', function(event, element) {
+			console.log('handle blur')
+			console.log(event)
+			editor.style.outlineStyle = 'dotted';
+		});
+
+		window.mdEditor.subscribe('editableKeydown', function(event, element) {
+			if ( !MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ESCAPE)) return;
+
+			console.log('editableKeydown: ESC')
+			window.mdEditor.trigger('blur', event, element)
+			element.removeAttribute('data-medium-focused')
+			element.blur()
+		})
+	}
+
+	document.addEventListener('DOMContentLoaded', handleDOMContentLoaded);
+}())
+	</script>
+</body>
+</html>

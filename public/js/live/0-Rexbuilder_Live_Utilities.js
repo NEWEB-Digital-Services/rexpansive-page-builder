@@ -92,7 +92,6 @@ var Rexbuilder_Live_Utilities = (function($) {
 
 	var _hideAllTools = function() {
 		Rexbuilder_Util_Editor.manageElement = false;
-		// Rexbuilder_Util.$rexContainer.find('.rexpansive_section').removeClass('focusedRow').removeClass('activeRowTools').removeClass('highLightRow');
 		Rexbuilder_Util.$rexContainer.find('.rexpansive_section').removeClass('focusedRow').removeClass('activeRowTools');
 		Rexbuilder_Util.$rexContainer.find('.grid-stack-item').removeClass('focused');
 		Rexbuilder_Util.$rexContainer.find('.tool-button-floating--active').removeClass('tool-button-floating--active');
@@ -407,19 +406,19 @@ var Rexbuilder_Live_Utilities = (function($) {
 	};
 
 	var addWindowListeners = function() {
-		Rexbuilder_Util.$window.click(function(e) {
-			var $target = $(e.target);
-			if (
-				Rexbuilder_Util_Editor.editingElement &&
-				$target.parents(".grid-stack-item").length == 0 &&
-				$target.parents(".media-frame").length == 0 &&
-				!$target.hasClass("grid-stack-item")
-			) {
-				Rexbuilder_Util_Editor.activateElementFocus = false;
-				Rexbuilder_Util_Editor.endEditingElement();
-				Rexbuilder_Util_Editor.activateElementFocus = true;
-			}
-		});
+		// Rexbuilder_Util.$window.click(function(event) {
+		// 	var $target = $(event.target);
+		// 	if (
+		// 		Rexbuilder_Util_Editor.editingElement &&
+		// 		$target.parents(".grid-stack-item").length == 0 &&
+		// 		$target.parents(".media-frame").length == 0 &&
+		// 		!$target.hasClass("grid-stack-item")
+		// 	) {
+		// 		Rexbuilder_Util_Editor.activateElementFocus = false;
+		// 		Rexbuilder_Util_Editor.endEditingElement();
+		// 		Rexbuilder_Util_Editor.activateElementFocus = true;
+		// 	}
+		// });
 
 		function handleKeydown(e) {
 			if ((PLATFORM_IS_MAC ? e.metaKey : e.ctrlKey) && e.keyCode == 83) {
@@ -455,9 +454,10 @@ var Rexbuilder_Live_Utilities = (function($) {
 				Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			} else if (e.keyCode === 27) {
 				// ESC pressed
-				if (Rexbuilder_Util_Editor.editingGallery) {
-					Rexbuilder_Util_Editor.endEditingElement();
-				} else {
+				// if (Rexbuilder_Util_Editor.editingGallery) {
+				// 	// Rexbuilder_Util_Editor.endEditingElement();
+				// } else {
+				if ( !Rexbuilder_Util_Editor.editingGallery ) {
 					var data = {
 						eventName: 'rexlive:esc_pressed'
 					};
