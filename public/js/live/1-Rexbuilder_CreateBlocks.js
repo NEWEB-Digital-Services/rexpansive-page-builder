@@ -72,16 +72,12 @@ var Rexbuilder_CreateBlocks = (function ($) {
     
     var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, new_w, new_h, "text");
     var el = $el[0];
-    // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
-    //     galleryInstance.addScrollbar($el);
-    // }
     TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
 
-    // Rexbuilder_Block_Editor.updateBlockTools($el);
     Rexbuilder_Live_Utilities.launchTooltips();
 
+    // focus the text editor, to fast text insertion
     var event = jQuery.Event("dblclick");
-    // event.target = $el.find(".rexlive-block-drag-handle");
     event.target = el;
     event.offsetY = 0;
     galleryInstance.$element.trigger(event);

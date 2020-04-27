@@ -46,7 +46,6 @@ var TextEditor = (function ($) {
    */
   var _addElementToTextEditor = function ( textWrap ) {
     editorInstance.addElements( textWrap );
-    // _addMediumInsertToElement($textWrap);
   };
 
   /**
@@ -1760,26 +1759,28 @@ var TextEditor = (function ($) {
     traceInput: function (event) {
       // If the event happens on the text editor, save the selection
       if (0 === $(event.target).parents('.me-insert-media-button').length) {
-        switch (this.method) {
-          case 1:
-          case 2:
-            // Method 1) and 2)
-            this.base.saveSelection();
-            break;
-          case 3:
-            // Method 3)
-            if (this.traceSelection) {
-              rangy.removeMarkers(this.traceSelection);
-            }
-            this.traceSelection = rangy.saveSelection();
-            break;
-          case 4:
-            // Method 4)
-            var editor = this.base.getFocusedElement();
-            this.traceSelection = rangy.getSelection().saveCharacterRanges(editor);
-            break;
-          default:
-            break;
+        if ( !MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ESCAPE) ) {
+          switch (this.method) {
+            case 1:
+            case 2:
+              // Method 1) and 2)
+              this.base.saveSelection();
+              break;
+            case 3:
+              // Method 3)
+              if (this.traceSelection) {
+                rangy.removeMarkers(this.traceSelection);
+              }
+              this.traceSelection = rangy.saveSelection();
+              break;
+            case 4:
+              // Method 4)
+              var editor = this.base.getFocusedElement();
+              this.traceSelection = rangy.getSelection().saveCharacterRanges(editor);
+              break;
+            default:
+              break;
+          }
         }
       }
 
@@ -4002,14 +4003,18 @@ var TextEditor = (function ($) {
 
   var init = function () {
     toolbarActiveOnRexbutton = false;
-    rangy.init();
     _createToolbarContainer();
     _createEditor();
     _linkDocumentListeners();
   };
 
+  function load() {
+    rangy.init();
+  }
+
   return {
     init: init,
+    load: load,
     launchTextEditors: launchTextEditors,
     addElementToTextEditor: _addElementToTextEditor,
     destroyMediumEditor: _destroyMediumEditor,

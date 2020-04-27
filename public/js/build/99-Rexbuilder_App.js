@@ -1091,6 +1091,7 @@ var Rexbuilder_App = (function($) {
     // @deprecated i don't like this solution, too much expensive
 
     if ( Rexbuilder_Util.editorMode ) {
+      TextEditor.load();
       Rexbuilder_Util_Editor.load();
 			Rexbuilder_Live_Utilities.load();
     } else {

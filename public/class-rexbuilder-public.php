@@ -223,10 +223,10 @@ class Rexbuilder_Public
 				wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tippy.all.min.js', array( 'jquery' ), null, true );
 	
 				// RANGY
-				wp_enqueue_script( 'rangy-core', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/rangy-core.js', array( 'jquery' ), null, true );
-				wp_enqueue_script( 'rangy-classapplier', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/rangy-classapplier.js', array( 'jquery' ), null, true );
-				wp_enqueue_script( 'rangy-selectionsaverestore', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/rangy-selectionsaverestore.js', array( 'jquery' ), null, true );
-				wp_enqueue_script( 'rangy-textrange', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/rangy-textrange.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rangy-core', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-core.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rangy-classapplier', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-classapplier.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rangy-selectionsaverestore', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-selectionsaverestore.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rangy-textrange', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-textrange.js', array( 'jquery' ), null, true );
 
 				// SPECTRUM COLOR PICKER
 				wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . 'public/js/vendor/spectrum.js', array('jquery'), $ver, true);
