@@ -1,12 +1,16 @@
 var Rex_Navigator = (function ($) {
   'use strict';
   /* -- Handle dot behaviour --- */
-  var navigationItems;
+  var verticalNav;
+  var $touch_navigation_links;
+	var navigationItems;
+	
   var $sections;
   var sections;
-  var tot_sections;
-  var $touch_navigation_links;
-  var verticalNav;
+	var tot_sections;
+	var sectionsWithID;
+	var tot_sectionsWithID;
+
 
   var _updateNavigatorDom = function ($navigatorWrap) {
     var $sections = Rexbuilder_Util.$rexContainer.children(".rexpansive_section");
@@ -25,65 +29,71 @@ var Rex_Navigator = (function ($) {
         $navigatorWrap.children("ul").append(navItem);
       }
     });
-  }
+	}
 
+	var updateNavigation = function () {
+    var $this;
+    var activeSection;
+    var activeSectionIndex;
+    $sections.each(function () {
+      $this = $(this);
+      if ( null !== this.getAttribute('id') && this.getAttribute('id') != '') {
+        activeSection = document.querySelector('.vertical-nav a[href="#' + this.getAttribute('id') + '"]');
+        if ( activeSection ) {
+          activeSectionIndex = activeSection.getAttribute('data-number') - 1;
+          if (($this.offset().top - Rexbuilder_Util.globalViewport.height / 2 < Rexbuilder_Util.$window.scrollTop()) && ($this.offset().top + $this.height() - Rexbuilder_Util.globalViewport.height / 2 > Rexbuilder_Util.$window.scrollTop())) {
+            navigationItems.eq(activeSectionIndex).addClass('is-selected');
+          } else {
+            navigationItems.eq(activeSectionIndex).removeClass('is-selected');
+          }
+        }
+      }
+    });
+  }
+	
 	/**
 	 * Updates the active element of the navigator.
 	 * @returns	{void}
 	 * @since		?.?.?
 	 * @version	2.0.4			Changed in vanilla js
+	 * 
+	 * Use this function if you want to keep in memory
+	 * last section with an ID visited
 	 */
-  function updateNavigation() {
+  function NEW_updateNavigation() {
 		var section;
-		var sectionID;
-		// var sectionHeight;
 		var sectionTop;
 
 		var windowScrollTop = Rexbuilder_Util.$window.scrollTop();
-		var activeSection;
+		var verticalNavLink;
 		var activeSectionIndex;
 
-		var i = 0;
-
+		// Cleaning in case we aren't "under" any section
 		navigationItems.removeClass('is-selected');
 
-		for (; i < tot_sections; i++) {
-			section = sections[i];
-			sectionID = section.getAttribute('id');
+		var i = tot_sectionsWithID - 1;
 
-			if (null !== sectionID && '' !== sectionID) {
-				// activeSection = document.querySelector('.vertical-nav a[href="#' + sectionID + '"]');
-				activeSection = document.querySelector('.rex-vertical-nav a[href="#' + sectionID + '"]');
+		for (; i >= 0; i--) {
+			section = sectionsWithID[i];
+			verticalNavLink = document.querySelector('.vertical-nav a[href="#' + section.getAttribute('id') + '"]');
 
-				if (activeSection) {
-					// String - Number = Number
-					activeSectionIndex = activeSection.getAttribute('data-number') - 1;
+			if (verticalNavLink) {
+				// String - Number = Number
+				activeSectionIndex = verticalNavLink.getAttribute('data-number') - 1;
 
-					// sectionHeight = $(section).height();
-					sectionTop = $(section).offset().top;
+				sectionTop = $(section).offset().top;
 
-					if (windowScrollTop < sectionTop) {
-						activeSectionIndex--;
+				if (windowScrollTop >= sectionTop) {
+					// The first section that has less scrollTop
+					// than the window will become the selected section,
+					// because the user is "under" that section
+					navigationItems.removeClass('is-selected');
 
-						// console.log({ activeSectionIndex });
-
-						if (activeSectionIndex !== -1) {
-							navigationItems.eq(activeSectionIndex).addClass('is-selected');
-						}
-
-						break;
+					if (activeSectionIndex !== -1) {
+						navigationItems.eq(activeSectionIndex).addClass('is-selected');
 					}
 
-					// if (
-					// 	sectionTop - Rexbuilder_Util.globalViewport.height / 2 < windowScrollTop &&
-					// 	sectionTop + sectionHeight - Rexbuilder_Util.globalViewport.height / 2 > windowScrollTop
-					// ) {
-					// 	console.log( {activeSectionIndex} );
-
-					// 	navigationItems.eq(activeSectionIndex).addClass('is-selected');
-					// } else {
-					// 	navigationItems.eq(activeSectionIndex).removeClass('is-selected');
-					// }
+					break;
 				}
 			}
 		}
@@ -93,11 +103,17 @@ var Rex_Navigator = (function ($) {
 		$sections = Rexbuilder_Util.$rexContainer.children('.rexpansive_section');
 		sections = $sections.get();
 		tot_sections = sections.length;
+
+		sectionsWithID = sections.filter(function (section) {
+			return section.getAttribute('id') && '' !== section.getAttribute('id');
+		});
+
+		tot_sectionsWithID = sectionsWithID.length
 	}
 
   var updateNavigationItems = function () {
-    // navigationItems = Rexbuilder_Util.$document.find('.vertical-nav a');
-    navigationItems = Rexbuilder_Util.$document.find('.rex-vertical-nav a');
+    navigationItems = Rexbuilder_Util.$document.find('.vertical-nav a');
+    // navigationItems = Rexbuilder_Util.$document.find('.rex-vertical-nav a');
   };
 
   var updateTouchNavigationLinks = function () {
@@ -266,7 +282,7 @@ var Rex_Navigator = (function ($) {
 		}
 	}
 
-  var init = function () {
+  function init() {
 		var $navigatorWrap = Rexbuilder_Util.$document.find("nav[class*=\"vertical-nav\"]");
 
     if ($navigatorWrap.length != 0 && $navigatorWrap.hasClass("nav-editor-mode-disable")) {

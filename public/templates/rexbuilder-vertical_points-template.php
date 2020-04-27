@@ -10,7 +10,7 @@
  * @subpackage Rexbuilder/admin/partials
  */
 ?>
-<!-- <p id="vertical-nav-label" class="label"></p> -->
+<p id="vertical-nav-label" class="label"></p>
 <nav class="vertical-nav">
 	<ul>
 	<?php
