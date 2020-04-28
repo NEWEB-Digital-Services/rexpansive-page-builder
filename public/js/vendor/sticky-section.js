@@ -497,7 +497,7 @@
 			if ( videoControls && hasClass( videoControls, 'rex-video__controls' ) ) {
 				stickyVideoControls = document.createElement('div');
 				addClass(stickyVideoControls, 'sticky-video-controls');
-				videoEl.insertAdjacentElement('afterend', stickyVideoControls);
+				videoControls.insertAdjacentElement('afterend', stickyVideoControls);
 			}
 		} else if ('' !== section.style.backgroundImage || hasClass(section, 'section-w-image')) {
 			var adjacent = section.querySelector('.responsive-overlay');

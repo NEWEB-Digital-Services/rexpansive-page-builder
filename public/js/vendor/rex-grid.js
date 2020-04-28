@@ -319,11 +319,11 @@
 	function _checkFullHeight() {
 		if ( this.properties.fullHeight ) {
 			var heightInUnits = _calculateGridHeight.call( this );
-			var topSeparator = this.properties.gridTopSeparator - this.properties.halfSeparatorTop
-			var bottomSeparator = this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom
+			var topSeparator = this.properties.gridTopSeparator - this.properties.halfSeparatorTop;
+			var bottomSeparator = this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom;
 
 			if ( 0 !== heightInUnits ) {
-				this.properties.singleHeight = (globalViewportSize.height - (topSeparator + bottomSeparator)) / heightInUnits;
+				this.properties.singleHeight = ( globalViewportSize.height - ( topSeparator + bottomSeparator ) ) / heightInUnits;
 			}
 		}
 	}
@@ -1411,6 +1411,15 @@
 		}
 
 		return null;
+	}
+
+	/**
+	 * Function to programmatically update the viewport size information
+	 * @return {void}
+	 * @since  2.0.4
+	 */
+	RexGrid.updateViewportSize = function() {
+		globalViewportSize = Utils.viewport();
 	}
 
 	return RexGrid;

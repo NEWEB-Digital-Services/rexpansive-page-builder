@@ -216,7 +216,7 @@ var Rexbuilder_App = (function($) {
      * @return {void}
      */
     function handleClickStickyVideoControls(ev) {
-      var $activeTool = $(ev.currentTarget).prev().find('.video-tool--view');
+      var $activeTool = $(ev.currentTarget).parent().find('.video-tool--view');
       $activeTool.click();
     }
     Rexbuilder_Util.$document.on('click', '.sticky-video-controls', handleClickStickyVideoControls);
@@ -1204,6 +1204,9 @@ var Rexbuilder_App = (function($) {
       var choosedLayout = Rexbuilder_Util.chooseLayout();
   		Rexbuilder_Util.handleLayoutChange( choosedLayout );
 		}
+
+    // update the viewport size vars inside RexGrid
+    RexGrid.updateViewportSize();
 		
 		var i = 0;
 		var j = 0;
