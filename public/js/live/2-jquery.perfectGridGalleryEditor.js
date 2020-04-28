@@ -234,8 +234,8 @@
       if ( ( ! hasClass( textWrap, "medium-editor-placeholder" ) || textWrapClone.childElementCount > 0 ) || $textWrap.parents(".pswp-item").length != 0 ) {
         textHeight = textWrap.offsetHeight;
       }
-    }
-
+		}
+		
     return textHeight;
   }
 
@@ -3338,10 +3338,10 @@
       }
 
       if ( resizeNotNeeded ) {
-        Rexbuilder_Util_Editor.elementIsResizing = false;
+				Rexbuilder_Util_Editor.elementIsResizing = false;
         return;
-      }
-
+			}
+			
       var newHeightUnits;
 
       if (this.settings.galleryLayout == "fixed") {

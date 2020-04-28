@@ -23,7 +23,7 @@ var Rexbuilder_Util_Editor = (function($) {
 	 * @param	{Boolean}		needToSave
    */
   var _updateBlockContainerHeight = function($textWrap, needToSave){
-    needToSave = undefined === needToSave ? true : needToSave;
+		needToSave = undefined === needToSave ? true : needToSave;
 		this.needToSave = needToSave;
 		
     var galleryInstance = Rexbuilder_Util.getGalleryInstance($textWrap.parents(".rexpansive_section").eq(0));
@@ -35,7 +35,6 @@ var Rexbuilder_Util_Editor = (function($) {
 			var $wrapper = $textWrap.parents(".grid-item-content-wrap");
       insertButton.placeMediaBtn($wrapper);
 		}
-		
     this.needToSave = true;
   }
 
