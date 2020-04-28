@@ -188,13 +188,16 @@ class Rexbuilder_Section {
 			if ( !$editor ) {
 				$bg_video_markup .= '<source type="video/mp4" data-res-lazy-loading="false" data-src="' . $video_mp4_url . '" />';
 				$bg_video_markup .= '</video>';
-				// adding video controllers
-				$bg_video_markup .= '<div class="rex-video__controls"><div class="loader video-tool video-tool--view"></div><div class="pause video-tool"><div class="indicator"></div></div><div class="play video-tool"><div class="indicator"></div></div></div>';
 			} else {
 				$bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
 				$bg_video_markup .= '</video>';
 			}
+
 			$bg_video_markup .= '</div>';
+			if ( ! $editor ) {
+				// adding video controllers
+				$bg_video_markup .= '<div class="rex-video__controls"><div class="loader video-tool video-tool--view"></div><div class="pause video-tool"><div class="indicator"></div></div><div class="play video-tool"><div class="indicator"></div></div></div>';
+			}
 		}
 		
 		$bg_youtube_video_markup = '';

@@ -155,8 +155,8 @@
    */
   var addLazyVideoListeners = function( el ) {
     // handling loader icon
-    var controls = el.nextElementSibling;
-    if ( controls ) {
+    var controls = el.parentElement.nextElementSibling;
+    if ( controls && Rexbuilder_Util.hasClass( controls, 'rex-video__controls' ) ) {
       var loader = controls.querySelector('.loader');
       var pause = controls.querySelector('.pause');
       if ( loader ) {

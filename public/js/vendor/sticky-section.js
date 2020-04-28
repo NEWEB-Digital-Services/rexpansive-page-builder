@@ -482,7 +482,7 @@
 	StickySection.prepare = function (section) {
 		var sectionData = section.querySelector('.section-data');
 
-		if (hasClass(section, 'mp4-player')) {
+		if ( hasClass( section, 'mp4-player' ) ) {
 			// video controls fix
 			var stickyVideoControls = section.querySelector('.sticky-video-controls');
 
@@ -491,9 +491,10 @@
 			}
 
 			var videoEl = section.querySelector('.rex-video-wrap');
-			var videoControls = videoEl.querySelector('.rex-video__controls');
+      // var videoControls = videoEl.querySelector('.rex-video__controls');
+			var videoControls = videoEl.nextElementSibling;
 
-			if (videoControls) {
+			if ( videoControls && hasClass( videoControls, 'rex-video__controls' ) ) {
 				stickyVideoControls = document.createElement('div');
 				addClass(stickyVideoControls, 'sticky-video-controls');
 				videoEl.insertAdjacentElement('afterend', stickyVideoControls);

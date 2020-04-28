@@ -15,15 +15,12 @@
 	// height: 100%;
 }
 
-/*.rex-video-section-wrap {
-	z-index: -1;
-}*/
-
-.rex-video-wrap {
-  + div {
-    position: relative;
-  }
-}
+// moved the section video controls outside the video wrap
+// .rex-video-wrap {
+  // + div {
+  //   position: relative;
+  // }
+// }
 
 .rex-video-container {
 	position: absolute;
