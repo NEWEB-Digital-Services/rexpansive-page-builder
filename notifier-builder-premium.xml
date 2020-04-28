@@ -3,6 +3,10 @@
 	<latest>2.0.3</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.0.4</strong> – April 28, 2020</h4>
+			<p><strong>Update</strong>: Improved performance on frontend</p>
+			<p><strong>Add</strong>: Lazy load content by default on every page</p>
+			<p><strong>Fixed</strong>: Block heights calculation</p>
 			<h4><strong>v2.0.3</strong> – February 13, 2020</h4>
 			<p><strong>Fixed</strong>: Block heights on other layouts than default</p>
 			<p><strong>Fixed</strong>: Pasting text inside other text</p>

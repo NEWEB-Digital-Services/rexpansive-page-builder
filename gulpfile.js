@@ -306,6 +306,11 @@ function builderlive(cb) {
 	cb();
 }
 
+function watchBuilderLive(cb) {
+	watch( builderlive_public, builderlive );
+	cb();
+}
+
 // LIVE CSS
 function builderliveEditorStyle(cb, dev) {
 	let sassConfig = {
@@ -409,6 +414,8 @@ function rxcf7(cb) {
 }
 
 exports.rxcf7 = rxcf7;
+
+exports.builderlive = series( builderlive, watchBuilderLive );
 
 exports.dev = parallel( watchAdminBuilderStyle, watchBuilderliveStyle, watchBuilderliveEditorStyle );
 exports.build = series( minifyExternal, adminScript, builderliveEditor, builderlive, adminBuilderStyle.bind( null, null, false ), builderliveEditorStyle.bind( null, null, false ), builderliveStyle.bind( null, null , false ) );

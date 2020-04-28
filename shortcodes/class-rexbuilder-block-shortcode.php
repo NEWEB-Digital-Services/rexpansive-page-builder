@@ -81,6 +81,7 @@ class Rexbuilder_Block
 			"empty_block_backend_fix" => "false",
 			"block_flex_position" => "",
 			"block_flex_img_position" => "",
+			"fast_load" => "true"
 		), $atts));
 
 		global $post;
@@ -92,6 +93,7 @@ class Rexbuilder_Block
 		}
 
 		$editor = Rexbuilder_Utilities::isBuilderLive();
+		$fast_load = ( "true" == $fast_load ? true : false );
 
 		global $section_layout;
 
@@ -173,7 +175,7 @@ class Rexbuilder_Block
 			$img_attrs = wp_get_attachment_image_src($id_image_bg_block, $image_size);
 
 			$alt_value = get_post_meta($id_image_bg_block, '_wp_attachment_image_alt', true);
-			if ( ! $editor ) {
+			if ( ! $editor && $fast_load ) {
 				$background_img_style = ' data-res-lazy-loading="false" data-src="' . $img_attrs[0] . '"';
 			} else {
 				$background_img_style = ' style="background-image:url(\'' . $img_attrs[0] . '\');"';
@@ -413,7 +415,7 @@ class Rexbuilder_Block
 			$videoMp4Height = $videoMP4Data["height"];
 			$bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
 			$bg_video_markup .= '<video class="rex-video-container"' . ( ! $editor ? ' preload="none"' : ' preload autoplay' ) . ' loop playsinline'. ($bg_video_toggle_audio_markup != "" ? "": " muted").'>';
-			if ( ! $editor ) {
+			if ( ! $editor && $fast_load ) {
 				$bg_video_markup .= '<source type="video/mp4" data-res-lazy-loading="false" data-src="' . $video_mp4_url . '" />';
 			} else {
 				$bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';

@@ -82,7 +82,7 @@
 			if ( !isNaN( num ) ) {
 				return num % 2 === 0;
 			} else {
-				throw new Error( 'The value passed is not a Number or a String representing a Number' )
+				throw new Error( 'The value passed is not a Number or a String representing a Number' );
 			}
 		},
 		/**
@@ -104,9 +104,9 @@
 			return {
 				x: val % maxWidth,
 				y: Math.floor( val / maxWidth )
-			}
+			};
 		},
-	}
+	};
 
 	// Class manipulation utils
 	if ( 'classList' in document.documentElement ) {
@@ -115,7 +115,7 @@
 		Utils.removeClass = function( el, className ) { el.classList.remove( className ); };
 	} else {
 		Utils.hasClass = function( el, className ) { return new RegExp( '\\b' + className + '\\b' ).test( el.className ); };
-		Utils.addClass = function( el, className ) { if ( !hasClass( el, className ) ) { el.className += ' ' + className }; };
+		Utils.addClass = function( el, className ) { if ( !hasClass( el, className ) ) { el.className += ' ' + className; } };
 		Utils.removeClass = function( el, className ) { el.className = el.className.replace( new RegExp( '\\b' + className + '\\b', 'g' ), '' ); };
 	}
 
@@ -145,7 +145,7 @@
 		this.refreshCoords();
 		this.refreshHide();
 		this.refreshDOMIndex();
-	}
+	};
 
 	RexBlock.prototype.refreshCoords = function() {
 		this.w = parseInt( this.el.getAttribute( 'data-gs-width' ) );
@@ -159,11 +159,11 @@
 		this.start_h = parseInt( this.blockData.getAttribute('data-gs_start_h') );
 		this.start_x = this.x;
 		this.start_y = this.y;
-	}
+	};
 
 	RexBlock.prototype.refreshHide = function() {
 		this.hide = Utils.hasClass( this.el, 'rex-hide-element' );
-	}
+	};
 
 	/**
 	 * Re-calculating DOMIndex.
@@ -172,7 +172,7 @@
 	 */
 	RexBlock.prototype.refreshDOMIndex = function() {
 		this.domIndex = this.x + ( this.y * 12 );
-	}
+	};
 
 	/**
 	 * Destroy a RexBlock instance
@@ -182,7 +182,7 @@
 	RexBlock.prototype.destroy = function() {
 		this.el.style.top = '';
 		this.el.style.height = '';
-	}
+	};
 
 	/* ===== RexGrid Plugin constructor ===== */
 	function RexGrid() {
@@ -442,7 +442,7 @@
 		// Overriding blocks gutter value if there is the respective DOM Attribute
 		if ( this.element.getAttribute( 'data-separator' ) ) {
 			this.options.gutter = parseInt( this.element.getAttribute( 'data-separator' ) );
-		};
+		}
 
 		// Defining grid separators
 		this.properties.gridTopSeparator =
@@ -603,7 +603,7 @@
 						this.gridBlocks[ j ].el.style.top = ( ( newY ) * this.properties.singleHeight ) + 'px';
 					}
 					this.gridBlocks[ j ].y = newY;
-					this.gridBlocks[ j ].domIndex = this.gridBlocks[ j ].x + ( this.gridBlocks[ j ].y * this.options.columns )
+					this.gridBlocks[ j ].domIndex = this.gridBlocks[ j ].x + ( this.gridBlocks[ j ].y * this.options.columns );
 
 					this.gridBlocks[ j ].toCheck = true;
 				}
@@ -876,7 +876,7 @@
 
 		// calc the new height, based on the old height props
 		var spaceAvailable = gridBlockObj.h * this.properties.singleHeight;
-		var newH = Math.round( spaceAvailable / this.properties.singleHeight );
+		newH = Math.round( spaceAvailable / this.properties.singleHeight );
 
 		// check height if the block has text
 		if ( textWrap ) {
@@ -943,7 +943,7 @@
 			idx_pos = idx.willFit( toMaintainCoords[ i ].w, toMaintainCoords[ i ].h );
 			if ( idx_pos ) {
 				idx_cords = Utils.getCoord( idx_pos, this.options.columns );
-				idx.setGrid( idx_cords.x, idx_cords.y, toMaintainCoords[ i ].w, toMaintainCoords[ i ].h )
+				idx.setGrid( idx_cords.x, idx_cords.y, toMaintainCoords[ i ].w, toMaintainCoords[ i ].h );
 				toMaintainCoords[ i ].x = idx_cords.x;
 				toMaintainCoords[ i ].y = idx_cords.y;
 			}
@@ -965,11 +965,11 @@
 				this.calcAndSetBlockHeight( this.gridBlocks[ i ] );
 			}
 		}
-	}
+	};
 
 	RexGrid.prototype.calcAndSetBlockHeight = function( gridBlockObj ) {
 		gridBlockObj.el.style.height = ( this.properties.singleHeight * gridBlockObj.h ) + 'px';
-	}
+	};
 
 	RexGrid.prototype.fixAllBlocksHeights = function() {
 		var i = 0;
@@ -980,7 +980,7 @@
 				this.fixBlockHeight( this.gridBlocks[ i ] );
 			}
 		}
-	}
+	};
 
 	/**
 	 * Fix the height of a block, according to the builder contents rules
@@ -1007,7 +1007,7 @@
 
 		// Setting dimensions
 		_setBlockDimensions.call( this, gridBlockObj, newH );
-	}
+	};
 
 	function _setBlockDimensions( gridBlockObj, newH ) {
 		gridBlockObj.h = newH;
@@ -1035,7 +1035,7 @@
 				_fixAllBlockPositionsFixed.call( this );
 				break;
 		}
-	}
+	};
 
 	/**
 	 * Calculating top of the grid blocks.
@@ -1062,7 +1062,7 @@
 				currentBlock.style.top = currentBlockRealTop + 'px';
 			}
 		}
-	}
+	};
 
 	/**
 	 * Fixing of heights and positions that are necessary after
@@ -1077,7 +1077,7 @@
 		this.fixAllBlockPositions();
 
 		_setGridHeight.call( this );
-	}
+	};
 
 	/**
 	 * Update RexBlocks information reading from DOM attributes.
@@ -1090,7 +1090,7 @@
 		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
 			this.gridBlocks[ i ].refreshProperties();
 		}
-	}
+	};
 
 	/**
 	 * Sorts blocks. Order based on block DOM Index,
@@ -1101,9 +1101,9 @@
 	 */
 	RexGrid.prototype.sortBlocks = function() {
 		this.gridBlocks.sort( function( blockA, blockB ) {
-			return ( blockA.domIndex - blockB.domIndex )
+			return ( blockA.domIndex - blockB.domIndex );
 		} );		
-	}
+	};
 
 	/**
 	 * Fix the grid after change layout
@@ -1158,7 +1158,7 @@
 		// Needed because there could be blocks in different
 		// orders when changing layout
 		this.sortBlocks();
-	}
+	};
 
 	/**
 	 * Fix the grid after a resize
@@ -1217,7 +1217,7 @@
 
 			_setGridHeight.call( this, this.properties.filterCoords );
 		}
-	}
+	};
 
 	RexGrid.prototype.getRexBlockInstance = function( block ) {
 		var i = 0;
@@ -1229,7 +1229,7 @@
 		}
 
 		return null;
-	}
+	};
 
 	RexGrid.prototype.reCalcBlockHeight = function( block ) {
 		var gridBlockObj = this.getRexBlockInstance( block );
@@ -1245,7 +1245,7 @@
 		this.fixAllBlockPositions();
 
 		_setGridHeight.call( this );
-	}
+	};
 
 	/**
 	 * The grid is filterable?
@@ -1253,7 +1253,7 @@
 	 */
 	RexGrid.prototype.isFiltered = function() {
 		return 'string' === typeof ( this.properties.filterRule ) && '*' !== this.properties.filterRule;
-	}
+	};
 
 	/**
 	 * Filter the grid elements by a certain rule
@@ -1333,7 +1333,32 @@
 			scale: 0,
 			opacity: 0
 		}, '-=200' );
-	}
+	};
+
+	/**
+	 * Add an element to the grid
+	 * @param {Node} block html node to add
+	 * @param {[type]} w     width
+	 * @param {[type]} h     height
+	 * @param {[type]} x     x-coord
+	 * @param {[type]} y     y-coord
+	 * @since  2.0.4
+	 */
+	RexGrid.prototype.addGridBlock = function( el, w, h, x, y ) {
+		blockInstance = new RexBlock( {
+			el: el,
+			id: el.getAttribute( 'data-rexbuilder-block-id' ),
+			w: ( 'undefined' !== typeof w ? parseInt( w ) : parseInt( el.getAttribute( 'data-gs-width' ) ) ),
+			h: ( 'undefined' !== typeof h ? parseInt( h ) : parseInt( el.getAttribute( 'data-gs-height' ) ) ),
+			x: ( 'undefined' !== typeof x ? parseInt( x ) : parseInt( el.getAttribute( 'data-gs-x' ) ) ),
+			y: ( 'undefined' !== typeof y ? parseInt( y ) : parseInt( el.getAttribute( 'data-gs-y' ) ) ),
+			hide: Utils.hasClass( el, 'rex-hide-element' ),
+			toCheck: false
+		} );
+
+		this.gridBlocks.push( blockInstance );
+		this.gridBlocksTotal = this.gridBlocks.length;
+	};
 
 	/**
 	 * Remove an element from the grid
@@ -1344,7 +1369,7 @@
 	RexGrid.prototype.removeGridBlock = function(el) {
 		var i, found = null;
 		for( i=0; i<this.gridBlocksTotal; i++ ) {
-			if ( this.gridBlocks[i] === el ) {
+			if ( this.gridBlocks[i].el === el ) {
 				found = i;
 				break;
 			}
@@ -1352,9 +1377,11 @@
 
 		if ( null === found ) return;
 
+		this.gridBlocks[found].el.parentNode.removeChild( this.gridBlocks[found].el );
+
 		this.gridBlocks.splice( found, 1 );
 		this.gridBlocksTotal = this.gridBlocks.length;
-	}
+	};
 
 	/**
 	 * Remove all elements from the grid
@@ -1362,9 +1389,14 @@
 	 * @todo  remove elements from DOM
 	 */
 	RexGrid.prototype.removeAllGridBlocks = function() {
+		var i;
+		for( i=0; i<this.gridBlocksTotal; i++ ) {
+			this.gridBlocks[i].el.parentNode.removeChild( this.gridBlocks[i].el );
+		}
+
 		this.gridBlocks = [];
 		this.gridBlocksTotal = 0;
-	}
+	};
 
 	/**
 	 * Destroy a RexGrid instance destroying all instance RexBlocks
@@ -1385,7 +1417,8 @@
 		}
 
 		instances = instances.filter(removeInstance.bind(this));
-	}
+	};
+
 	/**
 	 * Destroys all RexGrid instances.
 	 * @returns	{void}
@@ -1411,7 +1444,7 @@
 		}
 
 		return null;
-	}
+	};
 
 	/**
 	 * Function to programmatically update the viewport size information
@@ -1420,7 +1453,7 @@
 	 */
 	RexGrid.updateViewportSize = function() {
 		globalViewportSize = Utils.viewport();
-	}
+	};
 
 	return RexGrid;
 } );
