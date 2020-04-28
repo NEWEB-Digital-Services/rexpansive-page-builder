@@ -45,3 +45,9 @@
 .accordion-animate-block {
 	transition: height 150ms, top 150ms;
 }
+
+.hide-video-controls {
+	.rex-video__controls {
+		display: none;
+	}
+}
