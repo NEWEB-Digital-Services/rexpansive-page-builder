@@ -70,7 +70,7 @@ var RexSlider = (function ($) {
           if (parentSection.length > 0) {
             var galleryInstance = Rexbuilder_Util.getGalleryInstance(parentSection);
             if ('undefined' !== galleryInstance) {
-              galleryInstance.updateElementHeight(this.$element.parents(".grid-stack-item")[0]);
+              galleryInstance.updateElementHeight(this.$element.parents(".grid-stack-item").get(0));
             }
           }
         }        

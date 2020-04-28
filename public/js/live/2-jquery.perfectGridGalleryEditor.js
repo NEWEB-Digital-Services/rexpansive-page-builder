@@ -990,12 +990,49 @@
       }
     },
 
-    updateGridstack: function() {
+    /**
+     * Update the grid when
+     * - the margin changes
+     * - the padding changes
+     * @return {void}
+     * @since  2.0.4
+     */
+    updateGridstack: function( opts ) {
       this.batchGridstack();
       this._defineDynamicPrivateProperties();
       this.updateGridstackStyles();
       if ( !Rexbuilder_Util.domUpdating ) {
-        this.updateBlocksHeight();
+        this.updateBlocksHeight( );
+      }
+      this.commitGridstack();
+    },
+
+    /**
+     * Update the grid:
+     * - the width changes
+     * @return {void}
+     * @since  2.0.4
+     */
+    updateGridstackWidth: function() {
+      this.batchGridstack();
+      this._defineDynamicPrivateProperties();
+
+      // temporary compact the blocks, to prevent empty spaces
+      if ( 'fixed' === this.settings.galleryLayout ) {
+        this.properties.gridstackInstance.grid._float = false;
+        this.properties.gridstackInstance.grid.float = false;
+      }
+
+      this.updateGridstackStyles();
+      if ( !Rexbuilder_Util.domUpdating ) {
+        // update the heights, forcing the text blocks to cut empty space
+        this.updateBlocksHeight( true );
+      }
+
+      // go back to previous state
+      if ( 'fixed' === this.settings.galleryLayout ) {
+        this.properties.gridstackInstance.grid._float = true;
+        this.properties.gridstackInstance.grid.float = true;
       }
       this.commitGridstack();
     },
@@ -1012,7 +1049,7 @@
       $galleryParent.css("max-width", newWidthParent);
 
       if (typeof reverseData !== "undefined") {
-        this.updateGridstack();
+        this.updateGridstackWidth( );
         var that = this;
         setTimeout(
           function() {
@@ -2935,7 +2972,7 @@
      * @since  2.0.0
      * @version 2.0.1   Height calc general review
      */
-    updateBlocksHeight: function () {  
+    updateBlocksHeight: function ( forceFixedText ) {  
       var gridstack = this.properties.gridstackInstance;
       if ( typeof gridstack === "null" ) return;
       
@@ -2953,7 +2990,7 @@
               this.updateElementHeight( items[i] );
             }
           } else if ( ! this.properties.collapsingElements ) {
-            this.updateElementHeight( items[i] );
+            this.updateElementHeight( items[i], false, forceFixedText );
           }
         }
         // end foreach of boxes
@@ -3102,12 +3139,14 @@
 
     /**
      * @param {Object} $elem Element to update height
-     * @param {Number} blockRatio Ratio block has to maintain
      * @param {Boolean} editingBlock Flag to consider also starting height
+     * @param {Number} blockRatio Ratio block has to maintain   @never used
      * @since 2.0.0
      */
-    updateElementHeight: function(elem, blockRatio, editingBlock) {
+    updateElementHeight: function(elem, editingBlock, forceFixedText, blockRatio) {
       editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
+      blockRatio = 'undefined' !== typeof blockRatio ? blockRatio : 0;
+      forceFixedText = 'undefined' !== typeof forceFixedText ? forceFixedText : false;
 
       if (!this.properties.oneColumModeActive) {
         Rexbuilder_Util_Editor.elementIsResizing = true;
@@ -3269,7 +3308,7 @@
         };
 			}
 			
-      if( typeof blockRatio != "undefined" && blockRatio !=0 ) {
+      if( blockRatio !=0 ) {
         newH = w * sw * blockRatio;
       }
 
@@ -3277,7 +3316,7 @@
 
       // check if resize really needed
       if ( textHeight !== 0 ) {
-        if ( 'fixed' === this.settings.galleryLayout || ( 1 !== elRealFluid && 'masonry' === this.settings.galleryLayout ) ) {
+        if ( ( 'fixed' === this.settings.galleryLayout && ! forceFixedText ) || ( 1 !== elRealFluid && 'masonry' === this.settings.galleryLayout ) ) {
           if ( newH <= spaceAvailable ) {
             resizeNotNeeded = true;
           }
@@ -3303,19 +3342,21 @@
         return;
       }
 
+      var newHeightUnits;
+
       if (this.settings.galleryLayout == "fixed") {
         if ( emptyBlockFlag || blockHasYoutube || blockHasVideo || blockHasVimeo ) {
-          newH = Math.round((newH+gutter) / this.properties.singleHeight);
+          newHeightUnits = Math.round((newH+gutter) / this.properties.singleHeight);
         } else {
-          newH = Math.ceil((newH+gutter) / this.properties.singleHeight);
+          newHeightUnits = Math.ceil((newH+gutter) / this.properties.singleHeight);
         }
       } else {
-        newH = Math.ceil((newH+gutter) / this.properties.singleHeight);
+        newHeightUnits = Math.ceil((newH+gutter) / this.properties.singleHeight);
       }
 
-			this.updateElementDataHeightProperties( blockData, newH );
+			this.updateElementDataHeightProperties( blockData, newHeightUnits );
 			
-      this.resizeBlock( elem, w, newH );
+      this.resizeBlock( elem, w, newHeightUnits );
       
       Rexbuilder_Util_Editor.elementIsResizing = false;
     },

@@ -1535,7 +1535,7 @@
       Rexbuilder_Dom_Util.updateBlockPaddings($elem, data.paddings);
       // TODO : here is the place to study to fix the padding problem
       if (galleryEditorInstance.settings.galleryLayout == "masonry") {
-        galleryEditorInstance.updateElementHeight($elem[0], 0, true);
+        galleryEditorInstance.updateElementHeight($elem[0], true);
       }
       Rexbuilder_Util_Editor.updatingPaddingBlock = false;
 

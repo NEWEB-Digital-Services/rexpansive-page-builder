@@ -27,7 +27,7 @@ var Rexbuilder_Util_Editor = (function($) {
 		this.needToSave = needToSave;
 		
     var galleryInstance = Rexbuilder_Util.getGalleryInstance($textWrap.parents(".rexpansive_section").eq(0));
-    galleryInstance.updateElementHeight($textWrap.parents(".grid-stack-item")[0]);
+    galleryInstance.updateElementHeight($textWrap.parents(".grid-stack-item").get(0));
 		
 		// updating insertButton position
     var insertButton = TextEditor.getEditorInstance().getExtensionByName('insert-media');
