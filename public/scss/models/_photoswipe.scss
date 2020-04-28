@@ -35,6 +35,12 @@ a {
 	display: none;
 }
 
+.rexbuilder-live-front {
+	.pswp__button {
+		background-color: transparent;
+	}
+}
+
 .pswp__button--close:hover, 
 .pswp__button--share:hover, 
 .pswp__button--fs:hover,
