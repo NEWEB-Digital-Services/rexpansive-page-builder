@@ -1463,6 +1463,8 @@ var Rexbuilder_Util = (function($) {
       if ( 'undefined' !== typeof galleryEditorInstance ) {
         for (var i = 1, tot_target = targets.length; i < tot_target; i++) {
           var elem = gallery.querySelector('div[data-rexbuilder-block-id="' + targets[i].name + '"]');
+          if ( null === elem ) continue;
+          
           var hideElement = typeof targets[i].props.hide == "undefined" ? false : targets[i].props.hide.toString() == "true";
           if ( hideElement ) {
             if ( ! Rexbuilder_Util.hasClass( elem, 'rex-hide-element' ) ) {
