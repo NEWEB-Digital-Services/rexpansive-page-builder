@@ -1318,23 +1318,12 @@
 			};
 			
 			Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOpt);
-
-      if ( galleryEditorInstance.settings.galleryLayout == "masonry" && true === data.updateBlockHeight ) {
-        galleryEditorInstance.updateElementHeight($elem[0]);
-      }
 			
-      // if (data.updateBlockHeight) {
-				// var blockWidth = parseInt(elem.getAttribute('data-gs-width'));
-				// var result = galleryEditorInstance.updateElementHeight(elem);
-
-				/** galleryEditorInstance.resetBgImage(elem); **/
-
-				// if (result) {
-				// 	var newH = galleryEditorInstance.settings.galleryLayout == 'masonry' ? result.height / 5 : result;
-
-				// 	galleryEditorInstance.resizeBlock(elem, blockWidth, newH);
-				// }
-			// }
+      if (data.updateBlockHeight) {
+				if (old_imageUrl !== data.urlImage) {
+					galleryEditorInstance.resizeBlockWithNewImage(elem);
+				}
+			}
 
       var actionData = {
         $itemContent: $itemContent,

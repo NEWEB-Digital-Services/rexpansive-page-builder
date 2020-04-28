@@ -3361,19 +3361,21 @@
       Rexbuilder_Util_Editor.elementIsResizing = false;
     },
 		
-		resetBgImage: function (block) {
+		resizeBlockWithNewImage: function (block) {
 			var itemContent = block.querySelector('.grid-item-content');
 
 			var gridWidth = this.properties.wrapWidth;
-
 			var imgWidth = itemContent.getAttribute('data-background_image_width');
 			var blockWidth = 1;
-
 			var imgHeight = itemContent.getAttribute('data-background_image_height');
 			var blockHeight = 1;
 
 			if (imgWidth > gridWidth) {
 				blockWidth = 6;
+
+				if (this.properties.oneColumModeActive) {
+					blockWidth = 12;
+				}
 			} else {
 				blockWidth = Math.max(Math.round((imgWidth * 6) / gridWidth), 1);
 			}
@@ -3389,7 +3391,8 @@
 			}
 
 			this.resizeBlock(block, blockWidth, blockHeight);
-			this.fix_natural_image_blocks()
+			this.updateSizeViewerText(block);
+			this.fix_natural_image_blocks();
 		},
 
     /**
