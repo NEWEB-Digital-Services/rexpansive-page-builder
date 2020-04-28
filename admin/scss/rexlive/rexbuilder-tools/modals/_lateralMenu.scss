@@ -13,9 +13,9 @@
   position: relative;
   .tool-button.tool-button--close {
     top: auto;
-    bottom: -20px;
+    bottom: 14px;
     transform: translate(50%, -50%) rotate(-90deg);
-    font-size: 12px;
+    font-size: 13px;
     @include bl-btn--dark;
   }
 }
