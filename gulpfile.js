@@ -427,7 +427,7 @@ exports.dev = parallel( watchAdminBuilderStyle, watchBuilderliveStyle, watchBuil
 exports.build = series( minifyExternal, adminScript, builderliveEditor, builderlive, adminBuilderStyle.bind( null, null, false ), builderliveEditorStyle.bind( null, null, false ), builderliveStyle.bind( null, null , false ) );
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
-var live_zip_name = 'Premium-204-Rexpansive-Builder.zip';
+var live_zip_name = 'Premium-205-Rexpansive-Builder.zip';
 var live_folder_name = 'rexpansive-page-builder';
 
 var live_file_map = [
