@@ -1186,30 +1186,30 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		// Column number
 		columnContentData.target.column_number = $formColumn.attr('wpcf7-column-number');
 
-		// Type
-		// columnContentData.type = $formColumn.find(".wpcf7-form-control").prop("nodeName").toLowerCase();
-
 		// Field class
-		if ($formColumn.find('.wpcf7-form-control').length > 0) {
-			columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find('.wpcf7-form-control').get(0).classList);
+		// If needed, it's possible to get:
+		// -	-rexclone-{number} in the 2nd group match
+		// -	only the rexclone number in the 3nd group match
+		var classRegExp = /([a-z]+\-[\d]+)(-rexclone-([\d]+))?/;
+		var partialMatch;
 
-			if (null === columnContentData.field_class) {
-				columnContentData.field_class = /[a-z]+\-[0-9]+/.exec(
-					$formColumn.find('.wpcf7-form-control-wrap').get(0).classList
-				);
+		var $formControl = $formColumn.find('.wpcf7-form-control');
+		columnContentData.field_class = null;
 
-				if (null === columnContentData.field_class) {
-					columnContentData.field_class = /[a-z]+\-[0-9]+/.exec(
-						$formColumn.find('[type=checkbox]').get(0).classList
-					)[0];
-				} else {
-					columnContentData.field_class = columnContentData.field_class[0];
+		if (0 !== $formControl.length) {
+			partialMatch = $formControl.get(0).className.match(classRegExp);
+
+			if (!partialMatch) {
+				var formControlWrapClass = $formColumn.find('.wpcf7-form-control-wrap').get(0).className;
+				partialMatch = formControlWrapClass.match(classRegExp);
+
+				if (!partialMatch) {
+					var checkboxClass = $formColumn.find('[type=checkbox]').get(0).className;
+					partialMatch = checkboxClass.match(classRegExp);
 				}
-			} else {
-				columnContentData.field_class = columnContentData.field_class[0];
 			}
-		} else {
-			columnContentData.field_class = null;
+
+			columnContentData.field_class = partialMatch[0];
 		}
 
 		// Input type

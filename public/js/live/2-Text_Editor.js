@@ -3424,19 +3424,19 @@ var TextEditor = (function ($) {
 
     handleClickCloneFormColumn: function (event) {
       Rexbuilder_Util_Editor.builderEdited(false);
-      this.hideSelectColumnsToolbar();
-      this.hideRowToolbox();
-      this.hideColumnToolbox();
+			this.hideSelectColumnsToolbar();
+			this.hideRowToolbox();
+			this.hideColumnToolbox();
 
-      var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
-      var clonedColumnNumber = $(this.traceFormColumn).attr("wpcf7-column-number");
-      var numberRowBefore = parseInt($(this.traceFormRow).attr("wpcf7-row-number"));
+			var formID = $(this.traceForm).parents('.rex-element-wrapper').attr('data-rex-element-id');
+			var clonedColumnNumber = parseInt(this.traceFormColumn.getAttribute('wpcf7-column-number'));
+			var numberRowBefore = parseInt(this.traceFormRow.getAttribute('wpcf7-row-number'));
 
-      Rexbuilder_Rexwpcf7_Editor.addClonedColumnRow(formID, clonedColumnNumber, numberRowBefore);
+			Rexbuilder_Rexwpcf7_Editor.addClonedColumnRow(formID, clonedColumnNumber, numberRowBefore);
 
-      this.updatePlusButtons();
-      this.updateHeight();
-      this.focusBlock();
+			this.updatePlusButtons();
+			this.updateHeight();
+			this.focusBlock();
     },
 
     handleClickDeleteFormColumn: function (event) {

@@ -30,13 +30,13 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			case 'text':
 				fieldShortcode = '[text text-' + fieldNumber + ' class:text-' + fieldNumber + ']';
 				$columnContent.prepend(
-					'<span class="wpcf7-form-control-wrap your-name text-' +
+					'<span class="wpcf7-form-control-wrap text-' +
 						fieldNumber +
 						'"><input type="text" name="text-' +
 						fieldNumber +
 						'" value="" class="wpcf7-form-control wpcf7-text text-' +
 						fieldNumber +
-						'" aria-invalid="false" style=""></span>'
+						'" aria-invalid="false"></span>'
 				);
 				break;
 			case 'textarea':
@@ -48,7 +48,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 						fieldNumber +
 						'" class="wpcf7-form-control wpcf7-textarea textarea-' +
 						fieldNumber +
-						'" aria-invalid="false" style=""></textarea></span>'
+						'" aria-invalid="false"></textarea></span>'
 				);
 				break;
 			case 'menu':
@@ -60,7 +60,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 						fieldNumber +
 						'" class="wpcf7-form-control wpcf7-select menu-' +
 						fieldNumber +
-						'" aria-invalid="false" style=""><option value="" disabled selected>Select something</option><option value="Field 1">Field 1</option><option value="Field 2">Field 2</option></select></span>'
+						'" aria-invalid="false"><option value="" disabled selected>Select something</option><option value="Field 1">Field 1</option><option value="Field 2">Field 2</option></select></span>'
 				);
 				break;
 			case 'radiobuttons':
@@ -68,7 +68,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				$columnContent.prepend(
 					'<span class="wpcf7-form-control-wrap radio-' +
 						fieldNumber +
-						'" style=""><span class="wpcf7-form-control wpcf7-radio"><span class="wpcf7-list-item first"><input type="radio" name="radio-' +
+						'"><span class="wpcf7-form-control wpcf7-radio"><span class="wpcf7-list-item first"><input type="radio" name="radio-' +
 						fieldNumber +
 						'" value="Option 1" checked="checked" class="with-gap" id="wpcf7-radio-1"><span class="wpcf7-list-item-label">Option 1</span></span><span class="wpcf7-list-item last"><input type="radio" name="radio-' +
 						fieldNumber +
@@ -80,7 +80,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				$columnContent.prepend(
 					'<span class="wpcf7-form-control-wrap acceptance-' +
 						fieldNumber +
-						'" style=""><span class="wpcf7-form-control wpcf7-acceptance optional"><span class="wpcf7-list-item"><label><input type="checkbox" name="acceptance-' +
+						'"><span class="wpcf7-form-control wpcf7-acceptance optional"><span class="wpcf7-list-item"><label><input type="checkbox" name="acceptance-' +
 						fieldNumber +
 						'" value="1" aria-invalid="false"><span class="wpcf7-list-item-label"><p>Your text</p></span></label></span></span></span>'
 				);
@@ -91,7 +91,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				$columnContent.prepend(
 					'<span class="wpcf7-form-control-wrap file-' +
 						fieldNumber +
-						'" style=""><input type="file" name="file-' +
+						'"><input type="file" name="file-' +
 						fieldNumber +
 						'" size="40" class="wpcf7-form-control wpcf7-file" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.ppt,.pptx,.odt,.avi,.ogg,.m4a,.mov,.mp3,.mp4,.mpg,.wav,.wmv" aria-invalid="false" id="wpcf7-file-2"><label for="wpcf7-file-2">Choose file</label><div class="wpcf7-file-caption">Your text here</div></span>'
 				);
@@ -99,9 +99,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			case 'submit':
 				fieldShortcode = '[submit class:submit-' + fieldNumber + ' "Send"]';
 				$columnContent.prepend(
-					'<input type="submit" value="Send" class="wpcf7-form-control wpcf7-submit submit-' +
-						fieldNumber +
-						'" style="">'
+					'<input type="submit" value="Send" class="wpcf7-form-control wpcf7-submit submit-' + fieldNumber + '">'
 				);
 				break;
 			default:
@@ -179,12 +177,57 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 		_fixRowNumbersAndClasses($formToAddRow);
 		_saveAddedRow(formID, numberRowBefore);
+
+		var columnsAdded = $rowToAdd.get(0).getElementsByClassName('wpcf7-column');
+		var tot_columnsAdded = columnsAdded.length;
+
+		var clonedColumn;
+		var clonedRadioButton;
+		var clonedColumnNumber;
+
+		var newRadioData;
+		var newRowNumber = numberRowBefore + 1;
+
+		var i = 0;
+
+		for (; i < tot_columnsAdded; i++) {
+			clonedColumn = columnsAdded[i];
+			clonedColumnNumber = i + 1;
+			clonedRadioButton = clonedColumn.querySelector('.wpcf7-form-control-wrap[class*=radio-]');
+
+			if (clonedRadioButton) {
+				newRadioData = _getNewRadioData(clonedRadioButton);
+
+				Rexbuilder_Util.$rexContainer
+					.find(
+						'.rex-element-wrapper[data-rex-element-id="' +
+							formID +
+							'"] .wpcf7 .wpcf7-row[wpcf7-row-number="' +
+							newRowNumber +
+							'"] .wpcf7-column[wpcf7-column-number="' +
+							clonedColumnNumber +
+							'"]'
+					)
+					.find('input')
+					.attr('name', newRadioData.newRadioName);
+
+				_fixClonedRadioButtonDB(formID, {
+					newRowNumber: newRowNumber,
+					newColumnNumber: clonedColumnNumber,
+					oldName: newRadioData.oldRadioName,
+					newName: newRadioData.newRadioName
+				});
+
+				Rexbuilder_Rexwpcf7.addColumnContentStyle($(clonedColumn))
+			}
+		}
 	}
 
 	function addClonedColumnRow(formID, clonedColumnNumber, numberRowBefore) {
+		// There may be more than 1 form
 		var $formToAddRow = Rexbuilder_Util.$rexContainer
 			.find('.rex-element-wrapper[data-rex-element-id="' + formID + '"]')
-			.find('.wpcf7-form'); // There may be more than 1 form
+			.find('.wpcf7-form');
 		var $rowBefore = $formToAddRow.find('.wpcf7-row[wpcf7-row-number="' + numberRowBefore + '"]');
 		var $rowToAdd = $($rowBefore[0]).clone();
 
@@ -193,67 +236,127 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 		var newRowNumber = numberRowBefore + 1;
 		var $rowAdded = $formToAddRow.find('.wpcf7-row[wpcf7-row-number="' + newRowNumber + '"]'); // Need to declare this after _fixRowNumbers
+		var clonedColumn;
 
 		$rowAdded.each(function (index, row) {
 			// There may be more than 1 row (multiple forms)
 			$(row)
 				.find('.wpcf7-column')
 				.each(function (index, column) {
-					if (index + 1 != clonedColumnNumber) {
+					if (index + 1 !== clonedColumnNumber) {
 						$(column).empty();
 
 						var plusButton = tmpl('tmpl-plus-button-inside-wpcf7-row', {});
 						$(column).append(plusButton).addClass('with-button');
-					}
-
-					var clonedRadioButton = column.querySelector('.wpcf7-form-control-wrap[class*=radio-]');
-
-					if (clonedRadioButton) {
-						_fixClonedRadioButton(clonedRadioButton);
+					} else {
+						clonedColumn = column;
 					}
 				});
 		});
 
 		_saveClonedColumnRow(formID, clonedColumnNumber, numberRowBefore);
-		console.log($formsInPage[6].get(0).outerHTML);
-		$rowAdded.each(function (index, row) {
-			// There may be more than 1 row (multiple forms)
-			$(row)
-				.find('.wpcf7-column')
-				.each(function (index, column) {
-					console.log(column);
-				});
-		});
+
+		var clonedRadioButton = clonedColumn.querySelector('.wpcf7-form-control-wrap[class*=radio-]');
+
+		if (clonedRadioButton) {
+			var newRadioData = _getNewRadioData(clonedRadioButton);
+
+			Rexbuilder_Util.$rexContainer
+				.find(
+					'.rex-element-wrapper[data-rex-element-id="' +
+						formID +
+						'"] .wpcf7 .wpcf7-row[wpcf7-row-number="' +
+						newRowNumber +
+						'"] .wpcf7-column[wpcf7-column-number="' +
+						clonedColumnNumber +
+						'"]'
+				)
+				.find('input')
+				.attr('name', newRadioData.newRadioName);
+
+			_fixClonedRadioButtonDB(formID, {
+				newRowNumber: newRowNumber,
+				newColumnNumber: clonedColumnNumber,
+				oldName: newRadioData.oldRadioName,
+				newName: newRadioData.newRadioName
+			});
+		}
 	}
 
-	function _fixClonedRadioButton(clonedRadioButton) {
-		var clonedRadioInput = clonedRadioButton.querySelector('input');
-		var radioName = clonedRadioInput.getAttribute('name');
+	/**
+	 * Retrieves cloned radio button data useful to
+	 * correctly complete the whole cloning operation.
+	 * @returns	{Object}		Old and new name of the radio inputs,
+	 * 											flag to know if that input was cloned
+	 * @since		2.0.4
+	 */
+	function _getNewRadioData(clonedRadioButton) {
+		var cloneRE = /(-rexclone-)(\d+)$/;
+		var oldRadioName = clonedRadioButton.querySelector('input').getAttribute('name');
+		var wasCloned = cloneRE.test(oldRadioName);
 
+		// Scanning all the container to get all radio inputs starting with the same name
 		var radiosWithName = Array.prototype.slice.call(
-			Rexbuilder_Util.rexContainer.querySelectorAll('[name^="' + radioName + '"]')
+			Rexbuilder_Util.rexContainer.querySelectorAll('[name^="' + oldRadioName.replace(cloneRE, '') + '"]')
 		);
 		var tot_radiosWithName = radiosWithName.length;
 
 		var testName;
-
 		var lastCloneNumber = 1;
 
 		var i = 0;
-		for (; i < tot_radiosWithName; i++) {
-			testName = radiosWithName[i].getAttribute('name');
 
-			testName = testName.match(/rexclone-\d+$/);
+		for (; i < tot_radiosWithName; i++) {
+			testName = radiosWithName[i].getAttribute('name').match(cloneRE);
 
 			if (testName) {
-				lastCloneNumber = testName.replace('rexclone-', '');
+				lastCloneNumber = parseInt(testName[2]) > lastCloneNumber ? parseInt(testName[2]) : lastCloneNumber;
 			}
 		}
 
-		clonedRadioInput.setAttribute('name', radioName + '-rexclone-' + (lastCloneNumber + 1));
+		lastCloneNumber++;
+
+		var newRadioName;
+
+		if (wasCloned) {
+			newRadioName = oldRadioName.replace(cloneRE, '-rexclone-' + lastCloneNumber);
+		} else {
+			newRadioName = oldRadioName + '-rexclone-' + lastCloneNumber;
+		}
+
+		return {
+			wasCloned: wasCloned,
+			oldRadioName: oldRadioName,
+			newRadioName: newRadioName
+		};
 	}
 
-	function deleteRow(formID, rowNumberToDelete, blockIDToFocusAfterDelete) {
+	function _fixClonedRadioButtonDB(formID, options) {
+		var newRowNumber = options.newRowNumber;
+		var newColumnNumber = options.newColumnNumber;
+		var oldName = options.oldName;
+		var newName = options.newName;
+
+		var dbColumnContent = $formsInPage[formID]
+			.find(
+				'.wpcf7-row[wpcf7-row-number="' +
+					newRowNumber +
+					'"] .wpcf7-column[wpcf7-column-number="' +
+					newColumnNumber +
+					'"] .wpcf7-column-content'
+			)
+			.get(0);
+
+		var shortcode = dbColumnContent.innerText;
+
+		if (-1 !== shortcode.indexOf(oldName)) {
+			dbColumnContent.innerText = shortcode.replace(oldName, newName);
+		} else {
+			console.error('Something went wrong when cloning radio buttons!');
+		}
+	}
+
+	function deleteRow(formID, rowNumberToDelete) {
 		var $formToDeleteRow = Rexbuilder_Util.$rexContainer
 			.find('.rex-element-wrapper[data-rex-element-id="' + formID + '"]')
 			.find('.wpcf7-form'); // There may be more than 1 form
@@ -376,8 +479,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				cssSelector = 'wpcf7-' + inputType;
 				break;
 			case 'acceptance':
-				cssSelector =  'wpcf7-form-control-wrap';
-        break;
+				cssSelector = 'wpcf7-form-control-wrap';
+				break;
 			case 'submit':
 			case 'file':
 				cssSelector = fieldClass;
@@ -423,7 +526,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				Rexbuilder_Rexwpcf7.updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
 				break;
 			case 'placeholder-color':
-				// @bug: cssSelector does not change properly. Maybe caused by ::placeholder?
+				/** @todo: bug: cssSelector does not change properly. Maybe caused by ::placeholder? */
 				// console.group('placeholder')
 				// console.log('%c Placeholder color ', 'background: '+newValue+'; color: #000');
 				// console.log('cssSelector', cssSelector)
@@ -786,7 +889,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 							$inputs.append($newRadio);
 						}
 
-						fixWpcf7RadioButtons();
+						Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
 						break;
 					case 'file':
 						$formColumns.find('.wpcf7-file').attr('accept', $formColumns.find('.wpcf7-file').attr('accept') + ',');
@@ -836,7 +939,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 							}
 						}
 
-						fixWpcf7RadioButtons();
+						Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
 						break;
 					case 'file':
 						var fileTypesArray = $formColumns.find('.wpcf7-file').attr('accept').split(',');
