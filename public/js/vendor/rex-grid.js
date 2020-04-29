@@ -1345,16 +1345,62 @@
 	 * @since  2.0.4
 	 */
 	RexGrid.prototype.addGridBlock = function( el, w, h, x, y ) {
+		// get attributes for the new block
+		// if necessary synchronize them with the data attributes
+		if ( 'undefined' !== typeof w ) {
+			w = parseInt( w );
+			el.setAttribute( 'data-gs-width', w );
+		} else {
+			w = parseInt( el.getAttribute( 'data-gs-width' ) );
+		}
+
+		if ( 'undefined' !== typeof h ) {
+			h = parseInt( h );
+			el.setAttribute( 'data-gs-height', h );
+		} else {
+			h = parseInt( el.getAttribute( 'data-gs-height' ) );
+		}
+
+		if ( 'undefined' !== typeof x ) {
+			x = parseInt( x );
+			el.setAttribute( 'data-gs-x', x );
+		} else {
+			x = parseInt( el.getAttribute( 'data-gs-x' ) );
+		}
+
+		if ( 'undefined' !== typeof y ) {
+			y = parseInt( y );
+			el.setAttribute( 'data-gs-y', y );
+		} else {
+			y = parseInt( el.getAttribute( 'data-gs-y' ) );
+		}
+
+		// fix block data
+		var blockData = el.querySelector('.rexbuilder-block-data');
+		blockData.setAttribute( 'data-gs_width', w );
+		blockData.setAttribute( 'data-gs_height', h );
+		blockData.setAttribute( 'data-gs_x', x );
+		blockData.setAttribute( 'data-gs_y', y );
+		blockData.setAttribute( 'data-gs_start_h', h );
+
+		// create the RexBlock instance
 		blockInstance = new RexBlock( {
 			el: el,
 			id: el.getAttribute( 'data-rexbuilder-block-id' ),
-			w: ( 'undefined' !== typeof w ? parseInt( w ) : parseInt( el.getAttribute( 'data-gs-width' ) ) ),
-			h: ( 'undefined' !== typeof h ? parseInt( h ) : parseInt( el.getAttribute( 'data-gs-height' ) ) ),
-			x: ( 'undefined' !== typeof x ? parseInt( x ) : parseInt( el.getAttribute( 'data-gs-x' ) ) ),
-			y: ( 'undefined' !== typeof y ? parseInt( y ) : parseInt( el.getAttribute( 'data-gs-y' ) ) ),
+			w: w,
+			h: h,
+			x: x,
+			y: y,
 			hide: Utils.hasClass( el, 'rex-hide-element' ),
 			toCheck: false
 		} );
+
+		// setting the gutter
+		var temp = el.querySelector( '.grid-stack-item-content' );
+		temp.style.paddingTop = this.properties.halfSeparatorBlockTop + 'px';
+		temp.style.paddingRight = this.properties.halfSeparatorBlockRight + 'px';
+		temp.style.paddingBottom = this.properties.halfSeparatorBlockBottom + 'px';
+		temp.style.paddingLeft = this.properties.halfSeparatorBlockLeft + 'px';
 
 		this.gridBlocks.push( blockInstance );
 		this.gridBlocksTotal = this.gridBlocks.length;

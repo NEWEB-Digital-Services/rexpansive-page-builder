@@ -258,6 +258,11 @@ function builderliveEditor(cb) {
 	cb();
 }
 
+function watchBuilderliveEditor(cb) {
+	watch( builderlive_public_editor, builderlive );
+	cb();
+}
+
 // PUBLIC JS
 var builderlive_public = [
 	'public/js/live/0-Rexbuilder_Array_Utilities.js',
@@ -416,6 +421,7 @@ function rxcf7(cb) {
 exports.rxcf7 = rxcf7;
 
 exports.builderlive = series( builderlive, watchBuilderLive );
+exports.builderliveEditor = series( builderliveEditor, watchBuilderliveEditor );
 
 exports.dev = parallel( watchAdminBuilderStyle, watchBuilderliveStyle, watchBuilderliveEditorStyle );
 exports.build = series( minifyExternal, adminScript, builderliveEditor, builderlive, adminBuilderStyle.bind( null, null, false ), builderliveEditorStyle.bind( null, null, false ), builderliveStyle.bind( null, null , false ) );
@@ -446,7 +452,7 @@ var live_file_map = [
 	'languages/**/*',
 	'Licensing/**/*',
 	'live/**/*',
-	'public/css/images',
+	// 'public/css/images',
 	'public/css/animate.css',
 	'public/css/builderlive-public.css',
 	'public/css/default-skin.png',

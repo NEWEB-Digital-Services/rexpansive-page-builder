@@ -3,8 +3,8 @@ Contributors: neweb_agency
 Donate link: http://www.neweb.info/
 Tags: builder, composer, content builder, custom, drag and drop, editor, page builder, page composer, responsive, theme
 Requires at least: 4.2
-Tested up to: 5.3.2
-Stable tag: 2.0.3
+Tested up to: 5.4
+Stable tag: 2.0.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -199,6 +199,15 @@ For the more experienced among us: you can insert CSS anywhere.
 11. Clean interface
 
 == Changelog ==
+
+= 2.0.4 – April 29, 2020 =
+ * Update: Improved performances on frontend
+ * Update: Navigator style
+ * Add: Lazy load content by default on every page
+ * Fixed: Block heights calculation
+ * Fixed: When a lot of text was copied within a block, the top bar disappeared
+ * Fixed: Builder tools style problems with TwentyTwenty Theme
+ * Fixed: Zoom all images and RexSlider
 
 = 2.0.3 – February 13, 2020 =
 * Fixed: Block heights on other layouts than default

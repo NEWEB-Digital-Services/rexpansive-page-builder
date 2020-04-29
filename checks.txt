@@ -1,7 +1,0 @@
-30/10/2019
-
-- controllare dove queste funzioni vengono lanciate. Sono lanciate anche sulla lista delle pagine
-
-Rexbuilder_Admin->create_builder_modals()
-Rexbuilder_Admin->create_builder_templates()
-Rexbuilder_Admin->include_sprites()

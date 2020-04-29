@@ -990,7 +990,9 @@ var Rexbuilder_App = (function($) {
 			});
 		}
 
-		Rexbuilder_Util.launchEditDomLayout();
+    if ( Rexbuilder_Util.editorMode ) {
+		  Rexbuilder_Util.launchEditDomLayout();
+    }
 
     /* ===== Launching plugins only on public side ===== */
     if ( !Rexbuilder_Util.editorMode ) {

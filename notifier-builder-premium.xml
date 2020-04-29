@@ -3,10 +3,14 @@
 	<latest>2.0.3</latest>
 	<changelog>
 		<![CDATA[
-			<h4><strong>v2.0.4</strong> – April 28, 2020</h4>
-			<p><strong>Update</strong>: Improved performance on frontend</p>
+			<h4><strong>v2.0.4</strong> – April 29, 2020</h4>
+			<p><strong>Update</strong>: Improved performances on frontend</p>
+			<p><strong>Update</strong>: Navigator style</p>
 			<p><strong>Add</strong>: Lazy load content by default on every page</p>
 			<p><strong>Fixed</strong>: Block heights calculation</p>
+			<p><strong>Fixed</strong>: When a lot of text was copied within a block, the top bar disappeared</p>
+			<p><strong>Fixed</strong>: Builder tools style problems with TwentyTwenty Theme</p>
+			<p><strong>Fixed</strong>: Zoom all images and RexSlider</p>
 			<h4><strong>v2.0.3</strong> – February 13, 2020</h4>
 			<p><strong>Fixed</strong>: Block heights on other layouts than default</p>
 			<p><strong>Fixed</strong>: Pasting text inside other text</p>
