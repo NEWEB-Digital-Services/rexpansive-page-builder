@@ -2771,9 +2771,8 @@ var TextEditor = (function ($) {
       // Create the tools displayed on an element
       this.rexelementTools = document.createElement("div");
       this.rexelementTools.contentEditable = false;
-      this.rexelementTools.classList.add("rexelement-tools");
+			Rexbuilder_Util.addClass(this.rexelementTools, 'rexelement-tools')
       this.rexelementTools.style.display = "none";
-      // this.rexelementTools.innerHTML = tmpl("tmpl-rexelement-tools", {});
       this.rexelementTools.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-rexelement-tools");
       $(document.getElementsByTagName("body")[0]).append(this.rexelementTools);
 
@@ -2784,47 +2783,31 @@ var TextEditor = (function ($) {
 
       // Trace the cursor position
       // this.subscribe("editableClick", this.traceInputRexElement.bind(this));
-      this.subscribe("editableMouseover", this.handleMouseOver.bind(this));
+      this.subscribe('editableMouseover', this.handleMouseOver.bind(this));
 
       // Link click listeners
       this.on(this.deleteRexelementBtn, "click", this.handleClickDeleteRexelement.bind(this));
       this.on(this.editRexelementBtn, "click", this.handleClickEditRexelement.bind(this));
-
-      // Hiding anchor preview of text editor when mouse is over a rexelement
-      // Timeout is needed because anchor will stay under element for about 500-600 ms
-      var showAnchorTimeout = null;
-      var extensionInstance = this;
-      // Rexbuilder_Util.$document.on("mouseenter", ".rex-element-wrapper", function (e) {
-      //   extensionInstance.hideAnchorPreview();
-      //   if (showAnchorTimeout !== null) {
-      //     clearTimeout(showAnchorTimeout);
-      //     showAnchorTimeout = null;
-      //   }
-      // });
-
-      // Rexbuilder_Util.$document.on("mouseleave", ".rex-element-wrapper", function (e) {
-      //   showAnchorTimeout = setTimeout(extensionInstance.showAnchorPreview, 1000);
-      // });
     },
 
-    handleMouseOver: function (event) {
-      var $target = $(event.target);
-      var $gridStackItem = $target.parents(".grid-stack-item");
-      var $section = $target.parents(".rexpansive_section");
+    handleMouseOver: function (event, editableElement) {
+			var gsItemFocused = Rexbuilder_Util.hasClass($(editableElement).parents('.grid-stack-item').get(0), 'item--me-focus');
+			var section = $(editableElement).parents('.rexpansive_section').get(0);
+			var sectionFocused = Rexbuilder_Util.hasClass(section, 'focusedRow');
+			var sectionEditing = Rexbuilder_Util.hasClass(section, 'block-editing');
 
-      if ( "mouseover" == event.type &&
-          $gridStackItem[0].classList.contains('item--me-focus') &&
-          $section[0].classList.contains('focusedRow') &&
-          $section[0].classList.contains('block-editing') 
-        ) {
-        if ($target.parents(".rex-element-container").length != 0) {
-          this.traceELMNT = $target.parents(".rex-element-container")[0];
-          this.containsWpcf7 = $(this.traceELMNT).find(".wpcf7").length != 0;
-          this.viewRexelementToolbox();
-        } else {
-          this.handleBlur(event);
-        }
-      }
+			if (gsItemFocused && sectionFocused && sectionEditing) {
+				var elementContainer = editableElement.querySelector('.rex-element-container');
+
+				if (elementContainer) {
+					this.traceELMNT = elementContainer;
+					this.containsWpcf7 = !!this.traceELMNT.querySelector('.wpcf7');
+
+					this.viewRexelementToolbox();
+				} else {
+					this.handleBlur(event);
+				}
+			}
     },
 
     traceInputRexElement: function (event) {
@@ -3158,7 +3141,8 @@ var TextEditor = (function ($) {
       this.on(this.deleteFormColumnBtn, "click", this.handleClickDeleteFormColumn.bind(this));
 
 			// Trace the cursor position
-      this.subscribe("editableMouseover", this.handleMouseOver.bind(this));
+      this.subscribe('editableMouseover', this.handleMouseOver.bind(this));
+      this.subscribe('editableMouseenter', this.handleMouseEnter.bind(this));
 
       this.subscribe("blur", this.handleBlur.bind(this));
     },
@@ -3179,105 +3163,104 @@ var TextEditor = (function ($) {
       $formTools.append($columnToInsert);
 
       this.formTools = $formTools[0];
-    },
+		},
+		
+		handleMouseEnter: function(mouseEvent, editableElement) {
 
-    ///////////////
-    /* HANDLERS */
-    ///////////////
-    
-    handleMouseOver: function (event) {
-      var $target = $(event.target);
-      var $gridStackItem = $target.parents(".grid-stack-item");
-      var $section = $target.parents(".rexpansive_section");
+		},
+		
+		/**
+		 * Handles mouse over.
+		 * @param		{Event}			mouseEvent 
+		 * @param		{Element}		editableElement		Contenteditable DOM Element
+		 * @returns	{void}
+		 * @since		2.0.2
+		 * @todo		Change in vanilla js
+		 * @todo		Improve efficiency
+		 * @todo		Improve code readability
+		 */
+    handleMouseOver: function (mouseEvent, editableElement) {
+			var target = mouseEvent.target;
+			var gridStackItem = $(editableElement).parents('.grid-stack-item').get(0);
+			var section = $(editableElement).parents('.rexpansive_section').get(0);
 
-      if ( "mouseover" == event.type &&
-          $gridStackItem[0].classList.contains('item--me-focus') &&
-          $section[0].classList.contains('focusedRow') &&
-          $section[0].classList.contains('block-editing') 
-        ) {
-        var needToAddPlusButtonsListener = "undefined" == typeof this.addFormContentBtns;
-        // var needToAddPlusButtonsListener = null === this.addFormContentBtns;
+			if (
+				Rexbuilder_Util.hasClass(gridStackItem, 'item--me-focus') &&
+				Rexbuilder_Util.hasClass(section, 'focusedRow') &&
+				Rexbuilder_Util.hasClass(section, 'block-editing')
+			) {
+				var needToAddPlusButtonsListener = !this.addFormContentBtns;
+				var contactForm = target.matches('.wpcf7-form') ? target : $(target).parents('.wpcf7-form').get(0);
 
-        if ( event.target.classList.contains('wpcf7-form') ) {
-          this.traceForm = $target.get(0);
-          this.setOutline(this.traceForm, '#00ACFF');
-        }
+				if (contactForm) {
+					// The pointer is inside a form
+					this.traceForm = contactForm;
+					this.addFormContentBtns = this.traceForm.querySelectorAll('.wpcf7-add-new-form-content');
 
-        var $form = $target.parents('.wpcf7-form');
-        if ( 0 !== $form.length ) {
-          // The pointer is inside a form
-          this.traceForm = $form[0];
-          this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
-          // this.addFormContentBtns = this.traceForm.querySelectorAll('.wpcf7-add-new-form-content');
+					// Possible to attach events at init and update listeners only when adding rows/columns
+					if (needToAddPlusButtonsListener) {
+						var plusButtonsInForm = !!this.addFormContentBtns;
 
-          if ( needToAddPlusButtonsListener ) {
-            var noPlusButtonsInForm = 'undefined' == typeof this.addFormContentBtns;
-            // var noPlusButtonsInForm = null === this.addFormContentBtns;
-            if ( !noPlusButtonsInForm ) {
-              this.on(this.addFormContentBtns, 'click', this.handleClickAddFormContent.bind(this));
-            }
-          } else {
-            this.off(this.addFormContentBtns, 'click', this.handleClickAddFormContent.bind(this));
-          }
+						if (plusButtonsInForm) {
+							this.on(this.addFormContentBtns, 'click', this.handleClickAddFormContent.bind(this));
+						}
+					} else {
+						this.off(this.addFormContentBtns, 'click', this.handleClickAddFormContent.bind(this));
+					}
 
-          this.placeFormToolbox();
-          this.hideColumnToolbox();
-          this.clearOutlines('rows');
-          this.clearOutlines('columns');
-          this.hidePlusButtons();
-          this.setOutline(this.traceForm, '#00ACFF');
+					this.placeFormToolbox();
+					this.hideColumnToolbox();
+					this.clearOutlines('columns');
 
-          var $formRow = $target.parents('.wpcf7-row');
-          if ( 0 !== $formRow.length ) {
-            // The pointer is inside a form row
-            this.traceFormRow = $formRow[0];
-            
-            this.setOutline(this.traceFormRow, '#00ACFF');
-            this.hideAllRowToolsInsideRow();
-            this.putRowToolsInsideRow();
+					var contactFormRow = target.matches('.wpcf7-row') ? target : $(target).parents('.wpcf7-row').get(0);
 
-            if ( 0 === $target.parents('#rex-wpcf7-tools').length && !$target.is('#rex-wpcf7-tools') ) {
-              this.viewRowToolbox();
-              this.hideSelectColumnsToolbar();
-            } else {
-              this.hideRowToolbox();
-            }
+					if (contactFormRow) {
+						// The pointer is inside a form row
+						this.traceFormRow = contactFormRow;
 
-            var $formColumn = $target.parents(".wpcf7-column");
-            // if ( $formColumn.length !== 0 && 0 !== $formColumn.find(".wpcf7-add-new-form-content").length ) {
-            if ( $formColumn.length !== 0 && 0 !== $formColumn[0].getElementsByClassName("wpcf7-add-new-form-content").length ) { 
-              // The pointer is inside a form column (and obviously row)
-              // $formColumn.find(".wpcf7-add-new-form-content").css("display", "block");
-              $formColumn[0].querySelector(".wpcf7-add-new-form-content").style.display = 'block';
-            // } else if ( $target.hasClass("wpcf7-column") && 0 !== $target.find(".wpcf7-add-new-form-content").length ) {
-            } else if ( $target.hasClass("wpcf7-column") && 0 !== $target[0].getElementsByClassName("wpcf7-add-new-form-content").length ) {
-              // The pointer is inside a form column (and obviously row)
-              // $target.find(".wpcf7-add-new-form-content").css("display", "block");
-              $target[0].querySelector(".wpcf7-add-new-form-content").style.display = 'block';
-            }
-            
-            if ( $formColumn.length !== 0 && $formColumn[0].getElementsByClassName("wpcf7-add-new-form-content").length === 0 && $formColumn[0].getElementsByClassName("wpcf7-add-new-row").length === 0 ) {
-              // The pointer is inside a form column (and obviously row)
-              this.traceFormColumn = $formColumn[0];
-              this.traceColumnContent = this.findElementToOutline(this.traceFormColumn);
+						this.hideAllRowToolsInsideRow();
+						this.putRowToolsInsideRow();
 
-              if ( $target[0] == this.traceColumnContent || $target.parents().filter(this.traceColumnContent).length != 0 ) {
-                this.hideRowToolbox();
-                this.viewColumnToolbox();
-                this.setOutline(this.traceColumnContent, "#FF0055");
-              }
-            } else if ( $target.hasClass("wpcf7-column") && $target[0].getElementsByClassName("wpcf7-add-new-form-content").length === 0 && $target[0].getElementsByClassName("wpcf7-add-new-row").length === 0 ) {
-              // The pointer is inside a form column (and obviously row)
-              this.traceFormColumn = $target[0];
-              this.traceColumnContent = this.findElementToOutline(this.traceFormColumn);
-            }
-          }
-        } else {
-          if ( !$target.is(".wpcf7-form") ) {
-            this.handleBlur(event);
-          }
-        }
-      }
+						if (0 === $(target).parents('#rex-wpcf7-tools').length && !$(target).is('#rex-wpcf7-tools')) {
+							this.viewRowToolbox();
+							this.hideSelectColumnsToolbar();
+						} else {
+							this.hideRowToolbox();
+						}
+
+						var contactFormColumn = target.matches('.wpcf7-column')
+							? target
+							: $(target).parents('.wpcf7-column').get(0);
+
+						if (contactFormColumn) {
+							if (!Rexbuilder_Util.hasClass(contactFormColumn, 'with-button')) {
+								// The pointer is inside a form column
+								this.traceFormColumn = contactFormColumn;
+								this.traceColumnContent = this.findElementToOutline(this.traceFormColumn);
+
+								if (
+									target == this.traceColumnContent ||
+									$(target).parents().filter(this.traceColumnContent).length != 0
+								) {
+									this.hideRowToolbox();
+									this.viewColumnToolbox();
+									this.setOutline(this.traceColumnContent, '#FF0055');
+								}
+							} else if (
+								$(target).hasClass('wpcf7-column') &&
+								target.getElementsByClassName('wpcf7-add-new-form-content').length === 0 &&
+								target.getElementsByClassName('wpcf7-add-new-row').length === 0
+							) {
+								// The pointer is inside a form column (and obviously row)
+								this.traceFormColumn = target;
+								this.traceColumnContent = this.findElementToOutline(this.traceFormColumn);
+							}
+						}
+					}
+				} else {
+					this.handleBlur(mouseEvent);
+				}
+			}
     },
 
     handleClickAddFormContent: function (event) {
@@ -3457,7 +3440,6 @@ var TextEditor = (function ($) {
       this.clearOutlines("form");
       this.clearOutlines("rows");
       this.clearOutlines("columns");
-      this.hidePlusButtons();
 
       var $target = $(event.target);
 
@@ -3712,12 +3694,10 @@ var TextEditor = (function ($) {
         case 'submit':
         case 'select':
           return formColumn.querySelector('.wpcf7-form-control');
-          break;
         case 'radio':
         case 'acceptance':
         case 'file':
           return formColumn.querySelector('.wpcf7-form-control-wrap');
-          break;
         default: break;
       }
     },
@@ -3727,20 +3707,7 @@ var TextEditor = (function ($) {
       // this.addFormContentBtns = this.traceForm.querySelectorAll('.wpcf7-add-new-form-content');
       this.off(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
       this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
-    },
-
-    hidePlusButtons: function () {
-      if ( ! this.traceForm ) {
-        return;
-      }
-      
-      var addNewContentButtons = Array.prototype.slice.call( this.traceForm.querySelectorAll('.wpcf7-add-new-form-content') );
-      var addNewContentButtonsLength = addNewContentButtons.length;
-
-      for( var i = 0; i < addNewContentButtonsLength; i++ ) {
-        addNewContentButtons[i].style.display = 'none';
-      }
-    },
+    }
   });
 
   var _linkDocumentListeners = function () {

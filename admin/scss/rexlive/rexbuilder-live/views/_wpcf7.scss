@@ -1,105 +1,135 @@
 .wpcf7-form {
-  display: flex;
-  flex-wrap: wrap;
-  cursor: default;
-  padding-top: 13px;
-  margin-top: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	cursor: default;
+	padding-top: 13px;
+	margin-top: 10px;
 
-  .wpcf7-rows {
-    display: block;
-    width: 100%;
+	&:hover {
+		outline: 2px solid $palette-color-1;
+		outline-offset: -1px;
+	}
 
-    .wpcf7-row {
-      display: flex;
-      width: 100%;
-      min-height: 72px;
+	.wpcf7-rows {
+		display: block;
+		width: 100%;
 
-      .wpcf7-column {
-        display: flex;
+		.wpcf7-row {
+			display: flex;
+			width: 100%;
+			min-height: 72px;
 
-        &.with-button {
-          justify-content: center;
-        }
+			&:hover {
+				outline: 2px solid $palette-color-1;
+				outline-offset: -1px;
+			}
 
-        .wpcf7-add-new-form-content {
-          margin: auto 0;
-          display: none;
-        }
+			.wpcf7-column {
+				display: flex;
 
-        .wpcf7-add-new-row {
-          margin: auto 0;
-        }
+				&:hover {
+					.wpcf7-add-new-form-content {
+						display: block;
+					}
+				}
 
-        .wpcf7-column-content {
-          width: 100%;
+				&.with-button {
+					justify-content: center;
+				}
 
-          label {
-            display: block;
-          }
+				.wpcf7-add-new-form-content {
+					margin: auto 0;
+					display: none;
+				}
 
-          .wpcf7-form-control-wrap {
-            max-width: 100%;
-            max-height: 100%;
-          }
+				.wpcf7-add-new-row {
+					margin: auto 0;
+				}
 
-          .wpcf7-radio,
-          .wpcf7-acceptance {
-            overflow: hidden;
-          }
-        }
+				.wpcf7-column-content {
+					width: 100%;
 
-        .rex-wpcf7-column-content-data {
-          display: none;
-        }
+					// &:not(.outline-wrap):hover {
+					// 	.wpcf7-form-control {
+					// 		outline: 2px solid $palette-color-3;
+					// 		outline-offset: -1px;
+					// 	}
+					// }
 
-        .wpcf7-list-item {
-          display: inline-flex;
-          align-items: center;
-        }
-      }
+					// &.outline-wrap:hover {
+					// 	.wpcf7-form-control-wrap {
+					// 		outline: 2px solid $palette-color-3;
+					// 		outline-offset: -1px;
+					// 	}
+					// }
 
-      &.wpcf7-row__1-column,
-      &.wpcf7-row__2-columns,
-      &.wpcf7-row__3-columns,
-      &.wpcf7-row__4-columns {
-        .wpcf7-column {
-          float: left;
-        }
-      }
-      
-      &.wpcf7-row__1-column {
-        .wpcf7-column {
-          width: 100%;
-        }
-      }
+					label {
+						display: block;
+					}
 
-      &.wpcf7-row__2-columns {
-        .wpcf7-column {
-          width: 50%;
-          max-width: 50%;
-        }
-      }
+					.wpcf7-form-control-wrap {
+						max-width: 100%;
+						max-height: 100%;
 
-      &.wpcf7-row__3-columns {
-        .wpcf7-column {
-          width: 33.3333%;
-        }
-      }
+						.wpcf7-radio,
+						.wpcf7-acceptance {
+							overflow: hidden;
+						}
+					}
+				}
 
-      &.wpcf7-row__4-columns {
-        .wpcf7-column {
-          width: 25%;
-        }
-      }
-    }
-  }
+				.rex-wpcf7-column-content-data {
+					display: none;
+				}
 
-  .wpcf7-response-output {
-    width: 100%;
-  }
+				.wpcf7-list-item {
+					display: inline-flex;
+					align-items: center;
+				}
+			}
 
-  .wpcf7-submit {
-    min-width: 150px;
-    min-height: 40px;
-  }
+			&.wpcf7-row__1-column,
+			&.wpcf7-row__2-columns,
+			&.wpcf7-row__3-columns,
+			&.wpcf7-row__4-columns {
+				.wpcf7-column {
+					float: left;
+				}
+			}
+
+			&.wpcf7-row__1-column {
+				.wpcf7-column {
+					width: 100%;
+				}
+			}
+
+			&.wpcf7-row__2-columns {
+				.wpcf7-column {
+					width: 50%;
+					max-width: 50%;
+				}
+			}
+
+			&.wpcf7-row__3-columns {
+				.wpcf7-column {
+					width: 33.3333%;
+				}
+			}
+
+			&.wpcf7-row__4-columns {
+				.wpcf7-column {
+					width: 25%;
+				}
+			}
+		}
+	}
+
+	.wpcf7-response-output {
+		width: 100%;
+	}
+
+	.wpcf7-submit {
+		min-width: 150px;
+		min-height: 40px;
+	}
 }
