@@ -140,6 +140,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			fieldClass;
 		var columnContentRule = columnContentSelector + '{' + property + '}';
 
+		if (/acceptance/.test(columnContentSelector)) {
+			console.log(columnContentSelector);
+		}
+
 		if (!_ruleAlreadyExists(columnContentSelector)) {
 			if ('insertRule' in styleSheet) {
 				styleSheet.insertRule(columnContentRule, styleSheet.cssRules.length);
@@ -981,6 +985,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				cssSelector = 'wpcf7-' + inputType;
 				break;
 			case 'acceptance':
+				cssSelector = 'wpcf7-form-control-wrap';
+				break;
 			case 'submit':
 			case 'file':
 				cssSelector = fieldClass;
@@ -1185,32 +1191,26 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 		// Field class
 		if ($formColumn.find('.wpcf7-form-control').length > 0) {
-			columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find('.wpcf7-form-control')[0].classList);
+			columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find('.wpcf7-form-control').get(0).classList);
 
 			if (null === columnContentData.field_class) {
 				columnContentData.field_class = /[a-z]+\-[0-9]+/.exec(
-					$formColumn.find('.wpcf7-form-control-wrap')[0].classList
-				)[0];
+					$formColumn.find('.wpcf7-form-control-wrap').get(0).classList
+				);
+
+				if (null === columnContentData.field_class) {
+					columnContentData.field_class = /[a-z]+\-[0-9]+/.exec(
+						$formColumn.find('[type=checkbox]').get(0).classList
+					)[0];
+				} else {
+					columnContentData.field_class = columnContentData.field_class[0];
+				}
 			} else {
 				columnContentData.field_class = columnContentData.field_class[0];
 			}
 		} else {
 			columnContentData.field_class = null;
 		}
-
-		// if( null == columnContentData.field_class ) {
-		//     var $tempWrap = $formColumn.find(".wpcf7-form-control-wrap");
-		//     if ( $tempWrap.length > 0 ) {
-		//         var searchClass = /[a-z]+\-[0-9]+/.exec($tempWrap[0].classList);
-		//         if ( searchClass ) {
-		//             columnContentData.field_class = searchClass[0];
-		//         } else {
-		//             columnContentData.field_class = null;
-		//         }
-		//     }
-		// } else {
-		//     columnContentData.field_class = columnContentData.field_class[0];
-		// }
 
 		// Input type
 		columnContentData.input_type = /[a-z]+/.exec(columnContentData.field_class)[0];
@@ -1227,6 +1227,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				cssSelector = 'wpcf7-' + inputType;
 				break;
 			case 'acceptance':
+				cssSelector = 'wpcf7-form-control-wrap';
+				break;
 			case 'submit':
 			case 'file':
 				cssSelector = columnContentData.field_class;
@@ -2169,6 +2171,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				cssSelector = 'wpcf7-' + inputType;
 				break;
 			case 'acceptance':
+				cssSelector = 'wpcf7-form-control-wrap';
+				break;
 			case 'submit':
 			case 'file':
 				cssSelector = fieldClass;
@@ -2314,19 +2318,25 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	}
 
 	function _removeColumnContentStyle($formColumn) {
-		// var formID = $formColumn.parents('.rex-element-wrapper').attr('data-rex-element-id');
-		// var rowNumber = $formColumn.parents('.wpcf7-row').attr('wpcf7-row-number');
-		// var columnNumber = $formColumn.attr('wpcf7-column-number');
+		var formID = $formColumn.parents('.rex-element-wrapper').attr('data-rex-element-id');
+		var rowNumber = $formColumn.parents('.wpcf7-row').attr('wpcf7-row-number');
+		var columnNumber = $formColumn.attr('wpcf7-column-number');
 
 		var noPlusButtonsInside =
-			0 == $formColumn.find('.wpcf7-add-new-form-content').length &&
+			0 === $formColumn.find('.wpcf7-add-new-form-content').length &&
 			0 == $formColumn.parents('#rex-wpcf7-tools').length;
 
 		if (noPlusButtonsInside) {
-			var fieldClass = /[a-z]+\-[0-9]+/.exec($formColumn.find('.wpcf7-form-control')[0].classList);
+			var fieldClass = /[a-z]+\-[0-9]+/.exec($formColumn.find('.wpcf7-form-control').get(0).classList);
 
 			if (null === fieldClass) {
-				fieldClass = /[a-z]+\-[0-9]+/.exec($formColumn.find('.wpcf7-form-control-wrap')[0].classList)[0];
+				fieldClass = /[a-z]+\-[0-9]+/.exec($formColumn.find('.wpcf7-form-control-wrap').get(0).classList);
+
+				if (null === fieldClass) {
+					fieldClass = /[a-z]+\-[0-9]+/.exec($formColumn.find('[type=checkbox]').get(0).classList)[0];
+				} else {
+					fieldClass = fieldClass[0];
+				}
 			} else {
 				fieldClass = fieldClass[0];
 			}
@@ -2344,12 +2354,27 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 					cssSelector = 'wpcf7-' + inputType;
 					break;
 				case 'acceptance':
+					cssSelector = 'wpcf7-form-control-wrap';
+					break;
 				case 'submit':
 					cssSelector = fieldClass;
 					break;
 				case 'file':
 					cssSelector = fieldClass;
+					removeColumnContentRule(formID, rowNumber, columnNumber, cssSelector + ' label');
+					removeColumnContentHoverRule(formID, rowNumber, columnNumber, cssSelector + ' label');
+					break;
+				case 'radio':
+					cssSelector = 'wpcf7-form-control-wrap.' + fieldClass;
+					// _removeColumnContentRule(formID, rowNumber, columnNumber, cssSelector + ' label');
+					break;
+				default:
+					break;
 			}
+
+			removeColumnContentRule(formID, rowNumber, columnNumber, cssSelector);
+			removeColumnContentHoverRule(formID, rowNumber, columnNumber, cssSelector);
+			removeColumnContentFocusRule(formID, rowNumber, columnNumber, cssSelector);
 		}
 	}
 

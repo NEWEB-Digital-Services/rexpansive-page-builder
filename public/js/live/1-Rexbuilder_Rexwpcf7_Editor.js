@@ -1,7 +1,5 @@
 var Rexbuilder_Rexwpcf7_Editor = (function ($) {
-	'use strict'
-	
-	var styleSheet;
+	'use strict';
 
 	/* ===== PUBLIC METHODS ===== */
 
@@ -223,7 +221,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			$(row)
 				.find('.wpcf7-column')
 				.each(function (index, column) {
-					console.log( column );
+					console.log(column);
 				});
 		});
 	}
@@ -378,6 +376,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				cssSelector = 'wpcf7-' + inputType;
 				break;
 			case 'acceptance':
+				cssSelector =  'wpcf7-form-control-wrap';
+        break;
 			case 'submit':
 			case 'file':
 				cssSelector = fieldClass;
@@ -1585,7 +1585,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	/* ===== PRIVATE METHODS END ===== */
 
 	function init() {
-		styleSheet = null;
 		$formsInPage = {};
 
 		_getDBFormsInPage();
