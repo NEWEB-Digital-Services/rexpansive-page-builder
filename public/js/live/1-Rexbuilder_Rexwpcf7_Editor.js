@@ -1,6 +1,8 @@
 var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	'use strict';
 
+	var textEditorCf7Instance;
+
 	/* ===== PUBLIC METHODS ===== */
 
 	function addField(data) {
@@ -9,13 +11,13 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		var fieldType = data.fieldType;
 		var fieldShortcode;
 		var fieldNumber = Rexbuilder_Util.createRandomNumericID(3);
-		var row = insertionPoint.row_number;
-		var column = insertionPoint.column_number;
+		var rowNumber = insertionPoint.row_number;
+		var columnNumber = insertionPoint.column_number;
 		var $columnToAddField = Rexbuilder_Util.$rexContainer.find(
-			'.wpcf7-row[wpcf7-row-number="' + row + '"] .wpcf7-column[wpcf7-column-number="' + column + '"]'
+			'.wpcf7-row[wpcf7-row-number="' + rowNumber + '"] .wpcf7-column[wpcf7-column-number="' + columnNumber + '"]'
 		);
 		var $columnToAddFieldInDB = $formsInPage[formID].find(
-			'.wpcf7-row[wpcf7-row-number="' + row + '"] .wpcf7-column[wpcf7-column-number="' + column + '"]'
+			'.wpcf7-row[wpcf7-row-number="' + rowNumber + '"] .wpcf7-column[wpcf7-column-number="' + columnNumber + '"]'
 		);
 
 		$columnToAddField.empty().removeClass('with-button');
@@ -110,11 +112,12 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		createColumnContentSpanData({
 			editPoint: {
 				element_id: formID,
-				row_number: row,
-				column_number: column
+				row_number: rowNumber,
+				column_number: columnNumber
 			}
 		});
 
+		_addMissingTools(formID, $columnToAddField.eq(0).parents('.wpcf7-row'))
 		Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
 		Rexbuilder_Rexwpcf7.addColumnContentStyle($columnToAddField);
 	}
@@ -163,6 +166,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			var $newRowClone = $newRow.clone();
 			$(this).find('.wpcf7-rows').append($newRowClone);
 		});
+
+		_addMissingTools(formID, $newRow);
 
 		_saveNewRow(formID, $newRow);
 	}
@@ -218,7 +223,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 					newName: newRadioData.newRadioName
 				});
 
-				Rexbuilder_Rexwpcf7.addColumnContentStyle($(clonedColumn))
+				Rexbuilder_Rexwpcf7.addColumnContentStyle($(clonedColumn));
 			}
 		}
 	}
@@ -1658,11 +1663,10 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			.find('.wpcf7-rows')
 			.addClass('ui-sortable')
 			.sortable({
-				// revert: true,
 				direction: 'vertical',
 				handle: '.rex-wpcf7-row-drag',
 				cursor: 'pointer',
-				update: function (e, ui) {
+				update: function (event, ui) {
 					var formID = ui.item.parents('.rex-element-wrapper').attr('data-rex-element-id');
 
 					var startPosition = parseInt(ui.item.attr('wpcf7-row-number')); // Getting the old row position
@@ -1680,15 +1684,116 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 					}
 
 					_fixRowNumbers($formsInPage[formID]);
-					// aggiornare pulsante salvataggio
+					Rexbuilder_Util_Editor.builderEdited(false);
 				}
 			});
 	}
 
-	/* ===== PRIVATE METHODS END ===== */
+	function _wrapButtons() {
+		$('.wpcf7-submit').each(function (index, element) {
+			$(element).wrap(Rexbuilder_Live_Templates.getTemplate('wpcf7-button-fix'));
+		});
+	}
+
+	function _addRowToolsToDOM() {
+		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-row-tools');
+		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form'));
+		var tot_forms = forms.length;
+
+		var rows;
+		var tot_rows;
+
+		var i = 0;
+		var j = 0;
+		for (; i < tot_forms; i++) {
+			rows = Array.prototype.slice.call(forms[i].querySelectorAll('.wpcf7-row'));
+			tot_rows = rows.length;
+
+			for (j = 0; j < tot_rows; j++) {
+				rows[j].insertAdjacentHTML('afterbegin', toolsTemplate);
+			}
+		}
+	}
+
+	function _addMissingTools(formID, row) {
+		var rowToolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-row-tools');
+		var columnToolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-column-tools');
+
+		if (row instanceof jQuery) {
+			row = row.get(0);
+		}
+
+		var rowNumber = row.getAttribute('wpcf7-row-number');
+		var forms = Array.prototype.slice.call(
+			Rexbuilder_Util.rexContainer.querySelectorAll(
+				'.rex-element-wrapper[data-rex-element-id="' + formID + '"] .wpcf7-form'
+			)
+		);
+
+		var currentRow;
+		var currentFormControls;
+
+		var i = 0;
+		var j = 0;
+		for (; i < forms.length; i++) {
+			currentRow = forms[i].querySelector('[wpcf7-row-number="' + rowNumber + '"]');
+
+			if (!currentRow.querySelector('.rexwpcf7-row-tools')) {
+				currentRow.insertAdjacentHTML('afterbegin', rowToolsTemplate);
+			}
+			
+			currentFormControls = Array.prototype.slice.call(currentRow.getElementsByClassName('wpcf7-form-control'));
+			
+			for (j = 0; j < currentFormControls.length; j++) {
+				if (!currentFormControls[j].querySelector('.rexwpcf7-column-tools')) {
+					currentFormControls[j].insertAdjacentHTML('afterend', columnToolsTemplate);
+				}
+			}
+		}
+
+		textEditorCf7Instance.refreshToolsHandlers();
+	}
+
+	function _addColumnToolsToDOM() {
+		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-column-tools');
+		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form'));
+
+		var columnsFormControl;
+
+		var i = 0;
+		var j = 0;
+		for (; i < forms.length; i++) {
+			columnsFormControl = Array.prototype.slice.call(forms[i].querySelectorAll('.wpcf7-form-control'));
+
+			for (j = 0; j < columnsFormControl.length; j++) {
+				columnsFormControl[j].insertAdjacentHTML('afterend', toolsTemplate);
+			}
+		}
+	}
+
+	function _addFormToolsToDOM() {
+		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-form-tools');
+		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form'));
+		var tot_forms = forms.length;
+
+		var i = 0;
+		for (; i < tot_forms; i++) {
+			forms[i].querySelector('.wpcf7-rows').insertAdjacentHTML('afterend', toolsTemplate);
+		}
+	}
+
+	function getCf7EditorInstance(instance) {
+		textEditorCf7Instance = instance
+	}
+
 
 	function init() {
 		$formsInPage = {};
+
+		_wrapButtons();
+		_addFormToolsToDOM();
+		_addRowToolsToDOM();
+		_addColumnToolsToDOM();
 
 		_getDBFormsInPage();
 	}
@@ -1696,6 +1801,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	return {
 		init: init,
 		retrieveFormsInPage: retrieveFormsInPage,
+		getCf7EditorInstance: getCf7EditorInstance,
 
 		addField: addField,
 		addNewRow: addNewRow,

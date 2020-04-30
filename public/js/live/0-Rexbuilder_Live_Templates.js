@@ -54,6 +54,93 @@ var Rexbuilder_Live_Templates = (function() {
 				return '<ul id="" class="medium-editor-toolbar-actions"> <li> <button class="medium-editor-action select-1-column"> <i class="l-svg-icons"><svg><use xlink:href="#B041-One-Column"></use></svg></i> </button> </li> <li> <button class="medium-editor-action select-2-columns"> <i class="l-svg-icons"><svg><use xlink:href="#B042-Two-Columns"></use></svg></i> </button> </li> <li> <button class="medium-editor-action select-3-columns"> <i class="l-svg-icons"><svg><use xlink:href="#B043-Three-Columns"></use></svg></i> </button> </li> <li> <button class="medium-editor-action select-4-columns"> <i class="l-svg-icons"><svg><use xlink:href="#B044-Four-Columns"></use></svg></i> </button> </li> </ul>';
 			case 'tmpl-rexwpcf7-tools':
 				return '<div class="tool-button tool-button--flat tool-button--add-big wpcf7-add-new-row tippy" data-tippy-content="' + _plugin_frontend_settings.labels.add_row + '"> <i class="l-svg-icons"><svg><use xlink:href="#Z001-Plus"></use></svg></i> </div>';
+			case 'wpcf7-form-tools':
+				return '<div contenteditable="false" class="rexwpcf7-form-tools">' +
+						'<div class="tool-button tool-button--flat tool-button--add-big wpcf7-add-new-row tippy" data-tippy-content="Add Row">' +
+							'<i class="l-svg-icons">' +
+								'<svg>' +
+									'<use xlink:href="#Z001-Plus">' +
+								'</use>' +
+								'</svg>' +
+							'</i>' +
+						'</div>' +
+						'<div class="wpcf7-select-columns-number">' +
+							'<ul>' +
+								'<li>' +
+									'<button type="button" class="select-1-column">' +
+										'<i class="l-svg-icons">' +
+											'<svg>' +
+												'<use xlink:href="#B041-One-Column">' +
+												'</use>' +
+											'</svg>' +
+										'</i>' +
+									'</button>' +
+								'</li>' +
+								'<li>' +
+									'<button type="button" class="select-2-columns">' +
+										'<i class="l-svg-icons">' +
+											'<svg>' +
+												'<use xlink:href="#B042-Two-Columns">' +
+												'</use>' +
+											'</svg>' +
+										'</i>' +
+									'</button>' +
+								'</li>' +
+								'<li>' +
+									'<button type="button" class="select-3-columns">' +
+										'<i class="l-svg-icons">' +
+											'<svg>' +
+												'<use xlink:href="#B043-Three-Columns">' +
+
+												'</use>' +
+											'</svg>' +
+										'</i>' +
+									'</button>' +
+								'</li>' +
+								'<li>' +
+									'<button type="button" class="select-4-columns">' +
+										'<i class="l-svg-icons">' +
+											'<svg>' +
+												'<use xlink:href="#B044-Four-Columns">' +
+												'</use>' +
+											'</svg>' +
+										'</i>' +
+									'</button>' +
+								'</li>' +
+							'</ul>' +
+						'</div>' +
+					'</div>';
+			case 'wpcf7-column-tools':
+				return '<div contenteditable="false" class="rexwpcf7-column-tools"><div class="tool-button tool-button--pink rex-wpcf7-column-settings tippy" data-tippy-content="' + _plugin_frontend_settings.labels.settings + '"> <i class="l-svg-icons"><svg><use xlink:href="#Z005-Setting"></use></svg></i> </div> <div class="tool-button rex-wpcf7-column-clone tippy" data-tippy-content="' + _plugin_frontend_settings.labels.clone + '"> <i class="l-svg-icons"><svg><use xlink:href="#Z004-Copy"></use></svg></i> </div> <div class="tool-button tool-button--black rex-wpcf7-column-delete tippy" data-tippy-content="' + _plugin_frontend_settings.labels.delete + '"> <i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i></div></div>'
+			case 'wpcf7-row-tools':
+				return '<div class="rexwpcf7-row-tools" contenteditable="false">' +
+						'<div class="tool-button rex-wpcf7-row-drag tippy" data-tippy-content="' + _plugin_frontend_settings.labels.drag + '" tabindex="0">' +
+							'<i class="l-svg-icons">' +
+								'<svg>' +
+									'<use xlink:href="#B007-Move">' +
+									'</use>' +
+								'</svg>' +
+							'</i>' +
+						'</div>' +
+						'<div class="tool-button rex-wpcf7-row-clone tippy" data-tippy-content="' + _plugin_frontend_settings.labels.clone + '" tabindex="0">' +
+							'<i class="l-svg-icons">' +
+								'<svg>' +
+									'<use xlink:href="#Z004-Copy">' +
+									'</use>' +
+								'</svg>' +
+							'</i>' +
+						'</div>' +
+						'<div class="tool-button tool-button--black rex-wpcf7-row-delete tippy" data-tippy-content="' + _plugin_frontend_settings.labels.delete + '" tabindex="0">'+
+							'<i class="l-svg-icons">'+
+								'<svg>'+
+									'<use xlink:href="#Z003-Close">'+
+									'</use>'+
+								'</svg>'+
+							'</i>'+
+						'</div>'+
+				'</div>'
+			case 'wpcf7-button-fix':
+				return '<span class="wpcf7-form-control-wrap"></span>'
 			default:
 				return '';
 		}

@@ -1,112 +1,213 @@
-// LIVE
+.rexwpcf7-form-tools {
+	display: none;
+	justify-content: center;
+	width: 100%;
+	padding: 15px;
+	position: relative;
+
+	&:hover {
+		outline: 2px solid $palette-color-1;
+		outline-offset: -1px;
+	}
+
+	.wpcf7-form:hover & {
+		display: flex;
+	}
+
+	.wpcf7-add-new-row {
+		.wpcf7-form:hover & {
+			display: block;
+		}
+	}
+
+	.wpcf7-select-columns-number {
+		width: 500px;
+		display: none;
+		position: absolute;
+		top: 50px;
+		justify-content: center;
+
+		&::before {
+			border-style: solid;
+			content: '';
+			width: 0;
+			height: 0;
+			display: block;
+			position: absolute;
+			top: -8px;
+			left: 50%;
+			margin-left: -8px;
+
+			border-width: 0 8px 8px 8px;
+			border-top-color: transparent;
+			border-right-color: transparent;
+			border-bottom-color: $palette-color-4;
+			border-left-color: transparent;
+		}
+
+		// The plus button that must stay underneath has 30 (from .tool-button)
+		z-index: 31;
+
+		&.active {
+			display: flex;
+		}
+
+		ul {
+			list-style: none;
+			margin: 0;
+		}
+
+		li {
+			display: inline-block;
+			margin: 0;
+			padding: 0;
+
+			&:first-child {
+				button {
+					border-top-left-radius: 1000px;
+					border-bottom-left-radius: 1000px;
+					padding-left: 15px;
+				}
+			}
+
+			&:last-child {
+				button {
+					border-top-right-radius: 1000px;
+					border-bottom-right-radius: 1000px;
+					padding-right: 15px;
+				}
+			}
+		}
+
+		button {
+			background: $palette-color-4;
+			padding: 9px;
+			outline: none;
+
+			@include fill-icon(white);
+		}
+	}
+}
+
 .rexwpcf7-row-tools {
-  position: absolute;
-  z-index: 10;
-  cursor: pointer;
+	position: absolute;
+	top: -10px;
+	right: 0;
+	z-index: 10;
+	font-size: 10px;
+	display: none;
 
-  &.rexwpcf7-row-tools-inside-row {
-    position: relative;
-    width: 0;
-  }
+	.wpcf7-row:hover & {
+		// display: flex;
+		display: block;
+	}
 
-  .rex-wpcf7-row-tools-container {
-    width: 0px;
-    height: 0px;
-    font-size: 10px;
+	&.rexwpcf7-row-tools-inside-row {
+		position: relative;
+		width: 0;
+	}
 
-    .rex-wpcf7-row-drag {
-      position: absolute;
-      top: 0px;
-      right: 60px;
-      display: none;
-    }
+	.rex-wpcf7-row-drag {
+		position: absolute;
+		top: 0px;
+		right: 60px;
+		// display: none;
+	}
 
-    .rex-wpcf7-row-clone {
-      position: absolute;
-      top: 0px;
-      right: 25px;
-    }
+	.rex-wpcf7-row-clone {
+		position: absolute;
+		top: 0px;
+		right: 25px;
+	}
 
-    .rex-wpcf7-row-delete {
-      position: absolute;
-      top: 0px;
-      right: -10px;
-      background-color: #424242;
+	.rex-wpcf7-row-delete {
+		position: absolute;
+		top: 0px;
+		right: -10px;
+		background-color: #424242;
 
-      .l-svg-icons > svg {
-        fill: #ffffff;
-      }
-    }
-  }
+		.l-svg-icons > svg {
+			fill: #ffffff;
+		}
+	}
 }
 
 .rexwpcf7-column-tools {
-  position: absolute;
-  z-index: 10;
-  cursor: pointer;
+	display: none;
+	position: absolute;
+	top: -10px;
+	right: 0;
+	z-index: 10;
+	width: 100%;
+	height: 22px;
+	font-size: 10px;
 
-  .rex-wpcf7-column-tools-container {
-    // width: 100%;
-    width: 0px;
-    // height: 22px;
-    height: 0px;
-    font-size: 10px;
+	.wpcf7-form-control-wrap:hover & {
+		display: flex;
+	}
 
-    .rex-wpcf7-column-settings {
-      position: absolute;
-      top: 0px;
-      left: calc(50% - 10px);
-    }
+	.rex-wpcf7-column-settings,
+	.rex-wpcf7-column-clone,
+	.rex-wpcf7-column-delete {
+		.l-svg-icons {
+			font-size: 10px;
+		}
+	}
 
-    .rex-wpcf7-column-clone {
-      position: absolute;
-      top: 0px;
-      right: 25px;
-    }
+	.rex-wpcf7-column-settings {
+		position: absolute;
+		top: 0px;
+		left: calc(50% - 10px);
+	}
 
-    .rex-wpcf7-column-delete {
-      position: absolute;
-      top: 0px;
-      right: -10px;
-    }
-  }
+	.rex-wpcf7-column-clone {
+		position: absolute;
+		top: 0px;
+		right: 25px;
+	}
+
+	.rex-wpcf7-column-delete {
+		position: absolute;
+		top: 0px;
+		right: -10px;
+	}
 }
 
 #wpcf7-select-columns-number {
-  &.medium-toolbar-arrow-over:before {
-    border-top-color: transparent;
-    border-right-color: transparent;
-    border-bottom-color: $palette-color-4;
-    border-left-color: transparent;
-  }
+	&.medium-toolbar-arrow-over:before {
+		border-top-color: transparent;
+		border-right-color: transparent;
+		border-bottom-color: $palette-color-4;
+		border-left-color: transparent;
+	}
 
-  .l-svg-icons > svg {
-    background-color: $palette-color-4;
-    // font-size: 23px;
-  }
+	.l-svg-icons > svg {
+		background-color: $palette-color-4;
+		// font-size: 23px;
+	}
 
-  li {
-    border-width: 0px;
+	li {
+		border-width: 0px;
 
-    .medium-editor-action {
-      background-color: $palette-color-4;
+		.medium-editor-action {
+			background-color: $palette-color-4;
 
-      .l-svg-icons {
-        box-sizing: content-box;
-        font-size: 23px;
-      }
-    }
+			.l-svg-icons {
+				box-sizing: content-box;
+				font-size: 23px;
+			}
+		}
 
-    &:first-child > .medium-editor-action {
-      border-top-left-radius: 17px;
-      border-bottom-left-radius: 17px;
-      padding-left: 20px;
-    }
+		&:first-child > .medium-editor-action {
+			border-top-left-radius: 17px;
+			border-bottom-left-radius: 17px;
+			padding-left: 20px;
+		}
 
-    &:last-child > .medium-editor-action {
-      border-top-right-radius: 17px;
-      border-bottom-right-radius: 17px;
-      padding-right: 20px;
-    }
-  }
+		&:last-child > .medium-editor-action {
+			border-top-right-radius: 17px;
+			border-bottom-right-radius: 17px;
+			padding-right: 20px;
+		}
+	}
 }

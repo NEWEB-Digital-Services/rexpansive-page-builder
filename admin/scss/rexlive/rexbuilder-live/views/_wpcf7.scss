@@ -18,6 +18,7 @@
 			display: flex;
 			width: 100%;
 			min-height: 72px;
+			position: relative;
 
 			&:hover {
 				outline: 2px solid $palette-color-1;
@@ -49,25 +50,17 @@
 				.wpcf7-column-content {
 					width: 100%;
 
-					// &:not(.outline-wrap):hover {
-					// 	.wpcf7-form-control {
-					// 		outline: 2px solid $palette-color-3;
-					// 		outline-offset: -1px;
-					// 	}
-					// }
-
-					// &.outline-wrap:hover {
-					// 	.wpcf7-form-control-wrap {
-					// 		outline: 2px solid $palette-color-3;
-					// 		outline-offset: -1px;
-					// 	}
-					// }
+					.wpcf7-form-control-wrap:hover {
+						outline: 2px solid $palette-color-3;
+						outline-offset: -1px;
+					}
 
 					label {
 						display: block;
 					}
 
 					.wpcf7-form-control-wrap {
+						display: inline-block;
 						max-width: 100%;
 						max-height: 100%;
 
