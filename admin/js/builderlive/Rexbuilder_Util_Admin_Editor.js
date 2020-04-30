@@ -338,11 +338,16 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
           default:
             break;
         }
+
         if (modelSaved && Rexbuilder_Util_Admin_Editor.pageSaved) {
           NProgress.done();
           Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.attr( "data-rex-edited-backend", false );
           $saveBtn.removeClass("page-edited");
           // Rexbuilder_Util_Admin_Editor.$body.removeClass('page-edited');
+          
+          // add saved layout indicator
+          Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-builder-layout.active-layout").parent().addClass('layout-saved');
+
           $saveBtn.removeClass("rex-saving");
           if ( typeof event.data.buttonData !== "undefined" && event.data.buttonData != "" ) {
             _updateLayoutPage(event.data.buttonData);
@@ -1137,7 +1142,6 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     };
     jQuery.extend(infos, data);
 
-    // console.log("sending message to iframe");
     frameBuilderWindow.postMessage(infos, "*");
   };
 
