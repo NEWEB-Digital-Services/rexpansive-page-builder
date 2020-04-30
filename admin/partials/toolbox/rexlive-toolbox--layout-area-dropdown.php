@@ -13,7 +13,7 @@ defined('ABSPATH') or exit;
   <div class="tool-button_list tool-button_list--dropdown">
 <?php
   $saved_layouts = get_post_meta($post_id, '_rex_responsive_layouts_names', true);
-  $saved_layouts_string = implode( ' ', $saved_layouts );
+  $saved_layouts_string = ( '' !== $saved_layouts ? implode( ' ', $saved_layouts ) : '' );
 
   $default_layouts = "";
   $custom_layouts = "";

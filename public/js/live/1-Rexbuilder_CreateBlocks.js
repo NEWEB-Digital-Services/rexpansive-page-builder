@@ -1018,7 +1018,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
     }
-  }
+  };
 
   /**
    * Object init function

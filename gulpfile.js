@@ -202,6 +202,7 @@ var builderlive_public_editor = [
 	'public/js/live/0-Rexbuilder_Array_Utilities.js',
 	'public/js/live/0-Rexbuilder_Live_Templates.js',
 	'public/js/live/0-Rexbuilder_Live_Utilities.js',
+	'public/js/live/0-Rexbuilder_RexEditedData.js',
 	'public/js/live/1-Rexbuilder_Color_Palette.js',
 	'public/js/live/1-Rexbuilder_Overlay_Palette.js',
 	'public/js/live/2-Text_Editor.js',

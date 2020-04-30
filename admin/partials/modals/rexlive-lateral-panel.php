@@ -14,7 +14,7 @@
 
 defined('ABSPATH') or exit;
 
-$elements = false;
+$elements = true;
 ?>
 <div id="rexbuilder-lateral-panel" class="rex-lateral-panel">
 	<div class="top-lateral-tools clearfix">
@@ -23,7 +23,7 @@ $elements = false;
 			<li><a href="#" data-rex-tab-target="rex-buttons-list"><?php _e( 'Buttons', 'rexpansive-builder' ); ?></a></li>
 			<?php
 			if ( $elements ) {
-				?><li><a href="#" data-rex-tab-target="rex-elements-list"><?php _e( 'Elements', 'rexpansive-builder' ); ?></a></li><?php
+				?><li><a href="#" data-rex-tab-target="rex-elements-list"><?php _e( 'Forms', 'rexpansive-builder' ); ?></a></li><?php
 			}
 			?>
 		</ul>

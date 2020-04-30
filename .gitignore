@@ -6,3 +6,4 @@ package-lock.json
 *.zip
 /**/*.mov
 /test-assets/
+/notes/

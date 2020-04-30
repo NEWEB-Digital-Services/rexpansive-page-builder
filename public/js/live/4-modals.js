@@ -626,6 +626,10 @@
       };
 
       Rexbuilder_Dom_Util.updateSectionBackgroundColor($section, data);
+      // tracing data
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'color_bg_section' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'color_bg_section_active' );
+      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }

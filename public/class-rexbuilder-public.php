@@ -238,6 +238,7 @@ class Rexbuilder_Public
 				// Rexbuilder
 				wp_enqueue_script('0-Rexbuilder_Live_Templates', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Templates.js', array('jquery'), $ver, true);
 				wp_enqueue_script('0-Rexbuilder_Live_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Utilities.js', array('jquery'), $ver, true);
+				wp_enqueue_script('0-Rexbuilder_RexEditedData', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_RexEditedData.js', array('jquery'), $ver, true);
 				
 				wp_enqueue_script('0-Rexbuilder_Array_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Array_Utilities.js', array('jquery'), $ver, true);
 				wp_enqueue_script('1-RexColorPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Color_Palette.js', array('jquery'), $ver, true);
@@ -555,11 +556,11 @@ class Rexbuilder_Public
 				'block_settings' => __( 'Block settings', 'rexpansive-builder' ),
 				'config' => __( 'Config', 'rexpansive-builder' ),
 				'delete' => __( 'Delete', 'rexpansive-builder' ),
-				'form_settings' => __('Form Settings', 'rexpansive-builder'),
-				'drag' => __('Drag', 'rexpansive-builder'),
-				'clone' => __('Clone', 'rexpansive-builder'),
-				'settings' => __('Settings', 'rexpansive-builder'),
-				'add_row' => __('Add Row', 'rexpansive-builder')
+				'form_settings' => __( 'Form Settings', 'rexpansive-builder' ),
+				'drag' => __( 'Drag', 'rexpansive-builder' ),
+				'clone' => __( 'Clone', 'rexpansive-builder' ),
+				'settings' => __( 'Settings', 'rexpansive-builder' ),
+				'add_row' => __( 'Add Row', 'rexpansive-builder' )
 			);
 		}
 
