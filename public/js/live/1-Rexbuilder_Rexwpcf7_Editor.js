@@ -117,7 +117,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			}
 		});
 
-		_addMissingTools(formID, $columnToAddField.eq(0).parents('.wpcf7-row'))
+		_addMissingTools(formID, $columnToAddField.eq(0).parents('.wpcf7-row'));
 		Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
 		Rexbuilder_Rexwpcf7.addColumnContentStyle($columnToAddField);
 	}
@@ -184,7 +184,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		_saveAddedRow(formID, numberRowBefore);
 
 		var columnsAdded = $rowToAdd.get(0).getElementsByClassName('wpcf7-column');
-		var tot_columnsAdded = columnsAdded.length;
 
 		var clonedColumn;
 		var clonedRadioButton;
@@ -195,7 +194,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 		var i = 0;
 
-		for (; i < tot_columnsAdded; i++) {
+		for (; i < columnsAdded.length; i++) {
 			clonedColumn = columnsAdded[i];
 			clonedColumnNumber = i + 1;
 			clonedRadioButton = clonedColumn.querySelector('.wpcf7-form-control-wrap[class*=radio-]');
@@ -1741,17 +1740,15 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			if (!currentRow.querySelector('.rexwpcf7-row-tools')) {
 				currentRow.insertAdjacentHTML('afterbegin', rowToolsTemplate);
 			}
-			
+
 			currentFormControls = Array.prototype.slice.call(currentRow.getElementsByClassName('wpcf7-form-control'));
-			
+
 			for (j = 0; j < currentFormControls.length; j++) {
 				if (!currentFormControls[j].querySelector('.rexwpcf7-column-tools')) {
 					currentFormControls[j].insertAdjacentHTML('afterend', columnToolsTemplate);
 				}
 			}
 		}
-
-		textEditorCf7Instance.refreshToolsHandlers();
 	}
 
 	function _addColumnToolsToDOM() {
@@ -1782,10 +1779,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		}
 	}
 
-	function getCf7EditorInstance(instance) {
-		textEditorCf7Instance = instance
+	function setCf7EditorInstance(instance) {
+		textEditorCf7Instance = instance;
 	}
-
 
 	function init() {
 		$formsInPage = {};
@@ -1801,7 +1797,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	return {
 		init: init,
 		retrieveFormsInPage: retrieveFormsInPage,
-		getCf7EditorInstance: getCf7EditorInstance,
+		setCf7EditorInstance: setCf7EditorInstance,
 
 		addField: addField,
 		addNewRow: addNewRow,

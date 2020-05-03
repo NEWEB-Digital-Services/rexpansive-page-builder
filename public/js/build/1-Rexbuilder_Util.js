@@ -4026,6 +4026,23 @@ var Rexbuilder_Util = (function($) {
     })
 	}
 
+	/**
+	 * Determines if a given element matches the given selector,
+	 * or if it's a child of the element that matches the given selector.
+	 * @param		{Element}		element 
+	 * @param		{String}		selector 
+	 * @returns	{Boolean}		Does the given element match, or is a child
+	 * 											of the element that matches the given selector?
+	 * @since		2.0.5
+	 */
+	function isOrIsChild(element, selector) {
+		if (element.matches(selector)) {
+			return true;
+		}
+
+		return 0 !== $(element).parents(selector).length;
+	}
+
   // init the utilities
   var init = function() {
     this.globalViewport = Rexbuilder_Util.viewport();
@@ -4211,6 +4228,7 @@ var Rexbuilder_Util = (function($) {
     merge: _merge,
 		handleLayoutChange: handleLayoutChange,
 		removeArrayDuplicates: removeArrayDuplicates,
+		isOrIsChild: isOrIsChild,
 
 		// Grids lazy loading
 		clearSectionsEdited: clearSectionsEdited,
