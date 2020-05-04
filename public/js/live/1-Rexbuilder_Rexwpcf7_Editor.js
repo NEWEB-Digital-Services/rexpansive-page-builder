@@ -101,7 +101,11 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			case 'submit':
 				fieldShortcode = '[submit class:submit-' + fieldNumber + ' "Send"]';
 				$columnContent.prepend(
-					'<input type="submit" value="Send" class="wpcf7-form-control wpcf7-submit submit-' + fieldNumber + '">'
+					'<span class="wpcf7-form-control-wrap">' +
+						'<input type="submit" value="Send" class="wpcf7-form-control wpcf7-submit submit-' +
+						fieldNumber +
+						' wrapped">' +
+						'</span>'
 				);
 				break;
 			default:
@@ -117,7 +121,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			}
 		});
 
-		_addMissingTools(formID, $columnToAddField.eq(0).parents('.wpcf7-row'));
+		addMissingTools(formID);
 		Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
 		Rexbuilder_Rexwpcf7.addColumnContentStyle($columnToAddField);
 	}
@@ -156,7 +160,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			$columnsToInsert[i].attr('wpcf7-column-number', i + 1);
 
 			// Creating the + buttons for adding content
-			var plusButton = tmpl('tmpl-plus-button-inside-wpcf7-row', {});
+			var plusButton = Rexbuilder_Live_Templates.getTemplate('wpcf7-plus-button-inside-row');
 			$columnsToInsert[i].append(plusButton);
 
 			$newRow.append($columnsToInsert[i]);
@@ -167,7 +171,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			$(this).find('.wpcf7-rows').append($newRowClone);
 		});
 
-		_addMissingTools(formID, $newRow);
+		addMissingTools(formID);
 
 		_saveNewRow(formID, $newRow);
 	}
@@ -182,6 +186,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 		_fixRowNumbersAndClasses($formToAddRow);
 		_saveAddedRow(formID, numberRowBefore);
+
+		wrapButtons();
 
 		var columnsAdded = $rowToAdd.get(0).getElementsByClassName('wpcf7-column');
 
@@ -250,7 +256,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 					if (index + 1 !== clonedColumnNumber) {
 						$(column).empty();
 
-						var plusButton = tmpl('tmpl-plus-button-inside-wpcf7-row', {});
+						var plusButton = Rexbuilder_Live_Templates.getTemplate('wpcf7-plus-button-inside-row');
 						$(column).append(plusButton).addClass('with-button');
 					} else {
 						clonedColumn = column;
@@ -259,6 +265,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		});
 
 		_saveClonedColumnRow(formID, clonedColumnNumber, numberRowBefore);
+
+		wrapButtons();
 
 		var clonedRadioButton = clonedColumn.querySelector('.wpcf7-form-control-wrap[class*=radio-]');
 
@@ -385,8 +393,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		);
 
 		$columnToDelete.empty();
-		var $plusButton = tmpl('tmpl-plus-button-inside-wpcf7-row', {});
-		$columnToDelete.append($plusButton).addClass('with-button');
+		var plusButton = Rexbuilder_Live_Templates.getTemplate('wpcf7-plus-button-inside-row');
+		$columnToDelete.append(plusButton).addClass('with-button');
 
 		_saveDeletingColumnContent(formID, rowNumberToDelete, columnNumberToDelete);
 	}
@@ -1587,8 +1595,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			if (index + 1 != clonedColumnNumber) {
 				$(column).empty();
 
-				var $plusButton = tmpl('tmpl-plus-button-inside-wpcf7-row', {});
-				$(column).append($plusButton).addClass('with-button');
+				var plusButton = Rexbuilder_Live_Templates.getTemplate('wpcf7-plus-button-inside-row');
+				$(column).append(plusButton).addClass('with-button');
 			}
 		});
 	}
@@ -1609,8 +1617,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			.find('.wpcf7-column[wpcf7-column-number="' + columnNumberToDelete + '"]');
 
 		$columnToDelete.empty();
-		var $plusButton = tmpl('tmpl-plus-button-inside-wpcf7-row', {});
-		$columnToDelete.append($plusButton).addClass('with-button');
+		var plusButton = Rexbuilder_Live_Templates.getTemplate('wpcf7-plus-button-inside-row');
+		$columnToDelete.append(plusButton).addClass('with-button');
 	}
 
 	function retrieveFormsInPage() {
@@ -1688,65 +1696,36 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			});
 	}
 
-	function _wrapButtons() {
-		$('.wpcf7-submit').each(function (index, element) {
-			$(element).wrap(Rexbuilder_Live_Templates.getTemplate('wpcf7-button-fix'));
+	function wrapButtons() {
+		$('.wpcf7-submit:not(.wrapped)').each(function (index, button) {
+			Rexbuilder_Util.addClass(button, 'wrapped');
+			$(button).wrap(Rexbuilder_Live_Templates.getTemplate('wpcf7-button-fix'));
 		});
+	}
+
+	function _addFormToolsToDOM() {
+		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-form-tools');
+		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form'));
+		var tot_forms = forms.length;
+
+		var i = 0;
+		for (; i < tot_forms; i++) {
+			forms[i].querySelector('.wpcf7-rows').insertAdjacentHTML('afterend', toolsTemplate);
+		}
 	}
 
 	function _addRowToolsToDOM() {
 		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-row-tools');
 		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form'));
-		var tot_forms = forms.length;
-
 		var rows;
-		var tot_rows;
-
-		var i = 0;
-		var j = 0;
-		for (; i < tot_forms; i++) {
-			rows = Array.prototype.slice.call(forms[i].querySelectorAll('.wpcf7-row'));
-			tot_rows = rows.length;
-
-			for (j = 0; j < tot_rows; j++) {
-				rows[j].insertAdjacentHTML('afterbegin', toolsTemplate);
-			}
-		}
-	}
-
-	function _addMissingTools(formID, row) {
-		var rowToolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-row-tools');
-		var columnToolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-column-tools');
-
-		if (row instanceof jQuery) {
-			row = row.get(0);
-		}
-
-		var rowNumber = row.getAttribute('wpcf7-row-number');
-		var forms = Array.prototype.slice.call(
-			Rexbuilder_Util.rexContainer.querySelectorAll(
-				'.rex-element-wrapper[data-rex-element-id="' + formID + '"] .wpcf7-form'
-			)
-		);
-
-		var currentRow;
-		var currentFormControls;
 
 		var i = 0;
 		var j = 0;
 		for (; i < forms.length; i++) {
-			currentRow = forms[i].querySelector('[wpcf7-row-number="' + rowNumber + '"]');
+			rows = Array.prototype.slice.call(forms[i].querySelectorAll('.wpcf7-row'));
 
-			if (!currentRow.querySelector('.rexwpcf7-row-tools')) {
-				currentRow.insertAdjacentHTML('afterbegin', rowToolsTemplate);
-			}
-
-			currentFormControls = Array.prototype.slice.call(currentRow.getElementsByClassName('wpcf7-form-control'));
-
-			for (j = 0; j < currentFormControls.length; j++) {
-				if (!currentFormControls[j].querySelector('.rexwpcf7-column-tools')) {
-					currentFormControls[j].insertAdjacentHTML('afterend', columnToolsTemplate);
-				}
+			for (j = 0; j < rows.length; j++) {
+				rows[j].insertAdjacentHTML('afterbegin', toolsTemplate);
 			}
 		}
 	}
@@ -1768,14 +1747,49 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		}
 	}
 
-	function _addFormToolsToDOM() {
-		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-form-tools');
-		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form'));
-		var tot_forms = forms.length;
+	function addMissingTools(formID) {
+		var formToolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-form-tools');
+		var rowToolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-row-tools');
+		var columnToolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-column-tools');
+
+		var forms = Array.prototype.slice.call(
+			Rexbuilder_Util.rexContainer.querySelectorAll(
+				'.rex-element-wrapper[data-rex-element-id="' + formID + '"] .wpcf7-form'
+			)
+		);
+		var rows;
+
+		var currentRow;
+		var currentFormControls;
 
 		var i = 0;
-		for (; i < tot_forms; i++) {
-			forms[i].querySelector('.wpcf7-rows').insertAdjacentHTML('afterend', toolsTemplate);
+		var j = 0;
+		var k = 0;
+		for (; i < forms.length; i++) {
+			// Form
+			if (!forms[i].querySelector('.rexwpcf7-form-tools')) {
+				forms[i].querySelector('.wpcf7-rows').insertAdjacentHTML('afterend', formToolsTemplate);
+			}
+
+			rows = Array.prototype.slice.call(forms[i].getElementsByClassName('wpcf7-row'));
+
+			for (j = 0; j < rows.length; j++) {
+				// Row
+				currentRow = rows[j];
+
+				if (!currentRow.querySelector('.rexwpcf7-row-tools')) {
+					currentRow.insertAdjacentHTML('afterbegin', rowToolsTemplate);
+				}
+
+				currentFormControls = Array.prototype.slice.call(currentRow.getElementsByClassName('wpcf7-form-control'));
+
+				for (k = 0; k < currentFormControls.length; k++) {
+					// Column, form control
+					if (0 === $(currentFormControls[k]).siblings('.rexwpcf7-column-tools').length) {
+						currentFormControls[k].insertAdjacentHTML('afterend', columnToolsTemplate);
+					}
+				}
+			}
 		}
 	}
 
@@ -1786,7 +1800,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	function init() {
 		$formsInPage = {};
 
-		_wrapButtons();
+		wrapButtons();
 		_addFormToolsToDOM();
 		_addRowToolsToDOM();
 		_addColumnToolsToDOM();
@@ -1798,6 +1812,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		init: init,
 		retrieveFormsInPage: retrieveFormsInPage,
 		setCf7EditorInstance: setCf7EditorInstance,
+		addMissingTools: addMissingTools,
+		wrapButtons: wrapButtons,
 
 		addField: addField,
 		addNewRow: addNewRow,

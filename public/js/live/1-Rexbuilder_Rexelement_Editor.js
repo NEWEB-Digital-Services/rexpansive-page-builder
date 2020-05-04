@@ -228,10 +228,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		$elementWrapper.find('.rex-element-data').attr('data-synchronize', true);
 	}
 
-	/* ===== PUBLIC METHODS END ===== */
-
 	/* ===== PRIVATE METHODS ===== */
-
 	function _endFixingImportedElement($elementWrapper, formFieldsString) {
 		var addingWpcf7 = 0 !== $elementWrapper.find('.wpcf7').length;
 
@@ -257,12 +254,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 			});
 		}
 
-		// Setting the block height
-		// var $gridGallery = $elementWrapper.parents('.grid-stack-row').eq(0);
-		// var galleryData = $gridGallery.data();
-		// var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
-		// var $block = $elementWrapper.parents('.grid-stack-item');
-
 		// Removing medium editor placeholder if there
 		var $textWrap = $elementWrapper.parents('.text-wrap');
 		if ($textWrap.length != 0) {
@@ -271,10 +262,10 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 		if (addingWpcf7) {
 			var firstTimeAdding = 0 === $elementWrapper.find('.wpcf7-rows').length;
+			var formID = elementID;
 
 			if (firstTimeAdding) {
 				var $form = $elementWrapper.find('.wpcf7-form');
-				var formID = elementID;
 				var $formChilds = $form.children().not('.wpcf7-response-output').not($form.children().first());
 
 				$formChilds.wrapAll('<div class="wpcf7-rows ui-sortable"></div>');
@@ -571,6 +562,10 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 			} else {
 				Rexbuilder_Rexwpcf7_Editor.updateDBFormsInPage(elementID, !flagElementFound);
 			}
+
+			Rexbuilder_Rexwpcf7_Editor.wrapButtons();
+			Rexbuilder_Rexwpcf7_Editor.addMissingTools(formID);
+			_addElementToolsToDOM();
 		}
 	}
 
@@ -596,13 +591,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 				number: 1
 			});
 		}
-
-		// Setting the block height
-		// var $gridGallery = $elementWrapper.parents(".grid-stack-row").eq(0);
-		// var galleryData = $gridGallery.data();
-		// var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
-		// var $block = $elementWrapper.parents(".grid-stack-item");
-		// galleryEditorInstance.updateElementHeight($block);
 
 		// Removing medium editor placeholder if there
 		var $textWrap = $elementWrapper.parents('.text-wrap');
@@ -895,12 +883,16 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 			var $elementWrapper = Rexbuilder_Util.$rexContainer
 				.find('.rex-element-wrapper[data-rex-element-id="' + formID + '"]')
 				.eq(0);
-			_addElementStyle($elementWrapper);
+			Rexbuilder_Rexelement.addElementStyle($elementWrapper);
 			Rexbuilder_Rexwpcf7.fixInputs();
 			Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
 		} else {
 			Rexbuilder_Rexwpcf7_Editor.updateDBFormsInPage(elementID, true);
 		}
+
+		Rexbuilder_Rexwpcf7_Editor.wrapButtons();
+		Rexbuilder_Rexwpcf7_Editor.addMissingTools(formID);
+		_addElementToolsToDOM();
 	}
 
 	function _updateElementListInPage() {
@@ -975,7 +967,19 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		return optionsDifferent;
 	}
 
-	/* ===== PRIVATE METHODS END ===== */
+	function _addElementToolsToDOM() {
+		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('rexelement-tools', { settingsType: 'form_settings' });
+		var rexElements = Array.prototype.slice.call(
+			Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form') // or .rex-element-container ?
+		);
+
+		var i = 0;
+		for (; i < rexElements.length; i++) {
+			if (rexElements[i].querySelector('.rexelement-tools')) continue;
+
+			rexElements[i].insertAdjacentHTML('afterbegin', toolsTemplate);
+		}
+	}
 
 	function init() {
 		elementsInPage = [];
@@ -1025,6 +1029,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 			}
 		};
 
+		_addElementToolsToDOM();
 		_updateElementListInPage();
 	}
 

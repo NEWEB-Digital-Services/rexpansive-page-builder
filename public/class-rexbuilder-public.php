@@ -555,10 +555,10 @@ class Rexbuilder_Public
 				'block_settings' => __( 'Block settings', 'rexpansive-builder' ),
 				'config' => __( 'Config', 'rexpansive-builder' ),
 				'delete' => __( 'Delete', 'rexpansive-builder' ),
+				'settings' => __('Settings', 'rexpansive-builder'),
 				'form_settings' => __('Form Settings', 'rexpansive-builder'),
 				'drag' => __('Drag', 'rexpansive-builder'),
 				'clone' => __('Clone', 'rexpansive-builder'),
-				'settings' => __('Settings', 'rexpansive-builder'),
 				'add_row' => __('Add Row', 'rexpansive-builder')
 			);
 		}

@@ -927,9 +927,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	}
 
 	function addColumnContentStyle($formColumn) {
-		var hasColumnData = 0 !== $formColumn.find('.rex-wpcf7-column-content-data').eq(0).length;
-
-		if (hasColumnData) {
+		if ($formColumn.get(0).querySelector('.rex-wpcf7-column-content-data')) {
 			var columnContentData = generateColumnContentData($formColumn, true);
 			var formID = columnContentData.target.element_id;
 			_addColumnContentCSSRules(formID, columnContentData);
@@ -2173,8 +2171,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			case 'acceptance':
 				cssSelector = 'wpcf7-form-control-wrap';
 				break;
-			case 'submit':
 			case 'file':
+			case 'submit':
 				cssSelector = fieldClass;
 				break;
 			case 'radio':
@@ -2262,7 +2260,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				columnContentRule += 'display: inline-flex;';
 			} else if ('file' === inputType) {
 				columnContentRule += 'display: block;';
-				columnContentRule += 'overflow: hidden;';
+				// columnContentRule += 'overflow: hidden;';
 			} else {
 				// Text, Number, Email, Textarea, Select
 				columnContentRule += 'background-color: ' + columnContentData.background_color + ';';

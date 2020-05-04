@@ -14,7 +14,8 @@ var TextEditor = (function ($) {
   var formattingTagsExtensionInstance;
   var justifyExtensionIntance;
   var listExtensionInstance;
-  var insertMediaExtensionInstance;
+	var insertMediaExtensionInstance;
+	var rexElementInstance;
 
   var currentTextSelection;
 
@@ -893,37 +894,7 @@ var TextEditor = (function ($) {
             rexbuttonToolbox.placeRexbuttonToolbox();
           }
           event.preventDefault();
-        } /*else if (toolbarActiveOnRexelement) {
-          this.action_active = action;
-          this.clearListElements();//@todo
-          this.activateListElements();//@todo
-          var element = editorInstance.getSelectedParentElement();
-          var $paragraphContainer = $(element).parents("p.rex-elements-paragraph");
-          switch (action) {
-            case "justifyRight":
-              $paragraphContainer.css("text-align", "right");
-              break;
-            case "justifyCenter":
-              $paragraphContainer.css("text-align", "center");
-              break;
-            case "justifyLeft":
-              $paragraphContainer.css("text-align", "left");
-              break;
-            default:
-              break;
-          }
-          //updating toolbar and toolbox positions
-          var toolbar = this.base.getExtensionByName('toolbar');
-          var rexelementToolbox = this.base.getExtensionByName('rexelement-input');
-
-          if (toolbar) {
-            toolbar.setToolbarPosition();
-          }
-          if (rexbuttonToolbox) {
-            rexbuttonToolbox.placeRexelementToolbox();
-          }
-          event.preventDefault();
-        }*/ else {
+        } else {
           editorInstance.execAction(action);
         }
       }
@@ -1211,13 +1182,7 @@ var TextEditor = (function ($) {
       this.on(this.deleteRexbuttonBtn, "click", this.handleClickDeleteRexbutton.bind(this));
       this.on(this.editRexbuttonBtn, "click", this.handleClickEditRexbutton.bind(this));
     },
-    
-    hideAnchorPreview: function (event) {
-      var anchorLinkPreview = document.getElementsByClassName("medium-editor-anchor-preview");
-      for (var i = 0; i < anchorLinkPreview.length; i++) {
-        anchorLinkPreview[i].style.display = "none";
-      }
-    },
+  
 
     showAnchorPreview: function (event) {
       var anchorLinkPreview = document.getElementsByClassName("medium-editor-anchor-preview");
@@ -2752,374 +2717,195 @@ var TextEditor = (function ($) {
     }
   });
 
-  ///////////////////////////////////////////////////////////////////////////////////////////////
-  /// REXELEMENTS LOGICS
-  ///////////////////////////////////////////////////////////////////////////////////////////////
-
   var RexElementExtension = MediumEditor.Extension.extend({
-    name: 'rexelement-input',
-    init: function () {
-      toolbarActiveOnRexelement = false;
+		name: 'rexelement',
+		init: function () {
+			toolbarActiveOnRexelement = false;
 
-      this.traceELMNT = null;
+			this.traceElement = null;
+			this.containsWpcf7;
 
-      this.containsWpcf7;
+			// Trace the cursor position
+			this.subscribe('editableMouseover', this.handleMouseOver.bind(this));
 
-      this.subscribe("positionToolbar", this.handlePositionToolbar.bind(this));
-      this.subscribe("hideToolbar", this.handleHideToolbar.bind(this));
+			/** @TODO Move on CF7 extension and prevent toolbar */
+			// this.subscribe('positionToolbar', this.handlePositionToolbar.bind(this));
+			// this.subscribe('hideToolbar', this.handleHideToolbar.bind(this));
+		},
 
-      // Create the tools displayed on an element
-      this.rexelementTools = document.createElement("div");
-      this.rexelementTools.contentEditable = false;
-			Rexbuilder_Util.addClass(this.rexelementTools, 'rexelement-tools')
-      this.rexelementTools.style.display = "none";
-      this.rexelementTools.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-rexelement-tools");
-      $(document.getElementsByTagName("body")[0]).append(this.rexelementTools);
+		handleMouseOver: function (mouseEvent, editableElement) {
+			var target = mouseEvent.target;
 
-      this.deleteRexelementBtn = $(this.rexelementTools).find(".rex-delete-element")[0];
-      this.editRexelementBtn = $(this.rexelementTools).find(".rex-edit-element")[0];
-
-      this.subscribe("blur", this.handleBlur.bind(this));
-
-      // Trace the cursor position
-      // this.subscribe("editableClick", this.traceInputRexElement.bind(this));
-      this.subscribe('editableMouseover', this.handleMouseOver.bind(this));
-
-      // Link click listeners
-      this.on(this.deleteRexelementBtn, "click", this.handleClickDeleteRexelement.bind(this));
-      this.on(this.editRexelementBtn, "click", this.handleClickEditRexelement.bind(this));
-    },
-
-    handleMouseOver: function (event, editableElement) {
-			var gsItemFocused = Rexbuilder_Util.hasClass($(editableElement).parents('.grid-stack-item').get(0), 'item--me-focus');
+			var gsItemFocused = Rexbuilder_Util.hasClass(
+				$(editableElement).parents('.grid-stack-item').get(0),
+				'item--me-focus'
+			);
 			var section = $(editableElement).parents('.rexpansive_section').get(0);
 			var sectionFocused = Rexbuilder_Util.hasClass(section, 'focusedRow');
 			var sectionEditing = Rexbuilder_Util.hasClass(section, 'block-editing');
 
 			if (gsItemFocused && sectionFocused && sectionEditing) {
-				var elementContainer = editableElement.querySelector('.rex-element-container');
+				var elementWrapper = target.matches('.rex-element-wrapper')
+					? target
+					: $(target).parents('.rex-element-wrapper').get(0);
 
-				if (elementContainer) {
-					this.traceELMNT = elementContainer;
-					this.containsWpcf7 = !!this.traceELMNT.querySelector('.wpcf7');
-
-					this.viewRexelementToolbox();
-				} else {
-					this.handleBlur(event);
+				if (elementWrapper) {
+					this.traceElement = elementWrapper;
+					this.containsWpcf7 = !!this.traceElement.querySelector('.wpcf7');
 				}
 			}
-    },
+		},
 
-    traceInputRexElement: function (event) {
-      if ("click" == event.type) {
-        // Check if cursor is inside rexelement
-        var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
-        if ($(nodeToFix).parents(".rex-element-container").length != 0) {
-          this.traceELMNT = $(nodeToFix).parents(".rex-element-container")[0];
-          this.viewRexelementToolbox();
-        } else {
-          this.handleBlur(event);
-        }
-      }
-    },
+		editRexelement: function (e) {
+			var $elementWrapper = $(this.traceElement);
 
-    handleClickDeleteRexelement: function (e) {
-      this.hideRexelementToolbox();
-      var $elementContainer = $(this.traceELMNT).parents(".rex-element-wrapper");
-      var $paragraphContainer = $elementContainer.parents("p.rex-elements-paragraph");
+			if (this.containsWpcf7) {
+				this.setOutline(this.traceElement.querySelector('.wpcf7-form'), '#00ACFF');
+			}
 
-      if ( 'undefined' !== typeof Rexbuilder_Rexwpcf7 && 0 !== $elementContainer[0].getElementsByClassName('wpcf7-form').length ) {
-        var formID = $elementContainer[0].getAttribute('data-rex-element-id');
-        Rexbuilder_Rexwpcf7_Editor.removeFormInPage(formID);
-      }
+			var blockID = $elementWrapper.parents('.grid-stack-item').attr('id');
 
-      $elementContainer.remove();
-      if ($paragraphContainer.find(".rex-element-wrapper").length == 0) {
-        $paragraphContainer.remove();
-      }
+			var data = {
+				eventName: 'rexlive:openRexElementChoose',
+				elementData: Rexbuilder_Rexelement.generateElementData($elementWrapper),
+				blockID: blockID
+			};
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
-      Rexbuilder_Util_Editor.builderEdited(false);
-    },
+			$elementWrapper.parents('.text-wrap').blur();
+		},
 
-    handleClickEditRexelement: function (e) {
-      this.hideRexelementToolbox();
-      var $elementWrapper = $(this.traceELMNT).parents(".rex-element-wrapper");
+		deleteRexelement: function (e) {
+			var $elementWrapper = $(this.traceElement);
+			var $paragraphContainer = $elementWrapper.parents('p.rex-elements-paragraph');
 
-      if ( this.containsWpcf7 ) {
-        this.setOutline(this.traceELMNT.querySelector('.wpcf7-form'), '#00ACFF');
-      }
+			if (
+				'undefined' !== typeof Rexbuilder_Rexwpcf7 &&
+				0 !== $elementWrapper.get(0).getElementsByClassName('wpcf7-form').length
+			) {
+				var formID = $elementWrapper.get(0).getAttribute('data-rex-element-id');
+				Rexbuilder_Rexwpcf7_Editor.removeFormInPage(formID);
+			}
 
-      var blockID = $(this.traceELMNT).parents(".grid-stack-item").attr("id");
+			$elementWrapper.remove();
+			if ($paragraphContainer.find('.rex-element-wrapper').length == 0) {
+				$paragraphContainer.remove();
+			}
 
-      var data = {
-        eventName: "rexlive:openRexElementChoose",
-        elementData: Rexbuilder_Rexelement.generateElementData($elementWrapper),
-        blockID: blockID
-      };
-      $elementWrapper.parents(".text-wrap").blur();
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-    },
+			Rexbuilder_Util_Editor.builderEdited(false);
+		},
 
-    hideAnchorPreview: function (event) {
-      var anchorLinkPreview = document.getElementsByClassName("medium-editor-anchor-preview");
-      for (var i = 0; i < anchorLinkPreview.length; i++) {
-        anchorLinkPreview[i].style.display = "none";
-      }
-    },
+		/**
+		 * Sets the outline of a DOM element with the given color.
+		 * @param		{Element}	element	Element which needs the outline
+		 * @param		{String}	color		The color of the outline
+		 * @returns	{void}
+		 * @since		2.0.2
+		 */
+		setOutline: function (element, color) {
+			element.style.outline = '2px solid ' + color;
+			element.style.outlineOffset = '-1px';
+		},
 
-    showAnchorPreview: function (event) {
-      var anchorLinkPreview = document.getElementsByClassName("medium-editor-anchor-preview");
-      for (var i = 0; i < anchorLinkPreview.length; i++) {
-        anchorLinkPreview[i].style.display = "block";
-      }
-    },
+		/** @TODO	Check when this function is called */
+		handlePositionToolbar: function (event) {
+			console.log( 'handlo', this.insideRexElement );
+			
+			var element = editorInstance.getSelectedParentElement();
+			var toolbar = this.base.getExtensionByName('toolbar');
+			var $toolbar = $(toolbar.toolbar);
+			if (this.insideRexElement(element)) {
+				$toolbar.addClass('medium-toolbar-hover-rexelement');
+				$toolbar
+					.find('button.medium-editor-action:not(.hide-tool-rexelement)')
+					.first()
+					.addClass('medium-editor-button-first');
+				$toolbar
+					.find('button.medium-editor-action:not(.hide-tool-rexelement)')
+					.last()
+					.addClass('medium-editor-button-last');
+				toolbarActiveOnRexelement = true;
+			} else {
+				this.restoreElementClasses($toolbar);
+				toolbarActiveOnRexelement = false;
+			}
+		},
 
-    /**
-     * Sets the outline of a DOM element
-     * @param {JQuery Object} element Element which needs the outline
-     * @param {String} color The color of the outline
-     */
-    setOutline: function (element, color) {
-      element.style.outline = '2px solid ' + color;
-      element.style.outlineOffset = '-1px';
-    },
+		/** @TODO	Check when this function is called */
+		handleHideToolbar: function (event) {
+			if (toolbarActiveOnRexelement) {
+				var toolbar = this.base.getExtensionByName('toolbar');
+				var $toolbar = $(toolbar.toolbar);
+				this.restoreElementClasses($toolbar);
+				toolbarActiveOnRexelement = false;
+			}
+		},
 
-    clearOutline: function ($element) {
-      $element.css("outline", '').css("outline-offset", '');
-    },
+		restoreElementClasses: function ($toolbar) {
+			$toolbar.removeClass('medium-toolbar-hover-rexelement');
+			$toolbar
+				.find('button.medium-editor-action:not(.hide-tool-rexelement)')
+				.first()
+				.removeClass('medium-editor-button-first');
+			$toolbar
+				.find('button.medium-editor-action:not(.hide-tool-rexelement)')
+				.last()
+				.removeClass('medium-editor-button-last');
 
-    /**
-     * Place rexelement tools on top of rexelement
-     */
-    placeRexelementToolbox: function () {
-      var targetCoords = this.traceELMNT.getBoundingClientRect();
-      // this.rexelementTools.style.height = targetCoords.height + "px";
-      this.rexelementTools.style.width = targetCoords.width + "px";
-      this.rexelementTools.style.left = (targetCoords.left + ((targetCoords.width - this.rexelementTools.offsetWidth) / 2)) + "px";
-      this.rexelementTools.style.top = (window.scrollY + targetCoords.top - this.rexelementTools.offsetHeight / 2 - 11) + "px";
-    },
+			$toolbar.find('button.medium-editor-action').first().addClass('medium-editor-button-first');
+			$toolbar.find('button.medium-editor-action').last().addClass('medium-editor-button-last');
+		},
 
-    hideRexelementToolbox: function (event) {
-      this.rexelementTools.style.display = "none";
-    },
+		/**
+		 * Checks if node is inside or a rexelement
+		 * @param {Object} node Node to check
+		 */
+		insideRexElement: function (node) {
+			var $node = $(node);
+			// if is a rexelement
+			if ($node.hasClass('rex-element-wrapper')) {
+				return true;
+			}
+			// if node is inside a rexelement
+			if ($node.parents('.rex-element-wrapper').length != 0) {
+				return true;
+			}
+			return false;
+		},
 
-    viewRexelementToolbox: function (event) {
-      this.rexelementTools.style.display = "block";
-      this.placeRexelementToolbox();
-    },
+		hideAnchorPreview: function (event) {
+			var anchorLinkPreview = document.getElementsByClassName('medium-editor-anchor-preview');
+			for (var i = 0; i < anchorLinkPreview.length; i++) {
+				anchorLinkPreview[i].style.display = 'none';
+			}
+		}
+	});
 
-    handlePositionToolbar: function (event) {
-      var element = editorInstance.getSelectedParentElement();
-      var toolbar = this.base.getExtensionByName('toolbar');
-      var $toolbar = $(toolbar.toolbar);
-      if (this.insideRexElement(element)) {
-        $toolbar.addClass("medium-toolbar-hover-rexelement");
-        $toolbar.find("button.medium-editor-action:not(.hide-tool-rexelement)").first().addClass("medium-editor-button-first");
-        $toolbar.find("button.medium-editor-action:not(.hide-tool-rexelement)").last().addClass("medium-editor-button-last");
-        toolbarActiveOnRexelement = true;
-      } else {
-        this.restoreElementClasses($toolbar);
-        toolbarActiveOnRexelement = false;
-      }
-    },
-
-    handleHideToolbar: function (event) {
-      if (toolbarActiveOnRexelement) {
-        var toolbar = this.base.getExtensionByName('toolbar');
-        var $toolbar = $(toolbar.toolbar);
-        this.restoreElementClasses($toolbar);
-        toolbarActiveOnRexelement = false;
-      }
-    },
-
-    restoreElementClasses: function ($toolbar) {
-      $toolbar.removeClass("medium-toolbar-hover-rexelement");
-      $toolbar.find("button.medium-editor-action:not(.hide-tool-rexelement)").first().removeClass("medium-editor-button-first");
-      $toolbar.find("button.medium-editor-action:not(.hide-tool-rexelement)").last().removeClass("medium-editor-button-last");
-
-      $toolbar.find("button.medium-editor-action").first().addClass("medium-editor-button-first");
-      $toolbar.find("button.medium-editor-action").last().addClass("medium-editor-button-last");
-    },
-
-    handleBlur: function (event) {
-      if (this.containsWpcf7) {
-        this.clearOutline($(this.traceELMNT).find('.wpcf7-form'));
-      }
-
-      var $target = $(event.target);
-      if ($target.parents(".rex-element-wrapper").length == 0 && $target.parents(".rexelement-tools").length == 0) {
-        this.hideRexelementToolbox();
-      }
-    },
-
-    replaceClasses: function ($wrapper, previousClass, newClass) {
-      $wrapper.find("." + previousClass).removeClass(previousClass).addClass(newClass);
-    },
-
-    /**
-     * 
-     * @param {Object} el element to move caret
-     * @param {integer} offset caret position
-     */
-    customMoveCursor: function (el, offset) {
-      offset = "undefined" !== typeof offset ? offset : 0;
-      var range = document.createRange();
-      var sel = window.getSelection();
-      range.setStart(el, offset);
-      range.collapse(true);
-      sel.removeAllRanges();
-      sel.addRange(range);
-    },
-
-    /**
-     * Checks if there is rexbutton after or before cursor
-     * @param {*} node 
-     */
-    isSafeInsert: function (node) {
-      var $node = $(node);
-      var mediumEditorOffset = MediumEditor.selection.getCaretOffsets(node).left;
-      var safe = true;
-      /*if ($node.hasClass("rex-button-text")) {
-        //siamo dentro un rexbutton
-        safe = false;
-      } else*/ if ($node.prev().hasClass("rex-element-wrapper") && !$node.parent().hasClass("medium-editor-element")) {
-        //prima c'è un rexelement e non siamo nel contenitore dell'editor
-        safe = false;
-      } else if (this.isNodeBefore(node, mediumEditorOffset, "rex-element-wrapper")) {
-        //il nodo prima è un rexelement
-        safe = false;
-      }
-      return safe;
-    },
-
-    //check inside an element if node before caret has given class
-    isNodeBefore: function (node, offset, class_name) {
-      // if caret is at beginning of node
-      var pos = 0;
-      var nodes = node.childNodes;
-      var nCharacters;
-      //get in which node is
-      while (true) {
-        nCharacters = parseInt(nodes[pos].length);
-        if (isNaN(nCharacters)) {
-          nCharacters = $(nodes[pos]).text().length;
-        }
-        if (nCharacters > offset) {
-          break;
-        }
-        offset -= nCharacters;
-        pos = pos + 1;
-        if (pos == nodes.length) {
-          break;
-        }
-      }
-      if (pos > 0) {
-        var nodeLength = parseInt(nodes[pos - 1].length);
-        // if is not text node
-        if (isNaN(nodeLength)) {
-          // if is rex button
-          if ($(nodes[pos - 1]).hasClass(class_name)) {
-            return true;
-          }
-        }
-      }
-      return false;
-    },
-
-    isElementBefore: function (node, class_name) {
-      var $node = $(node);
-      if ($node.prev().hasClass(class_name)) {
-        return true;
-      }
-      while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")) {
-        $node = $node.parent();
-      };
-      return $node.prev().hasClass(class_name);
-    },
-
-    isElementAfter: function (node, class_name) {
-      var $node = $(node);
-      if ($node.next().hasClass(class_name)) {
-        return true;
-      }
-      while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")) {
-        $node = $node.parent();
-      };
-      return $node.next().hasClass(class_name);
-    },
-
-    isInsideRexelementParagraph: function (node) {
-      var $node = $(node);
-      // if is a rexelement paragraph
-      if ($node.hasClass("rex-elements-paragraph")) {
-        return true;
-      }
-      // if node is inside a rexelement paragraph
-      if ($node.parents(".rex-elements-paragraph").length != 0) {
-        return true;
-      }
-      return false;
-    },
-
-    /**
-     * Checks if node is inside or a rexelement
-     * @param {Object} node Node to check
-     */
-    insideRexElement: function (node) {
-      var $node = $(node);
-      // if is a rexelement
-      if ($node.hasClass("rex-element-wrapper")) {
-        return true;
-      }
-      // if node is inside a rexelement
-      if ($node.parents(".rex-element-wrapper").length != 0) {
-        return true;
-      }
-      return false;
-    }
-  });
-
-  var RexWpcf7Extension = MediumEditor.Extension.extend({
+	var RexWpcf7Extension = MediumEditor.Extension.extend({
 		name: 'rexwpcf7',
 		init: function () {
+			this.traceGsItem = null;
 			this.traceForm = null;
 			this.traceRow = null;
 			this.traceColumn = null;
 			this.traceColumnContent = null;
 
-			Rexbuilder_Util.rexContainer.addEventListener('click', this.delegateClickContainer.bind(this))
+			// Delegated listener for toolboxes click
+			Rexbuilder_Util.$rexContainer.on('click', '.wpcf7-form-button', this.delegateClickContainer.bind(this));
 
 			// Trace the cursor position
 			this.subscribe('editableMouseover', this.handleMouseOver.bind(this));
-
 			this.subscribe('blur', this.handleBlur.bind(this));
 
 			Rexbuilder_Rexwpcf7_Editor.setCf7EditorInstance(this);
+
+			Rexbuilder_Util.$document.on('rexlive:clearFormOutlines', this.clearOutlines.bind(this))
 		},
 
 		delegateClickContainer: function (clickEvent) {
 			clickEvent.preventDefault();
 
-			var target = clickEvent.target;
-
-			var possibleOperations = {
-				addRow: Rexbuilder_Util.isOrIsChild(target, '.wpcf7-add-new-row'),
-				addSelectedColumns: Rexbuilder_Util.isOrIsChild(target, 'button[class^="select-"]'),
-				cloneRow: Rexbuilder_Util.isOrIsChild(clickEvent.target, '.rex-wpcf7-row-clone'),
-				deleteRow: Rexbuilder_Util.isOrIsChild(clickEvent.target, '.rex-wpcf7-row-delete'),
-				columnSettings: Rexbuilder_Util.isOrIsChild(clickEvent.target, '.rex-wpcf7-column-settings'),
-				cloneColumn: Rexbuilder_Util.isOrIsChild(clickEvent.target, '.rex-wpcf7-column-clone'),
-				deleteColumnContent: Rexbuilder_Util.isOrIsChild(clickEvent.target, '.rex-wpcf7-column-delete'),
-				addColumnContent: Rexbuilder_Util.isOrIsChild(clickEvent.target, '.wpcf7-add-new-form-content')
-			};
-
-			var operation = '';
-			for (var type in possibleOperations) {
-				if (possibleOperations[type] == true) {
-					operation = type;
-					break;
-				}
-			}
+			var operation = clickEvent.currentTarget.getAttribute('data-operation');
 
 			if ('' === operation) {
 				return;
@@ -3132,7 +2918,7 @@ var TextEditor = (function ($) {
 					break;
 				case 'addSelectedColumns':
 					// Add the selected columns
-					this.addSelectedColumns(target);
+					this.addSelectedColumns(clickEvent.currentTarget);
 					break;
 				case 'cloneRow':
 					// Clone the row
@@ -3158,6 +2944,14 @@ var TextEditor = (function ($) {
 					// Add new column content
 					this.addColumnContent();
 					break;
+				case 'editElement':
+					// Edit the element
+					this.base.getExtensionByName('rexelement').editRexelement();
+					break;
+					case 'deleteElement':
+						// Delete the element
+					this.base.getExtensionByName('rexelement').deleteRexelement();
+					break;
 
 				default:
 					break;
@@ -3170,16 +2964,14 @@ var TextEditor = (function ($) {
 		 * @param		{Element}		editableElement		Contenteditable DOM Element
 		 * @returns	{void}
 		 * @since		2.0.2
-		 * @todo		Change in vanilla js
-		 * @todo		Improve efficiency
 		 */
 		handleMouseOver: function (mouseEvent, editableElement) {
+			this.traceGsItem = $(editableElement).parents('.grid-stack-item').get(0);
 			var target = mouseEvent.target;
-			var gridStackItem = $(editableElement).parents('.grid-stack-item').get(0);
 			var section = $(editableElement).parents('.rexpansive_section').get(0);
 
 			if (
-				Rexbuilder_Util.hasClass(gridStackItem, 'item--me-focus') &&
+				Rexbuilder_Util.hasClass(this.traceGsItem, 'item--me-focus') &&
 				Rexbuilder_Util.hasClass(section, 'focusedRow') &&
 				Rexbuilder_Util.hasClass(section, 'block-editing')
 			) {
@@ -3188,8 +2980,6 @@ var TextEditor = (function ($) {
 				if (contactForm) {
 					// The pointer is inside a form
 					this.traceForm = contactForm;
-					this.addFormContentBtns = this.traceForm.querySelectorAll('.wpcf7-add-new-form-content');
-
 					var contactFormRow = target.matches('.wpcf7-row') ? target : $(target).parents('.wpcf7-row').get(0);
 
 					if (contactFormRow) {
@@ -3212,41 +3002,35 @@ var TextEditor = (function ($) {
 						}
 					}
 				} else {
-					this.handleBlur(mouseEvent);
+					this.handleBlur();
 				}
 			}
 		},
 
-		addColumnContent: function (event) {
+		addColumnContent: function () {
 			Rexbuilder_Util_Editor.builderEdited(false);
 
-			var $elementWrapper = $(this.traceForm).parents('.rex-element-wrapper');
+			var elementWrapper = rexElementInstance.traceElement;
 
 			var data = {
 				eventName: 'rexlive:openRexWpcf7AddContent',
 				insertionPoint: {
-					formID: $elementWrapper.attr('data-rex-element-id'),
+					formID: elementWrapper.getAttribute('data-rex-element-id'),
 					row_number: this.traceRow.getAttribute('wpcf7-row-number'),
 					column_number: this.traceColumn.getAttribute('wpcf7-column-number')
 				},
-				blockID: $(this.traceForm).parents('.grid-stack-item').get(0).getAttribute('id')
+				blockID: this.traceGsItem.getAttribute('id')
 			};
-
-			$elementWrapper.parents('.text-wrap').blur();
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
 			this.updateHeight();
 		},
 
 		addSelectedColumns: function (target) {
 			Rexbuilder_Util_Editor.builderEdited(false);
 
-			// Need to get the element with the right class because of event delegation
-			if (!target.matches('[class^="select-"]')) {
-				target = $(target).parents('[class^="select-"]').get(0);
-			}
-
+			var formID = rexElementInstance.traceElement.getAttribute('data-rex-element-id');
 			var columnsSelected = parseInt(target.className.match(/select-(\d)-columns?/)[1]);
-			var formID = $(this.traceForm).parents('.rex-element-wrapper').attr('data-rex-element-id');
 
 			Rexbuilder_Rexwpcf7_Editor.addNewRow(formID, columnsSelected);
 
@@ -3257,7 +3041,7 @@ var TextEditor = (function ($) {
 		cloneRow: function () {
 			Rexbuilder_Util_Editor.builderEdited(false);
 
-			var formID = $(this.traceForm).parents('.rex-element-wrapper').attr('data-rex-element-id');
+			var formID = rexElementInstance.traceElement.getAttribute('data-rex-element-id');
 			var $rowToClone = $(this.traceRow).clone();
 			var numberRowBefore = parseInt($rowToClone.attr('wpcf7-row-number'));
 
@@ -3270,9 +3054,9 @@ var TextEditor = (function ($) {
 		deleteRow: function () {
 			Rexbuilder_Util_Editor.builderEdited(false);
 
-			var formID = $(this.traceForm).parents('.rex-element-wrapper').attr('data-rex-element-id');
+			var formID = rexElementInstance.traceElement.getAttribute('data-rex-element-id');
 			var rowNumberToDelete = $(this.traceRow).attr('wpcf7-row-number');
-			var blockIDToFocusAfterDelete = $(this.traceForm).parents('.grid-stack-item').attr('id');
+			var blockIDToFocusAfterDelete = this.traceGsItem.getAttribute('id');
 
 			Rexbuilder_Rexwpcf7_Editor.deleteRow(formID, rowNumberToDelete, blockIDToFocusAfterDelete);
 
@@ -3280,33 +3064,28 @@ var TextEditor = (function ($) {
 			this.focusBlock();
 		},
 
-		/**
-		 * @todo	Improve
-		 */
-		openColumnSettings: function (event) {
+		openColumnSettings: function () {
 			this.setOutline(this.traceColumnContent, '#FF0055');
 
-			var $elementWrapper = $(this.traceForm).parents('.rex-element-wrapper');
-			var $thisColumn = $(this.traceColumn);
-			var spanDataExists = $thisColumn.find('.rex-wpcf7-column-content-data').length != 0 ? true : false;
-			var fileCaptionExists = $thisColumn.find('.rex-wpcf7-file-caption').length != 0 ? true : false;
-			var blockID = $(this.traceForm).parents('.grid-stack-item').attr('id');
+			var spanDataExists = !!this.traceColumn.querySelector('.rex-wpcf7-column-content-data');
+			var fileCaptionExists = !!this.traceColumn.querySelector('.rex-wpcf7-file-caption');
+
+			var blockID = this.traceGsItem.getAttribute('id');
 
 			var data = {
 				eventName: 'rexlive:openRexWpcf7EditContent',
-				columnContentData: Rexbuilder_Rexwpcf7.generateColumnContentData($thisColumn, spanDataExists),
+				columnContentData: Rexbuilder_Rexwpcf7.generateColumnContentData($(this.traceColumn), spanDataExists),
 				spanDataExists: spanDataExists,
 				fileCaptionExists: fileCaptionExists,
 				blockID: blockID
 			};
-			$elementWrapper.parents('.text-wrap').blur();
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 		},
 
-		cloneColumn: function (event) {
+		cloneColumn: function () {
 			Rexbuilder_Util_Editor.builderEdited(false);
 
-			var formID = $(this.traceForm).parents('.rex-element-wrapper').attr('data-rex-element-id');
+			var formID = rexElementInstance.traceElement.getAttribute('data-rex-element-id');
 			var clonedColumnNumber = parseInt(this.traceColumn.getAttribute('wpcf7-column-number'));
 			var numberRowBefore = parseInt(this.traceRow.getAttribute('wpcf7-row-number'));
 
@@ -3316,10 +3095,10 @@ var TextEditor = (function ($) {
 			this.focusBlock();
 		},
 
-		deleteColumnContent: function (event) {
+		deleteColumnContent: function () {
 			Rexbuilder_Util_Editor.builderEdited(false);
 
-			var formID = $(this.traceForm).parents('.rex-element-wrapper').attr('data-rex-element-id');
+			var formID = rexElementInstance.traceElement.getAttribute('data-rex-element-id');
 			var rowNumberToDelete = this.traceRow.getAttribute('wpcf7-row-number');
 			var columnNumberToDelete = this.traceColumn.getAttribute('wpcf7-column-number');
 
@@ -3328,14 +3107,13 @@ var TextEditor = (function ($) {
 			this.focusBlock();
 		},
 
-		handleBlur: function (event) {
-			this.clearOutlines();
+		handleBlur: function () {
 			this.updateHeight();
 		},
 
 		/**
 		 * Sets the outline of of the given element.
-		 * @param		{JQuery}	element	Element which needs the outline
+		 * @param		{Element}	element	Element which needs the outline
 		 * @param		{String}	color		The color of the outline
 		 * @returns	{void}
 		 * @since		2.0.2
@@ -3358,18 +3136,12 @@ var TextEditor = (function ($) {
 			this.traceForm.style.outline = '';
 			this.traceForm.style.outlineOffset = '';
 
-			this.traceRow.style.outline = '';
-			this.traceRow.style.outlineOffset = '';
-
-			this.traceColumn.style.outline = '';
-			this.traceColumn.style.outlineOffset = '';
-
 			this.traceColumnContent.style.outline = '';
 			this.traceColumnContent.style.outlineOffset = '';
 		},
 
 		updateHeight: function () {
-			if (null !== this.traceForm) {
+			if (this.traceForm) {
 				var $textWrap = $(this.traceForm).parents('.text-wrap');
 
 				if (0 !== $textWrap.length) {
@@ -3379,7 +3151,7 @@ var TextEditor = (function ($) {
 		},
 
 		focusBlock: function () {
-			var blockIDToFocus = $(this.traceForm).parents('.grid-stack-item')[0].id;
+			var blockIDToFocus = this.traceGsItem.getAttribute('id');
 
 			setTimeout(function () {
 				// Necessary!
@@ -3420,8 +3192,8 @@ var TextEditor = (function ($) {
 
   /**
    * Add handlers to text editor events
-   * @since  2.0.0
-   * @version  2.0.4  Listen on focus and blur events, to handling the
+   * @since			2.0.0
+   * @version		2.0.4  Listen on focus and blur events, to handling the
    *                   draggability of the parent grid
    */
   var _addEditableInputEvents = function () {
@@ -3577,7 +3349,8 @@ var TextEditor = (function ($) {
     formattingTagsExtensionInstance = new FormattingTagExtension();
     justifyExtensionIntance = new JustifyExtension();
     listExtensionInstance = new ListExtension();
-    insertMediaExtensionInstance = new InsertMediaExtension();
+		insertMediaExtensionInstance = new InsertMediaExtension();
+		rexElementInstance = new RexElementExtension();
 
     editorInstance = new MediumEditor(".editable", {
       toolbar: {
@@ -3620,7 +3393,7 @@ var TextEditor = (function ($) {
         textGradient: new TextGradientExtension(),
         'hide-row-tools-on-editing': new HideRowToolsOnEditing(),
         'rexbutton-input': new RexButtonExtension(),
-        'rexelement-input': new RexElementExtension(),
+        'rexelement': rexElementInstance,
         'rexwpcf7' : new RexWpcf7Extension(),
         onlySVGFixExtension : new OnlySVGFixExtension()
       },

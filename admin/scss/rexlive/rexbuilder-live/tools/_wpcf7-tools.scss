@@ -97,21 +97,18 @@
 	font-size: 10px;
 	display: none;
 
-	.wpcf7-row:hover & {
-		// display: flex;
-		display: block;
+	[wpcf7-row-number='1'] & {
+		top: 10px;
 	}
 
-	&.rexwpcf7-row-tools-inside-row {
-		position: relative;
-		width: 0;
+	.wpcf7-row:hover & {
+		display: block;
 	}
 
 	.rex-wpcf7-row-drag {
 		position: absolute;
 		top: 0px;
 		right: 60px;
-		// display: none;
 	}
 
 	.rex-wpcf7-row-clone {
@@ -133,13 +130,13 @@
 }
 
 .rexwpcf7-column-tools {
+	width: 100%;
+	height: 22px;
 	display: none;
 	position: absolute;
 	top: -10px;
 	right: 0;
 	z-index: 10;
-	width: 100%;
-	height: 22px;
 	font-size: 10px;
 
 	.wpcf7-form-control-wrap:hover & {
