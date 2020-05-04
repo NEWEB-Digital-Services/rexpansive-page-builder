@@ -433,6 +433,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			default:
 				break;
 		}
+
+		textEditorCf7Instance.updateHeight();
 	}
 
 	function updateFormContentLive(data) {
@@ -481,6 +483,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		var isSetEmail = data.content.wpcf7_email;
 
 		inputType = inputType === 'text' ? (onlyNumbers ? 'number' : isSetEmail ? 'email' : 'text') : inputType;
+
 		var cssSelector;
 		switch (inputType) {
 			case 'text':
@@ -965,6 +968,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			default:
 				break;
 		}
+
+		textEditorCf7Instance.updateHeight();
 	}
 
 	function createColumnContentSpanData(data) {

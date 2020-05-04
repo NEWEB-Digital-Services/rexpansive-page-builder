@@ -3336,7 +3336,7 @@
           resizeNotNeeded = true;
         }
       }
-
+			
       if ( resizeNotNeeded ) {
 				Rexbuilder_Util_Editor.elementIsResizing = false;
         return;

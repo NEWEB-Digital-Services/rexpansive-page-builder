@@ -2981,6 +2981,7 @@ var TextEditor = (function ($) {
 					// The pointer is inside a form
 					this.traceForm = contactForm;
 					var contactFormRow = target.matches('.wpcf7-row') ? target : $(target).parents('.wpcf7-row').get(0);
+					this.updateHeight();
 
 					if (contactFormRow) {
 						// The pointer is inside a form row
@@ -3127,6 +3128,8 @@ var TextEditor = (function ($) {
 		 * Removes inline style outlines of the given element.
 		 * @returns		{void}
 		 * @since			2.0.2
+		 * @version		2.0.5		Now it removes form and column content
+		 * 										outlines with no conditions.
 		 */
 		clearOutlines: function () {
 			if (!this.traceForm) {
@@ -3140,16 +3143,26 @@ var TextEditor = (function ($) {
 			this.traceColumnContent.style.outlineOffset = '';
 		},
 
+		/**
+		 * Updates height of the block that contains the form.
+		 * @returns		{void}
+		 * @since			2.0.2
+		 */
 		updateHeight: function () {
 			if (this.traceForm) {
 				var $textWrap = $(this.traceForm).parents('.text-wrap');
 
 				if (0 !== $textWrap.length) {
-					Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap, false);
+					Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap, false, true);
 				}
 			}
 		},
 
+		/**
+		 * Simulates focussing of the block that contains the form. 
+		 * @returns		{void}
+		 * @since			2.0.2
+		 */
 		focusBlock: function () {
 			var blockIDToFocus = this.traceGsItem.getAttribute('id');
 
