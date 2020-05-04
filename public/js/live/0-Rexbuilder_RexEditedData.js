@@ -2,8 +2,26 @@
 	'use strict';
 	window.RexEditedData = factory(window);
 })(typeof window !== 'undefined' ? window : this, function() {
-	var tracePropsSection = ['color_bg_section', 'color_bg_section_active'];
-	var tracePropsBlock = ['color_bg_block', 'color_bg_block_active'];
+	// synch section props
+	var tracePropsSection = [
+		'color_bg_section',			// background color
+		'color_bg_section_active',
+		'image_bg_section_active',	// background image
+		'image_bg_section',
+		'image_width',
+		'image_height',
+		'id_image_bg_section',
+		'image_size',
+		'custom_classes',			// custom classes
+		'row_overlay_color',		// overlay color
+		'row_overlay_active'
+	];
+
+	// synch block props
+	var tracePropsBlock = [
+		'color_bg_block', 			// background color
+		'color_bg_block_active'
+	];
 
 	function RexEditedData() {
 		this.editedInfo = null;
@@ -46,7 +64,7 @@
 					for ( z=0; z < tracePropsSection.length; z++ ) {
 						targetState.props[tracePropsSection[z]] = false;
 					}
-				} else {    // block
+				} else {	// block
 					for ( z=0; z < tracePropsBlock.length; z++ ) {
 						targetState.props[tracePropsBlock[z]] = false;
 					}
@@ -74,6 +92,12 @@
 		return false;
 	}
 
+	/**
+	 * Get the target props index inside a section information
+	 * @param  {String} sectionIndex section index
+	 * @param  {String} name         block id, or 'self' for section
+	 * @return {Integer|Boolean}              index of target prop, otherwise false
+	 */
 	function _getPropsIndex( sectionIndex, name ) {
 		// get section data, searching for 'self' name
 		var i, tot = this.editedInfo[sectionIndex].targets.length;
@@ -85,6 +109,12 @@
 		return false;
 	}
 
+	/**
+	 * Get prop value
+	 * @param  {String} sectionIndex section index
+	 * @param  {String} name         element props searched
+	 * @return {Object|Boolean}              props object, otherwise false
+	 */
 	function _getProps( sectionIndex, name ) {
 		var i = _getPropsIndex.call( this, sectionIndex, name );
 		if ( false !== i ) {
@@ -189,6 +219,8 @@
 		for ( z=0; z < tracePropsBlock.length; z++ ) {
 			props[tracePropsBlock[z]] = false;
 		}
+
+		console.log(sectionId, blockId)
 
 		var data = {
 			name: blockId,

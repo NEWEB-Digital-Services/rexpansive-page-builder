@@ -82,6 +82,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
     event.offsetY = 0;
     galleryInstance.$element.trigger(event);
 
+    console.log('add blocco dati')
+    Rexbuilder_Util.editedDataInfo.addBlockData( $section.attr("data-rexlive-section-id"), el.getAttribute('data-rexbuilder-block-id') );
+
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);

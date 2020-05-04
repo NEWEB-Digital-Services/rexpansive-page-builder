@@ -684,7 +684,7 @@ var Rexbuilder_Section = (function($) {
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
     // @todo (handle also blocks inside the copied section...)
-    Rexbuilder_Util.editedDataInfo.addSectionData( $newSection.attr("data-rexlive-section-id") );    
+    Rexbuilder_Util.editedDataInfo.addSectionData( $newSection.attr("data-rexlive-section-id") ); 
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection(
         $newSection,

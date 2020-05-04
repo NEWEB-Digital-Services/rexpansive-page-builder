@@ -561,6 +561,9 @@
         classes: data.customClasses
       };
       $section.attr("data-rexlive-section-edited", true);
+
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'custom_classes' );
+
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
@@ -679,6 +682,10 @@
       };
 
       Rexbuilder_Dom_Util.updateSectionBackgroundGradient($section, data);
+      // tracing data
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'color_bg_section' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'color_bg_section_active' );
+
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -737,6 +744,10 @@
       };
       $section.attr("data-rexlive-section-edited", true);
 
+      // tracing data
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_overlay_color' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_overlay_active' );
+
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
@@ -776,6 +787,10 @@
       };
 
       Rexbuilder_Dom_Util.updateSectionOverlay($section, data);
+
+      // tracing data
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_overlay_color' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_overlay_active' );
 
       var actionData = {
         color: data.color,
@@ -866,6 +881,14 @@
         height: data.height
       };
       $section.attr("data-rexlive-section-edited", true);
+
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'image_bg_section_active' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'image_bg_section' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'image_width' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'image_height' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'id_image_bg_section' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'image_size' );
+
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1035,7 +1058,11 @@
       };
 
       Rexbuilder_Dom_Util.updateBlockBackgroundColor(actionData);
-      $elem.attr("data-rexlive-element-edited", true); 
+      $elem.attr("data-rexlive-element-edited", true);
+
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'color_bg_block' );
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'color_bg_block_active' );
+
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }

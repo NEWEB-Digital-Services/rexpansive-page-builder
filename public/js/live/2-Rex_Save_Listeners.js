@@ -1126,7 +1126,6 @@ var Rex_Save_Listeners = (function($) {
     } else if (mode == "customLayout") {
 
       var traceBlockData = Rexbuilder_Util.editedDataInfo.getBlockData( gridGallery.getAttribute('data-rex-grid-id'), rex_id );
-
       var props = {};
 
       props["hide"] = hide_block;
@@ -1148,12 +1147,12 @@ var Rex_Save_Listeners = (function($) {
       props["gs_x"] = gs_x;
       // props["element_height_increased"] = element_height_increased;
       props["element_real_fluid"] = element_real_fluid;
-      // if ( traceBlockData && traceBlockData.color_bg_block ) {
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.color_bg_block ) ) {
         props["color_bg_block"] = color_bg_block;
-      // }
-      // if ( traceBlockData && traceBlockData.color_bg_block_active ) {
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.color_bg_block_active ) ) {
         props["color_bg_block_active"] = color_bg_block_active;
-      // }
+      }
       props["image_bg_url"] = image_bg_block;
       props["image_width"] = image_width;
       props["image_height"] = image_height;
@@ -1414,7 +1413,6 @@ var Rex_Save_Listeners = (function($) {
     } else if (mode == "customLayout") {
 
       var traceSectionData = Rexbuilder_Util.editedDataInfo.getSectionData( rexlive_section_id );
-      // console.log(traceSectionData)
 
       var props = {};
 
@@ -1422,20 +1420,40 @@ var Rex_Save_Listeners = (function($) {
       props["grid_cell_width"] = grid_cell_width;
       props["section_name"] = section_name;
       props["type"] = type;
-      // if ( traceSectionData && traceSectionData.color_bg_section ) {
+      // default always save, otherwise check
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.color_bg_section ) ) {
         props["color_bg_section"] = color_bg_section;
-      // }
-      // if ( traceSectionData && traceSectionData.color_bg_section_active ) {
+      }
+      // default always save, otherwise check
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.color_bg_section_active ) ) {
         props["color_bg_section_active"] = color_bg_section_active;
-      // }
+      }
       props["dimension"] = dimension;
       props["margin"] = margin;
-      props["image_bg_section_active"] = image_bg_section_active;
-      props["image_bg_section"] = image_bg_section;
-      props["image_width"] = image_width;
-      props["image_height"] = image_height;
-      props["id_image_bg_section"] = id_image_bg_section;
-      props["image_size"] = image_size;
+      // default always save, otherwise check
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_bg_section_active ) ) {
+        props["image_bg_section_active"] = image_bg_section_active;
+      }
+      // default always save, otherwise check
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_bg_section ) ) {
+        props["image_bg_section"] = image_bg_section;
+      }
+      // default always save, otherwise check
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_width ) ) {
+        props["image_width"] = image_width;
+      }
+      // default always save, otherwise check
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_height ) ) {
+        props["image_height"] = image_height;
+      }
+      // default always save, otherwise check
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.id_image_bg_section ) ) {
+        props["id_image_bg_section"] = id_image_bg_section;
+      }
+      // default always save, otherwise check
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_size ) ) {
+        props["image_size"] = image_size;
+      }
       props["video_bg_id"] = video_bg_id_section;
       props["video_bg_width_section"] = video_bg_width_section;
       props["video_bg_height_section"] = video_bg_height_section;
@@ -1445,7 +1463,9 @@ var Rex_Save_Listeners = (function($) {
       props["full_height"] = full_height;
       props["block_distance"] = block_distance;
       props["layout"] = layout;
-      props["custom_classes"] = custom_classes;
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.custom_classes ) ) {
+        props["custom_classes"] = custom_classes;
+      }
       props["section_width"] = section_width;
       props["row_separator_top"] = row_separator_top;
       props["row_separator_bottom"] = row_separator_bottom;
@@ -1455,8 +1475,12 @@ var Rex_Save_Listeners = (function($) {
       props["row_margin_bottom"] = row_margin_bottom;
       props["row_margin_right"] = row_margin_right;
       props["row_margin_left"] = row_margin_left;
-      props["row_overlay_color"] = row_overlay_color;
-      props["row_overlay_active"] = row_overlay_active;
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_overlay_color ) ) {
+        props["row_overlay_color"] = row_overlay_color;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_overlay_active ) ) {
+        props["row_overlay_active"] = row_overlay_active;
+      }
       props["rexlive_model_id"] = rexlive_model_id;
       props["rexlive_model_name"] = rexlive_model_name;
       props["section_edited"] = true;

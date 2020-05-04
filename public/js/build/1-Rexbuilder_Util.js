@@ -1809,7 +1809,7 @@ var Rexbuilder_Util = (function($) {
     // Update block background
     var bgColorOpt = {
       $elem: $elem,
-      color: targetProps["color_bg_block"],
+      color: ( 'undefined' !== typeof targetProps["color_bg_block"] ? targetProps["color_bg_block"] : '' ),
       active:
         typeof targetProps["color_bg_block_active"] == "undefined"
           ? true
@@ -1825,7 +1825,7 @@ var Rexbuilder_Util = (function($) {
     // Update block overlay
     var overlayBlockOpt = {
       $elem: $elem,
-      color: targetProps["overlay_block_color"],
+      color: ( 'undefined' !== typeof targetProps["overlay_block_color"] ? targetProps["overlay_block_color"] : '' ),
       active:
         typeof targetProps["overlay_block_color_active"] == "undefined"
           ? false
