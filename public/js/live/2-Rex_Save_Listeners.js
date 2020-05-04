@@ -1126,7 +1126,6 @@ var Rex_Save_Listeners = (function($) {
     } else if (mode == "customLayout") {
 
       var traceBlockData = Rexbuilder_Util.editedDataInfo.getBlockData( gridGallery.getAttribute('data-rex-grid-id'), rex_id );
-      console.log(traceBlockData);
 
       var props = {};
 
@@ -1149,12 +1148,12 @@ var Rex_Save_Listeners = (function($) {
       props["gs_x"] = gs_x;
       // props["element_height_increased"] = element_height_increased;
       props["element_real_fluid"] = element_real_fluid;
-      if ( traceBlockData && traceBlockData.color_bg_block ) {
+      // if ( traceBlockData && traceBlockData.color_bg_block ) {
         props["color_bg_block"] = color_bg_block;
-      }
-      if ( traceBlockData && traceBlockData.color_bg_block_active ) {
+      // }
+      // if ( traceBlockData && traceBlockData.color_bg_block_active ) {
         props["color_bg_block_active"] = color_bg_block_active;
-      }
+      // }
       props["image_bg_url"] = image_bg_block;
       props["image_width"] = image_width;
       props["image_height"] = image_height;
@@ -1423,12 +1422,12 @@ var Rex_Save_Listeners = (function($) {
       props["grid_cell_width"] = grid_cell_width;
       props["section_name"] = section_name;
       props["type"] = type;
-      if ( traceSectionData && traceSectionData.color_bg_section ) {
+      // if ( traceSectionData && traceSectionData.color_bg_section ) {
         props["color_bg_section"] = color_bg_section;
-      }
-      if ( traceSectionData && traceSectionData.color_bg_section_active ) {
+      // }
+      // if ( traceSectionData && traceSectionData.color_bg_section_active ) {
         props["color_bg_section_active"] = color_bg_section_active;
-      }
+      // }
       props["dimension"] = dimension;
       props["margin"] = margin;
       props["image_bg_section_active"] = image_bg_section_active;

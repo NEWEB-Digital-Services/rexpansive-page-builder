@@ -1264,6 +1264,7 @@ var Rexbuilder_Util = (function($) {
     Rexbuilder_Util.rexContainer.setAttribute( "data-rex-layout-selected", chosenLayoutName );
     Rexbuilder_Util.activeLayout = chosenLayoutName;
 
+    // new page (?)
     if ( $rexbuilderLayoutData.children(".layouts-customizations").attr("data-empty-customizations") == "true" && $rexbuilderModelData.children(".models-customizations").attr("data-empty-models-customizations") == "true" ) {
       if ( _isMobile() ) {
         if ( ! Rexbuilder_Util.blockGridUnder768 ) {
@@ -1273,6 +1274,16 @@ var Rexbuilder_Util = (function($) {
 			} else {
         Rexbuilder_Util.removeCollapsedGrids();
       }
+
+      // tracing empty page data
+      var emptySectionData = [{
+        section_rex_id: document.querySelector('.rexpansive_section.empty-section').getAttribute('data-rexlive-section-id'),
+        targets:[{
+          name:'self'
+        }]
+      }];
+      Rexbuilder_Util.editedDataInfo = new RexEditedData( emptySectionData );
+
       return response;
     }
 
@@ -1318,7 +1329,7 @@ var Rexbuilder_Util = (function($) {
       defaultLayoutSections = _getDefaultLayoutState();
     }
 
-    console.log('setting tracing data')
+    // tracing page data
     Rexbuilder_Util.editedDataInfo = new RexEditedData( defaultLayoutSections );
 
     var layoutSelectedSections = Rexbuilder_Util.getCustomLayoutSections(
