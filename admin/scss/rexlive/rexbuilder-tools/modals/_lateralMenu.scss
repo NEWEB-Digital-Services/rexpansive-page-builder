@@ -27,7 +27,7 @@
     width:33%;
     margin: 0;
     position: relative;
-    &:after {
+    &:before {
       content: '';
       display: block;
       position: absolute;
@@ -38,23 +38,39 @@
       bottom: 0;
       z-index: -1;
     }
+    &:not(:last-child) {
+      a {
+        border-right: 1px solid $palette-color-9b;
+      }
+    }
   }
   a {
     display:block;
     text-align:center;
     text-decoration:none;
     text-transform:uppercase;
-    font-size: 12px;
+    font-size: 11px;
+    font-weight: 500;
     letter-spacing: 2px;
-    color:#888;
+    color:#424242;
     padding:10px 0;
-    // border-bottom:2px solid #888;
     background:#ececec;
 
     &:focus, &.active {
       background:#fff;
       outline: none;
       box-shadow: none;
+      // &:after {
+      //   content: '';
+      //   position: absolute;
+      //   display: block;
+      //   background-color: #fff;
+      //   left: 0;
+      //   right: 1px;
+      //   bottom: -5px;
+      //   height: 10px;
+      //   z-index: 1;
+      // }
     }
   }
 }
@@ -64,6 +80,30 @@
   position: relative;
   box-shadow: -5px 0 5px rgba(0,0,0,.1);
   height: 100%;
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    background: #fff;
+    width: calc(33% - 1px);
+    top: -5px;
+    height: 10px;
+  }
+  &#rex-models-list {
+    &:before {
+      left: 0px;
+    }
+  }
+  &#rex-buttons-list {
+    &:before {
+      left: 33%;
+    }
+  }
+  &#rex-elements-list {
+    &:before {
+      left: 66%;
+    }
+  }
 }
 
 .rex-lateral-panel__list {
@@ -80,8 +120,11 @@
   .button-list__element {
     position: relative;
     margin-bottom: 15px;
-    outline: 1px solid #D6D6D6;
+    outline: 1px solid $palette-color-9b;
     cursor: grab;
+  }
+  .rex-container {
+    text-align: center;
   }
   .button-list__element__tools {
     position: absolute;

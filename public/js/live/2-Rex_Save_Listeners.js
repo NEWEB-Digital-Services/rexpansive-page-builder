@@ -1414,7 +1414,7 @@ var Rex_Save_Listeners = (function($) {
     } else if (mode == "customLayout") {
 
       var traceSectionData = Rexbuilder_Util.editedDataInfo.getSectionData( rexlive_section_id );
-      console.log(traceSectionData)
+      // console.log(traceSectionData)
 
       var props = {};
 

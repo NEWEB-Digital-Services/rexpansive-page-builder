@@ -545,7 +545,7 @@ class Rexbuilder_Public
 				'insert_video' => __( 'Insert Video','rexpansive-builder' ),
 				'slider' => __( 'Slider','rexpansive-builder' ),
 				'insert_row' => __( 'Insert Row','rexpansive-builder' ),
-				'model' => __( 'Model','rexpansive-builder' ),
+				'model' => __( 'Template','rexpansive-builder' ),
 				'copy_row' => __( 'Copy row', 'rexpansive-builder' ),
 				'move_row' => __( 'Move row', 'rexpansive-builder' ),
 				'row_settings' => __( 'Row settings', 'rexpansive-builder' ),

@@ -21,7 +21,7 @@ defined('ABSPATH') or exit;
             <div class="rex-modal-content__modal-area">
                 <div id="rex-model__edit-name__wrap" class="input-field col input-field--small">
                     <input type="text" id="rex-model__edit-name" name="rex-model__edit-name" data-rex-model-id="">
-                    <label for="rex-model__edit-name" class=""><?php _e('Model name', 'rexpansive-builder');?></label>
+                    <label for="rex-model__edit-name" class=""><?php _e('Template name', 'rexpansive-builder');?></label>
                     <span class="rex-material-bar"></span>
                 </div>
             </div>

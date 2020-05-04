@@ -1464,8 +1464,8 @@ border-bottom: 1px dotted #aaa;
 }
 
 .rex-modal {
-  display: none;
-  position: fixed;
+  // display: none;
+  // position: fixed;
   left: 0;
   right: 0;
   background-color: #fafafa;
@@ -1475,7 +1475,8 @@ border-bottom: 1px dotted #aaa;
   margin: auto;
   // overflow-y: auto;
   border-radius: 2px;
-  will-change: top, opacity;
+  // will-change: top, opacity;
+  backface-visibility: hidden;
 
   // max-width: 405px;
   // max-height: 580px;

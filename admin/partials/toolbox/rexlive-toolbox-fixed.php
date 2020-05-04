@@ -43,7 +43,7 @@ $small_tools = true;
           <span class="btn-save__label"><?php _e('Save','rexpansive-builder'); ?></span>
         </div>
 
-        <div class="tool-option tool-option--full btn-models tippy" data-tippy-content="<?php esc_attr_e( 'Models', 'rexpansive-builder' ); ?>">
+        <div class="tool-option tool-option--full btn-models tippy" data-tippy-content="<?php esc_attr_e( 'Templates', 'rexpansive-builder' ); ?>">
           <?php Rexbuilder_Utilities::get_icon('#A012-Models-List'); ?>
         </div>
       </div>

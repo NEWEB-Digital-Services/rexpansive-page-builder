@@ -21,7 +21,7 @@ defined('ABSPATH') or exit;
             <div class="rex-model__add-model__wrap rex-modal-content__modal-area" style="display:flex;">
                 <div id="rex-model__name__wrap" class="input-field col input-field--small" style="width:100%;">
                     <input type="text" id="rex-model__name" name="rex-model__name">
-                    <label for="rex-model__name" class=""><?php _e('Model name', 'rexpansive-builder');?></label>
+                    <label for="rex-model__name" class=""><?php _e('Template name', 'rexpansive-builder');?></label>
                     <span class="rex-material-bar"></span>
                 </div>
             </div><!-- // .rex-model__add-model__wrap -->
@@ -29,7 +29,7 @@ defined('ABSPATH') or exit;
         </div>
 
         <div class="rex-modal__outside-footer">
-            <div id="rex-model__add-new-model" class="tool-button tool-button--inline tool-button--save tippy" data-tippy-content="<?php esc_attr_e( 'Create Model', 'rexpansive-builder' ); ?>">
+            <div id="rex-model__add-new-model" class="tool-button tool-button--inline tool-button--save tippy" data-tippy-content="<?php esc_attr_e( 'Create Template', 'rexpansive-builder' ); ?>">
                 <div class="btn-save--wrap">
                     <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
                     <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
