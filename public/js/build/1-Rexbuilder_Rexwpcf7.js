@@ -2515,6 +2515,20 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		});
 	}
 
+	/**
+	 * Removes plus buttons for the frontend side.
+	 * @returns		{void}
+	 * @since			2.0.5
+	 */
+	function _removePlusButtons() {
+		$('.wpcf7-column.with-button').each(function (index, column) {
+			Rexbuilder_Util.removeClass(column, 'with-button');
+			Rexbuilder_Util.addClass(column, 'column-empty');
+
+			column.innerHTML = '';
+		});
+	}
+
 	function _linkDocumentListeners() {
 		Rexbuilder_Util.$rexContainer.find('.wpcf7-radio').each(function (i, el) {
 			$(el)
@@ -2536,8 +2550,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				});
 		});
 	}
-
-	/* ===== PRIVATE METHODS END ===== */
 
 	function init() {
 		styleSheet = null;
@@ -2604,6 +2616,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		fixInputs();
 		Rexbuilder_Rexelement.addStyles();
 		_linkDocumentListeners();
+
+		if (!Rexbuilder_Util.editorMode) {
+			_removePlusButtons();
+		}
 	}
 
 	return {
