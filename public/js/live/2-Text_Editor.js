@@ -3024,6 +3024,7 @@ var TextEditor = (function ($) {
 			};
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
+			$(elementWrapper).parents('.text-wrap').blur();
 			this.updateHeight();
 		},
 
@@ -3081,6 +3082,8 @@ var TextEditor = (function ($) {
 				blockID: blockID
 			};
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
+			$(rexElementInstance.traceElement).parents('.text-wrap').blur();
 		},
 
 		cloneColumn: function () {

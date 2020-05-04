@@ -457,6 +457,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 					updateColumnContentLive(updateData);
 				}
 			});
+
+		textEditorCf7Instance.updateHeight();
 	}
 
 	function updateColumnContentLive(data) {
@@ -1806,6 +1808,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		$formsInPage = {};
 
 		wrapButtons();
+
+		// Adding necessary toolboxes on forms, form rows and form columns
 		_addFormToolsToDOM();
 		_addRowToolsToDOM();
 		_addColumnToolsToDOM();
@@ -1820,6 +1824,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		addMissingTools: addMissingTools,
 		wrapButtons: wrapButtons,
 
+		updateFormInDB: updateFormInDB,
+
+		/* --- Form manipulation --- */
 		addField: addField,
 		addNewRow: addNewRow,
 		addRow: addRow,
@@ -1827,8 +1834,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 		deleteRow: deleteRow,
 		deleteColumnContent: deleteColumnContent,
-
-		updateFormInDB: updateFormInDB,
 
 		/* --- Modals --- */
 		updateFormLive: updateFormLive,
