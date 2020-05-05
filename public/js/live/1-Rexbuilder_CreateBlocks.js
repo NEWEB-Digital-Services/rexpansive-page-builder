@@ -493,6 +493,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
 		$el.find('.block-toolBox__editor-tools').find('.edit-block-content').addClass('tool-button--hide');
 		$elData.attr('data-type', 'rexslider');
 
+    // @todo, pass correct data to generate natural-blur effect if any
+
 		var $sliderWrap = _createSliderWrap($textWrap, sliderData);
 
 		var blockHasOverlay = 0 !== $textWrap.parents('.responsive-block-overlay').length;

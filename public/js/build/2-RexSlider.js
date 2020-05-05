@@ -51,6 +51,7 @@ var RexSlider = (function ($) {
     var originalLazyLoad = $sliderWrap.attr('data-rexlider-lazyload');
     if ('undefined' != typeof originalLazyLoad && '1' == originalLazyLoad.toString()) {
       settings.bgLazyLoad = 1;
+      settings.lazyLoad = 1;
     }
 
     if ($sliderWrap.hasClass('rex-slider--bottom-interface')) {
@@ -78,7 +79,7 @@ var RexSlider = (function ($) {
     }
 
     // var hasCustomAutoplay = $parentBlock.hasClass('custom-autoplay');    // custom autoplay becomes the default
-    var hasCustomAutoplay = true;
+    var hasCustomAutoplay = ( settings.autoPlay ? true : false );
 
     if ( settings.prevNextButtons && hasCustomAutoplay ) {
       settings.pauseAutoPlayOnHover = false;

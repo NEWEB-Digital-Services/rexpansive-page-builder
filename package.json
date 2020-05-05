@@ -5,6 +5,9 @@
   "main": "gulpfile.js",
   "author": "neweb",
   "license": "ISC",
+  "scripts": {
+    "build": "gulp build"
+  },
   "devDependencies": {
     "eslint-config-google": "^0.9.1",
     "gulp": "^4.0.2",

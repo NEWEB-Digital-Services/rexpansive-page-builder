@@ -68,8 +68,7 @@ var Rexbuilder_Dom_Util = (function($) {
       sliderNumberToActive: parseInt($sliderObj.attr("data-rex-slider-number"))
     };
 
-    Rexbuilder_Dom_Util.lastSliderNumber =
-      Rexbuilder_Dom_Util.lastSliderNumber + 1;
+    Rexbuilder_Dom_Util.lastSliderNumber = Rexbuilder_Dom_Util.lastSliderNumber + 1;
 
     var actionData = {
       textWrap: $textWrap,
@@ -1372,7 +1371,9 @@ var Rexbuilder_Dom_Util = (function($) {
 					'[data-rexbuilder-block-id="' + data.rexID + '"] .rex-slider-element'
 				);
 
-				$sliderElements.append('<div class="slider-overlay" style="background-color:' + color + '"></div>')
+        if( '' !== color ) {
+				  $sliderElements.append('<div class="slider-overlay" style="background-color:' + color + '"></div>')
+        }
 			} else {
 				$overlayTargets.css('background-color', color);
 			}
@@ -1405,7 +1406,9 @@ var Rexbuilder_Dom_Util = (function($) {
 		if (0 === $sliderOverlays.length) {
 			var $sliderElements = $elem.find('.rex-slider-element');
 
-			$sliderElements.append('<div class="slider-overlay" style="background-color:' + color + '"></div>');
+      if( '' !== color ) {
+        $sliderElements.append('<div class="slider-overlay" style="background-color:' + color + '"></div>');
+      }
 		} else {
 			$sliderOverlays.css('background-color', color);
 		}

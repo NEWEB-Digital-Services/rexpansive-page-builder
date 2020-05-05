@@ -25,15 +25,10 @@ var Rexbuilder_RexSlider = (function($) {
     var $slides = rexslider_modal_properties.$modal.find(".rex-slider__slide");
 
     if ($slides.length > 0) {
-      slider.settings[
-        "auto_start"
-      ] = rexslider_modal_properties.$slider_autostart.prop("checked");
-      slider.settings[
-        "prev_next"
-      ] = rexslider_modal_properties.$slider_prev_next.prop("checked");
-      slider.settings["dots"] = rexslider_modal_properties.$slider_dots.prop(
-        "checked"
-      );
+      slider.settings["auto_start"] = rexslider_modal_properties.$slider_autostart.prop("checked");
+      slider.settings["prev_next"] = rexslider_modal_properties.$slider_prev_next.prop("checked");
+      slider.settings["dots"] = rexslider_modal_properties.$slider_dots.prop("checked");
+      slider.settings['natural_blur'] = rexslider_modal_properties.$slider_natural_blur.prop('checked');
 
       $slides.each(function(i, el) {
         var $this_slide = $(el);
@@ -211,6 +206,7 @@ var Rexbuilder_RexSlider = (function($) {
     rexslider_modal_properties.$slider_autostart.prop("checked", false);
     rexslider_modal_properties.$slider_prev_next.prop("checked", false);
     rexslider_modal_properties.$slider_dots.prop("checked", false);
+    rexslider_modal_properties.$slider_natural_blur.prop('checked', false);
     for (var key in attrs) {
       if (attrs.hasOwnProperty(key)) {
         var element = attrs[key];
@@ -236,6 +232,11 @@ var Rexbuilder_RexSlider = (function($) {
               rexslider_modal_properties.$slider_dots.prop("checked", true);
             }
             break;
+          case 'natural_blur':
+            if ('true' == element) {
+              rexslider_modal_properties.$slider_natural_blur.prop('checked',true);
+            }
+            break;
           default:
             break;
         }
@@ -248,6 +249,7 @@ var Rexbuilder_RexSlider = (function($) {
     rexslider_modal_properties.$slider_autostart.prop("checked", false);
     rexslider_modal_properties.$slider_prev_next.prop("checked", false);
     rexslider_modal_properties.$slider_dots.prop("checked", false);
+    rexslider_modal_properties.$slider_natural_blur.prop('checked', false);
     rexslider_modal_properties.$slide_list.empty();
     rexslider_modal_properties.$slider_import.val("0");
     rexslider_modal_properties.$modal.removeClass("rex-slider-block--editing");
@@ -312,6 +314,7 @@ var Rexbuilder_RexSlider = (function($) {
       rexslider_modal_properties.$slider_autostart.prop("checked", true);
       rexslider_modal_properties.$slider_prev_next.prop("checked", true);
       rexslider_modal_properties.$slider_dots.prop("checked", true);
+      rexslider_modal_properties.$slider_natural_blur.prop('checked', true);
 
       rexslider_modal_properties.$save_button.attr("data-block-to-edit", "");
       rexslider_modal_properties.$save_button.attr("data-slider-to-edit", "");
@@ -927,6 +930,7 @@ var Rexbuilder_RexSlider = (function($) {
         rexslider_modal_properties.$slider_autostart.prop("checked", true);
         rexslider_modal_properties.$slider_prev_next.prop("checked", true);
         rexslider_modal_properties.$slider_dots.prop("checked", true);
+        rexslider_modal_properties.$slider_natural_blur.prop('checked', true);
 
         rexslider_modal_properties.$save_button.attr("data-block-to-edit", "");
         rexslider_modal_properties.$save_button.attr("data-slider-to-edit", "");
@@ -1062,6 +1066,7 @@ var Rexbuilder_RexSlider = (function($) {
         rexslider_modal_properties.$slider_autostart.prop("checked", true);
         rexslider_modal_properties.$slider_prev_next.prop("checked", true);
         rexslider_modal_properties.$slider_dots.prop("checked", true);
+        rexslider_modal_properties.$slider_natural_blur.prop('checked', true);
 
         rexslider_modal_properties.$slide_title.val(live_editor_obj.labels.slider.new_slider);
 
@@ -1296,6 +1301,7 @@ var Rexbuilder_RexSlider = (function($) {
       $slide_title: null,
       $slider_autostart: null,
       $slider_prev_next: null,
+      $slider_natural_blur: null,
       $slider_dots: null,
       $slider_import: null
     };
@@ -1308,6 +1314,7 @@ var Rexbuilder_RexSlider = (function($) {
     rexslider_modal_properties.$slide_title = rexslider_modal_properties.$modal.find( ".title-slider" );
     rexslider_modal_properties.$slider_autostart = rexslider_modal_properties.$modal.find( "#rex-slider__autostart" );
     rexslider_modal_properties.$slider_prev_next = rexslider_modal_properties.$modal.find( "#rex-slider__prev-next" );
+    rexslider_modal_properties.$slider_natural_blur = rexslider_modal_properties.$modal.find( "#rex-slider__natural-blur" );
     rexslider_modal_properties.$slider_dots = rexslider_modal_properties.$modal.find( "#rex-slider__dots" );
     rexslider_modal_properties.$slider_import = rexslider_modal_properties.$modal.find( "#rex-slider__import" );
 

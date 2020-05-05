@@ -145,6 +145,13 @@ defined('ABSPATH') or exit;
                             </label>
                         </div>
                         <div class="rex-check-icon">
+                            <label for="rex-slider__natural-blur" class="tippy" data-position="bottom" data-tippy-content="<?php _e('Natural Blur', 'rexpansive-builder');?>">
+                                <input type="checkbox" id="rex-slider__natural-blur" name="rex-slider__natural-blur" title="<?php _e('Natural Blur', 'rexpansive-builder');?>">
+                                <span><?php Rexbuilder_Utilities::get_icon('#C004-Image-Natural'); ?></span>
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                        <div class="rex-check-icon">
                             <input type="checkbox" id="rex-slider__dots" name="rex-slider__dots" title="<?php _e('Dots', 'rexpansive-builder');?>">
                             <label for="rex-slider__dots" class="tippy" data-position="bottom" data-tippy-content="<?php _e('Dots', 'rexpansive-builder');?>">
                                 <i class="rex-icon">Y</i>

@@ -42,12 +42,17 @@ class Rexbuilder_RexSlider {
 			'slider_id' => '',
 			'class' => '',
 			'photoswipe' => '',		// handling photoswipe on slider
-			'overlay' => ''			// handling overlay on slides
+			'overlay' => '',			// handling overlay on slides
 		), $atts ) );
 
 		ob_start();
 
-		if( Rexbuilder_Utilities::check_post_exists( $slider_id ) ) {
+		// slider does not exists, return empty
+		if( ! Rexbuilder_Utilities::check_post_exists( $slider_id ) ) return ob_get_clean();
+
+		$slider_gallery = get_field( '_rex_banner_gallery', $slider_id );
+
+		if( !empty( $slider_gallery ) ) {
 
 			$editor = Rexbuilder_Utilities::isBuilderLive();
 			$options = get_option( 'rexpansive-builder_options' );
@@ -55,8 +60,7 @@ class Rexbuilder_RexSlider {
 			$slider_animation = get_field( '_rex_enable_banner_animation', $slider_id );
 			$slider_prev_next = get_field( '_rex_enable_banner_prev_next', $slider_id );
 			$slider_dots = get_field( '_rex_enable_banner_dots', $slider_id );
-
-			$slider_gallery = get_field( '_rex_banner_gallery', $slider_id );
+			$natural_blur = get_field( '_rex_enable_banner_natural_blur', $slider_id );
 
 			$nav_previewed = get_post_meta( $slider_id, '_rex_slider_previewed_nav', true );
 			$nav_previewed_html = '';
@@ -68,8 +72,7 @@ class Rexbuilder_RexSlider {
 
 			$re = '/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
 
-			if( !empty( $slider_gallery ) ) {
-				$num_slides = count( $slider_gallery );
+			$num_slides = count( $slider_gallery );
 			?>
 			<div data-slider-id="<?php echo $slider_id;?>" class="rex-slider-wrap<?php echo ( 1 == $nav_previewed ? ' rex-slider--bottom-interface' . ( 1 !== $num_slides ? ' rex-slider--bottom-interface--active' : '' ) : '' ); ?><?php echo ' rex-slider--' . $num_slides . '-slides'; ?><?php echo ( "" != $nav_layout ? ' rex-slider-navigator--' . $nav_layout : '' ); ?>" data-rex-slider-animation="<?php echo ( is_array( $slider_animation ) ? 'true': ( "0" == $slider_animation ? 'true' : 'false' ) ); ?>" data-rex-slider-prev-next="<?php echo ( is_array( $slider_prev_next ) ? '1': ( "0" == $slider_prev_next ? 'true' : 'false' ) ); ?>" data-rex-slider-dots="<?php echo ( is_array( $slider_dots ) ? '1': ( "0" == $slider_dots ? 'true' : 'false' ) ); ?>" data-set-gallery-size="<?php echo esc_attr( ( 1 == $nav_previewed || 1 == $set_gallery_size ) ? 'true' : 'false' ); ?>"<?php echo ( '' !== $wrap_around ? ' data-wrap-around="' . $wrap_around . '"' : '' ); ?> data-rexlider-lazyload="<?php echo ( ! $editor ); ?>">
 			<?php
@@ -80,7 +83,7 @@ class Rexbuilder_RexSlider {
 				$overlay_el = '<div class="slider-overlay" style="background-color:' . $overlay . '"></div>';
 			}
 
-			foreach( $slider_gallery as $key => $slide ) :
+			foreach( $slider_gallery as $key => $slide ) {
 				$hide_slide = $slide['_rex_slider_hide_slide'];
 				if( isset( $hide_slide[0] ) && 'hide' === $hide_slide[0] ) {
 					continue;
@@ -99,8 +102,15 @@ class Rexbuilder_RexSlider {
 				}
 
 				?>
-				<div class="rex-slider-element" <?php echo ( 1 != $nav_previewed ? $slider_el_style : '' ); echo (!$slideHasImage? "" : $slideImageIdAttr); ?>>
+				<div class="rex-slider-element"<?php echo ( 1 != $nav_previewed ? ( !$natural_blur ? $slider_el_style : '' ) : '' ); echo (!$slideHasImage? "" : $slideImageIdAttr); ?>>
 				<?php
+
+				if ( $slideHasImage && $natural_blur ) {
+					?>
+					<div class="natural-blur-effect blur-slide"<?php echo $slider_el_style; ?>></div>
+					<img class="natural-slide" data-flickity-lazyload="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" alt="">
+					<?php
+				}
 
 				if( 1 == $nav_previewed && 'true' != $photoswipe && isset( $slide['_rex_banner_gallery_image']['url'] ) ) { 
 					?>
@@ -206,7 +216,7 @@ class Rexbuilder_RexSlider {
 				if( 1 == $nav_previewed ) {
 					$nav_previewed_html .= '<li class="dot"><span' . $slider_el_style . '></span></li>';
 				}
-			endforeach;
+			}
 
 			if( !empty( $nav_previewed_html ) && 1 !== $num_slides ) {
 				echo  '<ol class="flickity-page-dots rex-slider__previewed-nav rex-slider__custom-nav">' . $nav_previewed_html . '</ol>';
@@ -284,8 +294,8 @@ class Rexbuilder_RexSlider {
 			</div>
 			<?php
 			do_action( 'rex_slider_after_gallery_render', $slider_id );
-			}
 		}
+
 		return ob_get_clean();
 	}
 }

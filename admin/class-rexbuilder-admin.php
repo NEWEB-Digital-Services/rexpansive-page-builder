@@ -921,10 +921,386 @@ class Rexbuilder_Admin {
 	 * @since  2.0.2
 	 */
 	public function define_acf_fields() {
+		if( function_exists('acf_add_local_field_group') ) {
+
+			acf_add_local_field_group(array(
+				'key' => 'group_5c8669756b9d3',
+				'title' => 'Rexpansive Slider',
+				'fields' => array(
+					array(
+						'key' => 'field_564f2373722c3',
+						'label' => 'Slides',
+						'name' => '_rex_banner_gallery',
+						'type' => 'repeater',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'row_min' => '',
+						'row_limit' => '',
+						'layout' => 'row',
+						'button_label' => 'Add Slide',
+						'sub_fields' => array(
+							array(
+								'key' => 'field_5675394f2fa0f',
+								'label' => 'Image',
+								'name' => '_rex_banner_gallery_image',
+								'type' => 'image',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'preview_size' => 'thumbnail',
+								'library' => 'all',
+								'return_format' => 'array',
+								'min_width' => 0,
+								'min_height' => 0,
+								'min_size' => 0,
+								'max_width' => 0,
+								'max_height' => 0,
+								'max_size' => 0,
+								'mime_types' => '',
+							),
+							array(
+								'key' => 'field_567539852fa11',
+								'label' => 'Text',
+								'name' => '_rex_banner_gallery_image_title',
+								'type' => 'wysiwyg',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'default_value' => '',
+								'toolbar' => 'full',
+								'media_upload' => 0,
+								'tabs' => 'all',
+								'delay' => 0,
+							),
+							array(
+								'key' => 'field_594bc6bfefb19',
+								'label' => 'Text Position',
+								'name' => '_rex_banner_gallery_title_position',
+								'type' => 'radio',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'choices' => array(
+									'top-left' => 'Top Left',
+									'top-center' => 'Top Center',
+									'top-right' => 'Top Right',
+									'middle-left' => 'Middle Left',
+									'middle-center' => 'Middle Center',
+									'middle-right' => 'Middle Right',
+									'bottom-left' => 'Bottom Left',
+									'bottom-center' => 'Bottom Center',
+									'bottom-right' => 'Bottom Right',
+								),
+								'other_choice' => 0,
+								'save_other_choice' => 0,
+								'default_value' => 'middle-center',
+								'layout' => 'horizontal',
+								'allow_null' => 0,
+								'return_format' => 'value',
+							),
+							array(
+								'key' => 'field_580e08d79f9db',
+								'label' => 'Video',
+								'name' => '_rex_banner_gallery_video',
+								'type' => 'text',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'default_value' => '',
+								'placeholder' => '',
+								'prepend' => '',
+								'append' => '',
+								'formatting' => 'html',
+								'maxlength' => '',
+							),
+							array(
+								'key' => 'field_5948ca17a1bb8',
+								'label' => 'Mp4',
+								'name' => '_rex_banner_gallery_video_mp4',
+								'type' => 'file',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'library' => 'all',
+								'return_format' => 'array',
+								'min_size' => 0,
+								'max_size' => 0,
+								'mime_types' => '',
+							),
+							array(
+								'key' => 'field_5948eb01358e1',
+								'label' => 'Audio',
+								'name' => '_rex_banner_gallery_video_audio',
+								'type' => 'checkbox',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'choices' => array(
+									'yes' => 'Enable',
+								),
+								'default_value' => array(
+								),
+								'layout' => 'vertical',
+								'allow_custom' => 0,
+								'save_custom' => 0,
+								'toggle' => 0,
+								'return_format' => 'value',
+							),
+							array(
+								'key' => 'field_594a186edc532',
+								'label' => 'Url',
+								'name' => '_rex_banner_gallery_url',
+								'type' => 'text',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'default_value' => '',
+								'placeholder' => '',
+								'prepend' => '',
+								'append' => '',
+								'formatting' => 'html',
+								'maxlength' => '',
+							),
+							array(
+								'key' => 'field_5b963966471bd',
+								'label' => 'Navigator Label',
+								'name' => '_rex_slider_nav_label',
+								'type' => 'text',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'default_value' => '',
+								'placeholder' => '',
+								'prepend' => '',
+								'append' => '',
+								'formatting' => 'html',
+								'maxlength' => '',
+							),
+							array(
+								'key' => 'field_5b963990471be',
+								'label' => 'Navigator Image',
+								'name' => '_rex_slider_nav_img',
+								'type' => 'image',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'preview_size' => 'thumbnail',
+								'library' => 'all',
+								'return_format' => 'array',
+								'min_width' => 0,
+								'min_height' => 0,
+								'min_size' => 0,
+								'max_width' => 0,
+								'max_height' => 0,
+								'max_size' => 0,
+								'mime_types' => '',
+							),
+							array(
+								'key' => 'field_5ba9ef6fef790',
+								'label' => 'Hide slide',
+								'name' => '_rex_slider_hide_slide',
+								'type' => 'checkbox',
+								'instructions' => '',
+								'required' => 0,
+								'conditional_logic' => 0,
+								'wrapper' => array(
+									'width' => '',
+									'class' => '',
+									'id' => '',
+								),
+								'choices' => array(
+									'hide' => 'Yes',
+								),
+								'default_value' => array(
+								),
+								'layout' => 'horizontal',
+								'allow_custom' => 0,
+								'save_custom' => 0,
+								'toggle' => 0,
+								'return_format' => 'value',
+							),
+						),
+						'min' => 0,
+						'max' => 0,
+						'collapsed' => '',
+					),
+					array(
+						'key' => 'field_564f1f0c050bc',
+						'label' => 'Enable Animation',
+						'name' => '_rex_enable_banner_animation',
+						'type' => 'checkbox',
+						'instructions' => 'If check, enables animation on banner images',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'choices' => array(
+							'yes' => 'Enable',
+						),
+						'default_value' => array(
+							0 => 'yes',
+						),
+						'layout' => 'horizontal',
+						'allow_custom' => 0,
+						'save_custom' => 0,
+						'toggle' => 0,
+						'return_format' => 'value',
+					),
+					array(
+						'key' => 'field_5948caf770b0e',
+						'label' => 'View Prev Next Arrows',
+						'name' => '_rex_enable_banner_prev_next',
+						'type' => 'checkbox',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'choices' => array(
+							'yes' => 'Enable',
+						),
+						'default_value' => array(
+							0 => 'yes',
+						),
+						'layout' => 'horizontal',
+						'allow_custom' => 0,
+						'save_custom' => 0,
+						'toggle' => 0,
+						'return_format' => 'value',
+					),
+					array(
+						'key' => 'field_5948cb2270b0f',
+						'label' => 'View Dots',
+						'name' => '_rex_enable_banner_dots',
+						'type' => 'checkbox',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'choices' => array(
+							'yes' => 'Enable',
+						),
+						'default_value' => array(
+							0 => 'yes',
+						),
+						'layout' => 'horizontal',
+						'allow_custom' => 0,
+						'save_custom' => 0,
+						'toggle' => 0,
+						'return_format' => 'value',
+					),
+					array(
+						'key' => 'field_5eb175992a464',
+						'label' => 'Natural Blur',
+						'name' => '_rex_enable_banner_natural_blur',
+						'type' => 'checkbox',
+						'instructions' => '',
+						'required' => 0,
+						'conditional_logic' => 0,
+						'wrapper' => array(
+							'width' => '',
+							'class' => '',
+							'id' => '',
+						),
+						'choices' => array(
+							'yes' => 'Enable',
+						),
+						'allow_custom' => 0,
+						'default_value' => array(
+						),
+						'layout' => 'horizontal',
+						'toggle' => 0,
+						'return_format' => 'value',
+						'save_custom' => 0,
+					),
+				),
+				'location' => array(
+					array(
+						array(
+							'param' => 'post_type',
+							'operator' => '==',
+							'value' => 'rex_slider',
+						),
+					),
+				),
+				'menu_order' => 0,
+				'position' => 'normal',
+				'style' => 'default',
+				'label_placement' => 'top',
+				'instruction_placement' => 'label',
+				'hide_on_screen' => '',
+				'active' => true,
+				'description' => '',
+			));
+
+		}
+
 		if( ! function_exists("register_field_group") ) {
 			return;
 		}
 
+		/**
 		register_field_group(array (
 			'id' => 'acf_rexpansive-slider',
 			'title' => 'Rexpansive Slider',
@@ -1097,6 +1473,7 @@ class Rexbuilder_Admin {
 			),
 			'menu_order' => 0,
 		));
+		**/
 
 		$navigation_choices = array(
 			'none'			=>	'None',
@@ -2156,52 +2533,52 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 		$slider_id = $_POST['slider_id'];
 
-		if( $slider_id ) {
-			if( Rexbuilder_Utilities::check_post_exists( (int)$slider_id ) ) {
+		if( $slider_id && Rexbuilder_Utilities::check_post_exists( (int)$slider_id ) ) {
+			$slider_animation = get_field( '_rex_enable_banner_animation', $slider_id );
+			$slider_prev_next = get_field( '_rex_enable_banner_prev_next', $slider_id );
+			$slider_dots = get_field( '_rex_enable_banner_dots', $slider_id );
+			$natural_blur_effect = get_field( '_rex_enable_banner_natural_blur', $slider_id );
 
-				$slider_animation = get_field( '_rex_enable_banner_animation', $slider_id );
-				$slider_prev_next = get_field( '_rex_enable_banner_prev_next', $slider_id );
-				$slider_dots = get_field( '_rex_enable_banner_dots', $slider_id );
+			$rexslider_attrs = array(
+				'auto_start' => ( is_array( $slider_animation ) ? 'true' : ( "0" == $slider_animation ? 'true' : 'false' ) ),
+				'prev_next' => ( is_array( $slider_prev_next ) ? 'true' : ( "0" == $slider_prev_next ? 'true' : 'false' ) ),
+				'dots' => ( is_array( $slider_dots ) ? 'true' : ( "0" == $slider_dots ? 'true' : 'false' ) ),
+				'natural_blur' => ( is_array( $natural_blur_effect ) ? 'true' : ( "0" == $natural_blur_effect ? 'true' : 'false' ) ),
+			);
 
-				$rexslider_attrs = array(
-					'auto_start' => ( is_array( $slider_animation ) ? 'true' : ( "0" == $slider_animation ? 'true' : 'false' ) ),
-					'prev_next' => ( is_array( $slider_prev_next ) ? 'true' : ( "0" == $slider_prev_next ? 'true' : 'false' ) ),
-					'dots' => ( is_array( $slider_dots ) ? 'true' : ( "0" == $slider_dots ? 'true' : 'false' ) ),
-				);
+			$slider_gallery = get_field( '_rex_banner_gallery', (int)$slider_id );
 
-				$slider_gallery = get_field( '_rex_banner_gallery', (int)$slider_id );
+			$response['gallery_field'] = $slider_gallery;
 
-				$response['gallery_field'] = $slider_gallery;
+			$slides_markup = "";
 
-				$slides_markup = "";
+			$re = '/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
 
-				$re = '/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+			foreach( $slider_gallery as $j => $slide ) {
 
-				foreach( $slider_gallery as $j => $slide ) {
+				$slide_content = $slide['_rex_banner_gallery_image_title'];
+				$slide_content = preg_replace('/^<\/p>/', '', $slide_content);
+				$slide_content = preg_replace('/<p>+$/', '', $slide_content);
 
-					$slide_content = $slide['_rex_banner_gallery_image_title'];
-					$slide_content = preg_replace('/^<\/p>/', '', $slide_content);
-					$slide_content = preg_replace('/<p>+$/', '', $slide_content);
+				$video_type = "";
+				$video_info_data = "";
 
-					$video_type = "";
-					$video_info_data = "";
+				//youtube
+				if( false !== strpos( $slide['_rex_banner_gallery_video'], "youtu" ) ) {
+					$video_type = 'youtube';
+					$video_info_data = $slide['_rex_banner_gallery_video'];
+				//vimeo
+				} else if( false !== strpos( $slide['_rex_banner_gallery_video'], "vimeo" ) ) {
+					$video_type = 'vimeo';
+					$video_info_data = $slide['_rex_banner_gallery_video'];
+				//mp4
+				} else if( $slide['_rex_banner_gallery_video_mp4'] ) {
+					$video_type = 'mp4';
+					$video_info_data = $slide['_rex_banner_gallery_video_mp4']['id'];
+					$video_info_url = $slide['_rex_banner_gallery_video_mp4']['url'];
+				}
 
-					//youtube
-					if( false !== strpos( $slide['_rex_banner_gallery_video'], "youtu" ) ) {
-						$video_type = 'youtube';
-						$video_info_data = $slide['_rex_banner_gallery_video'];
-					//vimeo
-					} else if( false !== strpos( $slide['_rex_banner_gallery_video'], "vimeo" ) ) {
-						$video_type = 'vimeo';
-						$video_info_data = $slide['_rex_banner_gallery_video'];
-					//mp4
-					} else if( $slide['_rex_banner_gallery_video_mp4'] ) {
-						$video_type = 'mp4';
-						$video_info_data = $slide['_rex_banner_gallery_video_mp4']['id'];
-						$video_info_url = $slide['_rex_banner_gallery_video_mp4']['url'];
-					}
-
-					ob_start();
+				ob_start();
 	?>
 <div class="col rex-slider__slide rex-modal-content__modal-area__row" data-slider-slide-id="<?php echo $j ?>" data-block_type="slide">
 	<div class="valign-wrapper space-between-wrapper">
@@ -2253,8 +2630,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	</div>
 </div>
 	<?php
-					$slides_markup .= ob_get_clean();
-				}
+				$slides_markup .= ob_get_clean();
 			}
 		}
 
@@ -2400,6 +2776,12 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			update_field( 'field_5948cb2270b0f', array( "yes" ) ,$slider_id );
 		} else {
 			update_field( 'field_5948cb2270b0f', "" , $slider_id );
+		}
+
+		if( "true" == $slider_settings['settings']['natural_blur'] ) {
+			update_field( 'field_5eb175992a464', array( "yes" ) ,$slider_id );
+		} else {
+			update_field( 'field_5eb175992a464', "" , $slider_id );
 		}
 
 		$result['slides_settings'] = $slider_settings['slides'];

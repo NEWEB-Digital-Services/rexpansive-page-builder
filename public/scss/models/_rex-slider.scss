@@ -135,6 +135,26 @@
   }
 }
 
+.blur-slide {
+  position: absolute;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.natural-slide {
+  position:relative;
+  z-index: 1;
+  width: auto;
+  height: 100%;
+  margin: 0 auto;
+}
+
 .rex-box-slider-wrap {
   height: 485px;
   // margin: 20px auto;
