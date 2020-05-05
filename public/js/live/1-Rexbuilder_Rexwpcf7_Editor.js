@@ -808,7 +808,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 						switch (editingType) {
 							case 'resetting':
 								var numberOfInputs = $formColumns[0].querySelectorAll('.wpcf7-list-item').length;
-								
+
 								if (numberOfInputs < listLength) {
 									for (var i = 0; i < listLength - numberOfInputs; i++) {
 										updateColumnContentLive({
@@ -1051,6 +1051,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			shortcode = $columnToUpdateDB.html();
 		}
 
+		console.log('Prima', shortcode);
+
 		var isSetRequiredField = String(columnContentData.wpcf7_required_field) == 'true';
 		var isSetEmail = String(columnContentData.wpcf7_email) == 'true';
 		var onlyNumbers = String(columnContentData.wpcf7_only_numbers) == 'true';
@@ -1098,10 +1100,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			}
 		}
 
-		if (inputType == 'text' || inputType == 'email' || inputType == 'number') {
-			// E-Mail
-			// Changes the shortcode in [number number-xxx ...] or vice versa
+		if (-1 !== ['text', 'email', 'number'].indexOf(inputType)) {
 			if (isSetEmail) {
+				// Changes the shortcode in [number number-xxx ...] or vice versa
 				shortcode = shortcode.replace(/\[[a-z]+\*? [a-z]+/, '[number' + (isSetRequiredField ? '*' : '') + ' number');
 				shortcode = shortcode.replace(/class:[a-z]+/, 'class:number');
 
@@ -1109,17 +1110,17 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			} else {
 				var newFieldType = onlyNumbers ? 'number' : 'text';
 
-				shortcode = shortcode.replace(
-					/\[[a-z]+\*? [a-z]+/,
-					'[' + newFieldType + (isSetRequiredField ? '*' : '') + ' ' + newFieldType
-				);
-				shortcode = shortcode.replace(/class:[a-z]+/, 'class:' + newFieldType);
+				shortcode = shortcode
+					.replace(/\[(text|number)\*?/, '[' + newFieldType + (isSetRequiredField ? '*' : ''))
+					.replace(/class:(text|number)/, 'class:' + newFieldType);
+
+				console.log(shortcode);
 
 				inputType = newFieldType;
 			}
 		}
 
-		if (inputType == 'text' || inputType == 'email' || inputType == 'number') {
+		if (-1 !== ['text', 'email', 'number'].indexOf(inputType)) {
 			// Only number
 			// Changes the shortcode in [number number-xxx ...] or vice versa
 			if (onlyNumbers) {
@@ -1130,11 +1131,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			} else {
 				var newFieldType = isSetEmail ? 'email' : 'text';
 
-				shortcode = shortcode.replace(
-					/\[[a-z]+\*? [a-z]+/,
-					'[' + newFieldType + (isSetRequiredField ? '*' : '') + ' ' + newFieldType
-				);
-				shortcode = shortcode.replace(/class:[a-z]+/, 'class:' + newFieldType);
+				shortcode = shortcode
+					.replace(/\[(text|email)\*?/, '[' + newFieldType + (isSetRequiredField ? '*' : ''))
+					.replace(/class:(text|email)/, 'class:' + newFieldType);
 
 				inputType = newFieldType;
 			}
