@@ -3156,7 +3156,7 @@ var TextEditor = (function ($) {
 				var $textWrap = $(this.traceForm).parents('.text-wrap');
 
 				if (0 !== $textWrap.length) {
-					Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap, false, true);
+					Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap, false);
 				}
 			}
 		},

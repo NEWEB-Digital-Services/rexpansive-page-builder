@@ -22,13 +22,13 @@ var Rexbuilder_Util_Editor = (function($) {
 	 * @param {jQuery} $textWrap Text-wrap whose container block height has to be update
 	 * @param	{Boolean}		needToSave
 	 */
-	var _updateBlockContainerHeight = function ($textWrap, needToSave, forceFixedText) {
+	var _updateBlockContainerHeight = function ($textWrap, needToSave) {
 		needToSave = undefined === needToSave ? true : needToSave;
 		this.needToSave = needToSave;
 
 		var galleryInstance = Rexbuilder_Util.getGalleryInstance($textWrap.parents('.rexpansive_section').eq(0));
 		// galleryInstance.updateElementHeight($textWrap.parents('.grid-stack-item').get(0));
-		galleryInstance.updateElementHeight($textWrap.parents('.grid-stack-item').get(0), undefined, forceFixedText);
+		galleryInstance.updateElementHeight($textWrap.parents('.grid-stack-item').get(0));
 
 		// updating insertButton position
 		var insertButton = TextEditor.getEditorInstance().getExtensionByName('insert-media');

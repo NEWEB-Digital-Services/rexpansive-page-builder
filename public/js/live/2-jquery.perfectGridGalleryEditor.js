@@ -3138,10 +3138,11 @@
     },
 
     /**
-     * @param {Object} $elem Element to update height
-     * @param {Boolean} editingBlock Flag to consider also starting height
-     * @param {Number} blockRatio Ratio block has to maintain   @never used
-     * @since 2.0.0
+     * @param	{Object}	elem 						Element to update height
+     * @param	{Boolean}	editingBlock 		Flag to consider also starting height
+     * @param	{Number}	forceFixedText
+     * @param	{Number}	blockRatio 			Ratio block has to maintain   @never used
+     * @since	2.0.0
      */
     updateElementHeight: function(elem, editingBlock, forceFixedText, blockRatio) {
       editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
