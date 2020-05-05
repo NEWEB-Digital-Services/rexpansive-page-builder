@@ -2636,7 +2636,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		updateFormContent: updateFormContent,
 		updateColumnContent: updateColumnContent,
 
-
 		/* --- Rules --- */
 		addFormRule: addFormRule,
 		addFormMessageRule: addFormMessageRule,
