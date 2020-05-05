@@ -140,10 +140,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			fieldClass;
 		var columnContentRule = columnContentSelector + '{' + property + '}';
 
-		if (/acceptance/.test(columnContentSelector)) {
-			console.log(columnContentSelector);
-		}
-
 		if (!_ruleAlreadyExists(columnContentSelector)) {
 			if ('insertRule' in styleSheet) {
 				styleSheet.insertRule(columnContentRule, styleSheet.cssRules.length);
@@ -924,7 +920,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	 * @param  {jQuery} $formColumn the column to refresh the style
 	 */
 	function refreshColumnContentStyle($formColumn) {
-		_removeColumnContentStyle($formColumn);
+		removeColumnContentStyle($formColumn);
 		addColumnContentStyle($formColumn);
 	}
 
@@ -2317,7 +2313,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		// var formID = $form.parents('.rex-element-wrapper').attr('data-rex-element-id');
 	}
 
-	function _removeColumnContentStyle($formColumn) {
+	function removeColumnContentStyle($formColumn) {
 		var formID = $formColumn.parents('.rex-element-wrapper').attr('data-rex-element-id');
 		var rowNumber = $formColumn.parents('.wpcf7-row').attr('wpcf7-row-number');
 		var columnNumber = $formColumn.attr('wpcf7-column-number');
@@ -2630,6 +2626,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		addFormStyle: addFormStyle,
 		refreshFormStyle: refreshFormStyle,
 		addColumnContentStyle: addColumnContentStyle,
+		removeColumnContentStyle: removeColumnContentStyle,
 		refreshColumnContentStyle: refreshColumnContentStyle,
 		fixInputs: fixInputs,
 		fixWpcf7RadioButtons: fixWpcf7RadioButtons,
@@ -2638,6 +2635,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		updateForm: updateForm,
 		updateFormContent: updateFormContent,
 		updateColumnContent: updateColumnContent,
+
 
 		/* --- Rules --- */
 		addFormRule: addFormRule,

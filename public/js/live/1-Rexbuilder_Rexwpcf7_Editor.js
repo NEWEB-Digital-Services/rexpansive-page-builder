@@ -14,7 +14,13 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		var rowNumber = insertionPoint.row_number;
 		var columnNumber = insertionPoint.column_number;
 		var $columnToAddField = Rexbuilder_Util.$rexContainer.find(
-			'.wpcf7-row[wpcf7-row-number="' + rowNumber + '"] .wpcf7-column[wpcf7-column-number="' + columnNumber + '"]'
+			'.rex-element-wrapper[data-rex-element-id="' +
+				formID +
+				'"] .wpcf7-row[wpcf7-row-number="' +
+				rowNumber +
+				'"] .wpcf7-column[wpcf7-column-number="' +
+				columnNumber +
+				'"]'
 		);
 		var $columnToAddFieldInDB = $formsInPage[formID].find(
 			'.wpcf7-row[wpcf7-row-number="' + rowNumber + '"] .wpcf7-column[wpcf7-column-number="' + columnNumber + '"]'
@@ -392,6 +398,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				'"]'
 		);
 
+		Rexbuilder_Rexwpcf7.removeColumnContentStyle($columnToDelete);
+
 		$columnToDelete.empty();
 		var plusButton = Rexbuilder_Live_Templates.getTemplate('wpcf7-plus-button-inside-row');
 		$columnToDelete.append(plusButton).addClass('with-button');
@@ -543,11 +551,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				Rexbuilder_Rexwpcf7.updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
 				break;
 			case 'placeholder-color':
-				/** @todo: bug: cssSelector does not change properly. Maybe caused by ::placeholder? */
-				// console.group('placeholder')
-				// console.log('%c Placeholder color ', 'background: '+newValue+'; color: #000');
-				// console.log('cssSelector', cssSelector)
-				// console.groupEnd('placeholder')
 				Rexbuilder_Rexwpcf7.updateColumnContentRule(
 					formID,
 					row,
@@ -805,12 +808,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 						switch (editingType) {
 							case 'resetting':
 								var numberOfInputs = $formColumns[0].querySelectorAll('.wpcf7-list-item').length;
-								// console.log({
-								//     numberOfInputs: numberOfInputs,
-								//     listLength: listLength,
-								//     list: list.toString()
-								// })
-
+								
 								if (numberOfInputs < listLength) {
 									for (var i = 0; i < listLength - numberOfInputs; i++) {
 										updateColumnContentLive({
