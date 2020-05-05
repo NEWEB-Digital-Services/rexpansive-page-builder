@@ -18,9 +18,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var el = $el[0];
     $el.find(".grid-item-content").addClass("empty-content");
     TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
-    // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
-    //     galleryInstance.addScrollbar($el);
-    // }
+
     // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
     // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($el.find('input[name=edit-block-overlay-color]')[0]);
     // Rexbuilder_Block_Editor.updateBlockTools($el);
@@ -82,7 +80,6 @@ var Rexbuilder_CreateBlocks = (function ($) {
     event.offsetY = 0;
     galleryInstance.$element.trigger(event);
 
-    console.log('add blocco dati')
     Rexbuilder_Util.editedDataInfo.addBlockData( $section.attr("data-rexlive-section-id"), el.getAttribute('data-rexbuilder-block-id') );
 
     Rexbuilder_Util.updateSectionStateLive($section);
@@ -145,6 +142,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
     event.target = el;
     event.offsetY = 0;
     galleryInstance.$element.trigger(event);
+
+    Rexbuilder_Util.editedDataInfo.addBlockData( data.sectionTarget.sectionID, el.getAttribute('data-rexbuilder-block-id') );
+
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -279,8 +279,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
       TextEditor.addElementToTextEditor(el.querySelector(".text-wrap"));
 
       // Rexbuilder_Block_Editor.updateBlockTools($el);
-      Rexbuilder_Live_Utilities.launchTooltips();
+      Rexbuilder_Util.editedDataInfo.addBlockData( data.sectionTarget.sectionID, el.getAttribute('data-rexbuilder-block-id') );
     }
+    Rexbuilder_Live_Utilities.launchTooltips();
+
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -294,7 +296,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
   function handleInsertVideo(e) {
     var data = e.settings.data_to_send;
-    if (!(typeof data.typeVideo == "undefined")) {
+    if (!(typeof data.typeVideo == "undefined")) {mì
       var $section;
 
       if (data.sectionTarget.modelNumber != "") {
@@ -338,6 +340,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
         // galleryInstance.addScrollbar($el);
         var el = $el[0];
         TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
+
+        Rexbuilder_Util.editedDataInfo.addBlockData( data.sectionTarget.sectionID, el.getAttribute('data-rexbuilder-block-id') );
       } else {
         for (var i = 0; i < videoMp4.length; i++) {
           var $el = _createBlockGrid(galleryInstance, 3, 3, 'video');
@@ -365,6 +369,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
           // }
           var el = $el[0];
           TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
+
+          Rexbuilder_Util.editedDataInfo.addBlockData( data.sectionTarget.sectionID, el.getAttribute('data-rexbuilder-block-id') );
         }
       }
     }
@@ -391,6 +397,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
     // Rexbuilder_Block_Editor.updateBlockTools($el);
     Rexbuilder_Live_Utilities.launchTooltips();
+
+    Rexbuilder_Util.editedDataInfo.addBlockData( e.settings.data_to_send.target.sectionID, $el.attr('data-rexbuilder-block-id') );
 
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {

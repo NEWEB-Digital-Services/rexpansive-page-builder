@@ -4,23 +4,42 @@
 })(typeof window !== 'undefined' ? window : this, function() {
 	// synch section props
 	var tracePropsSection = [
-		'color_bg_section',			// background color
+		'color_bg_section',				// background color
 		'color_bg_section_active',
-		'image_bg_section_active',	// background image
+		'image_bg_section_active',		// background image
 		'image_bg_section',
 		'image_width',
 		'image_height',
 		'id_image_bg_section',
 		'image_size',
-		'custom_classes',			// custom classes
-		'row_overlay_color',		// overlay color
+		'video_bg_id_section',			// mp4 video background
+		'video_mp4_url',
+		'video_bg_width_section',
+		'video_bg_height_section',
+		'video_bg_url_section',			// youtube video background
+		'video_bg_url_vimeo_section',	// vimeo video background
+		'custom_classes',				// custom classes
+		'row_overlay_color',			// overlay color
 		'row_overlay_active'
 	];
 
 	// synch block props
 	var tracePropsBlock = [
-		'color_bg_block', 			// background color
-		'color_bg_block_active'
+		'color_bg_block', 				// background color
+		'color_bg_block_active',
+		'image_bg_url',					// background image
+		'image_width',
+		'image_height',
+		'id_image_bg',
+		'image_size',
+		'image_bg_elem_active',
+		'type_bg_image',
+		'photoswipe',					// photoswipe
+		'block_custom_class',			// custom class
+		'block_padding',				// block padding
+		'overlay_block_color',			// overlay color
+		'overlay_block_color_active',
+		'linkurl',						// links
 	];
 
 	function RexEditedData() {
@@ -31,10 +50,26 @@
 			this.startData = arguments[0];
 		}
 
+		_checkData.call(this);
 		_generateData.call(this);
 	}
 
 	/** PRIVATE METHODS */
+
+	/**
+	 * Check if data passaed is an array, if not, convert it to an array
+	 * @return {void}
+	 */
+	function _checkData() {
+		if ( ! Array.isArray(this.startData) ) {
+			var temp = [];
+			for( var t in this.startData ) {
+				temp.push( this.startData[t] );
+			}
+			
+			this.startData = temp;
+		}
+	}
 
 	/**
 	 * Generate the information to understand if a data has changed
@@ -44,6 +79,7 @@
 	*/
 	function _generateData( data ) {
 		data = 'undefined' !== typeof data ? data : this.startData;
+
 		var result = [];
 		var i, tot = data.length;
 		var j, totTargets = 0;
@@ -219,8 +255,6 @@
 		for ( z=0; z < tracePropsBlock.length; z++ ) {
 			props[tracePropsBlock[z]] = false;
 		}
-
-		console.log(sectionId, blockId)
 
 		var data = {
 			name: blockId,

@@ -10,6 +10,7 @@ var BlockOptions_Modal = (function($) {
     Block_Video_Background_Modal.updateVideoModal(data.bgVideo);
     BlockPaddings_Modal.updatePaddings(data.paddings);
     Block_Content_Positions_Setting.updatePosition(data.flexPosition);
+    Block_Photoswipe_Modal.updatePhotoswipeModal(data.imageBG);
     Block_Image_Positions_Modal.updatePosition(data.flexImgPosition);
     Block_CustomClasses_Modal.updateCustomClasses(data.customClasses);
     Block_Url_Modal.updateBlockUrl(data.linkBlock);
@@ -48,6 +49,7 @@ var BlockOptions_Modal = (function($) {
     Block_Video_Background_Modal.init($blockOptions);
     BlockPaddings_Modal.init($blockOptions);
     Block_Content_Positions_Setting.init($blockOptions);
+    Block_Photoswipe_Modal.init($blockOptions);
     Block_Image_Positions_Modal.init($blockOptions);
     Block_Image_Editor_Modal.init($blockOptions);
     Block_CustomClasses_Modal.init($blockOptions);

@@ -1125,7 +1125,11 @@ var Rex_Save_Listeners = (function($) {
       return output;
     } else if (mode == "customLayout") {
 
-      var traceBlockData = Rexbuilder_Util.editedDataInfo.getBlockData( gridGallery.getAttribute('data-rex-grid-id'), rex_id );
+      var sectionId = $(gridGallery).parents('.rexpansive_section').attr('data-rexlive-section-id');
+      var traceBlockData = Rexbuilder_Util.editedDataInfo.getBlockData( sectionId, rex_id );
+
+      console.log(traceBlockData)
+
       var props = {};
 
       props["hide"] = hide_block;
@@ -1153,25 +1157,52 @@ var Rex_Save_Listeners = (function($) {
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.color_bg_block_active ) ) {
         props["color_bg_block_active"] = color_bg_block_active;
       }
-      props["image_bg_url"] = image_bg_block;
-      props["image_width"] = image_width;
-      props["image_height"] = image_height;
-      props["id_image_bg"] = id_image_bg_block;
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_bg_url ) ) {
+        props["image_bg_url"] = image_bg_block;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_width ) ) {
+        props["image_width"] = image_width;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_height ) ) {
+        props["image_height"] = image_height;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.id_image_bg ) ) {
+        props["id_image_bg"] = id_image_bg_block;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_size ) ) {
+        props["image_size"] = image_size;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_bg_elem_active ) ) {
+        props["image_bg_elem_active"] = image_bg_elem_active;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.type_bg_image ) ) {
+        props["type_bg_image"] = type_bg_block;
+      }
+
       props["video_bg_id"] = video_bg_id;
       props["video_bg_width"] = video_bg_width;
       props["video_bg_height"] = video_bg_height;
       props["video_mp4_url"] = video_mp4_url;
       props["video_bg_url_youtube"] = video_bg_url;
       props["video_bg_url_vimeo"] = video_bg_url_vimeo;
-      props["type_bg_image"] = type_bg_block;
-      props["image_size"] = image_size;
-      props["photoswipe"] = photoswipe;
-      props["image_bg_elem_active"] = image_bg_elem_active;
-      props["block_custom_class"] = block_custom_class;
-      props["block_padding"] = block_padding;
-      props["overlay_block_color"] = overlay_block_color;
-      props["overlay_block_color_active"] = overlay_block_color_active;
-      props["linkurl"] = linkurl;
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.photoswipe ) ) {
+        props["photoswipe"] = photoswipe;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.block_custom_class ) ) {
+        props["block_custom_class"] = block_custom_class;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.block_padding ) ) {
+        props["block_padding"] = block_padding;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.overlay_block_color ) ) {
+        props["overlay_block_color"] = overlay_block_color;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.overlay_block_color_active ) ) {
+        props["overlay_block_color_active"] = overlay_block_color_active;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.linkurl ) ) {
+        props["linkurl"] = linkurl;
+      }
       if ( '' !== zak_background ) props["zak_background"] = zak_background;
       if ( '' !== zak_side ) props["zak_side"] = zak_side;
       if ( '' !== zak_title ) props["zak_title"] = zak_title;

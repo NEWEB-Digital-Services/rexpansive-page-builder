@@ -444,6 +444,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-block-image-positions-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_ImagePosition_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-image-positions-setting', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_ImagePosition_Setting.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-paddings-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Paddings_Modal.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-block-photoswipe-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Photoswipe_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-custom-classes', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Custom_Classes_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-image-editor', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Image_Editor_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-accordion-editor', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Accordion.js', array( 'jquery' ), null, true );

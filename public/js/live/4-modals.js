@@ -466,6 +466,12 @@
         Rexbuilder_Dom_Util.removePhotoswipeAllBlocksSection($section);
       }
 
+      var blocks = Array.prototype.slice.call( $section.get(0).getElementsByClassName('perfect-grid-item') );
+      var i, totBlocks = blocks.length;
+      for( i=0; i<totBlocks; i++ ) {
+        Rexbuilder_Util.editedDataInfo.setBlockData( data.sectionTarget.sectionID, blocks[i].getAttribute('data-rexbuilder-block-id'), 'photoswipe' );
+      }
+
       //actionData: state after
       var elementsAfter = Rexbuilder_Live_Utilities.getElementsPhotoswipe(
         $gallery
@@ -1002,6 +1008,24 @@
         audio: false,
         typeVideo: data.typeVideo
       };
+
+      switch (actionData.typeVideo) {
+        case 'mp4':
+          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_id_section' );
+          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_mp4_url' );
+          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_width_section' );
+          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_height_section' );
+          break;
+        case 'youtube':
+          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_url_section' );
+          break;
+        case 'vimeo':
+          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_url_vimeo_section' );
+          break;
+        default:
+          break;
+      }
+
       $section.attr("data-rexlive-section-edited", true);
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -1118,6 +1142,10 @@
       };
 
       Rexbuilder_Dom_Util.updateBlockBackgroundGradient(actionData);
+
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'color_bg_block' );
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'color_bg_block_active' );
+
       $elem.attr("data-rexlive-element-edited", true);      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -1174,6 +1202,10 @@
       };
 
       Rexbuilder_Dom_Util.updateBlockOverlayGradient(actionData);
+
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'overlay_block_color' );
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'overlay_block_color_active' );
+
       $elem.attr("data-rexlive-element-edited", true);      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -1232,6 +1264,10 @@
       };
 
       Rexbuilder_Dom_Util.updateBlockOverlay(actionData);
+
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'overlay_block_color' );
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'overlay_block_color_active' );
+
       $elem.attr("data-rexlive-element-edited", true);      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -1348,6 +1384,7 @@
         photoswipe: data.photoswipe
 			};
 			
+      // @todo PHOTOSWIPE to update indipendentyl HERE
 			Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOpt);
 			
       if (data.updateBlockHeight) {
@@ -1360,6 +1397,15 @@
         $itemContent: $itemContent,
         imageOpt: imageOpt
       };
+
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'image_bg_url' );
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'image_width' );
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'image_height' );
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'id_image_bg' );
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'image_size' );
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'image_bg_elem_active' );
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'type_bg_image' );
+
       $elem.attr("data-rexlive-element-edited", true);     
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -1555,7 +1601,8 @@
       Rexbuilder_Dom_Util.updateBlockPaddings($elem, data.paddings);
       // TODO : here is the place to study to fix the padding problem
       if (galleryEditorInstance.settings.galleryLayout == "masonry") {
-        galleryEditorInstance.updateElementHeight($elem[0], true);
+        galleryEditorInstance.updateElementHeight( $elem[0], true );
+        galleryEditorInstance.updateSizeViewerSizes( $elem[0] );
       }
       Rexbuilder_Util_Editor.updatingPaddingBlock = false;
 
@@ -1563,6 +1610,9 @@
         $elem: $elem,
         dataPadding: data.paddings
       };
+
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'block_padding' );
+
       $elem.attr("data-rexlive-element-edited", true);      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -1751,6 +1801,8 @@
         classes: data.customClasses
       };
 
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'block_custom_class' );
+
       $elem.attr("data-rexlive-element-edited", true);      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -1805,6 +1857,8 @@
         $elem: $elem,
         url: data.url
       };
+
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'linkurl' );
 
       $elem.attr("data-rexlive-element-edited", true);
       if (Rexbuilder_Util.activeLayout == "default") {

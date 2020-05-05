@@ -1329,9 +1329,6 @@ var Rexbuilder_Util = (function($) {
       defaultLayoutSections = _getDefaultLayoutState();
     }
 
-    // tracing page data
-    Rexbuilder_Util.editedDataInfo = new RexEditedData( defaultLayoutSections );
-
     var layoutSelectedSections = Rexbuilder_Util.getCustomLayoutSections(
       layoutDataPage,
       layoutDataModels,
@@ -1400,6 +1397,9 @@ var Rexbuilder_Util = (function($) {
 
     var meIndex, section, $section;
 
+    // tracing page data
+    Rexbuilder_Util.editedDataInfo = new RexEditedData( mergedEdits );
+    console.log(Rexbuilder_Util.editedDataInfo);
 
     for( meIndex in mergedEdits ) {
       if (!mergedEdits[meIndex].notInSection || chosenLayoutName == "default") {
