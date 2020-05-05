@@ -248,47 +248,48 @@ var Rexbuilder_Rexelement = (function ($) {
 		return data;
 	}
 
-	/* ===== PRIVATE METHODS ===== */
-
+	/**
+	 * Searches if there are different options between
+	 * the form inputs and the form global options.
+	 * @param		{String}	elementID
+	 * @returns	{void}
+	 * @since		2.0.3
+	 * @version	2.0.5			Changed in vanilla js, improved logic
+	 */
 	function _scanOptionsDifferent(elementID) {
-		var elementWrapperToScan = Rexbuilder_Util.$rexContainer
-			.find('.rex-element-wrapper[data-rex-element-id="' + elementID + '"]')
-			.eq(0)
-			.get(0);
-		var elementData = elementWrapperToScan.querySelector('.rex-element-data');
+		var elementWrapper = Rexbuilder_Util.rexContainer.querySelector(
+			'.rex-element-wrapper[data-rex-element-id="' + elementID + '"]'
+		);
+		var elementData = elementWrapper.querySelector('.rex-element-data');
 		var columnsSpanDataArray = Array.prototype.slice.call(
-			elementWrapperToScan.querySelectorAll('.rex-wpcf7-column-content-data')
+			elementWrapper.querySelectorAll('.rex-wpcf7-column-content-data')
 		);
 
-		// Using new Array() for readability
+		// Using new Array() for readability purposes
 		var columnsWidths = new Array(elementData.getAttribute('data-wpcf7-content-width'));
 		var columnsHeights = new Array(elementData.getAttribute('data-wpcf7-content-height'));
 		var columnsTextColors = new Array(elementData.getAttribute('data-wpcf7-content-text-color'));
 		var columnsFontSizes = new Array(elementData.getAttribute('data-wpcf7-content-font-size'));
 
-		columnsSpanDataArray.forEach(function (span) {
-			columnsWidths.push(span.getAttribute('data-wpcf7-input-width'));
-			columnsHeights.push(span.getAttribute('data-wpcf7-input-height'));
-			columnsTextColors.push(span.getAttribute('data-text-color'));
-			columnsFontSizes.push(span.getAttribute('data-wpcf7-font-size'));
+		columnsSpanDataArray.forEach(function (spanData) {
+			columnsWidths.push(spanData.getAttribute('data-wpcf7-input-width'));
+			columnsHeights.push(spanData.getAttribute('data-wpcf7-input-height'));
+			columnsTextColors.push(spanData.getAttribute('data-text-color'));
+			columnsFontSizes.push(spanData.getAttribute('data-wpcf7-font-size'));
 		});
 
 		var optionsDifferent = {};
 
-		// Checking if there are different values
-		optionsDifferent.width = !columnsWidths.every(function (val) {
-			return val === columnsWidths[0];
-		});
-		optionsDifferent.height = !columnsHeights.every(function (val) {
-			return val === columnsWidths[0];
-		});
-		optionsDifferent.text_color = !columnsTextColors.every(function (val) {
-			return val === columnsWidths[0];
-		});
-		optionsDifferent.font_size = !columnsFontSizes.every(function (val) {
-			return val === columnsWidths[0];
-		});
+		function checkDiff(val, i, arr) {
+			return val === arr[0];
+		}
 
+		// Checking if there are different values
+		optionsDifferent.width = !columnsWidths.every(checkDiff);
+		optionsDifferent.height = !columnsHeights.every(checkDiff);
+		optionsDifferent.text_color = !columnsTextColors.every(checkDiff);
+		optionsDifferent.font_size = !columnsFontSizes.every(checkDiff);
+		
 		return optionsDifferent;
 	}
 
