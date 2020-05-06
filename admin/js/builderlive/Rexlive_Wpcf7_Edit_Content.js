@@ -90,13 +90,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 	};
-	///////////////////////////////////////////////////////////////////////////////////////////////
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-	/// MODAL FUNCTIONS
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-
-	// var blockID;
+	// MODAL FUNCTIONS
 
 	var _openColumnContentEditorModal = function (data) {
 		columnContentData = jQuery.extend(true, {}, data.columnContentData);
@@ -104,7 +99,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		// var spanDataExists = data.spanDataExists;
 		needToRemoveSpanData = !data.spanDataExists; // If the span data already exists, we don't have to remove it
 		var inputType = columnContentData.input_type;
-		var blockID = data.blockID;
 
 		_updateColumnContentEditorModal(columnContentData);
 
@@ -425,9 +419,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		Rexlive_Modals_Utils.openModal(
 			wpcf7_content_editor_properties.$self.parent('.rex-modal-wrap'), // $target
 			false, // target_only
-			['wpcf7-editing-content'], // additional_class
-			undefined, // set_position
-			blockID // blockIDToFocusAfterClose
+			['wpcf7-editing-content'] // additional_class
 		);
 	};
 

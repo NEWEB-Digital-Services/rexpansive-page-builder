@@ -2523,7 +2523,7 @@
     },
 
     focusElement: function($elem) {
-      if ( $elem.length > 0 ) {
+      if ( $elem && $elem.length > 0 ) {
         $elem.addClass("focused");
       }
       this.$section.addClass("focusedRow");

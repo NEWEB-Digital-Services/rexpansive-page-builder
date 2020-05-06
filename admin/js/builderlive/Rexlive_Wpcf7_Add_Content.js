@@ -17,9 +17,7 @@ var Wpcf7_Add_Content_Modal = (function ($) {
 		Rexlive_Modals_Utils.openModal(
 			wpcf7_content_adder_properties.$self.parent('.rex-modal-wrap'), // $target
 			false, // target_only
-			['wpcf7-adding-content'], // additional_class
-			undefined, // set_position
-			blockID // blockIDToFocusAfterClose
+			['wpcf7-adding-content'] // additional_class
 		);
 	};
 

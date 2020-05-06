@@ -604,18 +604,6 @@ var Rexbuilder_Live_Utilities = (function($) {
 
 		Rexbuilder_Util.$document.on("rexlive:close_modal", function(e) {
 			Rexbuilder_Live_Utilities.hideAllTools();
-
-			var blockIDToFocusAfterClose = e.settings.blockID;
-
-			if ( "undefined" != typeof blockIDToFocusAfterClose ) {
-				setTimeout(function() {   // Necessary!
-				$('#' + blockIDToFocusAfterClose)
-					.dblclick()
-					.addClass('item--me-focus')
-					.parents('.rexpansive_section')
-					.addClass('focusedRow block-editing');
-				}, 0);
-			}
 		});
 
 		Rexbuilder_Util.$document.on("rexlive:openCreateModelModal", function(e) {
@@ -645,7 +633,7 @@ var Rexbuilder_Live_Utilities = (function($) {
 		});
 
 		/* ===== Elements ===== */
-		Rexbuilder_Util.$document.on('rexlive:import_element', function (e) {
+		Rexbuilder_Util.$document.on('rexlive:importElement', function (e) {
 			Rexbuilder_Rexelement_Editor.fixImportedElement( e.settings.data );
 		});
 
@@ -695,7 +683,7 @@ var Rexbuilder_Live_Utilities = (function($) {
 		});
 
 		// DRAG & DROP
-		Rexbuilder_Util.$document.on("rexlive:drag_drop_starded", function (e) {
+		Rexbuilder_Util.$document.on("rexlive:drag_drop_started", function (e) {
 			Rexbuilder_Util_Editor.dragAndDropFromParent = true;
 		});
 

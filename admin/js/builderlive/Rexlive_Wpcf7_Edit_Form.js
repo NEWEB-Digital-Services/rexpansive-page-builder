@@ -180,9 +180,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 		Rexlive_Modals_Utils.openModal(
 			wpcf7_form_editor_properties.$self.parent('.rex-modal-wrap'), // $target
 			false, // target_only
-			['wpcf7-editing-form'], // additional_class
-			undefined, // set_position
-			blockID // blockIDToFocusAfterClose
+			['wpcf7-editing-form'] // additional_class
 		);
 	};
 

@@ -527,7 +527,7 @@ var Element_Import_Modal = (function ($) {
                     $divInsert.hide();
                     $insertionPoint.remove();
                     var dataEndDrop = {
-                      eventName: "rexlive:import_element",
+                      eventName: "rexlive:importElement",
                       data: {
                         // elementDimensions: elementDimensions,
                         mousePosition: mousePositionToIFrame

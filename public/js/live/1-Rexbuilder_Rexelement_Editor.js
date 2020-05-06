@@ -11,7 +11,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 	/**
 	 * Fixes the dragged element in the DOM. Called right after
 	 * the drag & drop event in Rexlive_Element_Import.js
-	 * @param  {Object} data Contains mouse position of the drop.
+	 * @param	{Object}	data	Contains mouse position of the drop.
 	 * @since 2.0.4
 	 */
 	function fixImportedElement(data) {
@@ -566,6 +566,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 			Rexbuilder_Rexwpcf7_Editor.wrapButtons();
 			Rexbuilder_Rexwpcf7_Editor.addMissingTools(formID);
 			_addElementToolsToDOM();
+			focusRexElement($textWrap);
 		}
 	}
 
@@ -922,51 +923,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		});
 	}
 
-	function _scanOptionsDifferent(elementID, optionsDifferent) {
-		var $elementWrapperToScan = Rexbuilder_Util.$rexContainer
-			.find('.rex-element-wrapper[data-rex-element-id="' + elementID + '"]')
-			.eq(0);
-		var $columnsSpanData = $elementWrapperToScan.find('.rex-wpcf7-column-content-data');
-
-		// Getting data from columns span data
-		var columnsWidths = $columnsSpanData
-			.map(function () {
-				return $(this).attr('data-wpcf7-input-width');
-			})
-			.get();
-		var columnsHeights = $columnsSpanData
-			.map(function () {
-				return $(this).attr('data-wpcf7-input-height');
-			})
-			.get();
-		var columnsTextColors = $columnsSpanData
-			.map(function () {
-				return $(this).attr('data-text-color');
-			})
-			.get();
-		var columnsFontSizes = $columnsSpanData
-			.map(function () {
-				return $(this).attr('data-wpcf7-font-size');
-			})
-			.get();
-
-		// Checking if there are different values
-		optionsDifferent.width = !columnsWidths.every(function (val, i, arr) {
-			return val === arr[0];
-		});
-		optionsDifferent.height = !columnsHeights.every(function (val, i, arr) {
-			return val === arr[0];
-		});
-		optionsDifferent.text_color = !columnsTextColors.every(function (val, i, arr) {
-			return val === arr[0];
-		});
-		optionsDifferent.font_size = !columnsFontSizes.every(function (val, i, arr) {
-			return val === arr[0];
-		});
-
-		return optionsDifferent;
-	}
-
 	function _addElementToolsToDOM() {
 		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('rexelement-tools', { settingsType: 'form_settings' });
 		var rexElements = Array.prototype.slice.call(
@@ -979,6 +935,25 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 			rexElements[i].insertAdjacentHTML('afterbegin', toolsTemplate);
 		}
+	}
+
+	function focusRexElement($textWrap) {
+		var textWrap = $textWrap.get(0);
+		var $gallery = $textWrap.parents('.grid-stack-row');
+		var pgge = $gallery.data().plugin_perfectGridGalleryEditor;
+
+		// By passing no parameters only the section will be focused
+		pgge.focusElement();
+
+		// By setting this, it is possible to unfocus the block when clicking out of it
+		textWrap.setAttribute('data-medium-focused', true);
+
+		// Triggering focus event on current text wrap
+		TextEditor.triggerMEEvent({
+			name: 'focus',
+			data: {},
+			editable: textWrap
+		});
 	}
 
 	function init() {
@@ -1035,6 +1010,8 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 	return {
 		init: init,
+
+		focusRexElement: focusRexElement,
 
 		fixImportedElement: fixImportedElement,
 		handleCompleteImportElement: handleCompleteImportElement,

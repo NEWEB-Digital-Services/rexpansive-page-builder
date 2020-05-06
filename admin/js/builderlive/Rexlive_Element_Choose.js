@@ -200,9 +200,7 @@ var Element_Choose_Modal = (function ($) {
         Rexlive_Modals_Utils.openModal(
             rex_element_choose_panel.$self.parent(".rex-modal-wrap"),    // $target
             false,                          // target_only
-            ["wpcf7-choose-element"],      // additional_class
-            undefined,      // set_position
-            blockID         // blockIDToFocusAfterClose
+            ["wpcf7-choose-element"]      // additional_class
         );
     };
 

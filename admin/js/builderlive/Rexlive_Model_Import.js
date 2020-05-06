@@ -552,7 +552,7 @@ var Model_Import_Modal = (function($) {
         event.originalEvent.dataTransfer.setData("text/plain", insertingHTML);
       }
       var dataDnDstart = {
-        eventName: "rexlive:drag_drop_starded",
+        eventName: "rexlive:drag_drop_started",
         data_to_send: {}
       };
       Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDstart);

@@ -324,7 +324,7 @@ var Button_Import_Modal = (function ($) {
             Rexbuilder_Util_Admin_Editor.addClassToLiveFrameRexContainer("rex-dragging-button");
 
             var dataDnDstart = {
-                eventName: "rexlive:drag_drop_starded",
+                eventName: "rexlive:drag_drop_started",
                 data_to_send: {}
             };
             Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDstart);
