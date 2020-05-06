@@ -11,7 +11,6 @@ var Wpcf7_Add_Content_Modal = (function ($) {
 	////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	var _openContentAdder = function (data) {
-		var blockID = data.blockID;
 		insertionPoint = data.insertionPoint;
 
 		Rexlive_Modals_Utils.openModal(
@@ -22,6 +21,12 @@ var Wpcf7_Add_Content_Modal = (function ($) {
 	};
 
 	var _closeModal = function () {
+		var $focusedEl = $(
+			Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow.document.querySelector('.item--me-focus')
+		);
+
+		$focusedEl.parents('.rexpansive_section').addClass('needs-refocus');
+
 		Rexlive_Modals_Utils.closeModal(
 			wpcf7_content_adder_properties.$self.parent('.rex-modal-wrap'), // $target
 			false, // target_only
@@ -29,9 +34,7 @@ var Wpcf7_Add_Content_Modal = (function ($) {
 		);
 	};
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
-	/// ADDING FIELDS FUNCTIONS
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+	// ADDING FIELDS FUNCTIONS
 
 	var _addField = function (fieldType) {
 		var elementDataToIframe = {

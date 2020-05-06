@@ -604,6 +604,15 @@ var Rexbuilder_Live_Utilities = (function($) {
 
 		Rexbuilder_Util.$document.on("rexlive:close_modal", function(e) {
 			Rexbuilder_Live_Utilities.hideAllTools();
+
+			// Re-focusing row if necessary
+			var needRefocusEl = Rexbuilder_Util.rexContainer.querySelector('.needs-refocus')
+
+			if (needRefocusEl) {
+				Rexbuilder_Util.addClass(needRefocusEl, 'focusedRow')
+				Rexbuilder_Util.removeClass(needRefocusEl, 'needs-refocus')
+			}
+			
 		});
 
 		Rexbuilder_Util.$document.on("rexlive:openCreateModelModal", function(e) {
@@ -680,6 +689,10 @@ var Rexbuilder_Live_Utilities = (function($) {
 
 		Rexbuilder_Util.$document.on('rexlive:updateColumnContentLive', function(e){
 			Rexbuilder_Rexwpcf7_Editor.updateColumnContentLive(e.settings.data_to_send);
+		});
+
+		Rexbuilder_Util.$document.on('rexlive:focusElement', function (e) {
+			Rexbuilder_Rexelement_Editor.focusRexElement(e.settings.data_to_send.$textWrap);
 		});
 
 		// DRAG & DROP

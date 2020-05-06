@@ -2928,9 +2928,12 @@ var TextEditor = (function ($) {
 		 * @since		2.0.2
 		 */
 		handleMouseOver: function (mouseEvent, editableElement) {
-			this.traceGsItem = $(editableElement).parents('.grid-stack-item').get(0);
+			this.traceTextWrap = editableElement
+			this.$traceTextWrap = $(editableElement)
+
+			this.traceGsItem = $(this.traceTextWrap).parents('.grid-stack-item').get(0);
 			var target = mouseEvent.target;
-			var section = $(editableElement).parents('.rexpansive_section').get(0);
+			var section = $(this.traceTextWrap).parents('.rexpansive_section').get(0);
 
 			if (
 				Rexbuilder_Util.hasClass(this.traceGsItem, 'item--me-focus') &&
@@ -2985,8 +2988,9 @@ var TextEditor = (function ($) {
 			};
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
-			$(elementWrapper).parents('.text-wrap').blur();
 			this.updateHeight();
+			
+			Rexbuilder_Rexelement_Editor.focusRexElement(this.$traceTextWrap)
 		},
 
 		addSelectedColumns: function (target) {
@@ -3124,8 +3128,7 @@ var TextEditor = (function ($) {
 		 * @since			2.0.2
 		 */
 		focusBlock: function () {
-			var $textWrap = $(this.traceGsItem.querySelector('.text-wrap'))
-			Rexbuilder_Rexelement_Editor.focusRexElement($textWrap)
+			Rexbuilder_Rexelement_Editor.focusRexElement(this.$traceTextWrap)
 		}
 	});
 

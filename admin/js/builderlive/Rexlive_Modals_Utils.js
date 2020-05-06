@@ -4,7 +4,7 @@ var Rexlive_Modals_Utils = (function($) {
   var $lean_overlay;
   var $modals;
   var postionedModalOffset;
-
+	
   /**
    * Open a modal dialog box
    *
