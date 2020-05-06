@@ -1034,6 +1034,15 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		$formColumnInDB.prepend($spanDataInDB);
 	}
 
+	/**
+	 * Updated the shortocode of a column in DB
+	 * according to passed information.
+	 * @param	{Object}	data
+	 * @returns	{void}
+	 * @since		2.0.2
+	 * @version	2.0.5		Improved shortcode managing
+	 * @todo		Improve shortcode managing for files, radios, acceptances, selects, submits
+	 */
 	function updateColumnContentShortcode(data) {
 		var columnContentData = data.columnContentData;
 
@@ -1097,17 +1106,21 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			var newFieldType = isSetEmail ? 'email' : onlyNumbers ? 'number' : 'text';
 
 			if (newFieldType !== inputType) {
+				// It's necessary to change the field type
 				try {
+					// Matching the start of the cf7 shortcode (ex. '[email')
 					var shortcodeStart = shortcode.match(/\[(text|email|number)/);
 
+					// Matching the custom class (ex. 'number-813')
 					var customClassRegExp = /(text|email|number)(-\d+)/;
 					var customClassMatch = shortcode.match(customClassRegExp);
 
+					// Replacing the custom class globally in the cf7 shortcode
 					shortcode = shortcode
 						.replace(shortcodeStart[0], '[' + newFieldType)
 						.replace(new RegExp(customClassRegExp, 'g'), newFieldType + customClassMatch[2]);
-				} catch (error) {
-					console.error('Error while changing the field type to ' + newFieldType + '. Error:', error);
+				} catch (err) {
+					console.error('Error while changing the field type to ' + newFieldType + '. Error:', err);
 				}
 			}
 		}

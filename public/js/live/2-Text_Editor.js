@@ -20,7 +20,6 @@ var TextEditor = (function ($) {
   var currentTextSelection;
 
   var toolbarActiveOnRexbutton;
-  var toolbarActiveOnRexelement;
 
   /**
    *  Launching MediumEditor inside the blocks that can have it
@@ -2720,17 +2719,14 @@ var TextEditor = (function ($) {
   var RexElementExtension = MediumEditor.Extension.extend({
 		name: 'rexelement',
 		init: function () {
-			toolbarActiveOnRexelement = false;
-
 			this.traceElement = null;
 			this.containsWpcf7;
 
 			// Trace the cursor position
 			this.subscribe('editableMouseover', this.handleMouseOver.bind(this));
 
-			/** @TODO Move on CF7 extension and prevent toolbar */
-			// this.subscribe('positionToolbar', this.handlePositionToolbar.bind(this));
-			// this.subscribe('hideToolbar', this.handleHideToolbar.bind(this));
+			this.subscribe('positionToolbar', this.handlePositionToolbar.bind(this));
+			this.subscribe('hideToolbar', this.handleHideToolbar.bind(this));
 		},
 
 		handleMouseOver: function (mouseEvent, editableElement) {
@@ -2807,53 +2803,19 @@ var TextEditor = (function ($) {
 			element.style.outlineOffset = '-1px';
 		},
 
-		/** @TODO	Check when this function is called */
 		handlePositionToolbar: function (event) {
-			console.log( 'handlo', this.insideRexElement );
-			
 			var element = editorInstance.getSelectedParentElement();
-			var toolbar = this.base.getExtensionByName('toolbar');
-			var $toolbar = $(toolbar.toolbar);
+			var toolbarExtension = this.base.getExtensionByName('toolbar');
+
 			if (this.insideRexElement(element)) {
-				$toolbar.addClass('medium-toolbar-hover-rexelement');
-				$toolbar
-					.find('button.medium-editor-action:not(.hide-tool-rexelement)')
-					.first()
-					.addClass('medium-editor-button-first');
-				$toolbar
-					.find('button.medium-editor-action:not(.hide-tool-rexelement)')
-					.last()
-					.addClass('medium-editor-button-last');
-				toolbarActiveOnRexelement = true;
-			} else {
-				this.restoreElementClasses($toolbar);
-				toolbarActiveOnRexelement = false;
+				// Hiding toolbar if a RexElement is present
+				toolbarExtension.toolbar.style.display = 'none';
 			}
 		},
 
-		/** @TODO	Check when this function is called */
 		handleHideToolbar: function (event) {
-			if (toolbarActiveOnRexelement) {
-				var toolbar = this.base.getExtensionByName('toolbar');
-				var $toolbar = $(toolbar.toolbar);
-				this.restoreElementClasses($toolbar);
-				toolbarActiveOnRexelement = false;
-			}
-		},
-
-		restoreElementClasses: function ($toolbar) {
-			$toolbar.removeClass('medium-toolbar-hover-rexelement');
-			$toolbar
-				.find('button.medium-editor-action:not(.hide-tool-rexelement)')
-				.first()
-				.removeClass('medium-editor-button-first');
-			$toolbar
-				.find('button.medium-editor-action:not(.hide-tool-rexelement)')
-				.last()
-				.removeClass('medium-editor-button-last');
-
-			$toolbar.find('button.medium-editor-action').first().addClass('medium-editor-button-first');
-			$toolbar.find('button.medium-editor-action').last().addClass('medium-editor-button-last');
+			var toolbarExtension = this.base.getExtensionByName('toolbar');
+			toolbarExtension.toolbar.style.display = '';
 		},
 
 		/**
@@ -3214,11 +3176,6 @@ var TextEditor = (function ($) {
    */
   var _addEditableInputEvents = function () {
     editorInstance.subscribe("editableInput", function (event, elem) {
-     //  if ( event instanceof Event ) {
-  			// event.preventDefault();
-  			// event.stopPropagation();
-     //  }
-
 			var $elem = $(elem).parents(".grid-stack-item");
 
       var data = {
