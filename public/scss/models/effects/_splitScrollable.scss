@@ -106,10 +106,13 @@ $first-block-top: 20vh;
     opacity: 0!important;
     z-index: 1;
 
-    img {
-      max-width: 100%;
-      height: auto;
+    &:not(.block-has-slider) {
+      img {
+        max-width: 100%;
+        height: auto;
+      }
     }
+
   }
 
   /**

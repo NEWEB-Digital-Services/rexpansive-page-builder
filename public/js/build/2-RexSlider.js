@@ -88,13 +88,6 @@ var RexSlider = (function ($) {
     $sliderWrap.flickity(settings);
     $sliderWrap.flickity('stopPlayer');
 
-    // @todo global handler
-    // Rexbuilder_Util.$window.on('resize', function () {
-    //   if ($sliderWrap.data('flickity')) {
-    //     $sliderWrap.flickity('resize');
-    //   }
-    // });
-
     $sliderWrap.on('dragStart.flickity', function () {
       $(this).addClass('is-dragging');
     });
@@ -206,10 +199,6 @@ var RexSlider = (function ($) {
 
     $el.flickity(settings);
     $el.flickity('stopPlayer');
-
-    // Rexbuilder_Util.$window.on('resize', function () {
-    //   $el.flickity('resize');
-    // });
 
     $el.on('dragStart.flickity', function () {
       $(this).addClass('is-dragging');

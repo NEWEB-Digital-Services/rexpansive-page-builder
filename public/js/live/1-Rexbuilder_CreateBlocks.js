@@ -33,7 +33,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var data = {
       eventName: "rexlive:edited",
       modelEdited: $section.hasClass("rex-model-section")
-    }
+    };
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   }
 
@@ -62,8 +62,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var holes = indx.findHoles();
     var negGrid = indx.negativeGrid();
     var new_dim = _findDimension( holes, negGrid );
-    var new_w = undefined;
-    var new_h = undefined;
+    var new_w;
+    var new_h;
     
     if( new_dim.w > 2 && new_dim.h > 2 ) { 
       new_w = new_dim.w;
@@ -89,7 +89,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var data = {
       eventName: "rexlive:edited",
       modelEdited: $section.hasClass("rex-model-section")
-    }
+    };
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   }
 
@@ -152,7 +152,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
       ev.settings = {
         $buttonWrapper: data.$buttonWrapper,
         $blockAdded: $el
-      }
+      };
 
       var gridstackInstance = galleryInstance.properties.gridstackInstance;
       var mouseCell = gridstackInstance.getCellFromPixel({
@@ -175,7 +175,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         $elementWrapper: data.$elementWrapper,
         $elementAdded: $el,
         formFieldsString: data.formFieldsString
-      }
+      };
 
       var gridstackInstance = galleryInstance.properties.gridstackInstance;
       var mouseCell = gridstackInstance.getCellFromPixel({
@@ -196,7 +196,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var data = {
       eventName: "rexlive:edited",
       modelEdited: $section.hasClass("rex-model-section")
-    }
+    };
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   }
 
@@ -285,13 +285,13 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var data = {
       eventName: "rexlive:edited",
       modelEdited: $section.hasClass("rex-model-section")
-    }
+    };
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   }
 
   function handleInsertVideo(e) {
     var data = e.settings.data_to_send;
-    if (!(typeof data.typeVideo == "undefined")) {
+    if ( typeof data.typeVideo !== "undefined" ) {
       var $section;
 
       if (data.sectionTarget.modelNumber != "") {
@@ -330,7 +330,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
           youtubeUrl: urlYoutube,
           audio: audio,
           typeVideo: type
-        }
+        };
         Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
         // galleryInstance.addScrollbar($el);
         var el = $el[0];
@@ -355,7 +355,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
             youtubeUrl: "",
             audio: audio,
             typeVideo: type
-          }
+          };
           Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
           // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
           //     galleryInstance.addScrollbar($el);
@@ -374,7 +374,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var data = {
       eventName: "rexlive:edited",
       modelEdited: $section.hasClass("rex-model-section")
-    }
+    };
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   }
 
@@ -396,7 +396,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var data = {
       eventName: "rexlive:edited",
       modelEdited: $section.hasClass("rex-model-section")
-    }
+    };
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   }
 
@@ -445,7 +445,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
     // h++;
     return { w: w, h: h };
-  }
+  };
 
   var _createSlider = function (data, $elem, numberSlider) {
     var sliderNumber;
@@ -462,7 +462,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
       id: data.id,
       settings: data.settings,
       numberSlides: slides.length
-    }
+    };
 
     var $el;
     var $textWrap;
@@ -497,28 +497,42 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
 		var $sliderWrap = _createSliderWrap($textWrap, sliderData);
 
-		var blockHasOverlay = 0 !== $textWrap.parents('.responsive-block-overlay').length;
-
-		if (blockHasOverlay) {
-			var overlayColor = $textWrap.parents('.responsive-block-overlay').css('background-color');
+		// var blockHasOverlay = 0 !== $textWrap.parents('.responsive-block-overlay').length;
+    var blockHasOverlay = 'true' == $elData.attr('data-overlay_block_color_active');
+    var overlayColor = '';
+		if ( blockHasOverlay ) {
+			overlayColor = $textWrap.parents('.responsive-block-overlay').css('background-color');
 		}
 
     for (var i = 0; i < slides.length; i++) {
       tmpl.arg = "slide";
 
-			var $slide = $(tmpl("tmpl-new-slider-element", {}));
+			// var $slide = $(tmpl("tmpl-new-slider-element", {}));
+      var $slide = $('<div class="rex-slider-element"></div>');
 
-			if (blockHasOverlay) {
+			if ( blockHasOverlay ) {
 				$slide.append('<div class="slider-overlay" style="background-color:' + overlayColor + '"></div>');
 			}
 
-      if (slides[i].slide_image_url != "none") {
+      if ( ! data.settings.natural_blur && 'none' !== slides[i].slide_image_url ) {
         $slide.css("background-image", "url(" + slides[i].slide_image_url + ")");
         $slide.attr("data-rex-slide-image-id", slides[i].slide_image_id);
       }
 
+      if ( data.settings.natural_blur && 'none' !== slides[i].slide_image_url ) {
+        var blurSlide = document.createElement('div');
+        blurSlide.className = 'natural-blur-effect blur-slide';
+        blurSlide.style.backgroundImage = 'url(' + slides[i].slide_image_url + ')';
+        var naturalSlide = document.createElement('img');
+        naturalSlide.className = 'natural-slide';
+        naturalSlide.src = slides[i].slide_image_url;
+
+        $slide.append(blurSlide);
+        $slide.append(naturalSlide);
+      }
+
       if (slides[i].slide_text.trim().length != 0) {
-        $slide.children(".rex-slider-element-title").html(slides[i].slide_text);
+        $slide.append(".rex-slider-element-title").html(slides[i].slide_text);
       }
 
       $slide.appendTo($sliderWrap[0]);
@@ -536,7 +550,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
       if (slides[i].slide_video_type != "") {
         tmpl.arg = "video";
-        var $videoElement = $slide.children(".rex-slider-video-wrapper");
+        var $videoElement = $slide.append(".rex-slider-video-wrapper");
 
         switch (slides[i].slide_video_type) {
           case "mp4":
@@ -575,7 +589,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     RexSlider.initSlider($sliderWrap);
 
     return $el;
-  }
+  };
 
   var _createSliderWrap = function ($textWrap, data) {
     tmpl.arg = "slider";
@@ -589,7 +603,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     $textWrap.append($sliderWrap[0]);
     return $sliderWrap;
-  }
+  };
 
   var _createBlockGrid = function (galleryInstance, w, h, block_type) {
     block_type = typeof block_type !== 'undefined' ? block_type : '';
@@ -604,7 +618,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
       $el = galleryInstance.createNewBlock("masonry", blockW, blockH, block_type);
     }
     return $el;
-  }
+  };
 
   var _createCopyBlock = function ($elem) {
     var $gallery = $elem.parents('.grid-stack-row');
@@ -694,7 +708,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         sectionID: sectionID,
         modelNumber: modelNumber,
         rexID: rex_block_id
-      }
+      };
 
       var sliderData = Rexbuilder_Live_Utilities.createSliderData($oldSlider);
       Rexbuilder_Live_Utilities.saveSliderOnDB(sliderData, true, newBlockID, target);
@@ -714,7 +728,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
 		}
-  }
+  };
 
   /**
    * Sanitize the block content before the copy
@@ -726,7 +740,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var textWrap = elem.querySelector('.text-wrap');
     // sanitize buttons
     sanitizeButtons( textWrap );
-  }
+  };
 
   /**
    * Sanitizing the buttons
@@ -763,7 +777,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         }
       }
     }
-  }
+  };
 
   /**
    * Insert a new block in gridstack starting from an html element
@@ -870,7 +884,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
           sectionID: sectionID,
           modelNumber: modelNumber,
           rexID: rex_block_id
-        }
+        };
 
         var sliderData = Rexbuilder_Live_Utilities.createSliderData($oldSlider);
         Rexbuilder_Live_Utilities.saveSliderOnDB(sliderData, true, newBlockID, target);
@@ -891,7 +905,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
     }
-  }
+  };
 
   /**
    * Move a block from a section to another
@@ -1001,7 +1015,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         sectionID: sectionID,
         modelNumber: modelNumber,
         rexID: rex_block_id
-      }
+      };
 
       var sliderData = Rexbuilder_Live_Utilities.createSliderData($oldSlider);
       Rexbuilder_Live_Utilities.saveSliderOnDB(sliderData, true, newBlockID, target);
@@ -1020,7 +1034,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
     }
-  }
+  };
 
   /**
    * Object init function

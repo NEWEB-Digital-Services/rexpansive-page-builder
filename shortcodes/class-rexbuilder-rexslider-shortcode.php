@@ -105,10 +105,10 @@ class Rexbuilder_RexSlider {
 				<div class="rex-slider-element"<?php echo ( 1 != $nav_previewed ? ( !$natural_blur ? $slider_el_style : '' ) : '' ); echo (!$slideHasImage? "" : $slideImageIdAttr); ?>>
 				<?php
 
-				if ( $slideHasImage && $natural_blur ) {
+				if ( $slideHasImage && $natural_blur && ! 'true' == $photoswipe && "" == $slide['_rex_banner_gallery_url']  ) {
 					?>
 					<div class="natural-blur-effect blur-slide"<?php echo $slider_el_style; ?>></div>
-					<img class="natural-slide" data-flickity-lazyload="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" alt="">
+					<img class="natural-slide" data-flickity-lazyload="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>">
 					<?php
 				}
 
@@ -198,6 +198,12 @@ class Rexbuilder_RexSlider {
 							<div class="pswp-item-thumb" data-thumb-image-type="full" data-thumburl="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" itemprop="thumbnail"></div>
 							<div class="rex-custom-scrollbar">
 							<?php
+								if ( $natural_blur ) {
+									?>
+									<div class="natural-blur-effect blur-slide"<?php echo $slider_el_style; ?>></div>
+									<img class="natural-slide" data-flickity-lazyload="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>">
+									<?php
+								}
 								if( 1 == $nav_previewed && isset( $slide['_rex_banner_gallery_image']['url'] ) ) { ?>
 								<img src="<?php echo esc_url( $slide['_rex_banner_gallery_image']['url'] ); ?>">
 							<?php } ?>
