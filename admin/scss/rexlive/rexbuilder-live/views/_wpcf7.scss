@@ -124,5 +124,15 @@
 	.wpcf7-submit {
 		min-width: 150px;
 		min-height: 40px;
+		max-width: 100%;
+	}
+
+	.wpcf7-select {
+		max-width: 100%;
+		max-height: 100%;
+	}
+
+	.wpcf7-file + label {
+		max-width: 100%;
 	}
 }

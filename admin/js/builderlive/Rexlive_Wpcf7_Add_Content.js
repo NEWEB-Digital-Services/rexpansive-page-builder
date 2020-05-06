@@ -20,19 +20,13 @@ var Wpcf7_Add_Content_Modal = (function ($) {
 		);
 	};
 
-	var _closeModal = function () {
-		var $focusedEl = $(
-			Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow.document.querySelector('.item--me-focus')
-		);
-
-		$focusedEl.parents('.rexpansive_section').addClass('needs-refocus');
-
+	function _closeModal() {
 		Rexlive_Modals_Utils.closeModal(
 			wpcf7_content_adder_properties.$self.parent('.rex-modal-wrap'), // $target
 			false, // target_only
 			['wpcf7-adding-content'] // additional_class
 		);
-	};
+	}
 
 	// ADDING FIELDS FUNCTIONS
 
@@ -104,6 +98,10 @@ var Wpcf7_Add_Content_Modal = (function ($) {
 		 */
 		wpcf7_content_adder_properties.$wpcf7_add_submit_button.on('click', function () {
 			_addField('submit');
+		});
+
+		wpcf7_content_adder_properties.$modal.on('rexlive:this_modal_closed', function (event) {
+			Rexbuilder_Util_Admin_Editor.searchFocusedElement();
 		});
 	};
 

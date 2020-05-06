@@ -249,7 +249,11 @@ var Element_Choose_Modal = (function ($) {
 
         rex_element_choose_panel.$close_button.on("click", function () {
             _closeChooseModal();
-        })
+				})
+				
+				rex_element_choose_panel.$modal.on('rexlive:this_modal_closed', function (event) {
+					Rexbuilder_Util_Admin_Editor.searchFocusedElement();
+				});
     };
 
 	var _init = function() {
@@ -257,7 +261,8 @@ var Element_Choose_Modal = (function ($) {
         var $container = $self;
 
         rex_element_choose_panel = {
-            $self: $self,
+						$self: $self,
+						$modal: $container.parent('.rex-modal-wrap'),
             $button: $container.find(".rex-button"),
             $close_button: $container.find(".rex-modal__close-button")
         };

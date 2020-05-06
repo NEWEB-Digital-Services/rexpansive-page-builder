@@ -606,13 +606,12 @@ var Rexbuilder_Live_Utilities = (function($) {
 			Rexbuilder_Live_Utilities.hideAllTools();
 
 			// Re-focusing row if necessary
-			var needRefocusEl = Rexbuilder_Util.rexContainer.querySelector('.needs-refocus')
+			var needRefocusEl = Rexbuilder_Util.rexContainer.querySelector('.needs-refocus');
 
 			if (needRefocusEl) {
-				Rexbuilder_Util.addClass(needRefocusEl, 'focusedRow')
-				Rexbuilder_Util.removeClass(needRefocusEl, 'needs-refocus')
+				Rexbuilder_Util.addClass(needRefocusEl, 'focusedRow');
+				Rexbuilder_Util.removeClass(needRefocusEl, 'needs-refocus');
 			}
-			
 		});
 
 		Rexbuilder_Util.$document.on("rexlive:openCreateModelModal", function(e) {

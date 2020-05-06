@@ -167,11 +167,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 	/// Modal Functions
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
-	var blockID;
-
 	var _openFormEditorModal = function (data) {
 		elementData = data.elementData;
-		blockID = data.blockID;
 
 		_updateFormEditorModal(elementData);
 
@@ -1490,6 +1487,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			/* 	This event is triggered also when clicking out of the modal. 
 					In that case it's considered like a "don't want to save" action */
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage({ eventName: 'rexlive:clearFormOutlines' });
+			Rexbuilder_Util_Admin_Editor.searchFocusedElement();
 
 			if (!needToSave) {
 				elementData = jQuery.extend(true, {}, resetData);

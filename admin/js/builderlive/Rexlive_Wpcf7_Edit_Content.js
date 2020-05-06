@@ -2184,6 +2184,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			/* 	This event is triggered also when clicking out of the modal. 
 					In that case it's considered like a "don't want to save" action */
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage({ eventName: 'rexlive:clearFormOutlines' });
+			Rexbuilder_Util_Admin_Editor.searchFocusedElement();
 
 			var wasSetEmail = undefined !== wpcf7_content_editor_properties.$content_set_email.attr('checked');
 			var wasSetOnlyNumbers = undefined !== wpcf7_content_editor_properties.$content_only_numbers.attr('checked');
