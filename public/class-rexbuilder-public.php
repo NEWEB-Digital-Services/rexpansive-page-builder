@@ -456,9 +456,6 @@ class Rexbuilder_Public
 
 				if ( false !== strpos( $customEffects, 'popup-content-button' ) ) {
 					wp_enqueue_script('popup-content', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
-					// @todo: fix me
-					wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
-					wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
 				}
 
 				if ( false !== strpos( $customEffects, 'split-scrollable' ) ) {

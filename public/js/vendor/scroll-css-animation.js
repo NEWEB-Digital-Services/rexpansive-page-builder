@@ -8,6 +8,10 @@
 } )( 'undefined' !== typeof window ? window : this, function() {
   var instances = [];
 
+  var scrollCallbacksArray = [];
+
+  var windowScrollTop = scrollDocumentPositionTop();
+
   function ScrollCSSAnimation() {
     this.element = null;
     this.launched = false;
@@ -32,14 +36,40 @@
     }
 
     handleAnimation.call(this);
-    window.addEventListener('scroll', handleAnimation.bind(this));
+    scrollCallbacksArray.push(handleAnimation.bind(this));
 
     instances.push( this );
   }
 
-  function handleAnimation() {
-    var windowScrollTop = scrollDocumentPositionTop();
+  /**
+   * Watching the browser scrolling, bouncing the event
+   * every 50 ms to prevent event polling
+   * @return  {void}
+   * @since   2.0.5
+   */
+  function _watchScroll() {
+    var userScrolled = false;
 
+    function scrollHandler() {
+      userScrolled = true;
+    }
+
+    window.addEventListener('scroll', scrollHandler);
+
+    function handleInterval() {
+      if (userScrolled) {
+        windowScrollTop = scrollDocumentPositionTop();
+        scrollCallbacksArray.forEach(function (cb) {
+          cb.call();
+        });
+        userScrolled = false;
+      }
+    }
+
+    setInterval(handleInterval.bind(this), 50);
+  }
+
+  function handleAnimation() {
     // element scroll information
     var elScrollTop = offsetTop(this.element, windowScrollTop);
     var elHeight = this.element.offsetHeight;
@@ -155,6 +185,9 @@
       addClass(el, className);
     }
   }
+
+  // Invoking global Events watchers
+  _watchScroll();
 
   return ScrollCSSAnimation;
 } );

@@ -302,13 +302,16 @@
         // opY = 1 - Math.pow( 1 - percentage / 100, 1.75 );    // ease-out
         opY = 1 - Math.pow( 1 - percentage / 100, 3 );    // much steep ease-out
         this.overlayAnimationEl.style.opacity = opY;
+        // console.log(this.element.getAttribute('data-rexlive-section-id'), opY);
         // this.overlayAnimationEl.style.opacity = Math.pow( percentage / 100, 1.75 );   // ease-in
       } else {
         if ( beforeViewport ) {
           // opacity = 0
+          // console.log(this.element.getAttribute('data-rexlive-section-id'),0)
           this.overlayAnimationEl.style.opacity = 0;
         } else if ( afterViewport ) {
           // opacity = 1
+          // console.log(this.element.getAttribute('data-rexlive-section-id'),1)
           this.overlayAnimationEl.style.opacity = 1;
         }
       }
@@ -359,7 +362,7 @@
    * @param {ResizeEvent} event resize event
    */
   function updateWindowInnerHeight(event) {
-    if ( isMobile && detectOrientation() || ! isMobile ) {
+    if ( ( isMobile && detectOrientation() ) || ! isMobile ) {
       windowInnerHeight = _viewport().height;
     }
 	}

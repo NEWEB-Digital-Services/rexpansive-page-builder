@@ -419,14 +419,14 @@ var Rexbuilder_App = (function($) {
    * Launch eventually scroll animations
    */
   var launchScrollCSSAnimations = function() {
-    if ( 'undefined' !== typeof ScrollCSSAnimation ) {
-      var fadesUps = [].slice.call(document.getElementsByClassName('fadeUpTextCSS'));
-      var tot_fadesUps = fadesUps.length, i = 0;
-      for( i = 0; i < tot_fadesUps; i++ ) {
-        var fu = new ScrollCSSAnimation(fadesUps[i],{
-          offset: 0.75
-        });
-      }
+    if ( 'undefined' === typeof ScrollCSSAnimation ) return;
+    
+    var fadesUps = [].slice.call(document.getElementsByClassName('fadeUpTextCSS'));
+    var tot_fadesUps = fadesUps.length, i = 0;
+    for( i = 0; i < tot_fadesUps; i++ ) {
+      var fu = new ScrollCSSAnimation(fadesUps[i],{
+        offset: 0.75
+      });
     }
   }
 

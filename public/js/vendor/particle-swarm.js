@@ -545,6 +545,8 @@ this.Element&&Element.prototype.attachEvent&&!Element.prototype.addEventListener
     return false;
   }
 
+  detectOrientation();
+
   this.ParticleSwarm = function() {
     this.element = null;
 
@@ -589,7 +591,7 @@ this.Element&&Element.prototype.attachEvent&&!Element.prototype.addEventListener
 
     resize = function() {
       // resize the canvas
-      if ( isMobile && detectOrientation() || ! isMobile ) {
+      if ( ( isMobile && detectOrientation() ) || ! isMobile ) {
 
         that.element.width  = width  = bounds.x = window.innerWidth;
         that.element.height = height = bounds.y = window.innerHeight;
