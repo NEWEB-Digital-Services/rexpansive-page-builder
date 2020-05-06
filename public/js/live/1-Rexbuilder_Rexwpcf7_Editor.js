@@ -1042,16 +1042,13 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		var column = columnContentData.target.column_number;
 		var inputType = columnContentData.input_type;
 
-		var $formToUpdateDB = $formsInPage[formID];
-		var $columnToUpdateDB = $formToUpdateDB.find(
+		var $columnToUpdateDB = $formsInPage[formID].find(
 			'.wpcf7-row[wpcf7-row-number="' + row + '"] .wpcf7-column[wpcf7-column-number="' + column + '"]'
 		);
 		var shortcode = $columnToUpdateDB.find('.wpcf7-column-content').html();
 		if ('undefined' == typeof shortcode) {
 			shortcode = $columnToUpdateDB.html();
 		}
-
-		console.log('Prima', shortcode);
 
 		var isSetRequiredField = String(columnContentData.wpcf7_required_field) == 'true';
 		var isSetEmail = String(columnContentData.wpcf7_email) == 'true';
@@ -1063,84 +1060,60 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		var fileMaxDim = columnContentData.wpcf7_file_max_dimensions;
 		var buttonText = columnContentData.wpcf7_button.text;
 
-		if (
-			inputType == 'text' ||
-			inputType == 'email' ||
-			inputType == 'number' ||
-			inputType == 'select' ||
-			inputType == 'file' ||
-			inputType == 'textarea'
-		) {
-			// Required field
-			// Puts (or removes) the * after [(type)
-			var isAlreadyRequiredField = /\[[a-z]+\*/.test(shortcode);
-			if (isAlreadyRequiredField) {
-				if (!isSetRequiredField) {
-					shortcode = shortcode.replace(/\[[a-z]+\*/, /\[[a-z]+/.exec(shortcode)[0]);
+		// Required field
+		if (-1 !== ['text', 'email', 'number', 'select', 'file', 'textarea', 'acceptance'].indexOf(inputType)) {
+			// IMPORTANT: 'textarea' needs to go before 'text', otherwise 'textarea' will be matched as just 'text'
+			var result = shortcode.match(/\[(textarea|email|number|select|file|text)\*?|(optional)/);
+
+			if (result) {
+				// We could have one of the input fields OR the acceptance field with the optional string
+				var fullMatch = result[0];
+				var type = result[1];
+				var optional = result[2];
+
+				if (optional) {
+					// We have an acceptance field that has the 'optional' string
+					// Removing the optional string if necessary
+					if (isSetRequiredField) {
+						shortcode = shortcode.replace(' ' + optional, '');
+					}
+				} else {
+					// We have one of the following fields:
+					// textarea, email, number, select, file or text
+					shortcode = shortcode.replace(fullMatch, '[' + type + (isSetRequiredField ? '*' : ''));
 				}
 			} else {
-				if (isSetRequiredField) {
-					shortcode = shortcode.replace(/\[[a-z]+/, /\[[a-z]+/.exec(shortcode)[0] + '*');
-				}
-			}
-		}
-
-		if (inputType == 'acceptance') {
-			// Required field (acceptance)
-			// Puts (or removes) "optional" string
-			var isAlreadyRequiredField = !/optional/.test(shortcode);
-			if (isAlreadyRequiredField) {
+				// We have an acceptance field that doesn't have the 'optional' string,
+				// beacuse the match retrieved an empty result
+				// Adding the optional string if necessary
 				if (!isSetRequiredField) {
 					shortcode = shortcode.replace(/\]/, ' optional]');
 				}
-			} else {
-				if (isSetRequiredField) {
-					shortcode = shortcode.replace(' optional', '');
+			}
+		}
+
+		// Email, number, text switch
+		if (-1 !== ['text', 'email', 'number'].indexOf(inputType)) {
+			var newFieldType = isSetEmail ? 'email' : onlyNumbers ? 'number' : 'text';
+
+			if (newFieldType !== inputType) {
+				try {
+					var shortcodeStart = shortcode.match(/\[(text|email|number)/);
+
+					var customClassRegExp = /(text|email|number)(-\d+)/;
+					var customClassMatch = shortcode.match(customClassRegExp);
+
+					shortcode = shortcode
+						.replace(shortcodeStart[0], '[' + newFieldType)
+						.replace(new RegExp(customClassRegExp, 'g'), newFieldType + customClassMatch[2]);
+				} catch (error) {
+					console.error('Error while changing the field type to ' + newFieldType + '. Error:', error);
 				}
 			}
 		}
 
-		if (-1 !== ['text', 'email', 'number'].indexOf(inputType)) {
-			if (isSetEmail) {
-				// Changes the shortcode in [number number-xxx ...] or vice versa
-				shortcode = shortcode.replace(/\[[a-z]+\*? [a-z]+/, '[number' + (isSetRequiredField ? '*' : '') + ' number');
-				shortcode = shortcode.replace(/class:[a-z]+/, 'class:number');
-
-				inputType = 'number';
-			} else {
-				var newFieldType = onlyNumbers ? 'number' : 'text';
-
-				shortcode = shortcode
-					.replace(/\[(text|number)\*?/, '[' + newFieldType + (isSetRequiredField ? '*' : ''))
-					.replace(/class:(text|number)/, 'class:' + newFieldType);
-
-				console.log(shortcode);
-
-				inputType = newFieldType;
-			}
-		}
-
-		if (-1 !== ['text', 'email', 'number'].indexOf(inputType)) {
-			// Only number
-			// Changes the shortcode in [number number-xxx ...] or vice versa
-			if (onlyNumbers) {
-				shortcode = shortcode.replace(/\[[a-z]+\*? [a-z]+/, '[number' + (isSetRequiredField ? '*' : '') + ' number');
-				shortcode = shortcode.replace(/class:[a-z]+/, 'class:number');
-
-				inputType = 'number';
-			} else {
-				var newFieldType = isSetEmail ? 'email' : 'text';
-
-				shortcode = shortcode
-					.replace(/\[(text|email)\*?/, '[' + newFieldType + (isSetRequiredField ? '*' : ''))
-					.replace(/class:(text|email)/, 'class:' + newFieldType);
-
-				inputType = newFieldType;
-			}
-		}
-
+		// Default check
 		if (inputType == 'acceptance') {
-			// Default check
 			// Puts (or removes) the "default:on" string
 			var isAlreadyDefaultCheck = /default\:on/.test(shortcode);
 			if (isAlreadyDefaultCheck) {
@@ -1159,8 +1132,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			}
 		}
 
+		// Placeholder
 		if (inputType == 'text' || inputType == 'email' || inputType == 'number' || inputType == 'textarea') {
-			// Placeholder
 			/* Puts the "placeholder" string and the placeholder value at the end 
         of the shortcode or removes it */
 			var valueIsEmpty = placeholder === '';
@@ -1176,27 +1149,27 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			}
 		}
 
+		// Checkbox text
 		if (inputType == 'acceptance') {
-			// Checkbox text
 			shortcode = shortcode.replace(/\][\s\S]+\[/, ']' + fieldText + '[');
 			shortcode = shortcode.replace(/<p>\s<\/p>/g, '');
 		}
 
+		// Lists
 		if (inputType == 'select' || inputType == 'radio') {
-			// Lists
 			shortcode = shortcode.replace(/\s[\"\'][\s\S]+[\"\']/, '');
 			for (var fieldIndex in listFields) {
 				shortcode = shortcode.replace(']', " '" + listFields[fieldIndex] + "']");
 			}
 		}
 
+		// File max dimensions
 		if (inputType == 'file') {
-			// File max dimensions
 			shortcode = shortcode.replace(/limit\:[\w]*/, 'limit:' + fileMaxDim); // A intuito da problemi se non ho impostato un limite dal backend
 		}
 
+		// File types
 		if ('file' === inputType) {
-			// File types
 			var fileTypesString = 'filetypes:';
 			for (var i = 0; i < listFields.length; i++) {
 				listFields[i] = listFields[i].toLowerCase();
@@ -1209,16 +1182,16 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			shortcode = shortcode.replace(/filetypes\:[\w\|]*/, fileTypesString);
 		}
 
+		// File caption
 		if (inputType == 'file') {
-			// File caption
 			var $fileCaption = $($.parseHTML(shortcode)[1]);
 			$fileCaption.empty();
 			$fileCaption.append(fieldText);
 			shortcode = shortcode.replace(/\][\s\S]*/, ']' + $fileCaption[0].outerHTML);
 		}
 
+		// Submit button text
 		if (inputType == 'submit') {
-			// Submit button text
 			shortcode = shortcode.replace(/[\"\'][\s\S]*[\"\']/, '"' + buttonText + '"');
 		}
 
