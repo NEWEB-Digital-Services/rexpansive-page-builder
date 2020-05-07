@@ -1,7 +1,7 @@
 /**
  * Modal for selecting if we want to edit an existing element
  * or if we want to create a new element from the existing one
- * @since x.x.x
+ * @since 2.0.2
  */
 var Element_Choose_Modal = (function ($) {
     var rex_element_choose_panel;
@@ -11,31 +11,28 @@ var Element_Choose_Modal = (function ($) {
     var alreadyChooseToSynchronize;
     var oldElementID;
     var newID;
-    var blockID;
     
-    var _selectModalToOpen = function (data) {
+    function selectModalToOpen(receivedData) {
         alreadyChooseToSynchronize = false;
-        blockID = data.blockID;
 
-        _refreshElementData(data.elementData);
+        _refreshElementData(receivedData.elementData);
 
         if ( alreadyChooseToSynchronize ) {
             // Make an if if there are more kind of elements
             Wpcf7_Edit_Form_Modal.openFormEditorModal({
-                elementData: elementData,
-                blockID: blockID
+                elementData: elementData
             });
         } else {
             _openChooseModal();
         }
     };
 
-    var _refreshElementData = function (data) {
+    function _refreshElementData(newElementData) {
         _clearElementData();
-        _updateElementData(data);
+        _updateElementData(newElementData);
     };
 
-    var _clearElementData = function () {
+    function _clearElementData() {
         elementData = {
             synchronize: "",
             wpcf7_data: {
@@ -83,8 +80,8 @@ var Element_Choose_Modal = (function ($) {
         };
     }
 
-    var _updateElementData = function (data) {
-    	elementData = jQuery.extend(true, {}, data.elementInfo);
+    function _updateElementData(newElementData) {
+    	elementData = jQuery.extend(true, {}, newElementData);
 		if (typeof elementData.synchronize != "undefined") {
 		    alreadyChooseToSynchronize = elementData.synchronize.toString() == "true";
 		}
@@ -96,7 +93,7 @@ var Element_Choose_Modal = (function ($) {
     /// SAVING FUNCTIONS
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
-    var _saveNewElementOnDB = function () {
+    function _saveNewElementOnDB() {
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -116,15 +113,13 @@ var Element_Choose_Modal = (function ($) {
         });
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////
-    /// ELEMENT SEPARATION FUNCTIONS
-    //////////////////////////////////////////////////////////////////////////////////////////////////
+    // ELEMENT SEPARATION FUNCTIONS
 
     /**
      * Ends separtion of rexelement: tells iframe to change id of element
      * @param {string} rexID new id of rexelement
      */
-    var _endElementSeparation = function (rexID) {
+    function _endElementSeparation(rexID) {
         _separateElement(rexID);
 
         // The element will be the first with the new ID
@@ -135,12 +130,11 @@ var Element_Choose_Modal = (function ($) {
 
         _refreshElement(rexID);
         Wpcf7_Edit_Form_Modal.openFormEditorModal({
-            elementData: elementData,
-            blockID: blockID
+            elementData: elementData
         });
     }
 
-    var _separateElement = function(rexID){
+    function _separateElement(rexID){
         var elementDataToIframe = {
             eventName: "rexlive:separate_rex_element",
             data_to_send: {
@@ -155,12 +149,12 @@ var Element_Choose_Modal = (function ($) {
      * Updates the element target to update
      * @param {Object} data data of target to update{id, number}
      */
-    var _updateTarget = function (data) {
+    function _updateTarget (data) {
         elementData.element_target.element_id = data.id;
         elementData.element_target.element_number = data.number;
     }
 
-    var _refreshElement = function(rexID) {
+    function _refreshElement(rexID) {
         var elementDataToIframe = {
             eventName: "rexlive:refresh_separated_rex_element",
             data_to_send: {
@@ -172,7 +166,7 @@ var Element_Choose_Modal = (function ($) {
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(elementDataToIframe);
     }
 
-    var _staySynchronized = function () {
+    function _staySynchronized() {
         var elementDataToIframe = {
             eventName: "rexlive:lock_synchronize_on_element",
             data_to_send: {
@@ -182,7 +176,7 @@ var Element_Choose_Modal = (function ($) {
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(elementDataToIframe);
     }
 
-    var _removeSeparateElement = function () {
+    function _removeSeparateElement() {
         var elementDataToIframe = {
             eventName: "rexlive:remove_separate_element",
             data_to_send: {
@@ -192,11 +186,9 @@ var Element_Choose_Modal = (function ($) {
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(elementDataToIframe);
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////////////
-    /// MODAL FUNCTIONS
-    /////////////////////////////////////////////////////////////////////////////////////////////////
+    // MODAL FUNCTIONS
 
-    var _openChooseModal = function () {
+    function _openChooseModal() {
         Rexlive_Modals_Utils.openModal(
             rex_element_choose_panel.$self.parent(".rex-modal-wrap"),    // $target
             false,                          // target_only
@@ -204,7 +196,7 @@ var Element_Choose_Modal = (function ($) {
         );
     };
 
-    var _closeChooseModal = function () {
+    function _closeChooseModal() {
         Rexlive_Modals_Utils.closeModal(
             rex_element_choose_panel.$self.parent(".rex-modal-wrap"),   // $target
             false,                      // target_only
@@ -214,7 +206,7 @@ var Element_Choose_Modal = (function ($) {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
-    var _sendPageEditedMessage = function() {
+    function _sendPageEditedMessage() {
         var data = {
             eventName: "rexlive:edited",
             modelEdited: false
@@ -222,7 +214,7 @@ var Element_Choose_Modal = (function ($) {
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
     }
 
-    var _linkDocumentListeners = function () {
+    function _linkDocumentListeners () {
         rex_element_choose_panel.$button.on("click", function (e) {
             var optionSelected = this.getAttribute("data-rex-option");
             _closeChooseModal();
@@ -236,8 +228,7 @@ var Element_Choose_Modal = (function ($) {
                     break;
                 case "edit":        // Editing an existing element
                     Wpcf7_Edit_Form_Modal.openFormEditorModal({
-                        elementData: elementData,
-                        blockID: blockID
+                        elementData: elementData
                     });
 
                     _staySynchronized();
@@ -256,7 +247,7 @@ var Element_Choose_Modal = (function ($) {
 				});
     };
 
-	var _init = function() {
+	function init() {
         var $self = $("#rex-element-choose");
         var $container = $self;
 
@@ -271,8 +262,7 @@ var Element_Choose_Modal = (function ($) {
 	}
 
 	return {
-		init: _init,
-        selectModalToOpen: _selectModalToOpen,
-        updateElementData: _updateElementData
+		init: init,
+        selectModalToOpen: selectModalToOpen
 	}
 })(jQuery);

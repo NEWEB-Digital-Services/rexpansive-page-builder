@@ -896,18 +896,17 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 		if (hasElementData) {
 			var elementData = Rexbuilder_Rexelement.generateElementData($elementWrapper);
-			var formID = elementData.elementInfo.element_target.element_id;
-			var formData = elementData.elementInfo.wpcf7_data;
+			var formID = elementData.element_target.element_id;
+			var formData = elementData.wpcf7_data;
 			_addFormCSSRules(formID, formData);
 
 			if (needToUpdateForm) {
 				updateForm({
 					elementData: {
-						element_target: elementData.elementInfo.element_target,
-						synchronize: elementData.elementInfo.synchronize,
-						wpcf7_data: elementData.elementInfo.wpcf7_data
-					},
-					separateElement: elementData.separateElement
+						element_target: elementData.element_target,
+						synchronize: elementData.synchronize,
+						wpcf7_data: elementData.wpcf7_data
+					}
 				});
 			}
 		}
