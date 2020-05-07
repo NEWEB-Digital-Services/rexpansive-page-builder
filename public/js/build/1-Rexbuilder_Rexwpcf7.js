@@ -994,7 +994,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		}
 
 		if (inputType == 'acceptance' || inputType == 'radio') {
-			updateColumnContentRule(formID, rowNumber, columnNumber, cssSelector, 'display', 'inline-flex');
+			// updateColumnContentRule(formID, rowNumber, columnNumber, cssSelector, 'display', 'inline-flex');
 		}
 
 		if ('radio' === inputType) {
@@ -2402,7 +2402,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			var columnContentHoverRule = '';
 
 			if ('acceptance' === inputType || 'radio' === inputType) {
-				columnContentRule += 'display: inline-flex;';
+				// columnContentRule += 'display: inline-flex;';
 			} else if ('file' === inputType) {
 				columnContentRule += 'display: block;';
 				// columnContentRule += 'overflow: hidden;';
