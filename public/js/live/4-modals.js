@@ -30,6 +30,7 @@
      * 22) Block Overlay Gradient: rexlive:updateBlockOverlayGradient
      * 23) Block Overlay : rexlive:change_block_overlay
      * 24) Block Image : rexlive:apply_background_image_block
+     *   ) Block Photoswipe : rexlive:apply_photoswipe_block
      * 25) Block Video Background : rexlive:update_block_background_video
      * 26) Block Paddings : rexlive:apply_paddings_block
      * 27) Block Content Position : rexlive:apply_flex_position_block
@@ -1418,6 +1419,67 @@
         reverseData
       );
       Rexbuilder_Util_Editor.updatingImageBg = false;
+    });
+
+    /**
+     * Change photoswipe on block
+     * @param  {MouseEvent}
+     * @return {void}
+     * @since  2.0.5
+     */
+    $document.on('rexlive:apply_photoswipe_block', function(e) {
+      var data = e.settings.data_to_send;
+      var target = data.target;
+      var $elem;
+
+      if (target.modelNumber != "") {
+        $elem = Rexbuilder_Util.$rexContainer
+          .find(
+            'section[data-rexlive-section-id="' +
+              target.sectionID +
+              '"][data-rexlive-model-number="' +
+              target.modelNumber +
+              '"]'
+          )
+          .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
+      } else {
+        $elem = Rexbuilder_Util.$rexContainer
+          .find('section[data-rexlive-section-id="' + target.sectionID + '"]')
+          .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
+      }
+
+      var $elemData = $elem.children(".rexbuilder-block-data");
+      var $section = $elem.parents(".rexpansive_section");
+      var old_photoswipe =
+        typeof $elemData.attr("data-photoswipe") == "undefined"
+          ? ""
+          : $elemData.attr("data-photoswipe");
+
+      var reverseData = {
+        $elem: $elem,
+        photoswipe: old_photoswipe
+      };
+
+      var actionData = {
+        $elem: $elem,
+        photoswipe: data.photoswipe
+      };
+
+      Rexbuilder_Dom_Util.updateBlockPhotoswipe( actionData );
+
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'photoswipe' );
+
+      $elem.attr("data-rexlive-element-edited", true);      
+      if (Rexbuilder_Util.activeLayout == "default") {
+        Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+      }
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
+      Rexbuilder_Util_Editor.pushAction(
+        $section,
+        "updateBlockPhotoswipe",
+        actionData,
+        reverseData
+      );
     });
 
     /**

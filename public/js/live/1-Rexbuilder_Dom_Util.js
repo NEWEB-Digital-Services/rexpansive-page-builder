@@ -234,12 +234,17 @@ var Rexbuilder_Dom_Util = (function($) {
     // Rexbuilder_Util_Editor.activeAddSection( $section );
   };
 
+  var _updateBlockPhotoswipe = function( data ) {
+    var $elemData = data.$elem.children('.rexbuilder-block-data');
+    $elemData.attr("data-photoswipe", data.photoswipe);
+  };
+
   var _updateImageBlock = function($itemContent, $elemData, data) {
     $elemData.attr("data-id_image_bg_block", data.idImage);
     $elemData.attr("data-type_bg_block", data.typeBGimage);
     $elemData.attr("data-image_bg_block", data.urlImage);
 		$elemData.attr("data-image_size", data.sizeImage);
-		$elemData.attr("data-photoswipe", data.photoswipe)
+		// $elemData.attr("data-photoswipe", data.photoswipe);
     $elemData.attr("data-image_bg_elem_active", data.active);
 
     if (data.typeBGimage == 'full') {
@@ -1905,6 +1910,9 @@ var Rexbuilder_Dom_Util = (function($) {
         }
         Rexbuilder_Util_Editor.updatingImageBg = false;
         break;
+      case "updateBlockPhotoswipe":
+        _updateBlockPhotoswipe(dataToUse);
+        break;
       case "updateBlockPadding":
         Rexbuilder_Util_Editor.updatingPaddingBlock = true;
         _updateBlockPaddings(dataToUse.$elem, dataToUse.dataPadding);
@@ -1984,6 +1992,7 @@ var Rexbuilder_Dom_Util = (function($) {
     updateSectionMargins: _updateSectionMargins,
     updateSectionMarginsData: _updateSectionMarginsData,
     updateImageBG: _updateImageBG,
+    updateBlockPhotoswipe: _updateBlockPhotoswipe,
     performAction: _performAction,
     addYoutubeVideo: _addYoutubeVideo,
     removeYoutubeVideo: _removeYoutubeVideo,

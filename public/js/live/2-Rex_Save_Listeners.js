@@ -1128,8 +1128,6 @@ var Rex_Save_Listeners = (function($) {
       var sectionId = $(gridGallery).parents('.rexpansive_section').attr('data-rexlive-section-id');
       var traceBlockData = Rexbuilder_Util.editedDataInfo.getBlockData( sectionId, rex_id );
 
-      console.log(traceBlockData)
-
       var props = {};
 
       props["hide"] = hide_block;
@@ -1183,8 +1181,10 @@ var Rex_Save_Listeners = (function($) {
       props["video_bg_width"] = video_bg_width;
       props["video_bg_height"] = video_bg_height;
       props["video_mp4_url"] = video_mp4_url;
+
       props["video_bg_url_youtube"] = video_bg_url;
       props["video_bg_url_vimeo"] = video_bg_url_vimeo;
+
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.photoswipe ) ) {
         props["photoswipe"] = photoswipe;
       }
