@@ -1,10 +1,12 @@
-// @import '../../../admin/scss/rexlive/base/base';
 
 .wpcf7-form {
+	@import 'rex-wpcf7-radios';
+	@import 'rex-wpcf7-checkboxes';
+	
 	display: flex;
 	flex-wrap: wrap;
 	cursor: default;
-
+	
 	.wpcf7-rows {
 		display: block;
 		width: 100%;
