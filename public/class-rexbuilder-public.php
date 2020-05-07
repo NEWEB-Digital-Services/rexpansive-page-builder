@@ -211,6 +211,7 @@ class Rexbuilder_Public
 		global $post;
 		if ( $this->builder_active_on_this_post_type() ) {
 			$ver = null;
+			$front_end_settings = $this->get_plugin_frontend_settings();
 			$customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
 
 			if( Rexbuilder_Utilities::isBuilderLive() ) {
@@ -341,11 +342,18 @@ class Rexbuilder_Public
 
 				if ( false !== strpos( $customEffects, 'sticky-section' ) ) {
 					wp_enqueue_script('sticky-section', REXPANSIVE_BUILDER_URL . 'public/js/vendor/sticky-section.js', array(), $ver, true);
+					if ( $front_end_settings['stickySection']['revealContentOnScroll'] ) {
+						wp_enqueue_script('reveal-opacity-on-scroll', REXPANSIVE_BUILDER_URL . 'public/js/vendor/reveal-opacity-on-scroll.js', array(), $ver, true);
+					}
 				}
 
-				if ( false !== strpos( $customEffects, 'fadeUpTextCSS' ) ) {
-					wp_enqueue_script('scroll-css-animation', REXPANSIVE_BUILDER_URL . 'public/js/vendor/scroll-css-animation.js', array(), $ver, true);
+				if ( false !== strpos( $customEffects, 'reveal-opacity-on-scroll' ) ) {
+					wp_enqueue_script('reveal-opacity-on-scroll', REXPANSIVE_BUILDER_URL . 'public/js/vendor/reveal-opacity-on-scroll.js', array(), $ver, true);
 				}
+
+				// if ( false !== strpos( $customEffects, 'fadeUpTextCSS' ) ) {
+				// 	wp_enqueue_script('scroll-css-animation', REXPANSIVE_BUILDER_URL . 'public/js/vendor/scroll-css-animation.js', array(), $ver, true);
+				// }
 
 				if ( false !== strpos( $customEffects, 'distance-accordion-toggle' ) ) {
 					wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.js', array(), $ver, true);
@@ -387,7 +395,7 @@ class Rexbuilder_Public
 				wp_enqueue_script('fast-load', REXPANSIVE_BUILDER_URL . 'public/js/build/fast-load.js', array('intersection-observer'), $ver, true);
 			}
 
-			wp_localize_script('rexbuilder', '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', $this->get_plugin_frontend_settings() ) );
+			wp_localize_script( 'rexbuilder', '_plugin_frontend_settings', $front_end_settings );
 		}
 	}
 
@@ -396,8 +404,7 @@ class Rexbuilder_Public
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts_production()
-	{
+	public function enqueue_scripts_production() {
 		/**
 		 * This function is provided for demonstration purposes only.
 		 *
@@ -412,6 +419,8 @@ class Rexbuilder_Public
 
 		global $post;
 		if ( $this->builder_active_on_this_post_type() ) {
+			$front_end_settings = $this->get_plugin_frontend_settings();
+
 			$customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
 			
 			if( Rexbuilder_Utilities::isBuilderLive() ) {
@@ -444,11 +453,19 @@ class Rexbuilder_Public
 
 				if ( false !== strpos( $customEffects, 'sticky-section' ) ) {
 					wp_enqueue_script('sticky-section', REXPANSIVE_BUILDER_URL . 'public/js/vendor/sticky-section.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
+
+					if ( $front_end_settings['stickySection']['revealContentOnScroll'] ) {
+						wp_enqueue_script('reveal-opacity-on-scroll', REXPANSIVE_BUILDER_URL . 'public/js/vendor/reveal-opacity-on-scroll.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
+					}
 				}
 
-				if ( false !== strpos( $customEffects, 'fadeUpTextCSS' ) ) {
-					wp_enqueue_script('scroll-css-animation', REXPANSIVE_BUILDER_URL . 'public/js/vendor/scroll-css-animation.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
+				if ( false !== strpos( $customEffects, 'reveal-opacity-on-scroll' ) ) {
+					wp_enqueue_script('reveal-opacity-on-scroll', REXPANSIVE_BUILDER_URL . 'public/js/vendor/reveal-opacity-on-scroll.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
 				}
+
+				// if ( false !== strpos( $customEffects, 'fadeUpTextCSS' ) ) {
+				// 	wp_enqueue_script('scroll-css-animation', REXPANSIVE_BUILDER_URL . 'public/js/vendor/scroll-css-animation.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
+				// }
 
 				if ( false !== strpos( $customEffects, 'distance-accordion-toggle' ) ) {
 					wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
@@ -473,7 +490,7 @@ class Rexbuilder_Public
 				}
 			}
 
-			wp_localize_script( $this->plugin_name, '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', $this->get_plugin_frontend_settings() ) );
+			wp_localize_script( $this->plugin_name, '_plugin_frontend_settings', $front_end_settings );
 		}
 	}
 
@@ -512,6 +529,9 @@ class Rexbuilder_Public
 			),
 			'splitScrollable' => array(
 				'minViewportWidth' => 768
+			),
+			'stickySection' => array(
+				'revealContentOnScroll' => false
 			),
 			'old_builder' => Rexbuilder_Utilities::postSavedFromBackend()
 		);
@@ -560,7 +580,7 @@ class Rexbuilder_Public
 			);
 		}
 
-		return $settings;
+		return apply_filters( 'rexbuilder_js_settings', $settings );
 	}
 
 	/**
@@ -620,12 +640,6 @@ class Rexbuilder_Public
 		<div style="display:none"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
 		<?php
 		}
-	}
-
-	public function footer_debug() {
-?>
-<script>var globalP1 = performance.now();</script>
-<?php
 	}
 
 	/**

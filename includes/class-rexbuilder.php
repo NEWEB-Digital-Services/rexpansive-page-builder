@@ -396,8 +396,6 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites_live' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_custom_sprites' );
 
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'footer_debug' );
-
 		// ajax logic
 		// for live builder
 		$this->loader->add_action( 'wp_ajax_rexlive_save_shortcode', $plugin_public, 'rexlive_save_shortcode' );

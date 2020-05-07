@@ -1,6 +1,7 @@
 /**
  * Activate animation on scroll and reveal of an element
  * @version 1.0.0
+ * @deprecated
  */
 ;( function( window, factory ) {
   'use strict';
@@ -77,17 +78,22 @@
 
     // eventually offset
     var offset = windowInnerHeight * this.options.offset;
-    windowScrollTop = windowScrollTop + offset;
+    // windowScrollTop = windowScrollTop + offset;
 
-    if (windowScrollTop > elScrollTop && windowScrollTop < elScrollBottom) {
+    // console.log(this.element.getAttribute('data-rexbuilder-block-id'),windowScrollTop, elScrollTop, elScrollBottom);
+
+    // if (windowScrollTop > elScrollTop && windowScrollTop < elScrollBottom) {
+    if ( ( windowScrollTop + offset ) > elScrollTop ) {
       if (!this.launched) {
+        // console.log(this.element.getAttribute('data-rexbuilder-block-id'), 'fwd');
         addClass(this.element, this.options.forwardAnimationClass);
         removeClass(this.element, this.options.backwardAnimationClass);
         this.launched = true;
       }
     } else {
-      if (windowScrollTop < elScrollTop) {
+      if ( ( windowScrollTop + offset ) < elScrollTop) {
         if (this.launched) {
+          // console.log(this.element.getAttribute('data-rexbuilder-block-id'), 'bkwd');
           addClass(this.element, this.options.backwardAnimationClass);
           removeClass(this.element, this.options.forwardAnimationClass);
           this.launched = false;

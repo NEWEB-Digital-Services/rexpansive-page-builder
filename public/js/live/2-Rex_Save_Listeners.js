@@ -1651,8 +1651,12 @@ var Rex_Save_Listeners = (function($) {
         condition: 'sticky-section',
         active: false
       },
+      // {
+      //   condition: 'fadeUpTextCSS',
+      //   active: false
+      // },
       {
-        condition: 'fadeUpTextCSS',
+        condition: 'reveal-opacity-on-scroll',
         active: false
       },
       {

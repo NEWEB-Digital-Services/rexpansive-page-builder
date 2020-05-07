@@ -412,11 +412,29 @@ var Rexbuilder_App = (function($) {
         stickyElementSelector: stickyElementSelector,
         overlayAnimation: overlayAnimation
       });
+
+      // activate reveal text on scroll effect
+      if ( 'undefined' !== typeof RevealOpacityOnScroll && _plugin_frontend_settings.stickySection.revealContentOnScroll ) {
+        var bs = Array.prototype.slice.call( stickySection.getElementsByClassName('perfect-grid-item') );
+        var z, tot = bs.length;
+        for( z=0; z<tot; z++ ) {
+          bs[z].setAttribute('data-rs-animation-force-launch', true);
+          var j, textWrap = bs[z].querySelector('.text-wrap');
+          new RevealOpacityOnScroll( textWrap, {
+            offset: 1,
+            transition: true
+          } );
+          // for( j=0; j<textWrap.childElementCount; j++ ) {
+          //   new RevealOpacityOnScroll( textWrap.children[j], {offset: 1} );
+          // }
+        }
+      }
     }
-  };
+  }
 
   /**
    * Launch eventually scroll animations
+   * @deprecated 2.0.5
    */
   var launchScrollCSSAnimations = function() {
     if ( 'undefined' === typeof ScrollCSSAnimation ) return;
@@ -846,6 +864,11 @@ var Rexbuilder_App = (function($) {
       // launch border space animated
       launchBorderSpaceAnimated();
 
+      // sticky sections
+      launchStickySections();
+      // launch scrollCSSAnimations
+      // launchScrollCSSAnimations();
+
       // launch rexScrolled
       launchRexScrolled( $sections );
 
@@ -854,10 +877,6 @@ var Rexbuilder_App = (function($) {
         launchRexScrollify();
       }
 
-      // sticky sections
-      launchStickySections();
-      // launch scrollCSSAnimations
-      launchScrollCSSAnimations();
       // launch distance accordions
       launchDistanceAccordion();
       // launch popUpContent
