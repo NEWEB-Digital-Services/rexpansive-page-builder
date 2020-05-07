@@ -986,7 +986,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 					border_color: 'rgb(0, 0, 0, 1)',
 					border_color_hover: 'rgb(0, 0, 0, 1)',
 					width: '200px',
-					height: '100%',
+					height: '100px',
 					font_size: '15px',
 					border_width: '1px',
 					border_radius: '0px'

@@ -1439,57 +1439,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			$columnDataInDB.attr('data-button-border-color', columnContentData.wpcf7_button.border_color);
 			$columnDataInDB.attr('data-button-border-color-hover', columnContentData.wpcf7_button.border_color_hover);
 		}
-
-		// $columnDataInDB.attr("data-wpcf7-required-field", columnContentData.wpcf7_required_field);
-		// $columnDataInDB.attr("data-wpcf7-email", columnContentData.wpcf7_email);
-		// $columnDataInDB.attr("data-wpcf7-only-numbers", columnContentData.wpcf7_only_numbers);
-		// $columnDataInDB.attr("data-wpcf7-default-check", columnContentData.wpcf7_default_check);
-		// $columnDataInDB.attr("data-wpcf7-placeholder", columnContentData.wpcf7_placeholder);
-		// $columnDataInDB.attr("data-wpcf7-file-max-dimensions", columnContentData.wpcf7_file_max_dimensions);
-
-		// if (inputType == "file") {
-		//     $columnDataInDB.attr("data-wpcf7-file-types", columnContentData.wpcf7_list_fields);
-		// }
-
-		// if (inputType != "file" && inputType != "radio" && inputType != "acceptance") {
-		//     $columnDataInDB.attr("data-wpcf7-border-width", columnContentData.border_width);
-		//     $columnDataInDB.attr("data-wpcf7-border-radius", columnContentData.border_radius);
-		//     $columnDataInDB.attr("data-background-color", columnContentData.background_color);
-		//     $columnDataInDB.attr("data-background-color-hover", columnContentData.background_color_hover);
-		//     $columnDataInDB.attr("data-border-color", columnContentData.border_color);
-		//     $columnDataInDB.attr("data-border-color-hover", columnContentData.border_color_hover);
-		// }
-
-		// $columnDataInDB.attr("data-wpcf7-input-width", columnContentData.input_width);
-		// $columnDataInDB.attr("data-wpcf7-input-height", columnContentData.input_height);
-		// $columnDataInDB.attr("data-wpcf7-font-size", columnContentData.font_size);
-		// $columnDataInDB.attr("data-text-color", columnContentData.text_color);
-		// $columnDataInDB.attr("data-text-color-hover", columnContentData.text_color_hover);
-		// $columnDataInDB.attr("data-text-color-focus", columnContentData.text_color_focus);
-		// $columnDataInDB.attr("data-select-color-after-selection", columnContentData.select_color_after_selection);
-		// $columnDataInDB.attr("data-placeholder-color", columnContentData.placeholder_color);
-		// $columnDataInDB.attr("data-placeholder-hover-color", columnContentData.placeholder_hover_color);
-
-		// $columnDataInDB.attr("data-button-text", columnContentData.wpcf7_button.text);
-		// $columnDataInDB.attr("data-button-text-font-size", columnContentData.wpcf7_button.font_size);
-		// $columnDataInDB.attr("data-button-height", columnContentData.wpcf7_button.height);
-		// $columnDataInDB.attr("data-button-width", columnContentData.wpcf7_button.width);
-		// $columnDataInDB.attr("data-button-border-width", columnContentData.wpcf7_button.border_width);
-		// $columnDataInDB.attr("data-button-border-radius", columnContentData.wpcf7_button.border_radius);
-		// $columnDataInDB.attr("data-button-margin-top", columnContentData.wpcf7_button.margin_top);
-		// $columnDataInDB.attr("data-button-margin-right", columnContentData.wpcf7_button.margin_right);
-		// $columnDataInDB.attr("data-button-margin-bottom", columnContentData.wpcf7_button.margin_bottom);
-		// $columnDataInDB.attr("data-button-margin-left", columnContentData.wpcf7_button.margin_left);
-		// $columnDataInDB.attr("data-button-padding-top", columnContentData.wpcf7_button.padding_top);
-		// $columnDataInDB.attr("data-button-padding-right", columnContentData.wpcf7_button.padding_right);
-		// $columnDataInDB.attr("data-button-padding-bottom", columnContentData.wpcf7_button.padding_bottom);
-		// $columnDataInDB.attr("data-button-padding-left", columnContentData.wpcf7_button.padding_left);
-		// $columnDataInDB.attr("data-button-text-color", columnContentData.wpcf7_button.text_color);
-		// $columnDataInDB.attr("data-button-text-color-hover", columnContentData.wpcf7_button.text_color_hover);
-		// $columnDataInDB.attr("data-button-background-color", columnContentData.wpcf7_button.background_color);
-		// $columnDataInDB.attr("data-button-background-color-hover", columnContentData.wpcf7_button.background_color_hover);
-		// $columnDataInDB.attr("data-button-border-color", columnContentData.wpcf7_button.border_color);
-		// $columnDataInDB.attr("data-button-border-color-hover", columnContentData.wpcf7_button.border_color_hover);
 	}
 
 	function _getDBFormsInPage() {

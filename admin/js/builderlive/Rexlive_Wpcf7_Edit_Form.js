@@ -397,27 +397,30 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 		}
 
 		// Content Height
+		console.log( elementData );
 		if (elementData.wpcf7_data.options_different.height) {
+			
 			wpcf7_form_editor_properties.$content_height.val('');
 			wpcf7_form_editor_properties.$content_height.attr(
 				'placeholder',
 				/[0-9]+/.exec(elementData.wpcf7_data.content.height)
 			);
+			
 		} else {
 			wpcf7_form_editor_properties.$content_height.val(/[0-9]+/.exec(elementData.wpcf7_data.content.height));
-			var heightType =
-				null != /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.height)
-					? /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.height)[0]
-					: '%';
-			switch (heightType) {
-				case 'px':
-					wpcf7_form_editor_properties.$content_height_type.filter('[value=pixel]').prop('checked', true);
-					break;
-				case '%':
-				default:
-					wpcf7_form_editor_properties.$content_height_type.filter('[value=percentage]').prop('checked', true);
-					break;
-			}
+			// var heightType =
+			// 	null != /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.height)
+			// 		? /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.height)[0]
+			// 		: '%';
+			// switch (heightType) {
+			// 	case 'px':
+			// 		wpcf7_form_editor_properties.$content_height_type.filter('[value=pixel]').prop('checked', true);
+			// 		break;
+			// 	case '%':
+			// 	default:
+			// 		wpcf7_form_editor_properties.$content_height_type.filter('[value=percentage]').prop('checked', true);
+			// 		break;
+			// }
 			if (wpcf7_form_editor_properties.$content_height.val() != '') {
 				wpcf7_form_editor_properties.$content_height.siblings('label, .prefix').addClass('active');
 			}
@@ -571,16 +574,16 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			elementData.wpcf7_data.content.height = wpcf7_form_editor_properties.$content_height.attr('placeholder');
 		}
 
-		var heightType = wpcf7_form_editor_properties.$content_height_type.filter(':checked').val();
+		// var heightType = wpcf7_form_editor_properties.$content_height_type.filter(':checked').val();
 
-		switch (heightType) {
-			case 'percentage':
-				elementData.wpcf7_data.content.height = elementData.wpcf7_data.content.height + '%';
-				break;
-			case 'pixel':
+		// switch (heightType) {
+		// 	case 'percentage':
+		// 		elementData.wpcf7_data.content.height = elementData.wpcf7_data.content.height + '%';
+		// 		break;
+		// 	case 'pixel':
 				elementData.wpcf7_data.content.height = elementData.wpcf7_data.content.height + 'px';
-				break;
-		}
+		// 		break;
+		// }
 
 		// Content Font Size
 		elementData.wpcf7_data.content.font_size = wpcf7_form_editor_properties.$content_set_font_size.val() + 'px';
@@ -829,16 +832,16 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 		// Content Height
 		var _updateContentHeight = function (newContentHeight) {
 			// outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
-			var heightType = wpcf7_form_editor_properties.$content_height_type.filter(':checked').val();
+			// var heightType = wpcf7_form_editor_properties.$content_height_type.filter(':checked').val();
 
-			switch (heightType) {
-				case 'percentage':
-					outputString = newContentHeight + '%';
-					break;
-				case 'pixel':
+			// switch (heightType) {
+			// 	case 'percentage':
+			// 		outputString = newContentHeight + '%';
+			// 		break;
+			// 	case 'pixel':
 					outputString = newContentHeight + 'px';
-					break;
-			}
+			// 		break;
+			// }
 
 			_updateFormContentLive({
 				type: 'height',
@@ -1519,25 +1522,25 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			});
 		});
 
-		wpcf7_form_editor_properties.$content_height_type.on('click', function () {
-			var heightValue = wpcf7_form_editor_properties.$content_height.val();
-			var heightType = $(this).val();
+		// wpcf7_form_editor_properties.$content_height_type.on('click', function () {
+		// 	var heightValue = wpcf7_form_editor_properties.$content_height.val();
+		// 	var heightType = $(this).val();
 
-			switch (heightType) {
-				case 'percentage':
-					heightValue = heightValue + '%';
-					break;
-				case 'pixel':
-					heightValue = heightValue + 'px';
-					break;
-			}
+		// 	switch (heightType) {
+		// 		case 'percentage':
+		// 			heightValue = heightValue + '%';
+		// 			break;
+		// 		case 'pixel':
+		// 			heightValue = heightValue + 'px';
+		// 			break;
+		// 	}
 
-			_updateFormContentLive({
-				type: 'height',
-				name: 'height',
-				value: heightValue
-			});
-		});
+		// 	_updateFormContentLive({
+		// 		type: 'height',
+		// 		name: 'height',
+		// 		value: heightValue
+		// 	});
+		// });
 
 		// Text Color Palette
 		wpcf7_form_editor_properties.$content_text_color_palette_buttons.on('click', function (event) {
@@ -1752,7 +1755,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			$content_width: $container.find('#rex-wpcf7-content-width'),
 			$content_width_type: $container.find('.rex-wpcf7-content-width-type'),
 			$content_height: $container.find('#rex-wpcf7-content-height'),
-			$content_height_type: $container.find('.rex-wpcf7-content-height-type'),
+			// $content_height_type: $container.find('.rex-wpcf7-content-height-type'),
 
 			$content_set_font_size: $container.find('#rex-wpcf7-set-content-font-size'),
 			$content_set_border_width: $container.find('#rex-wpcf7-set-content-border-width'),

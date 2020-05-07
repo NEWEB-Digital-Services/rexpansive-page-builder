@@ -4,7 +4,51 @@ var Rexbuilder_Rexelement = (function ($) {
 	/* ===== GLOBAL VARIABLES ===== */
 
 	var elementsInPage;
-	var elementDataDefaults;
+	var ELEMENT_DATA_DEFAULTS = {
+		synchronize: false,
+		wpcf7_data: {
+			background_color: 'rgb(0, 0, 0, 0)',
+			border_color: 'rgb(0, 0, 0, 1)',
+			border_width: '2px',
+			margin_top: '5px',
+			margin_left: '5px',
+			margin_right: '5px',
+			margin_bottom: '5px',
+			error_message_color: 'rgb(0, 0, 0, 1)',
+			error_message_font_size: '15px',
+			send_message_color: 'rgb(0, 0, 0, 1)',
+			send_message_font_size: '15px',
+			columns: {
+				padding_top: '15px',
+				padding_left: '15px',
+				padding_right: '15px',
+				padding_bottom: '15px'
+			},
+			content: {
+				background_color: 'rgb(255, 255, 255, 1)',
+				background_color_hover: 'rgb(255, 255, 255, 1)',
+				text_color: 'rgb(0, 0, 0, 1)',
+				text_color_hover: 'rgb(0, 0, 0, 1)',
+				border_color: 'rgb(0, 0, 0, 1)',
+				border_color_hover: 'rgb(0, 0, 0, 1)',
+				width: '200px',
+				height: '75px',
+				font_size: '15px',
+				border_width: '1px',
+				border_radius: '0px'
+			},
+			options_different: {
+				width: true,
+				height: true,
+				font_size: true,
+				text_color: true
+			}
+		},
+		element_target: {
+			element_id: '',
+			element_number: ''
+		}
+	};
 
 	/* ===== PUBLIC METHODS ===== */
 
@@ -50,6 +94,9 @@ var Rexbuilder_Rexelement = (function ($) {
 	 * @returns {Object} data
 	 */
 	function generateElementData($elementWrapper, getAllData) {
+		console.groupCollapsed('generateElementData');
+		console.trace();
+		console.groupEnd();
 		getAllData = typeof getAllData === 'undefined' ? false : getAllData.toString() == 'true';
 
 		var elementData = {
@@ -106,9 +153,7 @@ var Rexbuilder_Rexelement = (function ($) {
 		elementData.element_target.element_number = parseInt($elementWrapper.attr('data-rex-element-number'));
 
 		elementData.synchronize =
-			typeof $elementData.attr('data-synchronize') == 'undefined'
-				? false
-				: $elementData.attr('data-synchronize').toString();
+			typeof $elementData.attr('data-synchronize') == 'undefined' ? false : $elementData.attr('data-synchronize');
 
 		var separate = false;
 		if ($elementWrapper.hasClass('rex-separate-element') || getAllData) {
@@ -120,122 +165,129 @@ var Rexbuilder_Rexelement = (function ($) {
 
 		// Background color
 		elementData.wpcf7_data.background_color = elementDataEl.getAttribute('data-wpcf7-background-color')
-			? elementDataEl.getAttribute('data-wpcf7-background-color').toString()
+			? elementDataEl.getAttribute('data-wpcf7-background-color')
 			: $form.css('background-color');
+
+		// console.log(
+		// 	elementDataEl.getAttribute('data-wpcf7-background-color')
+		// 		? elementDataEl.getAttribute('data-wpcf7-background-color')
+		// 		: $form.css('background-color')
+		// );
+		// console.log(elementDataEl.getAttribute('data-wpcf7-background-color') || $form.css('background-color'));
 
 		// Border color
 		elementData.wpcf7_data.border_color = elementDataEl.getAttribute('data-wpcf7-border-color')
-			? elementDataEl.getAttribute('data-wpcf7-border-color').toString()
+			? elementDataEl.getAttribute('data-wpcf7-border-color')
 			: $form.css('border-color');
 
 		// Border width
 		elementData.wpcf7_data.border_width = elementDataEl.getAttribute('data-wpcf7-border-width')
-			? elementDataEl.getAttribute('data-wpcf7-border-width').toString()
+			? elementDataEl.getAttribute('data-wpcf7-border-width')
 			: $form.css('border-width');
 
 		// Margins
 		elementData.wpcf7_data.margin_top = elementDataEl.getAttribute('data-wpcf7-margin-top')
-			? elementDataEl.getAttribute('data-wpcf7-margin-top').toString()
+			? elementDataEl.getAttribute('data-wpcf7-margin-top')
 			: $form.css('margin-top');
 		elementData.wpcf7_data.margin_left = elementDataEl.getAttribute('data-wpcf7-margin-left')
-			? elementDataEl.getAttribute('data-wpcf7-margin-left').toString()
+			? elementDataEl.getAttribute('data-wpcf7-margin-left')
 			: $form.css('margin-left');
 		elementData.wpcf7_data.margin_right = elementDataEl.getAttribute('data-wpcf7-margin-right')
-			? elementDataEl.getAttribute('data-wpcf7-margin-right').toString()
+			? elementDataEl.getAttribute('data-wpcf7-margin-right')
 			: $form.css('margin-right');
 		elementData.wpcf7_data.margin_bottom = elementDataEl.getAttribute('data-wpcf7-margin-bottom')
-			? elementDataEl.getAttribute('data-wpcf7-margin-bottom').toString()
+			? elementDataEl.getAttribute('data-wpcf7-margin-bottom')
 			: $form.css('margin-bottom');
 
 		// Columns padding
 		elementData.wpcf7_data.columns.padding_top = elementDataEl.getAttribute('data-wpcf7-columns-padding-top')
-			? elementDataEl.getAttribute('data-wpcf7-columns-padding-top').toString()
-			: elementDataDefaults.wpcf7_data.columns.padding_top;
+			? elementDataEl.getAttribute('data-wpcf7-columns-padding-top')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.columns.padding_top;
 		elementData.wpcf7_data.columns.padding_left = elementDataEl.getAttribute('data-wpcf7-columns-padding-left')
-			? elementDataEl.getAttribute('data-wpcf7-columns-padding-left').toString()
-			: elementDataDefaults.wpcf7_data.columns.padding_left;
+			? elementDataEl.getAttribute('data-wpcf7-columns-padding-left')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.columns.padding_left;
 		elementData.wpcf7_data.columns.padding_right = elementDataEl.getAttribute('data-wpcf7-columns-padding-right')
-			? elementDataEl.getAttribute('data-wpcf7-columns-padding-right').toString()
-			: elementDataDefaults.wpcf7_data.columns.padding_right;
+			? elementDataEl.getAttribute('data-wpcf7-columns-padding-right')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.columns.padding_right;
 		elementData.wpcf7_data.columns.padding_bottom = elementDataEl.getAttribute('data-wpcf7-columns-padding-bottom')
-			? elementDataEl.getAttribute('data-wpcf7-columns-padding-bottom').toString()
-			: elementDataDefaults.wpcf7_data.columns.padding_bottom;
+			? elementDataEl.getAttribute('data-wpcf7-columns-padding-bottom')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.columns.padding_bottom;
 
 		// Error Message
 		elementData.wpcf7_data.error_message_color = elementDataEl.getAttribute('data-wpcf7-error-message-color')
-			? elementDataEl.getAttribute('data-wpcf7-error-message-color').toString()
-			: elementDataDefaults.wpcf7_data.error_message_color;
+			? elementDataEl.getAttribute('data-wpcf7-error-message-color')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.error_message_color;
 		elementData.wpcf7_data.error_message_font_size = elementDataEl.getAttribute('data-wpcf7-error-message-font-size')
-			? elementDataEl.getAttribute('data-wpcf7-error-message-font-size').toString()
-			: elementDataDefaults.wpcf7_data.error_message_font_size;
+			? elementDataEl.getAttribute('data-wpcf7-error-message-font-size')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.error_message_font_size;
 
 		// Send Message
 		elementData.wpcf7_data.send_message_color = elementDataEl.getAttribute('data-wpcf7-send-message-color')
-			? elementDataEl.getAttribute('data-wpcf7-send-message-color').toString()
-			: elementDataDefaults.wpcf7_data.send_message_color;
+			? elementDataEl.getAttribute('data-wpcf7-send-message-color')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.send_message_color;
 		elementData.wpcf7_data.send_message_font_size = elementDataEl.getAttribute('data-wpcf7-send-message-font-size')
-			? elementDataEl.getAttribute('data-wpcf7-send-message-font-size').toString()
-			: elementDataDefaults.wpcf7_data.send_message_font_size;
+			? elementDataEl.getAttribute('data-wpcf7-send-message-font-size')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.send_message_font_size;
 
 		/* WPCF7 CONTENT */
 		// Content width
 		elementData.wpcf7_data.content.width = elementDataEl.getAttribute('data-wpcf7-content-width')
-			? elementDataEl.getAttribute('data-wpcf7-content-width').toString()
-			: elementDataDefaults.wpcf7_data.content.width;
+			? elementDataEl.getAttribute('data-wpcf7-content-width')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.content.width;
 
 		// Content height
 		elementData.wpcf7_data.content.height = elementDataEl.getAttribute('data-wpcf7-content-height')
-			? elementDataEl.getAttribute('data-wpcf7-content-height').toString()
-			: elementDataDefaults.wpcf7_data.content.height;
+			? elementDataEl.getAttribute('data-wpcf7-content-height')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.content.height;
 
 		// Content font size
 		elementData.wpcf7_data.content.font_size = elementDataEl.getAttribute('data-wpcf7-content-font-size')
-			? elementDataEl.getAttribute('data-wpcf7-content-font-size').toString()
-			: elementDataDefaults.wpcf7_data.content.font_size;
+			? elementDataEl.getAttribute('data-wpcf7-content-font-size')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.content.font_size;
 
 		// Content border width
 		elementData.wpcf7_data.content.border_width = elementDataEl.getAttribute('data-wpcf7-content-border-width')
-			? elementDataEl.getAttribute('data-wpcf7-content-border-width').toString()
-			: elementDataDefaults.wpcf7_data.content.border_width;
+			? elementDataEl.getAttribute('data-wpcf7-content-border-width')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.content.border_width;
 
 		// Content border radius
 		elementData.wpcf7_data.content.border_radius = elementDataEl.getAttribute('data-wpcf7-content-border-radius')
-			? elementDataEl.getAttribute('data-wpcf7-content-border-radius').toString()
-			: elementDataDefaults.wpcf7_data.content.border_radius;
+			? elementDataEl.getAttribute('data-wpcf7-content-border-radius')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.content.border_radius;
 
 		// Content text color
 		elementData.wpcf7_data.content.text_color = elementDataEl.getAttribute('data-wpcf7-content-text-color')
-			? elementDataEl.getAttribute('data-wpcf7-content-text-color').toString()
-			: elementDataDefaults.wpcf7_data.content.text_color;
+			? elementDataEl.getAttribute('data-wpcf7-content-text-color')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.content.text_color;
 
 		// Content background color
 		elementData.wpcf7_data.content.background_color = elementDataEl.getAttribute('data-wpcf7-content-background-color')
-			? elementDataEl.getAttribute('data-wpcf7-content-background-color').toString()
-			: elementDataDefaults.wpcf7_data.content.background_color;
+			? elementDataEl.getAttribute('data-wpcf7-content-background-color')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.content.background_color;
 
 		// Content border color
 		elementData.wpcf7_data.content.border_color = elementDataEl.getAttribute('data-wpcf7-content-border-color')
-			? elementDataEl.getAttribute('data-wpcf7-content-border-color').toString()
-			: elementDataDefaults.wpcf7_data.content.border_color;
+			? elementDataEl.getAttribute('data-wpcf7-content-border-color')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.content.border_color;
 
 		// Content text color hover
 		elementData.wpcf7_data.content.text_color_hover = elementDataEl.getAttribute('data-wpcf7-content-text-color-hover')
-			? elementDataEl.getAttribute('data-wpcf7-content-text-color-hover').toString()
-			: elementDataDefaults.wpcf7_data.content.text_color_hover;
+			? elementDataEl.getAttribute('data-wpcf7-content-text-color-hover')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.content.text_color_hover;
 
 		// Content background color hover
 		elementData.wpcf7_data.content.background_color_hover = elementDataEl.getAttribute(
 			'data-wpcf7-content-background-color-hover'
 		)
-			? elementDataEl.getAttribute('data-wpcf7-content-background-color-hover').toString()
-			: elementDataDefaults.wpcf7_data.content.background_color_hover;
+			? elementDataEl.getAttribute('data-wpcf7-content-background-color-hover')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.content.background_color_hover;
 
 		// Content border color hover
 		elementData.wpcf7_data.content.border_color_hover = elementDataEl.getAttribute(
 			'data-wpcf7-content-border-color-hover'
 		)
-			? elementDataEl.getAttribute('data-wpcf7-content-border-color-hover').toString()
-			: elementDataDefaults.wpcf7_data.content.border_color_hover;
+			? elementDataEl.getAttribute('data-wpcf7-content-border-color-hover')
+			: ELEMENT_DATA_DEFAULTS.wpcf7_data.content.border_color_hover;
 
 		// Options different
 		elementData.wpcf7_data.options_different = _scanOptionsDifferent(elementData.element_target.element_id);
@@ -289,7 +341,7 @@ var Rexbuilder_Rexelement = (function ($) {
 		optionsDifferent.height = !columnsHeights.every(checkDiff);
 		optionsDifferent.text_color = !columnsTextColors.every(checkDiff);
 		optionsDifferent.font_size = !columnsFontSizes.every(checkDiff);
-		
+
 		return optionsDifferent;
 	}
 
@@ -334,52 +386,6 @@ var Rexbuilder_Rexelement = (function ($) {
 
 	function init() {
 		elementsInPage = [];
-
-		elementDataDefaults = {
-			synchronize: false,
-			wpcf7_data: {
-				background_color: 'rgb(0, 0, 0, 0)',
-				border_color: 'rgb(0, 0, 0, 1)',
-				border_width: '2px',
-				margin_top: '5px',
-				margin_left: '5px',
-				margin_right: '5px',
-				margin_bottom: '5px',
-				error_message_color: 'rgb(0, 0, 0, 1)',
-				error_message_font_size: '15px',
-				send_message_color: 'rgb(0, 0, 0, 1)',
-				send_message_font_size: '15px',
-				columns: {
-					padding_top: '15px',
-					padding_left: '15px',
-					padding_right: '15px',
-					padding_bottom: '15px'
-				},
-				content: {
-					background_color: 'rgb(255, 255, 255, 1)',
-					background_color_hover: 'rgb(255, 255, 255, 1)',
-					text_color: 'rgb(0, 0, 0, 1)',
-					text_color_hover: 'rgb(0, 0, 0, 1)',
-					border_color: 'rgb(0, 0, 0, 1)',
-					border_color_hover: 'rgb(0, 0, 0, 1)',
-					width: '200px',
-					height: '100%',
-					font_size: '15px',
-					border_width: '1px',
-					border_radius: '0px'
-				},
-				options_different: {
-					width: true,
-					height: true,
-					font_size: true,
-					text_color: true
-				}
-			},
-			element_target: {
-				element_id: '',
-				element_number: ''
-			}
-		};
 
 		_updateElementListInPage();
 	}
