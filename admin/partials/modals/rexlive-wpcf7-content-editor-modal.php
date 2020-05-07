@@ -109,21 +109,6 @@ defined('ABSPATH') or exit;
 											</div>
 											<div class="bl_d-iblock label-px ml12" style="font-size: 16px;">
 												<?php _e('PX', 'rexpansive-builder');?>
-                        <!-- <div>
-                            <input id="wpcf7-input-height-percentage" type="radio" class="wpcf7-input-height-type with-gap" name="wpcf7-input-height-type" value="percentage" checked />
-                            <label for="wpcf7-input-height-percentage">
-                                <?php _e('%', 'rexpansive-builder');?>
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div> -->
-                        <!-- <div> -->
-                            <!-- <input id="wpcf7-input-height-pixel" type="radio" class="wpcf7-input-height-type with-gap" name="wpcf7-input-height-type" value="pixel" /> -->
-                            <!-- <label>
-                                <?php _e('PX', 'rexpansive-builder');?>
-                                <span class="rex-ripple"></span>
-														</label> -->
-														
-                        <!-- </div> -->
                     </div>
                 </div>
             </div>

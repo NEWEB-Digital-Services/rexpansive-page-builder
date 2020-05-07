@@ -1212,7 +1212,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		$columnShortcode.empty();
 		$columnShortcode.append(shortcode);
 
-		_updateSpanDataInDB(formID, columnContentData);
+		updateSpanDataInDB(formID, columnContentData);
 	}
 
 	function fixBlocksHeight() {
@@ -1354,7 +1354,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	var idsInPage = [];
 	var formOccurencies = {};
 
-	function _updateSpanDataInDB(formID, columnContentData) {
+	function updateSpanDataInDB(formID, columnContentData) {
+		if (!$formsInPage) return;
+
 		var $formInDB = $formsInPage[formID];
 		var row = columnContentData.target.row_number;
 		var column = columnContentData.target.column_number;
@@ -1757,6 +1759,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		wrapButtons: wrapButtons,
 
 		updateFormInDB: updateFormInDB,
+		updateSpanDataInDB: updateSpanDataInDB,
 
 		/* --- Form manipulation --- */
 		addField: addField,

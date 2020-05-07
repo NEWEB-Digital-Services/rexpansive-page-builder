@@ -1117,9 +1117,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	 * @returns {Object} data
 	 */
 	function generateColumnContentData($formColumn, spanDataExists) {
-		console.groupCollapsed( 'generateColumnContentData' );
-		console.trace(  );
-		console.groupEnd();
 		var columnContentData = {
 			wpcf7_required_field: '',
 			wpcf7_email: '',
@@ -1339,7 +1336,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 			columnContentData.input_height = columnContentDataEl.getAttribute('data-wpcf7-input-height')
 				? columnContentDataEl.getAttribute('data-wpcf7-input-height').toString()
-				: $formColumn.find('.' + cssSelector).css('height'); // @toedit
+				: $formColumn.find('.' + cssSelector).css('height'); /** @toedit */
 
 			// Font size
 			columnContentData.font_size = columnContentDataEl.getAttribute('data-wpcf7-font-size')
@@ -2383,11 +2380,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	 * @param  {Array} formData Data to update
 	 */
 	function _updateFormsData($elementWrappers, formData) {
-		console.groupCollapsed( '_updateFormsData' );
-		console.log( formData );
-		console.trace(  );
-		console.groupEnd();
-
 		$elementWrappers.each(function () {
 			var $formData = $(this).find('.rex-element-data').eq(0);
 
@@ -2519,6 +2511,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				$columnData.attr('data-button-border-color-hover', columnContentData.wpcf7_button.border_color_hover);
 			}
 		});
+
+		if (Rexbuilder_Util.editorMode) {
+			Rexbuilder_Rexwpcf7_Editor.updateSpanDataInDB(formID, columnContentData);
+		}
 	}
 
 	/**

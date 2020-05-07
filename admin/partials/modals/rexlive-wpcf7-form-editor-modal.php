@@ -252,22 +252,6 @@ defined('ABSPATH') or exit;
 																<div class="bl_d-iblock label-px ml12" style="font-size: 16px;">
 																	<?php _e('PX', 'rexpansive-builder');?>
 																</div>
-                                <!-- <div class="ml12">
-                                    <div>
-                                        <input id="rex-wpcf7-content-height-percentage" type="radio" class="rex-wpcf7-content-height-type with-gap" name="rex-wpcf7-content-height-type" value="percentage" checked />
-                                        <label for="rex-wpcf7-content-height-percentage">
-                                            <?php _e('%', 'rexpansive-builder');?>
-                                            <span class="rex-ripple"></span>
-                                        </label>
-                                    </div>
-                                    <div>
-                                        <input id="rex-wpcf7-content-height-pixel" type="radio" class="rex-wpcf7-content-height-type with-gap" name="rex-wpcf7-content-height-type" value="pixel" />
-                                        <label for="rex-wpcf7-content-height-pixel">
-                                            <?php _e('PX', 'rexpansive-builder');?>
-                                            <span class="rex-ripple"></span>
-                                        </label>
-                                    </div>
-                                </div> -->
                             </div>
                         </div>
                         <div class="rex-accordion close"> <!-- // Content Text -->

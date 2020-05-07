@@ -94,9 +94,6 @@ var Rexbuilder_Rexelement = (function ($) {
 	 * @returns {Object} data
 	 */
 	function generateElementData($elementWrapper, getAllData) {
-		console.groupCollapsed('generateElementData');
-		console.trace();
-		console.groupEnd();
 		getAllData = typeof getAllData === 'undefined' ? false : getAllData.toString() == 'true';
 
 		var elementData = {
