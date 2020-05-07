@@ -90,7 +90,7 @@ var Rexbuilder_Rexelement = (function ($) {
 		var newElementData = {};
 		var domData = $elementWrapper.get(0).querySelector('.rex-element-data').dataset;
 
-		// Element General Data
+		// Element general data
 		var elementTarget = {
 			element_id: $elementWrapper.attr('data-rex-element-id'),
 			element_number: parseInt($elementWrapper.attr('data-rex-element-number'))
@@ -98,6 +98,7 @@ var Rexbuilder_Rexelement = (function ($) {
 
 		var $form = $elementWrapper.find('.wpcf7-form');
 
+		// WPCF7
 		var wpcf7Data = {
 			background_color: domData.wpcf7BackgroundColor || $form.css('background-color'),
 			border_color: domData.wpcf7BorderColor || $form.css('border-color'),
@@ -138,15 +139,15 @@ var Rexbuilder_Rexelement = (function ($) {
 			padding_bottom: domData.wpcf7ColumnsPaddingBottom || ELEMENT_DATA_DEFAULTS.wpcf7_data.columns.padding_bottom
 		};
 
+		// Putting together WPCF7 data
 		wpcf7Data.content = wpcf7DataContent;
 		wpcf7Data.columns = wpcf7DataColumns;
 		wpcf7Data.options_different = _scanOptionsDifferent(elementTarget.element_id);
 
+		// Putting together all the element data
 		newElementData.synchronize = domData.synchronize || false;
 		newElementData.element_target = elementTarget;
 		newElementData.wpcf7_data = wpcf7Data;
-
-		console.log(newElementData);
 
 		return newElementData;
 	}

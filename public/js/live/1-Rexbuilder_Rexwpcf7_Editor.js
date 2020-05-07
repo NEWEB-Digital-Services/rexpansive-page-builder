@@ -471,15 +471,15 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 	function updateColumnContentLive(data) {
 		var formID = data.target.element_id;
-		var row = data.target.row_number;
-		var column = data.target.column_number;
+		var rowNumber = data.target.row_number;
+		var columnNumber = data.target.column_number;
 		var $formColumns = Rexbuilder_Util.$rexContainer.find(
 			'.rex-element-wrapper[data-rex-element-id="' +
 				formID +
 				'"] .wpcf7-row[wpcf7-row-number=\'' +
-				row +
+				rowNumber +
 				"'] .wpcf7-column[wpcf7-column-number='" +
-				column +
+				columnNumber +
 				"']"
 		); // > 1 if there are > 1 forms with the same ID in page
 		var fieldClass = data.content.field_class;
@@ -523,38 +523,68 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			case 'border-radius':
 			case 'border-color':
 				if (inputType != 'file' && inputType != 'radio' && inputType != 'acceptance') {
-					Rexbuilder_Rexwpcf7.updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
+					Rexbuilder_Rexwpcf7.updateColumnContentRule(
+						formID,
+						rowNumber,
+						columnNumber,
+						cssSelector,
+						propertyName,
+						newValue
+					);
 				}
 				break;
 			case 'font-size':
-				Rexbuilder_Rexwpcf7.updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
 				Rexbuilder_Rexwpcf7.updateColumnContentRule(
 					formID,
-					row,
-					column,
+					rowNumber,
+					columnNumber,
+					cssSelector,
+					propertyName,
+					newValue
+				);
+				Rexbuilder_Rexwpcf7.updateColumnContentRule(
+					formID,
+					rowNumber,
+					columnNumber,
 					cssSelector + ' .wpcf7-radio-label',
 					propertyName,
 					newValue
 				);
 				Rexbuilder_Rexwpcf7.updateColumnContentRule(
 					formID,
-					row,
-					column,
+					rowNumber,
+					columnNumber,
 					cssSelector + ' .wpcf7-list-item-label',
 					propertyName,
 					newValue
 				);
 				break;
 			case 'width':
+				Rexbuilder_Rexwpcf7.updateColumnContentRule(
+					formID,
+					rowNumber,
+					columnNumber,
+					cssSelector,
+					propertyName,
+					Rexbuilder_Rexwpcf7.guessWidthToSet(inputType, formID, rowNumber, columnNumber, newValue)
+				);
+				break;
 			case 'height':
 			case 'text-color':
-				Rexbuilder_Rexwpcf7.updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
+				Rexbuilder_Rexwpcf7.updateColumnContentRule(
+					formID,
+					rowNumber,
+					columnNumber,
+					cssSelector,
+					propertyName,
+					newValue
+				);
 				break;
 			case 'placeholder-color':
 				Rexbuilder_Rexwpcf7.updateColumnContentRule(
 					formID,
-					row,
-					column,
+					rowNumber,
+					columnNumber,
 					cssSelector + '::placeholder',
 					propertyName,
 					newValue
@@ -591,37 +621,65 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				if (inputType == 'file') {
 					Rexbuilder_Rexwpcf7.updateColumnContentRule(
 						formID,
-						row,
-						column,
+						rowNumber,
+						columnNumber,
 						cssSelector + ' label',
 						propertyName,
 						newValue
 					);
 				} else {
-					Rexbuilder_Rexwpcf7.updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
+					Rexbuilder_Rexwpcf7.updateColumnContentRule(
+						formID,
+						rowNumber,
+						columnNumber,
+						cssSelector,
+						propertyName,
+						newValue
+					);
 				}
 				break;
 			case 'background-color-hover':
 			case 'border-color-hover':
 				if (inputType != 'file' && inputType != 'radio' && inputType != 'acceptance') {
-					Rexbuilder_Rexwpcf7.updateColumnContentHoverRule(formID, row, column, cssSelector, propertyName, newValue);
+					Rexbuilder_Rexwpcf7.updateColumnContentHoverRule(
+						formID,
+						rowNumber,
+						columnNumber,
+						cssSelector,
+						propertyName,
+						newValue
+					);
 				}
 				break;
 			case 'text-color-hover':
-				Rexbuilder_Rexwpcf7.updateColumnContentHoverRule(formID, row, column, cssSelector, propertyName, newValue);
+				Rexbuilder_Rexwpcf7.updateColumnContentHoverRule(
+					formID,
+					rowNumber,
+					columnNumber,
+					cssSelector,
+					propertyName,
+					newValue
+				);
 				break;
 			case 'placeholder-color-hover':
 				Rexbuilder_Rexwpcf7.updateColumnContentPlaceholderHoverRule(
 					formID,
-					row,
-					column,
+					rowNumber,
+					columnNumber,
 					cssSelector,
 					propertyName,
 					newValue
 				);
 				break;
 			case 'text-focus':
-				Rexbuilder_Rexwpcf7.updateColumnContentFocusRule(formID, row, column, cssSelector, propertyName, newValue);
+				Rexbuilder_Rexwpcf7.updateColumnContentFocusRule(
+					formID,
+					rowNumber,
+					columnNumber,
+					cssSelector,
+					propertyName,
+					newValue
+				);
 				break;
 			case 'button-text-color-hover':
 			case 'button-background-color-hover':
@@ -629,14 +687,21 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				if (inputType == 'file') {
 					Rexbuilder_Rexwpcf7.updateColumnContentHoverRule(
 						formID,
-						row,
-						column,
+						rowNumber,
+						columnNumber,
 						cssSelector + ' label',
 						propertyName,
 						newValue
 					);
 				} else {
-					Rexbuilder_Rexwpcf7.updateColumnContentHoverRule(formID, row, column, cssSelector, propertyName, newValue);
+					Rexbuilder_Rexwpcf7.updateColumnContentHoverRule(
+						formID,
+						rowNumber,
+						columnNumber,
+						cssSelector,
+						propertyName,
+						newValue
+					);
 				}
 				break;
 			case 'wpcf7-required':
