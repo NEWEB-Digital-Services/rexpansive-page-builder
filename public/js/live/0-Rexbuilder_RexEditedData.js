@@ -34,6 +34,12 @@
 		'image_size',
 		'image_bg_elem_active',
 		'type_bg_image',
+		'video_bg_id',					// mp4 video background
+		'video_bg_width',
+		'video_bg_height',
+		'video_mp4_url',
+		'video_bg_url_youtube',			// youtube video background
+		'video_bg_url_vimeo',			// vimeo video background
 		'photoswipe',					// photoswipe
 		'block_custom_class',			// custom class
 		'block_padding',				// block padding

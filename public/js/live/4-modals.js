@@ -1605,7 +1605,25 @@
         $itemContent: $itemContent,
         videoOpt: videoOptions
       };
-      $elem.attr("data-rexlive-element-edited", true);      
+      $elem.attr("data-rexlive-element-edited", true);   
+
+      switch( data.typeVideo ) {
+        case 'mp4':
+          Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_id' );
+          Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_width' );
+          Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_height' );
+          Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_mp4_url' );
+          break;
+        case 'youtube':
+          Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_url_youtube' );
+          break;
+        case 'vimeo':
+          Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_url_vimeo' );
+          break;
+        default:
+          break;
+      }
+
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }

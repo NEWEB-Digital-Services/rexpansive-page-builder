@@ -296,7 +296,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
   function handleInsertVideo(e) {
     var data = e.settings.data_to_send;
-    if (!(typeof data.typeVideo == "undefined")) {mì
+    if (!(typeof data.typeVideo == "undefined")) {
       var $section;
 
       if (data.sectionTarget.modelNumber != "") {

@@ -1177,13 +1177,25 @@ var Rex_Save_Listeners = (function($) {
         props["type_bg_image"] = type_bg_block;
       }
 
-      props["video_bg_id"] = video_bg_id;
-      props["video_bg_width"] = video_bg_width;
-      props["video_bg_height"] = video_bg_height;
-      props["video_mp4_url"] = video_mp4_url;
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_id ) ) {
+        props["video_bg_id"] = video_bg_id;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_width ) ) {
+        props["video_bg_width"] = video_bg_width;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_height ) ) {
+        props["video_bg_height"] = video_bg_height;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_mp4_url ) ) {
+        props["video_mp4_url"] = video_mp4_url;
+      }
 
-      props["video_bg_url_youtube"] = video_bg_url;
-      props["video_bg_url_vimeo"] = video_bg_url_vimeo;
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_url_youtube ) ) {
+        props["video_bg_url_youtube"] = video_bg_url;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_url_vimeo ) ) {
+        props["video_bg_url_vimeo"] = video_bg_url_vimeo;
+      }
 
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.photoswipe ) ) {
         props["photoswipe"] = photoswipe;
