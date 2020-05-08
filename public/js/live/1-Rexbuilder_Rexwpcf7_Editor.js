@@ -474,10 +474,10 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		textEditorCf7Instance.updateHeight();
 	}
 
-	function updateColumnContentLive(data) {
-		var formID = data.target.element_id;
-		var rowNumber = data.target.row_number;
-		var columnNumber = data.target.column_number;
+	function updateColumnContentLive(wpcf7Data) {
+		var formID = wpcf7Data.target.element_id;
+		var rowNumber = wpcf7Data.target.row_number;
+		var columnNumber = wpcf7Data.target.column_number;
 		var $formColumns = Rexbuilder_Util.$rexContainer.find(
 			'.rex-element-wrapper[data-rex-element-id="' +
 				formID +
@@ -486,16 +486,17 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				"'] .wpcf7-column[wpcf7-column-number='" +
 				columnNumber +
 				"']"
-		); // > 1 if there are > 1 forms with the same ID in page
-		var fieldClass = data.content.field_class;
-		var inputType = data.content.input_type;
-		var propertyName = data.propertyName;
-		var propertyType = data.propertyType;
-		var newValue = data.newValue;
+		);
+		console.log($formColumns.length); // > 1 if there are > 1 forms with the same ID in page
+		var fieldClass = wpcf7Data.content.field_class;
+		var inputType = wpcf7Data.content.input_type;
+		var propertyName = wpcf7Data.propertyName;
+		var propertyType = wpcf7Data.propertyType;
+		var newValue = wpcf7Data.newValue;
 
-		var isSetRequiredField = data.content.wpcf7_required_field;
-		var onlyNumbers = data.content.wpcf7_only_numbers;
-		var isSetEmail = data.content.wpcf7_email;
+		var isSetRequiredField = wpcf7Data.content.wpcf7_required_field;
+		var onlyNumbers = wpcf7Data.content.wpcf7_only_numbers;
+		var isSetEmail = wpcf7Data.content.wpcf7_email;
 
 		inputType = inputType === 'text' ? (onlyNumbers ? 'number' : isSetEmail ? 'email' : 'text') : inputType;
 
@@ -863,11 +864,13 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 				switch (inputType) {
 					case 'select':
-						for (var i = 0; i < numberOfFormsInPage; i++) {
-							for (var j = 0; j < newValue.length; j++) {
-								$formColumns.find('.wpcf7-select option').not("[disabled='disabled']").eq(j).text(newValue[j]);
-								$formColumns.find('.wpcf7-select option').not("[disabled='disabled']").eq(j).val(newValue[j]);
-							}
+						console.log($formColumns.find('.wpcf7-select option:not([disabled="disabled"])'));
+						for (var i = 0; i < newValue.fields.length; i++) {
+							$formColumns
+								.find('.wpcf7-select option:not([disabled="disabled"])')
+								.eq(i)
+								.text(newValue.fields[i])
+								.val(newValue.fields[i]);
 						}
 						break;
 					case 'radio':
@@ -882,8 +885,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 								if (numberOfInputs < listLength) {
 									for (var i = 0; i < listLength - numberOfInputs; i++) {
 										updateColumnContentLive({
-											target: data.target,
-											content: data.content,
+											target: wpcf7Data.target,
+											content: wpcf7Data.content,
 											propertyType: 'wpcf7-list-add',
 											propertyName: undefined,
 											newValue: undefined
@@ -892,8 +895,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 								} else if (numberOfInputs > listLength) {
 									for (var i = 0; i < numberOfInputs - listLength; i++) {
 										updateColumnContentLive({
-											target: data.target,
-											content: data.content,
+											target: wpcf7Data.target,
+											content: wpcf7Data.content,
 											propertyType: 'wpcf7-list-remove',
 											propertyName: undefined,
 											newValue: numberOfInputs - 1 - i
@@ -910,16 +913,16 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 								}
 							case 'writing':
 								for (var i = 0; i < numberOfFormsInPage; i++) {
-									for (var j = 0; j < listLength; j++) {
+									for (var i = 0; i < listLength; i++) {
 										$formColumns
 											.eq(i)
 											.find('.wpcf7-radio .wpcf7-list-item')
-											.eq(j)
+											.eq(i)
 											.find('input')
-											.val(list[j])
+											.val(list[i])
 											.end()
 											.find('.wpcf7-radio-label')
-											.text(list[j]);
+											.text(list[i]);
 									}
 								}
 								break;
@@ -928,10 +931,10 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 						}
 
 						for (var i = 0; i < numberOfFormsInPage; i++) {
-							for (var j = 0; j < listLength; j++) {
+							for (var i = 0; i < listLength; i++) {
 								$formColumns.find('.wpcf7-radio .wpcf7-list-item').removeClass('first').removeClass('last');
-								$formColumns.find('.wpcf7-radio .wpcf7-list-item').eq(j).find('input').val(list[j]);
-								$formColumns.find('.wpcf7-radio .wpcf7-list-item').eq(j).find('.wpcf7-radio-label').text(list[j]);
+								$formColumns.find('.wpcf7-radio .wpcf7-list-item').eq(i).find('input').val(list[i]);
+								$formColumns.find('.wpcf7-radio .wpcf7-list-item').eq(i).find('.wpcf7-radio-label').text(list[i]);
 							}
 						}
 						$formColumns.find('.wpcf7-radio .wpcf7-list-item').eq(0).addClass('first');
@@ -1019,9 +1022,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 							var $radios = $actualInput.find('.wpcf7-list-item');
 
-							for (var j = 0; j < $radios.length; j++) {
-								var classToRemove = /wpcf7-radio\-[0-9]+/.exec($radios.find("[type='radio']")[j].id)[0];
-								$($radios.find("[type='radio']")[j]).removeClass(classToRemove);
+							for (var i = 0; i < $radios.length; i++) {
+								var classToRemove = /wpcf7-radio\-[0-9]+/.exec($radios.find("[type='radio']")[i].id)[0];
+								$($radios.find("[type='radio']")[i]).removeClass(classToRemove);
 							}
 						}
 
