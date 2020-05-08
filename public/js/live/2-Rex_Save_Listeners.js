@@ -1497,12 +1497,24 @@ var Rex_Save_Listeners = (function($) {
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_size ) ) {
         props["image_size"] = image_size;
       }
-      props["video_bg_id"] = video_bg_id_section;
-      props["video_bg_width_section"] = video_bg_width_section;
-      props["video_bg_height_section"] = video_bg_height_section;
-      props["video_mp4_url"] = video_mp4_url;
-      props["video_bg_url_section"] = video_bg_url_section;
-      props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_id ) ) {
+        props["video_bg_id"] = video_bg_id_section;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_width_section ) ) {
+        props["video_bg_width_section"] = video_bg_width_section;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_height_section ) ) {
+        props["video_bg_height_section"] = video_bg_height_section;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_mp4_url ) ) {
+        props["video_mp4_url"] = video_mp4_url;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_url_section ) ) {
+        props["video_bg_url_section"] = video_bg_url_section;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_url_vimeo_section ) ) {
+        props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
+      }
       props["full_height"] = full_height;
       props["block_distance"] = block_distance;
       props["layout"] = layout;
@@ -1518,6 +1530,7 @@ var Rex_Save_Listeners = (function($) {
       props["row_margin_bottom"] = row_margin_bottom;
       props["row_margin_right"] = row_margin_right;
       props["row_margin_left"] = row_margin_left;
+
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_overlay_color ) ) {
         props["row_overlay_color"] = row_overlay_color;
       }

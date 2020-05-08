@@ -17,7 +17,7 @@ const svgSprite = require('gulp-svg-sprite');
 /** SPRITES TASKS */
 
 var	config = {
-		shape: {
+	shape: {
 		// dimension		: {			// Set maximum dimensions
 		//   maxWidth	: 32,
 		//   maxHeight	: 32
@@ -177,6 +177,7 @@ var builderlive_admin = [
 	'admin/js/builderlive/Rexlive_Gradient_Utils.js',
 	'admin/js/builderlive/Rexlive_Page_Margins.js',
 	'admin/js/builderlive/Rexlive_Page_Settings_Modal.js',
+	'admin/js/builderlive/Rexlive_Resynch_Content_Modal.js',
 	'admin/js/builderlive/Rexbuilder_Starting.js',
 ];
 

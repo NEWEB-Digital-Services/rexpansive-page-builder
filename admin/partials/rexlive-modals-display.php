@@ -1010,6 +1010,7 @@ defined('ABSPATH') or exit;
 <?php include_once( 'modals/rexlive-model-save-modal.php' ); ?>
 
 <?php include_once( 'modals/rexlive-change-layout-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-resynch-content-modal.php' ); ?>
 
 <div class="rex-modal-wrap">
     <div id="rexlive-onbeforeunload" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">

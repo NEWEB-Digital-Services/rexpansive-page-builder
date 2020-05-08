@@ -42,6 +42,7 @@
      * 33) Model : rexlive:modelBecameSection
      * 34) Buttons: rexlive:update_button_page
      * 35) Custom CSS : rexlive:getCustomCss
+     * 36) Row | Block : rexlive:apply_reSynchContent
      */
 
     $document.on("rexlive:set_row_fullHeight", function(e) {
@@ -752,6 +753,7 @@
       $section.attr("data-rexlive-section-edited", true);
 
       // tracing data
+      console.log('che succiede?')
       Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_overlay_color' );
       Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_overlay_active' );
 
@@ -2233,6 +2235,31 @@
       };
 
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    });
+
+    // apply the reset of the content properties to default
+    $document.on('rexlive:apply_reSynchContent', function(event) {
+      // default layout, do nothing
+      if (Rexbuilder_Util.activeLayout == "default") return;
+
+      var defaultContent = document.getElementById('rexbuilder-layout-data').querySelector('.customization-wrap[data-customization-name="default"]').querySelector('.section-targets[data-section-rex-id="' + event.settings.data.targetInfo.sectionID + '"]').textContent;
+      var defaultProps = ( '' !== defaultContent ? JSON.parse( defaultContent ) : {} );
+
+      var $section;
+
+      if ( 'self' === event.settings.data.targetInfo.rexID ) {
+
+        // live synch of options
+        var traceSectionData = Rexbuilder_Util.editedDataInfo.getSectionData( event.settings.data.targetInfo.sectionID );
+        Rexbuilder_Dom_Util.updateBulkSection( event.settings.data.targetInfo, traceSectionData, defaultProps );
+
+        // reset: no property customized on this layout
+        Rexbuilder_Util.editedDataInfo.setBulkSectionData( event.settings.data.targetInfo.sectionID, false );
+      } else {
+        // live synch of options
+        // reset: no property customized on this layout
+        Rexbuilder_Util.editedDataInfo.setBulkBlockData( event.settings.data.targetInfo.sectionID, event.settings.data.targetInfo.rexID, false );
+      }
     });
 
     /**

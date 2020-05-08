@@ -1279,7 +1279,8 @@ var Rexbuilder_Util = (function($) {
       var emptySectionData = [{
         section_rex_id: document.querySelector('.rexpansive_section.empty-section').getAttribute('data-rexlive-section-id'),
         targets:[{
-          name:'self'
+          name:'self',
+          props: {}
         }]
       }];
       Rexbuilder_Util.editedDataInfo = new RexEditedData( emptySectionData );
@@ -1383,6 +1384,10 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
+    // tracing page data
+    Rexbuilder_Util.editedDataInfo = new RexEditedData( layoutSelectedSections );
+    console.log(Rexbuilder_Util.editedDataInfo);
+
     var mergedEdits = _mergeSections(
       ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ),
       defaultLayoutSections
@@ -1396,10 +1401,6 @@ var Rexbuilder_Util = (function($) {
     var sectionDomOrder = [];
 
     var meIndex, section, $section;
-
-    // tracing page data
-    Rexbuilder_Util.editedDataInfo = new RexEditedData( mergedEdits );
-    console.log(Rexbuilder_Util.editedDataInfo);
 
     for( meIndex in mergedEdits ) {
       if (!mergedEdits[meIndex].notInSection || chosenLayoutName == "default") {

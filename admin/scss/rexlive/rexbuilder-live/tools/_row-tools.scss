@@ -223,6 +223,14 @@
   // }
 }
 
+.rex-container {
+  &[data-rex-layout-selected=default] {
+    .tool-button--reset {
+      display: none;
+    }
+  }
+}
+
 .activeRowTools {
   .section-toolBox {
     @include view-row-tools();

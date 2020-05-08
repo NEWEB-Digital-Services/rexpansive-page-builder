@@ -1775,6 +1775,45 @@ var Rexbuilder_Dom_Util = (function($) {
   var _updateSectionFullHeight = function(data) {
     data.galleryInstance.updateFullHeight(data.fullHeight.toString() == "true");
   };
+
+  function _updateBulkSection( targetInfo, changedData, defaultData ) {
+    var $section;
+    if ( targetInfo.modelNumber != "" ) {
+      $section = Rexbuilder_Util.$rexContainer.find(
+        'section[data-rexlive-section-id="' +
+          targetInfo.sectionID +
+          '"][data-rexlive-model-number="' +
+          targetInfo.modelNumber +
+          '"]'
+      );
+    } else {
+      $section = Rexbuilder_Util.$rexContainer.find( 'section[data-rexlive-section-id="' + targetInfo.sectionID + '"]' );
+    }
+
+    var defaultProps;
+    var i, tot = defaultData.length;
+    for( i=0; i<tot; i++ ) {
+      if ( 'self' === defaultData[i].name ) {
+        defaultProps = defaultData[i].props;
+        break;
+      }
+    }
+
+    for( var prop in changedData ) {
+      if ( ! changedData[prop] ) continue;
+      switch(prop) {
+        case 'row_overlay_color':
+        // case 'row_overlay_active':         // they go togheter, find a way to prevent double call
+          _updateSectionOverlay( $section, {
+            color: defaultProps[prop],
+            active: true
+          });
+          break;
+        default:
+          break;
+      }
+    }
+  };
   
   /**
    * @param {String} HTML representing a single element
@@ -2037,6 +2076,7 @@ var Rexbuilder_Dom_Util = (function($) {
     updateSectionWidth: _updateSectionWidth,
     updateRowDistancesData: _updateRowDistancesData,
     updateGridLayoutDomProperties: _updateGridLayoutDomProperties,
-    htmlToElement: htmlToElement
+    htmlToElement: htmlToElement,
+    updateBulkSection: _updateBulkSection
   };
 })(jQuery);

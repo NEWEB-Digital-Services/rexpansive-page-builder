@@ -560,7 +560,8 @@ class Rexbuilder_Public
 				'drag' => __( 'Drag', 'rexpansive-builder' ),
 				'clone' => __( 'Clone', 'rexpansive-builder' ),
 				'settings' => __( 'Settings', 'rexpansive-builder' ),
-				'add_row' => __( 'Add Row', 'rexpansive-builder' )
+				'add_row' => __( 'Add Row', 'rexpansive-builder' ),
+				'synch_content' => __( 'Reset', 'rexpansive-builder' )
 			);
 		}
 

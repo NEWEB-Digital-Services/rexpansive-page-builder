@@ -104,11 +104,19 @@
 
 				if ( 'self' === targetState.name ) { // row
 					for ( z=0; z < tracePropsSection.length; z++ ) {
-						targetState.props[tracePropsSection[z]] = false;
+						if (  'undefined' === typeof data[i].targets[j].props[tracePropsSection[z]] || '' === data[i].targets[j].props[tracePropsSection[z]] ) {
+							targetState.props[tracePropsSection[z]] = false;
+						} else {
+							targetState.props[tracePropsSection[z]] = true;
+						}
 					}
 				} else {	// block
 					for ( z=0; z < tracePropsBlock.length; z++ ) {
-						targetState.props[tracePropsBlock[z]] = false;
+						if ( 'undefined' === typeof data[i].targets[j].props[tracePropsBlock[z]] || '' === data[i].targets[j].props[tracePropsBlock[z]] ) {
+							targetState.props[tracePropsBlock[z]] = false;
+						} else {
+							targetState.props[tracePropsBlock[z]] = true;
+						}
 					}
 				}
 				state.targets.push( targetState );
@@ -183,6 +191,38 @@
 		if ( false === sectionPropsIndex ) return;
 
 		this.editedInfo[sectiondIndex].targets[sectionPropsIndex].props[prop] = edited;
+	}
+
+	/**
+	 * Set data of a prop
+	 * @param {String} sectionId  section id
+	 * @param {String} targetName target name
+	 * @param {Boolen} edited     was the property edit
+	 */
+	function _setBulkData( sectionId, targetName, edited ) {
+		edited = 'undefined' !== typeof edited ? edited : true;
+		var sectiondIndex = _getSectionDataIndex.call( this, sectionId );
+
+		if ( sectiondIndex === false ) return;
+
+		var sectionPropsIndex = _getPropsIndex.call( this, sectiondIndex, targetName );
+
+		if ( false === sectionPropsIndex ) return;
+
+		var i, tot;
+		if( 'self' === targetName ) {
+			// bulk set section props
+			tot = tracePropsSection.length;
+			for( i=0; i<tot; i++ ) {
+				this.editedInfo[sectiondIndex].targets[sectionPropsIndex].props[tracePropsSection[i]] = edited;
+			}
+		} else {
+			// bulk set block props
+			tot = tracePropsBlock.length;
+			for( i=0; i<tot; i++ ) {
+				this.editedInfo[sectiondIndex].targets[sectionPropsIndex].props[tracePropsBlock[i]] = edited;
+			}
+		}
 	}
 
 	/** PUBLIC METHODS */
@@ -289,6 +329,41 @@
 	*/
 	RexEditedData.prototype.setBlockData = function( sectionId, blockId, prop, edited ) {
 		_setData.call( this, sectionId, blockId, prop, edited );
+	};
+
+	/**
+	 * Set all edited data of a section
+	 * @param {String} sectionId section to set
+	 * @param {Bool} edited    the data has changed or not?
+	 */
+	RexEditedData.prototype.setBulkSectionData = function( sectionId, edited ){
+		_setBulkData.call( this, sectionId, 'self', edited );
+	};
+
+	/**
+	 * Set all edited data of a block
+	 * @param {String} sectionId section to set
+	 * @param {String} blockId   block to set
+	 * @param {Bool} edited    the data has changed or not?
+	 */
+	RexEditedData.prototype.setBulkBlockData = function( sectionId, blockId, edited ){
+		_setBulkData.call( this, sectionId, blockId, edited );
+	};
+
+	/**
+	 * Get trace props section
+	 * @return {Array} array of section props synched between layouts
+	 */
+	RexEditedData.getTracePropsSection = function() {
+		return tracePropsSection;
+	};
+
+	/**
+	 * Get trace props block
+	 * @return {Array} array of block props synched between layouts
+	 */
+	RexEditedData.getTracePropsBlock = function() {
+		return tracePropsBlock;
 	};
 
 	return RexEditedData;
