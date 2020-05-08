@@ -4,25 +4,23 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 	/* ===== GLOBAL VARIABLES ===== */
 
 	var elementsInPage;
-	var elementDataDefaults;
 
 	/* ===== PUBLIC METHODS ===== */
 
 	/**
 	 * Fixes the dragged element in the DOM. Called right after
 	 * the drag & drop event in Rexlive_Element_Import.js
-	 * @param	{Object}	data	Contains mouse position of the drop.
-	 * @since 2.0.4
+	 * @param		{Object}	data	Contains mouse position of the drop.
+	 * @since 	2.0.4
 	 */
 	function fixImportedElement(data) {
 		var $elementWrapper = Rexbuilder_Util.$rexContainer.find('.rex-loading-element .rex-element-wrapper');
 		var elementID = $elementWrapper.attr('data-rex-element-id');
-		var $elementsParagraph = $elementWrapper.parents('.rex-elements-paragraph').eq(0);
 		var $textWrap = $elementWrapper.parents('.text-wrap').eq(0);
 		var $gridGallery = $elementWrapper.parents('.grid-stack-row').eq(0);
 		var $section = $elementWrapper.parents('.rexpansive_section').eq(0);
 
-		// Necessary to detect
+		// Necessary to detect the element
 		$elementWrapper.addClass('importing-element');
 
 		// Removing element unnecessary data
@@ -31,16 +29,15 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 		var dropType;
 		if ($textWrap.length == 0) {
-			if ($gridGallery.length != 0) {
+			if ($gridGallery.length !== 0) {
 				dropType = 'inside-row';
-			} else {
-				dropType = 'inside-new-row';
 			}
-		} else if ($elementsParagraph.length != 0) {
-			dropType = 'inside-paragraph';
 		} else {
+			// Is this necessary?
 			dropType = 'inside-block';
 		}
+
+		console.log(dropType);
 
 		// Getting the html of the element
 		$.ajax({
@@ -86,10 +83,8 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 					switch (dropType) {
 						case 'inside-block':
 							$elementWrapper.wrap('<span class="rex-elements-paragraph"></span>');
-							_endFixingImportedElement($elementWrapper, formFieldsString);
-							Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
-							break;
-						case 'inside-paragraph':
+							$textWrap.prepend($elementWrapper);
+
 							_endFixingImportedElement($elementWrapper, formFieldsString);
 							Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
 							break;
@@ -106,12 +101,11 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 							};
 							Rexbuilder_Util.$document.trigger(ev);
 							break;
-						case 'inside-new-row':
-							// @todo
-							break;
 						default:
 							break;
 					}
+
+					console.log( $elementData.attr('data-synchronize') );
 				}
 			},
 			error: function (response) {}
@@ -123,8 +117,10 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		var $newDOMElement = data.$elementAdded;
 		var $elementWrapper = data.$elementWrapper;
 		var formFieldsString = data.formFieldsString;
+
 		$elementWrapper.detach().prependTo($newDOMElement.find('.text-wrap').eq(0));
 		$elementWrapper.wrap('<span class="rex-elements-paragraph"></span>');
+
 		_endFixingImportedElement($elementWrapper, formFieldsString);
 	}
 
@@ -958,51 +954,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 	function init() {
 		elementsInPage = [];
-		elementDataDefaults = {
-			synchronize: false,
-			wpcf7_data: {
-				background_color: 'rgb(0, 0, 0, 0)',
-				border_color: 'rgb(0, 0, 0, 1)',
-				border_width: '2px',
-				margin_top: '5px',
-				margin_left: '5px',
-				margin_right: '5px',
-				margin_bottom: '5px',
-				error_message_color: 'rgb(0, 0, 0, 1)',
-				error_message_font_size: '15px',
-				send_message_color: 'rgb(0, 0, 0, 1)',
-				send_message_font_size: '15px',
-				columns: {
-					padding_top: '15px',
-					padding_left: '15px',
-					padding_right: '15px',
-					padding_bottom: '15px'
-				},
-				content: {
-					background_color: 'rgb(255, 255, 255, 1)',
-					background_color_hover: 'rgb(255, 255, 255, 1)',
-					text_color: 'rgb(0, 0, 0, 1)',
-					text_color_hover: 'rgb(0, 0, 0, 1)',
-					border_color: 'rgb(0, 0, 0, 1)',
-					border_color_hover: 'rgb(0, 0, 0, 1)',
-					width: '200px',
-					height: '100px',
-					font_size: '15px',
-					border_width: '1px',
-					border_radius: '0px'
-				},
-				options_different: {
-					width: true,
-					height: true,
-					font_size: true,
-					text_color: true
-				}
-			},
-			element_target: {
-				element_id: '',
-				element_number: ''
-			}
-		};
 
 		_addElementToolsToDOM();
 		_updateElementListInPage();

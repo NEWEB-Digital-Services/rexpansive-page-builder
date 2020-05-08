@@ -3109,14 +3109,6 @@ var TextEditor = (function ($) {
 		updateHeight: function (updateOnlyCurrent) {
 			updateOnlyCurrent = updateOnlyCurrent || false;
 
-			var formsInPage = Array.prototype.slice.call(
-				Rexbuilder_Util.rexContainer.querySelectorAll(
-					'.rex-element-wrapper[data-rex-element-id="' + rexElementInstance.traceElementId + '"] .wpcf7-form'
-				)
-			);
-
-			if (0 === formsInPage.length) return;
-
 			var $textWrap;
 
 			function setTextWrapHeight(form) {
@@ -3132,6 +3124,14 @@ var TextEditor = (function ($) {
 
 				setTextWrapHeight(this.traceForm);
 			} else {
+				var formsInPage = Array.prototype.slice.call(
+					Rexbuilder_Util.rexContainer.querySelectorAll(
+						'.rex-element-wrapper[data-rex-element-id="' + rexElementInstance.traceElementId + '"] .wpcf7-form'
+					)
+				);
+
+				if (0 === formsInPage.length) return;
+
 				formsInPage.forEach(setTextWrapHeight);
 			}
 		},
