@@ -2719,10 +2719,11 @@ var TextEditor = (function ($) {
     }
   });
 
-  var RexElementExtension = MediumEditor.Extension.extend({
+	var RexElementExtension = MediumEditor.Extension.extend({
 		name: 'rexelement',
 		init: function () {
 			this.traceElement = null;
+			this.traceElementId = '';
 			this.containsWpcf7;
 
 			// Trace the cursor position
@@ -2750,6 +2751,7 @@ var TextEditor = (function ($) {
 
 				if (elementWrapper) {
 					this.traceElement = elementWrapper;
+					this.traceElementId = elementWrapper.dataset.rexElementId;
 					this.containsWpcf7 = !!this.traceElement.querySelector('.wpcf7');
 				}
 			}
@@ -2775,12 +2777,8 @@ var TextEditor = (function ($) {
 			var $elementWrapper = $(this.traceElement);
 			var $paragraphContainer = $elementWrapper.parents('p.rex-elements-paragraph');
 
-			if (
-				'undefined' !== typeof Rexbuilder_Rexwpcf7 &&
-				0 !== $elementWrapper.get(0).getElementsByClassName('wpcf7-form').length
-			) {
-				var formID = $elementWrapper.get(0).getAttribute('data-rex-element-id');
-				Rexbuilder_Rexwpcf7_Editor.removeFormInPage(formID);
+			if (this.containsWpcf7) {
+				Rexbuilder_Rexwpcf7_Editor.removeFormInPage(this.traceElementId);
 			}
 
 			$elementWrapper.remove();
@@ -2857,11 +2855,13 @@ var TextEditor = (function ($) {
 
 			// Trace the cursor position
 			this.subscribe('editableMouseover', this.handleMouseOver.bind(this));
+
 			this.subscribe('blur', this.handleBlur.bind(this));
 
-			Rexbuilder_Rexwpcf7_Editor.setCf7EditorInstance(this);
+			// Listener used to clear outlines after closing modals
+			Rexbuilder_Util.$document.on('rexlive:clearFormOutlines', this.clearOutlines.bind(this));
 
-			Rexbuilder_Util.$document.on('rexlive:clearFormOutlines', this.clearOutlines.bind(this))
+			Rexbuilder_Rexwpcf7_Editor.setCf7EditorInstance(this);
 		},
 
 		delegateClickContainer: function (clickEvent) {
@@ -2908,11 +2908,11 @@ var TextEditor = (function ($) {
 					break;
 				case 'editElement':
 					// Edit the element
-					this.base.getExtensionByName('rexelement').editRexelement();
+					rexElementInstance.editRexelement();
 					break;
-					case 'deleteElement':
-						// Delete the element
-					this.base.getExtensionByName('rexelement').deleteRexelement();
+				case 'deleteElement':
+					// Delete the element
+					rexElementInstance.deleteRexelement();
 					break;
 
 				default:
@@ -2928,12 +2928,12 @@ var TextEditor = (function ($) {
 		 * @since		2.0.2
 		 */
 		handleMouseOver: function (mouseEvent, editableElement) {
-			this.traceTextWrap = editableElement
-			this.$traceTextWrap = $(editableElement)
+			this.traceTextWrap = editableElement;
+			this.$traceTextWrap = $(editableElement);
 
 			this.traceGsItem = $(this.traceTextWrap).parents('.grid-stack-item').get(0);
-			var target = mouseEvent.target;
 			var section = $(this.traceTextWrap).parents('.rexpansive_section').get(0);
+			var target = mouseEvent.target;
 
 			if (
 				Rexbuilder_Util.hasClass(this.traceGsItem, 'item--me-focus') &&
@@ -2946,7 +2946,8 @@ var TextEditor = (function ($) {
 					// The pointer is inside a form
 					this.traceForm = contactForm;
 					var contactFormRow = target.matches('.wpcf7-row') ? target : $(target).parents('.wpcf7-row').get(0);
-					this.updateHeight();
+
+					this.updateHeight(true);
 
 					if (contactFormRow) {
 						// The pointer is inside a form row
@@ -2976,58 +2977,47 @@ var TextEditor = (function ($) {
 		addColumnContent: function () {
 			Rexbuilder_Util_Editor.builderEdited(false);
 
-			var elementWrapper = rexElementInstance.traceElement;
-
 			var data = {
 				eventName: 'rexlive:openRexWpcf7AddContent',
 				insertionPoint: {
-					formID: elementWrapper.getAttribute('data-rex-element-id'),
+					formID: rexElementInstance.traceElementId,
 					row_number: this.traceRow.getAttribute('wpcf7-row-number'),
 					column_number: this.traceColumn.getAttribute('wpcf7-column-number')
 				}
 			};
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
-			this.updateHeight();
-			
-			Rexbuilder_Rexelement_Editor.focusRexElement(this.$traceTextWrap)
+			Rexbuilder_Rexelement_Editor.focusRexElement(this.$traceTextWrap);
 		},
 
 		addSelectedColumns: function (target) {
 			Rexbuilder_Util_Editor.builderEdited(false);
 
-			var formID = rexElementInstance.traceElement.getAttribute('data-rex-element-id');
 			var columnsSelected = parseInt(target.className.match(/select-(\d)-columns?/)[1]);
 
-			Rexbuilder_Rexwpcf7_Editor.addNewRow(formID, columnsSelected);
-
+			Rexbuilder_Rexwpcf7_Editor.addNewRow(rexElementInstance.traceElementId, columnsSelected);
 			this.updateHeight();
-			// this.focusBlock();
 		},
 
 		cloneRow: function () {
 			Rexbuilder_Util_Editor.builderEdited(false);
 
-			var formID = rexElementInstance.traceElement.getAttribute('data-rex-element-id');
 			var $rowToClone = $(this.traceRow).clone();
 			var numberRowBefore = parseInt($rowToClone.attr('wpcf7-row-number'));
 
-			Rexbuilder_Rexwpcf7_Editor.addRow(formID, $rowToClone, numberRowBefore);
+			Rexbuilder_Rexwpcf7_Editor.addRow(rexElementInstance.traceElementId, $rowToClone, numberRowBefore);
 
 			this.updateHeight();
-			// this.focusBlock();
 		},
 
 		deleteRow: function () {
 			Rexbuilder_Util_Editor.builderEdited(false);
 
-			var formID = rexElementInstance.traceElement.getAttribute('data-rex-element-id');
 			var rowNumberToDelete = $(this.traceRow).attr('wpcf7-row-number');
 
-			Rexbuilder_Rexwpcf7_Editor.deleteRow(formID, rowNumberToDelete);
+			Rexbuilder_Rexwpcf7_Editor.deleteRow(rexElementInstance.traceElementId, rowNumberToDelete);
 
 			this.updateHeight();
-			// this.focusBlock();
 		},
 
 		openColumnSettings: function () {
@@ -3043,33 +3033,36 @@ var TextEditor = (function ($) {
 				fileCaptionExists: fileCaptionExists
 			};
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-
-			$(rexElementInstance.traceElement).parents('.text-wrap').blur();
 		},
 
 		cloneColumn: function () {
 			Rexbuilder_Util_Editor.builderEdited(false);
 
-			var formID = rexElementInstance.traceElement.getAttribute('data-rex-element-id');
 			var clonedColumnNumber = parseInt(this.traceColumn.getAttribute('wpcf7-column-number'));
 			var numberRowBefore = parseInt(this.traceRow.getAttribute('wpcf7-row-number'));
 
-			Rexbuilder_Rexwpcf7_Editor.addClonedColumnRow(formID, clonedColumnNumber, numberRowBefore);
+			Rexbuilder_Rexwpcf7_Editor.addClonedColumnRow(
+				rexElementInstance.traceElementId,
+				clonedColumnNumber,
+				numberRowBefore
+			);
 
 			this.updateHeight();
-			// this.focusBlock();
 		},
 
 		deleteColumnContent: function () {
 			Rexbuilder_Util_Editor.builderEdited(false);
 
-			var formID = rexElementInstance.traceElement.getAttribute('data-rex-element-id');
 			var rowNumberToDelete = this.traceRow.getAttribute('wpcf7-row-number');
 			var columnNumberToDelete = this.traceColumn.getAttribute('wpcf7-column-number');
 
-			Rexbuilder_Rexwpcf7_Editor.deleteColumnContent(formID, rowNumberToDelete, columnNumberToDelete);
+			Rexbuilder_Rexwpcf7_Editor.deleteColumnContent(
+				rexElementInstance.traceElementId,
+				rowNumberToDelete,
+				columnNumberToDelete
+			);
 
-			// this.focusBlock();
+			this.updateHeight();
 		},
 
 		handleBlur: function () {
@@ -3111,24 +3104,46 @@ var TextEditor = (function ($) {
 		 * Updates height of the block that contains the form.
 		 * @returns		{void}
 		 * @since			2.0.2
+		 * @version		2.0.5		Added updating of all form instances
 		 */
-		updateHeight: function () {
-			if (this.traceForm) {
-				var $textWrap = $(this.traceForm).parents('.text-wrap');
+		updateHeight: function (updateOnlyCurrent) {
+			updateOnlyCurrent = updateOnlyCurrent || false;
 
-				if (0 !== $textWrap.length) {
-					Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap, false, true);
-				}
+			var formsInPage = Array.prototype.slice.call(
+				Rexbuilder_Util.rexContainer.querySelectorAll(
+					'.rex-element-wrapper[data-rex-element-id="' + rexElementInstance.traceElementId + '"] .wpcf7-form'
+				)
+			);
+
+			if (0 === formsInPage.length) return;
+
+			var $textWrap;
+
+			function setTextWrapHeight(form) {
+				$textWrap = $(form).parents('.text-wrap');
+
+				if (0 === $textWrap.length) return;
+
+				Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap, false, true);
+			}
+
+			if (updateOnlyCurrent) {
+				if (!this.traceForm) return;
+
+				setTextWrapHeight(this.traceForm);
+			} else {
+				formsInPage.forEach(setTextWrapHeight);
 			}
 		},
 
 		/**
-		 * Simulates focussing of the block that contains the form. 
-		 * @returns		{void}
-		 * @since			2.0.2
+		 * Simulates focusing of the block that contains the form.
+		 * @returns	{void}
+		 * @since		2.0.2
+		 * @version	2.0.5		Used Rexbuilder_Rexelement_Editor.focusRexElement function
 		 */
 		focusBlock: function () {
-			Rexbuilder_Rexelement_Editor.focusRexElement(this.$traceTextWrap)
+			Rexbuilder_Rexelement_Editor.focusRexElement(this.$traceTextWrap);
 		}
 	});
 
@@ -3145,17 +3160,6 @@ var TextEditor = (function ($) {
         .eq(0)
         .unwrap();
     });
-
-    // Rexbuilder_Util.$document.on("mouseenter", ".medium-insert-buttons-show", function(e) {
-    //   var $el = $(this);
-    //   if ($el.find('.medium-insert-buttons').attr('data-active-addon') === 'images') {
-    //     $el.find('.medium-insert-buttons').find('button[data-addon="images"]').click();
-    //     return;
-    //   }
-
-    //   $el.find('.medium-insert-buttons-addons').fadeToggle();
-    //   $el.find('.medium-insert-buttons-show').toggleClass('medium-insert-buttons-rotate');
-    // });
   };
 
   /**

@@ -130,6 +130,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		addMissingTools(formID);
 		Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
 		Rexbuilder_Rexwpcf7.addColumnContentStyle($columnToAddField);
+
+		// Updating block height
+		textEditorCf7Instance.updateHeight();
 	}
 
 	function addNewRow(formID, columnsSelected) {
@@ -442,6 +445,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				break;
 		}
 
+		// Updating block height
 		textEditorCf7Instance.updateHeight();
 	}
 
@@ -466,6 +470,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				}
 			});
 
+		// Updating block height
 		textEditorCf7Instance.updateHeight();
 	}
 
@@ -1034,6 +1039,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				break;
 		}
 
+		// Updating block height
 		textEditorCf7Instance.updateHeight();
 	}
 

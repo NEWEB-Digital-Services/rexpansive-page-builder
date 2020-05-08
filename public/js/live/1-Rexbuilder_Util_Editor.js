@@ -36,6 +36,7 @@ var Rexbuilder_Util_Editor = (function($) {
 			insertButton.placeMediaBtn($wrapper);
 		}
 		this.needToSave = true;
+		// debugger
 	};
 
   /**

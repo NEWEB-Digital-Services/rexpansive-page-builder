@@ -993,10 +993,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				break;
 		}
 
-		if (inputType == 'acceptance' || inputType == 'radio') {
-			// updateColumnContentRule(formID, rowNumber, columnNumber, cssSelector, 'display', 'inline-flex');
-		}
-
 		if ('radio' === inputType) {
 			updateColumnContentRule(
 				formID,
@@ -2401,9 +2397,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			var columnContentRule = '';
 			var columnContentHoverRule = '';
 
-			if ('acceptance' === inputType || 'radio' === inputType) {
-				// columnContentRule += 'display: inline-flex;';
-			} else if ('file' === inputType) {
+			if ('file' === inputType) {
 				columnContentRule += 'display: block;';
 				// columnContentRule += 'overflow: hidden;';
 			} else {
