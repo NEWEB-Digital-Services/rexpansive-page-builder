@@ -37,8 +37,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 			dropType = 'inside-block';
 		}
 
-		console.log(dropType);
-
 		// Getting the html of the element
 		$.ajax({
 			type: 'POST',
@@ -104,8 +102,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 						default:
 							break;
 					}
-
-					console.log( $elementData.attr('data-synchronize') );
 				}
 			},
 			error: function (response) {}

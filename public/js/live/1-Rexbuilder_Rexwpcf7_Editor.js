@@ -941,10 +941,11 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 							.addClass('last');
 						break;
 					case 'file':
-						for (var i = 0; i < listLength; i++) {
-							newValue[i] = '.' + newValue[i];
-						}
-						$formColumns.find('.wpcf7-file').attr('accept', newValue);
+						newValue.fields = newValue.fields.map(function (field) {
+							return '.' + field;
+						});
+
+						$formColumns.find('.wpcf7-file').attr('accept', newValue.fields);
 						break;
 					default:
 						break;
