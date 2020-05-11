@@ -318,6 +318,16 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 				wpcf7_content_editor_properties.$content_input_text_editor.parents('.bl_modal-row').removeClass('row-hidden');
 				break;
 			case 'file':
+				var accOpen =
+					'open' ===
+					wpcf7_content_editor_properties.$button_preview
+						.parents('.rex-accordion-outer--content')
+						.attr('data-item-status');
+
+				if (accOpen) {
+					wpcf7_content_editor_properties.$button_preview.parents('.rex-accordion-outer--content').css('display', '');
+				}
+
 				wpcf7_content_editor_properties.$content_required_field
 					.parents('.bl_modal__option-wrap')
 					.removeClass('row-hidden')
@@ -1042,7 +1052,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 			switch (widthType) {
 				case 'percentage':
-					// Percentage value is impossible to block because there could be 
+					// Percentage value is impossible to block because there could be
 					// multiple instances of forms with the same ID with different widths
 					outputString = newInputWidth + '%';
 					break;
