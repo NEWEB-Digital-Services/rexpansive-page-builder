@@ -1328,7 +1328,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		idsInPage.push(formID);
 
 		idsInPage = Rexbuilder_Util.removeArrayDuplicates(idsInPage);
-		console.log('addFormInPage', idsInPage);
 	}
 
 	function removeFormInPage(formID) {
@@ -1340,7 +1339,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		} else {
 			formOccurencies[formID] -= 1;
 		}
-		console.log('removeFormInPage', formOccurencies, idsInPage);
 	}
 
 	function updateDBFormsInPage(formID, needToAddElementStyle) {
@@ -1363,8 +1361,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		}
 
 		idsInPage = Rexbuilder_Util.removeArrayDuplicates(idsInPage);
-
-		console.log('updateDBFormsInPage', idsInPage);
 
 		$.ajax({
 			type: 'POST',
@@ -1437,11 +1433,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		var $formInDB = $formsInPage[formID];
 		var row = columnContentData.target.row_number;
 		var column = columnContentData.target.column_number;
-
-		// console.groupCollapsed('update');
-		// console.log(formID, row, column);
-		// console.trace();
-		// console.groupEnd();
 
 		var $columnDataInDB = $formInDB
 			.find('.wpcf7-row[wpcf7-row-number="' + row + '"]')
@@ -1728,12 +1719,10 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	function _addFormToolsToDOM() {
 		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-form-tools');
 		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form'));
-		var tot_forms = forms.length;
 
-		var i = 0;
-		for (; i < tot_forms; i++) {
-			forms[i].querySelector('.wpcf7-rows').insertAdjacentHTML('afterend', toolsTemplate);
-		}
+		forms.forEach(function (form) {
+			form.querySelector('.wpcf7-rows').insertAdjacentHTML('afterend', toolsTemplate);
+		});
 	}
 
 	function _addRowToolsToDOM() {

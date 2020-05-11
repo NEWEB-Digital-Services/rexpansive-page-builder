@@ -50,20 +50,18 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 			success: function (response) {
 				// If success get the element HTML and append it to a new div
 				if (response.success) {
-					var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
+					var shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
 					var formFieldsString = response.data.form_content.toString().trim();
 
-					var $elementContainer = $(document.createElement('div'));
-					$elementContainer.addClass('rex-element-container');
+					var $elementContainer = $('<div class="rex-element-container"></div>');
+					$elementContainer.append(shortcodeTransformed);
 					$elementWrapper.append($elementContainer);
-					$elementContainer.append($shortcodeTransformed);
 
 					// Get the shortcode and keep it as an attribute
 					var shortcode = response.data.shortcode;
-					var $spanShortcode = $(document.createElement('span'));
-					$spanShortcode.addClass('string-shortcode');
-					$spanShortcode.attr('shortcode', shortcode);
-					$elementWrapper.prepend($spanShortcode);
+					var spanShortcode = $('<span class="string-shortcode"></span>').get(0);
+					spanShortcode.setAttribute('shortcode', shortcode);
+					$elementWrapper.prepend(spanShortcode);
 
 					var $elementData = $elementWrapper.find('.rex-element-data');
 					var elementDataFromDB = $.parseHTML(response.data.element_data_html[0]);
