@@ -2198,19 +2198,24 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 	function fixWpcf7Files() {
 		Rexbuilder_Util.$rexContainer
-			.find('.wpcf7 .wpcf7-form-control-wrap')
+			.find(
+				'.rexpansive_section:not(.removing_section) .grid-stack-item:not(.removing_block) .wpcf7 .wpcf7-form-control-wrap'
+			)
 			.has('.wpcf7-file')
 			.each(function (index, el) {
-				if (0 === $(this).find('.wpcf7-file-caption').length) {
-					$(this).siblings('.wpcf7-file-caption').detach().appendTo($(this));
+				var $formControlWrap = $(el);
+
+				if (0 === $formControlWrap.find('.wpcf7-file-caption').length) {
+					$formControlWrap.siblings('.wpcf7-file-caption').detach().appendTo($formControlWrap);
 				}
-				var $element = $(this).find('[type=file]');
+
+				var $element = $formControlWrap.find('[type=file]');
 
 				var regexpToMove = /file-\w+/gm;
-				var elementClasses = $element[0].classList.toString();
+				var elementClasses = $element.get(0).className;
 				var classToMove = regexpToMove.exec(elementClasses);
 
-				if (null !== classToMove) {
+				if (classToMove) {
 					classToMove = classToMove[0];
 					$element.removeClass(classToMove);
 					$element.parents('.wpcf7-form-control-wrap').addClass(classToMove);
@@ -2223,16 +2228,19 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 				if (
 					'undefined' !=
-					typeof $(this).parents('.wpcf7-column').find('.rex-wpcf7-column-content-data').attr('data-button-text')
+					typeof $formControlWrap
+						.parents('.wpcf7-column')
+						.find('.rex-wpcf7-column-content-data')
+						.attr('data-button-text')
 				) {
-					var buttonText = $(this)
+					var buttonText = $formControlWrap
 						.parents('.wpcf7-column')
 						.find('.rex-wpcf7-column-content-data')
 						.attr('data-button-text');
 					$fileLabel.text(buttonText);
 				} else {
 					$fileLabel.text('Choose a file');
-					$(this)
+					$formControlWrap
 						.parents('.wpcf7-column')
 						.find('.rex-wpcf7-column-content-data')
 						.attr('data-button-text', 'Choose a file');
@@ -2635,7 +2643,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			$columnData.attr('data-text-color-hover', columnContentData.text_color_hover);
 			$columnData.attr('data-text-color-focus', columnContentData.text_color_focus);
 
-			
 			if ('select' === inputType) {
 				$columnData.attr('data-select-color-after-selection', columnContentData.select_color_after_selection);
 			}

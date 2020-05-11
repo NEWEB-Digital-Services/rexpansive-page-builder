@@ -619,7 +619,7 @@ defined('ABSPATH') or exit;
                         </div>
                         <div class="bl_modal-row modal-row-grey no12dx"> <!-- // Button -->
                             <div class="rexbutton-cont_row23">
-                                <div class="rexbutton-count-column_6">
+                                <div class="rexbutton-count-column_6 margin-padding-area">
                                     <div class="rex-live__row-margin-padding block-padding-wrap">
                                         <div class="bl_d-flex bl_jc-c">
                                             <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Top', 'rexpansive-builder' ); ?>">

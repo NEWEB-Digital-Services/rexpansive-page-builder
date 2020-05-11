@@ -1,6 +1,10 @@
 var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	'use strict';
 
+	var $formsInPage; // Array of DB side of forms in page
+	var idsInPage = [];
+	var formOccurencies = {};
+
 	var textEditorCf7Instance;
 
 	/* ===== PUBLIC METHODS ===== */
@@ -1321,9 +1325,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		formOccurencies[formID] = formOccurencies[formID] ? formOccurencies[formID] + 1 : 1;
 
 		idsInPage.push(formID);
-		idsInPage = idsInPage.filter(function (value, index, self) {
-			return self.indexOf(value) === index;
-		});
+
+		idsInPage = Rexbuilder_Util.removeArrayDuplicates(idsInPage);
+		console.log('addFormInPage', idsInPage);
 	}
 
 	function removeFormInPage(formID) {
@@ -1335,18 +1339,20 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		} else {
 			formOccurencies[formID] -= 1;
 		}
+		console.log('removeFormInPage', formOccurencies, idsInPage);
 	}
 
 	function updateDBFormsInPage(formID, needToAddElementStyle) {
-		var $elementWrappers = Rexbuilder_Util.$rexContainer.find('.rex-element-wrapper').has('.wpcf7-form');
+		var $elementWrappers = Rexbuilder_Util.$rexContainer
+			.find('.rexpansive_section:not(.removing_section) .grid-stack-item:not(.removing_block) .rex-element-wrapper')
+			.has('.wpcf7-form');
 
-		if (0 === $elementWrappers.length) {
-			return;
-		}
+		if (0 === $elementWrappers.length) return;
 
 		idsInPage = [];
-		$elementWrappers.each(function () {
-			idsInPage.push($(this).attr('data-rex-element-id'));
+
+		$elementWrappers.each(function (index, wrapper) {
+			idsInPage.push(wrapper.getAttribute('data-rex-element-id'));
 		});
 
 		formOccurencies = {};
@@ -1355,12 +1361,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			formOccurencies[id] = formOccurencies[id] ? formOccurencies[id] + 1 : 1;
 		}
 
-		idsInPage = idsInPage.filter(function (value, index, self) {
-			return self.indexOf(value) === index;
-		});
+		idsInPage = Rexbuilder_Util.removeArrayDuplicates(idsInPage);
 
-		// Check if ok
-		// idsInPage = Rexbuilder_Util.removeArrayDuplicates(idsInPage);
+		console.log('updateDBFormsInPage', idsInPage);
 
 		$.ajax({
 			type: 'POST',
@@ -1427,18 +1430,18 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		return idsInPage;
 	}
 
-	/* ===== FormsInPage Functions ===== */
-
-	var $formsInPage; // Array of DB side of forms in page
-	var idsInPage = [];
-	var formOccurencies = {};
-
 	function updateSpanDataInDB(formID, columnContentData) {
 		if (!$formsInPage) return;
 
 		var $formInDB = $formsInPage[formID];
 		var row = columnContentData.target.row_number;
 		var column = columnContentData.target.column_number;
+
+		// console.groupCollapsed('update');
+		// console.log(formID, row, column);
+		// console.trace();
+		// console.groupEnd();
+
 		var $columnDataInDB = $formInDB
 			.find('.wpcf7-row[wpcf7-row-number="' + row + '"]')
 			.find('.wpcf7-column[wpcf7-column-number="' + column + '"]')
@@ -1540,9 +1543,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			formOccurencies[id] = formOccurencies[id] ? formOccurencies[id] + 1 : 1;
 		}
 
-		idsInPage = idsInPage.filter(function (value, index, self) {
-			return self.indexOf(value) === index;
-		});
+		idsInPage = Rexbuilder_Util.removeArrayDuplicates(idsInPage);
 
 		$.ajax({
 			type: 'POST',
