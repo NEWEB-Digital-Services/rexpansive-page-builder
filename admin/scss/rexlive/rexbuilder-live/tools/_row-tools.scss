@@ -348,9 +348,26 @@
   // }
 }
 
+/*
 .add-new-section--hide {
   .add-new-section__wrap {
     display: none;
+  }
+}*/
+
+.add-new-section--hide {
+  .rex-container[data-rex-layout-selected="default"] {
+    + .add-new-section__wrap {
+      display: none;
+    }
+  }
+}
+
+.rex-container {
+  &:not([data-rex-layout-selected="default"]) {
+    + .add-new-section__wrap {
+      display: none;
+    }
   }
 }
 

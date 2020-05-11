@@ -18,6 +18,16 @@
 		'video_bg_height_section',
 		'video_bg_url_section',			// youtube video background
 		'video_bg_url_vimeo_section',	// vimeo video background
+		'block_distance',				// gutter & paddings
+		'row_separator_top',
+		'row_separator_bottom',
+		'row_separator_right',
+		'row_separator_left',
+		'margin',						// margins
+		'row_margin_top',
+		'row_margin_bottom',
+		'row_margin_right',
+		'row_margin_left',
 		'custom_classes',				// custom classes
 		'row_overlay_color',			// overlay color
 		'row_overlay_active'

@@ -73,8 +73,6 @@ var Block_Photoswipe_Setting = (function($) {
 			}
 		};
 
-		console.log(data_image);
-
 		Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_image);
 
 		_tracePhotoswipeStatus();

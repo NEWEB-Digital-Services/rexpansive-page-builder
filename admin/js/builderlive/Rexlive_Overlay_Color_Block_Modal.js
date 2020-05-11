@@ -63,9 +63,7 @@ var Overlay_Color_block_Modal = (function($) {
       showButtons: false,
       containerClassName:
         "rexbuilder-materialize-wrap block-overlay-color-picker",
-      move: function(color) {
-				console.log( color );
-				
+      move: function(color) {				
         overlay_block_properties.$overlay_color_preview_icon.hide();
         changeColorEvent.data_to_send.color = color.toRgbString();
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(changeColorEvent);

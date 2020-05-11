@@ -1027,53 +1027,51 @@ var Rexbuilder_Dom_Util = (function($) {
     $elemData.attr("data-linkurl", url);
   };
 
+  /**
+   * Update block content position
+   * @param  {jQuery} $elem        block to edit
+   * @param  {Object} flexPosition x and y flex positions
+   * @return {vodi}
+   */
   var _updateFlexPostition = function($elem, flexPosition) {
-    if (!$elem.hasClass("block-has-slider")) {
-      // var $scrollbarDiv = $elem.find(".rex-custom-scrollbar");
-      // if ($scrollbarDiv.length != 0) {
-        // var scrollbarInstance = $scrollbarDiv.overlayScrollbars();
-        // if (typeof scrollbarInstance != "undefined") {
-        //   scrollbarInstance.update();
-        // }
-      // }
-      var flexClasses =
-        "rex-flex-top rex-flex-middle rex-flex-bottom rex-flex-left rex-flex-center rex-flex-right";
-      $elem.removeClass(flexClasses);
-      var $elemData = $elem.children(".rexbuilder-block-data");
-      $elemData.attr("data-block_flex_position", "");
-      if (flexPosition.x != "" && flexPosition.y != "") {
-        $elem.addClass("rex-flex-" + flexPosition.x);
-        $elem.addClass("rex-flex-" + flexPosition.y);
-        $elemData.attr(
-          "data-block_flex_position",
-          flexPosition.x + " " + flexPosition.y
-        );
-      }
+    if ( $elem.hasClass("block-has-slider") ) return;
+      
+    var flexClasses =
+      "rex-flex-top rex-flex-middle rex-flex-bottom rex-flex-left rex-flex-center rex-flex-right";
+    $elem.removeClass(flexClasses);
+    var $elemData = $elem.children(".rexbuilder-block-data");
+    $elemData.attr("data-block_flex_position", "");
+    if (flexPosition.x != "" && flexPosition.y != "") {
+      $elem.addClass("rex-flex-" + flexPosition.x);
+      $elem.addClass("rex-flex-" + flexPosition.y);
+      $elemData.attr(
+        "data-block_flex_position",
+        flexPosition.x + " " + flexPosition.y
+      );
     }
   };
 
+  /**
+   * Update the block image position
+   * @param  {jQuery} $elem        block to edit
+   * @param  {Object} flexPosition x and y flex positions
+   * @return {void}
+   */
   var _updateImageFlexPostition = function($elem, flexPosition) {
-    if (!$elem.hasClass("block-has-slider")) {
-      // var $scrollbarDiv = $elem.find(".rex-custom-scrollbar");
-      // if ($scrollbarDiv.length != 0) {
-        // var scrollbarInstance = $scrollbarDiv.overlayScrollbars();
-        // if (typeof scrollbarInstance != "undefined") {
-        //   scrollbarInstance.update();
-        // }
-      // }
-      var flexClasses =
-        "rex-flex-img-top rex-flex-img-middle rex-flex-img-bottom rex-flex-img-left rex-flex-img-center rex-flex-img-right";
-      $elem.removeClass(flexClasses);
-      var $elemData = $elem.children(".rexbuilder-block-data");
-      $elemData.attr("data-block_flex_img_position", "");
-      if (flexPosition.x != "" && flexPosition.y != "") {
-        $elem.addClass("rex-flex-img-" + flexPosition.x);
-        $elem.addClass("rex-flex-img-" + flexPosition.y);
-        $elemData.attr(
-          "data-block_flex_img_position",
-          flexPosition.x + " " + flexPosition.y
-        );
-      }
+    if ( $elem.hasClass("block-has-slider") ) return;
+
+    var flexClasses =
+      "rex-flex-img-top rex-flex-img-middle rex-flex-img-bottom rex-flex-img-left rex-flex-img-center rex-flex-img-right";
+    $elem.removeClass(flexClasses);
+    var $elemData = $elem.children(".rexbuilder-block-data");
+    $elemData.attr("data-block_flex_img_position", "");
+    if (flexPosition.x != "" && flexPosition.y != "") {
+      $elem.addClass("rex-flex-img-" + flexPosition.x);
+      $elem.addClass("rex-flex-img-" + flexPosition.y);
+      $elemData.attr(
+        "data-block_flex_img_position",
+        flexPosition.x + " " + flexPosition.y
+      );
     }
   };
 
@@ -1811,6 +1809,8 @@ var Rexbuilder_Dom_Util = (function($) {
     var colorChanged = false;
     var imageChanged = false;
     var videoMp4Changed = false;
+    var gutterChanged = false;
+    var marginChanged = false;
     var overlayChanged = false;
 
     for( var prop in changedData ) {
@@ -1875,6 +1875,61 @@ var Rexbuilder_Dom_Util = (function($) {
             typeVideo: 'vimeo',
             vimeoUrl: defaultProps.video_bg_url_vimeo_section
           });
+          break;
+        case 'block_distance':
+        case 'row_separator_top':
+        case 'row_separator_bottom':
+        case 'row_separator_right':
+        case 'row_separator_left':
+          if ( gutterChanged ) break;
+
+          var galleryInstance = $section.find('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
+          _updateRowDistances( $section, {
+            rowDistances: {
+              gutter: defaultProps.block_distance,
+              top: defaultProps.row_separator_top,
+              right:defaultProps.row_separator_right,
+              bottom: defaultProps.row_separator_bottom,
+              left: defaultProps.row_separator_left
+            },
+            galleryInstance: galleryInstance,
+            singleWidth: galleryInstance.properties.singleWidth,
+            singleHeight: galleryInstance.properties.singleHeight,
+            blocksDisposition: $.extend(
+              true,
+              {},
+              galleryInstance.createActionDataMoveBlocksGrid()
+            )
+          });
+          gutterChanged = true;
+
+          break;
+        case 'margin':
+        case 'row_margin_top':
+        case 'row_margin_bottom':
+        case 'row_margin_right':
+        case 'row_margin_left':
+          if( marginChanged ) break;
+
+          var galleryInstance = $section.find('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
+          _updateSectionMargins( $section, {
+            marginsSection: {
+              top: defaultProps.row_margin_top,
+              bottom: defaultProps.row_margin_bottom,
+              right: defaultProps.row_margin_right,
+              left: defaultProps.row_margin_left
+            },
+            galleryInstance: galleryInstance,
+            singleWidth: galleryInstance.properties.singleWidth,
+            singleHeight: galleryInstance.properties.singleHeight,
+            blocksDisposition: $.extend(
+              true,
+              {},
+              galleryInstance.createActionDataMoveBlocksGrid()
+            )
+          });
+          marginChanged = true;
+
           break;
         case 'custom_classes':
           _updateCustomClasses( $section, defaultProps.custom_classes );
@@ -2014,7 +2069,7 @@ var Rexbuilder_Dom_Util = (function($) {
         case 'block_padding':
           var paddingType = ( -1 !== defaultProps.block_padding.indexOf('px') ? 'px' : ( -1 !== defaultProps.block_padding.indexOf('%') ? '%' : '' ) );
           var paddingString = defaultProps.block_padding;
-          paddingString.replace( /px|%/g, '' );
+          paddingString = paddingString.replace( /px|%/g, '' );
           var paddingVals = paddingString.split(';');
 
           _updateBlockPaddings( $elem, {

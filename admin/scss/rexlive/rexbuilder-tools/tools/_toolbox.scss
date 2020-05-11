@@ -340,6 +340,15 @@
   }
 }
 
+#rexpansive-builder-backend-wrapper {
+  &:not([data-active-layout="default"]) {
+    .toolbox-insert-area {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+}
+
 .left-tools{
   display: flex;
   justify-content: flex-start;

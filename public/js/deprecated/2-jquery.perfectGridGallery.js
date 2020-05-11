@@ -62,8 +62,6 @@
     // Avoid Plugin.prototype conflicts
     $.extend( pefectGridGallery.prototype, {
         init: function() {
-            console.log('launching normal grid');
-            
             this._defineDataSettings();
             this._definePrivateProperties();
 

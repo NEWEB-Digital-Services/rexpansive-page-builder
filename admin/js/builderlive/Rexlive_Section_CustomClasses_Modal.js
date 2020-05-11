@@ -43,10 +43,6 @@ var Section_CustomClasses_Modal = (function ($) {
                 .addClass("active");
         }
 
-        //console.log("stamp || newClasses:" + newClasses);
-        //console.log("stamp || data.sectionTarger:" + data.sectionTarget);
-        //console.log("stamp || data.customClasses:" + data.customClasses);
-
         custom_classes_modal_properties.$classes.val(newClasses);
         
     }

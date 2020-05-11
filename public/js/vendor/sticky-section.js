@@ -273,7 +273,6 @@
         // divide by 100 to make the animation last until the end of the section
         // otherwise play with the value (now its 10)
         var sv = 1 - (1 * percentage / 5);
-        // console.log(this.element.id, percentage, sv);
         if ( sv <= 1 && sv > 0 ) {
           scaleBorder.call(this, sv);
         } else {

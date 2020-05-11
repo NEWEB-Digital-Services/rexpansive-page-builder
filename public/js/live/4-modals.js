@@ -190,7 +190,7 @@
       var $gallery = $section.find(".grid-stack-row");
       var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
 
-      //reverseData: STATO PRIMA
+      //reverseData: state before
       var oldDisposition = galleryInstance.createActionDataMoveBlocksGrid();
 
       var oldRowDistances = {
@@ -213,6 +213,13 @@
 
       Rexbuilder_Dom_Util.updateRowDistancesData($gallery, data.distances);
       galleryInstance.updateRowDistances(data.distances, reverseData);
+
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'block_distance' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_separator_top' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_separator_bottom' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_separator_right' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_separator_left' );
+
       Rexbuilder_Section.fixBlockToolsAccordingToSeparator($section, data.distances);
       $section.attr("data-rexlive-section-edited", true);
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
@@ -300,6 +307,12 @@
       Rexbuilder_Dom_Util.updateSectionMarginsData($section, data.margins);
       galleryInstance.updateRowSectionMargins(data.margins, reverseData);
       Rexbuilder_Section.fixSectionToolbox($section, data.margins);
+
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'margin' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_margin_top' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_margin_bottom' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_margin_right' );
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_margin_left' );
 
       $section.attr("data-rexlive-section-edited", true);
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
@@ -753,7 +766,6 @@
       $section.attr("data-rexlive-section-edited", true);
 
       // tracing data
-      console.log('che succiede?')
       Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_overlay_color' );
       Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'row_overlay_active' );
 
@@ -2246,15 +2258,12 @@
     // apply the reset of the content properties to default
     $document.on('rexlive:apply_reSynchContent', function(event) {
       // default layout, do nothing
-      if (Rexbuilder_Util.activeLayout == "default") return;
+      if ( Rexbuilder_Util.activeLayout == "default" ) return;
 
       var defaultContent = document.getElementById('rexbuilder-layout-data').querySelector('.customization-wrap[data-customization-name="default"]').querySelector('.section-targets[data-section-rex-id="' + event.settings.data.targetInfo.sectionID + '"]').textContent;
       var defaultProps = ( '' !== defaultContent ? JSON.parse( defaultContent ) : {} );
 
-      var $section;
-
       if ( 'self' === event.settings.data.targetInfo.rexID ) {
-
         // live synch of options
         var traceSectionData = Rexbuilder_Util.editedDataInfo.getSectionData( event.settings.data.targetInfo.sectionID );
         Rexbuilder_Dom_Util.updateBulkSection( event.settings.data.targetInfo, traceSectionData, defaultProps );
@@ -2269,6 +2278,8 @@
         // reset: no property customized on this layout
         Rexbuilder_Util.editedDataInfo.setBulkBlockData( event.settings.data.targetInfo.sectionID, event.settings.data.targetInfo.rexID, false );
       }
+      
+      Rexbuilder_Util_Editor.builderEdited( '' !== event.settings.data.targetInfo.modelNumber );
     });
 
     /**

@@ -1385,8 +1385,7 @@ var Rexbuilder_Util = (function($) {
     }
 
     // tracing page data
-    Rexbuilder_Util.editedDataInfo = new RexEditedData( layoutSelectedSections );
-    console.log(Rexbuilder_Util.editedDataInfo);
+    Rexbuilder_Util.editedDataInfo = new RexEditedData( ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ) );
 
     var mergedEdits = _mergeSections(
       ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ),
@@ -1873,6 +1872,17 @@ var Rexbuilder_Util = (function($) {
     };
 
     Rexbuilder_Dom_Util.updateFlexPostition($elem, flexPosition);
+
+    // Update block image position
+    var pos =
+      typeof targetProps["block_flex_img_position"] != "undefined"
+        ? targetProps["block_flex_img_position"].split(" ")
+        : "";
+    var imgFlexPosition = {
+      x: pos[0],
+      y: pos[1]
+    };
+    Rexbuilder_Dom_Util.updateImageFlexPostition( $elem, imgFlexPosition );
 
     var sliderRatio =
       typeof targetProps["slider_dimension_ratio"] == "undefined"

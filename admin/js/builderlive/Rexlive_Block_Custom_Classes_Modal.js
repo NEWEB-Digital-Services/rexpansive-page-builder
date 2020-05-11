@@ -55,7 +55,6 @@ var Block_CustomClasses_Modal = (function ($) {
                 target: targetSection
             }
         }
-        //console.log("passed || applyCustomClasses() || Block_CC_Modals")
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_customClasses);
     }
 

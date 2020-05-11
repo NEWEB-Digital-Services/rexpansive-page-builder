@@ -1476,7 +1476,10 @@ var Rex_Save_Listeners = (function($) {
         props["color_bg_section_active"] = color_bg_section_active;
       }
       props["dimension"] = dimension;
-      props["margin"] = margin;
+      // default always save, otherwise check
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.margin ) ) {
+        props["margin"] = margin;
+      }
       // default always save, otherwise check
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_bg_section_active ) ) {
         props["image_bg_section_active"] = image_bg_section_active;
@@ -1520,20 +1523,39 @@ var Rex_Save_Listeners = (function($) {
         props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
       }
       props["full_height"] = full_height;
-      props["block_distance"] = block_distance;
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.block_distance ) ) {
+        props["block_distance"] = block_distance;
+      }
       props["layout"] = layout;
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.custom_classes ) ) {
         props["custom_classes"] = custom_classes;
       }
       props["section_width"] = section_width;
-      props["row_separator_top"] = row_separator_top;
-      props["row_separator_bottom"] = row_separator_bottom;
-      props["row_separator_right"] = row_separator_right;
-      props["row_separator_left"] = row_separator_left;
-      props["row_margin_top"] = row_margin_top;
-      props["row_margin_bottom"] = row_margin_bottom;
-      props["row_margin_right"] = row_margin_right;
-      props["row_margin_left"] = row_margin_left;
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_separator_top ) ) {
+        props["row_separator_top"] = row_separator_top;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_separator_bottom ) ) {
+        props["row_separator_bottom"] = row_separator_bottom;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_separator_right ) ) {
+        props["row_separator_right"] = row_separator_right;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_separator_left ) ) {
+        props["row_separator_left"] = row_separator_left;
+      }
+      // default always save, otherwise check
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_margin_top ) ) {
+        props["row_margin_top"] = row_margin_top;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_margin_bottom ) ) {
+        props["row_margin_bottom"] = row_margin_bottom;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_margin_right ) ) {
+        props["row_margin_right"] = row_margin_right;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_margin_left ) ) {
+        props["row_margin_left"] = row_margin_left;
+      }
 
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_overlay_color ) ) {
         props["row_overlay_color"] = row_overlay_color;
