@@ -2830,6 +2830,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		refreshColumnContentStyle: refreshColumnContentStyle,
 		fixInputs: fixInputs,
 		fixWpcf7RadioButtons: fixWpcf7RadioButtons,
+		fixWpcf7Files: fixWpcf7Files,
 		generateColumnContentData: generateColumnContentData,
 
 		updateForm: updateForm,

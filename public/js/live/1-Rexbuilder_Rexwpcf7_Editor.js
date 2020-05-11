@@ -105,7 +105,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 						fieldNumber +
 						'"><input type="file" name="file-' +
 						fieldNumber +
-						'" size="40" class="wpcf7-form-control wpcf7-file" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.ppt,.pptx,.odt,.avi,.ogg,.m4a,.mov,.mp3,.mp4,.mpg,.wav,.wmv" aria-invalid="false" id="wpcf7-file-2"><label for="wpcf7-file-2">Choose file</label><div class="wpcf7-file-caption">Your text here</div></span>'
+						'" size="40" class="wpcf7-form-control wpcf7-file" accept=".jpg,.jpeg,.png,.gif" aria-invalid="false" id="wpcf7-file-2"><label for="wpcf7-file-2">Choose file</label><div class="wpcf7-file-caption">Your text here</div></span>'
 				);
 				break;
 			case 'submit':
@@ -132,6 +132,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		});
 
 		addMissingTools(formID);
+		Rexbuilder_Rexwpcf7.fixWpcf7Files();
 		Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
 		Rexbuilder_Rexwpcf7.addColumnContentStyle($columnToAddField);
 
