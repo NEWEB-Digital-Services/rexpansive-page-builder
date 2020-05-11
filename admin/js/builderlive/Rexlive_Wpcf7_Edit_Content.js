@@ -294,7 +294,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 				wpcf7_content_editor_properties.$content_required_field
 					.parents('.bl_modal__option-wrap')
 					.removeClass('row-hidden')
-					.addClass('no-br');
+					.appendTo(wpcf7_content_editor_properties.$content_input_width_type.parents('.bl_modal-row'));
 				wpcf7_content_editor_properties.$content_required_field.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_input_default_check.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_input_width.parents('.bl_modal-row').removeClass('row-hidden');
@@ -303,9 +303,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 					.parents('.bl_modal__option-wrap')
 					.removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_input_height.parents('.bl_modal-row').removeClass('row-hidden');
-				wpcf7_content_editor_properties.$content_input_height
-					.parents('.bl_modal__option-wrap')
-					.removeClass('row-hidden');
+				// wpcf7_content_editor_properties.$content_input_height
+				// .parents('.bl_modal__option-wrap')
+				// .removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_text_color_value
 					.parents('.bl_modal-row')
 					.find('.rex-wpcf7-accordion-plus-wrap')
@@ -441,6 +441,10 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		wpcf7_content_editor_properties.$self.find('.rex-wpcf7-font-size-row').append(fontSizeField);
 
 		wpcf7_content_editor_properties.$field_list.removeClass('rex-wpcf7-file-list');
+
+		wpcf7_content_editor_properties.$content_required_field
+			.parents('.bl_modal__option-wrap')
+			.prependTo(wpcf7_content_editor_properties.$self.find('#required-field-row'));
 	};
 
 	var _applyData = function () {
@@ -2205,6 +2209,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 				type: 'wpcf7-placeholder',
 				value: columnContentData.wpcf7_placeholder
 			});
+
+			_resetModal();
 		});
 
 		wpcf7_content_editor_properties.$content_required_field.on('click', function () {

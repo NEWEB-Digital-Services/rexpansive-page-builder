@@ -1,8 +1,8 @@
 <?php
 /**
-* Modal for RexButton editing
+* Modal for RexWpcf7 Content editing
 *
-* @since x.x.x
+* @since			2.0.2
 * @package    Rexbuilder
 * @subpackage Rexbuilder/admin/partials/modals
 */
@@ -17,7 +17,7 @@ defined('ABSPATH') or exit;
         <!-- General wrap -->
         <div class="modal-content"> <!-- // Required Field, E-Mail Field, Only Numbers  -->
             <?php include 'rexlive-loader-modal.php'; ?>
-            <div class="bl_modal-row modal-row-grey">
+            <div id="required-field-row" class="bl_modal-row modal-row-grey">
                 <div class="bl_modal__option-wrap bl_jc-c ptb24">
                     <div id="" class="bl_modal__single-option valign-wrapper tippy" data-tippy-content="<?php _e('Required Field', 'rexpansive-builder');?>">
                         <label>

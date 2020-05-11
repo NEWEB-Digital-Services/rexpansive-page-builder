@@ -1055,7 +1055,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				guessWidthToSet(inputType, formID, rowNumber, columnNumber, columnContentData.input_width)
 			);
 
-			updateColumnContentRule(formID, rowNumber, columnNumber, cssSelector, 'height', columnContentData.input_height);
+			if ('acceptance' !== inputType) {
+				updateColumnContentRule(formID, rowNumber, columnNumber, cssSelector, 'height', columnContentData.input_height);
+			}
 
 			updateColumnContentRule(formID, rowNumber, columnNumber, cssSelector, 'font-size', columnContentData.font_size);
 			updateColumnContentRule(
@@ -2440,7 +2442,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			columnContentRule +=
 				'width: ' + guessWidthToSet(inputType, formID, rowNumber, columnNumber, columnContentData.input_width) + ';';
 
-			columnContentRule += 'height: ' + columnContentData.input_height + ';';
+			if ('acceptance' !== inputType) {
+				columnContentRule += 'height: ' + columnContentData.input_height + ';';
+			}
+
 			columnContentRule += 'font-size: ' + columnContentData.font_size + ';';
 			addColumnContentRule(formID, rowNumber, columnNumber, cssSelector, columnContentRule);
 
