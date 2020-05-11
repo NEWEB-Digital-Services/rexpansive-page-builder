@@ -1044,24 +1044,16 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			false
 		);
 
-		var MIN_INPUT_WIDTH = 115;
-
 		// INPUT WIDTH
 		var _updateColumnContentWidth = function (newInputWidth) {
 			var widthType = wpcf7_content_editor_properties.$content_input_width_type.filter(':checked').val();
 
 			switch (widthType) {
 				case 'percentage':
-					// Percentage value is impossible to block because there could be
-					// multiple instances of forms with the same ID with different widths
 					outputString = newInputWidth + '%';
 					break;
 				case 'pixel':
-					// Blocking width to the lower bound in pixels
-					if (newInputWidth < MIN_INPUT_WIDTH) {
-						wpcf7_content_editor_properties.$content_input_width.val(MIN_INPUT_WIDTH);
-					}
-					outputString = (newInputWidth < MIN_INPUT_WIDTH ? String(MIN_INPUT_WIDTH) : newInputWidth) + 'px';
+					outputString = newInputWidth + 'px';
 					break;
 			}
 
