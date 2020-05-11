@@ -2345,7 +2345,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			wpcf7_content_editor_properties.$content_select_color_after_selection_value.spectrum('set', color);
 			wpcf7_content_editor_properties.$content_select_color_after_selection_runtime.val(color);
 
-			columnContentData.text_color = color;
+			columnContentData.select_color_after_selection = color;
 
 			_updateColumnContentLive({
 				type: 'select-color',

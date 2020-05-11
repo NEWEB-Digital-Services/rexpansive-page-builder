@@ -2635,6 +2635,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			$columnData.attr('data-text-color-hover', columnContentData.text_color_hover);
 			$columnData.attr('data-text-color-focus', columnContentData.text_color_focus);
 
+			
 			if ('select' === inputType) {
 				$columnData.attr('data-select-color-after-selection', columnContentData.select_color_after_selection);
 			}

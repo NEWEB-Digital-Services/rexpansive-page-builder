@@ -489,7 +489,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				columnNumber +
 				"']"
 		);
-		
+
 		var fieldClass = wpcf7Data.content.field_class;
 		var inputType = wpcf7Data.content.input_type;
 		var propertyName = wpcf7Data.propertyName;
@@ -1426,8 +1426,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	function getIDsInPage() {
 		return idsInPage;
 	}
-
-	/* ===== PRIVATE METHODS ===== */
 
 	/* ===== FormsInPage Functions ===== */
 
