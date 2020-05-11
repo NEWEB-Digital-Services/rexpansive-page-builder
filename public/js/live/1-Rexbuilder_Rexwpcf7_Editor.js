@@ -478,6 +478,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		var formID = wpcf7Data.target.element_id;
 		var rowNumber = wpcf7Data.target.row_number;
 		var columnNumber = wpcf7Data.target.column_number;
+
+		// Getting all the columns in page of the given form ID
 		var $formColumns = Rexbuilder_Util.$rexContainer.find(
 			'.rex-element-wrapper[data-rex-element-id="' +
 				formID +
@@ -487,7 +489,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				columnNumber +
 				"']"
 		);
-		console.log($formColumns.length); // > 1 if there are > 1 forms with the same ID in page
+		
 		var fieldClass = wpcf7Data.content.field_class;
 		var inputType = wpcf7Data.content.input_type;
 		var propertyName = wpcf7Data.propertyName;
@@ -859,19 +861,23 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			case 'wpcf7-list':
 				var formID = $formColumns.parents('.rex-element-wrapper').eq(0).attr('data-rex-element-id');
 				var numberOfFormsInPage = Rexbuilder_Util.$rexContainer.find(
-					".rex-element-wrapper[data-rex-element-id='" + formID + "']"
+					'.rex-element-wrapper[data-rex-element-id="' + formID + '"]'
 				).length;
 
 				switch (inputType) {
 					case 'select':
-						console.log($formColumns.find('.wpcf7-select option:not([disabled="disabled"])'));
-						for (var i = 0; i < newValue.fields.length; i++) {
-							$formColumns
-								.find('.wpcf7-select option:not([disabled="disabled"])')
-								.eq(i)
-								.text(newValue.fields[i])
-								.val(newValue.fields[i]);
-						}
+						var formColumns = $formColumns.get();
+						var actualOption;
+
+						formColumns.forEach(function (column) {
+							newValue.fields.forEach(function (newVal, i) {
+								actualOption = column.querySelectorAll('.wpcf7-select option:not([disabled="disabled"])')[i];
+
+								actualOption.setAttribute('value', newVal);
+								actualOption.innerText = newVal;
+							});
+						});
+
 						break;
 					case 'radio':
 						var list = newValue.fields;
