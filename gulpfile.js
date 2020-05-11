@@ -113,6 +113,7 @@ var builderlive_admin = [
 	'admin/js/builderlive/Rexlive_LayoutGrid_Modal.js',
 	'admin/js/builderlive/Rexlive_Section_Width_Modal.js',
 	'admin/js/builderlive/Rexlive_Section_Separators_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Photoswipe_Setting.js',
 	'admin/js/builderlive/Rexlive_SectionMargins_Modal.js',
 	'admin/js/builderlive/Rexlive_Section_Photoswipe_Modal.js',
 	'admin/js/builderlive/Rexlive_Section_Hold_Grid_Modal.js',
