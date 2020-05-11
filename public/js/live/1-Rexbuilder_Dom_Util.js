@@ -1776,6 +1776,14 @@ var Rexbuilder_Dom_Util = (function($) {
     data.galleryInstance.updateFullHeight(data.fullHeight.toString() == "true");
   };
 
+  /**
+   * Update the props of a section in a "bulky" way
+   * @param  {Object} targetInfo  Section info
+   * @param  {Object} changedData list of changed data to revert to default
+   * @param  {Array} defaultData array of objects with default data
+   * @return {void}
+   * @since  2.0.5
+   */
   function _updateBulkSection( targetInfo, changedData, defaultData ) {
     var $section;
     if ( targetInfo.modelNumber != "" ) {
@@ -1799,21 +1807,251 @@ var Rexbuilder_Dom_Util = (function($) {
       }
     }
 
+    // handle multiple value props, to prevent duplicate reset
+    var colorChanged = false;
+    var imageChanged = false;
+    var videoMp4Changed = false;
+    var overlayChanged = false;
+
     for( var prop in changedData ) {
       if ( ! changedData[prop] ) continue;
-      switch(prop) {
-        case 'row_overlay_color':
-        // case 'row_overlay_active':         // they go togheter, find a way to prevent double call
-          _updateSectionOverlay( $section, {
-            color: defaultProps[prop],
-            active: true
+      switch( prop ) {
+        case 'color_bg_section':
+        case 'color_bg_section_active':
+          if ( colorChanged ) break;
+
+          _updateSectionBackgroundColor( $section, {
+            color: defaultProps.color_bg_section,
+            active: defaultProps.color_bg_section_active
+          });
+          colorChanged = true;
+
+          break;
+        case 'image_bg_section_active':
+        case 'image_bg_section':
+        case 'image_width':
+        case 'image_height':
+        case 'id_image_bg_section':
+        case 'image_size':
+          if ( imageChanged ) break;
+
+          _updateSectionBackgroundImage( $section, {
+            width: defaultProps.image_width,
+            height: defaultProps.image_height,
+            image_size: defaultProps.image_size,
+            idImage: defaultProps.id_image_bg_section,
+            urlImage: defaultProps.image_bg_section,
+            active: defaultProps.image_bg_section_active
+          });
+          imageChanged = true;
+
+          break;
+        case 'video_bg_id_section':
+        case 'video_mp4_url':
+        case 'video_bg_width_section':
+        case 'video_bg_height_section':
+          if ( videoMp4Changed ) break;
+
+          _updateSectionVideoBackground( $section, {
+            typeVideo: 'mp4',
+            mp4Data: {
+              linkMp4: defaultProps.video_mp4_url,
+              idMp4: defaultProps.video_bg_id_section,
+              width: defaultProps.video_bg_width_section,
+              height: defaultProps.video_bg_height_section,
+            }
+          });
+          videoMp4Changed = true;
+
+          break;
+        case 'video_bg_url_section':
+          _updateSectionVideoBackground( $section, {
+            typeVideo: 'youtube',
+            youtubeUrl: defaultProps.video_bg_url_section
           });
           break;
-        default:
+        case 'video_bg_url_vimeo_section':
+          _updateSectionVideoBackground( $section, {
+            typeVideo: 'vimeo',
+            vimeoUrl: defaultProps.video_bg_url_vimeo_section
+          });
           break;
+        case 'custom_classes':
+          _updateCustomClasses( $section, defaultProps.custom_classes );
+          break;
+        case 'row_overlay_color':
+        case 'row_overlay_active':         // they go togheter, find a way to prevent double call
+          if ( overlayChanged ) break;
+
+          _updateSectionOverlay( $section, {
+            color: defaultProps.row_overlay_color,
+            active: defaultProps.row_overlay_active
+          });
+          overlayChanged = true;
+
+          break;
+        default: break;
       }
     }
-  };
+  }
+
+  /**
+   * Update the props of a block in a "bulky" way
+   * @param  {Object} targetInfo  Section info
+   * @param  {Object} changedData list of changed data to revert to default
+   * @param  {Array} defaultData array of objects with default data
+   * @return {void}
+   * @since  2.0.5
+   */
+  function _updateBulkBlock( targetInfo, changedData, defaultData ) {
+    var $elem;
+    if ( targetInfo.modelNumber != "" ) {
+      $elem = Rexbuilder_Util.$rexContainer
+        .find(
+          'section[data-rexlive-section-id="' +
+            targetInfo.sectionID +
+            '"][data-rexlive-model-number="' +
+            targetInfo.modelNumber +
+            '"]'
+        )
+        .find('div [data-rexbuilder-block-id="' + targetInfo.rexID + '"]');
+    } else {
+      $elem = Rexbuilder_Util.$rexContainer
+        .find('section[data-rexlive-section-id="' + targetInfo.sectionID + '"]')
+        .find('div [data-rexbuilder-block-id="' + targetInfo.rexID + '"]');
+    }
+
+    var defaultProps;
+    var i, tot = defaultData.length;
+    for( i=0; i<tot; i++ ) {
+      if ( targetInfo.rexID === defaultData[i].name ) {
+        defaultProps = defaultData[i].props;
+        break;
+      }
+    }
+
+    // handle multiple value props, to prevent duplicate reset
+    var colorChanged = false;
+    var imageChanged = false;
+    var videoMp4Changed = false;
+    var overlayChanged = false;
+
+    for( var prop in changedData ) {
+      if ( ! changedData[prop] ) continue;
+      switch( prop ) {
+        case 'color_bg_block':
+        case 'color_bg_block_active':
+          if ( colorChanged ) break;
+
+          _updateBlockBackgroundColor({ 
+            $elem: $elem,
+            color: defaultProps.color_bg_block,
+            active: defaultProps.color_bg_block_active
+          });
+          colorChanged = true;
+
+          break;
+        case 'image_bg_url':
+        case 'image_width':
+        case 'image_height':
+        case 'id_image_bg':
+        case 'image_size':
+        case 'image_bg_elem_active':
+        case 'type_bg_image':
+          if ( imageChanged ) break;
+
+          _updateImageBG( $elem.find(".grid-item-content"), {
+            width: defaultProps.image_width,
+            height: defaultProps.image_height,
+            sizeImage: defaultProps.image_size,
+            idImage: defaultProps.id_image_bg,
+            urlImage: defaultProps.image_bg_url,
+            active: defaultProps.image_bg_elem_active,
+            typeBGimage: defaultProps.type_bg_image
+          });
+
+          imageChanged = true;
+
+          break;
+        case 'video_bg_id':
+        case 'video_bg_width':
+        case 'video_bg_height':
+        case 'video_mp4_url':
+          if( videoMp4Changed ) break;
+
+          _updateVideos( $elem, {
+            typeVideo: 'mp4',
+            mp4Data: {
+              linkMp4: defaultProps.video_mp4_url,
+              idMp4: defaultProps.video_bg_id,
+              width: defaultProps.video_bg_width,
+              height: defaultProps.video_bg_height,
+            }
+          });
+
+          videoMp4Changed = true;
+        case 'video_bg_url_youtube':
+          _updateVideos( $elem, {
+            typeVideo: 'youtube',
+            vimeoUrl: defaultProps.video_bg_url_youtube
+          });
+          break;
+        case 'video_bg_url_vimeo':
+          _updateVideos( $elem, {
+            typeVideo: 'vimeo',
+            vimeoUrl: defaultProps.video_bg_url_vimeo
+          });
+          break;
+        case 'photoswipe':
+          _updateBlockPhotoswipe({
+            $elem: $elem,
+            photoswipe: defaultProps.photoswipe
+          });
+          break;
+        case 'block_custom_class':
+          _updateCustomClasses( $elem, defaultProps.block_custom_class );
+          break;
+        case 'block_padding':
+          var paddingType = ( -1 !== defaultProps.block_padding.indexOf('px') ? 'px' : ( -1 !== defaultProps.block_padding.indexOf('%') ? '%' : '' ) );
+          var paddingString = defaultProps.block_padding;
+          paddingString.replace( /px|%/g, '' );
+          var paddingVals = paddingString.split(';');
+
+          _updateBlockPaddings( $elem, {
+            top: paddingVals[0],
+            right: paddingVals[1],
+            bottom: paddingVals[2],
+            left: paddingVals[3],
+            type: paddingType
+          });
+          break;
+        case 'overlay_block_color':
+        case 'overlay_block_color_active':
+          if ( overlayChanged ) break;
+
+          _updateBlockOverlay( {
+            $elem: $elem,
+            color: defaultProps.overlay_block_color,
+            active: defaultProps.overlay_block_color_active
+          });
+
+          overlayChanged = true;
+          break;
+        case 'linkurl':
+          _updateBlockUrl( $elem, defaultProps.linkurl );
+          break;
+        case 'block_flex_position':
+          var flexCoords = defaultProps.block_flex_position.split(' ');
+          _updateFlexPostition( $elem, { x: flexCoords[0], y: flexCoords[1] } );
+          break;
+        case 'block_flex_img_position':
+          var flexCoords = defaultProps.block_flex_img_position.split(' ');
+          _updateImageFlexPostition( $elem, { x: flexCoords[0], y: flexCoords[1] } );
+          break;
+        default: break;
+      }
+    }
+  }
   
   /**
    * @param {String} HTML representing a single element
@@ -1913,7 +2151,7 @@ var Rexbuilder_Dom_Util = (function($) {
       case "updateCustomCSS":
         _updateCustomCSS(dataToUse.css);
         break;
-      case "updateSectionBackgroundColor":
+      case "_updateSectionBackgroundColor":
         _updateSectionBackgroundColor($section, dataToUse);
         break;
       case "updateSectionOverlay":
@@ -2077,6 +2315,7 @@ var Rexbuilder_Dom_Util = (function($) {
     updateRowDistancesData: _updateRowDistancesData,
     updateGridLayoutDomProperties: _updateGridLayoutDomProperties,
     htmlToElement: htmlToElement,
-    updateBulkSection: _updateBulkSection
+    updateBulkSection: _updateBulkSection,
+    updateBulkBlock: _updateBulkBlock
   };
 })(jQuery);

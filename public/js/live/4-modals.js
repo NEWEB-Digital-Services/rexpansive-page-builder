@@ -1761,6 +1761,9 @@
         dataPosition: data.position
       };
       $elem.attr("data-rexlive-element-edited", true);
+
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'block_flex_position' );
+
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1825,6 +1828,9 @@
         $elem: $elem,
         dataPosition: data.position
       };
+
+      Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'block_flex_img_position' );
+
       $elem.attr("data-rexlive-element-edited", true);      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -2257,6 +2263,9 @@
         Rexbuilder_Util.editedDataInfo.setBulkSectionData( event.settings.data.targetInfo.sectionID, false );
       } else {
         // live synch of options
+        var traceBlockData = Rexbuilder_Util.editedDataInfo.getBlockData( event.settings.data.targetInfo.sectionID, event.settings.data.targetInfo.rexID );
+        Rexbuilder_Dom_Util.updateBulkBlock( event.settings.data.targetInfo, traceBlockData, defaultProps );
+
         // reset: no property customized on this layout
         Rexbuilder_Util.editedDataInfo.setBulkBlockData( event.settings.data.targetInfo.sectionID, event.settings.data.targetInfo.rexID, false );
       }

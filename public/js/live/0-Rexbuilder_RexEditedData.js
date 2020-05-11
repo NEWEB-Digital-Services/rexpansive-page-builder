@@ -46,6 +46,8 @@
 		'overlay_block_color',			// overlay color
 		'overlay_block_color_active',
 		'linkurl',						// links
+		'block_flex_position',			// content position
+		'block_flex_img_position'		// image position
 	];
 
 	function RexEditedData() {

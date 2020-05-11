@@ -2,7 +2,7 @@
 /**
  * Modal that ask the user if want to continue with the synch operation
  * This action bring back the block/section desired to the default layout
- * re-synch its settings
+ * re-synching its settings
  *
  * @since 2.0.5
  * @package    Rexbuilder
@@ -27,4 +27,4 @@ defined('ABSPATH') or exit;
             </div>
         </div>
     </div>
-</div><!-- Layout page Changed -->
+</div><!-- Reset Element (Section or Block) Properties -->

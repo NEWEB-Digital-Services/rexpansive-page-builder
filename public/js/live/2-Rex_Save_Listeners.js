@@ -1224,8 +1224,12 @@ var Rex_Save_Listeners = (function($) {
       props["video_has_audio"] = video_has_audio;
       props["block_has_scrollbar"] = block_has_scrollbar;
       // props["block_dimensions_live_edited"] = block_dimensions_live_edited;
-      props["block_flex_position"] = block_flex_position;
-      props["block_flex_img_position"] = block_flex_img_position;
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.block_flex_position ) ) {
+        props["block_flex_position"] = block_flex_position;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.block_flex_img_position ) ) {
+        props["block_flex_img_position"] = block_flex_img_position;
+      }
       props["slider_dimension_ratio"] = slider_dimension_ratio;
       props["block_ratio"] = block_ratio;
       return props;
