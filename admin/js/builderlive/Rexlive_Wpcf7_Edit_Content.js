@@ -2124,6 +2124,11 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 				value: columnContentData.wpcf7_placeholder
 			});
 
+			_updateColumnContentLive({
+				type: 'wpcf7-text-editor',
+				value: columnContentData.text
+			});
+
 			var $listFields = wpcf7_content_editor_properties.$field_list.find('.wpcf7-select-field');
 			if (0 !== $listFields.length) {
 				var listFieldsArray = [];
