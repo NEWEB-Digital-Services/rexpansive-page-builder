@@ -1199,10 +1199,10 @@ wp_reset_postdata();
                 <div id="rex-model__name__wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
                     <span class="prefix"></span>
                     <input type="text" id="rex-model__name" name="rex-model__name">
-                    <label for="rex-model__name" class=""><?php _e('Model name', 'rexpansive');?></label>
+                    <label for="rex-model__name" class=""><?php _e('Template name', 'rexpansive');?></label>
                     <span class="rex-material-bar"></span>
                 </div>
-                <button id="rex-model__add-new-model" class="builder-button btn-floating btn-no-shadow btn-bordered btn-bordered--inactive tooltipped" data-position="bottom" data-tooltip="<?php _e('Add model', 'rexpansive-builder')?>">
+                <button id="rex-model__add-new-model" class="builder-button btn-floating btn-no-shadow btn-bordered btn-bordered--inactive tooltipped" data-position="bottom" data-tooltip="<?php _e('Add Template', 'rexpansive-builder')?>">
                     <i class="material-icons">&#xE145;</i>
                 </button>
             </div><!-- // .rex-model__add-model__wrap -->

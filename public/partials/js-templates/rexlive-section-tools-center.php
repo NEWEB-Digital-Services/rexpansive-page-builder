@@ -15,7 +15,7 @@ defined('ABSPATH') or exit;
 
 <div class="bl_d-flex bl_ai-c tools-area tool-area--center row-toolBox__def-view">
     <div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__fast-configuration">
-        <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked tippy" data-tippy-content="<?php _e('Model','rexpansive-builder'); ?>">
+        <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked tippy" data-tippy-content="<?php _e('Template','rexpansive-builder'); ?>">
             <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
             <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
         </div>

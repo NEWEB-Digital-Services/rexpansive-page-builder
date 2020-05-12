@@ -32,10 +32,8 @@ var Background_Block_Image_Modal = (function($) {
       );
     }
 
-    _focusImageType(
-      data.typeBGimage == "" ? data.defaultTypeImage : data.typeBGimage
-    );
-    _updatePhotoswipe(data.photoswipe);
+    _focusImageType( data.typeBGimage == "" ? data.defaultTypeImage : data.typeBGimage );
+    // _updatePhotoswipe(data.photoswipe);
 
     backgroundImageActive = data.active.toString() == "true";
     if (backgroundImageActive) {
@@ -68,7 +66,7 @@ var Background_Block_Image_Modal = (function($) {
     );
     backgroundImageActive = true;
     background_block_image_properties.$image_active.prop("checked", true);
-    background_block_image_properties.$checkboxPhotoswipe.prop( "checked", false );
+    // background_block_image_properties.$checkboxPhotoswipe.prop( "checked", false );
     background_block_image_properties.$image_type_typeWrap.removeClass(
       "selected"
     );
@@ -78,7 +76,7 @@ var Background_Block_Image_Modal = (function($) {
     imageStatus.imageActive = background_block_image_properties.$image_active.prop('checked');
     imageStatus.imageId = background_block_image_properties.$image_url.val();
     imageStatus.imageType = background_block_image_properties.$image_type_types_wrap.children(".selected").attr("data-rex-type-image");
-    imageStatus.imagePswpActive = true === background_block_image_properties.$checkboxPhotoswipe.prop("checked") ? "true" : "false";
+    // imageStatus.imagePswpActive = true === background_block_image_properties.$checkboxPhotoswipe.prop("checked") ? "true" : "false";
   }
 
   var _updateImageBackground = function() {
@@ -116,11 +114,11 @@ var Background_Block_Image_Modal = (function($) {
     var typeBGimage = $wrapImageType
       .children(".selected")
       .attr("data-rex-type-image");
-    var photoswipe =
-      true ===
-      background_block_image_properties.$checkboxPhotoswipe.prop("checked")
-        ? "true"
-        : "false";
+    // var photoswipe =
+    //   true ===
+    //   background_block_image_properties.$checkboxPhotoswipe.prop("checked")
+    //     ? "true"
+    //     : "false";
 
     var updateBlockHeight = ( imageStatus.imageType !== typeBGimage || imageStatus.imageId !== idImage );
 
@@ -133,7 +131,7 @@ var Background_Block_Image_Modal = (function($) {
         height: backgroundImageActive ? height : "",
         typeBGimage: backgroundImageActive ? typeBGimage : "",
         // photoswipe: backgroundImageActive ? photoswipe : "",
-        photoswipe: photoswipe,
+        // photoswipe: photoswipe,
         active: backgroundImageActive,
         updateBlockHeight: updateBlockHeight,
         target: target
@@ -146,12 +144,12 @@ var Background_Block_Image_Modal = (function($) {
     _traceImageStatus();
   };
 
-  var _updatePhotoswipe = function(active) {
-    background_block_image_properties.$checkboxPhotoswipe.prop(
-      "checked",
-      active.toString() == "true"
-    );
-  };
+  // var _updatePhotoswipe = function(active) {
+  //   background_block_image_properties.$checkboxPhotoswipe.prop(
+  //     "checked",
+  //     active.toString() == "true"
+  //   );
+  // };
 
   var _focusImageType = function(imageType) {
     var $imageTypeWrap = background_block_image_properties.$image_type_types_wrap.children(
@@ -209,24 +207,24 @@ var Background_Block_Image_Modal = (function($) {
       }
     });
 
-    background_block_image_properties.$is_photoswipe.click(function(e) {
-      e.preventDefault();
-      var status =
-        true ===
-        background_block_image_properties.$checkboxPhotoswipe.prop("checked");
-      if (status) {
-        background_block_image_properties.$checkboxPhotoswipe.prop(
-          "checked",
-          false
-        );
-      } else {
-        background_block_image_properties.$checkboxPhotoswipe.prop(
-          "checked",
-          true
-        );
-      }
-      _updateImageBackground();
-    });
+    // background_block_image_properties.$is_photoswipe.click(function(e) {
+    //   e.preventDefault();
+    //   var status =
+    //     true ===
+    //     background_block_image_properties.$checkboxPhotoswipe.prop("checked");
+    //   if (status) {
+    //     background_block_image_properties.$checkboxPhotoswipe.prop(
+    //       "checked",
+    //       false
+    //     );
+    //   } else {
+    //     background_block_image_properties.$checkboxPhotoswipe.prop(
+    //       "checked",
+    //       true
+    //     );
+    //   }
+    //   _updateImageBackground();
+    // });
   };
 
   var _init = function($container) {
@@ -247,8 +245,8 @@ var Background_Block_Image_Modal = (function($) {
       $image_type_types_wrap: $self.find("#bg-set-img-type"),
 
       // Photoswipe
-      $is_photoswipe: $self.find("#bg-set-photoswipe"),
-      $checkboxPhotoswipe: $self.find("#background_photoswipe")
+      // $is_photoswipe: $self.find("#bg-set-photoswipe"),
+      // $checkboxPhotoswipe: $self.find("#background_photoswipe")
     };
 
     imageStatus = {

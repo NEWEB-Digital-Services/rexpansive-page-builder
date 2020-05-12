@@ -251,9 +251,12 @@ var RexSlider = (function ($) {
   var _startSliders = function () {
     if ($(slider_class, context).length) {
       $(slider_class, context).each(function (i, el) {
-        var auto_player = $(el).attr('data-rex-slider-animation');
-        if ('undefined' != typeof auto_player && 'true' == auto_player) {
-          $(el).flickity('playPlayer');
+        var flktyInstance = Flickity.data(el);
+        if (flktyInstance) {
+          var auto_player = el.getAttribute('data-rex-slider-animation');
+          if ('undefined' != typeof auto_player && 'true' == auto_player) {
+            flktyInstance.playPlayer();
+          }
         }
       });
     }

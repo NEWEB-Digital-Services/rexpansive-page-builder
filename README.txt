@@ -200,6 +200,10 @@ For the more experienced among us: you can insert CSS anywhere.
 
 == Changelog ==
 
+= 2.0.5 – =
+ * Fixed: On a copied row, text editor doesn't work
+ * Fixed: On an import template, text editor doesn't work
+
 = 2.0.4 – April 29, 2020 =
  * Update: Improved performances on frontend
  * Update: Navigator style

@@ -70,6 +70,9 @@ var Rexlive_Modals = (function ($) {
     // change active layout
     Change_Layout_Modal.init();
 
+    // resynch content with default
+    Resynch_Content_Modal.init();
+
     // change active layout
     LockedOptionMask.init();
 

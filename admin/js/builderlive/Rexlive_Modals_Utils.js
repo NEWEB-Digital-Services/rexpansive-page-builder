@@ -58,7 +58,7 @@ var Rexlive_Modals_Utils = (function($) {
       $("body").removeClass("rex-modal-open");
       $lean_overlay.hide();
     }
-    // $target.removeClass('rex-in').hide();
+
     $target.removeClass('rex-modal--active').fadeOut({
       duration: 300
     });

@@ -340,6 +340,15 @@
   }
 }
 
+#rexpansive-builder-backend-wrapper {
+  &:not([data-active-layout="default"]) {
+    .toolbox-insert-area {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+}
+
 .left-tools{
   display: flex;
   justify-content: flex-start;
@@ -369,6 +378,20 @@
   .btn-builder-layout,
   .builder-config-layouts {
     padding: 10px 20px;
+  }
+  &.layout-saved {
+    &:before {
+      content: '';
+      position: absolute;
+      display: block;
+      width: 4px;
+      height: 4px;
+      background-color: $icon-active-color;
+      top: 50%;
+      right: 8px;
+      border-radius: 50%;
+      transform: translate(0,-50%);
+    }
   }
 }
 .tool-option {

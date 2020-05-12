@@ -444,6 +444,8 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-block-image-positions-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_ImagePosition_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-image-positions-setting', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_ImagePosition_Setting.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-paddings-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Paddings_Modal.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-block-photoswipe-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Photoswipe_Modal.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-block-photoswipe-setting', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Photoswipe_Setting.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-custom-classes', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Custom_Classes_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-image-editor', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Image_Editor_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-accordion-editor', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Accordion.js', array( 'jquery' ), null, true );
@@ -467,6 +469,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'Rexlive-Model-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Import.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Button-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Button_Import.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Button-Edit', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Edit_Button.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-resynch-content', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Resynch_Content_Modal.js', array( 'jquery' ), null, true );
 
 				// elements and form logics
 				wp_enqueue_script( 'Rexlive-Element-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Element_Import.js', array( 'jquery' ), null, true );

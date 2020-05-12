@@ -379,6 +379,31 @@ var Rexbuilder_Section_Editor = (function($) {
     // global spectrum logic -> click handlers on color tools
     Rexbuilder_Util.$rexContainer.on("click", ".edit-row-color-background", handleSectionBackgroundColorTool);
     Rexbuilder_Util.$rexContainer.on("click", ".edit-row-overlay-color", handleSectionOverlayColorTool);
+
+    // synch section content to default layout
+    Rexbuilder_Util.$rexContainer.on('click', '.synch-section-content', function(event) {
+      event.preventDefault();
+
+      var $section = $(event.target).parents(".rexpansive_section");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+
+      var data = {
+        eventName: "rexlive:reSynchContent",
+        data: {
+          targetInfo: {
+            sectionID: sectionID,
+            modelNumber: modelNumber,
+            rexID: 'self'
+          },
+        }
+      };
+
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    });
   };
 
   /**

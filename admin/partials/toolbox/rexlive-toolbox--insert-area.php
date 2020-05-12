@@ -38,11 +38,6 @@
     <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
   </div>
 
-  <!-- Button to import models -->
-  <!-- <div class="tool-button tool-button--flat tool-button__models--flat tool-button--inline btn-models tippy" data-tippy-content="<?php // esc_attr_e( 'Models', 'rexpansive-builder' ); ?>">
-    <?php // Rexbuilder_Utilities::get_icon('#A012-Models-List'); ?>
-  </div> -->
-
   <div class="tool-button-floating tool-button__settings--flat">
     <!-- to add an empty block add this class: add-new-block-empty -->
     <div class="tool-button tool-button--flat active">
@@ -112,7 +107,7 @@
         <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
       </div>
       
-      <div class="tool-button open-model-toolbox tool-button_list--item tippy" data-tippy-content="<?php _e('Model','rexpansive-builder'); ?>">
+      <div class="tool-button open-model-toolbox tool-button_list--item tippy" data-tippy-content="<?php _e('Template','rexpansive-builder'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#B005-RexModel'); ?>
       </div>
     </div>

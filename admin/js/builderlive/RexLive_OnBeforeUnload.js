@@ -90,8 +90,6 @@ var Change_OnBeforeUnload_Modal = (function($) {
     _linkDocumentListeners();
   };
 
-  //console.log("CARICAMENTO COMPLETATO: ../RexLive_OnBeforeUnload.js");
-
   return {
     init: _init,
     openModal: _openModal,

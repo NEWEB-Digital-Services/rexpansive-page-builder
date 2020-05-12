@@ -681,9 +681,6 @@ var Rexbuilder_RexSlider = (function($) {
         },
         success: function(response) {
           if (response.success) {
-            // console.log(rexslider_modal_properties.$slider_import);
-            // console.log(saveLive);
-            // console.log(response);
             if (!saveLive) {
               // updating modal info
               rexslider_modal_properties.$slider_import.find('option[value='+response.data.slider_id+']').text(live_editor_obj.labels.slider.list_title_prefix + response.data.slider_title + live_editor_obj.labels.slider.list_title_suffix).attr('data-rex-slider-title', response.data.slider_title);
@@ -736,7 +733,6 @@ var Rexbuilder_RexSlider = (function($) {
                 target: target
               }
             };
-            // console.log(data);
             if (!saveNew) {
 							if (block_to_edit) {
 								data.eventName = "rexlive:updateSlider";
@@ -750,7 +746,6 @@ var Rexbuilder_RexSlider = (function($) {
             rexslider_modal_properties.$slider_import.children().first().after(
               '<option value="' + response.data.slider_id + '" data-rex-slider-title="' + response.data.slider_title + '">' + live_editor_obj.labels.slider.list_title_prefix + response.data.slider_title + live_editor_obj.labels.slider.list_title_suffix + "</option>"
             );
-            // console.log(data.eventName);
             Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
           }
         },

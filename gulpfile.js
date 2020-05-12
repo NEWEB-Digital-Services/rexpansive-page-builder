@@ -17,7 +17,7 @@ const svgSprite = require('gulp-svg-sprite');
 /** SPRITES TASKS */
 
 var	config = {
-		shape: {
+	shape: {
 		// dimension		: {			// Set maximum dimensions
 		//   maxWidth	: 32,
 		//   maxHeight	: 32
@@ -113,6 +113,7 @@ var builderlive_admin = [
 	'admin/js/builderlive/Rexlive_LayoutGrid_Modal.js',
 	'admin/js/builderlive/Rexlive_Section_Width_Modal.js',
 	'admin/js/builderlive/Rexlive_Section_Separators_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Photoswipe_Setting.js',
 	'admin/js/builderlive/Rexlive_SectionMargins_Modal.js',
 	'admin/js/builderlive/Rexlive_Section_Photoswipe_Modal.js',
 	'admin/js/builderlive/Rexlive_Section_Hold_Grid_Modal.js',
@@ -140,6 +141,7 @@ var builderlive_admin = [
 	'admin/js/builderlive/Rexlive_Block_ImagePosition_Modal.js',
 	'admin/js/builderlive/Rexlive_Block_ImagePosition_Setting.js',
 	'admin/js/builderlive/Rexlive_Block_Paddings_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Photoswipe_Modal.js',
 	'admin/js/builderlive/Rexlive_Block_Custom_Classes_Modal.js',
 	'admin/js/builderlive/Rexlive_Block_Image_Editor_Modal.js',
 	'admin/js/builderlive/Rexlive_Block_Accordion.js',
@@ -176,6 +178,7 @@ var builderlive_admin = [
 	'admin/js/builderlive/Rexlive_Gradient_Utils.js',
 	'admin/js/builderlive/Rexlive_Page_Margins.js',
 	'admin/js/builderlive/Rexlive_Page_Settings_Modal.js',
+	'admin/js/builderlive/Rexlive_Resynch_Content_Modal.js',
 	'admin/js/builderlive/Rexbuilder_Starting.js',
 ];
 
@@ -202,6 +205,7 @@ var builderlive_public_editor = [
 	'public/js/live/0-Rexbuilder_Array_Utilities.js',
 	'public/js/live/0-Rexbuilder_Live_Templates.js',
 	'public/js/live/0-Rexbuilder_Live_Utilities.js',
+	'public/js/live/0-Rexbuilder_RexEditedData.js',
 	'public/js/live/1-Rexbuilder_Color_Palette.js',
 	'public/js/live/1-Rexbuilder_Overlay_Palette.js',
 	'public/js/live/2-Text_Editor.js',

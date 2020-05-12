@@ -28,7 +28,7 @@ var Rexbuilder_Util = (function($) {
     } else {
       addClass(el, className);
     }
-  }
+  };
 
   // timing utilities
   /**
@@ -43,13 +43,13 @@ var Rexbuilder_Util = (function($) {
       start = dateNow(),
       stop,
       timeoutFunc = function() {
-        dateNow() - start < delay ? stop || requestAnimation( timeoutFunc ) : callback()
+        dateNow() - start < delay ? stop || requestAnimation( timeoutFunc ) : callback();
       };
     requestAnimation(timeoutFunc);
 
     return {
-      clear:function(){stop=1}
-    }
+      clear:function(){stop=1;}
+    };
   }
 
   /**
@@ -65,13 +65,13 @@ var Rexbuilder_Util = (function($) {
       stop,
       intervalFunc = function() {
         dateNow() - start < delay || ( start += delay, callback());
-        stop || requestAnimation( intervalFunc )
-      }
+        stop || requestAnimation( intervalFunc );
+      };
     requestAnimation( intervalFunc );
 
     return {
-      clear: function(){ stop=1 }
-    }
+      clear: function(){ stop=1; }
+    };
   }
 
   /**
@@ -274,7 +274,7 @@ var Rexbuilder_Util = (function($) {
         editRowLayout[j].nextElementSibling.setAttribute('for', editRowLayout[j].nextElementSibling.getAttribute('for') + id );
       }
     }
-  }
+  };
 
   var _updateSectionsNumber = function() {
     var last = -1;
@@ -418,14 +418,8 @@ var Rexbuilder_Util = (function($) {
       .each(function(j, sectionTargetsElem) {
         var $sectionTargetsElem = $(sectionTargetsElem);
         var sectionRexID = $sectionTargetsElem.attr("data-section-rex-id");
-        var modelID = isNaN(parseInt($sectionTargetsElem.attr("data-model-id")))
-          ? -1
-          : parseInt($sectionTargetsElem.attr("data-model-id"));
-        var modelNumber = isNaN(
-          parseInt($sectionTargetsElem.attr("data-model-number"))
-        )
-          ? -1
-          : parseInt($sectionTargetsElem.attr("data-model-number"));
+        var modelID = isNaN(parseInt($sectionTargetsElem.attr("data-model-id"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-id"));
+        var modelNumber = isNaN( parseInt($sectionTargetsElem.attr("data-model-number")) ) ? -1 : parseInt($sectionTargetsElem.attr("data-model-number"));
         var hideSection =
           typeof $sectionTargetsElem.attr("data-section-hide") == "undefined"
             ? false
@@ -688,8 +682,8 @@ var Rexbuilder_Util = (function($) {
 
     var sortBy = function (key) {
       return function (a, b) {
-        return a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0
-      }
+        return a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0;
+      };
     };
 
     // Creating a copy of layoutsPageNames and sorting it
@@ -730,7 +724,7 @@ var Rexbuilder_Util = (function($) {
       return 'tablet';
     }
     return 'default';
-  }
+  };
 
   var _createEmptyTargets = function(targetsToEmpty) {
     var emptyTargets = [];
@@ -823,7 +817,7 @@ var Rexbuilder_Util = (function($) {
     allLayouts = ( '' !== allLayouts ? JSON.parse( allLayouts ): [] );
 
     var layoutInfo = allLayouts.filter( function( layout ) {
-      return ( layout.id === layoutName )
+      return ( layout.id === layoutName );
     });
 
     // something has goes wrong
@@ -1220,7 +1214,7 @@ var Rexbuilder_Util = (function($) {
     var d = document.createElement('div');
     d.style[prop] = value;
     return d.style[prop] === value;
-	}
+	};
 	
 	/**
    * Clear editing info for the sections
@@ -1242,7 +1236,7 @@ var Rexbuilder_Util = (function($) {
         blocks[j].setAttribute('data-rexlive-element-edited', false);
       }
     }
-	};
+	}
 
   var launchEditDomLayout = function () {
 		var layout = Rexbuilder_Util.chooseLayout();
@@ -1270,6 +1264,7 @@ var Rexbuilder_Util = (function($) {
     Rexbuilder_Util.rexContainer.setAttribute( "data-rex-layout-selected", chosenLayoutName );
     Rexbuilder_Util.activeLayout = chosenLayoutName;
 
+    // new page (?)
     if ( $rexbuilderLayoutData.children(".layouts-customizations").attr("data-empty-customizations") == "true" && $rexbuilderModelData.children(".models-customizations").attr("data-empty-models-customizations") == "true" ) {
       if ( _isMobile() ) {
         if ( ! Rexbuilder_Util.blockGridUnder768 ) {
@@ -1279,6 +1274,17 @@ var Rexbuilder_Util = (function($) {
 			} else {
         Rexbuilder_Util.removeCollapsedGrids();
       }
+
+      // tracing empty page data
+      var emptySectionData = [{
+        section_rex_id: document.querySelector('.rexpansive_section.empty-section').getAttribute('data-rexlive-section-id'),
+        targets:[{
+          name:'self',
+          props: {}
+        }]
+      }];
+      Rexbuilder_Util.editedDataInfo = new RexEditedData( emptySectionData );
+
       return response;
     }
 
@@ -1297,9 +1303,7 @@ var Rexbuilder_Util = (function($) {
       // populate sections object array
       temp_secObj = {
         rexID: sections[sIndex].getAttribute( 'data-rexlive-section-id' ),
-        modelID: isNaN( parseInt( sections[sIndex].getAttribute( 'data-rexlive-model-id' ) ) )
-          ? ''
-          : parseInt( sections[sIndex].getAttribute( 'data-rexlive-model-id' ) )
+        modelID: isNaN( parseInt( sections[sIndex].getAttribute( 'data-rexlive-model-id' ) ) ) ? '' : parseInt( sections[sIndex].getAttribute( 'data-rexlive-model-id' ) )
       };
       sectionsPage.push( temp_secObj );
     }
@@ -1372,13 +1376,16 @@ var Rexbuilder_Util = (function($) {
       if ( chosenLayoutName !== probableLayout ) {
         probableLayoutSelectedSections = layoutDataPage.filter( function(layout) {
           return ( probableLayout === layout.name );
-        })
+        });
 
         probableLayoutSelectedSections = probableLayoutSelectedSections[0].sections;
       } else {
         probableLayoutSelectedSections = layoutSelectedSections;
       }
     }
+
+    // tracing page data
+    Rexbuilder_Util.editedDataInfo = new RexEditedData( ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ) );
 
     var mergedEdits = _mergeSections(
       ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ),
@@ -1393,7 +1400,6 @@ var Rexbuilder_Util = (function($) {
     var sectionDomOrder = [];
 
     var meIndex, section, $section;
-
 
     for( meIndex in mergedEdits ) {
       if (!mergedEdits[meIndex].notInSection || chosenLayoutName == "default") {
@@ -1803,7 +1809,7 @@ var Rexbuilder_Util = (function($) {
     // Update block background
     var bgColorOpt = {
       $elem: $elem,
-      color: targetProps["color_bg_block"],
+      color: ( 'undefined' !== typeof targetProps["color_bg_block"] ? targetProps["color_bg_block"] : '' ),
       active:
         typeof targetProps["color_bg_block_active"] == "undefined"
           ? true
@@ -1819,7 +1825,7 @@ var Rexbuilder_Util = (function($) {
     // Update block overlay
     var overlayBlockOpt = {
       $elem: $elem,
-      color: targetProps["overlay_block_color"],
+      color: ( 'undefined' !== typeof targetProps["overlay_block_color"] ? targetProps["overlay_block_color"] : '' ),
       active:
         typeof targetProps["overlay_block_color_active"] == "undefined"
           ? false
@@ -1866,6 +1872,17 @@ var Rexbuilder_Util = (function($) {
     };
 
     Rexbuilder_Dom_Util.updateFlexPostition($elem, flexPosition);
+
+    // Update block image position
+    var pos =
+      typeof targetProps["block_flex_img_position"] != "undefined"
+        ? targetProps["block_flex_img_position"].split(" ")
+        : "";
+    var imgFlexPosition = {
+      x: pos[0],
+      y: pos[1]
+    };
+    Rexbuilder_Dom_Util.updateImageFlexPostition( $elem, imgFlexPosition );
 
     var sliderRatio =
       typeof targetProps["slider_dimension_ratio"] == "undefined"
@@ -2846,11 +2863,8 @@ var Rexbuilder_Util = (function($) {
     // }
 
     var backgroundColorOpt = {
-      color: targetProps["color_bg_section"],
-      active:
-        typeof targetProps["color_bg_section_active"] == "undefined"
-          ? true
-          : targetProps["color_bg_section_active"].toString()
+      color: ( 'undefined' !== typeof targetProps["color_bg_section"] ? targetProps["color_bg_section"] : '' ),
+      active: typeof targetProps["color_bg_section_active"] == "undefined" ? true : targetProps["color_bg_section_active"].toString()
     };
 
     if( -1 === backgroundColorOpt.color.indexOf("gradient") ) {
@@ -2866,18 +2880,10 @@ var Rexbuilder_Util = (function($) {
     }
 
     var margins = {
-      top: isNaN(parseInt(targetProps["row_margin_top"]))
-        ? 0
-        : parseInt(targetProps["row_margin_top"]),
-      right: isNaN(parseInt(targetProps["row_margin_right"]))
-        ? 0
-        : parseInt(targetProps["row_margin_right"]),
-      bottom: isNaN(parseInt(targetProps["row_margin_bottom"]))
-        ? 0
-        : parseInt(targetProps["row_margin_bottom"]),
-      left: isNaN(parseInt(targetProps["row_margin_left"]))
-        ? 0
-        : parseInt(targetProps["row_margin_left"])
+      top: isNaN(parseInt(targetProps["row_margin_top"])) ? 0 : parseInt(targetProps["row_margin_top"]),
+      right: isNaN(parseInt(targetProps["row_margin_right"])) ? 0 : parseInt(targetProps["row_margin_right"]),
+      bottom: isNaN(parseInt(targetProps["row_margin_bottom"])) ? 0 : parseInt(targetProps["row_margin_bottom"]),
+      left: isNaN(parseInt(targetProps["row_margin_left"])) ? 0 : parseInt(targetProps["row_margin_left"])
     };
 
     Rexbuilder_Dom_Util.updateSectionMarginsData($section, margins);
@@ -3822,7 +3828,7 @@ var Rexbuilder_Util = (function($) {
     // first load default layout state generation
     if ( $defaultLayoutState.attr("data-empty-default-customization") == "true" ) {
       defaultLayoutSections = Rexbuilder_Util.getDefaultPageLayout( layoutDataPage, layoutDataModels );
-      Rexbuilder_Util.createDefaultLayoutState(defaultLayoutSections);
+      _createDefaultLayoutState(defaultLayoutSections);
     } else {
       // on change layout, the default state may be change, get it updated
       Rexbuilder_Util.updateDefaultLayoutState({
@@ -4167,7 +4173,6 @@ var Rexbuilder_Util = (function($) {
     fixYoutube: _fixYoutube,
     saveCustomizationDomOrder: _saveCustomizationDomOrder,
     getDefaultPageLayout: _getDefaultPageLayout,
-    createDefaultLayoutState: _createDefaultLayoutState,
     getModelsCustomizations: _getModelsCustomizations,
     updateModelsCustomizationsData: _updateModelsCustomizationsData,
     getPageCustomizations: _getPageCustomizations,
@@ -4211,8 +4216,6 @@ var Rexbuilder_Util = (function($) {
     merge: _merge,
 		handleLayoutChange: handleLayoutChange,
 		removeArrayDuplicates: removeArrayDuplicates,
-
-		// Grids lazy loading
 		clearSectionsEdited: clearSectionsEdited,
   };
 })(jQuery);

@@ -261,6 +261,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Section_Video_Background_Modal.openSectionVideoBackgroundModal( event.data.activeBG, event.data.mousePosition);
       }
 
+      if (event.data.eventName == "rexlive:reSynchContent") {
+        Resynch_Content_Modal.openModal( event.data );
+      }
+
       if (event.data.eventName == "rexlive:editBlockOptions") {
         BlockOptions_Modal.openBlockOptionsModal(event.data.activeBlockData );
       }
@@ -338,11 +342,16 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
           default:
             break;
         }
+
         if (modelSaved && Rexbuilder_Util_Admin_Editor.pageSaved) {
           NProgress.done();
           Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.attr( "data-rex-edited-backend", false );
           $saveBtn.removeClass("page-edited");
           // Rexbuilder_Util_Admin_Editor.$body.removeClass('page-edited');
+          
+          // add saved layout indicator
+          Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-builder-layout.active-layout").parent().addClass('layout-saved');
+
           $saveBtn.removeClass("rex-saving");
           if ( typeof event.data.buttonData !== "undefined" && event.data.buttonData != "" ) {
             _updateLayoutPage(event.data.buttonData);
@@ -1016,12 +1025,14 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     Rexbuilder_Util_Admin_Editor.pageSaved = true;
     activeLayoutPage = buttonData.id;
     activeLayoutPageLabel = buttonData.label;
+    Rexbuilder_Util_Admin_Editor.setActiveLayout( activeLayoutPage );
+    /*
     var $activeLayoutBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.btn-builder-layout[data-name="' + activeLayoutPage + '"]');
     Rexbuilder_Util_Admin_Editor.$responsiveToolbar
       .find(".btn-builder-layout.active-layout")
       .removeClass("active-layout");
     $activeLayoutBtn
-      .addClass("active-layout");
+      .addClass("active-layout");*/
 
     Rexbuilder_Util_Admin_Editor.$responsiveToolbar
       .find('.tool-option__choose-layout')
@@ -1137,7 +1148,6 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     };
     jQuery.extend(infos, data);
 
-    // console.log("sending message to iframe");
     frameBuilderWindow.postMessage(infos, "*");
   };
 
@@ -1176,6 +1186,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     this.$responsiveToolbar
       .find('.btn-builder-layout[data-name="' + activeLayoutPage + '"]')
       .addClass("active-layout");
+    this.$rexpansiveContainer.attr('data-active-layout', layout);
   };
 
   var _whichTransitionEvent = function() {

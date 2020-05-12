@@ -1176,16 +1176,22 @@ var TextEditor = (function ($) {
       this.subscribe("positionToolbar", this.handlePositionToolbar.bind(this));
       this.subscribe("hideToolbar", this.handleHideToolbar.bind(this));
 
-      this.rexbuttonTools = document.createElement("div");
-      this.rexbuttonTools.contentEditable = false;
-      this.rexbuttonTools.classList.add("rexbutton-tools");
-      this.rexbuttonTools.style.display = "none";
-      // this.rexbuttonTools.innerHTML = tmpl("tmpl-rexbutton-tools", {});
-      this.rexbuttonTools.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-rexbutton-tools");
-      $(document.getElementsByTagName("body")[0]).append(this.rexbuttonTools);
+      this.rexbuttonToolsTop = document.createElement('div');
+      this.rexbuttonToolsTop.contentEditable = false;
+      this.rexbuttonToolsTop.classList.add("rexbutton-tools");
+      this.rexbuttonToolsTop.style.display = "none";
+      this.rexbuttonToolsTop.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-rexbutton-tools-top");
+      document.body.appendChild( this.rexbuttonToolsTop );
 
-      this.deleteRexbuttonBtn = $(this.rexbuttonTools).find(".rex-delete-button")[0];
-      this.editRexbuttonBtn = $(this.rexbuttonTools).find(".rex-edit-button")[0];
+      this.rexbuttonToolsBottom = document.createElement("div");
+      this.rexbuttonToolsBottom.contentEditable = false;
+      this.rexbuttonToolsBottom.classList.add("rexbutton-tools");
+      this.rexbuttonToolsBottom.style.display = "none";
+      this.rexbuttonToolsBottom.innerHTML = Rexbuilder_Live_Templates.getTemplate("tmpl-rexbutton-tools-bottom");
+      document.body.appendChild( this.rexbuttonToolsBottom );
+
+      this.deleteRexbuttonBtn = this.rexbuttonToolsTop.querySelector(".rex-delete-button");
+      this.editRexbuttonBtn = this.rexbuttonToolsBottom.querySelector(".rex-edit-button");
 
       // Hiding anchor preview of text editor when mouse is over a rexbutton
       // Timeout is needed because anchor will stay under button for about 500-600 ms
@@ -1262,12 +1268,14 @@ var TextEditor = (function ($) {
     },
 
     viewRexbuttonToolbox: function (event) {
-      this.rexbuttonTools.style.display = "block";
+      this.rexbuttonToolsTop.style.display = "block";
+      this.rexbuttonToolsBottom.style.display = "block";
       this.placeRexbuttonToolbox();
     },
 
     hideRexbuttonToolbox: function (event) {
-      this.rexbuttonTools.style.display = "none";
+      this.rexbuttonToolsTop.style.display = "none";
+      this.rexbuttonToolsBottom.style.display = "none";
     },
 
     traceInputRexButton: function (event) {
@@ -1297,11 +1305,14 @@ var TextEditor = (function ($) {
      */
     placeRexbuttonToolbox: function () {
       var targetCoords = this.traceBTN.getBoundingClientRect();
-      this.rexbuttonTools.style.width = targetCoords.width + "px";
-      this.rexbuttonTools.style.left = (targetCoords.left + ((targetCoords.width - this.rexbuttonTools.offsetWidth) / 2)) + "px";
-      this.rexbuttonTools.style.top = (window.scrollY + targetCoords.top - this.rexbuttonTools.offsetHeight) + "px";
-      //this.rexbuttonTools.style.top = (window.scrollY + targetCoords.top - this.rexbuttonTools.offsetHeight + 8) + "px";
-      //this.rexbuttonTools.style.top = (window.scrollY + targetCoords.top - this.rexbuttonTools.offsetHeight - 8) + "px";
+      this.rexbuttonToolsTop.style.width = targetCoords.width + "px";
+      this.rexbuttonToolsTop.style.left = (targetCoords.left + ((targetCoords.width - this.rexbuttonToolsTop.offsetWidth) / 2)) + "px";
+      this.rexbuttonToolsTop.style.top = (window.scrollY + targetCoords.top - this.rexbuttonToolsTop.offsetHeight) + "px";
+      
+      this.rexbuttonToolsBottom.style.width = targetCoords.width + "px";
+      this.rexbuttonToolsBottom.style.left = (targetCoords.left + ((targetCoords.width - this.rexbuttonToolsBottom.offsetWidth) / 2)) + "px";
+      // this.rexbuttonToolsBottom.style.top = (window.scrollY + targetCoords.top - this.rexbuttonToolsBottom.offsetHeight) + "px";
+      this.rexbuttonToolsBottom.style.top = (window.scrollY + targetCoords.top + targetCoords.height) + "px";
     },
 
     handleClickDeleteRexbutton: function (e) {

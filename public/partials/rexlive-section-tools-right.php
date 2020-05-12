@@ -20,7 +20,7 @@ $image_bg_section = ( isset( $atts['image_bg_section'] ) && ! empty( $atts['imag
 <div class="bl_d-flex bl_ai-c bl_jc-fe tools-area tool-area--side">
 
     <div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__fast-configuration">
-        <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked tippy" data-tippy-content="<?php _e('Model','rexpansive-builder'); ?>">
+        <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked tippy" data-tippy-content="<?php _e('Template','rexpansive-builder'); ?>">
             <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
             <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
         </div>
@@ -106,7 +106,7 @@ $image_bg_section = ( isset( $atts['image_bg_section'] ) && ! empty( $atts['imag
                     <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
                 </div>
                 
-                <div class="tool-button open-model tool-button_list--item tippy" data-tippy-content="<?php _e('Model','rexpansive-builder'); ?>">
+                <div class="tool-button open-model tool-button_list--item tippy" data-tippy-content="<?php _e('Template','rexpansive-builder'); ?>">
                     <?php Rexbuilder_Utilities::get_icon('#B005-RexModel'); ?>
                 </div>
             </div>

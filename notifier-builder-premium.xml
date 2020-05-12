@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <notifier>
-	<latest>2.0.3</latest>
+	<latest>2.0.5</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.0.5</strong> – </h4>
+			<p><strong>Fixed</strong>: On a copied row, text editor doesn't work</p>
+			<p><strong>Fixed</strong>: On an import template, text editor doesn't work</p>
 			<h4><strong>v2.0.4</strong> – April 29, 2020</h4>
 			<p><strong>Update</strong>: Improved performances on frontend</p>
 			<p><strong>Update</strong>: Navigator style</p>

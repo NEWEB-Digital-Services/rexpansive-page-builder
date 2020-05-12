@@ -28,6 +28,7 @@ var Block_Image_Editor_Modal = (function($) {
   var _openModal = function(data, mousePosition) {
     Background_Block_Image_Setting.updateImageModal(data.imageBG);
     Block_Image_Positions_Setting.updatePosition(data.flexImgPosition);
+    Block_Photoswipe_Setting.updatePhotoswipeModal(data.imageBG);
     
     Rexlive_Modals_Utils.positionModal( block_image_editor_properties.$modal, mousePosition );
     Rexlive_Modals_Utils.openModal($modal_wrap);
@@ -41,11 +42,11 @@ var Block_Image_Editor_Modal = (function($) {
   };
 
   var init = function(data) {
-    // console.log(data);
     _cache_variables();
     _listen_events();
     Background_Block_Image_Setting.init(block_image_editor_properties.$modal);
     Block_Image_Positions_Setting.init(block_image_editor_properties.$modal);
+    Block_Photoswipe_Setting.init(block_image_editor_properties.$modal);
   };
 
   return {

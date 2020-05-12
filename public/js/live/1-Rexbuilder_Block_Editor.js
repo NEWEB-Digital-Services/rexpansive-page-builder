@@ -771,6 +771,33 @@ var Rexbuilder_Block_Editor = (function($) {
     // global spectrum logic -> click handlers on color tools
     Rexbuilder_Util.$rexContainer.on("click", ".edit-block-color-background", handleBlockBackgroundColorTool);
     Rexbuilder_Util.$rexContainer.on("click", ".edit-block-overlay-color", handleBlockOverlayColorTool);
+
+    // synch block content to default layout
+    Rexbuilder_Util.$rexContainer.on('click', '.synch-block-content', function(event) {
+      event.preventDefault();
+
+      var $elem = $(event.target).parents(".grid-stack-item");
+      var $section = $elem.parents(".rexpansive_section");
+      var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+
+      var data = {
+        eventName: "rexlive:reSynchContent",
+        data: {
+          targetInfo: {
+            sectionID: sectionID,
+            modelNumber: modelNumber,
+            rexID: rex_block_id
+          },
+        }
+      };
+
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    });
   };
 
   /**

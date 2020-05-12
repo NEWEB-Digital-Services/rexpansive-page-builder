@@ -41,7 +41,6 @@ var Change_UpdateVideoInline_Modal = (function($) {
             if( isUrl == false ){
               $("#me-insert-embed-url-isnot-valid").css("display","block");
               document.getElementById("me-insert-embed-inline-video-text").value = "";
-              console.log("InsertVIDEO || The value has an error, it isn't a valid URL\nValue:",inlinevideourlvalue,"\nisUrl:",isUrl);
               $("#me-insert-embed-url-isnot-valid").fadeOut(3000);
             } else {
               var settings = {
@@ -84,8 +83,6 @@ var Change_UpdateVideoInline_Modal = (function($) {
     };
     _linkDocumentListeners();
   };
-
-  //console.log("CARICAMENTO COMPLETATO: ../RexLive_OnBeforeUnload.js");
 
   return {
     init: _init,

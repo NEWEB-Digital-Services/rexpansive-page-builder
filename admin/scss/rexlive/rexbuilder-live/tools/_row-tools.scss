@@ -223,6 +223,14 @@
   // }
 }
 
+.rex-container {
+  &[data-rex-layout-selected=default] {
+    .tool-button--reset {
+      display: none;
+    }
+  }
+}
+
 .activeRowTools {
   .section-toolBox {
     @include view-row-tools();
@@ -333,23 +341,6 @@
   }
 }
 
-// .empty-section {
-  // dev purpose
-  // .section-toolBox {
-  //   .tools {
-  //     @include generic-toolbar;
-  //     transform: translateY(-50%);
-  //   }
-  
-  //   + .section-toolBoox__highlight {
-  //     opacity: 1;
-  //   }
-  // }
-  // .row-toolBox__fast-configuration {
-  //   display: none;
-  // }
-// }
-
 .add-new-section__wrap {
   padding: 20px 0;
   // .add-new-section {
@@ -357,9 +348,26 @@
   // }
 }
 
+/*
 .add-new-section--hide {
   .add-new-section__wrap {
     display: none;
+  }
+}*/
+
+.add-new-section--hide {
+  .rex-container[data-rex-layout-selected="default"] {
+    + .add-new-section__wrap {
+      display: none;
+    }
+  }
+}
+
+.rex-container {
+  &:not([data-rex-layout-selected="default"]) {
+    + .add-new-section__wrap {
+      display: none;
+    }
   }
 }
 

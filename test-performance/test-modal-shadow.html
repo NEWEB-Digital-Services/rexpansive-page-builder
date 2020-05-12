@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>MODAL & SHADOW & CHROME</title>
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+	<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+		}
+		.page {
+			max-width: 1024px;
+			margin: 0 auto;
+		}
+		.section {
+			padding: 40px;
+			background-color: #ddd;
+			color:#aaa;
+		}
+		.modal-wrap {
+			position: fixed;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			z-index: 10;
+		}
+		.modal {
+			position: relative;
+			top: 7%;
+			left: 0;
+			right: 0;
+			padding: 30px;
+			background-color:#eee;
+			max-width: 405px;
+			margin: auto;
+			box-shadow: 0 0 100px 5px rgba(255,0,85,0.4);
+			cursor: grab;
+			backface-visibility: hidden;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="modal-wrap">
+		<div id="modal" class="modal">
+			UNA FINESTRA VOLANTE
+		</div>
+	</div>
+	<div class="page">
+		<div class="section">
+			<h1>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime eaque libero, doloremque iusto, ipsam, ea maiores inventore ad quasi tempora, ipsum. Assumenda nobis placeat odit dolores minima, omnis earum officiis. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime eaque libero, doloremque iusto, ipsam, ea maiores inventore ad quasi tempora, ipsum. Assumenda nobis placeat odit dolores minima, omnis earum officiis.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime eaque libero, doloremque iusto, ipsam, ea maiores inventore ad quasi tempora, ipsum. Assumenda nobis placeat odit dolores minima, omnis earum officiis.</h1>
+			<h2>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime eaque libero, doloremque iusto, ipsam, ea maiores inventore ad quasi tempora, ipsum. Assumenda nobis placeat odit dolores minima, omnis earum officiis.</h2>
+			<h3>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime eaque libero, doloremque iusto, ipsam, ea maiores inventore ad quasi tempora, ipsum. Assumenda nobis placeat odit dolores minima, omnis earum officiis.</h3>
+			<h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime eaque libero, doloremque iusto, ipsam, ea maiores inventore ad quasi tempora, ipsum. Assumenda nobis placeat odit dolores minima, omnis earum officiis.</h4>
+			<h5>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime eaque libero, doloremque iusto, ipsam, ea maiores inventore ad quasi tempora, ipsum. Assumenda nobis placeat odit dolores minima, omnis earum officiis.</h5>
+			<h6>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime eaque libero, doloremque iusto, ipsam, ea maiores inventore ad quasi tempora, ipsum. Assumenda nobis placeat odit dolores minima, omnis earum officiis.</h6>
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime eaque libero, doloremque iusto, ipsam, ea maiores inventore ad quasi tempora, ipsum. Assumenda nobis placeat odit dolores minima, omnis earum officiis.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime eaque libero, doloremque iusto, ipsam, ea maiores inventore ad quasi tempora, ipsum. Assumenda nobis placeat odit dolores minima, omnis earum officiis. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime eaque libero, doloremque iusto, ipsam, ea maiores inventore ad quasi tempora, ipsum. Assumenda nobis placeat odit dolores minima, omnis earum officiis. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime eaque libero, doloremque iusto, ipsam, ea maiores inventore ad quasi tempora, ipsum. Assumenda nobis placeat odit dolores minima, omnis earum officiis.</p>
+		</div>
+	</div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+	<script>
+;(function($) {
+	function handleDOMContentLoaded() {
+		$('#modal').draggable();
+	}
+
+	document.addEventListener('DOMContentLoaded', handleDOMContentLoaded);
+}(jQuery));
+	</script>
+</body>
+</html>

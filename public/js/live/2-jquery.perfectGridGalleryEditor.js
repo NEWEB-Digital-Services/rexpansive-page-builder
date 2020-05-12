@@ -2808,8 +2808,6 @@
       var scroll = function(step) {
         var scrollY = $(document).scrollTop();
 
-        //console.log(scrollY);   // view the scroll coordinates during drag.
-
         $(document).scrollTop( scrollY + step );
         if (!stop) {
           setTimeout(function() {
