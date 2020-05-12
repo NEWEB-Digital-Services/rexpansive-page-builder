@@ -1518,7 +1518,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	}
 
 	function _getDBFormsInPage() {
-		var $elementWrappers = Rexbuilder_Util.$rexContainer.find('.rex-element-wrapper').has('.wpcf7-form:not(.no-builder-form)');
+		var $elementWrappers = Rexbuilder_Util.$rexContainer
+			.find('.rex-element-wrapper')
+			.has('.wpcf7-form:not(.no-builder-form)');
 
 		if (0 === $elementWrappers.length) {
 			return;
@@ -1718,7 +1720,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 	function _addFormToolsToDOM() {
 		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-form-tools');
-		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form:not(.no-builder-form)'));
+		var forms = Array.prototype.slice.call(
+			Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form:not(.no-builder-form)')
+		);
 
 		forms.forEach(function (form) {
 			form.querySelector('.wpcf7-rows').insertAdjacentHTML('afterend', toolsTemplate);
@@ -1727,7 +1731,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 	function _addRowToolsToDOM() {
 		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-row-tools');
-		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form:not(.no-builder-form)'));
+		var forms = Array.prototype.slice.call(
+			Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form:not(.no-builder-form)')
+		);
 		var rows;
 
 		var i = 0;
@@ -1742,17 +1748,24 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	}
 
 	function _addColumnToolsToDOM() {
-		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-column-tools');
-		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form:not(.no-builder-form)'));
+		var forms = Array.prototype.slice.call(
+			Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form:not(.no-builder-form)')
+		);
 
 		var columnsFormControl;
+		var fieldName;
+		var toolsTemplate;
 
-		var i = 0;
 		var j = 0;
-		for (; i < forms.length; i++) {
+		for (var i = 0; i < forms.length; i++) {
 			columnsFormControl = Array.prototype.slice.call(forms[i].querySelectorAll('.wpcf7-form-control'));
 
 			for (j = 0; j < columnsFormControl.length; j++) {
+				// fieldName = columnsFormControl[j].getAttribute('name');
+				fieldName = _getName(columnsFormControl[j]);
+				console.log(fieldName)
+				toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-column-tools', { name: fieldName });
+
 				columnsFormControl[j].insertAdjacentHTML('afterend', toolsTemplate);
 			}
 		}
@@ -1761,7 +1774,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	function addMissingTools(formID) {
 		var formToolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-form-tools');
 		var rowToolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-row-tools');
-		var columnToolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-column-tools');
 
 		var forms = Array.prototype.slice.call(
 			Rexbuilder_Util.rexContainer.querySelectorAll(
@@ -1773,10 +1785,12 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		var currentRow;
 		var currentFormControls;
 
-		var i = 0;
+		var fieldName;
+		var columnToolsTemplate;
+
 		var j = 0;
 		var k = 0;
-		for (; i < forms.length; i++) {
+		for (var i = 0; i < forms.length; i++) {
 			// Form
 			if (!forms[i].querySelector('.rexwpcf7-form-tools')) {
 				forms[i].querySelector('.wpcf7-rows').insertAdjacentHTML('afterend', formToolsTemplate);
@@ -1797,10 +1811,47 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				for (k = 0; k < currentFormControls.length; k++) {
 					// Column, form control
 					if (0 === $(currentFormControls[k]).siblings('.rexwpcf7-column-tools').length) {
+						// fieldName = currentFormControls[k].getAttribute('name');
+						fieldName = _getName(currentFormControls[k]);
+						console.log(fieldName)
+						columnToolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-column-tools', { name: fieldName });
+
 						currentFormControls[k].insertAdjacentHTML('afterend', columnToolsTemplate);
 					}
 				}
 			}
+		}
+	}
+
+	/**
+	 * Returns the passed form control input name. It can be different
+	 * from the input-{xxx} template.
+	 * @param		{Element}	formControl	.wpcf7-form-control element
+	 * @returns	{String}	Input name
+	 * @since		2.0.5
+	 */
+	function _getName(formControl) {
+		var type = formControl.className.match(/wpcf7-email/);
+		if (type) return formControl.getAttribute('name');
+
+		type = formControl.className.match(/wpcf7-(text|number|textarea|submit|acceptance|radio|file)/);
+		if (!type) return;
+
+		type = type[1];
+
+		switch (type) {
+			case 'text':
+			case 'number':
+			case 'textarea':
+			case 'file':
+				return formControl.getAttribute('name');
+			case 'acceptance':
+				type = 'checkbox';
+			case 'radio':
+				return formControl.querySelector('[type="' + type + '"]').getAttribute('name');
+			case 'submit':
+			default:
+				return null;
 		}
 	}
 

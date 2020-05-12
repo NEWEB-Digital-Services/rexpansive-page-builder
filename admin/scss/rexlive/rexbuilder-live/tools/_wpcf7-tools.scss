@@ -144,6 +144,7 @@
 	}
 
 	.rex-wpcf7-column-settings,
+	.rex-wpcf7-column-info,
 	.rex-wpcf7-column-clone,
 	.rex-wpcf7-column-delete {
 		.l-svg-icons {
@@ -151,21 +152,27 @@
 		}
 	}
 
+	.rex-wpcf7-column-info {
+		position: absolute;
+		top: 0;
+		left: -10px;
+	}
+
 	.rex-wpcf7-column-settings {
 		position: absolute;
-		top: 0px;
+		top: 0;
 		left: calc(50% - 10px);
 	}
 
 	.rex-wpcf7-column-clone {
 		position: absolute;
-		top: 0px;
+		top: 0;
 		right: 25px;
 	}
 
 	.rex-wpcf7-column-delete {
 		position: absolute;
-		top: 0px;
+		top: 0;
 		right: -10px;
 	}
 }

@@ -128,7 +128,37 @@ var Rexbuilder_Live_Templates = (function() {
 						'</div>'+
 				'</div>';
 			case 'wpcf7-column-tools':
-				return '<div contenteditable="false" class="rexwpcf7-column-tools"><div class="tool-button tool-button--pink wpcf7-form-button rex-wpcf7-column-settings tippy" data-tippy-content="' + _plugin_frontend_settings.labels.settings + '" data-operation="columnSettings"> <i class="l-svg-icons"><svg><use xlink:href="#Z005-Setting"></use></svg></i> </div> <div class="tool-button wpcf7-form-button rex-wpcf7-column-clone tippy" data-tippy-content="' + _plugin_frontend_settings.labels.clone + '" data-operation="cloneColumn"> <i class="l-svg-icons"><svg><use xlink:href="#Z004-Copy"></use></svg></i> </div> <div class="tool-button tool-button--black wpcf7-form-button rex-wpcf7-column-delete tippy" data-tippy-content="' + _plugin_frontend_settings.labels.delete + '" data-operation="deleteColumnContent"> <i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i></div></div>';
+				return '<div contenteditable="false" class="rexwpcf7-column-tools">' +
+				(data.name ? '<div class="tool-button rex-wpcf7-column-info tippy" data-tippy-content="' + data.name + '">' +
+						'<i class="l-svg-icons">' +
+							'<svg>' +
+								'<use xlink:href="#Z015-Question-Mark-Sign"></use>' +
+							'</svg>' +
+						'</i>' +
+					'</div>'
+					: '') +
+					'<div class="tool-button tool-button--pink wpcf7-form-button rex-wpcf7-column-settings tippy" data-tippy-content="' + _plugin_frontend_settings.labels.settings + '" data-operation="columnSettings">' +
+						'<i class="l-svg-icons">' +
+							'<svg>' +
+								'<use xlink:href="#Z005-Setting"></use>' +
+							'</svg>' +
+						'</i>' +
+					'</div>' +
+					'<div class="tool-button wpcf7-form-button rex-wpcf7-column-clone tippy" data-tippy-content="' + _plugin_frontend_settings.labels.clone + '" data-operation="cloneColumn">' +
+						'<i class="l-svg-icons">' +
+							'<svg>' +
+								'<use xlink:href="#Z004-Copy"></use>' +
+							'</svg>' +
+						'</i>' +
+					'</div>' +
+					'<div class="tool-button tool-button--black wpcf7-form-button rex-wpcf7-column-delete tippy" data-tippy-content="' + _plugin_frontend_settings.labels.delete + '" data-operation="deleteColumnContent">' +
+						'<i class="l-svg-icons">' +
+							'<svg>' +
+								'<use xlink:href="#Z003-Close"></use>' +
+							'</svg>' +
+						'</i>' +
+					'</div>' +
+				'</div>';
 			case 'wpcf7-button-fix':
 				return '<span class="wpcf7-form-control-wrap"></span>';
 			case 'rexelement-tools':
