@@ -1789,7 +1789,7 @@ var TextEditor = (function ($) {
           }
 
           // If the SVG clicked is the form button for adding new content
-          if ($(target).parents('.wpcf7-form').length !== 0) {
+          if ($(target).parents('.wpcf7-form:not(.no-builder-form)').length !== 0) {
 						this.hideAllToolbars();
 					} else {
 						this.viewEditInlineSVGToolbar(target);
@@ -2940,7 +2940,9 @@ var TextEditor = (function ($) {
 				Rexbuilder_Util.hasClass(section, 'focusedRow') &&
 				Rexbuilder_Util.hasClass(section, 'block-editing')
 			) {
-				var contactForm = target.matches('.wpcf7-form') ? target : $(target).parents('.wpcf7-form').get(0);
+				var contactForm = target.matches('.wpcf7-form:not(.no-builder-form)')
+					? target
+					: $(target).parents('.wpcf7-form:not(.no-builder-form)').get(0);
 
 				if (contactForm) {
 					// The pointer is inside a form

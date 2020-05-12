@@ -3,7 +3,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 	/* ===== GLOBAL VARIABLES ===== */
 
-	var elementsInPage;
+	var elementsInPage = [];
 
 	/* ===== PUBLIC METHODS ===== */
 
@@ -33,7 +33,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 				dropType = 'inside-row';
 			}
 		} else {
-			// Is this necessary?
 			dropType = 'inside-block';
 		}
 
@@ -916,7 +915,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 	function _addElementToolsToDOM() {
 		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('rexelement-tools', { settingsType: 'form_settings' });
 		var rexElements = Array.prototype.slice.call(
-			Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form') // or .rex-element-container ?
+			Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form:not(.no-builder-form)')
 		);
 
 		var i = 0;
@@ -947,8 +946,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 	}
 
 	function init() {
-		elementsInPage = [];
-
 		_addElementToolsToDOM();
 		_updateElementListInPage();
 	}

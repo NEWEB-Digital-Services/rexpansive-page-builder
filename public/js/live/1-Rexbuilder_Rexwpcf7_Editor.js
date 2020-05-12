@@ -1518,7 +1518,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	}
 
 	function _getDBFormsInPage() {
-		var $elementWrappers = Rexbuilder_Util.$rexContainer.find('.rex-element-wrapper').has('.wpcf7-form');
+		var $elementWrappers = Rexbuilder_Util.$rexContainer.find('.rex-element-wrapper').has('.wpcf7-form:not(.no-builder-form)');
 
 		if (0 === $elementWrappers.length) {
 			return;
@@ -1710,7 +1710,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	}
 
 	function wrapButtons() {
-		$('.wpcf7-submit:not(.wrapped)').each(function (index, button) {
+		$('.wpcf7-form:not(.no-builder-form) .wpcf7-submit:not(.wrapped)').each(function (index, button) {
 			Rexbuilder_Util.addClass(button, 'wrapped');
 			$(button).wrap(Rexbuilder_Live_Templates.getTemplate('wpcf7-button-fix'));
 		});
@@ -1718,7 +1718,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 	function _addFormToolsToDOM() {
 		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-form-tools');
-		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form'));
+		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form:not(.no-builder-form)'));
 
 		forms.forEach(function (form) {
 			form.querySelector('.wpcf7-rows').insertAdjacentHTML('afterend', toolsTemplate);
@@ -1727,7 +1727,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 	function _addRowToolsToDOM() {
 		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-row-tools');
-		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form'));
+		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form:not(.no-builder-form)'));
 		var rows;
 
 		var i = 0;
@@ -1743,7 +1743,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 	function _addColumnToolsToDOM() {
 		var toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-column-tools');
-		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form'));
+		var forms = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-form:not(.no-builder-form)'));
 
 		var columnsFormControl;
 
@@ -1765,7 +1765,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 		var forms = Array.prototype.slice.call(
 			Rexbuilder_Util.rexContainer.querySelectorAll(
-				'.rex-element-wrapper[data-rex-element-id="' + formID + '"] .wpcf7-form'
+				'.rex-element-wrapper[data-rex-element-id="' + formID + '"] .wpcf7-form:not(.no-builder-form)'
 			)
 		);
 		var rows;

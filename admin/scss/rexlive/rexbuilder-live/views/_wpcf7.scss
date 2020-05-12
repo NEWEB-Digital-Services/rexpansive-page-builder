@@ -3,7 +3,7 @@ $input-min-width: 115px;
 .wpcf7 {
 	position: relative;
 
-	.wpcf7-form {
+	.wpcf7-form:not(.no-builder-form) {
 		display: flex;
 		flex-wrap: wrap;
 		cursor: default;

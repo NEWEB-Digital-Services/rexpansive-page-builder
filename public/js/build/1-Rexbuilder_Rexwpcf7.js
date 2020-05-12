@@ -1,8 +1,62 @@
 var Rexbuilder_Rexwpcf7 = (function ($) {
 	'use strict';
 
-	var styleSheet;
-	var columnContentDataDefaults;
+	var styleSheet = null;
+	var COLUMN_CONTENT_DEFAULTS = {
+		wpcf7_required_field: false,
+		wpcf7_email: false,
+		wpcf7_only_numbers: false,
+		wpcf7_default_check: false,
+		wpcf7_placeholder: 'Placeholder',
+		// wpcf7_list_fields: [],
+		wpcf7_file_max_dimensions: '25mb',
+		wpcf7_button: {
+			// text: "",
+			// font_size: "18px",
+			// height: "50px",
+			// width: "200px",
+			// border_width: "2px",
+			// border_radius: "10px",
+			// margin_top: "0px",
+			// margin_right: "0px",
+			// margin_bottom: "0px",
+			// margin_left: "0px",
+			// padding_top: "5px",
+			// padding_right: "15px",
+			// padding_bottom: "5px",
+			// padding_left: "15px",
+			// text_color: "rgba(86, 86, 86)",
+			text_color_hover: 'rgba(255,255,255,1)',
+			// background_color: "rgb(255, 255, 255)",
+			background_color_hover: 'rgba(86,86,86,1)',
+			// border_color: "rgb(86, 86, 86)",
+			border_color_hover: 'rgba(255,255,255,1)'
+		},
+		// input_width: "",
+		// input_height: "",
+		// font_size: "",
+		// border_width: "",
+		// border_radius: "",
+		// background_color: "",
+		// background_color_hover: "",
+		// border_color: "",
+		// border_color_hover: "",
+		placeholder_color: 'rgba(0,0,0,1)',
+		placeholder_hover_color: 'rgba(0,0,0,1)',
+		// select_color_after_selection: "",
+		// text_color: "",
+		// text_color_hover: "",
+		text_color_focus: 'rgba(0,0,0,1)'
+		// text: "",
+		// type: "",
+		// field_class: "",
+		// input_type: "",
+		// target: {
+		//     element_id: "",
+		//     row_number: "",
+		//     column_number: "",
+		// }
+	};
 
 	/* ===== CSS Rules Functions ===== */
 
@@ -1443,14 +1497,21 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				: isDefaultChecked;
 
 			// Placeholder
-			columnContentData.wpcf7_placeholder = columnContentDataEl.getAttribute('data-wpcf7-placeholder')
-				? columnContentDataEl.getAttribute('data-wpcf7-placeholder').toString()
-				: '';
+			if (-1 !== ['text', 'email', 'number', 'textarea'].indexOf(inputType)) {
+				if (
+					columnContentDataEl.hasAttribute('data-wpcf7-placeholder') &&
+					columnContentDataEl.getAttribute('data-wpcf7-placeholder')
+				) {
+					columnContentData.wpcf7_placeholder = columnContentDataEl.getAttribute('data-wpcf7-placeholder');
+				} else {
+					columnContentData.wpcf7_placeholder = $formColumn.find('.wpcf7-form-control').attr('placeholder') || '';
+				}
+			}
 
 			// File max dimensions
 			columnContentData.wpcf7_file_max_dimensions = columnContentDataEl.getAttribute('data-wpcf7-file-max-dimensions')
 				? columnContentDataEl.getAttribute('data-wpcf7-file-max-dimensions').toString()
-				: columnContentDataDefaults.wpcf7_file_max_dimensions;
+				: COLUMN_CONTENT_DEFAULTS.wpcf7_file_max_dimensions;
 
 			// File types
 			if ('file' === columnContentData.input_type) {
@@ -1495,7 +1556,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			// Text color focus
 			columnContentData.text_color_focus = columnContentDataEl.getAttribute('data-text-color-focus')
 				? columnContentDataEl.getAttribute('data-text-color-focus').toString()
-				: columnContentDataDefaults.text_color_focus;
+				: COLUMN_CONTENT_DEFAULTS.text_color_focus;
 
 			// Select color after selection
 			columnContentData.select_color_after_selection = columnContentDataEl.getAttribute(
@@ -1507,12 +1568,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			// Placeholder color
 			columnContentData.placeholder_color = columnContentDataEl.getAttribute('data-placeholder-color')
 				? columnContentDataEl.getAttribute('data-placeholder-color').toString()
-				: columnContentDataDefaults.placeholder_color; // @toedit
+				: COLUMN_CONTENT_DEFAULTS.placeholder_color; // @toedit
 
 			// Placeholder hover color
 			columnContentData.placeholder_hover_color = columnContentDataEl.getAttribute('data-placeholder-hover-color')
 				? columnContentDataEl.getAttribute('data-placeholder-hover-color').toString()
-				: columnContentDataDefaults.placeholder_hover_color;
+				: COLUMN_CONTENT_DEFAULTS.placeholder_hover_color;
 
 			/* ONLY GENERAL MODAL OPTIONS */
 			// Border width
@@ -1778,7 +1839,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			// Button text color hover
 			columnContentData.wpcf7_button.text_color_hover = columnContentDataEl.getAttribute('data-button-text-color-hover')
 				? columnContentDataEl.getAttribute('data-button-text-color-hover').toString()
-				: columnContentDataDefaults.wpcf7_button.text_color_hover;
+				: COLUMN_CONTENT_DEFAULTS.wpcf7_button.text_color_hover;
 
 			// Button background color
 			if (columnContentDataEl.getAttribute('data-button-background-color')) {
@@ -1801,7 +1862,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				'data-button-background-color-hover'
 			)
 				? columnContentDataEl.getAttribute('data-button-background-color-hover').toString()
-				: columnContentDataDefaults.wpcf7_button.background_color_hover;
+				: COLUMN_CONTENT_DEFAULTS.wpcf7_button.background_color_hover;
 
 			// Button border color
 			if (columnContentDataEl.getAttribute('data-button-border-color')) {
@@ -1824,22 +1885,22 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				'data-button-border-color-hover'
 			)
 				? columnContentDataEl.getAttribute('data-button-border-color-hover').toString()
-				: columnContentDataDefaults.wpcf7_button.border_color_hover;
+				: COLUMN_CONTENT_DEFAULTS.wpcf7_button.border_color_hover;
 		} else {
 			// Required field
-			columnContentData.wpcf7_required_field = columnContentDataDefaults.wpcf7_required_field;
+			columnContentData.wpcf7_required_field = COLUMN_CONTENT_DEFAULTS.wpcf7_required_field;
 
 			// Only numbers
-			columnContentData.wpcf7_only_numbers = columnContentDataDefaults.wpcf7_only_numbers;
+			columnContentData.wpcf7_only_numbers = COLUMN_CONTENT_DEFAULTS.wpcf7_only_numbers;
 
 			// Default check
-			columnContentData.wpcf7_default_check = columnContentDataDefaults.wpcf7_default_check;
+			columnContentData.wpcf7_default_check = COLUMN_CONTENT_DEFAULTS.wpcf7_default_check;
 
 			// Placeholder
-			columnContentData.wpcf7_placeholder = columnContentDataDefaults.wpcf7_placeholder;
+			columnContentData.wpcf7_placeholder = COLUMN_CONTENT_DEFAULTS.wpcf7_placeholder;
 
 			// File max dimensions
-			columnContentData.wpcf7_file_max_dimensions = columnContentDataDefaults.wpcf7_file_max_dimensions;
+			columnContentData.wpcf7_file_max_dimensions = COLUMN_CONTENT_DEFAULTS.wpcf7_file_max_dimensions;
 
 			// File types
 			if (columnContentData.input_type == 'file') {
@@ -1851,7 +1912,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			columnContentData.input_height = $formColumn.find('.' + cssSelector).css('height'); // @toedit
 
 			// Font size
-			columnContentData.font_size = columnContentDataDefaults.font_size;
+			columnContentData.font_size = COLUMN_CONTENT_DEFAULTS.font_size;
 
 			// Background color
 			columnContentData.background_color = $formColumn.find('.' + cssSelector).css('background-color');
@@ -1860,7 +1921,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			columnContentData.text_color = $formColumn.find('.' + cssSelector).css('color');
 
 			// Text color focus
-			columnContentData.text_color_focus = columnContentDataDefaults.text_color_focus;
+			columnContentData.text_color_focus = COLUMN_CONTENT_DEFAULTS.text_color_focus;
 
 			/* BUTTON */
 			// Button text
@@ -2005,7 +2066,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			}
 
 			// Button text color hover
-			columnContentData.wpcf7_button.text_color_hover = columnContentDataDefaults.wpcf7_button.text_color_hover;
+			columnContentData.wpcf7_button.text_color_hover = COLUMN_CONTENT_DEFAULTS.wpcf7_button.text_color_hover;
 
 			// Button background color
 			if (columnContentData.input_type == 'file') {
@@ -2019,7 +2080,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 			// Button background color hover
 			columnContentData.wpcf7_button.background_color_hover =
-				columnContentDataDefaults.wpcf7_button.background_color_hover;
+				COLUMN_CONTENT_DEFAULTS.wpcf7_button.background_color_hover;
 
 			// Button border color
 			if (columnContentData.input_type == 'file') {
@@ -2032,7 +2093,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			}
 
 			// Button border color hover
-			columnContentData.wpcf7_button.border_color_hover = columnContentDataDefaults.wpcf7_button.border_color_hover;
+			columnContentData.wpcf7_button.border_color_hover = COLUMN_CONTENT_DEFAULTS.wpcf7_button.border_color_hover;
 		}
 
 		return columnContentData;
@@ -2041,7 +2102,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	/* === Fixing Methods === */
 
 	function fixInputs() {
-		Rexbuilder_Util.$rexContainer.find('.wpcf7-column').each(function (i, el) {
+		Rexbuilder_Util.$rexContainer.find('.wpcf7-form:not(.no-builder-form) .wpcf7-column').each(function (i, el) {
 			var $formColumn = $(el);
 
 			var possibleFields = {
@@ -2727,7 +2788,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	}
 
 	function _linkDocumentListeners() {
-		Rexbuilder_Util.$rexContainer.find('.wpcf7-radio').each(function (i, el) {
+		Rexbuilder_Util.$rexContainer.find('.wpcf7-form:not(.no-builder-form) .wpcf7-radio').each(function (i, el) {
 			$(el)
 				.find('.wpcf7-list-item')
 				.click(function (e) {
@@ -2749,64 +2810,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	}
 
 	function init() {
-		styleSheet = null;
-
-		columnContentDataDefaults = {
-			wpcf7_required_field: false,
-			wpcf7_email: false,
-			wpcf7_only_numbers: false,
-			wpcf7_default_check: false,
-			wpcf7_placeholder: 'Placeholder',
-			// wpcf7_list_fields: [],
-			wpcf7_file_max_dimensions: '25mb',
-			wpcf7_button: {
-				// text: "",
-				// font_size: "18px",
-				// height: "50px",
-				// width: "200px",
-				// border_width: "2px",
-				// border_radius: "10px",
-				// margin_top: "0px",
-				// margin_right: "0px",
-				// margin_bottom: "0px",
-				// margin_left: "0px",
-				// padding_top: "5px",
-				// padding_right: "15px",
-				// padding_bottom: "5px",
-				// padding_left: "15px",
-				// text_color: "rgba(86, 86, 86)",
-				text_color_hover: 'rgba(255,255,255,1)',
-				// background_color: "rgb(255, 255, 255)",
-				background_color_hover: 'rgba(86,86,86,1)',
-				// border_color: "rgb(86, 86, 86)",
-				border_color_hover: 'rgba(255,255,255,1)'
-			},
-			// input_width: "",
-			// input_height: "",
-			// font_size: "",
-			// border_width: "",
-			// border_radius: "",
-			// background_color: "",
-			// background_color_hover: "",
-			// border_color: "",
-			// border_color_hover: "",
-			placeholder_color: 'rgba(0,0,0,1)',
-			placeholder_hover_color: 'rgba(0,0,0,1)',
-			// select_color_after_selection: "",
-			// text_color: "",
-			// text_color_hover: "",
-			text_color_focus: 'rgba(0,0,0,1)'
-			// text: "",
-			// type: "",
-			// field_class: "",
-			// input_type: "",
-			// target: {
-			//     element_id: "",
-			//     row_number: "",
-			//     column_number: "",
-			// }
-		};
-
 		this.$rexFormsStyle = $('#rexpansive-builder-rexwpcf7-style-inline-css');
 		_fixFormCustomStyle();
 
