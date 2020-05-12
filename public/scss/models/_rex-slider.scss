@@ -135,6 +135,12 @@
   }
 }
 
+.natural-slide__wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .blur-slide {
   position: absolute;
   background-size: cover;
@@ -152,8 +158,10 @@
   position:relative;
   z-index: 1;
   width: auto;
-  height: 100%;
-  margin: 0 auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  // margin: 0 auto;
 }
 
 .rex-box-slider-wrap {

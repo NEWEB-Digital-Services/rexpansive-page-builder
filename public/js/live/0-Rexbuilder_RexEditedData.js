@@ -12,7 +12,7 @@
 		'image_height',
 		'id_image_bg_section',
 		'image_size',
-		'video_bg_id_section',			// mp4 video background
+		'video_bg_id',					// mp4 video background
 		'video_mp4_url',
 		'video_bg_width_section',
 		'video_bg_height_section',

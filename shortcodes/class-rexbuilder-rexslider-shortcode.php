@@ -196,7 +196,7 @@ class Rexbuilder_RexSlider {
 					<figure class="pswp-figure" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
 						<a class="pswp-item" href="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" itemprop="contentUrl" data-size="<?php echo $slide['_rex_banner_gallery_image']['width']; ?>x<?php echo $slide['_rex_banner_gallery_image']['height']; ?>">
 							<div class="pswp-item-thumb" data-thumb-image-type="full" data-thumburl="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" itemprop="thumbnail"></div>
-							<div class="rex-custom-scrollbar">
+							<div class="rex-custom-scrollbar<?php echo ( $natural_blur ? ' natural-slide__wrap' : '' ); ?>">
 							<?php
 								if ( $natural_blur ) {
 									?>
