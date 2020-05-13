@@ -440,6 +440,10 @@ var Rexbuilder_Rexbutton = (function ($) {
                         blockDimensions: {
                             w: buttonDimensionCalculated.width,
                             h: buttonDimensionCalculated.height
+                        },
+                        sectionTarget: {
+                            sectionID: $section.attr("data-rexlive-section-id"),
+                            modelNumber: ( typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "" )
                         }
                     }
                 };

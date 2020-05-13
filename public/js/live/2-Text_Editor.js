@@ -3828,21 +3828,10 @@ var TextEditor = (function ($) {
       if ( 'click' == event.type && 'undefined' !== typeof editorInstance.getExtensionByName('insert-media') && 0 !== $(event.srcElement).parents('.' + editorInstance.getExtensionByName('insert-media').toolbarWrapClass).length ) return false;
 
       // view or hide the little T icon
-      var $current_textWrap = $(elem);
-      var $top_tools = $current_textWrap.parents('.grid-stack-item').find('.block-toolBox__editor-tools');
-      var $T_tool = $top_tools.find('.edit-block-content');
-      var $content_position_tool = $top_tools.find('.edit-block-content-position');
-
-      if ( textContentEmpty( elem ) ) {
-        $T_tool.removeClass('tool-button--hide');
-        $content_position_tool.addClass('tool-button--hide');
-      } else {
-        $T_tool.addClass('tool-button--hide');
-        $content_position_tool.removeClass('tool-button--hide');
-      }
+      Rexbuilder_Block_Editor.updateTextTool( elem );
 
       // get perfect grid gallery instance
-      var pgge = $current_textWrap.parents('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
+      var pgge = $(elem).parents('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
       if ( ! pgge ) return;
 
       // enable dragging on gristack
@@ -3883,28 +3872,6 @@ var TextEditor = (function ($) {
 			}
 		});
   };
-
-  /**
-   * Check if a text wrap is empty
-   * 
-   * @param  {Element} elem text element
-   * @return {Boolean}      is empty or not
-   * @since  2.0.4
-   */
-  function textContentEmpty( elem ) {
-    // no childre, text element empty
-    if ( 0 === elem.childElementCount ) return true;
-
-    // no text, one children as the span fix
-    if ( '' === elem.textContent.trim() && 1 === elem.childElementCount && elem.querySelector('.text-editor-span-fix') ) return true;
-
-    var totImgs = Array.prototype.slice.call( elem.getElementsByTagName('img') ).length;
-    var totSvgs = Array.prototype.slice.call( elem.getElementsByTagName('svg') ).length;
-    var totIframes = Array.prototype.slice.call( elem.getElementsByTagName('iframe') ).length;
-
-    // text empty and no images, icons or embed as childrens
-    return ( 0 === ( totImgs + totSvgs + totIframes ) && '' === elem.textContent.trim() );
-  }
 
   var _createToolbarContainer = function () {
     var id = "textEditorToolbar";

@@ -1141,6 +1141,49 @@ var Rexbuilder_Block_Editor = (function($) {
   };
 
   /**
+   * View or hide the T tool on the blocks, if there is or isn't text inside
+   * @param  {Element} textElem text wrap
+   * @return {void}
+   * @since  2.0.5
+   */
+  function _updateTextTool( textElem ) {
+    var $top_tools = $(textElem).parents('.grid-stack-item').find('.block-toolBox__editor-tools');
+    var $T_tool = $top_tools.find('.edit-block-content');
+    var $content_position_tool = $top_tools.find('.edit-block-content-position');
+
+    if ( textContentEmpty( textElem ) ) {
+      $T_tool.removeClass('tool-button--hide');
+      $content_position_tool.addClass('tool-button--hide');
+    } else {
+      $T_tool.addClass('tool-button--hide');
+      $content_position_tool.removeClass('tool-button--hide');
+    }
+  }
+
+  /**
+   * Check if a text wrap is empty
+   * 
+   * @param  {Element} elem text element
+   * @return {Boolean}      is empty or not
+   * @since  2.0.4
+   * @version  2.0.5  Moved inside block editor
+   */
+  function textContentEmpty( elem ) {
+    // no childre, text element empty
+    if ( 0 === elem.childElementCount ) return true;
+
+    // no text, one children as the span fix
+    if ( '' === elem.textContent.trim() && 1 === elem.childElementCount && elem.querySelector('.text-editor-span-fix') ) return true;
+
+    var totImgs = Array.prototype.slice.call( elem.getElementsByTagName('img') ).length;
+    var totSvgs = Array.prototype.slice.call( elem.getElementsByTagName('svg') ).length;
+    var totIframes = Array.prototype.slice.call( elem.getElementsByTagName('iframe') ).length;
+
+    // text empty and no images, icons or embed as childrens
+    return ( 0 === ( totImgs + totSvgs + totIframes ) && '' === elem.textContent.trim() );
+  }
+
+  /**
    * Setting the block live color pickers for the background
 	 * @returns		{void}
    * @since			2.0.0
@@ -1834,6 +1877,7 @@ var Rexbuilder_Block_Editor = (function($) {
     updateBlockOverlayColorTool: _updateBlockOverlayColorTool,
     updateBlockOverlayGradientTool: _updateBlockOverlayGradientTool,
     openBlockBackgroundGradient: _openBlockBackgroundGradient,
-    openBlockOverlayGradient: _openBlockOverlayGradient
+    openBlockOverlayGradient: _openBlockOverlayGradient,
+    updateTextTool: _updateTextTool
   }
 })(jQuery);

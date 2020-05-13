@@ -1402,7 +1402,6 @@
         photoswipe: data.photoswipe
 			};
 			
-      // @todo PHOTOSWIPE to update indipendentyl HERE
 			Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOpt);
 			
       if (data.updateBlockHeight) {

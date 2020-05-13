@@ -1325,7 +1325,7 @@ var Rexbuilder_Section = (function($) {
           //starting sliders after grid is up
           setTimeout(
             function() {
-              $row.children(".grid-stack-item").each(function(i, el) {
+              $row.find(".grid-stack-item").each(function(i, el) {
                 var $sliderToActive = $(el).find(".rex-slider-wrap");
                 if ($sliderToActive.length != 0) {
                   RexSlider.initSlider($sliderToActive);
@@ -1336,9 +1336,63 @@ var Rexbuilder_Section = (function($) {
             $row
           );
 
-          launchSectionTextEditors( $row[0] );
+          launchSectionTextEditors( $row.get(0) );
 
           Rexbuilder_Live_Utilities.launchTooltips();
+
+          // update block tools
+          var blocks = Array.prototype.slice.call( $row.get(0).getElementsByClassName('perfect-grid-item') );
+          var i, tot = blocks.length;
+          for( i=0; i<tot; i++ ) {
+            var $itemContent = $(blocks[i]).find('.grid-item-content');
+
+            var blockData = blocks[i].querySelector('.rexbuilder-block-data');
+            
+            // update image tool
+            var imageActive = blockData.getAttribute('data-image_bg_elem_active');
+            var imageUrl = blockData.getAttribute('data-image_bg_block')
+
+            if ( 'true' == imageActive && '' !== imageUrl ) {
+              var data = {
+                active: imageActive,
+                urlImage: imageUrl,
+              };
+
+              // brutal fix
+              Rexbuilder_Util.addClass( blocks[i].querySelector('.rexlive-block-toolbox.top-tools .edit-block-image').parentElement, 'tool-button--hide' );
+              Rexbuilder_Block_Editor.updateBlockBackgroundImageTool($itemContent, data);
+              Rexbuilder_Block_Editor.updateBlockImagePositionTool($itemContent, data);
+            }
+
+            // update color tool
+            var color = blockData.getAttribute('data-color_bg_block');
+            var colorActive = blockData.getAttribute('data-color_bg_block_active');
+
+            if ( 'true' == colorActive && '' !== color ) {
+              Rexbuilder_Block_Editor.updateBlockBackgroundColorToolLive( $itemContent, color );
+            }
+
+            // update overlay tool
+            var overlay = blockData.getAttribute('data-overlay_block_color');
+            var overlayActive = blockData.getAttribute('data-overlay_block_color_active');
+
+            if ( 'true' == overlayActive && '' !== overlay ) {
+              Rexbuilder_Block_Editor.updateBlockOverlayColorToolLive( $itemContent, overlay );
+            }
+
+            // update video tool
+            var mp4Video = blockData.getAttribute('data-video_bg_id');
+            var youtubeVideo = blockData.getAttribute('data-video_bg_url');
+            var vimeoVideo = blockData.getAttribute('data-video_bg_url_vimeo');
+
+            if ( '' !== mp4Video || '' !== youtubeVideo || '' !== vimeoVideo ) {
+              Rexbuilder_Util.addClass( blocks[i].querySelector('.rexlive-block-toolbox.top-tools .edit-block-video-background').parentElement, 'tool-button--hide' );
+              Rexbuilder_Util.removeClass( blocks[i].querySelector('.rexlive-block-toolbox.bottom-tools .edit-block-video-background').parentElement, 'tool-button--hide' );
+            }
+
+            // update text tool
+            Rexbuilder_Block_Editor.updateTextTool( blocks[i].querySelector('.text-wrap') );
+          }
 
           Rexbuilder_Util.$rexContainer.sortable("refresh");
 
