@@ -234,17 +234,17 @@ var Rexbuilder_Rexelement = (function ($) {
 		return elementsInPage;
 	}
 
-	function _detectNotImportedForms() {
-		var allForms = Rexbuilder_Util.$rexContainer.find('form').get();
+	function _detectNoBuilderForms() {
+		var allForms = Rexbuilder_Util.$document.find('form').get();
 
 		// These are all the cf7 forms that were not imported from the
 		// builder, but added by typing their shortcode in a text block
 		// or typing manually the HTML tags
-		var notImportedForms = allForms.filter(function (form) {
+		var noBuilderForms = allForms.filter(function (form) {
 			return 0 === $(form).parents('.rex-element-wrapper').length;
 		});
 
-		notImportedForms.forEach(function (form) {
+		noBuilderForms.forEach(function (form) {
 			Rexbuilder_Util.addClass(form, 'no-builder-form');
 		});
 	}
@@ -252,8 +252,8 @@ var Rexbuilder_Rexelement = (function ($) {
 	function init() {
 		// Calling here this funcion because Rexbuilder_Rexelement
 		// is the first called between itself, Rexbuilder_Rexwpcf7,
-		// Rexbuilder_Rexelement_Edtior, Rexbuilder_Rexwpcf7_Editor
-		_detectNotImportedForms();
+		// Rexbuilder_Rexelement_Edtior and Rexbuilder_Rexwpcf7_Editor
+		_detectNoBuilderForms();
 
 		_updateElementListInPage();
 	}

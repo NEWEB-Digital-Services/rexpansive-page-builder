@@ -1,7 +1,9 @@
 $input-min-width: 115px;
 
 .wpcf7 {
-	.wpcf7-form {
+	position: relative;
+
+	.wpcf7-form:not(.no-builder-form) {
 		@import 'rex-wpcf7-radios';
 		@import 'rex-wpcf7-checkboxes';
 
@@ -29,9 +31,9 @@ $input-min-width: 115px;
 						}
 
 						.wpcf7-form-control-wrap {
-							// If this is changed, some changed are needed in the js too
+							// If you want to cahnge this, some changes are needed in the js too
 							// See Rexbuilder_Rexwpcf7 & Rexbuilder_Rexwpcf7_Editor when they update column content dimensions
-							display: inline;
+							display: inline-block;
 
 							min-width: $input-min-width;
 							max-width: 100%;

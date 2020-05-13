@@ -1188,6 +1188,13 @@ var TextEditor = (function ($) {
       for (var i = 0; i < anchorLinkPreview.length; i++) {
         anchorLinkPreview[i].style.display = "block";
       }
+		},
+		
+		hideAnchorPreview: function (event) {
+      var anchorLinkPreview = document.getElementsByClassName("medium-editor-anchor-preview");
+      for (var i = 0; i < anchorLinkPreview.length; i++) {
+        anchorLinkPreview[i].style.display = "none";
+      }
     },
 
     handlePositionToolbar: function (event) {

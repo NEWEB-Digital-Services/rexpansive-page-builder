@@ -135,9 +135,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		Rexbuilder_Rexwpcf7.fixWpcf7Files();
 		Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
 		Rexbuilder_Rexwpcf7.addColumnContentStyle($columnToAddField);
-		
+
 		Rexbuilder_Live_Utilities.launchTooltips();
-		
+
 		// Updating block height
 		textEditorCf7Instance.updateHeight();
 	}
@@ -1231,20 +1231,30 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				}
 			}
 		}
-
 		// Placeholder
-		if (inputType == 'text' || inputType == 'email' || inputType == 'number' || inputType == 'textarea') {
-			/* Puts the "placeholder" string and the placeholder value at the end 
-        of the shortcode or removes it */
-			var valueIsEmpty = placeholder === '';
-			var thereIsPlaceholder = /placeholder/.test(shortcode);
-			if (valueIsEmpty) {
-				shortcode = shortcode.replace(/\splaceholder ".+"/, '');
+		if (-1 !== ['text', 'email', 'number', 'textarea'].indexOf(inputType)) {
+			var hasPlaceholder = /placeholder/.test(shortcode);
+
+			if ('' === placeholder) {
+				// Removing the placeholder
+
+				if (hasPlaceholder) {
+					shortcode = shortcode.replace(/\splaceholder \".+\"/, '');
+				}
 			} else {
-				if (!thereIsPlaceholder) {
-					shortcode = shortcode.replace(/\]/, ' placeholder "' + placeholder + '"]');
-				} else {
-					shortcode = shortcode.replace(/placeholder ".+"/, 'placeholder "' + placeholder + '"');
+				// Setting the placeholder
+
+				// Searching for a "{something}" like string
+				var stringValue = shortcode.match(/(\"|\')(.+)(\"|\')/);
+				var newPlaceholder = 'placeholder "' + placeholder + '"';
+
+				if (!hasPlaceholder && !stringValue) {
+					shortcode = shortcode.replace(']', ' ' + newPlaceholder + ']');
+				} else if (hasPlaceholder) {
+					shortcode = shortcode.replace(/placeholder \".+\"/, newPlaceholder);
+				} else if (stringValue) {
+					shortcode = shortcode.replace(stringValue[0], '');
+					shortcode = shortcode.replace(']', ' ' + newPlaceholder + ']');
 				}
 			}
 		}

@@ -23,7 +23,7 @@ $elements = true;
 			<li><a href="#" data-rex-tab-target="rex-buttons-list"><?php _e( 'Buttons', 'rexpansive-builder' ); ?></a></li>
 			<?php
 			if ( $elements ) {
-				?><li><a href="#" data-rex-tab-target="rex-elements-list"><?php _e( 'Contact Forms', 'rexpansive-builder' ); ?></a></li><?php
+				?><li><a href="#" data-rex-tab-target="rex-elements-list"><?php _e( 'Elements', 'rexpansive-builder' ); ?></a></li><?php
 			}
 			?>
 		</ul>

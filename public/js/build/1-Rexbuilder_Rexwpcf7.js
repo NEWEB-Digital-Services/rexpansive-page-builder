@@ -2763,7 +2763,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 	function guessWidthToSet(inputType, formID, rowNumber, columnNumber, widthValue) {
 		var setValueToParent =
-			Rexbuilder_Util.editorMode &&
 			-1 !== ['text', 'email', 'number', 'textarea', 'select'].indexOf(inputType) &&
 			/\%/.test(widthValue);
 
