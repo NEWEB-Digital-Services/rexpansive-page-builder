@@ -3558,6 +3558,17 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				}
 
 				$response['rexButtonsHTML'] = $temp;
+
+				// Getting cf7 forms HTML in model
+				// $regexpForm = '/data-rex-element-id="([a-zA-Z0-9]+)"/m';
+				// preg_match_all($regexpForm, $modelShortcode, $elementsFound, PREG_SET_ORDER, 0);
+				// $temp = array();
+
+				// foreach ($elementsFound as $key => $value) {
+				// 	array_push($temp, stripslashes(get_option("_rex_button_{$value[1]}_html")));
+				// }
+
+				// $response['rexElementsHTML'] = $temp;
 				
 				if($modelCustomizationsNames == ""){
 					$modelCustomizationsNames = array();

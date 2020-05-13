@@ -532,7 +532,8 @@ var Element_Import_Modal = (function ($) {
                     $divInsert.addClass("rex-loading-element");
                     $divInsert.insertAfter($insertionPoint[0]);
                     $divInsert.hide();
-                    $insertionPoint.remove();
+										$insertionPoint.remove();
+										
                     var dataEndDrop = {
                       eventName: "rexlive:importElement",
                       data: {

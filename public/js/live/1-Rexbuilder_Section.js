@@ -1319,6 +1319,8 @@ var Rexbuilder_Section = (function($) {
 					var $buttonsWrappers = $row.find('.rex-button-wrapper');
 					_replaceRexButtons($row, $buttonsWrappers, response);
 
+					console.log( $row.find('.rex-element-wrapper').get(0).outerHTML );
+
           // Launching and Updating tools
           Rexbuilder_Live_Utilities.updateModelSectionTools( $newSection, $newSectionData );
 
@@ -1432,7 +1434,12 @@ var Rexbuilder_Section = (function($) {
 	}
 	
 	/**
-	 * Replaces RexButtons in the model with 
+	 * Replaces model RexButtons with the DB-retrieved HTML
+	 * @param		{jQuery}	$row 
+	 * @param		{jQuery}	$buttonsWrappers 
+	 * @param		{Object}	response 
+	 * @returns	{void}
+	 * @since		2.0.4
 	 */
 	function _replaceRexButtons($row, $buttonsWrappers, response) {
 		// Keeping jQuery for consistency motivations
