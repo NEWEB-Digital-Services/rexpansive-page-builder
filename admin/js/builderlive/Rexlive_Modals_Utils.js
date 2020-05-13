@@ -4,8 +4,7 @@ var Rexlive_Modals_Utils = (function($) {
   var $lean_overlay;
   var $modals;
   var postionedModalOffset;
-  var blockID;
-
+	
   /**
    * Open a modal dialog box
    *
@@ -13,11 +12,10 @@ var Rexlive_Modals_Utils = (function($) {
    * @param {boolean} target_only active only the modal not the overlay
    * @param {Array} additional_class Array of additional classes
    */
-  var _openModal = function($target, target_only, additional_class, set_position, blockIDToFocusAfterClose) {
+  var _openModal = function($target, target_only, additional_class, set_position) {
     target_only = typeof target_only !== "undefined" ? target_only : false;
     additional_class = typeof additional_class !== "undefined" ? additional_class : [];
     set_position = typeof set_position !== "undefined" ? set_position : false;
-    blockID = blockIDToFocusAfterClose;
 
     if (!target_only) {
       $("body").addClass("rex-modal-open");
@@ -85,8 +83,7 @@ var Rexlive_Modals_Utils = (function($) {
     $target.trigger('rexlive:this_modal_closed');
 
     var closeEvent = {
-      eventName: "rexlive:close_modal",
-      blockID: blockID
+      eventName: "rexlive:close_modal"
     };
     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(closeEvent);
 

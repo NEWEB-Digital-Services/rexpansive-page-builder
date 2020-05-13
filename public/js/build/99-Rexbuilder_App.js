@@ -966,7 +966,7 @@ var Rexbuilder_App = (function($) {
 		}
 	}
 
-  function init() {
+	function init() {
 		Rexbuilder_Util.init();
 		Rexbuilder_Dom_Util.init();
 

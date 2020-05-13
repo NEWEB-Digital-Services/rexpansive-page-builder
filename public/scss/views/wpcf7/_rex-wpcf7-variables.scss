@@ -1,0 +1,11 @@
+$input-disabled-color: $palette-color-12;
+$input-background: #fff !default;
+$secondary-color: color("teal", "lighten-1") !default;
+
+$radio-fill-color: $palette-color-1;
+$radio-empty-color: $palette-color-4;
+$radio-border: 2px solid $radio-fill-color;
+
+$checkbox-fill-color: $palette-color-1;
+$checkbox-empty-color: $palette-color-4;
+$checkbox-border: 2px solid $radio-fill-color;

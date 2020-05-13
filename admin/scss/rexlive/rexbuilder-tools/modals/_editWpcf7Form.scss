@@ -236,7 +236,6 @@
 
     &.lateral {
       width: 62.2222px;
-      // width: 50px;
       height: 120px;
       border-width: 2px 0 2px 0;
       border-style: dotted;
@@ -246,7 +245,10 @@
     .modal-form-column {
       width: 100%;
       height: 100%;
-      padding: 5px;
+			padding: 5px;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-around;
 
       .modal-form-column-title {
         width: 54px;

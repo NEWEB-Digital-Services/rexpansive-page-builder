@@ -1050,21 +1050,22 @@ var Rex_Save_Listeners = (function($) {
             content = savingBlock.innerHTML.trim();
           } else {
             content = '';
-          }
+					}
         } else {
           // Saves element shortcode so it remains updated
-          [].slice.call( savingBlock.getElementsByClassName('rex-element-container') ).forEach( function(el) {
-            $(el).empty();
-            var elementShortcode = $(el).siblings(".string-shortcode").attr("shortcode");
-            $(el).append(elementShortcode);
-          });
+					Array.prototype.slice
+						.call(savingBlock.getElementsByClassName('rex-element-container'))
+						.forEach(function (el) {
+							$(el).empty();
+							var elementShortcode = $(el).siblings('.string-shortcode').attr('shortcode');
+							$(el).append(elementShortcode);
+						});
           content = savingBlock.innerHTML.trim();
           // why do this after the retrieving of the HTML?
           [].slice.call( savingBlock.getElementsByClassName('rex-button-data') ).forEach( function(el) {
             el.removeAttribute('data-synchronize');
-          });
-        }
-
+					});
+				}
       } else {
         var sliderToSave = textWrap.querySelector('.rex-slider-wrap[data-rex-slider-active="true"]');
 

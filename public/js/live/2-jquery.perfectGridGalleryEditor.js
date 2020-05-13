@@ -234,8 +234,8 @@
       if ( ( ! hasClass( textWrap, "medium-editor-placeholder" ) || textWrapClone.childElementCount > 0 ) || $textWrap.parents(".pswp-item").length != 0 ) {
         textHeight = textWrap.offsetHeight;
       }
-    }
-
+		}
+		
     return textHeight;
   }
 
@@ -2523,7 +2523,7 @@
     },
 
     focusElement: function($elem) {
-      if ( $elem.length > 0 ) {
+      if ( $elem && $elem.length > 0 ) {
         $elem.addClass("focused");
       }
       this.$section.addClass("focusedRow");
@@ -3136,10 +3136,11 @@
     },
 
     /**
-     * @param {Object} $elem Element to update height
-     * @param {Boolean} editingBlock Flag to consider also starting height
-     * @param {Number} blockRatio Ratio block has to maintain   @never used
-     * @since 2.0.0
+     * @param	{Object}	elem 						Element to update height
+     * @param	{Boolean}	editingBlock 		Flag to consider also starting height
+     * @param	{Number}	forceFixedText
+     * @param	{Number}	blockRatio 			Ratio block has to maintain   @never used
+     * @since	2.0.0
      */
     updateElementHeight: function(elem, editingBlock, forceFixedText, blockRatio) {
       editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
@@ -3334,12 +3335,12 @@
           resizeNotNeeded = true;
         }
       }
-
+			
       if ( resizeNotNeeded ) {
-        Rexbuilder_Util_Editor.elementIsResizing = false;
+				Rexbuilder_Util_Editor.elementIsResizing = false;
         return;
-      }
-
+			}
+			
       var newHeightUnits;
 
       if (this.settings.galleryLayout == "fixed") {
