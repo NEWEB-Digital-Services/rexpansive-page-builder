@@ -534,6 +534,9 @@
         sectionName: data.sectionName
       };
       $section.attr("data-rexlive-section-edited", true);
+
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'section_name' );
+      
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,

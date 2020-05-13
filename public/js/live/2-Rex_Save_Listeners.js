@@ -1465,7 +1465,9 @@ var Rex_Save_Listeners = (function($) {
 
       props["collapse_grid"] = collapse_grid;
       props["grid_cell_width"] = grid_cell_width;
-      props["section_name"] = section_name;
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.section_name ) ) {
+        props["section_name"] = section_name;
+      }
       props["type"] = type;
       // default always save, otherwise check
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.color_bg_section ) ) {

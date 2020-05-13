@@ -1819,6 +1819,9 @@ var Rexbuilder_Dom_Util = (function($) {
     for( var prop in changedData ) {
       if ( ! changedData[prop] ) continue;
       switch( prop ) {
+        case 'section_name':
+          _updateSectionName($section, defaultProps.sectionName);
+          break;
         case 'color_bg_section':
         case 'color_bg_section_active':
           if ( colorChanged ) break;

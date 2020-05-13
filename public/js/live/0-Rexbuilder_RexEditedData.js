@@ -4,6 +4,7 @@
 })(typeof window !== 'undefined' ? window : this, function() {
 	// synch section props
 	var tracePropsSection = [
+		'section_name',					// section name
 		'color_bg_section',				// background color
 		'color_bg_section_active',
 		'image_bg_section_active',		// background image
