@@ -135,7 +135,9 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		Rexbuilder_Rexwpcf7.fixWpcf7Files();
 		Rexbuilder_Rexwpcf7.fixWpcf7RadioButtons();
 		Rexbuilder_Rexwpcf7.addColumnContentStyle($columnToAddField);
-
+		
+		Rexbuilder_Live_Utilities.launchTooltips();
+		
 		// Updating block height
 		textEditorCf7Instance.updateHeight();
 	}
@@ -253,7 +255,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			.find('.rex-element-wrapper[data-rex-element-id="' + formID + '"]')
 			.find('.wpcf7-form');
 		var $rowBefore = $formToAddRow.find('.wpcf7-row[wpcf7-row-number="' + numberRowBefore + '"]');
-		var $rowToAdd = $($rowBefore[0]).clone();
+		var $rowToAdd = $($rowBefore[0]).clone(false);
 
 		$rowToAdd.insertAfter($rowBefore); // Inserting the new row in the form
 		_fixRowNumbersAndClasses($formToAddRow); // After this function row numbers are now correct
@@ -279,7 +281,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		});
 
 		_saveClonedColumnRow(formID, clonedColumnNumber, numberRowBefore);
-
 		wrapButtons();
 
 		var clonedRadioButton = clonedColumn.querySelector('.wpcf7-form-control-wrap[class*=radio-]');
@@ -1763,7 +1764,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			for (j = 0; j < columnsFormControl.length; j++) {
 				// fieldName = columnsFormControl[j].getAttribute('name');
 				fieldName = _getName(columnsFormControl[j]);
-				console.log(fieldName)
+				console.log(fieldName);
 				toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-column-tools', { name: fieldName });
 
 				columnsFormControl[j].insertAdjacentHTML('afterend', toolsTemplate);
@@ -1813,7 +1814,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 					if (0 === $(currentFormControls[k]).siblings('.rexwpcf7-column-tools').length) {
 						// fieldName = currentFormControls[k].getAttribute('name');
 						fieldName = _getName(currentFormControls[k]);
-						console.log(fieldName)
+						console.log(fieldName);
 						columnToolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-column-tools', { name: fieldName });
 
 						currentFormControls[k].insertAdjacentHTML('afterend', columnToolsTemplate);

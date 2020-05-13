@@ -557,6 +557,8 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 			_addElementToolsToDOM();
 			focusRexElement($textWrap);
 		}
+
+		Rexbuilder_Live_Utilities.launchTooltips();
 	}
 
 	function _endFixingSeparatedElement($elementWrapper, formFieldsString) {

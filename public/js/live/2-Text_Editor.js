@@ -3009,6 +3009,7 @@ var TextEditor = (function ($) {
 
 			Rexbuilder_Rexwpcf7_Editor.addRow(rexElementInstance.traceElementId, $rowToClone, numberRowBefore);
 
+			Rexbuilder_Live_Utilities.launchTooltips();
 			this.updateHeight();
 		},
 
@@ -3049,6 +3050,7 @@ var TextEditor = (function ($) {
 				numberRowBefore
 			);
 
+			Rexbuilder_Live_Utilities.launchTooltips();
 			this.updateHeight();
 		},
 
