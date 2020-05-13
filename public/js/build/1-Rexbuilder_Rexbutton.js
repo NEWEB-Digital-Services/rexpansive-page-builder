@@ -432,17 +432,24 @@ var Rexbuilder_Rexbutton = (function ($) {
             case "inside-row":
                 var ev = jQuery.Event("rexlive:insert_new_text_block");
                 ev.settings = {
-                    data_to_send: {
-                        $buttonWrapper: $buttonWrapper,
-                        $section: $section,
-                        addBlockButton: true,
-                        mousePosition: data.mousePosition,
-                        blockDimensions: {
-                            w: buttonDimensionCalculated.width,
-                            h: buttonDimensionCalculated.height
-                        }
-                    }
-                };
+									data_to_send: {
+										$buttonWrapper: $buttonWrapper,
+										$section: $section,
+										addBlockButton: true,
+										mousePosition: data.mousePosition,
+										blockDimensions: {
+											w: buttonDimensionCalculated.width,
+											h: buttonDimensionCalculated.height
+										},
+										sectionTarget: {
+											sectionID: $section.attr('data-rexlive-section-id'),
+											modelNumber:
+												typeof $section.attr('data-rexlive-model-number') != 'undefined'
+													? $section.attr('data-rexlive-model-number')
+													: ''
+										}
+									}
+								};
                 Rexbuilder_Util.$document.trigger(ev);
                 break;
             case "inside-new-row":
@@ -480,6 +487,8 @@ var Rexbuilder_Rexbutton = (function ($) {
         if ($textWrap.length != 0) {
             TextEditor.removePlaceholder($textWrap.eq(0));
 				}
+
+				Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
     }
 
     var _addButtonStyle = function ($buttonWrapper) {

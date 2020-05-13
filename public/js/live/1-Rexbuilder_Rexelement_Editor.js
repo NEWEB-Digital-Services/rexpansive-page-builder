@@ -91,7 +91,14 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 									$section: $section,
 									addBlockElement: true,
 									mousePosition: data.mousePosition,
-									formFieldsString: formFieldsString
+									formFieldsString: formFieldsString,
+									sectionTarget: {
+										sectionID: $section.attr('data-rexlive-section-id'),
+										modelNumber:
+											undefined !== $section.attr('data-rexlive-model-number')
+												? $section.attr('data-rexlive-model-number')
+												: ''
+									}
 								}
 							};
 							Rexbuilder_Util.$document.trigger(ev);

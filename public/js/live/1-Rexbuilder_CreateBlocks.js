@@ -140,8 +140,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var event = jQuery.Event("dblclick");
     event.target = el;
     event.offsetY = 0;
-    galleryInstance.$element.trigger(event);
-
+		galleryInstance.$element.trigger(event);
+		
     Rexbuilder_Util.editedDataInfo.addBlockData( data.sectionTarget.sectionID, el.getAttribute('data-rexbuilder-block-id') );
 
     Rexbuilder_Util.updateSectionStateLive($section);
