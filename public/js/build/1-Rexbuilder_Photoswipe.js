@@ -325,7 +325,8 @@ var Rexbuilder_Photoswipe = (function($){
 			options.index = parseInt(index, 10);
 		}
 
-		if (Rexbuilder_Util.hasClass(galleryElement, 'split-scrollable')) {
+		// handling split scrollable section
+		if ( Rexbuilder_Util.hasClass( galleryElement, 'split-scrollable' ) ) {
 			/* Searching the relative index, based on number of the current
 			opacity block photoswipe elements */
 			var elementsToShow = $(galleryElement)
@@ -348,6 +349,35 @@ var Rexbuilder_Photoswipe = (function($){
 				}
 				return false;
 			});
+		} else {
+
+			// if the section has sliders, the behaviour changes a little
+			// - on a slider, opens only the sliders images
+			// - on other images, opens all the section images, except the ones on the sliders
+			var hasSliders = 0 !== ( Array.prototype.slice.call( galleryElement.getElementsByClassName('block-has-slider') ) ).length ? true : false;
+			if ( hasSliders ) {
+				// check if the item clicked is a slider
+				var click_item_parent = Rexbuilder_Util.parents( items[index].el, '.perfect-grid-item' );
+				var filter_slider = false;
+				if ( click_item_parent ) {
+					if ( Rexbuilder_Util.hasClass( click_item_parent, 'block-has-slider' ) ) {
+						filter_slider = true;
+					}
+				}
+
+				// filter the items
+				items = items.filter( function(item) {
+					var block_parent = Rexbuilder_Util.parents( item.el, '.perfect-grid-item' );
+					if ( block_parent ) {
+						if ( Rexbuilder_Util.hasClass( block_parent, 'block-has-slider' ) ) {
+							return ( filter_slider ? true : false );
+						} else {
+							return ( filter_slider ? false : true );
+						}
+					}
+					return true;
+				});
+			}
 		}
 
 		// exit if index not found

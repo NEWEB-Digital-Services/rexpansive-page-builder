@@ -4044,6 +4044,9 @@ select.rx__form-input {
 
 #rexeditor-modal.hide-padding-position .modal-editor-header {
   height: 30px;
+  background-color: #fafafa;
+  position: relative;
+  z-index: 1;
 }
 
 #rex-slider-block.rex-modal {
