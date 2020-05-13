@@ -1762,9 +1762,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			columnsFormControl = Array.prototype.slice.call(forms[i].querySelectorAll('.wpcf7-form-control'));
 
 			for (j = 0; j < columnsFormControl.length; j++) {
-				// fieldName = columnsFormControl[j].getAttribute('name');
 				fieldName = _getName(columnsFormControl[j]);
-				console.log(fieldName);
 				toolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-column-tools', { name: fieldName });
 
 				columnsFormControl[j].insertAdjacentHTML('afterend', toolsTemplate);
@@ -1812,9 +1810,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				for (k = 0; k < currentFormControls.length; k++) {
 					// Column, form control
 					if (0 === $(currentFormControls[k]).siblings('.rexwpcf7-column-tools').length) {
-						// fieldName = currentFormControls[k].getAttribute('name');
 						fieldName = _getName(currentFormControls[k]);
-						console.log(fieldName);
 						columnToolsTemplate = Rexbuilder_Live_Templates.getTemplate('wpcf7-column-tools', { name: fieldName });
 
 						currentFormControls[k].insertAdjacentHTML('afterend', columnToolsTemplate);

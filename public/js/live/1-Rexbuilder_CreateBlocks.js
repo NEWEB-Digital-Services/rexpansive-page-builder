@@ -119,85 +119,67 @@ var Rexbuilder_CreateBlocks = (function ($) {
       } else {
         $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
       }
-    }
-
-    var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
-    if (addBlockButton) {
-      blockWidth = 4;
-      blockHeight = 100;
-      blockHeight = Math.ceil(blockHeight / galleryInstance.properties.singleHeight);
-    } else if ( addBlockElement ) {
-      blockHeight = 100;
-      blockHeight = Math.ceil(blockHeight / galleryInstance.properties.singleHeight);
-    }
-
+		}
+		
+		var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
+		if (addBlockButton) {
+			blockWidth = 4;
+			blockHeight = 100;
+			blockHeight = Math.ceil(blockHeight / galleryInstance.properties.singleHeight);
+		} else if (addBlockElement) {
+			var ratio = ($section.width() / Rexbuilder_Util.globalViewport.width) * 100;
+			blockWidth = ratio <= 50 ? 12 : ratio <= 75 ? 6 : 4;
+			blockHeight = Math.ceil(100 / galleryInstance.properties.singleHeight);
+		}
+		
     var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, blockWidth, blockHeight, "text");
     var el = $el[0];
     TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
 
-    // Rexbuilder_Block_Editor.updateBlockTools($el);
     Rexbuilder_Live_Utilities.launchTooltips();
     var event = jQuery.Event("dblclick");
-    // event.target = $el.find(".rexlive-block-drag-handle");
     event.target = el;
     event.offsetY = 0;
     galleryInstance.$element.trigger(event);
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
-    }
+		}
+		
+		var ev;
     
-    if ( addBlockButton ) {
-      var ev = jQuery.Event("rexlive:completeImportButton");
-      ev.settings = {
-        $buttonWrapper: data.$buttonWrapper,
-        $blockAdded: $el
-      }
+    if (addBlockButton) {
+			ev = jQuery.Event('rexlive:completeImportButton');
+			ev.settings = {
+				$buttonWrapper: data.$buttonWrapper,
+				$blockAdded: $el
+			};
+		} else if (addBlockElement) {
+			ev = jQuery.Event('rexlive:completeImportElement');
+			ev.settings = {
+				$elementWrapper: data.$elementWrapper,
+				$elementAdded: $el,
+				formFieldsString: data.formFieldsString
+			};
+		}
 
-      var gridstackInstance = galleryInstance.properties.gridstackInstance;
-      var mouseCell = gridstackInstance.getCellFromPixel({
-        left: data.mousePosition.x,
-        top: data.mousePosition.y
-      }, true);
+		var gridstackInstance = galleryInstance.properties.gridstackInstance;
+		var mouseCell = gridstackInstance.getCellFromPixel({ left: data.mousePosition.x, top: data.mousePosition.y }, true);
 
-      // infinity fix
-      var moveX = Math.max(0, mouseCell.x - Math.round(blockWidth / 2));
-      var moveY = Math.max(0, mouseCell.y - Math.round(blockHeight / 2));
-      moveX = ( Infinity !== moveX ? moveX : 0 );
-      moveY = ( Infinity !== moveY ? moveY : 0 );
+		// Infinity fix
+		var moveX = Math.max(0, mouseCell.x - Math.round(blockWidth / 2));
+		var moveY = Math.max(0, mouseCell.y - Math.round(blockHeight / 2));
+		moveX = Infinity !== moveX ? moveX : 0;
+		moveY = Infinity !== moveY ? moveY : 0;
 
-      gridstackInstance.move($el[0], moveX, moveY);
-      Rexbuilder_Util.$document.trigger(ev);
-    } else if (addBlockElement) {
-      // Here is space
-      var ev = jQuery.Event('rexlive:complete_import_element');
-      ev.settings = {
-        $elementWrapper: data.$elementWrapper,
-        $elementAdded: $el,
-        formFieldsString: data.formFieldsString
-      }
+		gridstackInstance.move(el, moveX, moveY);
+		Rexbuilder_Util.$document.trigger(ev);
 
-      var gridstackInstance = galleryInstance.properties.gridstackInstance;
-      var mouseCell = gridstackInstance.getCellFromPixel({
-        left: data.mousePosition.x,
-        top: data.mousePosition.y
-      }, true);
-
-      // infinity fix
-      var moveX = Math.max(0, mouseCell.x - Math.round(blockWidth / 2));
-      var moveY = Math.max(0, mouseCell.y - Math.round(blockHeight / 2));
-      moveX = ( Infinity !== moveX ? moveX : 0 );
-      moveY = ( Infinity !== moveY ? moveY : 0 );
-
-      gridstackInstance.move($el[0], moveX, moveY);
-      Rexbuilder_Util.$document.trigger(ev);
-    }
-
-    var data = {
-      eventName: "rexlive:edited",
-      modelEdited: $section.hasClass("rex-model-section")
-    }
-    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+		var data = {
+			eventName: 'rexlive:edited',
+			modelEdited: $section.hasClass('rex-model-section')
+		};
+		Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   }
 
   /**

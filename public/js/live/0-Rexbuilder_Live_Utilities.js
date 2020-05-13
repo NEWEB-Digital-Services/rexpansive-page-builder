@@ -645,7 +645,7 @@ var Rexbuilder_Live_Utilities = (function($) {
 			Rexbuilder_Rexelement_Editor.fixImportedElement( e.settings.data );
 		});
 
-		Rexbuilder_Util.$document.on("rexlive:complete_import_element", function ( e ) {
+		Rexbuilder_Util.$document.on("rexlive:completeImportElement", function ( e ) {
 			Rexbuilder_Rexelement_Editor.handleCompleteImportElement( e );
 		});
 
