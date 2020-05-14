@@ -471,7 +471,13 @@
     width: 262px;
     height: 210px;
     padding-left: 4px;
-    box-sizing: content-box;
+		box-sizing: content-box;
+		
+		&.margin-padding-area {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
   }
 
   .rexbutton-count-column_7 {

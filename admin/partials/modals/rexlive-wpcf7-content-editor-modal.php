@@ -1,8 +1,8 @@
 <?php
 /**
-* Modal for RexButton editing
+* Modal for RexWpcf7 Content editing
 *
-* @since x.x.x
+* @since			2.0.2
 * @package    Rexbuilder
 * @subpackage Rexbuilder/admin/partials/modals
 */
@@ -17,7 +17,7 @@ defined('ABSPATH') or exit;
         <!-- General wrap -->
         <div class="modal-content"> <!-- // Required Field, E-Mail Field, Only Numbers  -->
             <?php include 'rexlive-loader-modal.php'; ?>
-            <div class="bl_modal-row modal-row-grey">
+            <div id="required-field-row" class="bl_modal-row modal-row-grey">
                 <div class="bl_modal__option-wrap bl_jc-c ptb24">
                     <div id="" class="bl_modal__single-option valign-wrapper tippy" data-tippy-content="<?php _e('Required Field', 'rexpansive-builder');?>">
                         <label>
@@ -106,22 +106,9 @@ defined('ABSPATH') or exit;
                         </span>
                         <input type="text" id="wpcf7-input-height" class="rexwpcf7-set-height-input" name="">
                         <span class="rex-material-bar"></span>
-                    </div>
-                    <div class="ml12">
-                        <div>
-                            <input id="wpcf7-input-height-percentage" type="radio" class="wpcf7-input-height-type with-gap" name="wpcf7-input-height-type" value="percentage" checked />
-                            <label for="wpcf7-input-height-percentage">
-                                <?php _e('%', 'rexpansive-builder');?>
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div>
-                        <div>
-                            <input id="wpcf7-input-height-pixel" type="radio" class="wpcf7-input-height-type with-gap" name="wpcf7-input-height-type" value="pixel" />
-                            <label for="wpcf7-input-height-pixel">
-                                <?php _e('PX', 'rexpansive-builder');?>
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div>
+											</div>
+											<div class="bl_d-iblock label-px ml12" style="font-size: 16px;">
+												<?php _e('PX', 'rexpansive-builder');?>
                     </div>
                 </div>
             </div>
@@ -632,7 +619,7 @@ defined('ABSPATH') or exit;
                         </div>
                         <div class="bl_modal-row modal-row-grey no12dx"> <!-- // Button -->
                             <div class="rexbutton-cont_row23">
-                                <div class="rexbutton-count-column_6">
+                                <div class="rexbutton-count-column_6 margin-padding-area">
                                     <div class="rex-live__row-margin-padding block-padding-wrap">
                                         <div class="bl_d-flex bl_jc-c">
                                             <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Top', 'rexpansive-builder' ); ?>">

@@ -15,7 +15,7 @@ var Model_Import_Modal = (function($) {
   * @param selected_image_id Wordpress id of the new thumbnail image
   * @param selected_image_size
   * @return {null} 
-  * @since  x.x.x
+  * @since  2.0.0
   */
   var _saveModelThumbnail = function(model_selected, selected_image_id, selected_image_size) {
     $.ajax({
@@ -42,7 +42,7 @@ var Model_Import_Modal = (function($) {
   * Deletes the model thumbnail from the db using an AJAX call.
   * @param model_to_delete
   * @return {null} 
-  * @since  x.x.x
+  * @since  2.0.0
   */
   var _deleteModelThumbnail = function(model_to_delete) {
     $.ajax({
@@ -552,7 +552,7 @@ var Model_Import_Modal = (function($) {
         event.originalEvent.dataTransfer.setData("text/plain", insertingHTML);
       }
       var dataDnDstart = {
-        eventName: "rexlive:drag_drop_starded",
+        eventName: "rexlive:drag_drop_started",
         data_to_send: {}
       };
       Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDstart);

@@ -426,7 +426,10 @@ var Element_Import_Modal = (function ($) {
         Rexlive_Base_Settings.$document.on("drag", ".element-list li", function (
             event
         ) {
-            Rexbuilder_Util_Admin_Editor.setScroll(true);
+						Rexbuilder_Util_Admin_Editor.setScroll(true);
+						
+						// console.log( mouseClientY < 150, mouseClientY );
+						// console.log( mouseClientY > $frameContentWindow.height() - 150 );
 
             if (mouseClientY < 150) {
                 Rexbuilder_Util_Admin_Editor.setScroll(false);
@@ -459,13 +462,13 @@ var Element_Import_Modal = (function ($) {
             var $rexContainer = $(Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow.document).find(".rex-container").eq(0);
 
             var mousePosition = {};
-            var mousePositionToIFrame = {};
+						var mousePositionToIFrame = {};
 
             $frameContentWindow.on('dragover', function (event) {
                 if (Rexbuilder_Util_Admin_Editor.dragImportType == "rexelement") {
-                    // mouse position for scrolling
+									// mouse position for scrolling
                     event.preventDefault();
-                    event.stopPropagation();
+										event.stopPropagation();
                     mouseClientX = event.originalEvent.clientX;
                     mouseClientY = event.originalEvent.clientY;
                 }
@@ -482,6 +485,10 @@ var Element_Import_Modal = (function ($) {
 
             $rexContainer.on('dragover', ".grid-stack-row", function (event) {
                 if (Rexbuilder_Util_Admin_Editor.dragImportType == "rexelement") {
+										// Updating mouseClinentX & mouseClientY variables to make possible
+										// dragging even on sections
+										mouseClientX = event.originalEvent.clientX;
+                    mouseClientY = event.originalEvent.clientY;
 
                     if (countdown % 15 != 0 && currentElementChangeFlag == false) {
                         countdown = countdown + 1;
@@ -525,11 +532,11 @@ var Element_Import_Modal = (function ($) {
                     $divInsert.addClass("rex-loading-element");
                     $divInsert.insertAfter($insertionPoint[0]);
                     $divInsert.hide();
-                    $insertionPoint.remove();
+										$insertionPoint.remove();
+										
                     var dataEndDrop = {
-                      eventName: "rexlive:import_element",
+                      eventName: "rexlive:importElement",
                       data: {
-                        // elementDimensions: elementDimensions,
                         mousePosition: mousePositionToIFrame
                       }
                     };

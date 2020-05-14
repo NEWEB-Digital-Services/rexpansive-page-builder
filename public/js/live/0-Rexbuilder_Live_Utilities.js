@@ -605,16 +605,12 @@ var Rexbuilder_Live_Utilities = (function($) {
 		Rexbuilder_Util.$document.on("rexlive:close_modal", function(e) {
 			Rexbuilder_Live_Utilities.hideAllTools();
 
-			var blockIDToFocusAfterClose = e.settings.blockID;
+			// Re-focusing row if necessary
+			var needRefocusEl = Rexbuilder_Util.rexContainer.querySelector('.needs-refocus');
 
-			if ( "undefined" != typeof blockIDToFocusAfterClose ) {
-				setTimeout(function() {   // Necessary!
-				$('#' + blockIDToFocusAfterClose)
-					.dblclick()
-					.addClass('item--me-focus')
-					.parents('.rexpansive_section')
-					.addClass('focusedRow block-editing');
-				}, 0);
+			if (needRefocusEl) {
+				Rexbuilder_Util.addClass(needRefocusEl, 'focusedRow');
+				Rexbuilder_Util.removeClass(needRefocusEl, 'needs-refocus');
 			}
 		});
 
@@ -645,11 +641,11 @@ var Rexbuilder_Live_Utilities = (function($) {
 		});
 
 		/* ===== Elements ===== */
-		Rexbuilder_Util.$document.on('rexlive:import_element', function (e) {
+		Rexbuilder_Util.$document.on('rexlive:importElement', function (e) {
 			Rexbuilder_Rexelement_Editor.fixImportedElement( e.settings.data );
 		});
 
-		Rexbuilder_Util.$document.on("rexlive:complete_import_element", function ( e ) {
+		Rexbuilder_Util.$document.on("rexlive:completeImportElement", function ( e ) {
 			Rexbuilder_Rexelement_Editor.handleCompleteImportElement( e );
 		});
 
@@ -694,8 +690,12 @@ var Rexbuilder_Live_Utilities = (function($) {
 			Rexbuilder_Rexwpcf7_Editor.updateColumnContentLive(e.settings.data_to_send);
 		});
 
+		Rexbuilder_Util.$document.on('rexlive:focusElement', function (e) {
+			Rexbuilder_Rexelement_Editor.focusRexElement(e.settings.data_to_send.$textWrap);
+		});
+
 		// DRAG & DROP
-		Rexbuilder_Util.$document.on("rexlive:drag_drop_starded", function (e) {
+		Rexbuilder_Util.$document.on("rexlive:drag_drop_started", function (e) {
 			Rexbuilder_Util_Editor.dragAndDropFromParent = true;
 		});
 

@@ -1756,7 +1756,15 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Rexbuilder_Util_Admin_Editor.$frameBuilder.trigger("load");
       }
     }
-  }
+	}
+	
+	function searchFocusedElement() {
+		var $focusedEl = $(
+			Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow.document.querySelector('.item--me-focus')
+		);
+
+		$focusedEl.parents('.rexpansive_section').addClass('needs-refocus');
+	}
 
   // init the utilities
   var init = function() {
@@ -1888,6 +1896,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     setScroll: _setScroll,
     addClassToLiveFrameRexContainer: _addClassToLiveFrameRexContainer,
     removeClassToLiveFrameRexContainer: _removeClassToLiveFrameRexContainer,
-    forceTriggerLoad: _forceTriggerLoad
+		forceTriggerLoad: _forceTriggerLoad,
+		searchFocusedElement: searchFocusedElement
   };
 })(jQuery);

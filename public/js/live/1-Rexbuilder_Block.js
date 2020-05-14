@@ -13,7 +13,7 @@ var Rexbuilder_Block = (function ($) {
 		Rexbuilder_Util_Editor.removingBlocks = false;
 
 		// WPCF7 operations
-		if ( 0 !== $elem.find('.wpcf7-form').length ) {
+		if ( 0 !== $elem.find('.wpcf7-form:not(.no-builder-form)').length ) {
 			var formID = $elem.find('.rex-element-wrapper').attr('data-rex-element-id');
 			Rexbuilder_Rexwpcf7_Editor.removeFormInPage(formID);
 		}

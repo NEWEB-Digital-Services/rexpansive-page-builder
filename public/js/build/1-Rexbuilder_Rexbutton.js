@@ -459,23 +459,23 @@ var Rexbuilder_Rexbutton = (function ($) {
 
     var _endFixingButtonImported = function ($buttonWrapper) {
         var buttonID = $buttonWrapper.attr('data-rex-button-id');
-				var flagButtonFound = false;
-				var i = 0;
+		var flagButtonFound = false;
+		var i = 0;
 
-				for (; i < buttonsInPage.length; i++) {
-					if (buttonsInPage[i].id == buttonID) {
-						flagButtonFound = true;
-						break;
-					}
-				}
+		for (; i < buttonsInPage.length; i++) {
+			if (buttonsInPage[i].id == buttonID) {
+				flagButtonFound = true;
+				break;
+			}
+		}
 
-				if (!flagButtonFound) {
-					_addButtonStyle($buttonWrapper);
-				}
+		if (!flagButtonFound) {
+			_addButtonStyle($buttonWrapper);
+		}
 
-				// Refreshing RexButtons numbers and buttonsInPage Object
-				refreshNumbers();
-				updateButtonListInPage();
+		// Refreshing RexButtons numbers and buttonsInPage Object
+		refreshNumbers();
+		updateButtonListInPage();
 				
         _removeModelData($buttonWrapper);
 
@@ -483,15 +483,17 @@ var Rexbuilder_Rexbutton = (function ($) {
         var $textWrap = $buttonWrapper.parents(".text-wrap");
         if ($textWrap.length != 0) {
             TextEditor.removePlaceholder($textWrap.eq(0));
-				}
+		}
+
+		Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
     }
 
     var _addButtonStyle = function ($buttonWrapper) {
         if ($buttonWrapper.find(".rex-button-data").eq(0).length != 0) {
             var buttonProperties = _generateButtonData($buttonWrapper, true);
-						var buttonID = buttonProperties.buttonInfo.buttonTarget.button_id;
-						
-						_addCSSRules(buttonID, buttonProperties.buttonInfo);
+			var buttonID = buttonProperties.buttonInfo.buttonTarget.button_id;
+			
+			_addCSSRules(buttonID, buttonProperties.buttonInfo);
         }
     }
 

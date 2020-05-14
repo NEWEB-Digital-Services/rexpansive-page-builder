@@ -6,6 +6,7 @@
 			<h4><strong>v2.0.5</strong> – </h4>
 			<p><strong>Fixed</strong>: On a copied row, text editor doesn't work</p>
 			<p><strong>Fixed</strong>: On an import template, text editor doesn't work</p>
+			<p><strong>Add</strong>: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. old forms will not be affected</p>
 			<h4><strong>v2.0.4</strong> – April 29, 2020</h4>
 			<p><strong>Update</strong>: Improved performances on frontend</p>
 			<p><strong>Update</strong>: Navigator style</p>
