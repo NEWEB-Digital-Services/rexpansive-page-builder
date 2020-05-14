@@ -202,7 +202,11 @@ For the more experienced among us: you can insert CSS anywhere.
 
 = 2.0.5 – =
  * Fixed: On a copied row, text editor doesn't work
+ * Fixed: On an imported template, at the first moment the tools are not correctly visible
  * Fixed: On an import template, text editor doesn't work
+ * Update: Photoswipe on a RexSlider opens only the images in the slider
+ * Update: Change a row or a block property on layouts different from default, saves only that property, leaving the other properties synchronized with the default ones
+ * Add: Reset button on rows and blocks to reset their properties with the default
  * Add: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. old forms will not be affected
 
 = 2.0.4 – April 29, 2020 =

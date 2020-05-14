@@ -252,7 +252,7 @@ var Rex_Navigator = (function ($) {
 				navigationLabel.innerText = targetHref.replace('#', '').replace(/\-/g, ' ');
 				navigationLabel.style.display = 'inline';
 				navigationLabel.style.opacity = '1';
-				navigationLabel.style.top = targetsPositions[targetHref].top - 2 + 'px';
+				navigationLabel.style.top = targetsPositions[targetHref].top + 1 + 'px';
 				navigationLabel.style.right = targetsPositions[targetHref].width * 1.5 + 'px';
 			});
 
@@ -278,16 +278,7 @@ var Rex_Navigator = (function ($) {
 			var linkHref = navigationLinks[i].getAttribute('href');
 			var boundingRect = navigationLinks[i].getBoundingClientRect();
 
-			targetsPositions[linkHref] = {
-				x: boundingRect.x,
-				y: boundingRect.y,
-				width: boundingRect.width,
-				height: boundingRect.height,
-				top: boundingRect.top,
-				right: boundingRect.right,
-				bottom: boundingRect.bottom,
-				left: boundingRect.left
-			};
+			targetsPositions[linkHref] = boundingRect;
 		}
 	}
 
