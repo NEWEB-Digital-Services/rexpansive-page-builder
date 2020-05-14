@@ -1,18 +1,11 @@
 /**
- * Handling lateral menu to import various models (buttons, sections, ...)
+ * Handling lateral menu to import various models (templates, buttons, elements)
  * @since  2.0.0
  */
 var Model_Lateral_Menu = (function ($) {
   "use strict";
   var rexmodel_lateral_menu;
   var image_uploader_frame_direct;  //used for the media library opener
-
-  var _linkDocumentListeners = function () {
-    rexmodel_lateral_menu.$close_button.click(function (e) {
-      e.preventDefault();
-      _closeModal();
-    });
-  };
 
   var _openModal = function () {
     Model_Import_Modal.updateModelList();
@@ -35,7 +28,11 @@ var Model_Lateral_Menu = (function ($) {
       rexmodel_lateral_menu.$self.addClass("rex-lateral-panel--open");
       var activeTab = rexmodel_lateral_menu.$tabsButtons.filter('.active').parent().index();
       rexmodel_lateral_menu.$tabs.eq(activeTab).show();
-    });
+		});
+		
+    Rexlive_Base_Settings.$document.on('rexlive:rexButtonDropped rexlive:rexElementDropped rexlive:rexModelDropped', function () {
+			_closeModal();
+		});
 
     rexmodel_lateral_menu.$close_button.click(function (e) {
       e.preventDefault();

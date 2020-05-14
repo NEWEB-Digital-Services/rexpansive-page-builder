@@ -703,7 +703,6 @@ var Rexbuilder_Live_Utilities = (function($) {
 			Rexbuilder_Util_Editor.dragAndDropFromParent = false;
 		});
 
-		// BUTTONS?
 		Rexbuilder_Util.$document.on("rexlive:set_container_margins", function(e) {
 			Rexbuilder_Util_Editor.updateContainerMargins(e.settings.data_to_send);
 		});

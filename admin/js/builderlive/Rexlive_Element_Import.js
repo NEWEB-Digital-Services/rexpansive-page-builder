@@ -428,9 +428,6 @@ var Element_Import_Modal = (function ($) {
         ) {
 						Rexbuilder_Util_Admin_Editor.setScroll(true);
 						
-						// console.log( mouseClientY < 150, mouseClientY );
-						// console.log( mouseClientY > $frameContentWindow.height() - 150 );
-
             if (mouseClientY < 150) {
                 Rexbuilder_Util_Admin_Editor.setScroll(false);
                 Rexbuilder_Util_Admin_Editor.scrollFrame(-1);
@@ -455,7 +452,10 @@ var Element_Import_Modal = (function ($) {
                 eventName: "rexlive:drag_drop_ended",
                 data_to_send: {}
             };
-            Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
+						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
+						
+						var dropEndEvent = jQuery.Event('rexlive:rexElementDropped');
+						$(document).trigger(dropEndEvent);
         });
 
         Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {

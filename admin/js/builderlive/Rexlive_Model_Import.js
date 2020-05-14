@@ -584,7 +584,10 @@ var Model_Import_Modal = (function($) {
         eventName: "rexlive:drag_drop_ended",
         data_to_send: {}
       };
-      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
+			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
+			
+			var dropEndEvent = jQuery.Event('rexlive:rexModelDropped');
+			$(document).trigger(dropEndEvent);
     });
 
     Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function() {

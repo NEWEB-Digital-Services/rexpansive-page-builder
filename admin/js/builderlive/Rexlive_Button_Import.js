@@ -347,7 +347,9 @@ var Button_Import_Modal = (function ($) {
             }
         });
 
-        Rexlive_Base_Settings.$document.on("dragend", ".button-list li", function (event) {
+        Rexlive_Base_Settings.$document.on("dragend", ".button-list li", function (dropEndEvent) {
+					
+					console.log( 'droppato' );
             clearInterval(dragoverqueue_processtimer);
 
             Rexbuilder_Util_Admin_Editor.setScroll(true);
@@ -360,7 +362,10 @@ var Button_Import_Modal = (function ($) {
                 eventName: "rexlive:drag_drop_ended",
                 data_to_send: {}
             };
-            Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
+						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
+						
+						var dropEndEvent = jQuery.Event('rexlive:rexButtonDropped');
+						$(document).trigger(dropEndEvent);
         });
 
         Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
