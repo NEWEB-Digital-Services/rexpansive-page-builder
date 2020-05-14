@@ -5,38 +5,45 @@
 var Model_Lateral_Menu = (function ($) {
   "use strict";
   var rexmodel_lateral_menu;
-  var image_uploader_frame_direct;  //used for the media library opener
 
-  var _openModal = function () {
+  function _openModal() {
     Model_Import_Modal.updateModelList();
     Element_Import_Modal.updateElementList();
   };
 
-  var _closeModal = function () {
-    rexmodel_lateral_menu.$self
-    .addClass("rex-lateral-panel--close")
-    .one(Rexbuilder_Util_Admin_Editor.animationEvent, function (e) {
-      rexmodel_lateral_menu.$self.removeClass(
-        "rex-lateral-panel--open rex-lateral-panel--close"
-        );
-    });
-        // Rexlive_Modals_Utils.closeModal(rexmodel_lateral_menu.$self.parent('.rex-modal-wrap'));
-  };
+	/**
+	 * Makes the lateral menu not visible anymore.
+	 * @returns	{void}
+	 * @since		2.0.5
+	 */
+	function hide() {
+		rexmodel_lateral_menu.$self
+			.addClass('rex-lateral-panel--close')
+			.one(Rexbuilder_Util_Admin_Editor.animationEvent, function (e) {
+				rexmodel_lateral_menu.$self.removeClass('rex-lateral-panel--open rex-lateral-panel--close');
+			});
+	};
+	
+	/**
+	 * Makes the lateral menu visible.
+	 * @returns	{void}
+	 * @since		2.0.5
+	 */
+	function show() {
+		rexmodel_lateral_menu.$self.addClass('rex-lateral-panel--open');
 
-  var _linkDocumentListeners = function () {
-    Rexlive_Base_Settings.$document.on("rexlive:lateralMenuReady", function () {
-      rexmodel_lateral_menu.$self.addClass("rex-lateral-panel--open");
-      var activeTab = rexmodel_lateral_menu.$tabsButtons.filter('.active').parent().index();
-      rexmodel_lateral_menu.$tabs.eq(activeTab).show();
-		});
-		
-    Rexlive_Base_Settings.$document.on('rexlive:rexButtonDropped rexlive:rexElementDropped rexlive:rexModelDropped', function () {
-			_closeModal();
+		var activeTab = rexmodel_lateral_menu.$tabsButtons.filter('.active').parent().index();
+		rexmodel_lateral_menu.$tabs.eq(activeTab).show();
+	}
+
+  function _linkDocumentListeners() {
+		Rexlive_Base_Settings.$document.on('rexlive:lateralMenuReady', function () {
+			show();
 		});
 
     rexmodel_lateral_menu.$close_button.click(function (e) {
       e.preventDefault();
-      _closeModal();
+      hide();
     });
 
     rexmodel_lateral_menu.$tabsButtons.click(function (e) {
@@ -143,7 +150,7 @@ var Model_Lateral_Menu = (function ($) {
     });
   }
 
-  var _init = function () {
+  function _init() {
     var $self = $("#rexbuilder-lateral-panel");
     rexmodel_lateral_menu = {
       $self: $self,
@@ -160,6 +167,7 @@ var Model_Lateral_Menu = (function ($) {
   return {
     init: _init,
     openModal: _openModal,
-    closeModal: _closeModal
+		hide: hide,
+		show: show
   };
 })(jQuery);

@@ -400,7 +400,9 @@ var Element_Import_Modal = (function ($) {
         Rexlive_Base_Settings.$document.on("dragstart", ".element-list li", function (
             event
         ) {
-            Rexbuilder_Util_Admin_Editor.dragImportType = "rexelement";
+						Rexbuilder_Util_Admin_Editor.dragImportType = "rexelement";
+						Rexbuilder_Util_Admin_Editor.hideLateralMenu();
+
             event.originalEvent.dataTransfer.effectAllowed = "all";
             dragoverqueue_processtimer = setInterval(function () {
                 DragDropFunctions.ProcessDragOverQueue();
@@ -427,6 +429,7 @@ var Element_Import_Modal = (function ($) {
             event
         ) {
 						Rexbuilder_Util_Admin_Editor.setScroll(true);
+						Rexbuilder_Util_Admin_Editor.checkLateralMenu(mouseClientX);
 						
             if (mouseClientY < 150) {
                 Rexbuilder_Util_Admin_Editor.setScroll(false);
@@ -538,9 +541,6 @@ var Element_Import_Modal = (function ($) {
                       }
                     };
 										Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
-										
-										var dropEndEvent = jQuery.Event('rexlive:rexElementDropped');
-										$(document).trigger(dropEndEvent);
                   }
                   catch (e) {
                     console.log(e);

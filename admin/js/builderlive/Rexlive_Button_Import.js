@@ -300,12 +300,12 @@ var Button_Import_Modal = (function ($) {
         var $imgPreview;
 
         var mouseClientX = 0,
-            mouseClientY = 0;
+						mouseClientY = 0;
+						
+        Rexlive_Base_Settings.$document.on("dragstart", ".button-list li", function (event) {
+						Rexbuilder_Util_Admin_Editor.dragImportType = "rexbutton";
+						Rexbuilder_Util_Admin_Editor.hideLateralMenu();
 
-        Rexlive_Base_Settings.$document.on("dragstart", ".button-list li", function (
-            event
-        ) {
-            Rexbuilder_Util_Admin_Editor.dragImportType = "rexbutton";
             event.originalEvent.dataTransfer.effectAllowed = "all";
             dragoverqueue_processtimer = setInterval(function () {
                 DragDropFunctions.ProcessDragOverQueue();
@@ -330,22 +330,21 @@ var Button_Import_Modal = (function ($) {
             Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDstart);
         });
 
-        // definisce quando bisogna scrollare in alto o in basso
-        Rexlive_Base_Settings.$document.on("drag", ".button-list li", function (
-            event
-        ) {
-            Rexbuilder_Util_Admin_Editor.setScroll(true);
+				// Defines when it's necessary to scroll up or down
+        Rexlive_Base_Settings.$document.on('drag', '.button-list li', function (event) {
+					Rexbuilder_Util_Admin_Editor.setScroll(true);
+					Rexbuilder_Util_Admin_Editor.checkLateralMenu(mouseClientX);
 
-            if (mouseClientY < 150) {
-                Rexbuilder_Util_Admin_Editor.setScroll(false);
-                Rexbuilder_Util_Admin_Editor.scrollFrame(-1);
-            }
+					if (mouseClientY < 150) {
+						Rexbuilder_Util_Admin_Editor.setScroll(false);
+						Rexbuilder_Util_Admin_Editor.scrollFrame(-1);
+					}
 
-            if (mouseClientY > $frameContentWindow.height() - 150) {
-                Rexbuilder_Util_Admin_Editor.setScroll(false);
-                Rexbuilder_Util_Admin_Editor.scrollFrame(1);
-            }
-        });
+					if (mouseClientY > $frameContentWindow.height() - 150) {
+						Rexbuilder_Util_Admin_Editor.setScroll(false);
+						Rexbuilder_Util_Admin_Editor.scrollFrame(1);
+					}
+				});
 
         Rexlive_Base_Settings.$document.on("dragend", ".button-list li", function (dropEndEvent) {
             clearInterval(dragoverqueue_processtimer);
@@ -361,9 +360,6 @@ var Button_Import_Modal = (function ($) {
                 data_to_send: {}
             };
 						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
-						
-						// var dropEndEvent = jQuery.Event('rexlive:rexButtonDropped');
-						// $(document).trigger(dropEndEvent);
         });
 
         Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
@@ -449,9 +445,6 @@ var Button_Import_Modal = (function ($) {
                             }
                         };
 												Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
-												
-												var dropEndEvent = jQuery.Event('rexlive:rexButtonDropped');
-												$(document).trigger(dropEndEvent);
                     }
                     catch (e) {
                         console.error('Error when dropping the RexButton:', e);

@@ -1766,6 +1766,34 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 		$focusedEl.parents('.rexpansive_section').addClass('needs-refocus');
 	}
 
+	function showLateralMenu() {
+		Model_Lateral_Menu.show();
+		Rexbuilder_Util_Admin_Editor.isLateralMenuOpen = true;
+	}
+
+	/**
+	 * 
+	 */
+	function hideLateralMenu() {
+		Model_Lateral_Menu.hide();
+		Rexbuilder_Util_Admin_Editor.isLateralMenuOpen = false;
+	}
+
+	/**
+	 * Controls either the mouse x coord and if the lateral menu is open.
+	 * Opens / hides the laterl menu depending on the conditions.
+	 * @param		{Number}	mouseX	X coordinate of the mouse
+	 * @returns	{void}
+	 * @since		2.0.5
+	 */
+	function checkLateralMenu(mouseX) {
+		if (!Rexbuilder_Util_Admin_Editor.isLateralMenuOpen && mouseX <= 350) {
+			showLateralMenu();
+		} else if (Rexbuilder_Util_Admin_Editor.isLateralMenuOpen && mouseX > 350) {
+			hideLateralMenu();
+		}
+	}
+
   // init the utilities
   var init = function() {
     this.$body = $('body');
@@ -1773,7 +1801,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     $frameContainer = this.$rexpansiveContainer.find( ".rexpansive-live-frame-container" );
     this.$frameBuilder = this.$rexpansiveContainer.find( "#rexpansive-live-frame" );
     frameBuilderWindow = this.$frameBuilder[0].contentWindow;
-    $frameBuilderWindow = $(frameBuilderWindow);
+		$frameBuilderWindow = $(frameBuilderWindow);
+		
+		// Used to handle opening/closing of the lateral menu
+		// while dragging items from it to the iframe
+		this.isLateralMenuOpen = false;
 
     this.triggeredLoad = false;
     this.$liveFrameRexContainer = {};
@@ -1897,6 +1929,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     addClassToLiveFrameRexContainer: _addClassToLiveFrameRexContainer,
     removeClassToLiveFrameRexContainer: _removeClassToLiveFrameRexContainer,
 		forceTriggerLoad: _forceTriggerLoad,
-		searchFocusedElement: searchFocusedElement
+		searchFocusedElement: searchFocusedElement,
+		hideLateralMenu: hideLateralMenu,
+		checkLateralMenu: checkLateralMenu
   };
 })(jQuery);
