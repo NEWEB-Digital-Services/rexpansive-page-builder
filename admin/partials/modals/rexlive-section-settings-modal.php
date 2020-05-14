@@ -233,6 +233,17 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
                 <div class="bl_modal__option-wrap">
+                    <div class="input-field rex-input-prefixed tippy" data-tippy-content="<?php _e( 'Section Label', 'rexpansive-builder' ); ?>">
+                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?></span>
+                        <input id="section-set-nav-label" name="section-set-nav-label" type="text" class="small-input">
+                        <label for="section-set-nav-label"><?php _e( 'Label', 'rexpansive-builder' ); ?></label>
+                        <span class="rex-material-bar"></span>
+                    </div>
+                </div>
+            </div><!-- custom classes -->
+
+            <div class="bl_modal-row">
+                <div class="bl_modal__option-wrap">
                     <div id="section-set-class-wrap" class="input-field rex-input-prefixed tippy"  data-tippy-content="<?php _e( 'Custom Classes', 'rexpansive-builder' ); ?>">
                         <!-- <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php // _e('Custom Class', 'rexpansive-builder');?>">e</i> -->
                         <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#A008-Code'); ?></span>
@@ -243,7 +254,7 @@ defined('ABSPATH') or exit;
                         <span class="rex-material-bar"></span>
                     </div>
                 </div>
-            </div><!-- custom classes -->
+            </div>
         </div>
     </div>
 </div><!-- Section settings -->
