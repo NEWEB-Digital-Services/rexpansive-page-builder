@@ -228,15 +228,53 @@ var Rex_Navigator = (function ($) {
     });
 	}
 
-	var targetsPositions = {}
-	
-	function _updateNavigationDotsPositions() {
-		var navigationLinks = Array.prototype.slice.call(Rexbuilder_Util.$document.get(0).querySelectorAll('.vertical-nav-link[href]'));
-		var tot_navigationLinks = navigationLinks.length;
+	var targetsPositions = {};
 
-		var i = 0;
+	/**
+	 * Adds mouseenter and mouseleave listeners to the vertical nav links.
+	 * These listeners are used to position the label in the right place.
+	 * @returns	{void}
+	 * @since		2.0.4
+	 */
+	function _prepareNavigationLabel() {
+		_getNavigationDotsPosition();
 
-		for (i = 0; i < tot_navigationLinks; i++) {
+		var navigationLabel = Rexbuilder_Util.$document.get(0).getElementById('vertical-nav-label');
+		var navigationLinks = Array.prototype.slice.call(
+			Rexbuilder_Util.$document.get(0).querySelectorAll('.vertical-nav-link[href]')
+		);
+
+		for (var i = 0; i < navigationLinks.length; i++) {
+			navigationLinks[i].addEventListener('mouseenter', function (event) {
+				// When RexClassic is active this function never gets called
+				var targetHref = event.target.getAttribute('href');
+
+				navigationLabel.innerText = targetHref.replace('#', '').replace(/\-/g, ' ');
+				navigationLabel.style.display = 'inline';
+				navigationLabel.style.opacity = '1';
+				navigationLabel.style.top = targetsPositions[targetHref].top - 2 + 'px';
+				navigationLabel.style.right = targetsPositions[targetHref].width * 1.5 + 'px';
+			});
+
+			navigationLinks[i].addEventListener('mouseleave', function (event) {
+				// When RexClassic is active this function never gets called
+				navigationLabel.style.display = 'none';
+				navigationLabel.style.opacity = '0';
+			});
+		}
+	}
+
+	/**
+	 * Retrieves the coords of all the vertical nav links.
+	 * @returns	{void}
+	 * @since		2.0.4
+	 */
+	function _getNavigationDotsPosition() {
+		var navigationLinks = Array.prototype.slice.call(
+			Rexbuilder_Util.$document.get(0).querySelectorAll('.vertical-nav-link[href]')
+		);
+
+		for (var i = 0; i < navigationLinks.length; i++) {
 			var linkHref = navigationLinks[i].getAttribute('href');
 			var boundingRect = navigationLinks[i].getBoundingClientRect();
 
@@ -250,35 +288,6 @@ var Rex_Navigator = (function ($) {
 				bottom: boundingRect.bottom,
 				left: boundingRect.left
 			};
-		}
-	}
-
-	function _prepareNavigationLabel() {
-		_updateNavigationDotsPositions();
-
-		var navigationLabel = Rexbuilder_Util.$document.get(0).getElementById('vertical-nav-label');
-		var navigationLinks = Array.prototype.slice.call(Rexbuilder_Util.$document.get(0).querySelectorAll('.vertical-nav-link[href]'));
-		var tot_navigationLinks = navigationLinks.length;
-
-		var i = 0;
-
-		for (i = 0; i < tot_navigationLinks; i++) {
-			navigationLinks[i].addEventListener('mouseenter', function (event) {
-				// When RexClassic is active this function never gets called
-				var targetHref = event.target.getAttribute('href');
-
-				navigationLabel.innerText = targetHref.replace('#', '').replace('-', ' ');
-				navigationLabel.style.display = 'inline';
-				navigationLabel.style.opacity = '1';
-				navigationLabel.style.top = targetsPositions[targetHref].top - 2 + 'px';
-				navigationLabel.style.right = targetsPositions[targetHref].width * 1.5 + 'px';
-			});
-
-			navigationLinks[i].addEventListener('mouseleave', function (event) {
-				// When RexClassic is active this function never gets called
-				navigationLabel.style.display = 'none';
-				navigationLabel.style.opacity = '0';
-			});
 		}
 	}
 

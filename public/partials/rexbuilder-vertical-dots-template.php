@@ -34,7 +34,7 @@ if( count($titles) > 0 ) {
 		$i = 1;
 		foreach($titles as $title) :
 			if(!empty($title)) :
-				$id_nospaces = preg_replace('/\s+/', '', $title);
+				$id_nospaces = preg_replace('/\s+/', '-', $title);
 			?>
 			<li>
 				<a href="<?php echo '#' . $id_nospaces; ?>" class="vertical-nav-link not-smooth-anchor-scroll" data-number="<?php echo $i; ?>">
