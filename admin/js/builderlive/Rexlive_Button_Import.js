@@ -405,8 +405,7 @@ var Button_Import_Modal = (function ($) {
                     mousePositionToIFrame.x = event.originalEvent.pageX
                     mousePositionToIFrame.y = event.originalEvent.pageY;
 										DragDropFunctions.AddEntryToDragOverQueue(currentElement, elementRectangle, mousePosition);
-										
-										
+										// debugger
                 }
             });
 
@@ -713,31 +712,36 @@ var Button_Import_Modal = (function ($) {
                     .find(".drop-marker")
                     .remove();
             },
-            getPlaceHolder: function () {
-                return $("<li class='drop-marker'></li>");
-            },
+            // getPlaceHolder: function () {
+            //     return $("<div class='drop-marker'></div>");
+            // },
+            getPlaceHolder: function() {
+							return $(
+								"<div class='drop-marker drop-marker--rex-button'></div>"
+								);
+						},
             PlaceInside: function ($element) {
-                var placeholder = this.getPlaceHolder();
-                placeholder.addClass('horizontal').css('width', $element.width() + "px");
-                this.addPlaceHolder($element, "inside-append", placeholder);
+                var $placeholder = this.getPlaceHolder();
+                $placeholder.addClass('horizontal').css('width', $element.width() + "px");
+                this.addPlaceHolder($element, "inside-append", $placeholder);
             },
             PlaceBefore: function ($element) {
-                var placeholder = this.getPlaceHolder();
+                var $placeholder = this.getPlaceHolder();
 
                 var inlinePlaceholder = ($element.css('display') == "inline" || $element.css('display') == "inline-block" || $element.css('display') == "inline-flex");
                 if ($element.is("br")) {
                     inlinePlaceholder = false;
                 }
                 else if ($element.is("td,th")) {
-                    placeholder.addClass('horizontal').css('width', $element.width() + "px");
-                    return this.addPlaceHolder($element, "inside-prepend", placeholder);
+                    $placeholder.addClass('horizontal').css('width', $element.width() + "px");
+                    return this.addPlaceHolder($element, "inside-prepend", $placeholder);
                 }
                 if (inlinePlaceholder) {
-                    placeholder.addClass("vertical").css('height', $element.innerHeight() + "px");
+                    $placeholder.addClass("vertical").css('height', $element.innerHeight() + "px");
                 } else {
-                    placeholder.addClass("horizontal").css('width', $element.parent().width() + "px");
+                    $placeholder.addClass("horizontal").css('width', $element.parent().width() + "px");
                 }
-                this.addPlaceHolder($element, "before", placeholder);
+                this.addPlaceHolder($element, "before", $placeholder);
             },
 
             PlaceAfter: function ($element) {
