@@ -526,6 +526,11 @@ var Rexbuilder_App = (function($) {
       case "popUpContent:pswpClosed":
         Rexbuilder_Util.removeClass( document.body, 'popup-content--active--pswp-open' );
         break;
+      case 'popUpContent:changePage':
+        if ( '' !== event.data.href ) {
+          window.location = event.data.href;
+        }
+        break;
       default:
         break;
     }
