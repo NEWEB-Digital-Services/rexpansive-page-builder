@@ -453,9 +453,6 @@ var Element_Import_Modal = (function ($) {
                 data_to_send: {}
             };
 						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
-						
-						var dropEndEvent = jQuery.Event('rexlive:rexElementDropped');
-						$(document).trigger(dropEndEvent);
         });
 
         Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
@@ -540,7 +537,10 @@ var Element_Import_Modal = (function ($) {
                         mousePosition: mousePositionToIFrame
                       }
                     };
-                    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
+										Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
+										
+										var dropEndEvent = jQuery.Event('rexlive:rexElementDropped');
+										$(document).trigger(dropEndEvent);
                   }
                   catch (e) {
                     console.log(e);

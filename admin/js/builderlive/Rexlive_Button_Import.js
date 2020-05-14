@@ -348,14 +348,12 @@ var Button_Import_Modal = (function ($) {
         });
 
         Rexlive_Base_Settings.$document.on("dragend", ".button-list li", function (dropEndEvent) {
-					
-					console.log( 'droppato' );
             clearInterval(dragoverqueue_processtimer);
 
             Rexbuilder_Util_Admin_Editor.setScroll(true);
 
             DragDropFunctions.removePlaceholder();
-            DragDropFunctions.ClearContainerContext();
+						DragDropFunctions.ClearContainerContext();
             Rexbuilder_Util_Admin_Editor.removeClassToLiveFrameRexContainer("rex-dragging-button");
             Rexbuilder_Util_Admin_Editor.dragImportType = "";
             var dataDnDend = {
@@ -364,8 +362,8 @@ var Button_Import_Modal = (function ($) {
             };
 						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
 						
-						var dropEndEvent = jQuery.Event('rexlive:rexButtonDropped');
-						$(document).trigger(dropEndEvent);
+						// var dropEndEvent = jQuery.Event('rexlive:rexButtonDropped');
+						// $(document).trigger(dropEndEvent);
         });
 
         Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
@@ -410,7 +408,9 @@ var Button_Import_Modal = (function ($) {
 
                     mousePositionToIFrame.x = event.originalEvent.pageX
                     mousePositionToIFrame.y = event.originalEvent.pageY;
-                    DragDropFunctions.AddEntryToDragOverQueue(currentElement, elementRectangle, mousePosition);
+										DragDropFunctions.AddEntryToDragOverQueue(currentElement, elementRectangle, mousePosition);
+										
+										
                 }
             });
 
@@ -439,7 +439,7 @@ var Button_Import_Modal = (function ($) {
 
                         var $divInsert = $(jQuery.parseHTML(textData));
                         $divInsert.addClass("rex-loading-button");
-                        $divInsert.insertAfter($insertionPoint[0]);
+												$divInsert.insertAfter($insertionPoint[0]);
                         $insertionPoint.remove();
                         var dataEndDrop = {
                             eventName: "rexlive:importButton",
@@ -448,10 +448,13 @@ var Button_Import_Modal = (function ($) {
                                 mousePosition: mousePositionToIFrame
                             }
                         };
-                        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
+												Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
+												
+												var dropEndEvent = jQuery.Event('rexlive:rexButtonDropped');
+												$(document).trigger(dropEndEvent);
                     }
                     catch (e) {
-                        console.log(e);
+                        console.error('Error when dropping the RexButton:', e);
                     }
                 }
             });

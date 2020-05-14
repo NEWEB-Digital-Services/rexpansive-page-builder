@@ -585,9 +585,6 @@ var Model_Import_Modal = (function($) {
         data_to_send: {}
       };
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
-			
-			var dropEndEvent = jQuery.Event('rexlive:rexModelDropped');
-			$(document).trigger(dropEndEvent);
     });
 
     Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function() {
@@ -657,7 +654,10 @@ var Model_Import_Modal = (function($) {
             var dataEndDrop = {
               eventName: "rexlive:importModels"
             };
-            Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
+						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
+						
+						var dropEndEvent = jQuery.Event('rexlive:rexModelDropped');
+						$(document).trigger(dropEndEvent);
           } catch (e) {
 						console.log(e);
           }

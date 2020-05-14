@@ -399,3 +399,96 @@
     outline: none;
   }
 }
+
+@mixin drop-marker($markerColor) {
+	$shadowColor: rgba(255, 255, 255, 0.4);
+
+	.drop-marker {
+		pointer-events: none;
+		height: $drop-marker-height;
+		visibility: visible !important;
+		z-index: 123456789;
+		position: relative;
+
+		&.horizontal {
+			text-align: center;
+
+			&.topside {
+				margin-top: 0;
+			}
+
+			&.bottomside {
+				margin-top: 2px;
+			}
+
+			.drop-marker--ruler {
+				width: 100%;
+				position: absolute;
+				height: 2px;
+				background-color: $markerColor;
+				top: 50%;
+				transform: translateY(-50%);
+
+				&::before {
+					content: '';
+					position: absolute;
+					width: 8px;
+					height: 8px;
+					background-color: $markerColor;
+					margin-top: -3px;
+					left: 0;
+				}
+
+				&::after {
+					content: '';
+					position: absolute;
+					width: 8px;
+					height: 8px;
+					background-color: $markerColor;
+					margin-top: -3px;
+					right: 0;
+				}
+			}
+		}
+
+		&.vertical {
+			list-style: none;
+			border: 1px solid $markerColor;
+			position: absolute;
+			margin-left: 3px;
+			display: inline;
+			box-shadow: 1px 0 2px $shadowColor, -1px 0 2px $shadowColor;
+
+			&::before {
+				content: '';
+				width: 8px;
+				height: 8px;
+				background: $markerColor;
+				margin-top: -4px;
+				top: 0;
+				position: absolute;
+				margin-left: -4px;
+				box-shadow: 1px 0 2px $shadowColor, -1px 0 2px $shadowColor;
+			}
+
+			&::after {
+				content: '';
+				width: 8px;
+				height: 8px;
+				background: $markerColor;
+				margin-left: -4px;
+				bottom: -4px;
+				position: absolute;
+				box-shadow: 1px 0 2px $shadowColor, -1px 0 2px $shadowColor;
+			}
+
+			&.leftside {
+				margin-left: 0;
+			}
+
+			&.rightside {
+				margin-left: 3px;
+			}
+		}
+	}
+}

@@ -1,42 +1,48 @@
-// LIVE
 // Handling drop down placeholders
+
+@include drop-marker($palette-color-1);
+
 .rexpansive-lock-section {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9999999;
-  // background-color: rgba(255, 0, 0, 0.2);
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999999;
+	// background-color: rgba(255, 0, 0, 0.2);
 }
 
 .import-model {
-  height: $drop-marker-height;
-  position: relative;
+	height: $drop-marker-height;
+	position: relative;
 }
 
 .reserved-drop-marker {
-  width: 100%;
-  height: 2px;
-  background: #00a8ff;
-  position: absolute;
+	width: 100%;
+	height: 2px;
+	background: #00a8ff;
+	position: absolute;
 }
+
 .reserved-drop-marker::after,
 .reserved-drop-marker::before {
-  content: "";
-  background: #00a8ff;
-  height: 7px;
-  width: 7px;
-  position: absolute;
-  // border-radius: 50%;
-  top: -2px;
+	content: '';
+	background: #00a8ff;
+	height: 7px;
+	width: 7px;
+	position: absolute;
+	// border-radius: 50%;
+	top: -2px;
 }
+
 .reserved-drop-marker::before {
-  left: 0;
+	left: 0;
 }
+
 .reserved-drop-marker::after {
-  right: 0;
+	right: 0;
 }
+
 // [data-dragcontext-marker],
 // [data-sh-parent-marker] {
 //   outline: #19cd9d solid 2px;
@@ -46,131 +52,36 @@
 //   pointer-events: none;
 //   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 // }
+
 [data-dragcontext-marker] [data-dragcontext-marker-text],
 [data-sh-parent-marker] [data-sh-parent-marker-text] {
-  background: #19cd9d;
-  color: #fff;
-  padding: 2px 10px;
-  display: inline-block;
-  font-size: 14px;
-  position: relative;
-  top: -24px;
-  min-width: 121px;
-  font-weight: 700;
-  pointer-events: none;
-  z-index: 123456782;
+	background: #19cd9d;
+	color: #fff;
+	padding: 2px 10px;
+	display: inline-block;
+	font-size: 14px;
+	position: relative;
+	top: -24px;
+	min-width: 121px;
+	font-weight: 700;
+	pointer-events: none;
+	z-index: 123456782;
 }
+
 [data-dragcontext-marker].invalid {
-  outline: #dc044f solid 2px;
+	outline: #dc044f solid 2px;
 }
+
 [data-dragcontext-marker].invalid [data-dragcontext-marker-text] {
-  background: #dc044f;
-}
-[data-dragcontext-marker="body"] {
-  outline-offset: -2px;
-}
-[data-dragcontext-marker="body"] [data-dragcontext-marker-text] {
-  top: 0;
-  position: fixed;
-}
-.drop-marker {
-  pointer-events: none;
-  height: $drop-marker-height;
-  visibility: visible !important;
-  z-index: 123456789;
-  position: relative;
-  
-  // .drop-marker--ruler {
-  //   opacity: 0;
-  //   transition: opacity 3000ms;
-  // }
-
-  // &.drop-marker--view {
-  //   .drop-marker--ruler {
-  //     opacity: 1;
-  //   }
-  // }
-
-  &.horizontal {
-    .drop-marker--ruler {
-      width: 100%;
-      position: absolute;
-      height: 2px;
-      background-color: $palette-color-1;
-      top: 50%;
-      transform: translateY(-50%);
-      &:before {
-        content: "";
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        background-color: $palette-color-1;
-        // border-radius: 8px;
-        margin-top: -3px;
-        left: 0;
-      }
-      &:after {
-        content: "";
-        position: absolute;
-        width: 8px;
-        height: 8px;
-        background-color: $palette-color-1;
-        // border-radius: 8px;
-        margin-top: -3px;
-        right: 0;
-      }
-    }
-  }
-}
-.drop-marker.horizontal {
-  // box-shadow: 0 1px 2px rgba(255, 255, 255, 0.4),
-  //   0 -1px 2px rgba(255, 255, 255, 0.4);
-  text-align: center;
-}
-.drop-marker.horizontal.topside {
-  margin-top: 0;
-}
-.drop-marker.horizontal.bottomside {
-  margin-top: 2px;
+	background: #dc044f;
 }
 
-.drop-marker.vertical {
-  list-style: none;
-  border: 1px solid #00adff;
-  position: absolute;
-  margin-left: 3px;
-  display: inline;
-  box-shadow: 1px 0 2px rgba(255, 255, 255, 0.4),
-    -1px 0 2px rgba(255, 255, 255, 0.4);
+[data-dragcontext-marker='body'] {
+	outline-offset: -2px;
 }
-.drop-marker.vertical.leftside {
-  margin-left: 0;
+
+[data-dragcontext-marker='body'] [data-dragcontext-marker-text] {
+	top: 0;
+	position: fixed;
 }
-.drop-marker.vertical.rightside {
-  margin-left: 3px;
-}
-.drop-marker.vertical:before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  background: #00adff;
-  // border-radius: 8px;
-  margin-top: -4px;
-  top: 0;
-  position: absolute;
-  margin-left: -4px;
-  box-shadow: 1px 0 2px rgba(255, 255, 255, 0.4),
-    -1px 0 2px rgba(255, 255, 255, 0.4);
-}
-.drop-marker.vertical:after {
-  content: "";
-  width: 8px;
-  height: 8px;
-  background: #00adff;
-  // border-radius: 8px;
-  margin-left: -4px;
-  bottom: -4px;
-  position: absolute;
-  box-shadow: 1px 0 2px rgba(255, 255, 255, 0.4),
-    -1px 0 2px rgba(255, 255, 255, 0.4);
-}
+
