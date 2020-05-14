@@ -80,7 +80,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 							$elementWrapper.wrap('<span class="rex-elements-paragraph"></span>');
 							$textWrap.prepend($elementWrapper);
 
-							_endFixingImportedElement($elementWrapper, formFieldsString);
+							endFixingImportedElement($elementWrapper, formFieldsString);
 							Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
 							break;
 						case 'inside-row':
@@ -121,7 +121,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		$elementWrapper.detach().prependTo($newDOMElement.find('.text-wrap').eq(0));
 		$elementWrapper.wrap('<span class="rex-elements-paragraph"></span>');
 
-		_endFixingImportedElement($elementWrapper, formFieldsString);
+		endFixingImportedElement($elementWrapper, formFieldsString);
 	}
 
 	function separateRexElement(data) {
@@ -224,14 +224,13 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		$elementWrapper.find('.rex-element-data').attr('data-synchronize', true);
 	}
 
-	/* ===== PRIVATE METHODS ===== */
-	function _endFixingImportedElement($elementWrapper, formFieldsString) {
+	function endFixingImportedElement($elementWrapper, formFieldsString) {
 		var addingWpcf7 = 0 !== $elementWrapper.find('.wpcf7').length;
 
 		var elementID = $elementWrapper.attr('data-rex-element-id');
 		var flagElementFound = false;
 
-		// Adding element style and updating elements in page if the new element
+		// Updating elements in page if the new element
 		// is the first of the elements with that ID
 		$elementWrapper.attr('data-rex-element-number', 1);
 		for (var i = 0; i < elementsInPage.length; i++) {
@@ -965,6 +964,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		focusRexElement: focusRexElement,
 
 		fixImportedElement: fixImportedElement,
+		endFixingImportedElement: endFixingImportedElement,
 		handleCompleteImportElement: handleCompleteImportElement,
 
 		lockSynchronize: lockSynchronize,

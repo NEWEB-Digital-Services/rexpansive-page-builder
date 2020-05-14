@@ -1398,6 +1398,8 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 					var $importedElementWrapper = Rexbuilder_Util.$rexContainer.find('.importing-element');
 
+					if (0 === $importedElementWrapper.length) return;
+
 					Rexbuilder_Util_Editor.updateBlockContainerHeight($importedElementWrapper.parents('.text-wrap'));
 					$importedElementWrapper.removeClass('importing-element');
 				}

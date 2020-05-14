@@ -1316,10 +1316,13 @@ var Rexbuilder_Section = (function($) {
 
 					$row.perfectGridGalleryEditor({editorMode:true});
 					
-					var $buttonsWrappers = $row.find('.rex-button-wrapper');
-					_replaceRexButtons($row, $buttonsWrappers, response);
+					// Replacing RexButtons in the model with the fresh HTML from the DB
+					_replaceRexButtons($row, response);
 
-					console.log( $row.find('.rex-element-wrapper').get(0).outerHTML );
+					// Adding the necessary to forms that are present in the model
+					$row.find('.rex-element-wrapper').each(function (index, wrapper) {
+						Rexbuilder_Rexelement_Editor.endFixingImportedElement($(wrapper));
+					})
 
           // Launching and Updating tools
           Rexbuilder_Live_Utilities.updateModelSectionTools( $newSection, $newSectionData );
@@ -1339,9 +1342,7 @@ var Rexbuilder_Section = (function($) {
           );
 
           launchSectionTextEditors( $row[0] );
-
           Rexbuilder_Live_Utilities.launchTooltips();
-
           Rexbuilder_Util.$rexContainer.sortable("refresh");
 
           var reverseData = {
@@ -1441,8 +1442,9 @@ var Rexbuilder_Section = (function($) {
 	 * @returns	{void}
 	 * @since		2.0.4
 	 */
-	function _replaceRexButtons($row, $buttonsWrappers, response) {
+	function _replaceRexButtons($row, response) {
 		// Keeping jQuery for consistency motivations
+		var $buttonsWrappers = $row.find('.rex-button-wrapper');
 		var buttonID = '';
 		var databaseButtonsArray = response.data.rexButtonsHTML;
 		var tot_databaseButtonsArray = databaseButtonsArray.length;
