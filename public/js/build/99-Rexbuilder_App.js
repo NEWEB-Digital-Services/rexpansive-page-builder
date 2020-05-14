@@ -424,9 +424,6 @@ var Rexbuilder_App = (function($) {
             offset: 1,
             transition: true
           } );
-          // for( j=0; j<textWrap.childElementCount; j++ ) {
-          //   new RevealOpacityOnScroll( textWrap.children[j], {offset: 1} );
-          // }
         }
       }
     }

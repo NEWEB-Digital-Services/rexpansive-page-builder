@@ -58,7 +58,7 @@
 		this.launched = false;
 
 		this.elBoundingInfo = null;
-		this.elOffsetTop = null;
+		// this.elOffsetTop = null;
 
 		if ( arguments[0] ) {
 			this.element = arguments[0];
@@ -92,7 +92,7 @@
 
 	function defineElementSizeProps() {
 		this.elBoundingInfo = this.element.getBoundingClientRect();
-		this.elOffsetTop = this.element.offsetTop;
+		// this.elOffsetTop = this.element.offsetTop;
 	}
 
 	function scrollHandler() {

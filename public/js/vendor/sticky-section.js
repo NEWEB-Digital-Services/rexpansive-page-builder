@@ -11,7 +11,24 @@
   var instances = [];
 
 	var scrollCallbacksArray = [];
+  var resizeCallbackArray = [];
   var globalStickySectionIndex = 0;
+
+  function debounce(func, wait, immediate) {
+    var timeout;
+    return function () {
+      var context = this;
+      var args = arguments;
+      var later = function () {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  }
 
   var windowScrollTop = scrollDocumentPositionTop();
 
@@ -52,6 +69,7 @@
     this.overlayAnimationEl = null;
     this.ticking = false;
     this.stickyId = null;
+    this.elBoundingInfo = null;
 
     // get element as first argument
     if (arguments[0]) {
@@ -134,6 +152,9 @@
     } else {
       addClass( this.element, 'sticky-css' );
 		}
+
+    defineElementSizeProps.call(this);
+    resizeCallbackArray.push( defineElementSizeProps.bind(this) );
 		
     // first load check
 		handleSticky.call(this);
@@ -141,57 +162,41 @@
 
 		instances.push( this );
 	}
+
+  function defineElementSizeProps() {
+    this.elBoundingInfo = this.element.getBoundingClientRect();
+    // this.elOffsetTop = this.element.offsetTop;
+  }
 	
 	/**
 	 * Watching the browser scrolling, bouncing the event
 	 * every 50 ms to prevent event polling
 	 * @return	{void}
-	 * @since		1.1.0
+	 * @since		2.0.4
 	 */
-	function _watchScroll() {
-		var userScrolled = false;
-
-		function scrollHandler() {
-			userScrolled = true;
-		}
-
-		window.addEventListener('scroll', scrollHandler);
-
-		function handleInterval() {
-			if (userScrolled) {
-        windowScrollTop = scrollDocumentPositionTop();
-				scrollCallbacksArray.forEach(function (cb) {
-					cb.call();
-				});
-				userScrolled = false;
-			}
-		}
-
-		setInterval(handleInterval.bind(this), 50);
-	}
+  function scrollHandler(event) {
+    if ( ! ( isMobile && detectOrientation() ) && isMobile ) return;
+    
+    windowScrollTop = scrollDocumentPositionTop();
+    scrollCallbacksArray.forEach(function (cb) {
+      cb.call();
+    });
+  }
 
 	/**
 	 * Watching the browser resizing, bouncing the event
 	 * every 150 ms to prevent event polling
 	 * @return	{void}
-	 * @since		1.1.0
+	 * @since		2.0.4
 	 */
-	function _watchResize() {
-		var userResized = false;
+  function resizeHandler(event) {
+    if ( ! ( isMobile && detectOrientation() ) && isMobile ) return;
 
-		function resizeHandler(ev) {
-			userResized = true;
-		}
-
-		window.addEventListener('resize', resizeHandler);
-
-		setInterval(function () {
-			if (userResized) {
-				updateWindowInnerHeight();
-				userResized = false;
-			}
-		}, 150);
-	}
+    updateWindowInnerHeight();
+    resizeCallbackArray.forEach(function (cb) {
+      cb.call();
+    });
+  }
 
   // private shared vars
   var windowInnerHeight = _viewport().height;
@@ -211,7 +216,7 @@
 
     // element scroll information
 		var elScrollTop = offsetTop(this.element, windowScrollTop);
-    var elHeight = this.element.offsetHeight;
+    var elHeight = this.elBoundingInfo.height;
 		var elScrollBottom = elScrollTop + elHeight;
 
     // eventually offset
@@ -298,19 +303,16 @@
       // animate overlay faker
       if ( topViewport && bottomViewport ) {
         // opacity = percentage of scoll
+        opY = 1 - Math.pow( 1 - percentage / 100, 0.75 );    // ease-out
         // opY = 1 - Math.pow( 1 - percentage / 100, 1.75 );    // ease-out
-        opY = 1 - Math.pow( 1 - percentage / 100, 3 );    // much steep ease-out
+        // opY = 1 - Math.pow( 1 - percentage / 100, 3 );    // much steep ease-out
         this.overlayAnimationEl.style.opacity = opY;
         // console.log(this.element.getAttribute('data-rexlive-section-id'), opY);
         // this.overlayAnimationEl.style.opacity = Math.pow( percentage / 100, 1.75 );   // ease-in
       } else {
         if ( beforeViewport ) {
-          // opacity = 0
-          // console.log(this.element.getAttribute('data-rexlive-section-id'),0)
           this.overlayAnimationEl.style.opacity = 0;
         } else if ( afterViewport ) {
-          // opacity = 1
-          // console.log(this.element.getAttribute('data-rexlive-section-id'),1)
           this.overlayAnimationEl.style.opacity = 1;
         }
       }
@@ -361,9 +363,7 @@
    * @param {ResizeEvent} event resize event
    */
   function updateWindowInnerHeight(event) {
-    if ( ( isMobile && detectOrientation() ) || ! isMobile ) {
-      windowInnerHeight = _viewport().height;
-    }
+    windowInnerHeight = _viewport().height;
 	}
 	
   /**
@@ -468,11 +468,11 @@
     }
     
     instances = instances.filter( removeInstance.bind(this) );
-	}
+	};
 
 	StickySection.destroyHandlers = function (){
 		scrollCallbacksArray = [];
-	}
+	};
 	
 	/**
 	 * Creates StickySection background simulators for images
@@ -530,8 +530,11 @@
 	};
 
 	// Invoking global Events watchers
-	_watchScroll();
-	_watchResize(); 
+	// _watchScroll();
+	// _watchResize(); 
+  window.addEventListener('scroll', debounce( scrollHandler, 50 ));
+  window.addEventListener('resize', debounce( resizeHandler, 50 ));
+
 
   return StickySection;
 });
