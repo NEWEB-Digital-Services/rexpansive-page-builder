@@ -201,11 +201,37 @@
 	 * On iframe correct load, add a class to the body and launch custom callback
 	 * @return {void}
 	 */
-	function onIframeLoadComplete() {
+	function onIframeLoadComplete( event ) {
 		addClass( this.iframeContainer.contentDocument.body, this.options.iframePopUpLoadClass );
 		addClass( this.target, this.options.popUpContentLoaded );
 		if ( 'function' === typeof this.options.getPopUpContentComplete ) {
 			this.options.getPopUpContentComplete.call(this)
+		}
+
+		this.iframeContainer.contentWindow.addEventListener('click', onIframeClick.bind(this));
+	}
+
+	/**
+	 * Listen click events inside the iframe, to correctly change page if needed
+	 * @param  {MouseEvent} event mouse click
+	 * @return {void}
+	 * @since  2.0.5
+	 */
+	function onIframeClick( event ) {
+		if ('A' === event.target.tagName.toUpperCase() && '' !== event.target.href ) {
+			event.preventDefault();
+
+			// close popup
+			removeClass(this.target, this.options.popupViewClass);
+			removeClass(document.body, this.options.bodyPopUpViewClass);
+
+			var data = {
+				rexliveEvent: true,
+				eventName: "popUpContent:changePage",
+				href: event.target.href
+			};
+
+			window.parent.postMessage(data, "*");
 		}
 	}
 

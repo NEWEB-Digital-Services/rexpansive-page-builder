@@ -721,6 +721,13 @@ var Rexbuilder_CreateBlocks = (function ($) {
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
 		}
+
+    // notify the editing of the page
+    var data = {
+      eventName: "rexlive:edited",
+      modelEdited: false
+    };
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   };
 
   /**
