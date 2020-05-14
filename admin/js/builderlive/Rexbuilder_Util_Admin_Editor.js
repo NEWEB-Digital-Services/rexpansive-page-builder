@@ -346,7 +346,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         if (modelSaved && Rexbuilder_Util_Admin_Editor.pageSaved) {
           NProgress.done();
           Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.attr( "data-rex-edited-backend", false );
-          $saveBtn.removeClass("page-edited");
+          Rexbuilder_Util_Admin_Editor.activeSavePageButton();
           // Rexbuilder_Util_Admin_Editor.$body.removeClass('page-edited');
           
           // add saved layout indicator
@@ -1432,6 +1432,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 		$saveBtn.addClass("page-edited");
   };
 
+  function _activeSavePageButton() {
+    $saveBtn.removeClass('page-edited');
+  }
+
   /**
    * Init the Top Toolbar tools
    * - row background color picker
@@ -1860,6 +1864,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     releaseIframeRows: _releaseIframeRows,
     blockIframeRows: _blockIframeRows,
     editPageProperties: _editPageProperties,
+    activeSavePageButton: _activeSavePageButton,
     updateOpenModelsList: _updateOpenModelsList,
     highlightRowSetData: _highlightRowSetData,
     updateTopToolbar: _updateTopToolbar,

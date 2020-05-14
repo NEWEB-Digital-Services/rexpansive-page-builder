@@ -63,6 +63,7 @@ var Change_Layout_Modal = (function($) {
           Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.removeClass(
             "btn-redo--active btn-undo--active"
           );
+          Rexbuilder_Util_Admin_Editor.activeSavePageButton();
           break;
         case "abort":
           break;
