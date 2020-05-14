@@ -404,11 +404,11 @@
 	$shadowColor: rgba(255, 255, 255, 0.4);
 
 	.drop-marker {
-		pointer-events: none;
+		position: relative;
 		height: $drop-marker-height;
 		visibility: visible !important;
-		z-index: 123456789;
-		position: relative;
+		z-index: 10000;
+		pointer-events: none;
 
 		&.horizontal {
 			text-align: center;

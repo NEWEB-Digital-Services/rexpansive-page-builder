@@ -1767,16 +1767,16 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 	}
 
 	function showLateralMenu() {
-		Model_Lateral_Menu.show();
 		Rexbuilder_Util_Admin_Editor.isLateralMenuOpen = true;
+		Model_Lateral_Menu.show();
 	}
 
 	/**
 	 * 
 	 */
 	function hideLateralMenu() {
-		Model_Lateral_Menu.hide();
 		Rexbuilder_Util_Admin_Editor.isLateralMenuOpen = false;
+		Model_Lateral_Menu.hide();
 	}
 
 	/**
