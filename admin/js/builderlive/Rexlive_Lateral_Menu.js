@@ -9,19 +9,6 @@ var Model_Lateral_Menu = (function ($) {
   function _openModal() {
     Model_Import_Modal.updateModelList();
     Element_Import_Modal.updateElementList();
-  };
-
-	/**
-	 * Makes the lateral menu not visible anymore.
-	 * @returns	{void}
-	 * @since		2.0.5
-	 */
-	function hide() {
-		rexmodel_lateral_menu.$self
-			.addClass('rex-lateral-panel--close')
-			.one(Rexbuilder_Util_Admin_Editor.animationEvent, function (e) {
-				rexmodel_lateral_menu.$self.removeClass('rex-lateral-panel--open rex-lateral-panel--close');
-			});
 	};
 	
 	/**
@@ -30,10 +17,27 @@ var Model_Lateral_Menu = (function ($) {
 	 * @since		2.0.5
 	 */
 	function show() {
+		if (rexmodel_lateral_menu.$self.hasClass('rex-lateral-panel--open')) return;
+
 		rexmodel_lateral_menu.$self.addClass('rex-lateral-panel--open');
 
 		var activeTab = rexmodel_lateral_menu.$tabsButtons.filter('.active').parent().index();
 		rexmodel_lateral_menu.$tabs.eq(activeTab).show();
+	}
+
+	/**
+	 * Makes the lateral menu not visible anymore.
+	 * @returns	{void}
+	 * @since		2.0.5
+	 */
+	function hide() {
+		if (rexmodel_lateral_menu.$self.hasClass('rex-lateral-panel--close')) return;
+
+		rexmodel_lateral_menu.$self
+			.addClass('rex-lateral-panel--close')
+			.one(Rexbuilder_Util_Admin_Editor.animationEvent, function (e) {
+				rexmodel_lateral_menu.$self.removeClass('rex-lateral-panel--open rex-lateral-panel--close');
+			});
 	}
 
   function _linkDocumentListeners() {
