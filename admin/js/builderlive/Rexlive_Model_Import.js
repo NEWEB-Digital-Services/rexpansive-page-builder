@@ -659,7 +659,7 @@ var Model_Import_Modal = (function($) {
             };
 						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
           } catch (e) {
-						console.log(e);
+						console.error(e);
           }
         }
       });
@@ -882,26 +882,18 @@ var Model_Import_Modal = (function($) {
       this.removePlaceholder();
       switch (position) {
         case "before":
-        placeholder
-        .find(".message")
-        .html($element.parent().data("sh-dnd-error"));
         $element.before(placeholder);
         this.AddContainerContext($element, "sibling");
         break;
         case "after":
-        placeholder
-        .find(".message")
-        .html($element.parent().data("sh-dnd-error"));
         $element.after(placeholder);
         this.AddContainerContext($element, "sibling");
         break;
         case "inside-prepend":
-        placeholder.find(".message").html($element.data("sh-dnd-error"));
         $element.prepend(placeholder);
         this.AddContainerContext($element, "inside");
         break;
         case "inside-append":
-        placeholder.find(".message").html($element.data("sh-dnd-error"));
         $element.append(placeholder);
         this.AddContainerContext($element, "inside");
         break;
@@ -1201,7 +1193,7 @@ var Model_Import_Modal = (function($) {
       };
     };
 
-    var initPhotoSwipeFromDOM = function(gallerySelector) {
+  var initPhotoSwipeFromDOM = function(gallerySelector) {
     // parse slide data (url, title, size ...) from DOM elements
     // (children of gallerySelector)
     var parseThumbnailElements = function(el) {

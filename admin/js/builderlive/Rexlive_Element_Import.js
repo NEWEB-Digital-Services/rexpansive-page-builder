@@ -543,7 +543,7 @@ var Element_Import_Modal = (function ($) {
 										Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
                   }
                   catch (e) {
-                    console.log(e);
+                    console.error(e);
                   }
                 }
             });
@@ -772,7 +772,6 @@ var Element_Import_Modal = (function ($) {
                 this.removePlaceholder();
                 switch (position) {
                     case "before":
-                        placeholder.find(".message").html($element.data('sh-dnd-error'));
                         //elements have to be inside grid-stack-row
                         if ($element.hasClass("grid-stack-row")) {
                             $element.prepend(placeholder);
@@ -782,7 +781,6 @@ var Element_Import_Modal = (function ($) {
                         this.AddContainerContext($element, 'sibling');
                         break;
                     case "after":
-                        placeholder.find(".message").html($element.data('sh-dnd-error'));
                         //elements have to be inside grid-stack-row
                         if ($element.hasClass("grid-stack-row")) {
                             $element.append(placeholder);
@@ -792,12 +790,10 @@ var Element_Import_Modal = (function ($) {
                         this.AddContainerContext($element, 'sibling');
                         break;
                     case "inside-prepend":
-                        placeholder.find(".message").html($element.data('sh-dnd-error'));
                         $element.prepend(placeholder);
                         this.AddContainerContext($element, 'inside');
                         break;
                     case "inside-append":
-                        placeholder.find(".message").html($element.data('sh-dnd-error'));
                         $element.append(placeholder);
                         this.AddContainerContext($element, 'inside');
                         break;
@@ -900,17 +896,17 @@ var Element_Import_Modal = (function ($) {
                                 corner2 = { x: xPosition1, y: yPosition2, 'position': 'after' };       //left bottom
                             }
                             else if (clientX > xPosition1 && clientX > xPosition2) {
-                                //console.log('I m on the right of the element');
+                                //'I m on the right of the element'
                                 corner1 = { x: xPosition2, y: yPosition1, 'position': 'before' };   //Right top
                                 corner2 = { x: xPosition2, y: yPosition2, 'position': 'after' }; //Right Bottom
                             }
                             else if (clientY < yPosition1 && clientY < yPosition2) {
-                                // console.log('I m on the top of the element');
+                                // 'I m on the top of the element'
                                 corner1 = { x: xPosition1, y: yPosition1, 'position': 'before' }; //Top Left
                                 corner2 = { x: xPosition2, y: yPosition1, 'position': 'after' }; //Top Right
                             }
                             else if (clientY > yPosition1 && clientY > yPosition2) {
-                                // console.log('I m on the bottom of the element');
+                                // 'I m on the bottom of the element'
                                 corner1 = { x: xPosition1, y: yPosition2, 'position': 'before' }; //Left bottom
                                 corner2 = { x: xPosition2, y: yPosition2, 'position': 'after' }; //Right Bottom
                             }

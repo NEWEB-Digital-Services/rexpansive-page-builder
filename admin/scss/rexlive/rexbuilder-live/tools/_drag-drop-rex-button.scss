@@ -1,7 +1,7 @@
 .rex-dragging-button {
 	@include drop-marker($palette-color-3);
 
-	.drop-marker--rex-button {
+	.drop-marker--rex-button:not(.vertical) {
 		display: flex;
 		justify-content: center;
 		
@@ -13,7 +13,6 @@
 			height: 43px;
 			background: $palette-color-3;
 			border-radius: 1000px;
-			// left: calc(50% - 43px);
 		}
 	}
 }

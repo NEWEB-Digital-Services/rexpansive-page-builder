@@ -84,11 +84,13 @@
   }
 
   .el-size-viewer {
+		position: absolute;
+		right: 12px;
     font-weight: 400;
     letter-spacing: 1px;
     font-size: 10px;
     padding-left: 8px;
-    padding-right: 8px;
+		padding-right: 8px;
   }
 
   &.mobile-tools {

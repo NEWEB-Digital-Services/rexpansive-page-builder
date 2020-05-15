@@ -1771,9 +1771,6 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 		Model_Lateral_Menu.show();
 	}
 
-	/**
-	 * 
-	 */
 	function hideLateralMenu() {
 		Rexbuilder_Util_Admin_Editor.isLateralMenuOpen = false;
 		Model_Lateral_Menu.hide();
@@ -1800,6 +1797,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     this.$rexpansiveContainer = $("#rexpansive-builder-backend-wrapper");
     $frameContainer = this.$rexpansiveContainer.find( ".rexpansive-live-frame-container" );
     this.$frameBuilder = this.$rexpansiveContainer.find( "#rexpansive-live-frame" );
+		this.frameBuilder = this.$frameBuilder.get(0);
+		
     frameBuilderWindow = this.$frameBuilder[0].contentWindow;
 		$frameBuilderWindow = $(frameBuilderWindow);
 		

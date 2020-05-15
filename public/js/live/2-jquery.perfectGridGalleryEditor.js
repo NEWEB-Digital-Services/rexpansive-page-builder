@@ -2559,7 +2559,7 @@
      * @date 11-07-2019 Rewrite for vanilla JS
      */
     updateSizeViewerText: function(elem, x, y, size_viewer, size_viewer_mobile) {
-      size_viewer = 'undefined' !== typeof size_viewer ? size_viewer : elem.querySelector('.top-tools .el-size-viewer .el-size-viewer__val');
+      size_viewer = 'undefined' !== typeof size_viewer ? size_viewer : elem.querySelector('.bottom-tools .el-size-viewer .el-size-viewer__val');
       size_viewer_mobile = 'undefined' !== typeof size_viewer_mobile ? size_viewer_mobile : elem.querySelector('.mobile-tools .el-size-viewer .el-size-viewer__val');
       if (x === undefined || y === undefined) {
         var x, y;
@@ -2664,7 +2664,7 @@
           blockContentWrap = event.target.querySelector('.grid-item-content-wrap');
           textWrap = event.target.querySelector('.text-wrap');
           $textWrap = $(textWrap);
-          size_viewer = event.target.querySelector('.top-tools .el-size-viewer .el-size-viewer__val');
+          size_viewer = event.target.querySelector('.bottom-tools .el-size-viewer .el-size-viewer__val');
           size_viewer_mobile = event.target.querySelector('.mobile-tools .el-size-viewer .el-size-viewer__val');
 
           blockHasSlider = hasClass( event.target, 'block-has-slider' );
