@@ -78,8 +78,8 @@
 
 		this.element.style.opacity = 0;
 		if ( this.options.transition ) {
-			this.element.style.webkitTransition = 'opacity 0.3s';
-			this.element.style.transition = 'opacity 0.3s';
+			this.element.style['-webkit-transition'] = 'opacity 0.3s';
+			this.element.style['transition'] = 'opacity 0.3s';
 		}
 
 		defineElementSizeProps.call(this);

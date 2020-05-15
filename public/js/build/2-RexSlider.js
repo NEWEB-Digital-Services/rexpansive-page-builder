@@ -12,6 +12,7 @@ var RexSlider = (function ($) {
   var box_slider_element_class = '.rex-box-slider-element';
 
   var _initSlider = function ($sliderWrap) {
+    var sliderWrap = $sliderWrap.get(0);
     var settings = {
       cellAlign: 'left',
       // contain: true,
@@ -88,25 +89,33 @@ var RexSlider = (function ($) {
     $sliderWrap.flickity(settings);
     $sliderWrap.flickity('stopPlayer');
 
-    $sliderWrap.on('dragStart.flickity', function () {
-      $(this).addClass('is-dragging');
-    });
+    function handleDragStart() {
+      Rexbuilder_Util.addClass( this, 'is-dragging' );
+    }
 
-    $sliderWrap.on('dragEnd.flickity', function () {
-      $(this).removeClass('is-dragging');
-    });
+    function handleDragEnd() {
+      Rexbuilder_Util.removeClass( this, 'is-dragging' );
+    }
+
+    var videoSlides = Array.prototype.slice.call( sliderWrap.getElementsByClassName('rex-slide--video') );
+
+    function handleSelect(event, index) {
+      for( var i=0; i<videoSlides.length; i++ ) {
+        Rexbuilder_Util.pauseVideo($(videoSlides[i].querySelector('.rex-slider-video-wrapper')));
+      }
+      var slideHasVideo = Rexbuilder_Util.hasClass( Flickity.data(event.target).selectedCell.element, 'rex-slide--video' );
+      if ( slideHasVideo ) {
+        Rexbuilder_Util.playVideo( $( event.target.querySelector('.rex-slider-video-wrapper') ) );
+      }
+    }
+
+    $sliderWrap.on('dragStart.flickity', handleDragStart);
+    $sliderWrap.on('dragEnd.flickity', handleDragEnd);
 
     //play videos on focus slide
-    $sliderWrap.on('select.flickity', function (event, index) {
-      var $rexSlider = $(event.target)
-      var $videoSlide = $rexSlider.find('.rex-slider-element.is-selected .rex-slider-video-wrapper');
-      $rexSlider.find(".rex-slider-video-wrapper").each(function (i, videoEl) {
-        if (videoEl != $videoSlide[0]) {
-          Rexbuilder_Util.pauseVideo($(videoEl));
-        }
-      });
-      Rexbuilder_Util.playVideo($videoSlide);
-    });
+    if ( 0 !== videoSlides.length ) {
+      $sliderWrap.on('select.flickity', handleSelect);
+    }
 
     if (settings.autoPlay) {
       $sliderWrap.flickity('playPlayer');
@@ -140,7 +149,7 @@ var RexSlider = (function ($) {
       var index = $this.index();
       $this.addClass('is-selected').siblings('.dot').removeClass('is-selected');
       $sliderWrap.flickity('select', index);
-    })
+    });
 
     /**
      * Label custom navigation
@@ -151,7 +160,7 @@ var RexSlider = (function ($) {
         $sliderWrap.flickity( 'select', index );
       }
     );
-  }
+  };
 
   /**
    * If custom autoplay set, the slider plays either on hover

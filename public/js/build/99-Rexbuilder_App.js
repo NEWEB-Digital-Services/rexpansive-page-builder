@@ -465,7 +465,7 @@ var Rexbuilder_App = (function($) {
    */
   var fixIframeContentAfterLoading = function() {
     var rexLiveContent = this.iframeContainer.contentDocument.querySelector('.rexbuilder-live-content');
-    rexLiveContent.parentElement.removeChild(rexLiveContent)
+    rexLiveContent.parentElement.removeChild(rexLiveContent);
     this.iframeContainer.contentDocument.body.insertBefore(rexLiveContent, this.iframeContainer.contentDocument.body.firstChild);
   }
 

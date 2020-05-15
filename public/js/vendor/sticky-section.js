@@ -67,9 +67,12 @@
     this.stickyElement = null;
     this.borderAnimationEl = {};
     this.overlayAnimationEl = null;
+    this.overlayOriginalEl = null;
+    this.overlayAnimationGuardEl = null;
     this.ticking = false;
     this.stickyId = null;
     this.elBoundingInfo = null;
+    this.overlayAnimationGuardBoundingInfo = null;
 
     // get element as first argument
     if (arguments[0]) {
@@ -83,6 +86,7 @@
       borderAnimation: false,
       overlayAnimation: false,
       originalOverlaySelector: '.responsive-overlay',
+      overlayGuardSelector: '.perfect-grid-item',
       borderCustomClass: '',
       requestAnimationFrame: false
     };
@@ -134,14 +138,15 @@
 		
     if ( this.options.overlayAnimation ) {
 
-      var originaloverlayEl = this.element.querySelector(this.options.originalOverlaySelector);
-      if ( originaloverlayEl ) {
+      this.overlayOriginalEl = this.element.querySelector(this.options.originalOverlaySelector);
+
+      if ( this.overlayOriginalEl ) {
         // generate overlay faker
         this.overlayAnimationEl = document.createElement('div');
         addClass( this.overlayAnimationEl, 'sticky__overlay' );
 
-        this.overlayAnimationEl.style.backgroundColor = originaloverlayEl.style.backgroundColor;
-        removeClass( originaloverlayEl, 'rex-active-overlay' )
+        this.overlayAnimationEl.style.backgroundColor = this.overlayOriginalEl.style.backgroundColor;
+        removeClass( this.overlayOriginalEl, 'rex-active-overlay' )
         // this.element.insertBefore(this.overlayAnimationEl, this.element.firstChild);
         this.stickyElement.appendChild(this.overlayAnimationEl); 
       }
@@ -165,6 +170,11 @@
 
   function defineElementSizeProps() {
     this.elBoundingInfo = this.element.getBoundingClientRect();
+    if ( this.options.overlayAnimation ) {
+      // on resize, element order can change
+      this.overlayAnimationGuardEl = this.element.querySelector( this.options.overlayGuardSelector );
+      this.overlayAnimationGuardBoundingInfo = this.overlayAnimationGuardEl.getBoundingClientRect();
+    }
     // this.elOffsetTop = this.element.offsetTop;
   }
 	
@@ -175,8 +185,6 @@
 	 * @since		2.0.4
 	 */
   function scrollHandler(event) {
-    if ( ! ( isMobile && detectOrientation() ) && isMobile ) return;
-    
     windowScrollTop = scrollDocumentPositionTop();
     scrollCallbacksArray.forEach(function (cb) {
       cb.call();
@@ -190,12 +198,13 @@
 	 * @since		2.0.4
 	 */
   function resizeHandler(event) {
-    if ( ! ( isMobile && detectOrientation() ) && isMobile ) return;
+    if ( ! isMobile || ( isMobile && detectOrientation() ) ) {
 
-    updateWindowInnerHeight();
-    resizeCallbackArray.forEach(function (cb) {
-      cb.call();
-    });
+      updateWindowInnerHeight();
+      resizeCallbackArray.forEach(function (cb) {
+        cb.call();
+      });
+    }
   }
 
   // private shared vars
@@ -301,18 +310,29 @@
     // animate overlay
     if ( this.options.overlayAnimation ) {
       // animate overlay faker
-      if ( topViewport && bottomViewport ) {
+
+      // element scroll information
+      var overlayGuardScrollTop = offsetTop(this.overlayAnimationGuardEl, windowScrollTop);
+      var overlayGuardScrollBottom = overlayGuardScrollTop + this.overlayAnimationGuardBoundingInfo.height;
+
+      var ovGTopViewport = windowScrollTop >= overlayGuardScrollTop;
+      var ovGBottomViewport = windowScrollBottom <= overlayGuardScrollBottom;
+      var ovGBeforeViewport = windowScrollTop <= overlayGuardScrollTop;
+      var ovGAfterViewport = windowScrollBottom >= overlayGuardScrollBottom;
+
+      if ( windowScrollBottom >= overlayGuardScrollTop ) {
+
+      // if ( ovGTopViewport && ovGBottomViewport ) {
         // opacity = percentage of scoll
-        opY = 1 - Math.pow( 1 - percentage / 100, 0.75 );    // ease-out
-        // opY = 1 - Math.pow( 1 - percentage / 100, 1.75 );    // ease-out
+        // opY = 1 - Math.pow( 1 - overlayPercentage / 100, 3 );    // ease-out
+        opY = 1 - Math.pow( 1 - percentage / 100, 1.75 );    // ease-out
         // opY = 1 - Math.pow( 1 - percentage / 100, 3 );    // much steep ease-out
         this.overlayAnimationEl.style.opacity = opY;
-        // console.log(this.element.getAttribute('data-rexlive-section-id'), opY);
         // this.overlayAnimationEl.style.opacity = Math.pow( percentage / 100, 1.75 );   // ease-in
       } else {
-        if ( beforeViewport ) {
+        if ( ovGBeforeViewport ) {
           this.overlayAnimationEl.style.opacity = 0;
-        } else if ( afterViewport ) {
+        } else if ( ovGAfterViewport ) {
           this.overlayAnimationEl.style.opacity = 1;
         }
       }
