@@ -267,7 +267,7 @@ class Rexbuilder_Public
 			}
 
 			// requestanimationframe
-			wp_enqueue_script('jquery-requestanimationframe', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.requestanimationframe.min.js', array('jquery'), $ver, true);
+			// wp_enqueue_script('jquery-requestanimationframe', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.requestanimationframe.min.js', array('jquery'), $ver, true);
 			// JS TMPL
 			wp_enqueue_script('tmpl', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tmpl.min.js', array('jquery'), $ver, true);
 
