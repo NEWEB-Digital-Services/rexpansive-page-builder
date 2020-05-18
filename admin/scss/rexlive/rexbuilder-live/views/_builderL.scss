@@ -175,20 +175,33 @@
 	z-index: 35;
 }
 
+.tool-button_list--section {
+	font-size: 10px;
+	left: -4px;
+	max-width: 30px;
+}
+
 .tool-button_list--section-item:first-child {
 	margin-top: 20px;
 }
 
 .add-new-block-slider,
-.add-new-section {
+.add-new-section:not(.tool-button--add-big) {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	width: 31px;
 	height: 31px;
-	padding: 0;
 
 	.l-svg-icons {
 		font-size: 15px;
 	}
+}
+
+.add-new-block-slider {
+	padding: 2px 0 0 0;
+}
+
+.add-new-section {
+	padding: 0;
 }
