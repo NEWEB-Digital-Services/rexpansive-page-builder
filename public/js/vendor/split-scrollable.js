@@ -8,6 +8,22 @@
 	var scrollCallbacksArray = [];
 	var resizeCallbacksArray = [];
 
+	function debounce(func, wait, immediate) {
+		var timeout;
+		return function () {
+			var context = this;
+			var args = arguments;
+			var later = function () {
+			timeout = null;
+				if (!immediate) func.apply(context, args);
+			};
+			var callNow = immediate && !timeout;
+			clearTimeout(timeout);
+			timeout = setTimeout(later, wait);
+			if (callNow) func.apply(context, args);
+		};
+	}
+
 	var globalViewport = _viewport();
 
 	function SplitScrollable() {
@@ -56,10 +72,6 @@
 			this.options = defaults;
 		}
 
-		// De-comment for debugging
-		// this.debugEl = null;
-		// debugging.call(this);
-
 		_initialize.call(this);
 		_addWrappers.call(this);
 
@@ -69,7 +81,7 @@
 
 		_fixStickyHeight.call(this);
 		
-		resizeCallbacksArray.push(_handleResize.bind(this));
+		// resizeCallbacksArray.push(_handleResize.bind(this));
 
 		// check first scroll
 		_handleScroll.call(this);
@@ -177,6 +189,7 @@
 	 * Watching the browser scrolling, bouncing the event
 	 * every 150 ms to prevent event polling
 	 * @return {void}
+	 * @deprecated 2.0.5
 	 */
 	function _watchScroll() {
 		var userScrolled = false;
@@ -185,7 +198,7 @@
 			userScrolled = true;
 		}
 
-		window.addEventListener( 'scroll', scrollHandler);
+		window.addEventListener( 'scroll', scrollHandler );
 
 		rInterval( function handleInterval() {
 			if ( userScrolled ) {
@@ -195,6 +208,12 @@
 				userScrolled = false;
 			}
 		}, 150);
+	}
+
+	function scrollHandler(event) {
+		scrollCallbacksArray.forEach(function (cb) {
+			cb.call();
+		});
 	}
 
 	/**
@@ -286,6 +305,11 @@
 	}
 
 	/* ===== Resize handling ===== */
+	/**
+	 * Watch resize
+	 * @return {void}
+	 * @deprecated 2.0.5
+	 */
 	function _watchResize() {
 		var userResized = false;
 
@@ -305,22 +329,16 @@
 		}, 150);
 	}
 
-	function _handleResize() {
-		// calculate sticky wrapper height
-		// fixStickyHeight.call(this);
+	function resizeHandler(event) {
+		resizeCallbacksArray.forEach(function (cb) {
+			cb.call();
+		});
 	}
 
-	function debugging() {
-		this.debugEl = document.createElement('div');
-		this.debugEl.style.position = 'fixed'
-		this.debugEl.style.bottom = '0px'
-		this.debugEl.style.right = '0px'
-		this.debugEl.style.backgroundColor = '#ddd'
-		this.debugEl.style.padding = '10px'
-		this.debugEl.style.zIndex = '9999'
-		this.debugEl.style.fontSize = '15px'
-		document.body.appendChild(this.debugEl)
-	}
+	// function _handleResize() {
+		// calculate sticky wrapper height
+		// fixStickyHeight.call(this);
+	// }
 
 	// Utilities
 	// Class utilities
@@ -421,26 +439,6 @@
 	}
 
 	// timing utilities
-	/**
-	 * Set timeout function rewritten with requestanimation frame
-	 * @param  {Function} callback [description]
-	 * @param  {Number}   delay    delay time
-	 * @return {Object}
-	 */
-	function rtimeOut( callback, delay ) {
-		var dateNow = Date.now,
-			requestAnimation = window.requestAnimationFrame,
-			start = dateNow(),
-			stop,
-			timeoutFunc = function(){
-				dateNow() - start < delay ? stop || requestAnimation(timeoutFunc) : callback()
-			};
-		requestAnimation(timeoutFunc);
-
-		return {
-			clear:function(){stop=1}
-		}
-	}
 
 	/**
 	 * Set interval function rewritten with requestanimation frame
@@ -635,8 +633,10 @@
 	};
 
 	// Invoking global Events watchers
-	_watchScroll();
-	_watchResize();
+	// _watchScroll();
+	window.addEventListener('scroll', debounce( scrollHandler, 150, true ));
+	// _watchResize();
+	window.addEventListener('resize', debounce( resizeHandler, 150 ));
 
 	return SplitScrollable;
 });

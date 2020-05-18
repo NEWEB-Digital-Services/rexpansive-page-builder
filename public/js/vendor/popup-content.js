@@ -208,6 +208,10 @@
 			this.options.getPopUpContentComplete.call(this)
 		}
 
+		// trigger event on iframe document that tells that the popupcontent has ended load
+		var loadCompleteEvent = new Event('popUpContent:loadComplete');
+		this.iframeContainer.contentDocument.dispatchEvent(loadCompleteEvent);
+
 		this.iframeContainer.contentWindow.addEventListener('click', onIframeClick.bind(this));
 	}
 

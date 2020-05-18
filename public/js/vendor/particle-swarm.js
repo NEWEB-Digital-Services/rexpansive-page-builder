@@ -589,19 +589,22 @@ this.Element&&Element.prototype.attachEvent&&!Element.prototype.addEventListener
 
     var that = this;
 
+    function updateParticle() {
+      that.element.width  = width  = bounds.x = window.innerWidth;
+      that.element.height = height = bounds.y = window.innerHeight;
+      
+      // remove this and see weird gorgeous stuffs, the history of particles.
+      context.fillStyle = '#ffffff';
+      context.fillRect(0, 0, width, height);
+    }
+
     resize = function() {
       // resize the canvas
       if ( ( isMobile && detectOrientation() ) || ! isMobile ) {
-
-        that.element.width  = width  = bounds.x = window.innerWidth;
-        that.element.height = height = bounds.y = window.innerHeight;
-        
-        // remove this and see weird gorgeous stuffs, the history of particles.
-        context.fillStyle = '#ffffff';
-        context.fillRect(0, 0, width, height);
+        updateParticle();
       }
     }; 
-    resize();
+    updateParticle();
 
     window.addEventListener('resize', debounce( resize, 100 )); 
 

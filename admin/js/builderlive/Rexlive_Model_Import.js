@@ -530,7 +530,9 @@ var Model_Import_Modal = (function($) {
     mouseClientY = 0;
 
     Rexlive_Base_Settings.$document.on("dragstart", ".model-list li", function( event ) {
-      Rexbuilder_Util_Admin_Editor.dragImportType = "rexmodel";
+			Rexbuilder_Util_Admin_Editor.dragImportType = "rexmodel";
+			Rexbuilder_Util_Admin_Editor.hideLateralMenu();
+
       Rexbuilder_Util_Admin_Editor.blockIframeRows();
       event.originalEvent.dataTransfer.effectAllowed = "all";
       dragoverqueue_processtimer = setInterval(function() {
@@ -560,7 +562,8 @@ var Model_Import_Modal = (function($) {
 
     // definisce quando bisogna scrollare in alto o in basso
     Rexlive_Base_Settings.$document.on("drag", ".model-list li", function( event ) {
-      Rexbuilder_Util_Admin_Editor.setScroll(true);
+			Rexbuilder_Util_Admin_Editor.setScroll(true);
+			Rexbuilder_Util_Admin_Editor.checkLateralMenu(mouseClientX);
 
       if (mouseClientY < 150) {
         Rexbuilder_Util_Admin_Editor.setScroll(false);
@@ -655,9 +658,6 @@ var Model_Import_Modal = (function($) {
               eventName: "rexlive:importModels"
             };
 						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
-						
-						var dropEndEvent = jQuery.Event('rexlive:rexModelDropped');
-						$(document).trigger(dropEndEvent);
           } catch (e) {
 						console.log(e);
           }

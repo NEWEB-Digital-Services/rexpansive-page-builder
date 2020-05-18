@@ -422,11 +422,8 @@ var Rexbuilder_App = (function($) {
           var j, textWrap = bs[z].querySelector('.text-wrap');
           new RevealOpacityOnScroll( textWrap, {
             offset: 1,
-            transition: true
+            transition: false
           } );
-          // for( j=0; j<textWrap.childElementCount; j++ ) {
-          //   new RevealOpacityOnScroll( textWrap.children[j], {offset: 1} );
-          // }
         }
       }
     }
@@ -468,9 +465,9 @@ var Rexbuilder_App = (function($) {
    */
   var fixIframeContentAfterLoading = function() {
     var rexLiveContent = this.iframeContainer.contentDocument.querySelector('.rexbuilder-live-content');
-    rexLiveContent.parentElement.removeChild(rexLiveContent)
+    rexLiveContent.parentElement.removeChild(rexLiveContent);
     this.iframeContainer.contentDocument.body.insertBefore(rexLiveContent, this.iframeContainer.contentDocument.body.firstChild);
-  }
+  };
 
   /**
    * Launch popupcontent plugin on found launchers
@@ -478,7 +475,7 @@ var Rexbuilder_App = (function($) {
    */
   var launchPopUpContent = function() {
     if ( 'undefined' === typeof PopUpContent ) {
-      return
+      return;
     }
 
     var btns = [].slice.call( document.getElementsByClassName('popup-content-button') );
@@ -502,11 +499,11 @@ var Rexbuilder_App = (function($) {
         }
       });
     }
-  }
+  };
 
   function listenPopUpContentEvents() {
     if ( 'undefined' === typeof PopUpContent ) {
-      return
+      return;
     }
 
     if ( ! Rexbuilder_Util.isIframe ) {

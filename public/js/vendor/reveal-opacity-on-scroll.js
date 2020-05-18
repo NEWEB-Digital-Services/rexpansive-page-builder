@@ -58,7 +58,7 @@
 		this.launched = false;
 
 		this.elBoundingInfo = null;
-		this.elOffsetTop = null;
+		// this.elOffsetTop = null;
 
 		if ( arguments[0] ) {
 			this.element = arguments[0];
@@ -78,8 +78,8 @@
 
 		this.element.style.opacity = 0;
 		if ( this.options.transition ) {
-			this.element.style.webkitTransition = 'opacity 0.3s';
-			this.element.style.transition = 'opacity 0.3s';
+			this.element.style['-webkit-transition'] = 'opacity 0.3s';
+			this.element.style['transition'] = 'opacity 0.3s';
 		}
 
 		defineElementSizeProps.call(this);
@@ -92,7 +92,7 @@
 
 	function defineElementSizeProps() {
 		this.elBoundingInfo = this.element.getBoundingClientRect();
-		this.elOffsetTop = this.element.offsetTop;
+		// this.elOffsetTop = this.element.offsetTop;
 	}
 
 	function scrollHandler() {
@@ -167,8 +167,9 @@
 		return source;
 	}
 
-	window.addEventListener('resize', debounce( resizeHandler, 50 ) );
-	window.addEventListener('scroll', debounce( scrollHandler, 50 ));
+	window.addEventListener('resize', debounce( resizeHandler, 50 ));
+	// window.addEventListener('scroll', debounce( scrollHandler, 15, true ));
+	window.addEventListener('scroll', scrollHandler);
 
 	return RevealOpacityOnScroll;
 });

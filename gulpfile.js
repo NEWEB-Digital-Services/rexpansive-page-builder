@@ -220,7 +220,7 @@ var builderlive_public_editor = [
 	'public/js/live/4-modals.js',
 
 	'public/js/live/4-Rexbuilder_Live_Post_Edit.js',
-	'public/js/vendor/jquery.requestanimationframe.min.js',
+	// 'public/js/vendor/jquery.requestanimationframe.min.js',
 	'public/js/vendor/tmpl.min.js',
 	'public/Photoswipe/photoswipe.min.js',
 	'public/Photoswipe/photoswipe-ui-default.min.js',
@@ -275,7 +275,7 @@ function watchBuilderliveEditor(cb) {
 var builderlive_public = [
 	'public/js/live/0-Rexbuilder_Array_Utilities.js',
 	'public/js/vendor/intersection-observer.js',
-	'public/js/vendor/jquery.requestanimationframe.min.js',
+	// 'public/js/vendor/jquery.requestanimationframe.min.js',
 	'public/js/vendor/tmpl.min.js',
 	'public/Photoswipe/photoswipe.min.js',
 	'public/Photoswipe/photoswipe-ui-default.min.js',

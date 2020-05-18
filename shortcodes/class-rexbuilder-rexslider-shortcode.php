@@ -70,7 +70,7 @@ class Rexbuilder_RexSlider {
 			$set_gallery_size = get_post_meta( $slider_id, '_rex_slider_set_gallery_size', true );
 			$wrap_around = get_post_meta( $slider_id, '_rex_slider_wrap_around', true );
 
-			$re = '/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
+			$active_video = apply_filters( 'rexpansive_slider_filter_active_video', true );
 
 			$num_slides = count( $slider_gallery );
 			?>
@@ -102,7 +102,7 @@ class Rexbuilder_RexSlider {
 				}
 
 				?>
-				<div class="rex-slider-element<?php echo ( $slideHasImage && $natural_blur && ! 'true' == $photoswipe && "" == $slide['_rex_banner_gallery_url'] ? ' natural-slide__wrap' : '' ); ?>"<?php echo ( 1 != $nav_previewed ? ( !$natural_blur ? $slider_el_style : '' ) : '' ); echo (!$slideHasImage? "" : $slideImageIdAttr); ?>>
+				<div class="rex-slider-element<?php echo ( $slideHasImage && $natural_blur && ! 'true' == $photoswipe && "" == $slide['_rex_banner_gallery_url'] ? ' natural-slide__wrap' : '' ); ?><?php echo ( ( $active_video && ( $slide['_rex_banner_gallery_video'] || $slide['_rex_banner_gallery_video_mp4'] ) ) ? ' rex-slide--video' : '' ); ?>"<?php echo ( 1 != $nav_previewed ? ( !$natural_blur ? $slider_el_style : '' ) : '' ); echo (!$slideHasImage? "" : $slideImageIdAttr); ?>>
 				<?php
 
 				if ( $slideHasImage && $natural_blur && ! 'true' == $photoswipe && "" == $slide['_rex_banner_gallery_url']  ) {
@@ -118,58 +118,47 @@ class Rexbuilder_RexSlider {
 					<?php 
 				}
 
-				$active_video = apply_filters( 'rexpansive_slider_filter_active_video', true );
+				if( $active_video && ( $slide['_rex_banner_gallery_video'] || $slide['_rex_banner_gallery_video_mp4'] ) ) {
+					// check if is a valid URL
 
-				if( $active_video ) {
-					if( $slide['_rex_banner_gallery_video'] || $slide['_rex_banner_gallery_video_mp4']) {
-						// check if is a valid URL
-						$re = '/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
-
-						preg_match($re, $slide['_rex_banner_gallery_video'], $matches, PREG_OFFSET_CAPTURE, 0);
-
-						//if( count($matches) > 0 ) {
-							/* $toPrint = $slide['_rex_banner_gallery_video'];
-							echo "<script type='text/javascript'>alert('$toPrint');</script>"; */
-							//youtube
-							if( false !== strpos( $slide['_rex_banner_gallery_video'], "youtu" ) ) {
-								?>
-								<div class="rex-slider-video-wrapper youtube-player">
-									<div class="rex-youtube-wrap" data-property="{videoURL:'<?php echo $slide['_rex_banner_gallery_video']; ?>',containment:'self',startAt:0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}" data-ytvideo-stop-on-click="false">
-									</div>							
-							<?php
-							//vimeo
-							} else if( false !== strpos( $slide['_rex_banner_gallery_video'], "vimeo" ) ) {
-								?>
-								<div class="rex-slider-video-wrapper vimeo-player">
-									<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block">
-										<iframe src="<?php echo $slide['_rex_banner_gallery_video']; ?>?autoplay=1&loop=1&byline=0&title=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-									</div>
-								<?php
-							//mp4
-							} else if( $slide['_rex_banner_gallery_video_mp4'] ) {
-								$mp4IDattr = "data-rex-video-mp4-id=\"". $slide["_rex_banner_gallery_video_mp4"]["id"] . "\"";
-
-								?>
-								<div class="rex-slider-video-wrapper mp4-player">
-									<div class="rex-video-wrap" <?php echo $mp4IDattr;?>>
-										<video class="rex-video-container" preload muted autoplay loop playsinline>
-											<source type="video/mp4" src="<?php echo $slide['_rex_banner_gallery_video_mp4']['url']; ?>" />
-										</video>
-									</div>
-							<?php
-							}
-							if( is_array( $slide['_rex_banner_gallery_video_audio'] ) ) {
-							?>
-								<div class="rex-video-toggle-audio">
-									<div class="rex-video-toggle-audio-shadow"></div>
-								</div>
-							<?php
-							}
-							?>
-						</div>
+					//youtube
+					if( false !== strpos( $slide['_rex_banner_gallery_video'], "youtu" ) ) {
+						?>
+						<div class="rex-slider-video-wrapper youtube-player">
+							<div class="rex-youtube-wrap" data-property="{videoURL:'<?php echo $slide['_rex_banner_gallery_video']; ?>',containment:'self',startAt:0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}" data-ytvideo-stop-on-click="false">
+							</div>							
+					<?php
+					//vimeo
+					} else if( false !== strpos( $slide['_rex_banner_gallery_video'], "vimeo" ) ) {
+						?>
+						<div class="rex-slider-video-wrapper vimeo-player">
+							<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block">
+								<iframe src="<?php echo $slide['_rex_banner_gallery_video']; ?>?autoplay=1&loop=1&byline=0&title=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+							</div>
 						<?php
-						//}
+					//mp4
+					} else if( $slide['_rex_banner_gallery_video_mp4'] ) {
+						$mp4IDattr = "data-rex-video-mp4-id=\"". $slide["_rex_banner_gallery_video_mp4"]["id"] . "\"";
+
+						?>
+						<div class="rex-slider-video-wrapper mp4-player">
+							<div class="rex-video-wrap" <?php echo $mp4IDattr;?>>
+								<video class="rex-video-container" preload muted autoplay loop playsinline>
+									<source type="video/mp4" src="<?php echo $slide['_rex_banner_gallery_video_mp4']['url']; ?>" />
+								</video>
+							</div>
+					<?php
 					}
+					if( is_array( $slide['_rex_banner_gallery_video_audio'] ) ) {
+					?>
+						<div class="rex-video-toggle-audio">
+							<div class="rex-video-toggle-audio-shadow"></div>
+						</div>
+					<?php
+					}
+					?>
+					</div>
+					<?php
 				}
 				// Link section
 				if( $slide['_rex_banner_gallery_url'] ) {
