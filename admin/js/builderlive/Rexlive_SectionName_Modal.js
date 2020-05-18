@@ -7,7 +7,7 @@ var SectionName_Modal = (function ($) {
     
     var _resetSectionName = function () {
         section_name_modal_properties.$section_id.val(defaultName);
-    }
+    };
     
     var _updateSectionName = function(data) {
         sectionTarget = data.sectionTarget;
@@ -20,12 +20,12 @@ var SectionName_Modal = (function ($) {
             section_name_modal_properties.$section_id
                 .blur();
         }
-    }
+    };
 
     var _getData = function () {
         var newName = section_name_modal_properties.$section_id.val();
         return newName;
-    }
+    };
 
     var _applySectionName = function () {
         var sectionName = _getData();
@@ -40,29 +40,29 @@ var SectionName_Modal = (function ($) {
                 sectionTarget: sectionTarget,
                 sectionName: sectionName
             }
-        }
+        };
 
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_sectionName);
-    }
+    };
     
     var _linkDocumentListeners = function () {
         section_name_modal_properties.$section_id.keyup(function (e) {
             _applySectionName();
-        })
-    }
+        });
+    };
 
     var _init = function ($container) {
         section_name_modal_properties = {
 
             // ID and navigator configuration
             $section_id: $container.find('#sectionid-container'),
-        }
+        };
 
         defaultName = "";
 
         _resetSectionName();
         _linkDocumentListeners();
-    }
+    };
 
     return {
         init: _init,

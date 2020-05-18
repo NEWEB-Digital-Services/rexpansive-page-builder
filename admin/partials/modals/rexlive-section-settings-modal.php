@@ -235,8 +235,8 @@ defined('ABSPATH') or exit;
                 <div class="bl_modal__option-wrap">
                     <div class="input-field rex-input-prefixed tippy" data-tippy-content="<?php _e( 'Section Label', 'rexpansive-builder' ); ?>">
                         <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?></span>
-                        <input id="section-set-nav-label" name="section-set-nav-label" type="text" class="small-input">
-                        <label for="section-set-nav-label"><?php _e( 'Label', 'rexpansive-builder' ); ?></label>
+                        <input id="section-nav-label" name="section-nav-label" type="text" class="small-input">
+                        <label for="section-nav-label"><?php _e( 'Label', 'rexpansive-builder' ); ?></label>
                         <span class="rex-material-bar"></span>
                     </div>
                 </div>

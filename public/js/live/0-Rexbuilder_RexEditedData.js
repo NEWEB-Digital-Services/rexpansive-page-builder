@@ -5,6 +5,7 @@
 	// synch section props
 	var tracePropsSection = [
 		'section_name',					// section name
+		'section_nav_label',				// section label
 		'color_bg_section',				// background color
 		'color_bg_section_active',
 		'image_bg_section_active',		// background image

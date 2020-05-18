@@ -809,6 +809,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
           photoswipe: false,
   
           sectionName: hightlightRowInfo.section_name,
+          sectionNavLabel: hightlightRowInfo.section_nav_label,
           customClasses: hightlightRowInfo.custom_classes
         },
         mousePosition: mousePosition

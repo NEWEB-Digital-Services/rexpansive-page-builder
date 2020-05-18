@@ -121,6 +121,7 @@ var builderlive_admin = [
 	'admin/js/builderlive/Rexlive_SectionMargins_Modal.js',
 	'admin/js/builderlive/Rexlive_Section_Photoswipe_Modal.js',
 	'admin/js/builderlive/Rexlive_Section_Hold_Grid_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_NavLabel_Modal.js',
 	'admin/js/builderlive/Rexlive_Section_Fullheight.js',
 	'admin/js/builderlive/Rexlive_SectionName_Modal.js',
 	'admin/js/builderlive/Rexlive_Top_Tools.js',

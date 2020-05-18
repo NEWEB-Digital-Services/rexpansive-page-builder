@@ -17,6 +17,7 @@
      * 09) Row Width : rexlive:sectionWidthApplyed
      * 10) Row Photoswipe : rexlive:set_row_photoswipe
      * 11) Row Name : rexlive:change_section_name
+     *   ) Row Nav Label: rexlive:change_section_nav_label
      * 12) Row Custom Classes : rexlive:apply_section_custom_classes
      * 13) Custom CSS : rexlive:SetCustomCSS
      * 14) Row Background Color : rexlive:apply_background_color_section
@@ -541,6 +542,48 @@
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateSectionName",
+        actionData,
+        reverseData
+      );
+    });
+
+    $document.on('rexlive:change_section_nav_label', function(e) {
+      var data = e.settings.data_to_send;
+      var $section;
+
+      if (data.sectionTarget.modelNumber != "") {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"][data-rexlive-model-number="' +
+            data.sectionTarget.modelNumber +
+            '"]'
+        );
+      } else {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"]'
+        );
+      }
+
+      var reverseData = {
+        sectionNavLabel: $section.children('.section-data').attr("data-section_nav_label")
+      };
+
+      Rexbuilder_Dom_Util.updateSectionNavLabel($section, data.sectionNavLabel);
+
+      var actionData = {
+        sectionNavLabel: data.sectionNavLabel
+      };
+      $section.attr("data-rexlive-section-edited", true);
+
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'section_nav_label' );
+      
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
+      Rexbuilder_Util_Editor.pushAction(
+        $section,
+        "updateSectionNavLabel",
         actionData,
         reverseData
       );
@@ -2292,6 +2335,7 @@
       e.preventDefault();
 
       var $section = $(e.target).parents(".rexpansive_section");
+      var $sectionData = $section.children(".section-data");
 
       var sectionID = $section.attr("data-rexlive-section-id");
       var modelNumber =
@@ -2352,9 +2396,8 @@
       }
 
       var nameSection = $section.attr("data-rexlive-section-name");
-      var customClasses = $section
-        .children(".section-data")
-        .attr("data-custom_classes");
+      var customClasses = $sectionData.attr("data-custom_classes");
+      var sectionNavLabel = $sectionData.attr("data-section_nav_label");
 
       var data = {
         eventName: "rexlive:openSectionModal",
@@ -2376,6 +2419,7 @@
           photoswipe: photoswipe,
 
           sectionName: nameSection,
+          sectionNavLabel: ( 'undefined' !== typeof sectionNavLabel ? sectionNavLabel : '' ),
           customClasses: customClasses
         }
       };

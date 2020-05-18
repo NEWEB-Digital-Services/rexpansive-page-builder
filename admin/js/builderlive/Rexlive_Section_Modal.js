@@ -28,6 +28,7 @@ var Section_Modal = (function($) {
     Hold_Grid_Modal.reset();
     FullHeight_Modal.resetFullHeight();
     SectionName_Modal.resetSectionName();
+    Section_NavLabel_Modal.resetSectionNavLabel();
     Section_CustomClasses_Modal.reset();
   };
 
@@ -40,6 +41,7 @@ var Section_Modal = (function($) {
     Hold_Grid_Modal.update(data);
     FullHeight_Modal.updateFullHeight(data);
     SectionName_Modal.updateSectionName(data);
+    Section_NavLabel_Modal.updateSectionNavLabel(data);
     Section_CustomClasses_Modal.update(data);
   };
 
@@ -69,6 +71,7 @@ var Section_Modal = (function($) {
     Hold_Grid_Modal.init($sectionConfigModal);
     FullHeight_Modal.init($sectionConfigModal);
     SectionName_Modal.init($sectionConfigModal);
+    Section_NavLabel_Modal.init($sectionConfigModal);
     Section_CustomClasses_Modal.init($sectionConfigModal);
   };
 
