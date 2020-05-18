@@ -1,4 +1,3 @@
-// LIVE
 .rexlive-block-toolbox {
 	position: absolute;
 	left: 0;
@@ -188,12 +187,12 @@
 			.rexlive-block-toolbox {
 				&.top-tools,
 				&.floating-tools {
-					top: 20px;
+					top: 27px;
 					transform: none;
 				}
 
 				&.mobile-tools {
-					top: 30px;
+					top: 37px;
 				}
 
 				.block-toolBox__config-tools {

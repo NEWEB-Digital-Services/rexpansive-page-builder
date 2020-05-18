@@ -6,7 +6,9 @@
   "author": "neweb",
   "license": "ISC",
   "scripts": {
-    "build": "gulp build"
+    "build": "gulp build",
+    "deploy:win": "gulp build && gulp standardBuild",
+    "deploy:mac": "gulp build && gulp macBuild"
   },
   "devDependencies": {
     "eslint-config-google": "^0.9.1",

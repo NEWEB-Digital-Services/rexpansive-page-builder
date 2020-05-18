@@ -59,9 +59,18 @@ var Rexbuilder_Rexbutton = (function ($) {
 		}
 	};
 
-	var _getActiveStyleSheet = function () {
+	var getActiveStyleSheet = function () {
 		return styleSheet;
 	};
+
+	function _styleAlreadyExists(buttonID) {
+		for (var i = 0; i < styleSheet.cssRules.length; i++) {
+			if (-1 !== styleSheet.cssRules[i].selectorText.indexOf(buttonID)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	//////////////////////////////////////////////////////////////////////////////////////////////
 	// Adding rules
@@ -1209,24 +1218,22 @@ var Rexbuilder_Rexbutton = (function ($) {
 	};
 
 	/**
-	 * Generates (or re-generates) buttonsInPage Array.
+	 * Generates or updates buttonsInPage Array.
 	 * @returns	{void}
-	 * @since		?.?.?
+	 * @since		2.0.?
 	 * @version	2.0.4		Added resetting of the buttonsInPage Array and removed jQuery
+	 * @version	2.0.5		Added existing style check
 	 */
 	function updateButtonListInPage() {
 		buttonsInPage = [];
 
 		var rexButtons = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rex-button-wrapper'));
 		var currentButton;
-		var tot_rexButtons = rexButtons.length;
 
 		var currentButtonID;
 		var currentButtonNumber;
 
-		var i = 0;
-
-		for (; i < tot_rexButtons; i++) {
+		for (var i = 0; i < rexButtons.length; i++) {
 			currentButton = rexButtons[i];
 			currentButtonID = currentButton.getAttribute('data-rex-button-id');
 			currentButtonNumber = parseInt(currentButton.getAttribute('data-rex-button-number'));
@@ -1237,8 +1244,10 @@ var Rexbuilder_Rexbutton = (function ($) {
 			});
 
 			if (Rexbuilder_Util.hasClass(currentButton, 'rex-separate-button')) {
-				// We are not editing a button model, but a separate button
-				_addButtonStyle($(currentButton));
+				// We are not updating a button template, but a separate button
+				if (!_styleAlreadyExists(currentButtonID)) {
+					_addButtonStyle($(currentButton));
+				}
 			}
 
 			if (buttonsInPage[i].number < currentButtonNumber) {
@@ -1290,7 +1299,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 
 	return {
 		init: init,
-		getActiveStyleSheet: _getActiveStyleSheet,
+		getActiveStyleSheet: getActiveStyleSheet,
 		fixImportedButton: _fixImportedButton,
 		getButtonsInPage: _getButtonsInPage,
 		updateButtonLive: _updateButtonLive,

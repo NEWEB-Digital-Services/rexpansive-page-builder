@@ -244,7 +244,7 @@ defined('ABSPATH') or exit;
 
 <script type="text/x-tmpl" id="tmpl-rex-button-delete">
 <div class="button-list__element__tools">
-    <div class="tool-button tool-button--black tool-button--close rex-close-button button__element--delete tippy" data-tippy-content="<?php _e('Delete','rexpansive-builder'); ?>">
+    <div class="tool-button tool-button--black rex-close-button button__element--delete tippy" data-tippy-content="<?php _e('Delete','rexpansive-builder'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
     </div>
 </div>

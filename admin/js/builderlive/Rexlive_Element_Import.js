@@ -52,18 +52,18 @@ var Element_Import_Modal = (function ($) {
           }
 
           tmpl.arg = "element";
-          for (var i = 0; i < updatedList.length; i++) {
-            if (!updatedList[i].founded) {
-              element_import_props.$self.find(".element-list").prepend(
-                tmpl("rexlive-tmpl-element-item-list", {
-                  id: updatedList[i].id,
-                  name: updatedList[i].name,
-                  preview:
-                  updatedList[i].preview_image_url != "" ? updatedList[i].preview_image_url : ""
-                })
-                ).find(".rex-element-wrapper").prepend(updatedList[i].element_data_html[0]);
-            }
-          }
+          // for (var i = 0; i < updatedList.length; i++) {
+          //   if (!updatedList[i].founded) {
+          //     element_import_props.$self.find(".element-list").prepend(
+          //       tmpl("rexlive-tmpl-element-item-list", {
+          //         id: updatedList[i].id,
+          //         name: updatedList[i].name,
+          //         preview:
+          //         updatedList[i].preview_image_url != "" ? updatedList[i].preview_image_url : ""
+          //       })
+          //       ).find(".rex-element-wrapper").prepend(updatedList[i].element_data_html[0]);
+          //   }
+          // }
 
           for (var i = 0; i < currentList.length; i++) {
             if (!currentList[i].founded) {

@@ -23,10 +23,10 @@
 .rex-lateral-tabs-list {
   margin: 0;
   li {
-    // float:left;
-    width:33%;
+    width:33.33333%;
     margin: 0;
-    position: relative;
+		position: relative;
+		
     &:before {
       content: '';
       display: block;
@@ -37,11 +37,12 @@
       right: 0;
       bottom: 0;
       z-index: -1;
-    }
+		}
+		
     &:not(:last-child) {
-      a {
+      // a {
         border-right: 1px solid $palette-color-9b;
-      }
+      // }
     }
   }
   a {
@@ -79,29 +80,33 @@
   background-color: #fff;
   position: relative;
   box-shadow: -5px 0 5px rgba(0,0,0,.1);
-  height: 100%;
-  &:before {
+	height: 100%;
+	
+  &::before {
     content: '';
     display: block;
     position: absolute;
     background: #fff;
-    width: calc(33% - 1px);
+    width: calc(33% - 2px);
     top: -5px;
     height: 10px;
-  }
+	}
+	
   &#rex-models-list {
-    &:before {
+    &::before {
       left: 0px;
     }
-  }
+	}
+	
   &#rex-buttons-list {
-    &:before {
-      left: 33%;
+    &::before {
+      left: calc(33% + 1px);
     }
-  }
+	}
+	
   &#rex-elements-list {
-    &:before {
-      left: 66%;
+    &::before {
+      left: calc(66% + 2px);
     }
   }
 }
