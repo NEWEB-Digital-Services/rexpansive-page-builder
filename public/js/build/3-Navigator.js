@@ -273,7 +273,6 @@ var Rex_Navigator = (function ($) {
 	 * @since		2.0.4
 	 */
 	function _getNavigationDotsPosition() {
-    console.log('piglia dots')
 		var navigationLinks = Array.prototype.slice.call( document.querySelectorAll('.vertical-nav-link[href]') );
 
 		for (var i = 0; i < navigationLinks.length; i++) {

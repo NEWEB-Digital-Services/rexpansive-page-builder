@@ -32,7 +32,7 @@ var FullHeight_Modal = (function ($) {
                 sectionTarget: sectionTarget,
                 fullHeight: fullHeight
             }
-        }
+        };
 
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_fullHeight);
     }

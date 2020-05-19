@@ -16,6 +16,7 @@
      * 08) Row Width : rexlive:set_section_width
      * 09) Row Width : rexlive:sectionWidthApplyed
      * 10) Row Photoswipe : rexlive:set_row_photoswipe
+     *   ) Row Hold Grid : rexlive:set_row_hold_grid
      * 11) Row Name : rexlive:change_section_name
      *   ) Row Nav Label: rexlive:change_section_nav_label
      * 12) Row Custom Classes : rexlive:apply_section_custom_classes
@@ -503,6 +504,36 @@
       );
       $section.attr("data-rexlive-section-edited", true);
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
+    });
+
+    /**
+     * Handling the "Grid on Mobile" tool event
+     * @param  {Event}
+     * @return {void}
+     * @since  2.0.5
+     */
+    $document.on('rexlive:set_row_hold_grid', function(e) {
+      var data = e.settings.data_to_send;
+      var $section;
+
+      if (data.sectionTarget.modelNumber != "") {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"][data-rexlive-model-number="' +
+            data.sectionTarget.modelNumber +
+            '"]'
+        );
+      } else {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"]'
+        );
+      }
+
+      // delegate the Hold Grid logic to collapse grid button
+      $section.find('.collapse-grid').trigger('click');
     });
 
     $document.on("rexlive:change_section_name", function(e) {

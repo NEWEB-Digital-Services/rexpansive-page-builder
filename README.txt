@@ -201,6 +201,7 @@ For the more experienced among us: you can insert CSS anywhere.
 == Changelog ==
 
 = 2.0.5 – =
+ * Fixed: Grid on mobile and reset row properties
  * Fixed: On a copied row, text editor doesn't work
  * Fixed: On an imported template, at the first moment the tools are not correctly visible
  * Fixed: On an import template, text editor doesn't work

@@ -384,7 +384,7 @@ var Rexbuilder_Section = (function($) {
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
     }
-  }
+  };
 
   function handleBuilderDeleteRow(e) {
     var $section = $(e.currentTarget).parents(".rexpansive_section");

@@ -4,6 +4,7 @@
 	<changelog>
 		<![CDATA[
 			<h4><strong>v2.0.5</strong> – </h4>
+			<p><strong>Fixed</strong>: Grid on mobile and reset row properties</p>
 			<p><strong>Fixed</strong>: On a copied row, text editor doesn't work</p>
 			<p><strong>Fixed</strong>: On an imported template, at the first moment the tools are not correctly visible</p>
 			<p><strong>Fixed</strong>: On an imported template, text editor doesn't work</p>
