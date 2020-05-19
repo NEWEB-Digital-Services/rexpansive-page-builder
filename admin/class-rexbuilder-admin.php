@@ -473,7 +473,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-resynch-content', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Resynch_Content_Modal.js', array( 'jquery' ), null, true );
 
 				// elements and form logics
-				wp_enqueue_script( 'Rexlive-Element-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Element_Import.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'Rexlive-Element-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Form_Import.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Element-Choose', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Element_Choose.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Wpcf7-Add-Content', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Wpcf7_Add_Content.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Wpcf7-Edit-Content', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Wpcf7_Edit_Content.js', array( 'jquery' ), null, true );

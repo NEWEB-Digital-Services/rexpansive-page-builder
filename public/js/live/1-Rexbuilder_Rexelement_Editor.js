@@ -9,7 +9,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 	/**
 	 * Fixes the dragged element in the DOM. Called right after
-	 * the drag & drop event in Rexlive_Element_Import.js
+	 * the drag & drop event in Rexlive_Form_Import.js
 	 * @param		{Object}	data	Contains mouse position of the drop.
 	 * @since 	2.0.4
 	 */

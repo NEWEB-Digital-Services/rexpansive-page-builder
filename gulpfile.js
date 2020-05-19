@@ -170,7 +170,7 @@ var builderlive_admin = [
 	'admin/js/builderlive/Rexlive_Model_Import.js',
 	'admin/js/builderlive/Rexlive_Button_Import.js',
 	'admin/js/builderlive/Rexlive_Edit_Button.js',
-	'admin/js/builderlive/Rexlive_Element_Import.js',
+	'admin/js/builderlive/Rexlive_Form_Import.js',
 	'admin/js/builderlive/Rexlive_Element_Choose.js',
 	'admin/js/builderlive/Rexlive_Wpcf7_Add_Content.js',
 	'admin/js/builderlive/Rexlive_Wpcf7_Edit_Content.js',

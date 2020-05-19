@@ -1,11 +1,7 @@
 var Element_Import_Modal = (function ($) {
 	'use strict';
 	var element_import_props;
-	var image_uploader_frame_direct; //used for the media library opener
-
-	/////////////////////////////////////////////////////////////////////
-	/// FUNCTIONS THAT USE AJAX CALLS
-	/////////////////////////////////////////////////////////////////////
+	var image_uploader_frame_direct; // Used for the media library opener
 
 	/**
 	 * Updates the element list using an AJAX call.
@@ -23,51 +19,63 @@ var Element_Import_Modal = (function ($) {
 			},
 			success: function (response) {
 				if (response.success) {
-					var currentList = [];
-					element_import_props.$self.find('.element-list__element').each(function (i, element) {
-						var elementID = $(element).attr('data-rex-element-id');
-						var elementObj = {
-							id: elementID,
-							founded: false
-						};
-						currentList.push(elementObj);
-					});
+					$(element_import_props.loadingPlaceholder).addClass('loading-placeholder--hidden');
 
 					var updatedList = response.data.updated_list;
 
-					for (var i = 0; i < updatedList.length; i++) {
-						updatedList[i].founded = false;
-					}
+					if (0 === updatedList.length) {
+						$(element_import_props.message).removeClass('lateral-menu-message--hidden');
+					} else {
+						$(element_import_props.message).addClass('lateral-menu-message--hidden');
 
-					for (var i = 0; i < updatedList.length; i++) {
-						for (var j = 0; j < currentList.length; j++) {
-							if (updatedList[i].id == currentList[j].id) {
-								updatedList[i].founded = true;
-								currentList[j].founded = true;
-								break;
+						var currentList = [];
+
+						element_import_props.$self.find('.element-list__element').each(function (i, element) {
+							var elementID = $(element).attr('data-rex-element-id');
+							var elementObj = {
+								id: elementID,
+								found: false
+							};
+							currentList.push(elementObj);
+						});
+
+						for (var i = 0; i < updatedList.length; i++) {
+							updatedList[i].found = false;
+						}
+
+						for (var i = 0; i < updatedList.length; i++) {
+							for (var j = 0; j < currentList.length; j++) {
+								if (updatedList[i].id == currentList[j].id) {
+									updatedList[i].found = true;
+									currentList[j].found = true;
+									break;
+								}
 							}
 						}
-					}
 
-					tmpl.arg = 'element';
-					// for (var i = 0; i < updatedList.length; i++) {
-					//   if (!updatedList[i].founded) {
-					//     element_import_props.$self.find(".element-list").prepend(
-					//       tmpl("rexlive-tmpl-element-item-list", {
-					//         id: updatedList[i].id,
-					//         name: updatedList[i].name,
-					//         preview:
-					//         updatedList[i].preview_image_url != "" ? updatedList[i].preview_image_url : ""
-					//       })
-					//       ).find(".rex-element-wrapper").prepend(updatedList[i].element_data_html[0]);
-					//   }
-					// }
+						tmpl.arg = 'element';
+						for (var i = 0; i < updatedList.length; i++) {
+							if (!updatedList[i].found) {
+								element_import_props.$self
+									.find('.element-list')
+									.prepend(
+										tmpl('rexlive-tmpl-element-item-list', {
+											id: updatedList[i].id,
+											name: updatedList[i].name,
+											preview: updatedList[i].preview_image_url != '' ? updatedList[i].preview_image_url : ''
+										})
+									)
+									.find('.rex-element-wrapper')
+									.prepend(updatedList[i].element_data_html[0]);
+							}
+						}
 
-					for (var i = 0; i < currentList.length; i++) {
-						if (!currentList[i].founded) {
-							element_import_props.$self
-								.find('.element-list__element[data-rex-element-id="' + currentList[i].id + '"]')
-								.remove();
+						for (var i = 0; i < currentList.length; i++) {
+							if (!currentList[i].found) {
+								element_import_props.$self
+									.find('.element-list__element[data-rex-element-id="' + currentList[i].id + '"]')
+									.remove();
+							}
 						}
 					}
 
@@ -75,7 +83,6 @@ var Element_Import_Modal = (function ($) {
 					$(document).trigger(event);
 				}
 			},
-			error: function (response) {},
 			complete: function (response) {
 				element_import_props.$self.removeClass('rex-modal--loading');
 			}
@@ -144,8 +151,10 @@ var Element_Import_Modal = (function ($) {
 	 */
 	var _deleteElement = function (element) {
 		var element_id = element.getAttribute('data-rex-element-id');
+
 		if (element_id) {
 			var response = confirm(live_editor_obj.labels.rexelements.confirm_delete);
+
 			if (response) {
 				// prepare data to ajax request
 				var data = {
@@ -153,6 +162,7 @@ var Element_Import_Modal = (function ($) {
 					nonce_param: live_editor_obj.rexnonce,
 					element_id: element_id
 				};
+				
 				var endcodedData = Rexlive_Base_Settings.encodeData(data);
 
 				// prepare ajax request
@@ -164,12 +174,14 @@ var Element_Import_Modal = (function ($) {
 				request.onloadstart = function () {
 					element_import_props.$self.addClass('rex-modal--loading');
 				};
+
 				request.onload = function () {
 					if (request.status >= 200 && request.status < 400) {
 						element.style.display = 'none';
+						_checkIfShowMessage();
 					}
 				};
-				request.onerror = function () {};
+
 				request.onloadend = function () {
 					element_import_props.$self.removeClass('rex-modal--loading');
 				};
@@ -369,11 +381,42 @@ var Element_Import_Modal = (function ($) {
 		_deleteElementThumbnail(element_id);
 	};
 
+	function _checkIfShowMessage() {
+		var elements = element_import_props.$self.find('.element-list__element').get();
+
+		elements = elements.filter(function (element) {
+			return 'none' !== element.style.display;
+		});
+
+		if (0 === elements.length) {
+			$(element_import_props.loadingPlaceholder).addClass('loading-placeholder--hidden');
+			$(element_import_props.message).removeClass('lateral-menu-message--hidden');
+		}
+	}
+
+	function _linkListeners() {
+		element_import_props.importForms.addEventListener('click', function (clickEvent) {
+			clickEvent.stopPropagation();
+
+			// Show loading placeholder
+			$(element_import_props.message).addClass('lateral-menu-message--hidden');
+			$(element_import_props.loadingPlaceholder).removeClass('loading-placeholder--hidden');
+
+			// Caricare dal db alcuni form predefiniti
+
+			// Remove this
+			setTimeout(function () {
+				$(element_import_props.message).removeClass('lateral-menu-message--hidden');
+				$(element_import_props.loadingPlaceholder).addClass('loading-placeholder--hidden');
+			}, 3000);
+		});
+	}
+
 	/////////////////////////////////////////////////////////////////////////////////////////
 	/// FUNCTION FOR DRAG & DROP
 	/////////////////////////////////////////////////////////////////////////////////////////
 
-	var _linkDraggable = function () {
+	function _linkDraggable() {
 		var currentElement, currentElementChangeFlag, elementRectangle, countdown, dragoverqueue_processtimer;
 
 		var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow;
@@ -1071,17 +1114,6 @@ var Element_Import_Modal = (function ($) {
 				return $element.prop('tagName');
 			}
 		};
-	};
-
-	function _linkListeners() {
-		element_import_props.importForms.addEventListener('click', function (clickEvent) {
-			clickEvent.stopPropagation();
-
-			$(element_import_props.message).addClass('lateral-menu-message--hidden');
-			$(element_import_props.loadingPlaceholder).removeClass('loading-placeholder--hidden');
-
-
-		})
 	}
 
 	var _init = function () {
