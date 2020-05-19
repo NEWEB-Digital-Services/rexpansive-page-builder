@@ -170,7 +170,11 @@
 		margin: 10px 0;
 	}
 
-	&__body {
+	// &__body {}
+
+	&__body-element {
+		font-size: 16px;
+		margin: 0;
 		text-align: center;
 	}
 }
