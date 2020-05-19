@@ -1666,7 +1666,7 @@ class Rexbuilder_Public
 
 		$nav = get_post_meta(get_the_ID(), '_rex_navigation_type', true);
 
-		if ( !empty($nav) && !empty( Rexbuilder_Utilities::get_plugin_templates_path( 'rexbuilder-' . $nav . '-template.php', '' )) ) {
+		if ( !empty($nav) && !empty( Rexbuilder_Utilities::get_plugin_templates_path( 'rexbuilder-' . $nav . '-template.php', '' ) ) ) {
 			$rexbuilderShortcode = get_post_meta($post->ID, '_rexbuilder_shortcode', true);
 			
 			if ($rexbuilderShortcode == "") {
@@ -1677,16 +1677,24 @@ class Rexbuilder_Public
 			preg_match_all("/$pattern/", $rexbuilderShortcode, $content_shortcodes);
 			// Check for section titles; if no one has a title, don't display the navigation
 			$titles = array();
-			foreach ($content_shortcodes[3] as $attrs):
-				$x = shortcode_parse_atts(trim($attrs));
-				if (isset($x['section_name']) && $x['section_name'] != ''):
-					$titles[] = $x['section_name'];
-				endif;
-			endforeach;
+			$labels = array();
+			foreach ( $content_shortcodes[3] as $attrs ) {
+				$x = shortcode_parse_atts( trim($attrs) );
 
-			if ( count($titles) > 0 ) {
+				// retrieve section names
+				if ( isset( $x['section_name'] ) && $x['section_name'] != '' ) {
+					$titles[] = $x['section_name'];
+				}
+
+				// retrieve section nav labels
+				if ( isset( $x['section_nav_label'] ) && $x['section_nav_label'] != '' ) {
+					$labels[] = $x['section_nav_label'];
+				}
+			}
+
+			if ( count( $titles ) > 0 ) {
 				include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-' . $nav . '-template.php');
-			} else{
+			} else {
 				if ( Rexbuilder_Utilities::isBuilderLive() ){
 					?> 
 					<nav class="vertical-nav nav-editor-mode-enable">

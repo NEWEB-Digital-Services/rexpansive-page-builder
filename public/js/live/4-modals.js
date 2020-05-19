@@ -547,6 +547,12 @@
       );
     });
 
+    /**
+     * On section label change
+     * @param  {Event}
+     * @return {void}
+     * @since 2.0.5
+     */
     $document.on('rexlive:change_section_nav_label', function(e) {
       var data = e.settings.data_to_send;
       var $section;

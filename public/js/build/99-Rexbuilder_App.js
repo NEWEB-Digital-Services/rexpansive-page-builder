@@ -1307,6 +1307,8 @@ var Rexbuilder_App = (function($) {
       launchFrontEndEffects();
     }
 
+    Rex_Navigator.getNavigationDotsPosition();
+
   	Rexbuilder_Util.changedFrontLayout = false;
   }
 

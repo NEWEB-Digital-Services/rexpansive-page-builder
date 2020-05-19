@@ -14,22 +14,20 @@
 <nav class="vertical-nav">
 	<ul>
 	<?php
-		$i = 1;
-		foreach($titles as $title) :
-			if(!empty($title)) :
-				$id_nospaces = preg_replace('/[\W\s+]/', '-', $title);
-			?>
-			<li>
-				<a href="<?php echo '#' . $id_nospaces; ?>" class="vertical-nav-link not-smooth-anchor-scroll" data-number="<?php echo $i; ?>">
-					<span class="dot-cont">
-						<span class="dot"></span>
-					</span>
-				</a>
-			</li>
-			<?php
-				$i++;
-			endif;
-		endforeach;
+	foreach( $titles as $title_key => $title ) {
+		if( !empty( $title ) ) {
+			$id_nospaces = preg_replace('/[\W\s+]/', '-', $title);
+		?>
+		<li>
+			<a href="<?php echo '#' . $id_nospaces; ?>" class="vertical-nav-link not-smooth-anchor-scroll" data-number="<?php echo $title_key + 1; ?>"<?php echo ( isset( $labels[$title_key] ) ? ' data-section_nav_label="' . $labels[$title_key] . '"' : '' ); ?>>
+				<span class="dot-cont">
+					<span class="dot"></span>
+				</span>
+			</a>
+		</li>
+		<?php
+		}
+	}
 	?>
 	</ul>
 </nav>
