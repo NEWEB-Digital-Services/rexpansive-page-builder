@@ -622,58 +622,58 @@ defined('ABSPATH') or exit;
                                 <div class="rexbutton-count-column_6 margin-padding-area">
                                     <div class="rex-live__row-margin-padding block-padding-wrap">
                                         <div class="bl_d-flex bl_jc-c">
-                                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Top', 'rexpansive-builder' ); ?>">
-                                                <input type="text" id="wpcf7-button-margin-top" name="wpcf7-button-margin-top" class="block-padding-values" placeholder="20"/>
+                                            <div class="val-wrap bl_d-iflex bl_ai-c">
+                                                <input type="text" id="wpcf7-button-margin-top" name="wpcf7-button-margin-top" class="block-padding-values tippy" placeholder="20" data-tippy-content="<?php _e( 'Margin Top', 'rexpansive-builder' ); ?>"/>
                                                 <span class="bl_input-indicator">px</span>
                                             </div><!-- // Button Margin Top -->
                                         </div>
                                         <div class="bl_d-flex bl_ai-c bl_jc-sb">
                                             <div>
-                                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Left', 'rexpansive-builder' ); ?>">
-                                                    <input type="text" id="wpcf7-button-margin-left" name="wpcf7-button-margin-left" class="block-padding-values" placeholder="20"/>
+                                                <div class="val-wrap bl_d-iflex bl_ai-c">
+                                                    <input type="text" id="wpcf7-button-margin-left" name="wpcf7-button-margin-left" class="block-padding-values tippy" placeholder="20" data-tippy-content="<?php _e( 'Margin Left', 'rexpansive-builder' ); ?>"/>
                                                     <span class="bl_input-indicator">px</span>
                                                 </div><!-- // Button Margin Left -->
                                             </div>
                                             <div class="rex-live__row-padding-wrap">
                                                 <div class="bl_d-flex bl_jc-c">
-                                                    <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Top', 'rexpansive-builder' ); ?>">
-                                                        <input type="text" id="wpcf7-button-padding-top" name="wpcf7-button-padding-top" class="block-padding-values" placeholder="20"/>
+                                                    <div class="val-wrap bl_d-iflex bl_ai-c">
+                                                        <input type="text" id="wpcf7-button-padding-top" name="wpcf7-button-padding-top" class="block-padding-values tippy" placeholder="20" data-tippy-content="<?php _e( 'Padding Top', 'rexpansive-builder' ); ?>"/>
                                                         <span class="bl_input-indicator">px</span>
                                                     </div><!-- // Button Padding Top -->
                                                 </div>
                                                 <div class="bl_d-flex bl_ai-c bl_jc-sb">
                                                     <div class="zl_cfd_a">BUTTON</div>
                                                     <div>
-                                                        <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Left', 'rexpansive-builder' ); ?>">
-                                                            <input type="text" id="wpcf7-button-padding-left" name="wpcf7-button-padding-left" class="block-padding-values" placeholder="20"/>
+                                                        <div class="val-wrap bl_d-iflex bl_ai-c">
+                                                            <input type="text" id="wpcf7-button-padding-left" name="wpcf7-button-padding-left" class="block-padding-values tippy" placeholder="20" data-tippy-content="<?php _e( 'Padding Left', 'rexpansive-builder' ); ?>"/>
                                                             <span class="bl_input-indicator">px</span>
                                                         </div><!-- // Button Padding Left -->
                                                     </div>
                                                     <div class="rex-live__row-gutter-wrap bl_d-flex bl_jc-c bl_ai-c"></div>
                                                     <div>
-                                                        <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Right', 'rexpansive-builder' ); ?>">
-                                                            <input type="text" id="wpcf7-button-padding-right" name="wpcf7-button-padding-right" class="block-padding-values" placeholder="20"/>
+                                                        <div class="val-wrap bl_d-iflex bl_ai-c">
+                                                            <input type="text" id="wpcf7-button-padding-right" name="wpcf7-button-padding-right" class="block-padding-values tippy" placeholder="20" data-tippy-content="<?php _e( 'Padding Right', 'rexpansive-builder' ); ?>"/>
                                                             <span class="bl_input-indicator">px</span>
                                                         </div><!-- // Button Padding Right -->
                                                     </div>
                                                 </div>
                                                 <div class="bl_d-flex bl_jc-c">
-                                                    <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Bottom', 'rexpansive-builder' ); ?>">
-                                                        <input type="text" id="wpcf7-button-padding-bottom" name="wpcf7-button-padding-bottom" class="block-padding-values" placeholder="20"/>
+                                                    <div class="val-wrap bl_d-iflex bl_ai-c">
+                                                        <input type="text" id="wpcf7-button-padding-bottom" name="wpcf7-button-padding-bottom" class="block-padding-values tippy" placeholder="20" data-tippy-content="<?php _e( 'Padding Bottom', 'rexpansive-builder' ); ?>"/>
                                                         <span class="bl_input-indicator">px</span>
                                                     </div><!-- // Button Paddig Bottom -->
                                                 </div>
                                             </div>
                                             <div>
-                                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Right', 'rexpansive-builder' ); ?>">
-                                                    <input type="text" id="wpcf7-button-margin-right" name="wpcf7-button-margin-right" class="block-padding-values" placeholder="20"/>
+                                                <div class="val-wrap bl_d-iflex bl_ai-c">
+                                                    <input type="text" id="wpcf7-button-margin-right" name="wpcf7-button-margin-right" class="block-padding-values tippy" placeholder="20" data-tippy-content="<?php _e( 'Margin Right', 'rexpansive-builder' ); ?>"/>
                                                     <span class="bl_input-indicator">px</span>
                                                 </div><!-- //Button Margin Right -->
                                             </div>
                                         </div>
                                         <div class="bl_d-flex bl_jc-c">
-                                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Bottom', 'rexpansive-builder' ); ?>">
-                                                <input type="text" id="wpcf7-button-margin-bottom" name="wpcf7-button-margin-bottom" class="block-padding-values" placeholder="20"/>
+                                            <div class="val-wrap bl_d-iflex bl_ai-c">
+                                                <input type="text" id="wpcf7-button-margin-bottom" name="wpcf7-button-margin-bottom" class="block-padding-values tippy" placeholder="20" data-tippy-content="<?php _e( 'Margin Bottom', 'rexpansive-builder' ); ?>"/>
                                                 <span class="bl_input-indicator">px</span>
                                             </div><!-- //Button Margin Bottom -->
                                         </div>
