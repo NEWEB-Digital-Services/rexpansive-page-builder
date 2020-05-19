@@ -3941,11 +3941,12 @@ var Rexbuilder_Util = (function($) {
 		var collapseGrid = targets[0].props.collapse_grid;
 
     // right spot?
+    
     if ( -1 !== targets[0].props.custom_classes.indexOf('rex-block-grid') ) {
       collapseGrid = false;
-    } else {
+    } /**else {
       collapseGrid = true;
-    }
+    }**/
 
   	// Setting one column mode on the actual RexGrid instance
   	section.querySelector( '.section-data' ).setAttribute( 'data-collapse-grid', collapseGrid );

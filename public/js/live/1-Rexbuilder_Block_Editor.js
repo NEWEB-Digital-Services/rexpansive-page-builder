@@ -31,6 +31,8 @@ var Rexbuilder_Block_Editor = (function($) {
       var $itemContent = $elem.find(".grid-item-content");
       var $textcontent = $elem.find('.text-wrap');
 
+      var blockTextEmpty = textContentEmpty( $textcontent.get(0) );
+
       var tools = '';
       var $btn_container = $btn.parents('.rexlive-block-toolbox');
       if( $btn_container.hasClass('bottom-tools') ) {
@@ -60,7 +62,7 @@ var Rexbuilder_Block_Editor = (function($) {
           ? $elemData.attr("data-image_bg_elem_active")
           : true;
       var defaultTypeImage = $elem.parents(".grid-stack-row").attr("data-layout") == "fixed" ? "full" : "natural";
-      if ( '' !== $textcontent.text().trim() ) {
+      if ( ! blockTextEmpty ) {
         defaultTypeImage = 'full';
       }
 
@@ -68,10 +70,7 @@ var Rexbuilder_Block_Editor = (function($) {
         ( typeof $elemData.attr("data-type_bg_block") == "undefined" || "" == $elemData.attr("data-type_bg_block") )
           ? defaultTypeImage
           : $elemData.attr("data-type_bg_block");
-      var activePhotoswipe =
-        typeof $elemData.attr("data-photoswipe") == "undefined"
-          ? ""
-          : $elemData.attr("data-photoswipe");
+      var activePhotoswipe = typeof $elemData.attr("data-photoswipe") == "undefined" ? "" : $elemData.attr("data-photoswipe");
       var imageSize = typeof $elemData.attr("data-image_size") == "undefined" ? "" : $elemData.attr("data-image_size");
 
       var activeImage = true;
@@ -102,7 +101,7 @@ var Rexbuilder_Block_Editor = (function($) {
             photoswipe: activeImage ? activePhotoswipe : "",
             imageSize: activeImage ? imageSize :"",
             active: activeImage,
-            updateBlockHeight: true,
+            updateBlockHeight: ( blockTextEmpty ? true : false ),
             tools: tools,        
             sectionTarget: {
               sectionID: sectionID,
