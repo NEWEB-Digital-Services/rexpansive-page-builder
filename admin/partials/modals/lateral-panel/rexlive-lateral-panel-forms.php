@@ -10,7 +10,7 @@
 defined('ABSPATH') or exit;
 ?>
 <div id="rex-elements-list" class="rex-lateral-panel__content">
-	<?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/modals/rexlive-loader-modal.php'; ?>
+	<?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/modals/rexlive-loader-lateral-menu.php'; ?>
 	<div class="elements-list-wrapper rex-lateral-panel__list">
 		<ul class="element-list" itemscope itemtype="http://schema.org/ImageGallery">
 			<?php
@@ -64,18 +64,39 @@ defined('ABSPATH') or exit;
 					// There are no forms
 					?>
 					<div class="lateral-menu-message">
-						<div class="lateral-menu-message__icon-wrap"><?php Rexbuilder_Utilities::get_icon('#A013-Template-Import'); ?></div>
-						<p class="lateral-menu-message__warning"><?php _e( 'Warning!', 'rexpansive-builder' ); ?></p>
-						<span class="lateral-menu-message__body">There are no forms.</span>
+						<div id="import-forms" class="lateral-menu-message__icon-wrap 
+							lateral-menu-message__icon-wrap--rounded 
+							lateral-menu-message__icon-wrap--lightblue 
+							lateral-menu-message__icon-wrap--shadowed 
+							lateral-menu-message__icon-wrap--button
+							">
+							<?php Rexbuilder_Utilities::get_icon('#A013-Template-Import'); ?>
+						</div>
+
+						<p class="lateral-menu-message__header"><?php _e( 'Warning!', 'rexpansive-builder' ); ?></p>
+						<div class="lateral-menu-message__body">
+							<p class="lateral-menu-message__body-element">
+								<?php _e( 'No template present.', 'rexpansive-builder' ); ?> 
+							</p>
+
+							<p class="lateral-menu-message__body-element">
+								<strong><?php _e( 'Click on the icon', 'rexpansive-builder' ); ?></strong> <?php _e( 'to load', 'rexpansive-builder' ); ?>
+							</p>
+
+							<p class="lateral-menu-message__body-element">
+								<?php _e( 'the form templates.', 'rexpansive-builder' ); ?>
+							</p>
+						</div>
 					</div>
 				<?php
 				}
 			} else {
+				// The plugin is not active
 				?>
 				<div class="lateral-menu-message">
 					<div class="lateral-menu-message__icon-wrap"><?php Rexbuilder_Utilities::get_icon('#Z016-Warning'); ?></div>
-					<p class="lateral-menu-message__warning"><?php _e( 'Warning!', 'rexpansive-builder' ); ?></p>
-					<span class="lateral-menu-message__body">
+					<p class="lateral-menu-message__header"><?php _e( 'Warning!', 'rexpansive-builder' ); ?></p>
+					<div class="lateral-menu-message__body">
 						<p class="lateral-menu-message__body-element">
 							<?php _e( 'Activate', 'rexpansive-builder' ); ?> "<strong><?php _e( 'Contact Form 7', 'rexpansive-builder' ); ?></strong>"
 						</p>
@@ -87,7 +108,7 @@ defined('ABSPATH') or exit;
 						<p class="lateral-menu-message__body-element">
 							<?php _e( 'templates.', 'rexpansive-builder' ); ?>
 						</p>
-					</span>
+					</div>
 				</div>
 			<?php
 			}

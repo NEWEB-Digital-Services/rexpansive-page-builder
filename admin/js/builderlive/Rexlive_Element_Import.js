@@ -1073,17 +1073,34 @@ var Element_Import_Modal = (function ($) {
 		};
 	};
 
+	function _linkListeners() {
+		element_import_props.importForms.addEventListener('click', function (clickEvent) {
+			clickEvent.stopPropagation();
+
+			$(element_import_props.message).addClass('lateral-menu-message--hidden');
+			$(element_import_props.loadingPlaceholder).removeClass('loading-placeholder--hidden');
+
+
+		})
+	}
+
 	var _init = function () {
 		var $self = $('#rex-elements-list');
+
 		element_import_props = {
-			$self: $self
+			$self: $self,
+			message: $self.get(0).querySelector('.lateral-menu-message'),
+			loadingPlaceholder: $self.get(0).querySelector('.loading-placeholder'),
+			importForms: document.getElementById('import-forms')
 		};
 
+		_linkListeners();
 		_linkDraggable();
 	};
 
 	return {
 		init: _init,
+
 		// Functions that use Ajax calls
 		saveElementThumbnail: _saveElementThumbnail,
 		deleteElementThumbnail: _deleteElementThumbnail,

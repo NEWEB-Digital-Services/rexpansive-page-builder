@@ -499,3 +499,33 @@
 		}
 	}
 }
+
+@mixin flex-center {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@mixin loader-pulse($loader-pulse-size, $loader-pulse-color) {
+	.loader-pulse {
+		width: $loader-pulse-size;
+		height: $loader-pulse-size;
+		position: relative;
+
+		.loader-pulse__child {
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+			background-color: $loader-pulse-color;
+			opacity: 0.6;
+			position: absolute;
+			top: 0;
+			left: 0;
+			animation: doubleBounce 2.0s infinite ease-in-out;
+		}
+
+		.loader-pulse__child--delayed {
+			animation-delay: -1.0s;
+		}
+	}
+}
