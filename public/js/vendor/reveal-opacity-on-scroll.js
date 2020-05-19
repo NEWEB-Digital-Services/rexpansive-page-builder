@@ -167,8 +167,9 @@
 		return source;
 	}
 
-	window.addEventListener('resize', debounce( resizeHandler, 50 ) );
-	window.addEventListener('scroll', debounce( scrollHandler, 50 ));
+	window.addEventListener('resize', debounce( resizeHandler, 50 ));
+	// window.addEventListener('scroll', debounce( scrollHandler, 15, true ));
+	window.addEventListener('scroll', scrollHandler);
 
 	return RevealOpacityOnScroll;
 });

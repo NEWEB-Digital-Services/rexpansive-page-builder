@@ -39,6 +39,7 @@ class Rexbuilder_Section {
 	public function render_section( $atts, $content = null ) {
 		$parsed_atts = shortcode_atts( array(
 			"section_name" => "",
+			"section_nav_label" => "",
 			"type" => "perfect-grid",
 			"color_bg_section" => "#ffffff",
 			"dimension" => "boxed",

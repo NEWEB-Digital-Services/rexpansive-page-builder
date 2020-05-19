@@ -206,6 +206,7 @@ For the more experienced among us: you can insert CSS anywhere.
  * Fixed: On an import template, text editor doesn't work
  * Update: Photoswipe on a RexSlider opens only the images in the slider
  * Update: Change a row or a block property on layouts different from default, saves only that property, leaving the other properties synchronized with the default ones
+ * Add: Row label, to customize the navigator labels
  * Add: Reset button on rows and blocks to reset their properties with the default
  * Add: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. old forms will not be affected
 
