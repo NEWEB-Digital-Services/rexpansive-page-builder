@@ -261,11 +261,14 @@ var RexSlider = (function ($) {
     if ($(slider_class, context).length) {
       $(slider_class, context).each(function (i, el) {
         var flktyInstance = Flickity.data(el);
-        if (flktyInstance) {
+        if (flktyInstance && flktyInstance.autoPlay) {
+          flktyInstance.playPlayer();
+          /*
           var auto_player = el.getAttribute('data-rex-slider-animation');
           if ('undefined' != typeof auto_player && 'true' == auto_player) {
             flktyInstance.playPlayer();
           }
+          */
         }
       });
     }

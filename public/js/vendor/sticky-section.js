@@ -552,7 +552,8 @@
 	// Invoking global Events watchers
 	// _watchScroll();
 	// _watchResize(); 
-  window.addEventListener('scroll', debounce( scrollHandler, 50 ));
+  // window.addEventListener('scroll', debounce( scrollHandler, 50, true ));
+  window.addEventListener('scroll', debounce( scrollHandler, 15, true ));
   window.addEventListener('resize', debounce( resizeHandler, 50 ));
 
 

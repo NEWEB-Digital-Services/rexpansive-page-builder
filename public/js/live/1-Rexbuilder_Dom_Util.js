@@ -861,6 +861,10 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
+  var _updateSectionNavLabel = function($section, newNavLabel) {
+    $section.children('.section-data').attr("data-section_nav_label", newNavLabel);
+  };
+
   /**
    * Reordering the DOM
    * @param  {Array} newOrder     array of sections
@@ -2342,6 +2346,7 @@ var Rexbuilder_Dom_Util = (function($) {
     updateSlider: _updateSlider,
     updateSliderStack: _updateSliderStack,
     updateSectionName: _updateSectionName,
+    updateSectionNavLabel: _updateSectionNavLabel,
     enablePhotoswipeAllBlocksSection: _enablePhotoswipeAllBlocksSection,
     removePhotoswipeAllBlocksSection: _removePhotoswipeAllBlocksSection,
     updateCustomClasses: _updateCustomClasses,

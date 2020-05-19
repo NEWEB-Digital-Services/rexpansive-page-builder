@@ -82,75 +82,66 @@ defined('ABSPATH') or exit;
                 <div class="bl_modal__option-wrap">
                     <div class="rex-live__row-margin-padding block-padding-wrap">
                         <div class="bl_d-flex bl_jc-c">
-                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Top', 'rexpansive-builder' ); ?>">
-                                <input type="text" size="5" id="row-margin-top" class="block-padding-values" name="row-margin-top" value=""
-                                    placeholder="0" />
+                            <div class="val-wrap bl_d-iflex bl_ai-c">
+                                <input type="text" size="5" id="row-margin-top" class="block-padding-values tippy" name="row-margin-top" value="" placeholder="0" data-tippy-content="<?php _e( 'Margin Top', 'rexpansive-builder' ); ?>" />
                                 <span class="bl_input-indicator">px</span>
                             </div><!-- // row margin top -->
                         </div>
                         <div class="bl_d-flex bl_ai-c bl_jc-sb">
                             <div>
-                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Left', 'rexpansive-builder' ); ?>">
-                                    <input type="text" size="5" id="row-margin-left" class="block-padding-values" name="row-margin-left" value=""
-                                        placeholder="0" />
+                                <div class="val-wrap bl_d-iflex bl_ai-c">
+                                    <input type="text" size="5" id="row-margin-left" class="block-padding-values tippy" name="row-margin-left" value="" placeholder="0" data-tippy-content="<?php _e( 'Margin Left', 'rexpansive-builder' ); ?>" />
                                     <span class="bl_input-indicator">px</span>
                                 </div><!-- // row margin left -->
                             </div>
                             <div class="rex-live__row-padding-wrap">
                                 <div class="bl_d-flex bl_jc-c">
-                                    <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Top', 'rexpansive-builder' ); ?>">
-                                        <input type="text" size="5" id="row-separator-top" class="block-padding-values" name="row-separator-top"
-                                            value="" placeholder="" />
+                                    <div class="val-wrap bl_d-iflex bl_ai-c">
+                                        <input type="text" size="5" id="row-separator-top" class="block-padding-values tippy" name="row-separator-top" value="" placeholder="" data-tippy-content="<?php _e( 'Padding Top', 'rexpansive-builder' ); ?>" />
                                         <span class="bl_input-indicator">px</span>
                                     </div><!-- // row padding top -->
                                 </div>
                                 <div class="bl_d-flex bl_ai-c bl_jc-sb">
                                     <div>
-                                        <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Left', 'rexpansive-builder' ); ?>">
-                                            <input type="text" size="5" id="row-separator-left" class="block-padding-values" name="row-separator-left"
-                                                value="" placeholder="" />
+                                        <div class="val-wrap bl_d-iflex bl_ai-c">
+                                            <input type="text" size="5" id="row-separator-left" class="block-padding-values tippy" name="row-separator-left" value="" placeholder="" data-tippy-content="<?php _e( 'Padding Left', 'rexpansive-builder' ); ?>" />
                                             <span class="bl_input-indicator">px</span>
                                         </div><!-- // row padding left -->
                                     </div>
                                     <div class="rex-live__row-gutter-wrap bl_d-flex bl_jc-c bl_ai-c">
                                         <div class="rex-live__gutter-wrap--xaxis"></div>
                                         <div class="rex-live__row-gutter bl_d-flex bl_jc-c bl_ai-c">
-                                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Gutter', 'rexpansive-builder' ); ?>">
-                                                <input type="text" size="5" id="" class="section-set-block-gutter block-padding-values" name="section-set-block-gutter"
-                                                    value="" placeholder="" size="15">
+                                            <div class="val-wrap bl_d-iflex bl_ai-c">
+                                                <input type="text" size="5" id="" class="section-set-block-gutter block-padding-values tippy" name="section-set-block-gutter" value="" placeholder="" data-tippy-content="<?php _e( 'Gutter', 'rexpansive-builder' ); ?>">
                                                 <span class="bl_input-indicator">px</span>
                                             </div><!-- // row gutter -->
                                         </div>
                                         <div class="rex-live__gutter-wrap--yaxis"></div>
                                     </div>
                                     <div>
-                                        <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Right', 'rexpansive-builder' ); ?>">
-                                            <input type="text" size="5" id="row-separator-right" class="block-padding-values" name="row-separator-right"
-                                                value="" placeholder="" />
+                                        <div class="val-wrap bl_d-iflex bl_ai-c">
+                                            <input type="text" size="5" id="row-separator-right" class="block-padding-values tippy" name="row-separator-right" value="" placeholder="" data-tippy-content="<?php _e( 'Padding Right', 'rexpansive-builder' ); ?>" />
                                             <span class="bl_input-indicator">px</span>
                                         </div><!-- // row padding right -->
                                     </div>
                                 </div>
                                 <div class="bl_d-flex bl_jc-c">
-                                    <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Bottom', 'rexpansive-builder' ); ?>">
-                                        <input type="text" size="5" id="row-separator-bottom" class="block-padding-values" name="row-separator-bottom"
-                                            value="" placeholder="" />
+                                    <div class="val-wrap bl_d-iflex bl_ai-c">
+                                        <input type="text" size="5" id="row-separator-bottom" class="block-padding-values tippy" name="row-separator-bottom" value="" placeholder="" data-tippy-content="<?php _e( 'Padding Bottom', 'rexpansive-builder' ); ?>" />
                                         <span class="bl_input-indicator">px</span>
                                     </div><!-- // row paddig bottom -->
                                 </div>
                             </div>
                             <div>
-                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Right', 'rexpansive-builder' ); ?>">
-                                    <input type="text" size="5" id="row-margin-right" class="block-padding-values" name="row-margin-right" value=""
-                                        placeholder="0" />
+                                <div class="val-wrap bl_d-iflex bl_ai-c">
+                                    <input type="text" size="5" id="row-margin-right" class="block-padding-values tippy" name="row-margin-right" value="" placeholder="0" data-tippy-content="<?php _e( 'Margin Right', 'rexpansive-builder' ); ?>" />
                                     <span class="bl_input-indicator">px</span>
                                 </div><!-- //row margin right -->
                             </div>
                         </div>
                         <div class="bl_d-flex bl_jc-c">
-                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Bottom', 'rexpansive-builder' ); ?>">
-                                <input type="text" size="5" id="row-margin-bottom" class="block-padding-values" name="row-margin-bottom" value=""
-                                    placeholder="0" />
+                            <div class="val-wrap bl_d-iflex bl_ai-c">
+                                <input type="text" size="5" id="row-margin-bottom" class="block-padding-values tippy" name="row-margin-bottom" value="" placeholder="0" data-tippy-content="<?php _e( 'Margin Bottom', 'rexpansive-builder' ); ?>" />
                                 <span class="bl_input-indicator">px</span>
                             </div><!-- //row margin bottom -->
                         </div>
@@ -225,25 +216,36 @@ defined('ABSPATH') or exit;
 
             <div class="id-class-row-wrap bl_modal-row">
                 <div class="bl_modal__option-wrap">
-                    <div id="rex-config-id" class="input-field rex-input-prefixed tippy"  data-tippy-content="<?php _e( 'Section Name', 'rexpansive-builder' ); ?>">
+                    <div id="rex-config-id" class="input-field rex-input-prefixed">
                         <!-- <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php // _e('Section Name', 'rexpansive-builder');?>">B</i> -->
                         <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B013-Row-ID'); ?></span>
-                        <input type="text" id="sectionid-container" class="small-input" name="sectionid-container">
+                        <input type="text" id="sectionid-container" class="small-input tippy" name="sectionid-container" data-tippy-content="<?php _e( 'Section Name', 'rexpansive-builder' ); ?>">
                         <span class="rex-material-bar"></span>
                     </div>
                 </div>
                 <div class="bl_modal__option-wrap">
-                    <div id="section-set-class-wrap" class="input-field rex-input-prefixed tippy"  data-tippy-content="<?php _e( 'Custom Classes', 'rexpansive-builder' ); ?>">
+                    <div class="input-field rex-input-prefixed">
+                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B045-Row-Label'); ?></span>
+                        <input id="section-nav-label" name="section-nav-label" type="text" class="small-input tippy" data-tippy-content="<?php _e( 'Section Label', 'rexpansive-builder' ); ?>">
+                        <label for="section-nav-label"><?php _e( 'Label', 'rexpansive-builder' ); ?></label>
+                        <span class="rex-material-bar"></span>
+                    </div>
+                </div>
+            </div><!-- custom classes -->
+
+            <div class="bl_modal-row">
+                <div class="bl_modal__option-wrap">
+                    <div id="section-set-class-wrap" class="input-field rex-input-prefixed">
                         <!-- <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php // _e('Custom Class', 'rexpansive-builder');?>">e</i> -->
                         <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#A008-Code'); ?></span>
-                        <input type="text" id="section-set-custom-class" name="section-set-custom-class" class="small-input" value="" size="10">
+                        <input type="text" id="section-set-custom-class" name="section-set-custom-class" class="small-input tippy" value="" size="10" data-tippy-content="<?php _e( 'Custom Classes', 'rexpansive-builder' ); ?>">
                         <label for="section-set-custom-class">
                             <?php _e('Classes', 'rexpansive-builder');?>
                         </label>
                         <span class="rex-material-bar"></span>
                     </div>
                 </div>
-            </div><!-- custom classes -->
+            </div>
         </div>
     </div>
 </div><!-- Section settings -->

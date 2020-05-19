@@ -1239,6 +1239,7 @@ var Rex_Save_Listeners = (function($) {
 
   var createSectionProperties = function($section, mode, newID) {
     var section_name = "",
+      section_nav_label = '',
       type = "perfect-grid",
       color_bg_section = "#ffffff",
       color_bg_section_active = "true",
@@ -1289,6 +1290,8 @@ var Rex_Save_Listeners = (function($) {
     var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
 
     section_name = section.getAttribute("data-rexlive-section-name");
+
+    section_nav_label = null === sectionData.getAttribute('data-section_nav_label') ? '' : sectionData.getAttribute('data-section_nav_label');
 
     type = sectionData.getAttribute("data-type") === null ? "perfect-grid" : sectionData.getAttribute("data-type");
 
@@ -1407,6 +1410,7 @@ var Rex_Save_Listeners = (function($) {
       output =
         "[RexpansiveSection" +
         ' section_name="' + section_name + '"' + 
+        ' section_nav_label="' + section_nav_label + '"' +
         ' type="' + type + '"' + 
         ' color_bg_section="' + color_bg_section + '"' + 
         ' color_bg_section_active="' + color_bg_section_active + '"' + 
@@ -1457,6 +1461,7 @@ var Rex_Save_Listeners = (function($) {
       output += fillGridEmptySpaces(galleryIstance);
 
       output += "[/RexpansiveSection]";
+      console.log(output)
       return output;
     } else if (mode == "customLayout") {
 
@@ -1468,6 +1473,9 @@ var Rex_Save_Listeners = (function($) {
       props["grid_cell_width"] = grid_cell_width;
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.section_name ) ) {
         props["section_name"] = section_name;
+      }
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.section_nav_label ) ) {
+        props["section_nav_label"] = section_nav_label;
       }
       props["type"] = type;
       // default always save, otherwise check
@@ -1569,6 +1577,7 @@ var Rex_Save_Listeners = (function($) {
       props["rexlive_model_id"] = rexlive_model_id;
       props["rexlive_model_name"] = rexlive_model_name;
       props["section_edited"] = true;
+      console.log(props)
       return props;
     }
   };

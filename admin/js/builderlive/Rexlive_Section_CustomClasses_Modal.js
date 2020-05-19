@@ -65,29 +65,29 @@ var Section_CustomClasses_Modal = (function ($) {
         }
 
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_customClasses);
-    }
+    };
 
     var _getData = function () {
         var newClasses = custom_classes_modal_properties.$classes.val();
         newClasses += hiddenClasses;
         return newClasses;
-    }
+    };
 
     var _linkDocumentListeners = function () {
         custom_classes_modal_properties.$classes.blur(_apply);
-    }
+    };
 
     var _init = function ($container) {
         custom_classes_modal_properties = {
             // ID and navigator configuration
             $classes: $container.find('#section-set-custom-class'),
-        }
+        };
 
         defaultClasses = "";
 
         _reset();
         _linkDocumentListeners();
-    }
+    };
 
     return {
         init: _init,        // C
