@@ -25,17 +25,20 @@
 	}
 
 	.tools-area {
-		// padding: 10px;
-		padding: 10px 3px 10px 10px;
+		padding: 10px;
 		border-radius: 15px;
 		opacity: 0;
 		max-height: 33px;
 		transition: box-shadow 300ms;
 
+		&--right-small {
+			padding-right: 3px;
+		}
+
 		&.tool-area--side {
 			background-color: $palette-color-4;
 			animation-delay: 300ms;
-			// transition-delay: 300ms;
+			
 			.tool-button--flat {
 				&:hover {
 					@include fill-icon(rgba(255, 255, 255, 0.5));
