@@ -6,6 +6,12 @@
   }
 }
 
+@mixin style-icon {
+	.l-svg-icons > svg {
+		@content;
+  }
+}
+
 @mixin clearfix() {
   &:after {
     content: "";

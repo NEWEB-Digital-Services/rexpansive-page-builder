@@ -61,13 +61,22 @@ defined('ABSPATH') or exit;
 						<?php
 					}
 				} else {
-					// There are no forms. Show a message?
+					// There are no forms
+					?>
+					<div class="lateral-menu-message">
+						<div class="lateral-menu-message__icon-wrap"><?php Rexbuilder_Utilities::get_icon('#Z016-Warning'); ?></div>
+						<p class="lateral-menu-message__warning">Warning!</p>
+						<span class="lateral-menu-message__body">There are no forms.</span>
+					</div>
+				<?php
 				}
 			} else {
 				?>
-							<span>warning! 
-
-			Attivare plugin contact form 7 per abilitare i form</span>
+				<div class="lateral-menu-message">
+					<div class="lateral-menu-message__icon-wrap"><?php Rexbuilder_Utilities::get_icon('#Z016-Warning'); ?></div>
+					<p class="lateral-menu-message__warning">Warning!</p>
+					<span class="lateral-menu-message__body">Activate "<strong>Contact Form 7</strong>"<br/>plugin to enable form<br/> templates.</span>
+				</div>
 			<?php
 			}
 			?>

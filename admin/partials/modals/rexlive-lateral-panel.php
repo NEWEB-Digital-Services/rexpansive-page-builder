@@ -29,6 +29,6 @@ defined('ABSPATH') or exit;
 	<div id="rex-lateral-tabs" class="tabgroup">
 		<?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/modals/lateral-panel/rexlive-lateral-panel-models.php'; ?>
 		<?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/modals/lateral-panel/rexlive-lateral-panel-buttons.php'; ?>
-		<?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/modals/lateral-panel/rexlive-lateral-panel-elements.php'; ?>
+		<?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/modals/lateral-panel/rexlive-lateral-panel-forms.php'; ?>
 	</div>
 </div>

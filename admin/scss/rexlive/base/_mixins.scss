@@ -21,11 +21,18 @@
   }
 }
 
+// Icons mixins
 @mixin fill-icon( $color ) {
   // .l-svg-icons,
   .l-svg-icons > svg {
     fill: $color;
     // stroke: $btn-base-color;
+  }
+}
+
+@mixin style-icon {
+	.l-svg-icons > svg {
+		@content;
   }
 }
 
