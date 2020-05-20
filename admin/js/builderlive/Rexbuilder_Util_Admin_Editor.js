@@ -1792,6 +1792,29 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 		}
 	}
 
+	/**
+	 * Displays in an alert and in the console errors of a jQuery AJAX request.
+	 * @param	{Object}	errorsObj				Object containing the arguments of an error of a jQuery AJAX request
+	 * @param	{String}	alertMessage		Will be displayed in an alert
+	 * @param	{String}	consoleMessage	[OPTIONAL] Will be displayed in the console, together with error info, as an error
+	 * @since	2.0.5
+	 */
+	function displayAjaxError(errorsObj, alertMessage, consoleMessage) {
+		consoleMessage = consoleMessage || '[Rexpansive] Something went wrong with your AJAX request.';
+
+		if (!/^\[Rexpansive\]/.test(consoleMessage)) {
+			consoleMessage = '[Rexpansive] ' + consoleMessage;
+		}
+
+		alert(alertMessage);
+
+		console.error(consoleMessage, {
+			status: errorsObj.response.status,
+			message: errorsObj.textStatus,
+			errorThrown: errorsObj.errorThrown
+		});
+	}
+
   // init the utilities
   var init = function() {
     this.$body = $('body');
@@ -1931,6 +1954,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 		forceTriggerLoad: _forceTriggerLoad,
 		searchFocusedElement: searchFocusedElement,
 		hideLateralMenu: hideLateralMenu,
-		checkLateralMenu: checkLateralMenu
+		checkLateralMenu: checkLateralMenu,
+		displayAjaxError: displayAjaxError
   };
 })(jQuery);

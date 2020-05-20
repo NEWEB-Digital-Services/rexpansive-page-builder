@@ -38,13 +38,10 @@ var Element_Import_Modal = (function ($) {
 				$(document).trigger(event);
 			},
 			error: function (response, textStatus, errorThrown) {
-				alert('Something went wrong when trying to load the Contact Forms. Please try again.');
-
-				console.error('[Rexpansive] Something went wrong with your AJAX request.', {
-					status: response.status,
-					message: textStatus,
-					errorThrown: errorThrown
-				});
+				Rexbuilder_Util_Admin_Editor.displayAjaxError(
+					{ response: response, textStatus: textStatus, errorThrown: errorThrown },
+					'Something went wrong when trying to load the Contact Forms. Please try again.'
+				);
 			},
 			complete: function () {
 				elementImportProps.$self.removeClass('rex-modal--loading');
@@ -424,13 +421,10 @@ var Element_Import_Modal = (function ($) {
 			error: function (response, textStatus, errorThrown) {
 				$(elementImportProps.noFormsMessage).removeClass('lateral-menu-message--hidden');
 
-				alert('Something went wrong when trying to import the Contact Forms. Please try again.');
-
-				console.error('[Rexpansive] Something went wrong with your AJAX request.', {
-					status: response.status,
-					message: textStatus,
-					errorThrown: errorThrown
-				});
+				Rexbuilder_Util_Admin_Editor.displayAjaxError(
+					{ response: response, textStatus: textStatus, errorThrown: errorThrown },
+					'Something went wrong when trying to import the Contact Forms. Please try again after refreshing the page.'
+				);
 			},
 			complete: function () {
 				$(elementImportProps.loadingPlaceholder).addClass('loading-placeholder--hidden');
