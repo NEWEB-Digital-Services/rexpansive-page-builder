@@ -3785,8 +3785,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @since		2.0.5
 	 */
 	public function rex_load_default_forms() {
-		// $nonce = $_POST['nonce_param'];
-		$nonce = $_GET['nonce_param'];
+		$nonce = $_POST['nonce_param'];
 
 		$response = array();
 
