@@ -1779,7 +1779,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
 	/**
 	 * Controls either the mouse x coord and if the lateral menu is open.
-	 * Opens / hides the laterl menu depending on the conditions.
+	 * Opens/hides the laterl menu depending on the conditions.
 	 * @param		{Number}	mouseX	X coordinate of the mouse
 	 * @returns	{void}
 	 * @since		2.0.5

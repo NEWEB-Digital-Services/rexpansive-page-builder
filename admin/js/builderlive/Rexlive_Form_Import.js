@@ -38,10 +38,12 @@ var Element_Import_Modal = (function ($) {
 				$(document).trigger(event);
 			},
 			error: function (response, textStatus, errorThrown) {
-				Rexbuilder_Util_Admin_Editor.displayAjaxError(
-					{ response: response, textStatus: textStatus, errorThrown: errorThrown },
-					'Something went wrong when trying to load the Contact Forms. Please try again.'
-				);
+				// if ('F001' === errorThrown) return;
+
+				// Rexbuilder_Util_Admin_Editor.displayAjaxError(
+				// 	{ response: response, textStatus: textStatus, errorThrown: errorThrown },
+				// 	'Something went wrong when trying to load the Contact Forms. Please try again.'
+				// );
 			},
 			complete: function () {
 				elementImportProps.$self.removeClass('rex-modal--loading');
