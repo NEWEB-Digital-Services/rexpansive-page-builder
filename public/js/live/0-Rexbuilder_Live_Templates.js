@@ -56,7 +56,7 @@ var Rexbuilder_Live_Templates = (function() {
 								'</svg>' +
 							'</i>' +
 						'</div>' +
-						'<div class="wpcf7-select-columns-number">' +
+						'<div class="wpcf7-select-columns wpcf7-select-columns--bottom">' +
 							'<ul>' +
 								'<li>' +
 									'<button type="button" class="wpcf7-form-button wpcf7-column-selector select-1-column" data-operation="addSelectedColumns">' +
@@ -104,7 +104,7 @@ var Rexbuilder_Live_Templates = (function() {
 					'</div>';
 			case 'wpcf7-row-tools':
 				return '<div class="rexwpcf7-row-tools" contenteditable="false">' +
-						'<div class="tool-button rex-wpcf7-row-drag tippy" data-tippy-content="' + _plugin_frontend_settings.labels.drag + '" tabindex="0">' +
+						'<div class="tool-button rex-wpcf7-row-drag tippy" data-tippy-content="' + _plugin_frontend_settings.labels.drag + '" >' +
 							'<i class="l-svg-icons">' +
 								'<svg>' +
 									'<use xlink:href="#B007-Move">' +
@@ -112,7 +112,7 @@ var Rexbuilder_Live_Templates = (function() {
 								'</svg>' +
 							'</i>' +
 						'</div>' +
-						'<div class="tool-button wpcf7-form-button rex-wpcf7-row-clone tippy" data-tippy-content="' + _plugin_frontend_settings.labels.clone + '" data-operation="cloneRow" tabindex="0">' +
+						'<div class="tool-button wpcf7-form-button rex-wpcf7-row-clone tippy" data-tippy-content="' + _plugin_frontend_settings.labels.clone + '" data-operation="cloneRow" >' +
 							'<i class="l-svg-icons">' +
 								'<svg>' +
 									'<use xlink:href="#Z004-Copy">' +
@@ -120,7 +120,7 @@ var Rexbuilder_Live_Templates = (function() {
 								'</svg>' +
 							'</i>' +
 						'</div>' +
-						'<div class="tool-button tool-button--black wpcf7-form-button rex-wpcf7-row-delete tippy" data-tippy-content="' + _plugin_frontend_settings.labels.delete + '" data-operation="deleteRow" tabindex="0">'+
+						'<div class="tool-button tool-button--black wpcf7-form-button rex-wpcf7-row-delete tippy" data-tippy-content="' + _plugin_frontend_settings.labels.delete + '" data-operation="deleteRow" >'+
 							'<i class="l-svg-icons">'+
 								'<svg>'+
 									'<use xlink:href="#Z003-Close">'+
@@ -165,7 +165,60 @@ var Rexbuilder_Live_Templates = (function() {
 				return '<span class="wpcf7-form-control-wrap"></span>';
 			case 'rexelement-tools':
 				return '<div contenteditable="false" class="rexelement-tools">' +
-					'<div class="tool-button tool-button--blue wpcf7-form-button rex-edit-element tippy" data-tippy-content="' + _plugin_frontend_settings.labels[data.settingsType] + '" data-operation="editElement" tabindex="0">' +
+					'<div class="wpcf7-select-columns wpcf7-select-columns--top">' +
+						'<ul>' +
+							'<li>' +
+								'<button type="button" class="wpcf7-form-button wpcf7-column-selector select-1-column" data-operation="addSelectedColumns">' +
+									'<i class="l-svg-icons">' +
+										'<svg>' +
+											'<use xlink:href="#B041-One-Column">' +
+											'</use>' +
+										'</svg>' +
+									'</i>' +
+								'</button>' +
+							'</li>' +
+							'<li>' +
+								'<button type="button" class="wpcf7-form-button wpcf7-column-selector select-2-columns" data-operation="addSelectedColumns">' +
+									'<i class="l-svg-icons">' +
+										'<svg>' +
+											'<use xlink:href="#B042-Two-Columns">' +
+											'</use>' +
+										'</svg>' +
+									'</i>' +
+								'</button>' +
+							'</li>' +
+							'<li>' +
+								'<button type="button" class="wpcf7-form-button wpcf7-column-selector select-3-columns" data-operation="addSelectedColumns">' +
+									'<i class="l-svg-icons">' +
+										'<svg>' +
+											'<use xlink:href="#B043-Three-Columns">' +
+
+											'</use>' +
+										'</svg>' +
+									'</i>' +
+								'</button>' +
+							'</li>' +
+							'<li>' +
+								'<button type="button" class="wpcf7-form-button wpcf7-column-selector select-4-columns" data-operation="addSelectedColumns">' +
+									'<i class="l-svg-icons">' +
+										'<svg>' +
+											'<use xlink:href="#B044-Four-Columns">' +
+											'</use>' +
+										'</svg>' +
+									'</i>' +
+								'</button>' +
+							'</li>' +
+						'</ul>' +
+					'</div>' +
+					'<div class="tool-button tool-button--blue wpcf7-form-button rex-add-row tippy" data-tippy-content="Add Row" data-operation="addRowTop">' +
+						'<i class="l-svg-icons">' +
+							'<svg>' +
+								'<use xlink:href="#Z001-Plus">' +
+								'</use>' +
+							'</svg>' +
+						'</i>' +
+					'</div>' +
+					'<div class="tool-button wpcf7-form-button rex-edit-element tippy" data-tippy-content="' + _plugin_frontend_settings.labels[data.settingsType] + '" data-operation="editElement" >' +
 						'<i class="l-svg-icons">' +
 							'<svg>' +
 								'<use xlink:href="#Z005-Setting">' +
@@ -173,7 +226,7 @@ var Rexbuilder_Live_Templates = (function() {
 							'</svg>' +
 						'</i>' +
 					'</div>' +
-					'<div class="tool-button tool-button--black wpcf7-form-button rex-delete-element tippy" data-tippy-content="' + _plugin_frontend_settings.labels.delete + '" data-operation="deleteElement" tabindex="0">' +
+					'<div class="tool-button tool-button--black wpcf7-form-button rex-delete-element tippy" data-tippy-content="' + _plugin_frontend_settings.labels.delete + '" data-operation="deleteElement" >' +
 						'<i class="l-svg-icons">' +
 							'<svg>' +
 								'<use xlink:href="#Z003-Close">' +

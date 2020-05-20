@@ -19,73 +19,78 @@
 			display: block;
 		}
 	}
+}
 
-	.wpcf7-select-columns-number {
-		width: 500px;
-		display: none;
+.wpcf7-select-columns {
+	width: 500px;
+	display: none;
+	position: absolute;
+	top: 50px;
+	justify-content: center;
+
+	&--top {
+		width: 100%;
+		top: 31px;
+	}
+
+	&::before {
+		border-style: solid;
+		content: '';
+		width: 0;
+		height: 0;
+		display: block;
 		position: absolute;
-		top: 50px;
-		justify-content: center;
+		top: -8px;
+		left: 50%;
+		margin-left: -8px;
 
-		&::before {
-			border-style: solid;
-			content: '';
-			width: 0;
-			height: 0;
-			display: block;
-			position: absolute;
-			top: -8px;
-			left: 50%;
-			margin-left: -8px;
+		border-width: 0 8px 8px 8px;
+		border-top-color: transparent;
+		border-right-color: transparent;
+		border-bottom-color: $palette-color-4;
+		border-left-color: transparent;
+	}
 
-			border-width: 0 8px 8px 8px;
-			border-top-color: transparent;
-			border-right-color: transparent;
-			border-bottom-color: $palette-color-4;
-			border-left-color: transparent;
-		}
+	// The plus button that must stay underneath has 30 (from .tool-button)
+	z-index: 31;
 
-		// The plus button that must stay underneath has 30 (from .tool-button)
-		z-index: 31;
+	&.active {
+		display: flex;
+	}
 
-		&.active {
-			display: flex;
-		}
+	ul {
+		list-style: none;
+		margin: 0;
+	}
 
-		ul {
-			list-style: none;
-			margin: 0;
-		}
+	li {
+		display: inline-block;
+		margin: 0;
+		padding: 0;
 
-		li {
-			display: inline-block;
-			margin: 0;
-			padding: 0;
-
-			&:first-child {
-				button {
-					border-top-left-radius: 1000px;
-					border-bottom-left-radius: 1000px;
-					padding-left: 15px;
-				}
-			}
-
-			&:last-child {
-				button {
-					border-top-right-radius: 1000px;
-					border-bottom-right-radius: 1000px;
-					padding-right: 15px;
-				}
+		&:first-child {
+			button {
+				border-top-left-radius: 1000px;
+				border-bottom-left-radius: 1000px;
+				padding-left: 15px;
 			}
 		}
 
-		button {
-			background: $palette-color-4;
-			padding: 9px;
-			outline: none;
-
-			@include fill-icon(white);
+		&:last-child {
+			button {
+				border-top-right-radius: 1000px;
+				border-bottom-right-radius: 1000px;
+				padding-right: 15px;
+			}
 		}
+	}
+
+	.wpcf7-column-selector {
+		background: $palette-color-4;
+		padding: 9px;
+		outline: none;
+
+		@include fill-icon(white);
 	}
 }
 
@@ -177,41 +182,41 @@
 	}
 }
 
-#wpcf7-select-columns-number {
-	&.medium-toolbar-arrow-over:before {
-		border-top-color: transparent;
-		border-right-color: transparent;
-		border-bottom-color: $palette-color-4;
-		border-left-color: transparent;
-	}
+// #wpcf7-select-columns {
+// 	&.medium-toolbar-arrow-over:before {
+// 		border-top-color: transparent;
+// 		border-right-color: transparent;
+// 		border-bottom-color: $palette-color-4;
+// 		border-left-color: transparent;
+// 	}
 
-	.l-svg-icons > svg {
-		background-color: $palette-color-4;
-		// font-size: 23px;
-	}
+// 	.l-svg-icons > svg {
+// 		background-color: $palette-color-4;
+// 		// font-size: 23px;
+// 	}
 
-	li {
-		border-width: 0px;
+// 	li {
+// 		border-width: 0px;
 
-		.medium-editor-action {
-			background-color: $palette-color-4;
+// 		.medium-editor-action {
+// 			background-color: $palette-color-4;
 
-			.l-svg-icons {
-				box-sizing: content-box;
-				font-size: 23px;
-			}
-		}
+// 			.l-svg-icons {
+// 				box-sizing: content-box;
+// 				font-size: 23px;
+// 			}
+// 		}
 
-		&:first-child > .medium-editor-action {
-			border-top-left-radius: 17px;
-			border-bottom-left-radius: 17px;
-			padding-left: 20px;
-		}
+// 		&:first-child > .medium-editor-action {
+// 			border-top-left-radius: 17px;
+// 			border-bottom-left-radius: 17px;
+// 			padding-left: 20px;
+// 		}
 
-		&:last-child > .medium-editor-action {
-			border-top-right-radius: 17px;
-			border-bottom-right-radius: 17px;
-			padding-right: 20px;
-		}
-	}
-}
+// 		&:last-child > .medium-editor-action {
+// 			border-top-right-radius: 17px;
+// 			border-bottom-right-radius: 17px;
+// 			padding-right: 20px;
+// 		}
+// 	}
+// }

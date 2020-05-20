@@ -12,16 +12,22 @@
 		display: block;
 	}
 
-	.rex-edit-element {
+	.rex-add-row {
 		position: absolute;
 		top: 0;
-		left: calc(50% - 13px);
+		left: calc(50% - 11.5px);
 
-		.l-svg-icons {
+		#{$icon-class} {
 			font-size: 13px;
 			width: 13px;
 			height: 13px;
 		}
+	}
+
+	.rex-edit-element {
+		position: absolute;
+		top: 0;
+		right: 24px;
 	}
 
 	.rex-delete-element {

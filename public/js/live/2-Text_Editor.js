@@ -2887,14 +2887,16 @@ var TextEditor = (function ($) {
 
 			var operation = clickEvent.currentTarget.getAttribute('data-operation');
 
-			if ('' === operation) {
-				return;
-			}
+			if ('' === operation) return;
 
 			switch (operation) {
 				case 'addRow':
 					// Show the 'select number of columns' toolbox
-					Rexbuilder_Util.addClass(this.traceForm.querySelector('.wpcf7-select-columns-number'), 'active');
+					Rexbuilder_Util.addClass(this.traceForm.querySelector('.wpcf7-select-columns--bottom'), 'active');
+					break;
+				case 'addRowTop':
+					// Show the 'select number of columns' toolbox
+					Rexbuilder_Util.addClass(this.traceForm.querySelector('.wpcf7-select-columns--top'), 'active');
 					break;
 				case 'addSelectedColumns':
 					// Add the selected columns
@@ -2973,7 +2975,8 @@ var TextEditor = (function ($) {
 						// The pointer is inside a form row
 						this.traceRow = contactFormRow;
 
-						Rexbuilder_Util.removeClass(this.traceForm.querySelector('.wpcf7-select-columns-number'), 'active');
+						Rexbuilder_Util.removeClass(this.traceForm.querySelector('.wpcf7-select-columns--top'), 'active');
+						Rexbuilder_Util.removeClass(this.traceForm.querySelector('.wpcf7-select-columns--bottom'), 'active');
 
 						var contactFormColumn = target.matches('.wpcf7-column')
 							? target
