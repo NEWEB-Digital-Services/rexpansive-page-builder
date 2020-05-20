@@ -600,6 +600,18 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 						styleSheet.cssRules[i].style.borderBottomColor = value;
 
 						break;
+					case 'border-top-color':
+						styleSheet.cssRules[i].style.borderTopColor = value;
+						break;
+					case 'border-right-color':
+						styleSheet.cssRules[i].style.borderRightColor = value;
+						break;
+					case 'border-bottom-color':
+						styleSheet.cssRules[i].style.borderBottomColor = value;
+						break;
+					case 'border-left-color':
+						styleSheet.cssRules[i].style.borderLeftColor = value;
+						break;
 					case 'border-style':
 						styleSheet.cssRules[i].style.borderStyle = value;
 
@@ -1066,6 +1078,35 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				cssSelector + ' .wpcf7-list-item-label',
 				'font-size',
 				columnContentData.font_size
+			);
+
+			console.log( cssSelector );
+
+			updateColumnContentRule(
+				formID,
+				rowNumber,
+				columnNumber,
+				cssSelector + ' :not(:checked) ~ .wpcf7-list-item-label::before',
+				'border-color',
+				columnContentData.text_color
+			);
+
+			updateColumnContentRule(
+				formID,
+				rowNumber,
+				columnNumber,
+				cssSelector + ' :checked ~ .wpcf7-list-item-label::before',
+				'border-bottom-color',
+				columnContentData.text_color
+			);
+
+			updateColumnContentRule(
+				formID,
+				rowNumber,
+				columnNumber,
+				cssSelector + ' :checked ~ .wpcf7-list-item-label::before',
+				'border-right-color',
+				columnContentData.text_color
 			);
 		}
 
@@ -2496,6 +2537,25 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				labelRule += 'cursor:pointer;';
 
 				addColumnContentRule(formID, rowNumber, columnNumber, cssSelector + ' .wpcf7-list-item-label', labelRule);
+
+				addColumnContentRule(
+					formID,
+					rowNumber,
+					columnNumber,
+					cssSelector + ' :not(:checked) ~ .wpcf7-list-item-label::before',
+					'border-color:' + columnContentData.text_color + ';'
+				);
+
+				var checkedRule = 'border-bottom-color:' + columnContentData.text_color + ';';
+				checkedRule += 'border-right-color:' + columnContentData.text_color + ';';
+
+				addColumnContentRule(
+					formID,
+					rowNumber,
+					columnNumber,
+					cssSelector + ' :checked ~ .wpcf7-list-item-label::before',
+					checkedRule
+				);
 			}
 
 			columnContentRule += 'color: ' + columnContentData.text_color + ';';
@@ -2763,8 +2823,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 	function guessWidthToSet(inputType, formID, rowNumber, columnNumber, widthValue) {
 		var setValueToParent =
-			-1 !== ['text', 'email', 'number', 'textarea', 'select'].indexOf(inputType) &&
-			/\%/.test(widthValue);
+			-1 !== ['text', 'email', 'number', 'textarea', 'select'].indexOf(inputType) && /\%/.test(widthValue);
 
 		// Will be multiple Nodes if there is more than 1 instance of the form in the document
 		var controlWraps = Array.prototype.slice.call(

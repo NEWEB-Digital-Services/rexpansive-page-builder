@@ -593,6 +593,35 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 					propertyName,
 					newValue
 				);
+
+				if ('acceptance' === inputType) {
+					Rexbuilder_Rexwpcf7.updateColumnContentRule(
+						formID,
+						rowNumber,
+						columnNumber,
+						cssSelector + ' :not(:checked) ~ .wpcf7-list-item-label::before',
+						'border-color',
+						newValue
+					);
+
+					Rexbuilder_Rexwpcf7.updateColumnContentRule(
+						formID,
+						rowNumber,
+						columnNumber,
+						cssSelector + ' :checked ~ .wpcf7-list-item-label::before',
+						'border-bottom-color',
+						newValue
+					);
+
+					Rexbuilder_Rexwpcf7.updateColumnContentRule(
+						formID,
+						rowNumber,
+						columnNumber,
+						cssSelector + ' :checked ~ .wpcf7-list-item-label::before',
+						'border-right-color',
+						newValue
+					);
+				}
 				break;
 			case 'placeholder-color':
 				Rexbuilder_Rexwpcf7.updateColumnContentRule(
