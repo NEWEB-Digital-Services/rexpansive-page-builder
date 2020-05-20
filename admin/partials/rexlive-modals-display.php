@@ -1012,6 +1012,8 @@ defined('ABSPATH') or exit;
 <?php include_once( 'modals/rexlive-change-layout-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-resynch-content-modal.php' ); ?>
 
+<?php include_once( 'modals/rexlive-delete-model-modal.php' ); ?>
+
 <div class="rex-modal-wrap">
     <div id="rexlive-onbeforeunload" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="tool-button tool-button--black rex-change-layout-option tool-button--close tippy" data-position="bottom" data-tippy-content="<?php _e( 'Cancel', 'rexpansive-builder');?>" data-rex-option="hide">

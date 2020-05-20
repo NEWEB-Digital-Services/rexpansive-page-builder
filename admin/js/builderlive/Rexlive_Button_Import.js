@@ -1115,41 +1115,11 @@ var Button_Import_Modal = (function ($) {
 		 */
 		Rexlive_Base_Settings.$document.on('click', '.button__element--delete', function (e) {
 			var button = $(this).parents('.button-list__element').find('.rex-button-wrapper')[0];
-			if (button) {
-				var button_id = button.getAttribute('data-rex-button-id');
-				var response = confirm(live_editor_obj.labels.rexbuttons.confirm_delete);
-				if (response) {
-					// prepare data to ajax request
-					var data = {
-						action: 'rex_delete_rexbutton',
-						nonce_param: live_editor_obj.rexnonce,
-						button_id: button_id
-					};
-					var endcodedData = Rexlive_Base_Settings.encodeData(data);
-
-					// prepare ajax request
-					var request = new XMLHttpRequest();
-					request.open('POST', live_editor_obj.ajaxurl, true);
-					request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-
-					// handle request response
-					request.onloadstart = function () {
-						rexbutton_import_props.$self.addClass('rex-modal--loading');
-					};
-					request.onload = function () {
-						if (request.status >= 200 && request.status < 400) {
-							button.parentNode.parentNode.style.display = 'none';
-							Button_Edit_Modal.removeIDButtonSoft(button_id);
-						}
-					};
-					request.onerror = function () {};
-					request.onloadend = function () {
-						rexbutton_import_props.$self.removeClass('rex-modal--loading');
-					};
-
-					// send request
-					request.send(endcodedData);
-				}
+			if ( button ) {
+				Delete_Model_Modal.openModal({
+					type: 'button',
+					element: button
+				});
 			}
 		});
 
@@ -1163,6 +1133,51 @@ var Button_Import_Modal = (function ($) {
 			e.preventDefault();
 		});
 	};
+
+	/**
+	 * Delete a button model
+	 * @param  {Element} button node element of the button list
+	 * @return {void}
+	 * @since  2.0.5
+	 */
+	function deleteButton( button ) {
+		button = 'undefined' !== typeof button ? button : null;
+		if ( ! button ) return;
+
+		var button_id = button.getAttribute('data-rex-button-id');
+		if ( '' === button_id ) return;
+
+		// prepare data to ajax request
+		var data = {
+			action: 'rex_delete_rexbutton',
+			nonce_param: live_editor_obj.rexnonce,
+			button_id: button_id
+		};
+		var endcodedData = Rexlive_Base_Settings.encodeData(data);
+
+		// prepare ajax request
+		var request = new XMLHttpRequest();
+		request.open('POST', live_editor_obj.ajaxurl, true);
+		request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+
+		// handle request response
+		request.onloadstart = function () {
+			rexbutton_import_props.$self.addClass('rex-modal--loading');
+		};
+		request.onload = function () {
+			if (request.status >= 200 && request.status < 400) {
+				button.parentNode.parentNode.style.display = 'none';
+				Button_Edit_Modal.removeIDButtonSoft(button_id);
+			}
+		};
+		request.onerror = function () {};
+		request.onloadend = function () {
+			rexbutton_import_props.$self.removeClass('rex-modal--loading');
+		};
+
+		// send request
+		request.send(endcodedData);
+	}
 
 	// Returns a function, that, when invoked, will only be triggered at most once
 	// during a given window of time. Normally, the throttled function will run
@@ -1218,6 +1233,7 @@ var Button_Import_Modal = (function ($) {
 	return {
 		init: _init,
 		updateButtonList: _updateButtonList,
-		getActiveStyleSheet: _getActiveStyleSheet
+		getActiveStyleSheet: _getActiveStyleSheet,
+		deleteButton: deleteButton
 	};
 })(jQuery);
