@@ -3633,30 +3633,27 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	/**
 	 * Get elements list to display on lateral menu, ready to drag on page
 	 * @return JSON updated list
-	 * @since  x.x.x
+	 * @since  2.0.x
 	 */
-	public function rex_get_element_list(){
+	public function rex_get_form_list() {
 		$nonce = $_GET['nonce_param'];
 
-		$response = array(
-			'error' => false,
-			'msg' => '',
-		);
+		$response = array();
 
-		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
-			$response['error'] = true;
-			$response['msg'] = 'Nonce Error!';
-			wp_send_json_error($response);
-		endif;
-
-		$response['error'] = false;
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
+			wp_send_json_error(new WP_Error('R001', 'Nonce Error!'));
+		}
 		
+		if (!Rexbuilder_Utilities::check_plugin_active('contact-form-7/wp-contact-form-7.php')) {
+			wp_send_json_error(new WP_Error('F001', 'The Contact Form 7 plugin is not active! Please enable it from the backend.'));
+		}
+		
+		$elementList = array();
+
 		// WP_Query arguments
 		$args = array(
 			'post_type' => array('wpcf7_contact_form')
 		);
-
-		$elementList = array();
 
 		// The Query
 		$query = new WP_Query( $args );
@@ -3674,15 +3671,12 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 				array_push($elementList, $elementData);
 			}
-		} else {
-			// No forms found
 		}
 
 		// Restore original Post Data
 		wp_reset_postdata();
 
-		$response["updated_list"] = $elementList;
-		$response["args"] = $args;
+		$response['updated_list'] = $elementList;
 
 		wp_send_json_success($response);
 	}
@@ -3705,8 +3699,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			$response['msg'] = 'Nonce Error!';
 			wp_send_json_error($response);
 		}
-
+		
 		if ( !isset( $_POST['element_id'] ) ) {
+			$response['error'] = true;
 			$response['msg'] = 'ID Error!';
 			wp_send_json_error($response);
 		}
@@ -3781,6 +3776,77 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			'selected_image_size', 
 			""
 		);
+
+		wp_send_json_success($response);
+	}
+
+	/**
+	 * Creates default forms and inserts them in the database
+	 * @since		2.0.5
+	 */
+	public function rex_load_default_forms() {
+		$nonce = $_POST['nonce_param'];
+
+		$response = array();
+
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
+			wp_send_json_error(new WP_Error('R001', 'Nonce Error!'));
+		}
+
+		require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-utilities.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-xml-content.php';
+
+		// Importing the forms from XML file
+		$forms_definition_url = 'http://localhost/neweb_builderlive/wp-content/uploads/test-upload-forms.xml';
+		$xml_file = Rexbuilder_Import_Utilities::upload_media_file($forms_definition_url, 'xml');
+
+		if(file_exists($xml_file['file'])) {
+			$xml = new Rexbuilder_Import_Xml_Content($xml_file['file']);
+
+			wp_defer_term_counting(true);
+			wp_defer_comment_counting(true);
+	
+			wp_suspend_cache_invalidation(true);
+	
+			$xml->run_import_all();
+	
+			wp_suspend_cache_invalidation(false);
+	
+			wp_defer_term_counting(false);
+			wp_defer_comment_counting(false);
+			
+			Rexbuilder_Import_Utilities::remove_media_file($xml_file['file']);
+		}
+
+		// WP_Query arguments
+		$args = array(
+			'post_type' => array('wpcf7_contact_form')
+		);
+
+		$elementList = array();
+
+		// The Query
+		$query = new WP_Query( $args );
+
+		// if ($query->have_posts()) {
+			while ($query->have_posts()) {
+				$query->the_post();
+				
+				$elementData = array();
+				
+				$elementData["id"] = get_the_ID();
+				$elementData["name"] = get_the_title();
+				$elementData["preview_image_url"] = get_the_post_thumbnail_url();
+				$elementData["element_data_html"] = get_post_meta(get_the_ID(), "_rex_element_data_html");
+
+				array_push($elementList, $elementData);
+			}
+		// }
+
+		$response["updated_list"] = $elementList;
+		
+		// Restore original Post Data
+		// wp_reset_postdata();
 
 		wp_send_json_success($response);
 	}

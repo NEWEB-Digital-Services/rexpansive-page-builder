@@ -166,7 +166,7 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 						}
 					}
 				} else {
-					$post_id = wp_insert_post( $args );
+					$post_id = wp_insert_post( $args, true );
 				}
 
 				// Handle categories

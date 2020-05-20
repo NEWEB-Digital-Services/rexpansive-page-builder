@@ -1461,7 +1461,6 @@ var Rex_Save_Listeners = (function($) {
       output += fillGridEmptySpaces(galleryIstance);
 
       output += "[/RexpansiveSection]";
-      console.log(output)
       return output;
     } else if (mode == "customLayout") {
 
@@ -1577,7 +1576,6 @@ var Rex_Save_Listeners = (function($) {
       props["rexlive_model_id"] = rexlive_model_id;
       props["rexlive_model_name"] = rexlive_model_name;
       props["section_edited"] = true;
-      console.log(props)
       return props;
     }
   };

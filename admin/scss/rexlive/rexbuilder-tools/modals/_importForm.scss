@@ -1,4 +1,10 @@
 #rex-elements-list {
+	&.rex-elements-list--hidden {
+		.element-list-wrapper {
+			display: none;
+		}
+	}
+
 	.element-list {
 		margin: 0;
 		padding-top: 10px;

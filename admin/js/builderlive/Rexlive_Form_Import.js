@@ -1,93 +1,116 @@
 var Element_Import_Modal = (function ($) {
 	'use strict';
-	var element_import_props;
+	var elementImportProps = {};
 	var image_uploader_frame_direct; // Used for the media library opener
 
 	/**
 	 * Updates the element list using an AJAX call.
 	 * @return {null}
-	 * @since  x.x.x
+	 * @since  2.0.x
 	 */
-	var _updateElementList = function () {
+	function updateElementList() {
 		$.ajax({
 			type: 'GET',
 			dataType: 'json',
 			url: live_editor_obj.ajaxurl,
 			data: {
-				action: 'rex_get_element_list',
+				action: 'rex_get_form_list',
 				nonce_param: live_editor_obj.rexnonce
 			},
 			success: function (response) {
-				if (response.success) {
-					$(element_import_props.loadingPlaceholder).addClass('loading-placeholder--hidden');
+				if (!response.success) {
+					this.error(response, response.data[0].message, response.data[0].code);
 
-					var updatedList = response.data.updated_list;
-
-					if (0 === updatedList.length) {
-						$(element_import_props.message).removeClass('lateral-menu-message--hidden');
-					} else {
-						$(element_import_props.message).addClass('lateral-menu-message--hidden');
-
-						var currentList = [];
-
-						element_import_props.$self.find('.element-list__element').each(function (i, element) {
-							var elementID = $(element).attr('data-rex-element-id');
-							var elementObj = {
-								id: elementID,
-								found: false
-							};
-							currentList.push(elementObj);
-						});
-
-						for (var i = 0; i < updatedList.length; i++) {
-							updatedList[i].found = false;
-						}
-
-						for (var i = 0; i < updatedList.length; i++) {
-							for (var j = 0; j < currentList.length; j++) {
-								if (updatedList[i].id == currentList[j].id) {
-									updatedList[i].found = true;
-									currentList[j].found = true;
-									break;
-								}
-							}
-						}
-
-						tmpl.arg = 'element';
-						for (var i = 0; i < updatedList.length; i++) {
-							if (!updatedList[i].found) {
-								element_import_props.$self
-									.find('.element-list')
-									.prepend(
-										tmpl('rexlive-tmpl-element-item-list', {
-											id: updatedList[i].id,
-											name: updatedList[i].name,
-											preview: updatedList[i].preview_image_url != '' ? updatedList[i].preview_image_url : ''
-										})
-									)
-									.find('.rex-element-wrapper')
-									.prepend(updatedList[i].element_data_html[0]);
-							}
-						}
-
-						for (var i = 0; i < currentList.length; i++) {
-							if (!currentList[i].found) {
-								element_import_props.$self
-									.find('.element-list__element[data-rex-element-id="' + currentList[i].id + '"]')
-									.remove();
-							}
-						}
-					}
-
-					var event = jQuery.Event('rexlive:lateralMenuReady');
-					$(document).trigger(event);
+					$(elementImportProps.self).addClass('rex-elements-list--hidden');
+					$(elementImportProps.pluginNotActiveMessage).removeClass('lateral-menu-message--hidden');
+					return;
 				}
+
+				$(elementImportProps.self).removeClass('rex-elements-list--hidden');
+				$(elementImportProps.pluginNotActiveMessage).addClass('lateral-menu-message--hidden');
+
+				$(elementImportProps.noFormsMessage).addClass('lateral-menu-message--hidden');
+				$(elementImportProps.loadingPlaceholder).addClass('loading-placeholder--hidden');
+
+				refreshElements(response.data);
+
+				var event = jQuery.Event('rexlive:lateralMenuReady');
+				$(document).trigger(event);
 			},
-			complete: function (response) {
-				element_import_props.$self.removeClass('rex-modal--loading');
+			error: function (response, textStatus, errorThrown) {
+				alert('Something went wrong when trying to load the Contact Forms. Please try again.');
+
+				console.error('[Rexpansive] Something went wrong with your AJAX request.', {
+					status: response.status,
+					message: textStatus,
+					errorThrown: errorThrown
+				});
+			},
+			complete: function () {
+				elementImportProps.$self.removeClass('rex-modal--loading');
 			}
 		});
-	};
+	}
+
+	function refreshElements(data) {
+		var updatedList = data.updated_list;
+
+		if (0 === updatedList.length) {
+			$(elementImportProps.noFormsMessage).removeClass('lateral-menu-message--hidden');
+		} else {
+			$(elementImportProps.message).addClass('lateral-menu-message--hidden');
+
+			var currentList = [];
+
+			elementImportProps.$self.find('.element-list__element').each(function (i, element) {
+				element.style.display = '';
+
+				currentList.push({
+					id: element.getAttribute('data-rex-element-id'),
+					found: false
+				});
+			});
+
+			for (var i = 0; i < updatedList.length; i++) {
+				updatedList[i].found = false;
+			}
+
+			for (var i = 0; i < updatedList.length; i++) {
+				for (var j = 0; j < currentList.length; j++) {
+					if (updatedList[i].id == currentList[j].id) {
+						updatedList[i].found = true;
+						currentList[j].found = true;
+						break;
+					}
+				}
+			}
+
+			tmpl.arg = 'element';
+			for (var i = 0; i < updatedList.length; i++) {
+				if (!updatedList[i].found) {
+					elementImportProps.$self
+						.find('.element-list')
+						.prepend(
+							tmpl('rexlive-tmpl-element-item-list', {
+								id: updatedList[i].id,
+								name: updatedList[i].name,
+								preview: updatedList[i].preview_image_url || ''
+							})
+						)
+						.find('.rex-element-wrapper')
+						.prepend(updatedList[i].element_data_html[0]);
+				}
+			}
+
+			for (var i = 0; i < currentList.length; i++) {
+				if (!currentList[i].found) {
+					elementImportProps.$self
+						.find('.element-list__element[data-rex-element-id="' + currentList[i].id + '"]')
+						.remove();
+				}
+			}
+		}
+	}
 
 	/**
 	 * Saves the element thumbnail in the db using an AJAX call.
@@ -139,55 +162,52 @@ var Element_Import_Modal = (function ($) {
 		});
 	};
 
-	/////////////////////////////////////////////////////////////////////
-	/// ELEMENT FUNCTIONS
-	/////////////////////////////////////////////////////////////////////
-
 	/**
 	 * Send a POST request to delete an element.
-	 * @param  {Node} element
-	 * @return {null}
-	 * @since  x.x.x
+	 * @param		{Element}	element	The element to delete from the lateral menu
+	 * @since 	2.0.x
+	 * @version	2.0.5			Switched from XHR to AJAX
 	 */
-	var _deleteElement = function (element) {
+	var deleteElement = function (element) {
 		var element_id = element.getAttribute('data-rex-element-id');
 
 		if (element_id) {
-			var response = confirm(live_editor_obj.labels.rexelements.confirm_delete);
+			var wantToDelete = confirm(live_editor_obj.labels.rexelements.confirm_delete);
 
-			if (response) {
-				// prepare data to ajax request
-				var data = {
-					action: 'rex_delete_rexelement',
-					nonce_param: live_editor_obj.rexnonce,
-					element_id: element_id
-				};
-				
-				var endcodedData = Rexlive_Base_Settings.encodeData(data);
+			if (wantToDelete) {
+				$.ajax({
+					type: 'POST',
+					dataType: 'json',
+					url: live_editor_obj.ajaxurl,
+					data: {
+						action: 'rex_delete_rexelement',
+						nonce_param: live_editor_obj.rexnonce,
+						element_id: element_id
+					},
+					beforeSend: function () {
+						elementImportProps.$self.addClass('rex-modal--loading');
+					},
+					success: function (response) {
+						if (!response.success && !response.data.error) return;
 
-				// prepare ajax request
-				var request = new XMLHttpRequest();
-				request.open('POST', live_editor_obj.ajaxurl, true);
-				request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+						// Deleting happened
 
-				// handle request response
-				request.onloadstart = function () {
-					element_import_props.$self.addClass('rex-modal--loading');
-				};
-
-				request.onload = function () {
-					if (request.status >= 200 && request.status < 400) {
 						element.style.display = 'none';
 						_checkIfShowMessage();
+					},
+					error: function (response, textStatus, errorThrown) {
+						alert('Something went wrong when trying to delete the Contact Form. Please try again.');
+
+						console.error('[Rexpansive] Something went wrong with your deletion AJAX request.', {
+							status: response.status,
+							message: textStatus,
+							errorThrown: errorThrown
+						});
+					},
+					complete: function () {
+						elementImportProps.$self.removeClass('rex-modal--loading');
 					}
-				};
-
-				request.onloadend = function () {
-					element_import_props.$self.removeClass('rex-modal--loading');
-				};
-
-				// send request
-				request.send(endcodedData);
+				});
 			}
 		}
 	};
@@ -200,7 +220,7 @@ var Element_Import_Modal = (function ($) {
 	 * @return {media uploader}
 	 * @since  x.x.x
 	 */
-	var _editElementThumbnail = function (element_id, thumbnail_id) {
+	var editElementThumbnail = function (element_id, thumbnail_id) {
 		// sets default image size
 		setUserSetting('imgsize', 'medium');
 
@@ -361,7 +381,7 @@ var Element_Import_Modal = (function ($) {
 	 * @return {null}
 	 * @since  x.x.x
 	 */
-	var _resetElementThumbnail = function (element_id) {
+	var resetElementThumbnail = function (element_id) {
 		var element = $('.element-list__element[data-rex-element-id="' + element_id + '"]');
 
 		element.attr('data-rex-element-thumbnail-id', '');
@@ -381,41 +401,69 @@ var Element_Import_Modal = (function ($) {
 		_deleteElementThumbnail(element_id);
 	};
 
+	function _loadDefaultForms() {
+		$.ajax({
+			type: 'POST',
+			dataType: 'json',
+			url: live_editor_obj.ajaxurl,
+			data: {
+				action: 'rex_load_default_forms',
+				nonce_param: live_editor_obj.rexnonce
+			},
+			beforeSend: function () {
+				$(elementImportProps.loadingPlaceholder).removeClass('loading-placeholder--hidden');
+			},
+			success: function (response) {
+				if (!response.success) {
+					this.error(response, response.data[0].message, response.data[0].code);
+					return;
+				}
+
+				refreshElements(response.data);
+			},
+			error: function (response, textStatus, errorThrown) {
+				$(elementImportProps.noFormsMessage).removeClass('lateral-menu-message--hidden');
+
+				alert('Something went wrong when trying to import the Contact Forms. Please try again.');
+
+				console.error('[Rexpansive] Something went wrong with your AJAX request.', {
+					status: response.status,
+					message: textStatus,
+					errorThrown: errorThrown
+				});
+			},
+			complete: function () {
+				$(elementImportProps.loadingPlaceholder).addClass('loading-placeholder--hidden');
+			}
+		});
+	}
+
 	function _checkIfShowMessage() {
-		var elements = element_import_props.$self.find('.element-list__element').get();
+		var elements = elementImportProps.$self.find('.element-list__element').get();
 
 		elements = elements.filter(function (element) {
 			return 'none' !== element.style.display;
 		});
 
 		if (0 === elements.length) {
-			$(element_import_props.loadingPlaceholder).addClass('loading-placeholder--hidden');
-			$(element_import_props.message).removeClass('lateral-menu-message--hidden');
+			$(elementImportProps.loadingPlaceholder).addClass('loading-placeholder--hidden');
+			$(elementImportProps.noFormsMessage).removeClass('lateral-menu-message--hidden');
 		}
 	}
 
 	function _linkListeners() {
-		element_import_props.importForms.addEventListener('click', function (clickEvent) {
+		elementImportProps.importFormsButton.addEventListener('click', function (clickEvent) {
 			clickEvent.stopPropagation();
 
 			// Show loading placeholder
-			$(element_import_props.message).addClass('lateral-menu-message--hidden');
-			$(element_import_props.loadingPlaceholder).removeClass('loading-placeholder--hidden');
+			$(elementImportProps.noFormsMessage).addClass('lateral-menu-message--hidden');
 
-			// Caricare dal db alcuni form predefiniti
-
-			// Remove this
-			setTimeout(function () {
-				$(element_import_props.message).removeClass('lateral-menu-message--hidden');
-				$(element_import_props.loadingPlaceholder).addClass('loading-placeholder--hidden');
-			}, 3000);
+			// Loading default forms from database
+			_loadDefaultForms();
 		});
 	}
 
-	/////////////////////////////////////////////////////////////////////////////////////////
-	/// FUNCTION FOR DRAG & DROP
-	/////////////////////////////////////////////////////////////////////////////////////////
-
+	// Functions for drag & drop
 	function _linkDraggable() {
 		var currentElement, currentElementChangeFlag, elementRectangle, countdown, dragoverqueue_processtimer;
 
@@ -1116,32 +1164,31 @@ var Element_Import_Modal = (function ($) {
 		};
 	}
 
-	var _init = function () {
-		var $self = $('#rex-elements-list');
+	function init() {
+		var self = document.getElementById('rex-elements-list');
 
-		element_import_props = {
-			$self: $self,
-			message: $self.get(0).querySelector('.lateral-menu-message'),
-			loadingPlaceholder: $self.get(0).querySelector('.loading-placeholder'),
-			importForms: document.getElementById('import-forms')
+		elementImportProps = {
+			self: self,
+			$self: $(self),
+			pluginNotActiveMessage: document.getElementById('cf7-not-active-message'),
+			noFormsMessage: document.getElementById('no-forms-message'),
+			loadingPlaceholder: self.querySelector('.loading-placeholder'),
+			importFormsButton: document.getElementById('import-forms')
 		};
 
 		_linkListeners();
 		_linkDraggable();
-	};
+	}
 
 	return {
-		init: _init,
+		init: init,
 
 		// Functions that use Ajax calls
-		saveElementThumbnail: _saveElementThumbnail,
-		deleteElementThumbnail: _deleteElementThumbnail,
-		updateElementList: _updateElementList,
+		updateElementList: updateElementList,
 
 		//Element functions
-		deleteElement: _deleteElement,
-		editElementThumbnail: _editElementThumbnail,
-		updateElementThumbnail: _updateElementThumbnail,
-		resetElementThumbnail: _resetElementThumbnail
+		deleteElement: deleteElement,
+		editElementThumbnail: editElementThumbnail,
+		resetElementThumbnail: resetElementThumbnail
 	};
 })(jQuery);

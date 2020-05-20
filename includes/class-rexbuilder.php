@@ -333,10 +333,11 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_update_container_margins', $plugin_admin, 'rex_update_container_margins' );
 		$this->loader->add_action( 'wp_ajax_rex_delete_rexbutton', $plugin_admin, 'rex_delete_rexbutton' );
 
-		// ELEMENTS AJAX ACTIONS
-		$this->loader->add_action( 'wp_ajax_rex_get_element_list', $plugin_admin, 'rex_get_element_list' );
+		// Forms AJAX actions
+		$this->loader->add_action( 'wp_ajax_rex_get_form_list', $plugin_admin, 'rex_get_form_list' );
 		$this->loader->add_action( 'wp_ajax_rex_save_element_thumbnail', $plugin_admin, 'rex_save_element_thumbnail' );
 		$this->loader->add_action( 'wp_ajax_rex_delete_element_thumbnail', $plugin_admin, 'rex_delete_element_thumbnail' );
+		$this->loader->add_action( 'wp_ajax_rex_load_default_forms', $plugin_admin, 'rex_load_default_forms' );
 		$this->loader->add_action( 'wp_ajax_rex_delete_rexelement', $plugin_admin, 'rex_delete_rexelement' );
 		$this->loader->add_action( 'wp_ajax_rex_clone_element', $plugin_admin, 'rex_clone_element' );
 
