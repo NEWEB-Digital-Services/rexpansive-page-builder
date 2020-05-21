@@ -235,6 +235,10 @@
 		overflow: hidden;
 		padding: 0;
 	}
+
+	&--centered {
+		@include flex-center-both;
+	}
 }
 
 .tool-button--opacity-preview {

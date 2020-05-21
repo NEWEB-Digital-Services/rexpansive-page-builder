@@ -167,7 +167,7 @@
 		}
 
 		&--rounded {
-			@include flex-center;
+			@include flex-center-both;
 
 			width: calc(#{$icon-width} * 1.5);
 			height: calc(#{$icon-width} * 1.5);
@@ -223,7 +223,7 @@
 	$loader-pulse-color: $palette-color-3;
 
 	@include loader-pulse($loader-pulse-size, $loader-pulse-color);
-	@include flex-center;
+	@include flex-center-both;
 
 	height: calc(100% - 80px);
 

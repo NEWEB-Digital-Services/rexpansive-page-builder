@@ -131,7 +131,7 @@ defined('ABSPATH') or exit;
                         <div class="bl_d-iblock big-icon ml12 l-icon--dark-grey">
                             <?php Rexbuilder_Utilities::get_icon('#B023-Input-Text'); ?>
                         </div>
-                        <div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Text Color', 'rexpansive-builder');?>">
+                        <div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Main Text Color', 'rexpansive-builder');?>">
                             <input type="hidden" id="rex-wpcf7-text-color-runtime" name="rex-wpcf7-text-color-runtime" value="" />
                             <input id="rex-wpcf7-text-color" type="text" name="rex-wpcf7-text-color" value="" size="10" />
                             <div id="rex-wpcf7-text-color-preview-icon" class="preview-color-icon"></div>
@@ -172,7 +172,7 @@ defined('ABSPATH') or exit;
                             <div class="bl_d-iblock ml36 big-icon l-icon--dark-grey">
                                 <?php Rexbuilder_Utilities::get_icon('#B037-Input-Text-Focus'); ?>
                             </div>
-                            <div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Focus Text Color', 'rexpansive-builder');?>">
+                            <div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Color When Writing', 'rexpansive-builder');?>">
                                 <input type="hidden" id="rex-wpcf7-focus-color-runtime" name="rex-wpcf7-focus-color-runtime" value="" />
                                     <input id="rex-wpcf7-focus-color" type="text" name="rex-wpcf7-focus-color" value="" size="10" />
                                     <div id="rex-wpcf7-focus-color-preview-icon" class="preview-color-icon"></div>
@@ -216,7 +216,7 @@ defined('ABSPATH') or exit;
                         <div class="bl_d-iblock big-icon ml12 l-icon--dark-grey">
                             <?php Rexbuilder_Utilities::get_icon('#B023-Input-Text'); ?>
                         </div>
-                        <div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Text Color', 'rexpansive-builder');?>">
+                        <div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Main Text Color', 'rexpansive-builder');?>">
                             <input type="hidden" id="rex-wpcf7-select-text-color-runtime" name="rex-wpcf7-select-text-color-runtime" value="" />
                                 <input id="rex-wpcf7-select-text-color" type="text" name="rex-wpcf7-select-text-color" value="" size="10" />
                                 <div id="rex-wpcf7-select-text-color-preview-icon" class="preview-color-icon"></div>
@@ -714,16 +714,14 @@ defined('ABSPATH') or exit;
         </div>
         <!-- Footer -->
         <div class="rex-modal__outside-footer">
-            <div class="tool-button tool-button--inline tool-button--save rex-apply-button tippy" data-tippy-content="<?php _e('Save','rexpansive-builder'); ?>" data-rex-option="save">
-                <span class="rex-button save-page btn-save--wrap">
-                    <?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?>
-                </span>
-            </div>
-            <div class="tool-button tool-button--inline tool-button--cancel rex-reset-button tippy" data-rex-option="continue" data-tippy-content="<?php _e('Reset','rexpansive-builder'); ?>">
-                <span class="rex-button continue btn-save--wrap">
-                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-                </span>
-            </div>
+					<div class="tool-button tool-button--inline tool-button--save rex-apply-button tippy" data-tippy-content="<?php _e('Save','rexpansive-builder'); ?>" data-rex-option="save">
+						<span class="rex-button save-page btn-save--wrap">
+							<?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?>
+						</span>
+					</div>
+					<div class="tool-button tool-button--centered tool-button--cancel rex-reset-button tippy" data-rex-option="continue" data-tippy-content="<?php _e('Reset','rexpansive-builder'); ?>">
+						<?php Rexbuilder_Utilities::get_icon('#Z014-Refresh'); ?>
+					</div>
         </div>
 </div>
 </div>
