@@ -1,7 +1,7 @@
 .popup-content--active {
 	overflow: hidden;
-	visibility: hidden;
-	height: 0;
+	// visibility: hidden;
+	// height: 0;
 }
 
 .popup-content {
@@ -16,7 +16,7 @@
 	position: fixed;
 	/*transform: translateY(105%);*/
 	width: 100%;
-	z-index: 2500;
+	z-index: -2500;
 	transform: translate(0%, 105%) matrix(1, 0, 0, 1, 0, 0);
 	transition: opacity .24s, transform .24s;
 	transition-delay: .3s;
@@ -94,6 +94,7 @@
 		transform: matrix(1, 0, 0, 1, 0, 0);
 		transition-delay: .0s;
 		visibility: visible;
+		z-index: 2500;
 		&.popup-content__method--ajax {
 			overflow-x: hidden;
 			overflow-y: scroll;

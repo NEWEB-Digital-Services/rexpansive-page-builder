@@ -1107,7 +1107,7 @@ var Rexbuilder_App = (function($) {
       
       launchAccordions();
 		}		
-  };
+  }
 	
   function load() {
     // @bugfix on other layouts than desktop with mixed customization definitions
@@ -1153,7 +1153,7 @@ var Rexbuilder_App = (function($) {
 		if (IS_CHROME && !Rexbuilder_Util.editorMode) {
 			_fixWindowScrollPosition();
 		}
-	};
+	}
 	
   /**
    * Returns the instance of the grid DOM Element passed.

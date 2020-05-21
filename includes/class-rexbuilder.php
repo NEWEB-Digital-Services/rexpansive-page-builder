@@ -391,6 +391,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_vertical_dots' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_post_id' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_popup_content_template' );
 
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_js_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites_live' );

@@ -1717,6 +1717,22 @@ class Rexbuilder_Public
 	}
 
 	/**
+	 * Include the template for the popupcontent closing area
+	 * @return void
+	 * @since  2.0.5
+	 */
+	public function print_popup_content_template() {
+		global $post;
+
+		if ( ! $this->builder_active_on_this_post_type() ) return;
+
+		$template = Rexbuilder_Utilities::get_plugin_templates_path( 'rexbuilder-popupcontent-close-template.php' );
+		if ( ! empty( $template ) ) {
+			include_once $template;
+		}
+	}
+
+	/**
 	 *  Filtering YOAST SEO plugin meta description generator
 	 *  @since 2.0.0
 	 */

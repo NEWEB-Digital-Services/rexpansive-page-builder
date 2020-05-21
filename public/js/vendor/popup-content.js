@@ -8,6 +8,8 @@
 })( 'undefined' !== typeof window ? window : this, function() {
 	var instances = [];
 
+	var popupContentCloseTmpl = document.getElementById('tmpl-popupcontent-close');
+
 	function PopUpContent() {
 		// call object (button)
 		this.element = null;
@@ -205,7 +207,7 @@
 		addClass( this.iframeContainer.contentDocument.body, this.options.iframePopUpLoadClass );
 		addClass( this.target, this.options.popUpContentLoaded );
 		if ( 'function' === typeof this.options.getPopUpContentComplete ) {
-			this.options.getPopUpContentComplete.call(this)
+			this.options.getPopUpContentComplete.call(this);
 		}
 
 		// trigger event on iframe document that tells that the popupcontent has ended load
@@ -245,13 +247,20 @@
 		addClass( popUpContainer, 'popup-content__method--' + options.contentRetrieveMethod );
 		var closeWrapper = document.createElement('div');
 		addClass( closeWrapper,options.popUpCloseWrapper );
-		var closeBtn = document.createElement('div');
-		closeBtn.innerHTML = '<i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i>';
-		addClass( closeBtn, options.popUpCloseClass );
+
+		// create close wrapper with a template, to make it customizable
+		if ( popupContentCloseTmpl ) {
+			closeWrapper.innerHTML = popupContentCloseTmpl.innerHTML;
+		} else {
+			var closeBtn = document.createElement('div');
+			closeBtn.innerHTML = '<i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i>';
+			addClass( closeBtn, options.popUpCloseClass );
+			closeWrapper.appendChild(closeBtn);
+		}
+
 		var popUpContent = document.createElement('div');
 		addClass( popUpContent, options.popUpContent );
 
-		closeWrapper.appendChild(closeBtn);
 		popUpContainer.appendChild(closeWrapper);
 		popUpContainer.appendChild(popUpContent);
 
