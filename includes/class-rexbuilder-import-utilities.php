@@ -224,18 +224,30 @@ if ( ! class_exists( 'Rexbuilder_Import_Utilities' ) ) {
 						$data = wp_generate_attachment_metadata( $post_id, $result['file'] );
 						wp_update_attachment_metadata( $post_id, $data );
 
-						$response = 'media ' . $post_id . ' correctly imported';
+						$response = array(
+							'msg' => 'media ' . $post_id . ' correctly imported',
+							'post_id' => $post_id, 
+							'args' => $args 
+						);
 					} else {
 						// log error
 						if ( true === WP_DEBUG ) {
 							error_log( print_r( $result, true ) );
 						}
 
-						$response = 'media ' . $post_id . ' upload error';
+						$response = array(
+							'msg' => 'media ' . $post_id . ' upload error',
+							'post_id' => null, 
+							'args' => $args 
+						);
 					}
 				} else {
 					$post_id = wp_insert_post( $args );
-					$response = 'post ' . $post_id . ' correctly imported';
+					$response = array( 
+						'msg' => 'post ' . $post_id . ' correctly imported', 
+						'post_id' => $post_id, 
+						'args' => $args 
+					);
 				}
 
 				// Handle categories
@@ -275,7 +287,11 @@ if ( ! class_exists( 'Rexbuilder_Import_Utilities' ) ) {
 
 			} else {
 				// echo 'post already exists!';
-				$response = 'post ' . $args['import_id'] . ' already exists';
+				$response = array(
+					'msg' => 'post ' . $args['import_id'] . ' already exists',
+					'post_id' => null, 
+					'args' => $args 
+				);
 			}
 
 			return $response;

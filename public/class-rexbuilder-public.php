@@ -1502,7 +1502,7 @@ class Rexbuilder_Public
 				ob_start();
 
 				if( Rexbuilder_Utilities::isBuilderLive() ) {
-					$editor = $_GET['editor'];
+					$editor = ( isset( $_GET['editor'] ) ? $_GET['editor'] : false );
 				} else{
 					$editor = false;
 				}

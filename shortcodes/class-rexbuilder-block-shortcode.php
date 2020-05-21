@@ -18,8 +18,7 @@
  * @author     Neweb <info@neweb.info>
  *
  */
-class Rexbuilder_Block
-{
+class Rexbuilder_Block {
 	private $plugin_name;
 	/**
 	 * Initialize the class and set its properties.
@@ -444,7 +443,7 @@ class Rexbuilder_Block
 		}
 
 		echo '<div id="' . $id . '-builder-data" class="rexbuilder-block-data" ';
-		foreach ($atts as $property_name => $value_property) {
+		foreach ( $atts as $property_name => $value_property ) {
 			if($property_name != "block_flex_position"){
 				echo 'data-' . $property_name . '="' . ($value_property != "undefined"? $value_property : "" ). '" ';
 			}

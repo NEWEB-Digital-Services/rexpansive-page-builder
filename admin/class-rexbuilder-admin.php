@@ -1999,6 +1999,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			$this->Installer->push_to_queue( array( 'task' => 'import_models_end' ) );
 		}
 
+		$this->Installer->push_to_queue( array( 'task' => 'check_imported_content' ) );
+
 		// dispatch the installation process
 		$this->Installer->save()->dispatch();
 
