@@ -42,25 +42,25 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			case 'text':
 				fieldShortcode = '[text text-' + fieldNumber + ' class:text-' + fieldNumber + ']';
 				$columnContent.prepend(
-					'<span class="wpcf7-form-control-wrap text-' +
+					'<label class="wpcf7-label-text">DEVO ESSERE ELIMINATO<span class="wpcf7-form-control-wrap text-' +
 						fieldNumber +
 						'"><input type="text" name="text-' +
 						fieldNumber +
 						'" value="" class="wpcf7-form-control wpcf7-text text-' +
 						fieldNumber +
-						'" aria-invalid="false"></span>'
+						'" aria-invalid="false"></span></label>'
 				);
 				break;
 			case 'textarea':
 				fieldShortcode = '[textarea textarea-' + fieldNumber + ' class:textarea-' + fieldNumber + ']';
 				$columnContent.prepend(
-					'<span class="wpcf7-form-control-wrap textarea-' +
+					'<label class="wpcf7-label-text"><span class="wpcf7-form-control-wrap textarea-' +
 						fieldNumber +
 						'"><textarea name="textarea-' +
 						fieldNumber +
 						'" class="wpcf7-form-control wpcf7-textarea textarea-' +
 						fieldNumber +
-						'" aria-invalid="false"></textarea></span>'
+						'" aria-invalid="false"></textarea></span></label>'
 				);
 				break;
 			case 'menu':
@@ -105,7 +105,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 						fieldNumber +
 						'"><input type="file" name="file-' +
 						fieldNumber +
-						'" size="40" class="wpcf7-form-control wpcf7-file" accept=".jpg,.jpeg,.png,.gif" aria-invalid="false" id="wpcf7-file-2"><label for="wpcf7-file-2">Choose file</label><div class="wpcf7-file-caption">Your text here</div></span>'
+						'" class="wpcf7-form-control wpcf7-file" accept=".jpg,.jpeg,.png,.gif" aria-invalid="false" id="wpcf7-file-2"><label for="wpcf7-file-2">Choose file</label><div class="wpcf7-file-caption">Your text here</div></span>'
 				);
 				break;
 			case 'submit':

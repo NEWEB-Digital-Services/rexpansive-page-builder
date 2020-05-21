@@ -2141,6 +2141,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	/* === Fixing Methods === */
 
 	function fixInputs() {
+		console.groupCollapsed();
+		console.trace();
+		console.groupEnd();
 		Rexbuilder_Util.$rexContainer.find('.wpcf7-form:not(.no-builder-form) .wpcf7-column').each(function (i, el) {
 			var $formColumn = $(el);
 
@@ -2167,20 +2170,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			var $input = null;
 			switch (elementToFix) {
 				case 'text':
-					$input = $formColumn.find('.wpcf7-text');
-					$input.attr('size', '');
-					break;
 				case 'email':
-					$input = $formColumn.find('.wpcf7-email');
-					$input.attr('size', '');
-					break;
 				case 'number':
-					$input = $formColumn.find('.wpcf7-number');
-					$input.attr('size', '');
-					break;
 				case 'textarea':
-					$input = $formColumn.find('.wpcf7-textarea');
+					$input = $formColumn.find('.wpcf7-' + elementToFix);
 					$input.attr('size', '');
+					_fixLabels($input);
 					break;
 				case 'select':
 					$input = $formColumn.find('.wpcf7-select');
@@ -2242,6 +2237,41 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 		fixWpcf7RadioButtons();
 		fixWpcf7Files();
+	}
+
+	/**
+	 * Checks if an input has a label with the right class
+	 * and, if not, adds the label, the class or both
+	 * @param	{jQuery}	$input
+	 * @since	2.0.5
+	 */
+	function _fixLabels($input) {
+		// Finding label elements that are first level children of .wpcf7-column-content
+		var $labelChildren = $input.parents('.wpcf7-column-content').children('label');
+
+		if (0 !== $labelChildren.length) {
+			/* Input has label, need to add class */
+			if (1 === $labelChildren.length) {
+				// Adds class if not present. If present does nothing
+				$labelChildren.addClass('wpcf7-label-text');
+			} else {
+				// Handle this too?
+			}
+		} else {
+			/* Input has not the label, need to wrap */
+			// The label will be wrapped to this elements
+			var formControlWrap = $input.parents('.wpcf7-form-control-wrap').get(0);
+
+			// Create wrapper container
+			var newLabel = document.createElement('label');
+			Rexbuilder_Util.addClass(newLabel, 'wpcf7-label-text');
+
+			// Insert the label before the form control wrap in the DOM tree
+			formControlWrap.parentNode.insertBefore(newLabel, formControlWrap);
+
+			// Move the form control wrap into the label
+			newLabel.appendChild(formControlWrap);
+		}
 	}
 
 	/**
@@ -2869,7 +2899,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		this.$rexFormsStyle = $('#rexpansive-builder-rexwpcf7-style-inline-css');
 		_fixFormCustomStyle();
 
-		fixInputs();
+		if (!Rexbuilder_Util.editorMode) {
+			fixInputs();
+		}
+
 		Rexbuilder_Rexelement.addStyles();
 		_linkDocumentListeners();
 

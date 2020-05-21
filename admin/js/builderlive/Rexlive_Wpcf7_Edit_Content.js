@@ -10,6 +10,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 	var resetData;
 	var needToRemoveSpanData = true; // Needs to be set false the first time an edit happens
 	var tinyMCE_editor;
+	var tinyMCE_label_editor;
 	var needToSave = false;
 
 	/**
@@ -132,6 +133,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 				wpcf7_content_editor_properties.$content_only_numbers
 					.parents('.bl_modal__option-wrap')
 					.removeClass('row-hidden');
+				wpcf7_content_editor_properties.$content_input_label_editor.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_placeholder.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_input_width.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_input_width
@@ -163,6 +165,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 				wpcf7_content_editor_properties.$content_only_numbers
 					.parents('.bl_modal__option-wrap')
 					.removeClass('row-hidden');
+				wpcf7_content_editor_properties.$content_input_label_editor.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_placeholder.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_input_width.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_input_width
@@ -194,6 +197,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 				wpcf7_content_editor_properties.$content_only_numbers
 					.parents('.bl_modal__option-wrap')
 					.removeClass('row-hidden');
+				wpcf7_content_editor_properties.$content_input_label_editor.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_placeholder.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_input_width.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_input_width
@@ -222,6 +226,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 					.removeClass('row-hidden')
 					.addClass('no-br');
 				wpcf7_content_editor_properties.$content_required_field.parents('.bl_modal-row').removeClass('row-hidden');
+				wpcf7_content_editor_properties.$content_input_label_editor.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_placeholder.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_input_width.parents('.bl_modal-row').removeClass('row-hidden');
 				wpcf7_content_editor_properties.$content_input_width_type.parents('.bl_modal-row').removeClass('row-hidden');
@@ -512,6 +517,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			text_color: '',
 			text_color_hover: '',
 			text_color_focus: '',
+			label_text: '',
 			text: '',
 			type: '',
 			field_class: '',
@@ -579,6 +585,12 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		// Font Size
 		wpcf7_content_editor_properties.$content_input_font_size.val(/[0-9]+/.exec(columnContentData.font_size));
+
+		// Label Editor
+		tinyMCE_label_editor = tinyMCE.get('wpcf7_label_editor');
+		// columnContentData.label_text = columnContentData.label_text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, ''); // Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
+		// tinyMCE_editor.setContent(columnContentData.label_text);
+		_linkLabelTextEditorListeners();
 
 		// Text Editor
 		tinyMCE_editor = tinyMCE.get('wpcf7_text_editor');
@@ -911,6 +923,10 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		// Font size
 		columnContentData.font_size = wpcf7_content_editor_properties.$content_input_font_size.val() + 'px';
+
+		// Label text editor
+		columnContentData.label_text = tinyMCE_editor.getContent();
+		columnContentData.label_text = columnContentData.label_text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, ''); // Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
 
 		// Text editor
 		columnContentData.text = tinyMCE_editor.getContent();
@@ -2124,6 +2140,11 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 				value: columnContentData.wpcf7_placeholder
 			});
 
+			// _updateColumnContentLive({
+			// 	type: 'wpcf7-label-text-editor',
+			// 	value: columnContentData.label_text
+			// });
+
 			_updateColumnContentLive({
 				type: 'wpcf7-text-editor',
 				value: columnContentData.text
@@ -2573,6 +2594,23 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		});
 	};
 
+	function _linkLabelTextEditorListeners() {
+		tinyMCE_label_editor.on('keyup', _handleLabelTextEditorEvents);
+		tinyMCE_label_editor.on('change', _handleLabelTextEditorEvents);
+		tinyMCE_label_editor.on('undo', _handleLabelTextEditorEvents);
+		tinyMCE_label_editor.on('redo', _handleLabelTextEditorEvents);
+		tinyMCE_label_editor.on('cut', _handleLabelTextEditorEvents);
+		tinyMCE_label_editor.on('paste', _handleLabelTextEditorEvents);
+	}
+
+	function _handleLabelTextEditorEvents() {
+		console.log(tinyMCE_label_editor.getContent());
+		// _updateColumnContentLive({
+		// 	type: 'wpcf7-label-text-editor',
+		// 	value: tinyMCE_label_editor.getContent()
+		// });
+	}
+
 	var _init = function () {
 		var $self = $('#rex-wpcf7-content-editor');
 		var $accordions = $self.find('.rex-accordion');
@@ -2603,6 +2641,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			$content_set_email: $container.find('#wpcf7-set-email'),
 			$content_placeholder: $container.find('#wpcf7-placeholder'),
 			$content_input_default_check: $container.find('#wpcf7-default-check'),
+			$content_input_label_editor: $container.find('#wpcf7-label-editor'),
 			$content_input_text_editor: $container.find('#wpcf7-text-editor'),
 			$content_file_max_dimensions: $container.find('#wpcf7-file-max-dimensions'),
 			$content_file_max_dimensions_unit: $container.find('#wpcf7-file-max-dimensions-unit'),
@@ -2803,6 +2842,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			text_color: '',
 			text_color_hover: '',
 			text_color_focus: '',
+			label_text: '',
 			text: '',
 			type: '',
 			field_class: '',
