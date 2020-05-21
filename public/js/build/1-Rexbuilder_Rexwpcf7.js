@@ -1080,8 +1080,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				columnContentData.font_size
 			);
 
-			console.log( cssSelector );
-
 			updateColumnContentRule(
 				formID,
 				rowNumber,

@@ -595,32 +595,31 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				);
 
 				if ('acceptance' === inputType) {
-					Rexbuilder_Rexwpcf7.updateColumnContentRule(
-						formID,
-						rowNumber,
-						columnNumber,
-						cssSelector + ' :not(:checked) ~ .wpcf7-list-item-label::before',
-						'border-color',
-						newValue
-					);
+					var newPropsArray = [
+						{
+							property: 'border-color',
+							selector: cssSelector + ' :not(:checked) ~ .wpcf7-list-item-label::before'
+						},
+						{
+							property: 'border-bottom-color',
+							selector: cssSelector + ' :checked ~ .wpcf7-list-item-label::before'
+						},
+						{
+							property: 'border-right-color',
+							selector: cssSelector + ' :checked ~ .wpcf7-list-item-label::before'
+						}
+					];
 
-					Rexbuilder_Rexwpcf7.updateColumnContentRule(
-						formID,
-						rowNumber,
-						columnNumber,
-						cssSelector + ' :checked ~ .wpcf7-list-item-label::before',
-						'border-bottom-color',
-						newValue
-					);
-
-					Rexbuilder_Rexwpcf7.updateColumnContentRule(
-						formID,
-						rowNumber,
-						columnNumber,
-						cssSelector + ' :checked ~ .wpcf7-list-item-label::before',
-						'border-right-color',
-						newValue
-					);
+					newPropsArray.forEach(function (props) {
+						Rexbuilder_Rexwpcf7.updateColumnContentRule(
+							formID,
+							rowNumber,
+							columnNumber,
+							props.selector,
+							props.property,
+							newValue
+						);
+					});
 				}
 				break;
 			case 'placeholder-color':
