@@ -588,8 +588,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		// Label Editor
 		tinyMCE_label_editor = tinyMCE.get('wpcf7_label_editor');
-		// columnContentData.label_text = columnContentData.label_text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, ''); // Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
-		// tinyMCE_editor.setContent(columnContentData.label_text);
+		// Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
+		columnContentData.label_text = columnContentData.label_text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, ''); 
+		tinyMCE_label_editor.setContent(columnContentData.label_text);
 		_linkLabelTextEditorListeners();
 
 		// Text Editor
@@ -925,8 +926,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		columnContentData.font_size = wpcf7_content_editor_properties.$content_input_font_size.val() + 'px';
 
 		// Label text editor
-		columnContentData.label_text = tinyMCE_editor.getContent();
-		columnContentData.label_text = columnContentData.label_text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, ''); // Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
+		columnContentData.label_text = tinyMCE_label_editor.getContent();
+		// Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
+		columnContentData.label_text = columnContentData.label_text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, '');
 
 		// Text editor
 		columnContentData.text = tinyMCE_editor.getContent();
@@ -2140,10 +2142,10 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 				value: columnContentData.wpcf7_placeholder
 			});
 
-			// _updateColumnContentLive({
-			// 	type: 'wpcf7-label-text-editor',
-			// 	value: columnContentData.label_text
-			// });
+			_updateColumnContentLive({
+				type: 'wpcf7-label-text-editor',
+				value: columnContentData.label_text
+			});
 
 			_updateColumnContentLive({
 				type: 'wpcf7-text-editor',
@@ -2604,11 +2606,10 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 	}
 
 	function _handleLabelTextEditorEvents() {
-		console.log(tinyMCE_label_editor.getContent());
-		// _updateColumnContentLive({
-		// 	type: 'wpcf7-label-text-editor',
-		// 	value: tinyMCE_label_editor.getContent()
-		// });
+		_updateColumnContentLive({
+			type: 'wpcf7-label-text-editor',
+			value: tinyMCE_label_editor.getContent()
+		});
 	}
 
 	var _init = function () {
@@ -2641,7 +2642,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			$content_set_email: $container.find('#wpcf7-set-email'),
 			$content_placeholder: $container.find('#wpcf7-placeholder'),
 			$content_input_default_check: $container.find('#wpcf7-default-check'),
-			$content_input_label_editor: $container.find('#wpcf7-label-editor'),
+			$content_input_label_editor: $container.find('#wpcf7-label-text-editor'),
 			$content_input_text_editor: $container.find('#wpcf7-text-editor'),
 			$content_file_max_dimensions: $container.find('#wpcf7-file-max-dimensions'),
 			$content_file_max_dimensions_unit: $container.find('#wpcf7-file-max-dimensions-unit'),

@@ -40,9 +40,10 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		// Selecting the field
 		switch (fieldType) {
 			case 'text':
-				fieldShortcode = '[text text-' + fieldNumber + ' class:text-' + fieldNumber + ']';
+				fieldShortcode =
+					'<label class="wpcf7-label-text"><p class="wpcf7-label-text__paragraph"></p>[text text-' + fieldNumber + ' class:text-' + fieldNumber + ']</label>';
 				$columnContent.prepend(
-					'<label class="wpcf7-label-text">DEVO ESSERE ELIMINATO<span class="wpcf7-form-control-wrap text-' +
+					'<label class="wpcf7-label-text"><p class="wpcf7-label-text__paragraph"></p><span class="wpcf7-form-control-wrap text-' +
 						fieldNumber +
 						'"><input type="text" name="text-' +
 						fieldNumber +
@@ -52,9 +53,14 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				);
 				break;
 			case 'textarea':
-				fieldShortcode = '[textarea textarea-' + fieldNumber + ' class:textarea-' + fieldNumber + ']';
+				fieldShortcode =
+					'<label class="wpcf7-label-text"><p class="wpcf7-label-text__paragraph"></p>[textarea textarea-' +
+					fieldNumber +
+					' class:textarea-' +
+					fieldNumber +
+					']</label>';
 				$columnContent.prepend(
-					'<label class="wpcf7-label-text"><span class="wpcf7-form-control-wrap textarea-' +
+					'<label class="wpcf7-label-text"><p class="wpcf7-label-text__paragraph"></p><span class="wpcf7-form-control-wrap textarea-' +
 						fieldNumber +
 						'"><textarea name="textarea-' +
 						fieldNumber +
@@ -876,6 +882,11 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				break;
 			case 'wpcf7-default-check':
 				$formColumns.find(".wpcf7-acceptance input[type='checkbox']").prop('checked', newValue);
+				break;
+			case 'wpcf7-label-text-editor':
+				// Remove p empty elements with standard whitespaces, non-breaking spaces and bullet points
+				newValue = newValue.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, ''); 
+				$formColumns.find('.wpcf7-label-text__paragraph').html(newValue);
 				break;
 			case 'wpcf7-text-editor':
 				newValue = newValue.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, ''); // Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points

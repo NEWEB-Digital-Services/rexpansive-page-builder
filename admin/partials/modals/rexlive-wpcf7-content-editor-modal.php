@@ -62,7 +62,7 @@ defined('ABSPATH') or exit;
 				</div>
 			</div>
 			<div class="bl_modal-row modal-row-grey"> <!-- // Text Editor -->
-				<div id="wpcf7-label-editor" class="rexwpcf7-cont_row modal-editor-editorarea modal-editor-editorarea--with-top-text modal-row-grey">
+				<div id="wpcf7-label-text-editor" class="rexwpcf7-cont_row modal-editor-editorarea modal-editor-editorarea--with-top-text modal-row-grey">
 					<span class="modal-editor-editorarea__top-text">label text editor</span>
 					<?php 
 					wp_editor(

@@ -12,7 +12,7 @@ defined('ABSPATH') or exit;
 <div class="rex-modal-wrap">
 	<div id="rex-wpcf7-form-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable setting-edited">
 		<!-- Closing button -->
-        <div class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="<?php esc_attr_e( 'Close', 'rexpansive-builder' ); ?>" value="" tabindex="0">
+        <div class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="<?php esc_attr_e( 'Close', 'rexpansive-builder' ); ?>">
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
         </div>
         <!-- General wrap -->
@@ -115,7 +115,7 @@ defined('ABSPATH') or exit;
                                     <div class="bl_d-iblock form-icon l-icon--dark-grey">
                                         <?php Rexbuilder_Utilities::get_icon('#B021-Form-Background'); ?>
                                     </div>
-                                    <div class="bl_d-iblock ml19"  tabindex="0">
+                                    <div class="bl_d-iblock ml19"  >
                                         <input type="hidden" id="rex-wpcf7-background-color-runtime" name="rex-wpcf7-background-color-runtime" value="" />
                                         <input id="rex-wpcf7-background-color" type="text" name="rex-wpcf7-background-color" value="" size="10" />
                                         <div id="rex-wpcf7-background-color-preview-icon" class="rex-wpcf7-background-color-preview-icon"></div>
@@ -128,7 +128,7 @@ defined('ABSPATH') or exit;
                                         <div class="bl_d-iblock form-icon pl3 l-icon--dark-grey">
                                             <?php Rexbuilder_Utilities::get_icon('#B022-Form-Border'); ?>
                                         </div>
-                                        <div class="bl_d-iblock ml19"  tabindex="0">
+                                        <div class="bl_d-iblock ml19"  >
                                             <input type="hidden" id="rex-wpcf7-border-color-runtime" name="rex-wpcf7-border-color-runtime" value="" />
                                             <input id="rex-wpcf7-border-color" type="text" name="rex-wpcf7-border-color" value="" size="10" />
                                             <div id="rex-wpcf7-border-color-preview-icon" class="rex-wpcf7-border-color-preview-icon"></div>
@@ -156,7 +156,7 @@ defined('ABSPATH') or exit;
                                         <?php _e('Warning Message', 'rexpansive-builder');?>
                                     </label>
                                 </div>
-                                <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Warning Message Color', 'rexpansive-builder');?>">
+                                <div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Warning Message Color', 'rexpansive-builder');?>">
                                     <input type="hidden" id="rex-wpcf7-error-message-color-runtime" name="rex-wpcf7-error-message-color-runtime" value="" />
                                     <input id="rex-wpcf7-error-message-color" type="text" name="rex-wpcf7-error-message-color" value="" size="10" />
                                     <div id="rex-wpcf7-error-message-color-preview-icon" class="rex-wpcf7-error-message-color-preview-icon"></div>
@@ -180,7 +180,7 @@ defined('ABSPATH') or exit;
                                         <?php _e('Success Message', 'rexpansive-builder');?>
                                     </label>
                                 </div>
-                                <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Success Message Color', 'rexpansive-builder');?>">
+                                <div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Success Message Color', 'rexpansive-builder');?>">
                                     <input type="hidden" id="rex-wpcf7-send-message-color-runtime" name="rex-wpcf7-send-message-color-runtime" value="" />
                                     <input id="rex-wpcf7-send-message-color" type="text" name="rex-wpcf7-send-message-color" value="" size="10" />
                                     <div id="rex-wpcf7-send-message-color-preview-icon" class="rex-wpcf7-send-message-color-preview-icon"></div>
@@ -265,7 +265,7 @@ defined('ABSPATH') or exit;
                                     <div class="bl_d-iblock big-icon ml12 l-icon--dark-grey">
                                         <?php Rexbuilder_Utilities::get_icon('#B023-Input-Text'); ?>
                                     </div>
-                                    <div class="bl_d-iblock posrel ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Text Color', 'rexpansive-builder');?>">
+                                    <div class="bl_d-iblock posrel ml19 tippy"  data-tippy-content="<?php _e('Text Color', 'rexpansive-builder');?>">
                                         <input type="hidden" id="rex-wpcf7-content-text-color-runtime" name="rex-wpcf7-content-text-color-runtime" value="" />
                                         <input id="rex-wpcf7-content-text-color" type="text" name="rex-wpcf7-content-text-color" value="" size="10" />
                                         <div id="rex-wpcf7-content-text-color-preview-icon" class="preview-color-icon"></div>
@@ -306,7 +306,7 @@ defined('ABSPATH') or exit;
                                         <div class="bl_d-iblock ml36 big-icon l-icon--dark-grey">
                                             <?php Rexbuilder_Utilities::get_icon('#B024-Input-Text-Hover'); ?>
                                         </div>
-                                        <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Hover Text Color', 'rexpansive-builder');?>">
+                                        <div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Hover Text Color', 'rexpansive-builder');?>">
                                             <input type="hidden" id="rex-wpcf7-content-text-color-hover-runtime" name="rex-wpcf7-content-text-color-hover-runtime" value="" />
                                             <input id="rex-wpcf7-content-text-color-hover" type="text" name="rex-wpcf7-content-text-color-hover" value="" size="10" />
                                             <div id="rex-wpcf7-content-text-color-hover-preview-icon" class="preview-color-icon"></div>
@@ -350,7 +350,7 @@ defined('ABSPATH') or exit;
                                     <div class="bl_d-iblock ml12 big-icon l-icon--dark-grey">
                                         <?php Rexbuilder_Utilities::get_icon('#B025-Input-Background'); ?>
                                     </div>
-                                    <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Background Color', 'rexpansive-builder');?>">
+                                    <div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Background Color', 'rexpansive-builder');?>">
                                         <input type="hidden" id="rex-wpcf7-content-background-color-runtime" name="rex-wpcf7-content-background-color-runtime" value="" />
                                         <input id="rex-wpcf7-content-background-color" type="text" name="rex-wpcf7-content-background-color" value="" size="10" />
                                         <div id="rex-wpcf7-content-background-color-preview-icon" class="preview-color-icon"></div>
@@ -387,7 +387,7 @@ defined('ABSPATH') or exit;
                                         <div class="bl_d-iblock ml36 big-icon l-icon--dark-grey">
                                             <?php Rexbuilder_Utilities::get_icon('#B026-Input-Background-Hover'); ?>
                                         </div>
-                                        <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Hover Background Color', 'rexpansive-builder');?>">
+                                        <div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Hover Background Color', 'rexpansive-builder');?>">
                                             <input type="hidden" id="rex-wpcf7-content-background-color-hover-runtime" name="rex-wpcf7-content-background-color-hover-runtime" value="" />
                                             <input id="rex-wpcf7-content-background-color-hover" type="text" name="rex-wpcf7-content-background-color-hover" value="" size="10" />
                                             <div id="rex-wpcf7-content-background-color-hover-preview-icon" class="preview-color-hover-icon"></div>
@@ -431,7 +431,7 @@ defined('ABSPATH') or exit;
                                     <div class="bl_d-iblock ml12 big-icon l-icon--dark-grey">
                                         <?php Rexbuilder_Utilities::get_icon('#B027-Input-Border'); ?>
                                     </div>
-                                    <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Border Color', 'rexpansive-builder');?>">
+                                    <div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Border Color', 'rexpansive-builder');?>">
                                         <input type="hidden" id="rex-wpcf7-content-border-color-runtime" name="rex-wpcf7-content-border-color-runtime" value="" />
                                         <input id="rex-wpcf7-content-border-color" type="text" name="rex-wpcf7-content-border-color" value="" size="10" />
                                         <div id="rex-wpcf7-content-border-color-preview-icon" class="preview-color-icon"></div>
@@ -454,7 +454,7 @@ defined('ABSPATH') or exit;
                                         <div class="bl_d-iblock ml36 big-icon l-icon--dark-grey">
                                             <?php Rexbuilder_Utilities::get_icon('#B028-Input-Border-Hover'); ?>
                                         </div>
-                                        <div class="bl_d-iblock ml19 tippy" tabindex="0" data-tippy-content="<?php _e('Hover Border Color', 'rexpansive-builder');?>">
+                                        <div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Hover Border Color', 'rexpansive-builder');?>">
                                             <input type="hidden" id="rex-wpcf7-content-border-color-hover-runtime" name="rex-wpcf7-content-border-color-hover-runtime" value="" />
                                             <input id="rex-wpcf7-content-border-color-hover" type="text" name="rex-wpcf7-content-border-color-hover" value="" size="10" />
                                             <div id="rex-wpcf7-content-border-color-hover-preview-icon" class="preview-color-icon"></div>

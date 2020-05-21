@@ -261,9 +261,9 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 			if (firstTimeAdding) {
 				var $form = $elementWrapper.find('.wpcf7-form');
-				var $formChilds = $form.children().not('.wpcf7-response-output').not($form.children().first());
+				var $formChildren = $form.children().not('.wpcf7-response-output').not($form.children().first());
 
-				$formChilds.wrapAll('<div class="wpcf7-rows ui-sortable"></div>');
+				$formChildren.wrapAll('<div class="wpcf7-rows ui-sortable"></div>');
 				var $rows = $form.find('.wpcf7-rows');
 
 				// Removing unwanted elements
@@ -296,8 +296,19 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 					if (0 !== $element.find('.wpcf7-form-control-wrap').length) {
 						$element = $element.find('.wpcf7-form-control-wrap');
-						if (0 != $element.parent('label').length) {
-							$element = $element.parent('label'); // Searching only on the first parent because there may be a label containing more inputs, and this should not happen
+
+						if (0 !== $element.parent('label').length) {
+							// Searching only on the first parent because there may be a label
+							// containing more than 1 input, and this should not happen
+
+							// Add custom class to the label
+							var $label = $element.parent('label');
+
+							// Using $label.contents() and filtering the result deletes the text from the jQuery object
+							$label.contents().wrapAll('<p class="wpcf7-label-text__paragraph"></p>');
+							$label.append($element);
+
+							$element = $label.addClass('wpcf7-label-text');
 						}
 					} else {
 						if (0 !== $element.find('.wpcf7-form-control').length) {
@@ -368,7 +379,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 						// DOM
 						var $input = $el.find('.wpcf7-text');
 						$input.addClass(newClass);
-						$el.addClass(newClass); // Serve?
+						$el.addClass(newClass); // Needed?
 						$input.attr('size', '');
 
 						// Shortcode
@@ -386,7 +397,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 						// DOM
 						var $input = $el.find('.wpcf7-email');
 						$input.addClass(newClass);
-						$el.addClass(newClass); // Serve?
+						$el.addClass(newClass); // Needed?
 						$input.attr('size', '');
 
 						// Shortcode
@@ -404,7 +415,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 						// DOM
 						var $input = $el.find('.wpcf7-number');
 						$input.addClass(newClass);
-						$el.addClass(newClass); // Serve?
+						$el.addClass(newClass); // Needed?
 						$input.attr('size', '');
 
 						// Shortcode
