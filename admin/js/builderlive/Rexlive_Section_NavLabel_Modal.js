@@ -65,6 +65,7 @@ var Section_NavLabel_Modal = (function ($) {
     return {
         init: _init,
         updateSectionNavLabel: _updateSectionNavLabel,
+        applySectionNavLabel: _applySectionNavLabel,
         resetSectionNavLabel: _resetSectionNavLabel,
         getData: _getData
     };

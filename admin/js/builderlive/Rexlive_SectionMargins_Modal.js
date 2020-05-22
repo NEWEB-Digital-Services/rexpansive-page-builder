@@ -143,6 +143,7 @@ var SectionMargins_Modal = (function ($) {
     return {
         init: _init,
         updateMargins: _updateMargins,
+        applySectionMargins: _applySectionMargins,
         resetMargins: _resetMargins,
         getData: _getData
     };

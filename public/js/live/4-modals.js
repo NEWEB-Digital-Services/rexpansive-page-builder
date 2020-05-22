@@ -20,6 +20,7 @@
      * 11) Row Name : rexlive:change_section_name
      *   ) Row Nav Label: rexlive:change_section_nav_label
      * 12) Row Custom Classes : rexlive:apply_section_custom_classes
+     *   ) Row Blocks Update : rexlive:update_blocks_sizes
      * 13) Custom CSS : rexlive:SetCustomCSS
      * 14) Row Background Color : rexlive:apply_background_color_section
      * 15) Row Background Gradient: rexlive:updateSectionBackgroundGradient
@@ -675,6 +676,58 @@
         actionData,
         reverseData
       );
+    });
+
+    $document.on( 'rexlive:update_blocks_sizes', function(event) {
+      var data = event.settings.data_to_send;
+
+      var $section;
+
+      if (data.sectionTarget.modelNumber != "") {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"][data-rexlive-model-number="' +
+            data.sectionTarget.modelNumber +
+            '"]'
+        );
+      } else {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"]'
+        );
+      }
+
+      var $gridElement = $section.find(".grid-stack-row");
+      var pgge = $gridElement.data().plugin_perfectGridGalleryEditor;
+      pgge.updateBlocksSizes( data.blocksState );
+    });
+
+    $document.on('rexlive:update_block_size', function(event) {
+      var data = event.settings.data_to_send;
+
+      var $section;
+
+      if (data.sectionTarget.modelNumber != "") {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"][data-rexlive-model-number="' +
+            data.sectionTarget.modelNumber +
+            '"]'
+        );
+      } else {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"]'
+        );
+      }
+
+      var $gridElement = $section.find(".grid-stack-row");
+      var pgge = $gridElement.data().plugin_perfectGridGalleryEditor;
+      pgge.updateBlockSize( data.blockState );
     });
 
     $document.on("rexlive:SetCustomCSS", function(e) {
@@ -2241,9 +2294,7 @@
         layoutsOrder:
           layoutsOrder != null ? jQuery.extend(true, [], layoutsOrder) : null,
         stateDefault:
-          defaultStateSections != null
-            ? jQuery.extend(true, [], defaultStateSections)
-            : null
+          defaultStateSections != null ? jQuery.extend(true, [], defaultStateSections) : null
       };
 
       Rexbuilder_Util_Editor.pushAction(
@@ -2261,7 +2312,7 @@
       };
       var actionData = {
         buttonProperties: jQuery.extend(true, {}, data.actionButtonData)
-      }
+      };
       Rexbuilder_Rexbutton.updateButton(actionData);
 
       Rexbuilder_Util_Editor.pushAction(
@@ -2279,7 +2330,7 @@
       };
       var actionData = {
         columnContentData: jQuery.extend(true, {}, data.actionColumnContentData)
-      }
+      };
       if ( data.needToSave ) {
         Rexbuilder_Util_Editor.builderEdited(false);
       }
@@ -2381,6 +2432,17 @@
           : "";
 
       var $gridElement = $section.find(".grid-stack-row");
+      var pgge = $gridElement.data().plugin_perfectGridGalleryEditor;
+      var temp = pgge.createActionDataMoveBlocksGrid().blocks;
+      var blocksState = temp.map( function( el ) {
+        return {
+          rexID: el.rexID,
+          x: el.x,
+          y: el.y,
+          w: el.w,
+          h: el.h
+        };
+      });
 
       var activeLayout = $gridElement.attr("data-layout");
       var fullHeight = $gridElement.attr("data-full-height");
@@ -2443,6 +2505,8 @@
             sectionID: sectionID,
             modelNumber: modelNumber
           },
+
+          blocksState: blocksState,
 
           activeLayout: activeLayout,
           fullHeight: fullHeight,
@@ -2935,6 +2999,8 @@
         typeof $elemData.attr("data-block_flex_position") == "undefined"
           ? ""
           : $elemData.attr("data-block_flex_position");
+      if ( '' === blockFlexPosition ) blockFlexPosition = 'left top';
+
       var blockFlexPositionArr = blockFlexPosition.split(" ");
       var blockFlexPositionString =
         blockFlexPositionArr[1] + "-" + blockFlexPositionArr[0];
@@ -2951,9 +3017,10 @@
         typeof $elemData.attr("data-block_flex_img_position") == "undefined"
           ? ""
           : $elemData.attr("data-block_flex_img_position");
+      if ( '' === blockFlexImgPosition ) blockFlexImgPosition = 'center middle';
+      
       var blockFlexImgPositionArr = blockFlexImgPosition.split(" ");
-      var blockFlexImgPositionString =
-        blockFlexImgPositionArr[1] + "-" + blockFlexImgPositionArr[0];
+      var blockFlexImgPositionString = blockFlexImgPositionArr[1] + "-" + blockFlexImgPositionArr[0];
       var img_position = {
         target: {
           sectionID: sectionID,
@@ -2972,6 +3039,14 @@
         typeof $elemData.attr("data-linkurl") == "undefined"
           ? ""
           : $elemData.attr("data-linkurl");
+
+      var blockState = {
+        rexID: rex_block_id,
+        x: parseInt( $elem.attr('data-gs-x')),
+        y: parseInt( $elem.attr('data-gs-y')),
+        w: parseInt( $elem.attr('data-gs-width')),
+        h: parseInt( $elem.attr('data-gs-height'))
+      };
 
       var currentBlockData = {
         bgColor: colorData,
@@ -2996,7 +3071,12 @@
             modelNumber: modelNumber,
             rexID: rex_block_id
           }
-        }
+        },
+        sectionTarget: {
+          sectionID: sectionID,
+          modelNumber: modelNumber
+        },
+        blockState: blockState
       };
 
       var data = {

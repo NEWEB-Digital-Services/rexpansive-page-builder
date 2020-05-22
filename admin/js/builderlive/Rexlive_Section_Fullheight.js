@@ -57,6 +57,7 @@ var FullHeight_Modal = (function ($) {
     return {
         init: _init,
         updateFullHeight: _updateFullHeight,
+        applyFullHeight: _applyFullHeight,
         resetFullHeight: _resetFullHeight,
     };
 

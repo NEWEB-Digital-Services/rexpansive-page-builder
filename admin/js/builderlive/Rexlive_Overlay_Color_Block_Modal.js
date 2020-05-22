@@ -11,6 +11,7 @@ var Overlay_Color_block_Modal = (function($) {
   var changeColorEvent;
 
   var _updateOverlayModal = function(data) {
+    console.log(data)
     target = data.target;
     changeColorEvent.data_to_send.target = data.target;
 
@@ -149,6 +150,7 @@ var Overlay_Color_block_Modal = (function($) {
 
   return {
     init: _init,
-    updateOverlayModal: _updateOverlayModal
+    updateOverlayModal: _updateOverlayModal,
+    applyOverlay: _applyOverlay
   };
 })(jQuery);

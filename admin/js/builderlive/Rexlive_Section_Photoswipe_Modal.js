@@ -56,6 +56,7 @@ var PhotoSwipe_Modal = (function ($) {
     return {
         init: _init,
         updatePhotoswipe: _updatePhotoswipe,
+        applyPhotoswipeSetting: _applyPhotoswipeSetting,
         resetPhotoswipe: _resetPhotoswipe,
         getData: _getData
     };

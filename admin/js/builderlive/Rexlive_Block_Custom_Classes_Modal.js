@@ -9,7 +9,7 @@ var Block_CustomClasses_Modal = (function ($) {
 
     var _resetCustomClasses = function () {
         custom_classes_modal_properties.$classes.val(defaultClasses).trigger("focusout");
-    }
+    };
 
     var _updateCustomClasses = function (data) {
         targetSection = data.target;
@@ -54,32 +54,33 @@ var Block_CustomClasses_Modal = (function ($) {
                 customClasses: classList,
                 target: targetSection
             }
-        }
+        };
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_customClasses);
-    }
+    };
 
     var _linkDocumentListeners = function () {
         custom_classes_modal_properties.$classes.blur(function (e) {
             _applyCustomClasses();
-        })
-    }
+        });
+    };
 
     var _init = function ($container) {
         var $self = $container.find(".block-custom-class-wrapper");
         custom_classes_modal_properties = {
             $classes: $self.find('#rex_block_custom_class'),
-        }
+        };
 
         defaultClasses = "";
 
         _resetCustomClasses();
         _linkDocumentListeners();
-    }
+    };
 
     return {
         init: _init,
         updateCustomClasses: _updateCustomClasses,
-        resetCustomClasses: _resetCustomClasses
+        resetCustomClasses: _resetCustomClasses,
+        applyCustomClasses: _applyCustomClasses
     };
 
 })(jQuery);

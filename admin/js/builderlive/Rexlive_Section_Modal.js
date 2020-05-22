@@ -2,21 +2,43 @@ var Section_Modal = (function($) {
   "use strict";
 
   var section_config_modal_properties;
+  var resetData;
 
   var _openSectionModal = function(data, mousePosition) {
+    resetData = data;    
     _clearSectionModal();
     _updateSectionModal(data);
     Rexlive_Modals_Utils.positionModal( section_config_modal_properties.$self, mousePosition );
     Rexlive_Modals_Utils.openModal(
       section_config_modal_properties.$self.parent(".rex-modal-wrap")
     );
-};
+  };
 
   var _closeSectionModal = function() {
+    _resetSectionModal();
     Rexlive_Modals_Utils.closeModal( section_config_modal_properties.$self.parent(".rex-modal-wrap") );
     setTimeout(function() {
       _clearSectionModal();
     }, 300);
+    resetData = null;
+  };
+
+  var _resetSectionModal = function() {
+    if( resetData ) {
+      _updateSectionModal( resetData );
+    }
+    _applySectionModal();
+
+    // restore the blocks dimensions, probably changed
+    var event = {
+      eventName: "rexlive:update_blocks_sizes",
+      data_to_send: {
+        sectionTarget: resetData.sectionTarget,
+        blocksState: resetData.blocksState
+      }
+    };
+
+    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(event);
   };
 
   var _clearSectionModal = function() {
@@ -45,10 +67,38 @@ var Section_Modal = (function($) {
     Section_CustomClasses_Modal.update(data);
   };
 
+  var _applySectionModal = function() {
+    LayoutGrid_Modal.applySectionLayout();
+    Section_Width_Modal.applySectionWidth();
+    GridSeparators_Modal.applyRowDistances();
+    SectionMargins_Modal.applySectionMargins();
+    PhotoSwipe_Modal.applyPhotoswipeSetting();
+    Hold_Grid_Modal.apply();
+    FullHeight_Modal.applyFullHeight();
+    SectionName_Modal.applySectionName();
+    Section_NavLabel_Modal.applySectionNavLabel();
+    Section_CustomClasses_Modal.apply();
+  };
+
   var _linkDocumentListenersSectionPropertiesModal = function() {
     section_config_modal_properties.$close_button.click(function(e) {
       e.preventDefault();
       _closeSectionModal();
+    });
+
+    // confirm-refresh options
+    section_config_modal_properties.$options_buttons.on('click', function(event) {
+      event.preventDefault();
+      switch( this.getAttribute('data-rex-option' ) ) {
+        case 'save':
+          _closeSectionModal();
+          break;
+        case 'reset':
+          _resetSectionModal();
+          break;
+        default:
+          break;
+      }
     });
   };
 
@@ -56,7 +106,7 @@ var Section_Modal = (function($) {
     var $sectionConfigModal = $("#modal-background-responsive-set");
     section_config_modal_properties = {
       $self: $sectionConfigModal,
-      
+      $options_buttons: $sectionConfigModal.find('.rex-modal-option'),
       $close_button: $sectionConfigModal.find('.rex-modal__close-button'),
     };
 

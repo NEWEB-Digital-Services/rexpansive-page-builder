@@ -16,27 +16,21 @@ var Block_Video_Background_Modal = (function($) {
     Rexlive_Modals_Utils.openModal( video_background_properties.$self.parent(".rex-modal-wrap") );
 
     if(data.youtubeUrl == ""){
-      video_background_properties.$linkYoutube
-          .blur();
+      video_background_properties.$linkYoutube.blur();
     }else{
-      video_background_properties.$linkYoutube
-          .focus()
+      video_background_properties.$linkYoutube.focus();
     }
 
     if(data.vimeoUrl == ""){
-      video_background_properties.$linkVimeo
-          .blur();
+      video_background_properties.$linkVimeo.blur();
     }else{
-      video_background_properties.$linkVimeo
-          .focus()
+      video_background_properties.$linkVimeo.focus();
     }
 
     if(data.mp4Data == ""){
-      video_background_properties.$linkMp4Preview
-          .blur()
+      video_background_properties.$linkMp4Preview.blur();
     }else{
-      video_background_properties.$linkMp4Preview
-          .focus();
+      video_background_properties.$linkMp4Preview.focus();
     }
 
   };

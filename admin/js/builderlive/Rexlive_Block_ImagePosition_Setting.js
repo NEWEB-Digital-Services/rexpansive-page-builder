@@ -91,6 +91,7 @@ var Block_Image_Positions_Setting = (function($) {
     init: _init,
     updatePosition: _updatePosition,
     resetPosition: _resetPosition,
+    applyBlockPosition: _applyBlockPosition
     // openBlockContentPositionModal: _openBlockContentPositionModal,
     // closeBlockContentPositionModal: _closeBlockContentPositionModal
   };

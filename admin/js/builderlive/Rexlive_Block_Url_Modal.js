@@ -7,7 +7,7 @@ var Block_Url_Modal = (function ($) {
 
     var _resetBlockUrl = function () {
         block_url_modal_properties.$urlInput.val(defaultUrl);
-    }
+    };
 
     var _updateBlockUrl = function (data) {
         target = data.target;
@@ -23,7 +23,7 @@ var Block_Url_Modal = (function ($) {
                 .addClass("active");
         }
 
-    }
+    };
 
     var _applyBlockUrl = function () {
         var url = block_url_modal_properties.$urlInput.val();
@@ -34,33 +34,34 @@ var Block_Url_Modal = (function ($) {
                 url: url,
                 target: target
             }
-        }
+        };
 
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_blockUrl);
-    }
+    };
 
     var _linkDocumentListeners = function () {
         block_url_modal_properties.$urlInput.blur(function (e) {
             _applyBlockUrl();
-        })
-    }
+        });
+    };
 
     var _init = function ($container) {
         var $self = $container.find(".block-url-link-wrapper");
         block_url_modal_properties = {
             $urlInput: $self.find('#block_link_value'),
-        }
+        };
 
         defaultUrl = "";
 
         _resetBlockUrl();
         _linkDocumentListeners();
-    }
+    };
 
     return {
         init: _init,
         updateBlockUrl: _updateBlockUrl,
-        resetBlockUrl: _resetBlockUrl
+        resetBlockUrl: _resetBlockUrl,
+        applyBlockUrl: _applyBlockUrl
     };
 
 })(jQuery);

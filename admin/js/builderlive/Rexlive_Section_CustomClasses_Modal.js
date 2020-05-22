@@ -8,7 +8,7 @@ var Section_CustomClasses_Modal = (function ($) {
     
     var _reset = function () {
         //custom_classes_modal_properties.$classes.val(defaultClasses);
-    }
+    };
 
     var _update = function (data) {
         sectionTarget = data.sectionTarget;
@@ -45,7 +45,7 @@ var Section_CustomClasses_Modal = (function ($) {
 
         custom_classes_modal_properties.$classes.val(newClasses);
         
-    }
+    };
 
     var _apply = function () {
         var newClassesString = _getData();

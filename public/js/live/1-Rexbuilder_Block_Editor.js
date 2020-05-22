@@ -683,13 +683,15 @@ var Rexbuilder_Block_Editor = (function($) {
           sectionID: sectionID,
           modelNumber: modelNumber,
           rexID: rex_block_id
-        }
+        },
       };
   
       var blockFlexImgPosition =
         typeof $elemData.attr("data-block_flex_img_position") == "undefined"
           ? ""
           : $elemData.attr("data-block_flex_img_position");
+      if ( '' === blockFlexImgPosition ) blockFlexImgPosition = 'center middle';
+
       var blockFlexImgPositionArr = blockFlexImgPosition.split(" ");
       var blockFlexImgPositionString =
         blockFlexImgPositionArr[1] + "-" + blockFlexImgPositionArr[0];
@@ -701,11 +703,24 @@ var Rexbuilder_Block_Editor = (function($) {
         },
         position: blockFlexImgPositionString
       };
+
+      var blockState = {
+        rexID: rex_block_id,
+        x: parseInt( $elem.attr('data-gs-x')),
+        y: parseInt( $elem.attr('data-gs-y')),
+        w: parseInt( $elem.attr('data-gs-width')),
+        h: parseInt( $elem.attr('data-gs-height'))
+      };
   
       var settings = {
         imageBG: imageData,
-        flexImgPosition: img_position
-      }
+        flexImgPosition: img_position,
+        sectionTarget: {
+          sectionID: sectionID,
+          modelNumber: modelNumber,
+        },
+        blockState: blockState
+      };
   
       Rexbuilder_Util_Editor.manageElement = true;
       var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );

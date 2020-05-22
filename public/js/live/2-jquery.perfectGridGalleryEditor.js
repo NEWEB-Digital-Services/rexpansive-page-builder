@@ -2558,19 +2558,19 @@
      * @since 2.0.0
      * @date 11-07-2019 Rewrite for vanilla JS
      */
-    updateSizeViewerText: function(elem, x, y, size_viewer, size_viewer_mobile) {
+    updateSizeViewerText: function(elem, w, h, size_viewer, size_viewer_mobile) {
       size_viewer = 'undefined' !== typeof size_viewer ? size_viewer : elem.querySelector('.bottom-tools .el-size-viewer .el-size-viewer__val');
       size_viewer_mobile = 'undefined' !== typeof size_viewer_mobile ? size_viewer_mobile : elem.querySelector('.mobile-tools .el-size-viewer .el-size-viewer__val');
-      if (x === undefined || y === undefined) {
-        var x, y;
-        x = parseInt( elem.getAttribute("data-gs-width") );
-        y = parseInt( elem.getAttribute("data-gs-height") );
+      if (w === undefined || h === undefined) {
+        var w, h;
+        w = parseInt( elem.getAttribute("data-gs-width") );
+        h = parseInt( elem.getAttribute("data-gs-height") );
         if (this.settings.galleryLayout == "masonry") {
-          y = Math.round(y * this.properties.singleHeight) - this.properties.gutter;
+          h = Math.round(h * this.properties.singleHeight) - this.properties.gutter;
         }
       }
-      var size_text = (x + " x " + y);
-      var size_text_mobile = (x + "x" + y);
+      var size_text = (w + " x " + h);
+      var size_text_mobile = (w + "x" + h);
 
       if ( size_viewer ) {
         size_viewer.textContent = size_text;
@@ -2579,6 +2579,24 @@
       if ( size_viewer_mobile ) {
         size_viewer_mobile.textContent = size_text_mobile;
       }
+    },
+
+    updateBlocksSizes: function( data ) {
+      this.properties.gridstackInstance.batchUpdate();
+      for( var i=0; i < data.length; i++ ) {
+        var elem = this.element.querySelector( this.settings.itemSelector + '[data-rexbuilder-block-id="' + data[i].rexID + '"]' );
+        this.properties.gridstackInstance.update(elem, data[i].x, data[i].y, data[i].w, data[i].h);
+        this.updateSizeViewerText( elem, data[i].w, data[i].h );
+      }
+      this.properties.gridstackInstance.commit();
+    },
+
+    updateBlockSize: function( data ) {
+      this.properties.gridstackInstance.batchUpdate();
+      var elem = this.element.querySelector( this.settings.itemSelector + '[data-rexbuilder-block-id="' + data.rexID + '"]' );
+      this.properties.gridstackInstance.update(elem, data.x, data.y, data.w, data.h);
+      this.updateSizeViewerText( elem, data.w, data.h );
+      this.properties.gridstackInstance.commit();
     },
 
     updateSizeViewerSizes: function(block) {

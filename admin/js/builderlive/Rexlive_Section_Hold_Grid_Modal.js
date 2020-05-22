@@ -78,6 +78,7 @@ var Hold_Grid_Modal = (function ($) {
     return {
         init: _init,        // C
         getData: _getData,  // R
+        apply: _apply,
         update: _update,    // U
         reset: _reset,      // D
     };

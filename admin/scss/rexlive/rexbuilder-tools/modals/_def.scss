@@ -4,6 +4,9 @@
   &:not(:last-child) {
     border-bottom: 1px solid #ddd;
   }
+  &.bl_modal-row--no-border {
+    border-bottom: none;
+  }
   // margin-bottom: 15px;
   &.bl_modal-row--no-padding {
     padding: 0;
