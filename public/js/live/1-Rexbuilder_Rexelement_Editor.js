@@ -301,7 +301,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 							// Searching only on the first parent because there may be a label
 							// containing more than 1 input, and this should not happen
 
-							var labelParagraphTemplate = Rexbuilder_Live_Templates.getTemplate('label-text-paragraph');
+							var labelParagraphTemplate = Rexbuilder_Public_Templates.getTemplate('label-text-paragraph');
 
 							// Add custom class to the label
 							var $label = $element.parent('label');

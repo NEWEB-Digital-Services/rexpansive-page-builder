@@ -37,7 +37,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		$columnToAddField.append($span);
 		var $columnContent = $columnToAddField.find('.wpcf7-column-content');
 
-		var labelParagraphTemplate = Rexbuilder_Live_Templates.getTemplate('label-text-paragraph');
+		var labelParagraphTemplate = Rexbuilder_Public_Templates.getTemplate('label-text-paragraph');
 
 		// Selecting the field
 		switch (fieldType) {

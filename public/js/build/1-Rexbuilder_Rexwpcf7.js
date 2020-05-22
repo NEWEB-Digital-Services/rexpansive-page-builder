@@ -2261,12 +2261,14 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		} else {
 			/* Input has not the label, need to wrap */
 			// The label will be wrapped to this elements
+			var labelParagraphTemplate = Rexbuilder_Public_Templates.getTemplate('label-text-paragraph');
+
 			var formControlWrap = $input.parents('.wpcf7-form-control-wrap').get(0);
 
 			// Create wrapper container
 			var newLabel = document.createElement('label');
 			Rexbuilder_Util.addClass(newLabel, 'wpcf7-label-text');
-			newLabel.insertAdjacentHTML('afterbegin', '<div class="wpcf7-label-text__paragraph"></div>');
+			newLabel.insertAdjacentHTML('afterbegin', labelParagraphTemplate);
 
 			// Insert the label before the form control wrap in the DOM tree
 			formControlWrap.parentNode.insertBefore(newLabel, formControlWrap);
@@ -2276,6 +2278,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 			if (Rexbuilder_Util.editorMode) {
 				/* Add the label to the shortcode to save it */
+				var labelParagraphTemplate = Rexbuilder_Public_Templates.getTemplate('label-text-paragraph');
+
 				var formID = $input.parents('.rex-element-wrapper').attr('data-rex-element-id');
 				var rowNumber = $input.parents('.wpcf7-row').attr('wpcf7-row-number');
 				var columnNumber = $input.parents('.wpcf7-column').attr('wpcf7-column-number');
@@ -2287,7 +2291,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 					.get(0);
 
 				dbColumnContent.innerHTML =
-					'<label class="wpcf7-label-text"><div class="wpcf7-label-text__paragraph"></div>' +
+					'<label class="wpcf7-label-text">' +
+					labelParagraphTemplate +
+					'</div>' +
 					dbColumnContent.textContent +
 					'</label>';
 			}
