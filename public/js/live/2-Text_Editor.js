@@ -2759,10 +2759,10 @@ var TextEditor = (function ($) {
 				'item--me-focus'
 			);
 			var section = $(editableElement).parents('.rexpansive_section').get(0);
-			var sectionFocused = Rexbuilder_Util.hasClass(section, 'focusedRow');
+			// var sectionFocused = Rexbuilder_Util.hasClass(section, 'focusedRow');
 			var sectionEditing = Rexbuilder_Util.hasClass(section, 'block-editing');
 
-			if (gsItemFocused && sectionFocused && sectionEditing) {
+			if (gsItemFocused && /* sectionFocused && */ sectionEditing) {
 				var elementWrapper = target.matches('.rex-element-wrapper')
 					? target
 					: $(target).parents('.rex-element-wrapper').get(0);
@@ -2957,7 +2957,7 @@ var TextEditor = (function ($) {
 
 			if (
 				Rexbuilder_Util.hasClass(this.traceGsItem, 'item--me-focus') &&
-				Rexbuilder_Util.hasClass(section, 'focusedRow') &&
+				// Rexbuilder_Util.hasClass(section, 'focusedRow') &&
 				Rexbuilder_Util.hasClass(section, 'block-editing')
 			) {
 				var contactForm = target.matches('.wpcf7-form:not(.no-builder-form)')

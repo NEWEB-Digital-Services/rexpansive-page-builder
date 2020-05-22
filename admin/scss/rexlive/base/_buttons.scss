@@ -174,15 +174,6 @@
 		transform: translate(50%, -50%);
 	}
 
-	// &.tool-button--close2 {
-	//   position: absolute;
-	//   top: 0;
-	//   right: 0;
-	//   font-size: 10px!important;
-	//   padding: 5px;
-	//   transform: translate(50%,-50%);
-	// }
-
 	&.tool-button--cancel {
 		background-color: $palette-color-4;
 		@include fill-icon(#fff);
@@ -193,6 +184,11 @@
 		#{$icon-class} {
 			font-size: 18px;
 		}
+	}
+
+	&.tool-button--confirm {
+		background-color: $palette-color-1;
+		@include fill-icon(#fff);
 	}
 
 	&.tool-button--image-preview {

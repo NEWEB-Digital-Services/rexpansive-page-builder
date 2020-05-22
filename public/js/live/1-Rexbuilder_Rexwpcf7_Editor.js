@@ -1306,16 +1306,16 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			var hasPlaceholder = /placeholder/.test(shortcode);
 
 			if ('' === placeholder) {
-				// Removing the placeholder
-
+				/* Removing the placeholder */
+				
 				if (hasPlaceholder) {
 					shortcode = shortcode.replace(/\splaceholder \".+\"/, '');
 				}
 			} else {
-				// Setting the placeholder
+				/* Setting the placeholder */
 
 				// Searching for a "something" like string
-				var stringValue = shortcode.match(/(\"|\')(.+)(\"|\')/);
+				var stringValue = shortcode.match(/\[.+(\"|\')(.+)(\"|\')\]/);
 				var newPlaceholder = 'placeholder "' + placeholder + '"';
 
 				if (!hasPlaceholder && !stringValue) {
@@ -1323,7 +1323,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				} else if (hasPlaceholder) {
 					shortcode = shortcode.replace(/placeholder \".+\"/, newPlaceholder);
 				} else if (stringValue) {
-					shortcode = shortcode.replace(stringValue[0], '');
+					shortcode = shortcode.replace(stringValue[1] + stringValue[2] + stringValue[3], '');
 					shortcode = shortcode.replace(']', ' ' + newPlaceholder + ']');
 				}
 			}

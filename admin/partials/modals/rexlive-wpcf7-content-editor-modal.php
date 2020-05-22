@@ -727,12 +727,12 @@ defined('ABSPATH') or exit;
 		</div>
 		<!-- Footer -->
 		<div class="rex-modal__outside-footer">
-			<div class="tool-button tool-button--inline tool-button--save rex-apply-button tippy" data-tippy-content="<?php _e('Save','rexpansive-builder'); ?>" data-rex-option="save">
+			<div class="tool-button tool-button--inline tool-button--confirm tool-button--modal rex-apply-button tippy" data-tippy-content="<?php _e('Save','rexpansive-builder'); ?>">
 				<span class="rex-button save-page btn-save--wrap">
-					<?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?>
+					<?php Rexbuilder_Utilities::get_icon('#Z016-Checked'); ?>
 				</span>
 			</div>
-			<div class="tool-button tool-button--centered tool-button--cancel rex-reset-button tippy" data-rex-option="continue" data-tippy-content="<?php _e('Reset','rexpansive-builder'); ?>">
+			<div class="tool-button tool-button--centered rex-reset-button tippy" data-tippy-content="<?php _e('Reset','rexpansive-builder'); ?>">
 				<?php Rexbuilder_Utilities::get_icon('#Z014-Refresh'); ?>
 			</div>
 		</div>
