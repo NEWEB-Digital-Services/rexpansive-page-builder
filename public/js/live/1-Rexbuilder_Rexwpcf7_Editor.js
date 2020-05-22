@@ -37,17 +37,23 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		$columnToAddField.append($span);
 		var $columnContent = $columnToAddField.find('.wpcf7-column-content');
 
+		var labelParagraphTemplate = Rexbuilder_Live_Templates.getTemplate('label-text-paragraph');
+
 		// Selecting the field
 		switch (fieldType) {
 			case 'text':
 				fieldShortcode =
-					'<label class="wpcf7-label-text"><div class="wpcf7-label-text__paragraph"></div>[text text-' +
+					'<label class="wpcf7-label-text">' +
+					labelParagraphTemplate +
+					'[text text-' +
 					fieldNumber +
 					' class:text-' +
 					fieldNumber +
 					']</label>';
 				$columnContent.prepend(
-					'<label class="wpcf7-label-text"><div class="wpcf7-label-text__paragraph"></div><span class="wpcf7-form-control-wrap text-' +
+					'<label class="wpcf7-label-text">' +
+						labelParagraphTemplate +
+						'<span class="wpcf7-form-control-wrap text-' +
 						fieldNumber +
 						'"><input type="text" name="text-' +
 						fieldNumber +
@@ -58,13 +64,17 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				break;
 			case 'textarea':
 				fieldShortcode =
-					'<label class="wpcf7-label-text"><div class="wpcf7-label-text__paragraph"></div>[textarea textarea-' +
+					'<label class="wpcf7-label-text">' +
+					labelParagraphTemplate +
+					'[textarea textarea-' +
 					fieldNumber +
 					' class:textarea-' +
 					fieldNumber +
 					']</label>';
 				$columnContent.prepend(
-					'<label class="wpcf7-label-text"><div class="wpcf7-label-text__paragraph"></div><span class="wpcf7-form-control-wrap textarea-' +
+					'<label class="wpcf7-label-text">' +
+						labelParagraphTemplate +
+						'<span class="wpcf7-form-control-wrap textarea-' +
 						fieldNumber +
 						'"><textarea name="textarea-' +
 						fieldNumber +
@@ -1258,13 +1268,17 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 		// Label text
 		if (-1 !== ['text', 'email', 'number', 'textarea'].indexOf(inputType)) {
-			// Using .parseHTML to get the TextNode too
-			var $labelParsed = $($.parseHTML(shortcode));
+			try {
+				// Using .parseHTML to get the TextNode too
+				var $labelParsed = $($.parseHTML(shortcode));
 
-			// Replacing the first element's HTML, i.e. .wpcf7-label-text__paragraph
-			$labelParsed.contents().get(0).innerHTML = newLabelText;
+				// Replacing the first element's HTML, that is .wpcf7-label-text__paragraph
+				$labelParsed.contents().get(0).innerHTML = newLabelText;
 
-			shortcode = $labelParsed.get(0).outerHTML;
+				shortcode = $labelParsed.get(0).outerHTML;
+			} catch (err) {
+				console.error('Error while changing the label text. Error:', err);
+			}
 		}
 
 		// Default check
