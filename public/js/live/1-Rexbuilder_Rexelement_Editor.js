@@ -305,7 +305,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 							var $label = $element.parent('label');
 
 							// Using $label.contents() and filtering the result deletes the text from the jQuery object
-							$label.contents().wrapAll('<p class="wpcf7-label-text__paragraph"></p>');
+							$label.contents().wrapAll('<div class="wpcf7-label-text__paragraph"></div>');
 							$label.append($element);
 
 							$element = $label.addClass('wpcf7-label-text');

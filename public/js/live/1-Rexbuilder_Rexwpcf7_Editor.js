@@ -41,9 +41,13 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		switch (fieldType) {
 			case 'text':
 				fieldShortcode =
-					'<label class="wpcf7-label-text"><p class="wpcf7-label-text__paragraph"></p>[text text-' + fieldNumber + ' class:text-' + fieldNumber + ']</label>';
+					'<label class="wpcf7-label-text"><div class="wpcf7-label-text__paragraph"></div>[text text-' +
+					fieldNumber +
+					' class:text-' +
+					fieldNumber +
+					']</label>';
 				$columnContent.prepend(
-					'<label class="wpcf7-label-text"><p class="wpcf7-label-text__paragraph"></p><span class="wpcf7-form-control-wrap text-' +
+					'<label class="wpcf7-label-text"><div class="wpcf7-label-text__paragraph"></div><span class="wpcf7-form-control-wrap text-' +
 						fieldNumber +
 						'"><input type="text" name="text-' +
 						fieldNumber +
@@ -54,13 +58,13 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				break;
 			case 'textarea':
 				fieldShortcode =
-					'<label class="wpcf7-label-text"><p class="wpcf7-label-text__paragraph"></p>[textarea textarea-' +
+					'<label class="wpcf7-label-text"><div class="wpcf7-label-text__paragraph"></div>[textarea textarea-' +
 					fieldNumber +
 					' class:textarea-' +
 					fieldNumber +
 					']</label>';
 				$columnContent.prepend(
-					'<label class="wpcf7-label-text"><p class="wpcf7-label-text__paragraph"></p><span class="wpcf7-form-control-wrap textarea-' +
+					'<label class="wpcf7-label-text"><div class="wpcf7-label-text__paragraph"></div><span class="wpcf7-form-control-wrap textarea-' +
 						fieldNumber +
 						'"><textarea name="textarea-' +
 						fieldNumber +
@@ -885,7 +889,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				break;
 			case 'wpcf7-label-text-editor':
 				// Remove p empty elements with standard whitespaces, non-breaking spaces and bullet points
-				newValue = newValue.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, ''); 
+				newValue = newValue.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, '');
 				$formColumns.find('.wpcf7-label-text__paragraph').html(newValue);
 				break;
 			case 'wpcf7-text-editor':
@@ -1163,10 +1167,10 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	/**
 	 * Updated the shortocode of a column in DB
 	 * according to passed information.
-	 * @param	{Object}	data
+	 * @param		{Object}	data
 	 * @returns	{void}
 	 * @since		2.0.2
-	 * @version	2.0.5		Improved shortcode managing
+	 * @version	2.0.5			Improved shortcode managing
 	 * @todo		Improve shortcode managing for files, radios, acceptances, selects, submits
 	 */
 	function updateColumnContentShortcode(data) {
@@ -1190,6 +1194,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		var onlyNumbers = String(columnContentData.wpcf7_only_numbers) == 'true';
 		var isSetDefaultCheck = String(columnContentData.wpcf7_default_check) == 'true';
 		var placeholder = columnContentData.wpcf7_placeholder;
+		var newLabelText = columnContentData.label_text;
 		var fieldText = columnContentData.text;
 		var listFields = columnContentData.wpcf7_list_fields;
 		var fileMaxDim = columnContentData.wpcf7_file_max_dimensions;
@@ -1251,6 +1256,17 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			}
 		}
 
+		// Label text
+		if (-1 !== ['text', 'email', 'number', 'textarea'].indexOf(inputType)) {
+			// Using .parseHTML to get the TextNode too
+			var $labelParsed = $($.parseHTML(shortcode));
+
+			// Replacing the first element's HTML, i.e. .wpcf7-label-text__paragraph
+			$labelParsed.contents().get(0).innerHTML = newLabelText;
+
+			shortcode = $labelParsed.get(0).outerHTML;
+		}
+
 		// Default check
 		if (inputType == 'acceptance') {
 			// Puts (or removes) the "default:on" string
@@ -1270,6 +1286,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				}
 			}
 		}
+
 		// Placeholder
 		if (-1 !== ['text', 'email', 'number', 'textarea'].indexOf(inputType)) {
 			var hasPlaceholder = /placeholder/.test(shortcode);
@@ -1283,7 +1300,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 			} else {
 				// Setting the placeholder
 
-				// Searching for a "{something}" like string
+				// Searching for a "something" like string
 				var stringValue = shortcode.match(/(\"|\')(.+)(\"|\')/);
 				var newPlaceholder = 'placeholder "' + placeholder + '"';
 

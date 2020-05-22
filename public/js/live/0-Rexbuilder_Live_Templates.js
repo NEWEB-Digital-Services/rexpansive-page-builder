@@ -243,7 +243,10 @@ var Rexbuilder_Live_Templates = (function() {
 							'</use>' +
 						'</svg>' +
 					'</i>' +
-				'</div>'
+				'</div>';
+
+			case 'label-text-paragraph':
+				return '<div class="wpcf7-label-text__paragraph"></div>'
 				
 			default:
 				return '';

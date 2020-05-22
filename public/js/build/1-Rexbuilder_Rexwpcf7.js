@@ -2268,7 +2268,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			// Create wrapper container
 			var newLabel = document.createElement('label');
 			Rexbuilder_Util.addClass(newLabel, 'wpcf7-label-text');
-			newLabel.insertAdjacentHTML('afterbegin', '<p class="wpcf7-label-text__paragraph"></p>')
+			newLabel.insertAdjacentHTML('afterbegin', '<div class="wpcf7-label-text__paragraph"></div>')
 
 			// Insert the label before the form control wrap in the DOM tree
 			formControlWrap.parentNode.insertBefore(newLabel, formControlWrap);
@@ -2288,7 +2288,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 					)
 					.get(0);
 
-				dbColumnContent.innerHTML = '<label class="wpcf7-label-text"><p class="wpcf7-label-text__paragraph"></p>' + dbColumnContent.textContent + '</label>';
+				dbColumnContent.innerHTML = '<label class="wpcf7-label-text"><div class="wpcf7-label-text__paragraph"></div>' + dbColumnContent.textContent + '</label>';
 			}
 		}
 	}
