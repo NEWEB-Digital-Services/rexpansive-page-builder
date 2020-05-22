@@ -20,6 +20,8 @@
 		this.target = null;
 		this.urlTarget = '';
 
+		this.open = false;
+
 		// close button (child of popupelement)
 		this.closeBtn = null;
 
@@ -67,7 +69,7 @@
 		attachEventHandlers.call(this);
 
 		instances.push( this );
-	};
+	}
 
 	function initialize() {
 		this.hashTarget = this.element.hash.substr(1);
@@ -84,7 +86,7 @@
 
 				this.options.ajaxSettings.error = function( response ) {
 					console.log('There was an error');
-				}
+				};
 			}
 
         	var thisParent = foundParents( this.element, this.options.contentInjectorPoint );
@@ -118,6 +120,14 @@
 		ev.preventDefault();
 		toggleClass(this.target, this.options.popupViewClass);
 		toggleClass(document.body, this.options.bodyPopUpViewClass);
+
+		this.open = ! this.open;
+
+		// trigger open/close event to parent
+		var eventName = ( this.open ? 'popUpContent:open' : 'popUpContent:close' );
+
+		var stateEvent = new Event( eventName );
+		document.dispatchEvent(stateEvent);
 	}
 
 	function ajaxSuccessWrapper( response ) {

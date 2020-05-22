@@ -507,7 +507,42 @@ var Rexbuilder_App = (function($) {
     }
 
     if ( ! Rexbuilder_Util.isIframe ) {
+      // listen messages from popupcontent iframe
       window.addEventListener("message", receivePopUpContentMsgs, false);
+
+      // listen events from popupcontent object
+      document.addEventListener('popUpContent:open', onPopUpContentOpen);
+      document.addEventListener('popUpContent:close', opPopUpContentClose);
+
+      var sliders = Array.prototype.slice.call( document.getElementsByClassName('rex-slider-wrap'));
+      var i, tot = sliders.length;
+      var flktData = [];
+
+      for( i=0; i<tot; i++ ) {
+        var flkt = Flickity.data( sliders[i] );
+        if ( !flkt ) continue;
+        flktData.push( flkt );
+      }
+
+      function onPopUpContentOpen() {
+        // on popup open, stop all the autoplay sliders
+        var j;
+        for( j=0; j<flktData.length; j++ ) {
+          if ( flktData[j].options.autoPlay ) {
+            flktData[j].pausePlayer();
+          }
+        }
+      }
+
+      function opPopUpContentClose() {
+        // on popup close, restart the autoplays
+        var j;
+        for( j=0; j<flktData.length; j++ ) {
+          if ( flktData[j].options.autoPlay ) {
+            flktData[j].unpausePlayer();
+          }
+        }
+      }
     }
   }
 
