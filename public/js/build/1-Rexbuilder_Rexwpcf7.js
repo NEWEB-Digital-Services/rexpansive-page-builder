@@ -2178,6 +2178,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				case 'textarea':
 					$input = $formColumn.find('.wpcf7-' + elementToFix);
 					$input.attr('size', '');
+
 					_fixLabels($input);
 					break;
 				case 'select':
@@ -2411,9 +2412,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				refreshColumnContentStyle($formColumn);
 			});
 	}
-
-	/* === Fixing Methods End === */
-	/* ===== PUBLIC METHODS END ===== */
 
 	/* ===== PRIVATE METHODS ===== */
 

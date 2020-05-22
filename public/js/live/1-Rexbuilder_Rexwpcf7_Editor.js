@@ -234,9 +234,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		var newRadioData;
 		var newRowNumber = numberRowBefore + 1;
 
-		var i = 0;
-
-		for (; i < columnsAdded.length; i++) {
+		for (var i = 0; i < columnsAdded.length; i++) {
 			clonedColumn = columnsAdded[i];
 			clonedColumnNumber = i + 1;
 			clonedRadioButton = clonedColumn.querySelector('.wpcf7-form-control-wrap[class*=radio-]');
@@ -257,7 +255,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 					.find('input')
 					.attr('name', newRadioData.newRadioName);
 
-				_fixClonedRadioButtonDB(formID, {
+				_fixClonedFieldsDB(formID, {
 					newRowNumber: newRowNumber,
 					newColumnNumber: clonedColumnNumber,
 					oldName: newRadioData.oldRadioName,
@@ -303,29 +301,49 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		_saveClonedColumnRow(formID, clonedColumnNumber, numberRowBefore);
 		wrapButtons();
 
-		var clonedRadioButton = clonedColumn.querySelector('.wpcf7-form-control-wrap[class*=radio-]');
+		// Field name handling
+		var nameData = _getNewClonedData(clonedColumn);
+		console.log(nameData);
 
-		if (clonedRadioButton) {
-			var newRadioData = _getNewRadioData(clonedRadioButton);
+		// null -> a button is cloned, do nothing
+		if (nameData) {
+			var $column = Rexbuilder_Util.$rexContainer.find(
+				'.rex-element-wrapper[data-rex-element-id="' +
+					formID +
+					'"] .wpcf7 .wpcf7-row[wpcf7-row-number="' +
+					newRowNumber +
+					'"] .wpcf7-column[wpcf7-column-number="' +
+					clonedColumnNumber +
+					'"]'
+			);
 
-			Rexbuilder_Util.$rexContainer
-				.find(
-					'.rex-element-wrapper[data-rex-element-id="' +
-						formID +
-						'"] .wpcf7 .wpcf7-row[wpcf7-row-number="' +
-						newRowNumber +
-						'"] .wpcf7-column[wpcf7-column-number="' +
-						clonedColumnNumber +
-						'"]'
-				)
-				.find('input')
-				.attr('name', newRadioData.newRadioName);
+			// Replace the name tooltip
+			$column.find('.rex-wpcf7-column-info').attr('data-tippy-content', nameData.newName);
 
-			_fixClonedRadioButtonDB(formID, {
+			// Replace name in the control wrap class (only for some field types)
+			if ('radio' !== nameData.inputType) {
+				var controlWrap = $column.find('.wpcf7-form-control-wrap').get(0);
+
+				// Replace old name (if present) in .wpcf7-form-control-wrap class with the new one
+				controlWrap.className = controlWrap.className.replace(nameData.oldName, nameData.newName);
+			}
+
+			// Replace the field attribute
+			// not null -> acceptance or radio
+			if (nameData.inputType) {
+				$column
+					.find('[type="' + (nameData.inputType === 'acceptance' ? 'checkbox' : 'radio') + '"]')
+					.attr('name', nameData.newName);
+			} else {
+				$column.find('.wpcf7-form-control').attr('name', nameData.newName);
+			}
+
+			// Replace the name in the shortcode
+			_fixClonedFieldsDB(formID, {
 				newRowNumber: newRowNumber,
 				newColumnNumber: clonedColumnNumber,
-				oldName: newRadioData.oldRadioName,
-				newName: newRadioData.newRadioName
+				oldName: nameData.oldName,
+				newName: nameData.newName
 			});
 		}
 	}
@@ -339,22 +357,19 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 	 */
 	function _getNewRadioData(clonedRadioButton) {
 		var cloneRE = /(-rexclone-)(\d+)$/;
-		var oldRadioName = clonedRadioButton.querySelector('input').getAttribute('name');
-		var wasCloned = cloneRE.test(oldRadioName);
+		var oldName = clonedRadioButton.querySelector('input').getAttribute('name');
+		var wasCloned = cloneRE.test(oldName);
 
 		// Scanning all the container to get all radio inputs starting with the same name
-		var radiosWithName = Array.prototype.slice.call(
-			Rexbuilder_Util.rexContainer.querySelectorAll('[name^="' + oldRadioName.replace(cloneRE, '') + '"]')
+		var radiosWithSameName = Array.prototype.slice.call(
+			Rexbuilder_Util.rexContainer.querySelectorAll('[name^="' + oldName.replace(cloneRE, '') + '"]')
 		);
-		var tot_radiosWithName = radiosWithName.length;
 
 		var testName;
 		var lastCloneNumber = 1;
 
-		var i = 0;
-
-		for (; i < tot_radiosWithName; i++) {
-			testName = radiosWithName[i].getAttribute('name').match(cloneRE);
+		for (var i = 0; i < radiosWithSameName.length; i++) {
+			testName = radiosWithSameName[i].getAttribute('name').match(cloneRE);
 
 			if (testName) {
 				lastCloneNumber = parseInt(testName[2]) > lastCloneNumber ? parseInt(testName[2]) : lastCloneNumber;
@@ -363,22 +378,80 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 		lastCloneNumber++;
 
-		var newRadioName;
+		var newName;
 
 		if (wasCloned) {
-			newRadioName = oldRadioName.replace(cloneRE, '-rexclone-' + lastCloneNumber);
+			newName = oldName.replace(cloneRE, '-rexclone-' + lastCloneNumber);
 		} else {
-			newRadioName = oldRadioName + '-rexclone-' + lastCloneNumber;
+			newName = oldName + '-rexclone-' + lastCloneNumber;
 		}
 
 		return {
-			wasCloned: wasCloned,
-			oldRadioName: oldRadioName,
-			newRadioName: newRadioName
+			oldRadioName: oldName,
+			newRadioName: newName
 		};
 	}
 
-	function _fixClonedRadioButtonDB(formID, options) {
+	function _getNewClonedData(clonedColumn) {
+		var cloneRE = /(-rexclone-)(\d+)$/;
+		var clonedInput = clonedColumn.querySelector('.wpcf7-form-control:not(.wpcf7-acceptance):not(.wpcf7-radio)');
+		var oldName;
+		var inputType = null;
+
+		if (clonedInput) {
+			/* All except acceptance */
+			// Buttons don't have names
+			if (clonedInput.matches('.wpcf7-submit')) return null;
+		} else {
+			/* Acceptance or radio*/
+			inputType = clonedColumn.querySelector('.wpcf7-form-control').className.match(/wpcf7-(radio|acceptance)/);
+
+			if (inputType) {
+				inputType = inputType[1];
+				clonedInput = clonedColumn.querySelector(
+					'[type="' + (inputType === 'acceptance' ? 'checkbox' : 'radio') + '"]'
+				);
+			}
+		}
+
+		oldName = clonedInput.getAttribute('name');
+
+		var wasCloned = cloneRE.test(oldName);
+
+		// Scanning all the container to get all fields starting with the same name
+		var inputsWithSameName = Array.prototype.slice.call(
+			Rexbuilder_Util.rexContainer.querySelectorAll('[name^="' + oldName.replace(cloneRE, '') + '"]')
+		);
+
+		var testName;
+		var lastCloneNumber = 1;
+
+		for (var i = 0; i < inputsWithSameName.length; i++) {
+			testName = inputsWithSameName[i].getAttribute('name').match(cloneRE);
+
+			if (testName) {
+				lastCloneNumber = parseInt(testName[2]) > lastCloneNumber ? parseInt(testName[2]) : lastCloneNumber;
+			}
+		}
+
+		lastCloneNumber++;
+
+		var newName;
+
+		if (wasCloned) {
+			newName = oldName.replace(cloneRE, '-rexclone-' + lastCloneNumber);
+		} else {
+			newName = oldName + '-rexclone-' + lastCloneNumber;
+		}
+
+		return {
+			inputType: inputType,
+			oldName: oldName,
+			newName: newName
+		};
+	}
+
+	function _fixClonedFieldsDB(formID, options) {
 		var newRowNumber = options.newRowNumber;
 		var newColumnNumber = options.newColumnNumber;
 		var oldName = options.oldName;
@@ -399,7 +472,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		if (-1 !== shortcode.indexOf(oldName)) {
 			dbColumnContent.innerText = shortcode.replace(oldName, newName);
 		} else {
-			console.error('Something went wrong when cloning radio buttons!');
+			console.error('Something went wrong when cloning fields!');
 		}
 	}
 
@@ -1307,7 +1380,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 			if ('' === placeholder) {
 				/* Removing the placeholder */
-				
+
 				if (hasPlaceholder) {
 					shortcode = shortcode.replace(/\splaceholder \".+\"/, '');
 				}
