@@ -107,7 +107,7 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 		/**
 		 *	Function that sets the arguments for create a post based on the XML stored
 		 */
-		public function import_post( $item ) {
+		public function import_post( $item, $createNewIfAlreadyExists ) {
 			$temp_wp_namespace = $item->children( $this->namespaces['wp'] );
 			$temp_content_namespace = $item->children( $this->namespaces['content'] );
 			$temp_excerpt_namespace = $item->children( $this->namespaces['excerpt'] );
@@ -205,8 +205,13 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 				}
 
 			} else {
-				// echo 'post already exists!';
-				$this->import_response['posts'][] = 'post ' . $args['import_id'] . ' already exists!';
+				if ($createNewIfAlreadyExists) {
+					unset($args['import_id']);
+					$post_id = wp_insert_post( $args, true );
+				} else {
+					// echo 'post already exists!';
+					$this->import_response['posts'][] = 'post ' . $args['import_id'] . ' already exists!';
+				}
 			}
 		}
 
@@ -458,9 +463,9 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 		/**
 		 *	Launching the import on all items
 		 */
-		public function run_import_all() {
+		public function run_import_all($createNewIfAlreadyExists) {
 			foreach($this->posts as $post) {
-				$this->import_post( $post );
+				$result = $this->import_post( $post, $createNewIfAlreadyExists );
 			}
 		}
 

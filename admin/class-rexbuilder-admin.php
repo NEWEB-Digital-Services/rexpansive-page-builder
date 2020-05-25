@@ -697,6 +697,7 @@ class Rexbuilder_Admin {
 	 */
 	public function print_install_launcher() {
 		$content_installed = get_option( REXPANSIVE_BUILDER_INSTALL_OPTION );
+		
 		if ( false === $content_installed ) {
 			update_option( REXPANSIVE_BUILDER_INSTALL_OPTION, true );
 			?>
@@ -1980,6 +1981,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$this->Installer->push_to_queue( array( 'task' => 'import_buttons' ) );
 		$this->Installer->push_to_queue( array( 'task' => 'import_icons' ) );
 		
+		// Models
 		if ( 0 !== $post_count ) {
 			$this->Installer->push_to_queue( array( 'task' => 'import_models_start' ) );
 
@@ -1995,6 +1997,23 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			}
 
 			$this->Installer->push_to_queue( array( 'task' => 'import_models_end' ) );
+		}
+
+		$post_count = Rexbuilder_Installation::import_forms_resources();
+		$index = 0;
+
+		// Forms
+		if ( 0 !== $post_count ) {
+			$this->Installer->push_to_queue( array( 'task' => 'import_forms_start' ) );
+
+			while ( $index < $post_count ) {
+				$this->Installer->push_to_queue( array( 
+					'task' => 'import_forms_all'
+				) );
+				$index = $index + 100;
+			}
+
+			$this->Installer->push_to_queue( array( 'task' => 'import_forms_end' ) );
 		}
 
 		// dispatch the installation process

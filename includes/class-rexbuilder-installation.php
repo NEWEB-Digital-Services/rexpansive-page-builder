@@ -37,6 +37,7 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 			self::import_buttons();
 			self::import_icons();
 			self::import_models();
+			// self::import_forms();
 		}
 
 		/**
@@ -223,6 +224,112 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 				wp_defer_comment_counting( false );
 				
 				Rexbuilder_Import_Utilities::remove_media_file( $xml_file['file'] );
+			}
+		}
+
+		/**
+		 * Set forms resources
+		 * @return	int	Number of forms recources to import
+		 * @since				2.0.5
+		 */
+		public static function import_forms_resources() {
+			$forms_definition_url = 'http://builderlive.neweb.info/wp-content/uploads/default-forms.xml';
+			// $models_definition_url = 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/rex-models.xml';
+			$xml_file = Rexbuilder_Import_Utilities::upload_media_file( $forms_definition_url, 'xml' );
+
+			$post_count = 0;
+
+			if( file_exists( $xml_file['file'] ) ) {
+				set_transient( 'rexpansive_forms_xml', $xml_file, MINUTE_IN_SECONDS * 5 );
+
+				// get xml basic information: number of posts
+				$xml = simplexml_load_file( $xml_file['file'], 'SimpleXMLElement', LIBXML_NOCDATA );
+
+				$posts = $xml->xpath('//item');
+				$post_count = count( $posts );
+			}
+
+			return $post_count;
+		}
+
+		/**
+		 * Start importing posts operation
+		 * Pause defering term and comment counting
+		 * Pause cache invalidation
+		 * @return void
+		 * @since  2.0.5
+		 */
+		private static function import_forms_start() {
+			wp_defer_term_counting( true );
+			wp_defer_comment_counting( true );
+	
+			wp_suspend_cache_invalidation( true );
+		}
+
+		/**
+		 * End importing posts operation
+		 * Restart cache invalidation and defering terms and comments
+		 * Remove the xml file
+		 * @return void
+		 * @since  2.0.5
+		 */
+		private static function import_forms_end() {
+			$xml_file = get_transient( 'rexpansive_forms_xml' );
+
+			wp_suspend_cache_invalidation( false );
+		
+			wp_defer_term_counting( false );
+			wp_defer_comment_counting( false );
+			
+			if( file_exists( $xml_file['file'] ) ) {
+				Rexbuilder_Import_Utilities::remove_media_file( $xml_file['file'] );
+			}
+
+			// delete transient if already exists
+			delete_transient( 'rexpansive_forms_xml' );
+		}
+
+		/**
+		 * Import all the forms available in the transient xml file
+		 * @return void
+		 * @since  2.0.5
+		 */
+		private static function import_forms_all() {
+			$xml_file = get_transient( 'rexpansive_forms_xml' );
+
+			if( file_exists( $xml_file['file'] ) ) {
+				$xml = new Rexbuilder_Import_Xml_Content($xml_file['file']);
+				$xml->run_import_all(true);
+			}
+		}
+
+		/**
+		 * Import default cf7 forms
+		 * @since	2.0.5
+		 */
+		private static function import_forms() {
+			// Importing the forms from XML file
+			// $forms_definition_url = 'http://localhost/neweb_builderlive/wp-content/uploads/default-forms.xml';
+			// $forms_definition_url = 'http://tutorial.neweb.info/wp-content/uploads/default-forms.xml';
+			$forms_definition_url = 'http://builderlive.neweb.info/wp-content/uploads/default-forms.xml';
+			$xml_file = Rexbuilder_Import_Utilities::upload_media_file($forms_definition_url, 'xml');
+	
+			if(file_exists($xml_file['file'])) {
+				$xml = new Rexbuilder_Import_Xml_Content($xml_file['file']);
+	
+				wp_defer_term_counting(true);
+				wp_defer_comment_counting(true);
+		
+				wp_suspend_cache_invalidation(true);
+		
+				$xml->run_import_all();
+		
+				wp_suspend_cache_invalidation(false);
+		
+				wp_defer_term_counting(false);
+				wp_defer_comment_counting(false);
+				
+				Rexbuilder_Import_Utilities::remove_media_file($xml_file['file']);
 			}
 		}
 
