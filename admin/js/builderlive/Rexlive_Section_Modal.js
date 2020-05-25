@@ -14,8 +14,10 @@ var Section_Modal = (function($) {
     );
   };
 
-  var _closeSectionModal = function() {
-    _resetSectionModal();
+  var _closeSectionModal = function( reset ) {
+    if ( reset ) {
+      _resetSectionModal();
+    }
     Rexlive_Modals_Utils.closeModal( section_config_modal_properties.$self.parent(".rex-modal-wrap") );
     setTimeout(function() {
       _clearSectionModal();
@@ -83,7 +85,7 @@ var Section_Modal = (function($) {
   var _linkDocumentListenersSectionPropertiesModal = function() {
     section_config_modal_properties.$close_button.click(function(e) {
       e.preventDefault();
-      _closeSectionModal();
+      _closeSectionModal( true );
     });
 
     // confirm-refresh options
@@ -91,7 +93,7 @@ var Section_Modal = (function($) {
       event.preventDefault();
       switch( this.getAttribute('data-rex-option' ) ) {
         case 'save':
-          _closeSectionModal();
+          _closeSectionModal( false );
           break;
         case 'reset':
           _resetSectionModal();

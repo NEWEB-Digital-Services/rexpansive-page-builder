@@ -166,199 +166,21 @@ defined('ABSPATH') or exit;
 </div>
 <!-- Edit Section Background -->
 
-<div class="rex-modal-wrap">
-    <div id="video-section-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <?php Rexbuilder_Utilities::close_button(); ?>
-        <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-top-arrow.php'; ?>
-        <div class="modal-content">
-            <div id="edit-video-row-wrap-1" class="bl_modal-row youtube-insert-wrap video-insert-wrap">
-                <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                    <div class="rex-check rex-check-icon rex-video-type-select tippy" data-tippy-content="<?php _e('Active YouTube','rexpansive'); ?>">
-                        <input type="checkbox" class="rex-choose-video bl_checkbox bl_checkbox-bottom-indicator bl_checkbox-big-icon" name="rex-choose-video" value="youtube" id="rex-choose-youtube-video-section" />
-                        <label for="rex-choose-youtube-video-section">
-                            <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
-                            <i class="material-icons rex-icon">C</i>
-                            <!-- <span class="rex-ripple" /> -->
-                        </label>
-                    </div>
-                </div>
-                <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border" data-rex-video-type="youtube">
-                    <div class="input-field input-field--small">
-                        <input id="rex-youtube-video-section" class="youtube-url" type="text" />
-                        <label id="rex-youtube-video-section-label" for="rex-youtube-video-section">https://youtu.be/...</label>
-                        <span class="rex-material-bar"></span>
-                    </div>
-                </div>
-            </div>
-            <!-- youtube video background section -->
-            <div id="edit-video-row-wrap-2" class="bl_modal-row vimeo-insert-wrap video-insert-wrap">
-                <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                    <div class="rex-check rex-check-icon rex-video-type-select tippy" data-tippy-content="<?php _e('Active Vimeo','rexpansive'); ?>">
-                        <input type="checkbox" class="rex-choose-video bl_checkbox bl_checkbox-bottom-indicator bl_checkbox-big-icon" name="rex-choose-video" value="vimeo" id="rex-choose-vimeo-video-section" />
-                        <label for="rex-choose-vimeo-video-section">
-                            <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
-                            <i class="material-icons rex-icon">Z</i>
-                            <!-- <span class="rex-ripple" /> -->
-                        </label>
-                    </div>
-                </div>
-                <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border" data-rex-video-type="vimeo">
-                    <div class="input-field input-field--small">
-                        <input id="rex-vimeo-video-section" class="vimeo-url" type="text" />
-                        <label id="rex-vimeo-video-section-label" for="rex-vimeo-video-section">https://player.vimeo.com/video/...</label>
-                        <span class="rex-material-bar"></span>
-                    </div>
-                </div>
-            </div>
-            <!-- vimeo input section-->
-            <div id="edit-video-row-wrap-3" class="bl_modal-row mp4-insert-wrap video-insert-wrap">
-                <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                    <div class="rex-check rex-check-icon bl_modal__option-fixed-width rex-video-type-select tippy" data-tippy-content="<?php _e('Active Mp4','rexpansive'); ?>">
-                        <input type="checkbox" class="rex-choose-video bl_checkbox bl_checkbox-bottom-indicator" name="rex-choose-video" value="mp4" id="rex-choose-mp4-video-section" />
-                        <label id="rex-upload-mp4-video-section" for="rex-choose-mp4-video-section">
-                            <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
-                            <i class="material-icons rex-icon">A</i>
-                            <!-- <span class="rex-ripple" /> -->
-                        </label>
-                        <input name="" class="file-path" type="hidden" id="video-section-mp4-url" />
-                    </div>
-                </div>
-                <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border" data-rex-video-type="mp4">
-                    <div class="input-field input-field--small">
-                        <input id="rex-mp4-video-section-preview" class="mp4-video-section small-input" type="text" disabled>
-                        <label id="rex-mp4-video-section-preview-label" for="rex-mp4-video-section-preview">Video URL</label>
-                        <span class="rex-material-bar"></span>
-                    </div>
-                </div>
-            </div>
-            <!-- mp4 input section-->
-            <!-- video bg section-->
-        </div>
-        <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
-    </div>
-</div>
+<?php include_once( 'modals/rexlive-section-settings-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-section-video-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-section-background-gradient-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-section-overlay-gradient-modal.php' ); ?>
 
 <?php include_once( 'modals/rexlive-block-settings-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-block-image-editor-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-block-content-position-modal.php' ); ?>
-
 <?php include_once( 'modals/rexlive-block-accordion-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-block-slideshow-modal.php' ); ?>
-
-<?php include_once( 'modals/rexlive-section-background-gradient-modal.php' ); ?>
-<?php include_once( 'modals/rexlive-section-overlay-gradient-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-block-background-gradient-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-block-overlay-gradient-modal.php' ); ?>
-<?php include_once( 'modals/rexlive-text-color-gradient-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-block-video-editor-modal.php' ); ?>
 
-<div class="rex-modal-wrap">
-    <div id="video-block-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable" data-block_tools="">
-        <?php Rexbuilder_Utilities::close_button(); ?>
-        <div class="modal-content">
-            <div class="video-block-edit-wrap">
-                <div id="edit-video-block-wrap-1" class="bl_modal-row youtube-insert-wrap video-insert-wrap">
-                    <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                        <div class="rex-check rex-check-icon rex-video-type-select tippy" data-tippy-content="<?php _e('Active YouTube','rexpansive'); ?>">
-                            <input type="checkbox" class="rex-choose-video bl_checkbox bl_checkbox-bottom-indicator bl_checkbox-big-icon" name="rex-choose-video" value="youtube" id="rex-choose-youtube-video-block" />
-                            <label for="rex-choose-youtube-video-block">
-                                <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
-                                <i class="material-icons rex-icon">C</i>
-                                <!-- <span class="rex-ripple" /> -->
-                            </label>
-                        </div>
-                    </div>
-                    <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border" data-rex-video-type="youtube">
-                        <div class="input-field input-field--small">
-                            <input id="rex-youtube-video-block" class="youtube-url" type="text" />
-                            <label id="rex-youtube-video-block-label" for="rex-youtube-video-block">https://youtu.be/...</label>
-                            <span class="rex-material-bar"></span>
-                        </div>
-                    </div>
-                    <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                        <div class="set-video-audio-btn tippy" data-tippy-content="<?php _e('Audio ON/OFF','rexpansive'); ?>">
-                            <input class="video-audio-checkbox bl_checkbox bl_checkbox-bottom-indicator" type="checkbox" id="rex-edit-block-video-youtube-audio" name="block-youtube-audio" title="Audio ON/OFF">
-                            <label for="rex-edit-block-video-youtube-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
-                                <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
-                                <i class="rex-icon">
-                                    <span class="rex-icon-audio bl_checked-icon">L</span><span class="rex-icon-mute bl_unchecked-icon">M</span>
-                                </i>
-                                <!-- <span class="rex-ripple"></span> -->
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <!-- youtube video background block -->
-                <div id="edit-video-block-wrap-2" class="bl_modal-row vimeo-insert-wrap video-insert-wrap">
-                    <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                        <div class="rex-check rex-check-icon rex-video-type-select tippy" data-tippy-content="<?php _e('Active Vimeo','rexpansive'); ?>">
-                            <input type="checkbox" class="rex-choose-video bl_checkbox bl_checkbox-bottom-indicator bl_checkbox-big-icon" name="rex-choose-video" value="vimeo" id="rex-choose-vimeo-video-block" />
-                            <label for="rex-choose-vimeo-video-block">
-                                <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
-                                <i class="material-icons rex-icon">Z</i>
-                                <!-- <span class="rex-ripple" /> -->
-                            </label>
-                        </div>
-                    </div>
-                    <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border" data-rex-video-type="vimeo">
-                        <div class="input-field input-field--small">
-                            <input id="rex-vimeo-video-block" class="vimeo-url" type="text" />
-                            <label id="rex-vimeo-video-block-label" for="rex-vimeo-video-block">https://player.vimeo.com/video/...</label>
-                            <span class="rex-material-bar"></span>
-                        </div>
-                    </div>
-                    <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                        <div class="set-video-audio-btn tippy" data-tippy-content="<?php _e('Audio ON/OFF','rexpansive'); ?>">
-                            <input class="video-audio-checkbox bl_checkbox bl_checkbox-bottom-indicator" type="checkbox" id="rex-edit-block-video-vimeo-audio" name="block-vimeo-audio" title="Audio ON/OFF">
-                            <label for="rex-edit-block-video-vimeo-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
-                                <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
-                                <i class="rex-icon">
-                                    <span class="rex-icon-audio bl_checked-icon">L</span><span class="rex-icon-mute bl_unchecked-icon">M</span>
-                                </i>
-                                <!-- <span class="rex-ripple"></span> -->
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <!-- vimeo input block-->
-                <div id="edit-video-block-wrap-3" class="bl_modal-row mp4-insert-wrap video-insert-wrap">
-                    <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                        <div class="rex-check rex-check-icon bl_modal__option-fixed-width rex-video-type-select tippy" data-tippy-content="<?php _e('Active Mp4','rexpansive'); ?>">
-                            <input type="checkbox" class="rex-choose-video bl_checkbox bl_checkbox-bottom-indicator" name="rex-choose-video" value="mp4" id="rex-choose-mp4-video-block" />
-                            <label id="rex-upload-mp4-video-block" for="rex-choose-mp4-video-block">
-                                <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
-                                <i class="material-icons rex-icon">A</i>
-                                <!-- <span class="rex-ripple" /> -->
-                            </label>
-                            <input name="" class="file-path" type="hidden" id="video-block-mp4-url" />
-                        </div>
-                    </div>
-                    <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border" data-rex-video-type="mp4">
-                        <div class="input-field input-field--small">
-                            <input id="rex-mp4-video-block-preview" class="mp4-video-block small-input" type="text" disabled>
-                            <label id="rex-mp4-video-block-preview-label" for="rex-mp4-video-block-preview">Video URL</label>
-                            <span class="rex-material-bar"></span>
-                        </div>
-                    </div>
-                    <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                        <div class="set-video-audio-btn tippy" data-tippy-content="<?php _e('Audio ON/OFF','rexpansive'); ?>">
-                            <input class="video-audio-checkbox bl_checkbox bl_checkbox-bottom-indicator" type="checkbox" id="rex-edit-block-video-mp4-audio" name="block-mp4-audio" title="Audio ON/OFF">
-                            <label for="rex-edit-block-video-mp4-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
-                                <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
-                                <i class="rex-icon">
-                                    <span class="rex-icon-audio bl_checked-icon">L</span><span class="rex-icon-mute bl_unchecked-icon">M</span>
-                                </i>
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <!-- mp4 input block-->
-            </div>
-            <!-- /VIDEO BACKGROUND BLOCK -->
-        </div>
-        <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
-    </div>
-</div>
+<?php include_once( 'modals/rexlive-text-color-gradient-modal.php' ); ?>
 
 <?php include_once( 'modals/rexlive-rexslider-insert-edit-modal.php' ); ?>
 
@@ -445,8 +267,6 @@ defined('ABSPATH') or exit;
     </div>
 </div>
 <!-- //.rex-slider__links-editor -->
-
-<?php include_once( 'modals/rexlive-section-settings-modal.php' ); ?>
 
 <div class="rex-modal-wrap">
     <div id="rexeditor-modal" class="rexbuilder-materialize-wrap outside-content-modal rex-modal-draggable rex-modal">

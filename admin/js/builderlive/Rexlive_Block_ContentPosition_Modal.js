@@ -17,8 +17,10 @@ var Block_Content_Positions_Modal = (function($) {
     Rexlive_Modals_Utils.openModal( block_content_position_properties.$self.parent(".rex-modal-wrap") );
   };
 
-  var _closeBlockContentPositionModal = function() {
-    _resetBlockContentPositionModal();
+  var _closeBlockContentPositionModal = function( reset ) {
+    if ( reset ) {
+      _resetBlockContentPositionModal();
+    }
     Rexlive_Modals_Utils.closeModal(
       block_content_position_properties.$self.parent(".rex-modal-wrap")
     );
@@ -36,7 +38,7 @@ var Block_Content_Positions_Modal = (function($) {
   var _linkDocumentListeners = function() {
     block_content_position_properties.$close_button.on('click', function(e) {
       e.preventDefault();
-      _closeBlockContentPositionModal();
+      _closeBlockContentPositionModal( true );
     });
 
     // confirm-refresh options
@@ -44,7 +46,7 @@ var Block_Content_Positions_Modal = (function($) {
       event.preventDefault();
       switch( this.getAttribute('data-rex-option' ) ) {
         case 'save':
-          _closeBlockContentPositionModal();
+          _closeBlockContentPositionModal( false );
           break;
         case 'reset':
           _resetBlockContentPositionModal();

@@ -47,8 +47,10 @@ var Block_Image_Editor_Modal = (function($) {
     Block_Photoswipe_Setting.updateBlockPhotoswipe();
   };
 
-  var _closeModal = function() {
-    _resetBlockImageEditorModal();
+  var _closeModal = function( reset ) {
+    if ( reset ) {
+      _resetBlockImageEditorModal();
+    }
     Rexlive_Modals_Utils.closeModal( $modal_wrap );
     resetData = null;
   };
@@ -75,14 +77,14 @@ var Block_Image_Editor_Modal = (function($) {
   var _listen_events = function() {
     block_image_editor_properties.$close_button.on('click', function(e) {
       e.preventDefault();
-      
+      _closeModal( true );
     });
 
     block_image_editor_properties.$options_buttons.on('click', function(event) {
       event.preventDefault();
       switch( this.getAttribute('data-rex-option' ) ) {
         case 'save':
-          _closeModal();
+          _closeModal( false );
           break;
         case 'reset':
           _resetBlockImageEditorModal();

@@ -8,8 +8,10 @@ var Block_Video_Background_Modal = (function($) {
   var video_background_properties;
   var videoChosen;
   var target;
+  var resetData;
 
   var _openBlockVideoBackgroundModal = function(data, mousePosition) {
+    resetData = data;
     _updateVideoModal(data.bgVideo);
     video_background_properties.$self.attr('data-block_tools', data.bgVideo.tools);  
     Rexlive_Modals_Utils.positionModal( video_background_properties.$self, mousePosition );
@@ -35,11 +37,31 @@ var Block_Video_Background_Modal = (function($) {
 
   };
 
-  var _closeBlockVideoBackgroundModal = function() {
+  var _resetBlockVideoBackgroundModal = function() {
+    if ( resetData ) {
+      _updateVideoModal( resetData.bgVideo );
+    }
+    _updateVideoBackground();
+
+    // restore the blocks dimensions, probably changed
+    var event = {
+      eventName: "rexlive:update_blocks_sizes",
+      data_to_send: {
+        sectionTarget: resetData.sectionTarget,
+        blocksState: resetData.blocksState
+      }
+    };
+
+    // Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(event);
+  };
+
+  var _closeBlockVideoBackgroundModal = function( reset ) {
+    if ( reset ) {
+      _resetBlockVideoBackgroundModal();
+    }
     video_background_properties.$self.attr('data-block_tools', '');
-    Rexlive_Modals_Utils.closeModal(
-      video_background_properties.$self.parent(".rex-modal-wrap")
-    );
+    Rexlive_Modals_Utils.closeModal( video_background_properties.$self.parent(".rex-modal-wrap") );
+    resetData = null;
   };
 
   var _updateVideoModal = function(data) {
@@ -365,13 +387,28 @@ var Block_Video_Background_Modal = (function($) {
 
     video_background_properties.$close_button.on('click', function(e) {
       e.preventDefault();
-      _closeBlockVideoBackgroundModal();
+      _closeBlockVideoBackgroundModal( true );
+    });
+
+    // confirm-refresh options
+    video_background_properties.$options_buttons.on('click', function(event) {
+      event.preventDefault();
+      switch( this.getAttribute('data-rex-option' ) ) {
+        case 'save':
+          _closeBlockVideoBackgroundModal( false );
+          break;
+        case 'reset':
+          _resetBlockVideoBackgroundModal();
+          break;
+        default:
+          break;
+      }
     });
   };
 
   var _updateVideoMp4Link = function(url) {
     // video_background_properties.$linkMp4Preview.val(url).next('label').addClass('active');
-  }
+  };
 
   var _init = function($container) {
     var $self = $("#video-block-editor-wrapper");
@@ -400,7 +437,7 @@ var Block_Video_Background_Modal = (function($) {
       $audioYoutube: $self.find("#rex-edit-block-video-youtube-audio"),
       $audioVimeo: $self.find("#rex-edit-block-video-vimeo-audio"),
       $audioMp4: $self.find("#rex-edit-block-video-mp4-audio"),
-
+      $options_buttons: $self.find('.rex-modal-option'),
       $close_button: $self.find('.rex-modal__close-button'),
     };
     videoChosen = "";
