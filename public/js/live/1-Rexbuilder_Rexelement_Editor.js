@@ -78,7 +78,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 							$elementWrapper.wrap('<span class="rex-elements-paragraph"></span>');
 							$textWrap.prepend($elementWrapper);
 
-							endFixingImportedElement($elementWrapper, formFieldsString);
+							setupElement($elementWrapper, formFieldsString);
 
 							Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
 							break;
@@ -124,7 +124,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		$elementWrapper.detach().prependTo($newDOMElement.find('.text-wrap').eq(0));
 		$elementWrapper.wrap('<span class="rex-elements-paragraph"></span>');
 
-		endFixingImportedElement($elementWrapper, formFieldsString);
+		setupElement($elementWrapper, formFieldsString);
 	}
 
 	function separateRexElement(data) {
@@ -211,8 +211,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 				$elementContainer.append($shortcodeTransformed);
 
 				lockSynchronize(elementData);
-				// _endFixingSeparatedElement($elementWrapper, formFieldsString);
-				endFixingImportedElement($elementWrapper, formFieldsString);
+				setupElement($elementWrapper, formFieldsString);
 			},
 			error: function (response) {}
 		});
@@ -232,7 +231,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		$elementWrapper.find('.rex-element-data').attr('data-synchronize', true);
 	}
 
-	function endFixingImportedElement($elementWrapper, formFieldsString) {
+	function setupElement($elementWrapper, formFieldsString) {
 		var elementWrapper = $elementWrapper.get(0);
 		var addingWpcf7 = 0 !== $elementWrapper.find('.wpcf7').length;
 		var elementID = $elementWrapper.attr('data-rex-element-id');
@@ -701,7 +700,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		init: init,
 		focusRexElement: focusRexElement,
 		fixImportedElement: fixImportedElement,
-		endFixingImportedElement: endFixingImportedElement,
+		setupElement: setupElement,
 		handleCompleteImportElement: handleCompleteImportElement,
 		lockSynchronize: lockSynchronize,
 

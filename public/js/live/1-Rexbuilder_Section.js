@@ -1321,7 +1321,7 @@ var Rexbuilder_Section = (function($) {
 
 					// Adding the necessary to forms that are present in the model
 					$row.find('.rex-element-wrapper').each(function (index, wrapper) {
-						Rexbuilder_Rexelement_Editor.endFixingImportedElement($(wrapper));
+						Rexbuilder_Rexelement_Editor.setupElement($(wrapper));
 					})
 
           // Launching and Updating tools
