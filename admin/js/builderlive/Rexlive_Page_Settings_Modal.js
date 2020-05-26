@@ -25,6 +25,10 @@ var Rexlive_Page_Settings_Modal = (function ($) {
     Rexlive_Modals_Utils.closeModal( page_settings_props.$modal );    
   };
 
+  var _resetModal = function() {
+
+  };
+
   /**
    * Add the general listeners for the modal
    * @since 2.0.0
@@ -43,14 +47,28 @@ var Rexlive_Page_Settings_Modal = (function ($) {
     page_settings_props.$modal.on('rexlive:this_modal_closed', function(e) {
       _saveSettings();
     });
+
+    // confirm-refresh options
+    page_settings_props.$options_buttons.on('click', function(event) {
+      event.preventDefault();
+      switch( this.getAttribute('data-rex-option' ) ) {
+        case 'save':
+          _closeModal( false );
+          break;
+        case 'reset':
+          _resetModal();
+          break;
+        default:
+          break;
+      }
+    });
   };
 
   /**
    * Init the setting of this modal
    * @since 2.0.0
    */
-  var _initSettings = function( )
-  {
+  var _initSettings = function( ) {
     Rexlive_Page_Margins.init( page_settings_props.$self );
   };
 
@@ -58,15 +76,13 @@ var Rexlive_Page_Settings_Modal = (function ($) {
    * Save the settings data of this modal
    * @since 2.0.0
    */
-  var _saveSettings = function()
-  {
+  var _saveSettings = function() {
     Rexlive_Page_Margins.applyData();
-  }
+  };
 
-  var _getSettings = function()
-  {
+  var _getSettings = function() {
     Rexlive_Page_Margins.getData();
-  }
+  };
 
   /**
    * Init the modal
@@ -78,13 +94,14 @@ var Rexlive_Page_Settings_Modal = (function ($) {
       $self: $settingsModal,
       $modal: $settingsModal.parent(".rex-modal-wrap"),
 
+      $options_buttons: $settingsModal.find('.rex-modal-option'),
       $close_button: $settingsModal.find('.rex-modal__close-button'),
-      $save_button: $settingsModal.find('.rex-modal__save-button')
+      // $save_button: $settingsModal.find('.rex-modal__save-button')
     };
 
     _initSettings();
     _linkDocumentListeners();
-  }
+  };
 
   return {
     init: init,

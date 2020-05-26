@@ -54,6 +54,17 @@ define( 'REXPANSIVE_BUILDER_URL', plugin_dir_url( __FILE__ ) );
 define( 'REXPANSIVE_BUILDER_INSTALL_OPTION', 'rexpansive-builder-content-installed' );
 
 /**
+ * Name for the option that traces the imported content during the
+ * installation process
+ */
+define( 'REXPANSIVE_BUILDER_IMPORTED_CONTENT', 'rexpansive-builder-imported-content' );
+
+/**
+ * Domain that is the main source for the imported content
+ */
+define( 'REXPANSIVE_BUILDER_IMPORT_SOURCE', 'https://neweb.info/plugins/rexpansive/demo' );
+
+/**
  * Constant with the name of the template folder to search
  * in a WP THEME to customize the visualization
  */

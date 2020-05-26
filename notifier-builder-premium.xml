@@ -4,9 +4,13 @@
 	<changelog>
 		<![CDATA[
 			<h4><strong>v2.0.5</strong> – </h4>
+			<p><strong>Fixed</strong>: Grid on mobile and reset row properties</p>
 			<p><strong>Fixed</strong>: On a copied row, text editor doesn't work</p>
 			<p><strong>Fixed</strong>: On an imported template, at the first moment the tools are not correctly visible</p>
 			<p><strong>Fixed</strong>: On an imported template, text editor doesn't work</p>
+			<p><strong>Update</strong>: Block dimensions indicator is now at bottom left of the block</p>
+			<p><strong>Update</strong>: When dragging a RexButton the lateral menu disappears / appears acording to the mouse position</p>
+			<p><strong>Update</strong>: When dragging a RexButton the placeholder is more visible</p>
 			<p><strong>Update</strong>: Photoswipe on a RexSlider opens only the images in the slider</p>
 			<p><strong>Update</strong>: Changing a row or a block property on layouts different from default, save only that property, leaving the other properties synchronized with the default ones</p>
 			<p><strong>Add</strong>: Row label, to customize the navigator labels</p>

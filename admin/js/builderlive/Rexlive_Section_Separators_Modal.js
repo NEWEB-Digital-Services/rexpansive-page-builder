@@ -64,7 +64,7 @@ var GridSeparators_Modal = (function ($) {
                 distances: _getData(),
                 sectionTarget: sectionTarget
             }
-        }
+        };
 
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_grid_distances);
     }
@@ -153,6 +153,7 @@ var GridSeparators_Modal = (function ($) {
     return {
         init: _init,
         updateDistances: _updateDistances,
+        applyRowDistances: _applyRowDistances,
         resetDistances: _resetDistances,
         getData: _getData
     };

@@ -8,6 +8,8 @@
 })( 'undefined' !== typeof window ? window : this, function() {
 	var instances = [];
 
+	var popupContentCloseTmpl = document.getElementById('tmpl-popupcontent-close');
+
 	function PopUpContent() {
 		// call object (button)
 		this.element = null;
@@ -17,6 +19,8 @@
 		this.hashTarget = '';
 		this.target = null;
 		this.urlTarget = '';
+
+		this.open = false;
 
 		// close button (child of popupelement)
 		this.closeBtn = null;
@@ -65,7 +69,7 @@
 		attachEventHandlers.call(this);
 
 		instances.push( this );
-	};
+	}
 
 	function initialize() {
 		this.hashTarget = this.element.hash.substr(1);
@@ -82,7 +86,7 @@
 
 				this.options.ajaxSettings.error = function( response ) {
 					console.log('There was an error');
-				}
+				};
 			}
 
         	var thisParent = foundParents( this.element, this.options.contentInjectorPoint );
@@ -116,6 +120,14 @@
 		ev.preventDefault();
 		toggleClass(this.target, this.options.popupViewClass);
 		toggleClass(document.body, this.options.bodyPopUpViewClass);
+
+		this.open = ! this.open;
+
+		// trigger open/close event to parent
+		var eventName = ( this.open ? 'popUpContent:open' : 'popUpContent:close' );
+
+		var stateEvent = new Event( eventName );
+		document.dispatchEvent(stateEvent);
 	}
 
 	function ajaxSuccessWrapper( response ) {
@@ -205,7 +217,7 @@
 		addClass( this.iframeContainer.contentDocument.body, this.options.iframePopUpLoadClass );
 		addClass( this.target, this.options.popUpContentLoaded );
 		if ( 'function' === typeof this.options.getPopUpContentComplete ) {
-			this.options.getPopUpContentComplete.call(this)
+			this.options.getPopUpContentComplete.call(this);
 		}
 
 		// trigger event on iframe document that tells that the popupcontent has ended load
@@ -245,13 +257,20 @@
 		addClass( popUpContainer, 'popup-content__method--' + options.contentRetrieveMethod );
 		var closeWrapper = document.createElement('div');
 		addClass( closeWrapper,options.popUpCloseWrapper );
-		var closeBtn = document.createElement('div');
-		closeBtn.innerHTML = '<i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i>';
-		addClass( closeBtn, options.popUpCloseClass );
+
+		// create close wrapper with a template, to make it customizable
+		if ( popupContentCloseTmpl ) {
+			closeWrapper.innerHTML = popupContentCloseTmpl.innerHTML;
+		} else {
+			var closeBtn = document.createElement('div');
+			closeBtn.innerHTML = '<i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i>';
+			addClass( closeBtn, options.popUpCloseClass );
+			closeWrapper.appendChild(closeBtn);
+		}
+
 		var popUpContent = document.createElement('div');
 		addClass( popUpContent, options.popUpContent );
 
-		closeWrapper.appendChild(closeBtn);
 		popUpContainer.appendChild(closeWrapper);
 		popUpContainer.appendChild(popUpContent);
 

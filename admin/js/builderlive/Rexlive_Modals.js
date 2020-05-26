@@ -108,6 +108,9 @@ var Rexlive_Modals = (function ($) {
     // Wpcf7 Form Editor
     Wpcf7_Edit_Form_Modal.init();
 
+    // Delete Model (Template, button, form)
+    Delete_Model_Modal.init();
+
     // live media list
     Rexlive_PostEdit_MediaList.init();
   }

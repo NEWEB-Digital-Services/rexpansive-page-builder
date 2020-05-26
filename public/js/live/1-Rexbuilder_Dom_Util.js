@@ -1819,6 +1819,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var gutterChanged = false;
     var marginChanged = false;
     var overlayChanged = false;
+    var classChanged = false;
 
     for( var prop in changedData ) {
       if ( ! changedData[prop] ) continue;
@@ -1942,7 +1943,9 @@ var Rexbuilder_Dom_Util = (function($) {
 
           break;
         case 'custom_classes':
-          _updateCustomClasses( $section, defaultProps.custom_classes );
+          var classList = defaultProps.custom_classes.trim().split(/\s+/);
+          _updateCustomClasses( $section, classList );
+          classChanged = true;
           break;
         case 'row_overlay_color':
         case 'row_overlay_active':         // they go togheter, find a way to prevent double call
@@ -1957,6 +1960,11 @@ var Rexbuilder_Dom_Util = (function($) {
           break;
         default: break;
       }
+    }
+
+    // block grid fix; synch with the collapse option
+    if ( classChanged && 'default' !== Rexbuilder_Util.activeLayout && Rexbuilder_Util.globalViewport.width < 768 && -1 !== defaultProps.custom_classes.indexOf('rex-block-grid') ) {
+      $section.find('.collapse-grid').trigger('click');
     }
   }
 
@@ -2074,7 +2082,8 @@ var Rexbuilder_Dom_Util = (function($) {
           });
           break;
         case 'block_custom_class':
-          _updateCustomClasses( $elem, defaultProps.block_custom_class );
+          var classList = defaultProps.block_custom_class.trim().split(/\s+/);
+          _updateCustomClasses( $elem, classList );
           break;
         case 'block_padding':
           var paddingType = ( -1 !== defaultProps.block_padding.indexOf('px') ? 'px' : ( -1 !== defaultProps.block_padding.indexOf('%') ? '%' : '' ) );

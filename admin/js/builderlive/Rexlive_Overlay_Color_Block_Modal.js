@@ -127,9 +127,7 @@ var Overlay_Color_block_Modal = (function($) {
       $overlay_active_wrapper: $self.find(".overlay-active-wrapper"),
       $overlay_color_value: $self.find("#overlay-color-block-value"),
       $overlay_color_preview_icon: $self.find("#overlay-block-preview-icon"),
-      $overlay_color_palette_buttons: $self.find(
-        "#bg-overlay-block-color-palette .bg-palette-selector"
-      )
+      $overlay_color_palette_buttons: $self.find("#bg-overlay-block-color-palette .bg-palette-selector")
     };
 
     _launchSpectrumOverlayColor();
@@ -149,6 +147,7 @@ var Overlay_Color_block_Modal = (function($) {
 
   return {
     init: _init,
-    updateOverlayModal: _updateOverlayModal
+    updateOverlayModal: _updateOverlayModal,
+    applyOverlay: _applyOverlay
   };
 })(jQuery);

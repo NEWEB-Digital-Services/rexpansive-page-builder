@@ -44,9 +44,10 @@ var Block_Content_Positions_Setting = (function($) {
   };
 
   var _applyBlockPosition = function() {
-    var flex_content_position = block_content_position_properties.$positions
-      .filter(":checked")
-      .val();
+    var flex_content_position = block_content_position_properties.$positions.filter(":checked").val();
+
+    if ( 'undefined' === typeof flex_content_position ) return;
+
     var y = flex_content_position.split("-")[0];
     var x = flex_content_position.split("-")[1];
 
@@ -92,6 +93,7 @@ var Block_Content_Positions_Setting = (function($) {
     updatePosition: _updatePosition,
     resetPosition: _resetPosition,
     openBlockContentPositionModal: _openBlockContentPositionModal,
-    closeBlockContentPositionModal: _closeBlockContentPositionModal
+    closeBlockContentPositionModal: _closeBlockContentPositionModal,
+    applyBlockPosition: _applyBlockPosition
   };
 })(jQuery);

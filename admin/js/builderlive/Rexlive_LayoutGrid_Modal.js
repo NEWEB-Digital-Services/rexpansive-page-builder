@@ -119,6 +119,7 @@ var LayoutGrid_Modal = (function($) {
     init: _init,
     getData: _getData,
     updateLayoutModal: _updateLayoutModal,
+    applySectionLayout: _applySectionLayout,
     clearLayoutModal: _clearLayoutModal
   };
 })(jQuery);

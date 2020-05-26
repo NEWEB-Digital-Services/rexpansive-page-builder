@@ -100,6 +100,7 @@ var Model_Lateral_Menu = (function ($) {
 		 */
 		Rexlive_Base_Settings.$document.on('click', '.model__element--delete', function (e) {
 			var model = this.parentNode.parentNode.parentNode;
+			// @todo open modal with message and ask confirm before delete
 			Model_Import_Modal.deleteModel(model);
 		});
 
@@ -121,6 +122,7 @@ var Model_Lateral_Menu = (function ($) {
 		 */
 		Rexlive_Base_Settings.$document.on('click', '.element-list__element--delete', function (e) {
 			var element = this.parentNode.parentNode.parentNode;
+			// @todo open modal with message and ask confirm before delete
 			Element_Import_Modal.deleteElement(element);
 		});
 
@@ -152,7 +154,6 @@ var Model_Lateral_Menu = (function ($) {
 
 	function _init() {
 		var $self = $('#rexbuilder-lateral-panel');
-
 		rexmodel_lateral_menu = {
 			$self: $self,
 			$close_button: $self.find('.rex-lateral-panel--close'),

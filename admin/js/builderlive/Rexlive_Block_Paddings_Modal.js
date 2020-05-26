@@ -10,7 +10,7 @@ var BlockPaddings_Modal = (function ($) {
         block_paddings_modal_properties.$block_padding_right.val(defaultPaddings.right);
         block_paddings_modal_properties.$block_padding_bottom.val(defaultPaddings.bottom);
         block_paddings_modal_properties.$block_padding_left.val(defaultPaddings.left);
-    }
+    };
 
     var _updatePaddings = function (data) {
         target = data.target;
@@ -26,20 +26,20 @@ var BlockPaddings_Modal = (function ($) {
         block_paddings_modal_properties.$block_padding_right.val(right);
         block_paddings_modal_properties.$block_padding_bottom.val(bottom);
         block_paddings_modal_properties.$block_padding_left.val(left);
-    }
+    };
 
     var _focusPaddingType = function (paddingType) {
         var $wrapPaddingType = block_paddings_modal_properties.$padding_type_types_wrap.children("[data-rex-type-padding=\"" + paddingType + "\"]");
         $wrapPaddingType.addClass("selected");
         $wrapPaddingType.find("input").attr("checked", true);
-    }
+    };
 
     var _clearPaddingTypeSelection = function () {
         block_paddings_modal_properties.$padding_type_typeWrap.each(function (i, el) {
             $(el).removeClass("selected");
             $(el).find("input").attr("checked", false);
         });
-    }
+    };
     
     var _applyBlocksPaddings = function () {
         var top = parseInt(block_paddings_modal_properties.$block_padding_top.val());
@@ -61,10 +61,10 @@ var BlockPaddings_Modal = (function ($) {
                     type: typePadding
                 }
             }
-        }
+        };
 
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_padding);
-    }
+    };
 
     var _linkKeyDownListener = function ($target) {
         $target.keydown(function (e) {
@@ -98,7 +98,7 @@ var BlockPaddings_Modal = (function ($) {
                 $input.blur();
             }
         });
-    }
+    };
 
     var _linkKeyUpListener = function ($target) {
         $target.keyup(function (e) {
@@ -107,7 +107,7 @@ var BlockPaddings_Modal = (function ($) {
                 _applyBlocksPaddings();
             }
         });
-    }
+    };
 
     var _linkPaddingsListeners = function () {
         _linkKeyDownListener(block_paddings_modal_properties.$block_padding_top);
@@ -130,7 +130,7 @@ var BlockPaddings_Modal = (function ($) {
                 _applyBlocksPaddings();
             }
         });
-    }
+    };
 
     var _init = function ($container) {
         var $self = $container.find("#block-paddings-wrapper");
@@ -145,7 +145,7 @@ var BlockPaddings_Modal = (function ($) {
             $padding_type_typeWrap: $self.find(".rex-block-padding-type-wrap"),
             $padding_type_types_wrap: $self.find('#block-padding-type-select'),
 
-        }
+        };
 
         defaultPaddings = {
             top: 5,
@@ -153,16 +153,17 @@ var BlockPaddings_Modal = (function ($) {
             bottom: 5,
             left: 5,
             type: "px"
-        }
+        };
 
         _resetPaddings();
         _linkPaddingsListeners();
-    }
+    };
 
     return {
         init: _init,
         updatePaddings: _updatePaddings,
         resetPaddings: _resetPaddings,
+        applyBlocksPaddings: _applyBlocksPaddings
     };
 
 })(jQuery);

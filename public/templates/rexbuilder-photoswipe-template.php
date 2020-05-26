@@ -7,7 +7,7 @@
  * @since      1.0.0
  *
  * @package    Rexbuilder
- * @subpackage Rexbuilder/admin/partials
+ * @subpackage Rexbuilder/public/templates
  */
 ?>
 <!-- Root element of PhotoSwipe. Must have class pswp. -->

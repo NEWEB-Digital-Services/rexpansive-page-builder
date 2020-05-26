@@ -67,6 +67,7 @@ var SectionName_Modal = (function ($) {
     return {
         init: _init,
         updateSectionName: _updateSectionName,
+        applySectionName: _applySectionName,
         resetSectionName: _resetSectionName,
         getData: _getData
     };

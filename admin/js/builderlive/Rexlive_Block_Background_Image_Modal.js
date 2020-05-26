@@ -77,7 +77,7 @@ var Background_Block_Image_Modal = (function($) {
     imageStatus.imageId = background_block_image_properties.$image_url.val();
     imageStatus.imageType = background_block_image_properties.$image_type_types_wrap.children(".selected").attr("data-rex-type-image");
     // imageStatus.imagePswpActive = true === background_block_image_properties.$checkboxPhotoswipe.prop("checked") ? "true" : "false";
-  }
+  };
 
   var _updateImageBackground = function() {
     var status =

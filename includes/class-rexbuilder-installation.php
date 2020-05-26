@@ -184,12 +184,67 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 				$posts = $xml->xpath('//item');
 				$index = $args['start'];
 
+				$imported_content = get_option( REXPANSIVE_BUILDER_IMPORTED_CONTENT, array() );
+
 				while ( $index < $args['end'] ) {
 					if ( ! isset( $posts[$index] ) ) {
 						break;
 					}
-					Rexbuilder_Import_Utilities::import_post( $posts[$index], $namespaces );
+
+					$result = Rexbuilder_Import_Utilities::import_post( $posts[$index], $namespaces );
+
+					// tracing the imported content
+					if ( null !== $result['post_id'] ) {
+						$info = array( 
+							'post_id' => $result['post_id'], 
+							'post_type' => $result['args']['post_type']
+						);
+						array_push( $imported_content, $info );
+					}
+
 					$index++;
+				}
+
+				update_option( REXPANSIVE_BUILDER_IMPORTED_CONTENT, $imported_content );
+			}
+		}
+
+		/**
+		 * Checking the imported content: 
+		 * - fix urls
+		 * @return void
+		 * @since  2.0.5
+		 */
+		private static function check_imported_content() {
+			$imported_content = get_option( REXPANSIVE_BUILDER_IMPORTED_CONTENT, array() );
+			if ( count( $imported_content ) == 0 ) return;
+
+			$site_url = get_site_url();
+
+			foreach( $imported_content as $post ) {
+				switch( $post['post_type'] ) {
+					case 'rex_model':
+						// fix the template content
+						$template_content = get_post_field( 'post_content', $post['post_id'] );
+
+						$new_template_content = str_replace( REXPANSIVE_BUILDER_IMPORT_SOURCE, $site_url, $template_content );
+						$template_update = array(
+							'ID' => $post['post_id'],
+							'post_content' => $new_template_content
+						);
+						wp_update_post( $template_update );
+
+						// fix the template customizations
+						$customizations_names = get_post_meta( $post['post_id'], '_rex_model_customization_names', true );
+						foreach( $customizations_names as $customization_name ) {
+							$customization = get_post_meta( $post['post_id'], "_rex_model_customization_{$customization_name}", true );
+							$customization_fix = str_replace( REXPANSIVE_BUILDER_IMPORT_SOURCE, $site_url, $customization );
+							update_post_meta( $post['post_id'], "_rex_model_customization_{$customization_name}", $customization_fix );
+						}
+
+						break;
+					default:
+						break;
 				}
 			}
 		}

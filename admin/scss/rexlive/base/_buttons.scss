@@ -179,6 +179,11 @@
 		@include fill-icon(#fff);
 	}
 
+	&.tool-button--confirm {
+		background-color: $palette-color-1;
+		@include fill-icon(#fff);
+	}
+
 	&.tool-button--modal {
 		padding: 6px;
 		#{$icon-class} {

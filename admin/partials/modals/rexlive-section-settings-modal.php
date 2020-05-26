@@ -233,7 +233,7 @@ defined('ABSPATH') or exit;
                 </div>
             </div><!-- custom classes -->
 
-            <div class="bl_modal-row">
+            <div class="bl_modal-row bl_modal-row--no-border">
                 <div class="bl_modal__option-wrap">
                     <div id="section-set-class-wrap" class="input-field rex-input-prefixed">
                         <!-- <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php // _e('Custom Class', 'rexpansive-builder');?>">e</i> -->
@@ -245,6 +245,16 @@ defined('ABSPATH') or exit;
                         <span class="rex-material-bar"></span>
                     </div>
                 </div>
+            </div>
+
+            <div class="bl_modal-row"><div class="bl_modal__option-wrap"></div></div>
+        </div>
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button tool-button--inline tool-button--confirm tool-button--modal rex-modal-option tippy" data-tippy-content="<?php _e('Save','rexpansive-builder'); ?>" data-rex-option="save">
+                <span class="rex-button btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z016-Checked'); ?></span>
+            </div>
+            <div class="tool-button tool-button--inline tool-button--modal rex-modal-option tippy" data-rex-option="reset" data-tippy-content="<?php _e('Reset','rexpansive-builder'); ?>">
+                <span class="rex-button btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z014-Refresh'); ?></span>
             </div>
         </div>
     </div>

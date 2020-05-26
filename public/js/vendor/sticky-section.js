@@ -327,6 +327,7 @@
         // opY = 1 - Math.pow( 1 - overlayPercentage / 100, 3 );    // ease-out
         opY = 1 - Math.pow( 1 - percentage / 100, 1.75 );    // ease-out
         // opY = 1 - Math.pow( 1 - percentage / 100, 3 );    // much steep ease-out
+        if ( isNaN( opY ) && ovGAfterViewport ) opY = 1;
         this.overlayAnimationEl.style.opacity = opY;
         // this.overlayAnimationEl.style.opacity = Math.pow( percentage / 100, 1.75 );   // ease-in
       } else {
@@ -337,7 +338,7 @@
         }
       }
     }
-  };
+  }
 
   /**
    * Translate the element to stick, so it remains on 

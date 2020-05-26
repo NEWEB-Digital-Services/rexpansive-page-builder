@@ -8,34 +8,60 @@ var Block_Content_Positions_Modal = (function($) {
   var block_content_position_properties;
   var defaultPositionCoordinates;
   var target;
+  var resetData;
 
   var _openBlockContentPositionModal = function(data, mousePosition) {
+    resetData = data;
     _updatePosition(data.flexPosition);
     Rexlive_Modals_Utils.positionModal( block_content_position_properties.$self, mousePosition );
     Rexlive_Modals_Utils.openModal( block_content_position_properties.$self.parent(".rex-modal-wrap") );
   };
 
-  var _closeBlockContentPositionModal = function() {
+  var _closeBlockContentPositionModal = function( reset ) {
+    if ( reset ) {
+      _resetBlockContentPositionModal();
+    }
     Rexlive_Modals_Utils.closeModal(
       block_content_position_properties.$self.parent(".rex-modal-wrap")
     );
+    resetData = null;
+  };
+
+  var _resetBlockContentPositionModal = function() {
+    if( resetData ) {
+      _updatePosition(resetData.flexPosition);
+    }
+
+    _applyBlockPosition();
   };
 
   var _linkDocumentListeners = function() {
     block_content_position_properties.$close_button.on('click', function(e) {
       e.preventDefault();
-      _closeBlockContentPositionModal();
+      _closeBlockContentPositionModal( true );
+    });
+
+    // confirm-refresh options
+    block_content_position_properties.$options_buttons.on('click', function(event) {
+      event.preventDefault();
+      switch( this.getAttribute('data-rex-option' ) ) {
+        case 'save':
+          _closeBlockContentPositionModal( false );
+          break;
+        case 'reset':
+          _resetBlockContentPositionModal();
+          break;
+        default:
+          break;
+      }
     });
   };
 
   var _updatePosition = function(data) {
     target = data.target;
     _resetPosition();
-    var position =
-      data.position == "" ? defaultPositionCoordinates : data.position;
-    block_content_position_properties.$positions
-      .filter('[value="' + position + '"]')
-      .prop("checked", true);
+    var position = data.position == "" ? defaultPositionCoordinates : data.position;
+    block_content_position_properties.$positions.filter('[value="' + position + '"]').prop("checked", true);
   };
 
   var _resetPosition = function() {
@@ -69,6 +95,7 @@ var Block_Content_Positions_Modal = (function($) {
       $self: $self,
       // block padding
       $positions: $self.find(".content-position"),
+      $options_buttons: $self.find('.rex-modal-option'),
       $close_button: $self.find('.rex-modal__close-button')
     };
 

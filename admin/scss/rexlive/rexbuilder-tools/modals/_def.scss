@@ -1,9 +1,15 @@
 .bl_modal-row {
 	padding: 0 12px;
 	display: flex;
+
 	&:not(:last-child) {
 		border-bottom: 1px solid #ddd;
 	}
+
+	&.bl_modal-row--no-border {
+		border-bottom: none;
+	}
+
 	// margin-bottom: 15px;
 	&.bl_modal-row--no-padding {
 		padding: 0;
@@ -17,6 +23,7 @@
 		padding: 12px;
 	}
 }
+
 .no12dx {
 	padding: 0px 0px 0px 12px;
 }

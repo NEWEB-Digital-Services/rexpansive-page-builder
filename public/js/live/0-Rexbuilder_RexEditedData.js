@@ -5,7 +5,7 @@
 	// synch section props
 	var tracePropsSection = [
 		'section_name',					// section name
-		'section_nav_label',				// section label
+		'section_nav_label',			// section label
 		'color_bg_section',				// background color
 		'color_bg_section_active',
 		'image_bg_section_active',		// background image
@@ -118,7 +118,8 @@
 
 				if ( 'self' === targetState.name ) { // row
 					for ( z=0; z < tracePropsSection.length; z++ ) {
-						if (  'undefined' === typeof data[i].targets[j].props[tracePropsSection[z]] || '' === data[i].targets[j].props[tracePropsSection[z]] ) {
+						// if (  'undefined' === typeof data[i].targets[j].props[tracePropsSection[z]] || '' === data[i].targets[j].props[tracePropsSection[z]] ) {
+						if (  'undefined' === typeof data[i].targets[j].props[tracePropsSection[z]] ) {
 							targetState.props[tracePropsSection[z]] = false;
 						} else {
 							targetState.props[tracePropsSection[z]] = true;
@@ -126,7 +127,8 @@
 					}
 				} else {	// block
 					for ( z=0; z < tracePropsBlock.length; z++ ) {
-						if ( 'undefined' === typeof data[i].targets[j].props[tracePropsBlock[z]] || '' === data[i].targets[j].props[tracePropsBlock[z]] ) {
+						// if ( 'undefined' === typeof data[i].targets[j].props[tracePropsBlock[z]] || '' === data[i].targets[j].props[tracePropsBlock[z]] ) {
+						if ( 'undefined' === typeof data[i].targets[j].props[tracePropsBlock[z]] ) {
 							targetState.props[tracePropsBlock[z]] = false;
 						} else {
 							targetState.props[tracePropsBlock[z]] = true;

@@ -1503,7 +1503,7 @@ class Rexbuilder_Public
 				ob_start();
 
 				if( Rexbuilder_Utilities::isBuilderLive() ) {
-					$editor = $_GET['editor'];
+					$editor = ( isset( $_GET['editor'] ) ? $_GET['editor'] : false );
 				} else{
 					$editor = false;
 				}
@@ -1714,6 +1714,22 @@ class Rexbuilder_Public
 				</nav>
 				<?php
 			}
+		}
+	}
+
+	/**
+	 * Include the template for the popupcontent closing area
+	 * @return void
+	 * @since  2.0.5
+	 */
+	public function print_popup_content_template() {
+		global $post;
+
+		if ( ! $this->builder_active_on_this_post_type() ) return;
+
+		$template = Rexbuilder_Utilities::get_plugin_templates_path( 'rexbuilder-popupcontent-close-template.php' );
+		if ( ! empty( $template ) ) {
+			include_once $template;
 		}
 	}
 

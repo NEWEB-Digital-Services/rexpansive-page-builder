@@ -33,24 +33,23 @@ var Rexlive_Page_Margins = (function ($) {
     {
       return false;
     }
-  }
+  };
 
   var _applyContainerDistances = function () {
     var to_sent = _getDistanceValues();
-    if ( false !== to_sent )
-    {
+    if ( false !== to_sent ) {
       var data_container_margins = {
         eventName: "rexlive:set_container_margins",
         data_to_send: {
           distances: to_sent
         }
-      }
+      };
   
       Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_container_margins);
 
       _updateData(to_sent);
     }
-  }
+  };
 
   var _linkKeyDownListener = function ($target) {
     $target.keydown(function (e) {
@@ -84,7 +83,7 @@ var Rexlive_Page_Margins = (function ($) {
         $input.blur();
       }
     });
-  }
+  };
 
   var _linkKeyUpListener = function ($target) {
     $target.keyup(function (e) {
@@ -93,12 +92,12 @@ var Rexlive_Page_Margins = (function ($) {
         _applyContainerDistances();
       }
     });
-  }
+  };
 
   var _linkDistancesListeners = function () {
     _linkKeyDownListener(container_margins_modal_properties.$separatorValsTop);
     _linkKeyUpListener(container_margins_modal_properties.$separatorValsTop);
-  }
+  };
 
   /**
    * Check if the data is changed since the user opened the modal
@@ -114,14 +113,13 @@ var Rexlive_Page_Margins = (function ($) {
       }
     }
     return false;
-  }
+  };
 
   /**
    * Getting the margin settings from the data retrieve from DB
    * @since 2.0.0
    */
-  var _getData = function()
-  {
+  var _getData = function() {
     container_margins_modal_properties.$separatorContext.filter('global').prop('checked',true);
     container_margins_modal_properties.$separatorValsTop.val('');
 
@@ -211,7 +209,7 @@ var Rexlive_Page_Margins = (function ($) {
       default:
         break;
     }
-  }
+  };
 
   /**
    * Saving settings on DB
@@ -221,8 +219,7 @@ var Rexlive_Page_Margins = (function ($) {
     var data_margins = _getDistanceValues();
     var data_is_changed = _checkChanges( data_margins );
     
-    if ( false !== data_margins && data_is_changed )
-    {
+    if ( false !== data_margins && data_is_changed ) {
       $.ajax({
         type: "POST",
         dataType: "json",
@@ -239,11 +236,11 @@ var Rexlive_Page_Margins = (function ($) {
         },
         error: function () { },
         complete: function () { }
-      })
+      });
   
     }
     _applyContainerDistances();
-  }
+  };
 
   var _init = function ($container) {
     var $self = $container;
@@ -257,7 +254,7 @@ var Rexlive_Page_Margins = (function ($) {
       $container_separator_top: $self.find('#margin-rexlive-content'),
       $applyAllCheckBox: $self.find("margin-rexlive-all-pages"),
       selected_margins: ""
-    }
+    };
 
     defaultSeparators = {
       top: 0,
@@ -270,7 +267,7 @@ var Rexlive_Page_Margins = (function ($) {
 
     // _resetDistances();
     _linkDistancesListeners();
-  }
+  };
 
   return {
     init: _init,

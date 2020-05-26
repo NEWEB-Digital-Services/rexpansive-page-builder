@@ -8,17 +8,28 @@ var Section_Video_Background_Modal = (function($) {
   var video_background_properties;
   var videoChosen;
   var sectionTarget;
+  var resetData;
 
   var _openSectionVideoBackgroundModal = function(data, mousePosition) {
+    resetData = data;
     _updateVideoModal(data.bgVideo);
     Rexlive_Modals_Utils.positionModal( video_background_properties.$self, mousePosition );
     Rexlive_Modals_Utils.openModal( video_background_properties.$self.parent(".rex-modal-wrap") );
   };
 
-  var _closeSectionVideoBackgroundModal = function() {
-    Rexlive_Modals_Utils.closeModal(
-      video_background_properties.$self.parent(".rex-modal-wrap")
-    );
+  var _closeSectionVideoBackgroundModal = function( reset ) {
+    if ( reset ) {
+      _resetSectionVideoBackgroundModal();
+    }
+    Rexlive_Modals_Utils.closeModal( video_background_properties.$self.parent(".rex-modal-wrap") );
+    resetData = null;
+  };
+
+  var _resetSectionVideoBackgroundModal = function() {
+    if( resetData ) {
+      _updateVideoModal( resetData.bgVideo );
+    }
+    _updateVideoBackground();
   };
 
   var _updateVideoModal = function(data) {
@@ -157,9 +168,7 @@ var Section_Video_Background_Modal = (function($) {
     var urlVimeo = video_background_properties.$linkVimeo.val();
     var videoMp4Data = {
       linkMp4:
-        typeof video_background_properties.$linkMp4.attr(
-          "data-rex-video-bg-url"
-        ) == "undefined"
+        typeof video_background_properties.$linkMp4.attr("data-rex-video-bg-url") == "undefined"
           ? ""
           : video_background_properties.$linkMp4.attr("data-rex-video-bg-url"),
       idMp4: video_background_properties.$linkMp4.val(),
@@ -171,9 +180,7 @@ var Section_Video_Background_Modal = (function($) {
       linkMp4: "",
       idMp4: ""
     };
-    var $selected = video_background_properties.$self.find(
-      ".video-insert-wrap.selected"
-    );
+    var $selected = video_background_properties.$self.find( ".video-insert-wrap.selected" );
 
     if ($selected.hasClass("youtube-insert-wrap")) {
       type = "youtube";
@@ -256,7 +263,22 @@ var Section_Video_Background_Modal = (function($) {
      */
     video_background_properties.$close_button.on('click', function(e) {
       e.preventDefault();
-      _closeSectionVideoBackgroundModal();
+      _closeSectionVideoBackgroundModal( true );
+    });
+
+    // confirm-refresh options
+    video_background_properties.$options_buttons.on('click', function(event) {
+      event.preventDefault();
+      switch( this.getAttribute('data-rex-option' ) ) {
+        case 'save':
+          _closeSectionVideoBackgroundModal( false );
+          break;
+        case 'reset':
+          _resetSectionVideoBackgroundModal();
+          break;
+        default:
+          break;
+      }
     });
   };
 
@@ -280,7 +302,7 @@ var Section_Video_Background_Modal = (function($) {
       $youTubeWrap: $self.find("#edit-video-row-wrap-1"),
       $vimeoWrap: $self.find("#edit-video-row-wrap-2"),
       $mp4Wrap: $self.find("#edit-video-row-wrap-3"),
-
+      $options_buttons: $self.find('.rex-modal-option'),
       $close_button: $self.find('.rex-modal__close-button'),
     };
     videoChosen = "";

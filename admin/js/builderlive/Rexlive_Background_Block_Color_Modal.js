@@ -75,9 +75,7 @@ var Background_Block_Color_Modal = (function($) {
       },
       move: function(color) {
         background_block_color_properties.$color_preview_icon.hide();
-        changeColorEvent.data_to_send.color = bgColorActive
-          ? color.toRgbString()
-          : "";
+        changeColorEvent.data_to_send.color = bgColorActive ? color.toRgbString() : "";
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(changeColorEvent);
         flagPickerUsed = true;
       },
@@ -177,6 +175,7 @@ var Background_Block_Color_Modal = (function($) {
 
   return {
     init: _init,
-    updateColorModal: _updateColorModal
+    updateColorModal: _updateColorModal,
+    applyBackgroundColor: _applyBackgroundColor
   };
 })(jQuery);
