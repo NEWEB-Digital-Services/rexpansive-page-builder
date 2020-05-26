@@ -32,10 +32,6 @@
 	@include bl-btn;
 	@include bl-btn--hover-shadow;
 
-	// &:hover {
-	//   @include bl-btn--hover;
-	// }
-
 	&.active {
 		@include bl-btn--hover;
 	}
@@ -45,7 +41,6 @@
 	}
 
 	&.tool-button--black {
-		// @include bl-btn--black;
 		@include bl-btn--dark;
 	}
 
@@ -53,8 +48,11 @@
 		@include bl-btn--blue;
 	}
 
-	&.tool-button--pink {
-		@include bl-btn--pink;
+	// Not using the mixin 'cause it would be used just here
+	&.tool-button--green {
+		background-color: rgb(0, 190, 0);
+
+		@include fill-icon(#fff);
 	}
 
 	&.tool-button--flat {

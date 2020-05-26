@@ -91,17 +91,15 @@ var Element_Choose_Modal = (function ($) {
 		resetData = jQuery.extend(true, {}, elementData);
 	}
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-	/// SAVING FUNCTIONS
-	///////////////////////////////////////////////////////////////////////////////////////////////
+	// ELEMENT SEPARATION FUNCTIONS
 
-	function _saveNewElementOnDB() {
+	function _cloneElement() {
 		$.ajax({
 			type: 'POST',
 			dataType: 'json',
 			url: live_editor_obj.ajaxurl,
 			data: {
-				action: 'rex_clone_element',
+				action: 'rex_separate_element',
 				nonce_param: live_editor_obj.rexnonce,
 				old_id: oldElementID
 			},
@@ -109,13 +107,9 @@ var Element_Choose_Modal = (function ($) {
 			success: function (response) {
 				newID = response.data.new_id;
 				_endElementSeparation(newID);
-			},
-			error: function () {},
-			complete: function (response) {}
+			}
 		});
 	}
-
-	// ELEMENT SEPARATION FUNCTIONS
 
 	/**
 	 * Ends separtion of rexelement: tells iframe to change id of element
@@ -228,7 +222,7 @@ var Element_Choose_Modal = (function ($) {
 					oldElementID = elementData.element_target.element_id;
 
 					// Saving the new element in the DB
-					_saveNewElementOnDB();
+					_cloneElement();
 					break;
 				case 'edit': // Editing an existing element
 					Wpcf7_Edit_Form_Modal.openFormEditorModal({

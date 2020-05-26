@@ -8,7 +8,7 @@ var Model_Lateral_Menu = (function ($) {
 
 	function _openModal() {
 		Model_Import_Modal.updateModelList();
-		Element_Import_Modal.updateElementList();
+		Form_Import_Modal.updateList();
 	}
 
 	/**
@@ -123,7 +123,7 @@ var Model_Lateral_Menu = (function ($) {
 		Rexlive_Base_Settings.$document.on('click', '.element-list__element--delete', function (e) {
 			var element = this.parentNode.parentNode.parentNode;
 			// @todo open modal with message and ask confirm before delete
-			Element_Import_Modal.deleteElement(element);
+			Form_Import_Modal.deleteElement(element);
 		});
 
 		/**
@@ -134,7 +134,7 @@ var Model_Lateral_Menu = (function ($) {
 		Rexlive_Base_Settings.$document.on('click', '.element-list__element--edit-thumbnail', function (e) {
 			var $element = $(this).parents('.element-list__element');
 
-			Element_Import_Modal.editElementThumbnail(
+			Form_Import_Modal.editElementThumbnail(
 				$element.attr('data-rex-element-id'),
 				$element.attr('data-rex-element-thumbnail-id')
 			);
@@ -148,7 +148,7 @@ var Model_Lateral_Menu = (function ($) {
 		Rexlive_Base_Settings.$document.on('click', '.element-list__element--reset-thumbnail', function (e) {
 			var $element = $(this).parents('.element-list__element');
 
-			Element_Import_Modal.resetElementThumbnail($element.attr('data-rex-element-id'));
+			Form_Import_Modal.resetElementThumbnail($element.attr('data-rex-element-id'));
 		});
 	}
 

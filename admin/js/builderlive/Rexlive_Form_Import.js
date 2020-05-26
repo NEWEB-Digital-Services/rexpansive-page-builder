@@ -1,4 +1,4 @@
-var Element_Import_Modal = (function ($) {
+var Form_Import_Modal = (function ($) {
 	'use strict';
 	var elementImportProps = {};
 	var image_uploader_frame_direct; // Used for the media library opener
@@ -8,7 +8,7 @@ var Element_Import_Modal = (function ($) {
 	 * @return {null}
 	 * @since  2.0.x
 	 */
-	function updateElementList() {
+	function updateList() {
 		$.ajax({
 			type: 'GET',
 			dataType: 'json',
@@ -19,8 +19,6 @@ var Element_Import_Modal = (function ($) {
 			},
 			success: function (response) {
 				if (!response.success) {
-					this.error(response, response.data[0].message, response.data[0].code);
-
 					$(elementImportProps.self).addClass('rex-elements-list--hidden');
 					$(elementImportProps.pluginNotActiveMessage).removeClass('lateral-menu-message--hidden');
 					return;
@@ -37,14 +35,6 @@ var Element_Import_Modal = (function ($) {
 				var event = jQuery.Event('rexlive:lateralMenuReady');
 				$(document).trigger(event);
 			},
-			error: function (response, textStatus, errorThrown) {
-				// if ('F001' === errorThrown) return;
-
-				// Rexbuilder_Util_Admin_Editor.displayAjaxError(
-				// 	{ response: response, textStatus: textStatus, errorThrown: errorThrown },
-				// 	'Something went wrong when trying to load the Contact Forms. Please try again.'
-				// );
-			},
 			complete: function () {
 				elementImportProps.$self.removeClass('rex-modal--loading');
 			}
@@ -57,7 +47,7 @@ var Element_Import_Modal = (function ($) {
 		if (0 === updatedList.length) {
 			$(elementImportProps.noFormsMessage).removeClass('lateral-menu-message--hidden');
 		} else {
-			$(elementImportProps.message).addClass('lateral-menu-message--hidden');
+			$(elementImportProps.noFormsMessage).addClass('lateral-menu-message--hidden');
 
 			var currentList = [];
 
@@ -108,6 +98,13 @@ var Element_Import_Modal = (function ($) {
 						.remove();
 				}
 			}
+
+			// Hiding separated forms
+			data.separatedForms.forEach(function (formID) {
+				elementImportProps.$self
+					.find('.element-list__element[data-rex-element-id="' + formID + '"]')
+					.addClass('element-list__element--separated');
+			});
 		}
 	}
 
@@ -117,7 +114,7 @@ var Element_Import_Modal = (function ($) {
 	 * @param selected_image_id Wordpress id of the new thumbnail image
 	 * @param selected_image_size
 	 * @return {null}
-	 * @since  x.x.x
+	 * @since  2.0.x
 	 */
 	var _saveElementThumbnail = function (element_selected, selected_image_id, selected_image_size) {
 		$.ajax({
@@ -1180,7 +1177,7 @@ var Element_Import_Modal = (function ($) {
 		init: init,
 
 		// Functions that use Ajax calls
-		updateElementList: updateElementList,
+		updateList: updateList,
 
 		//Element functions
 		deleteElement: deleteElement,

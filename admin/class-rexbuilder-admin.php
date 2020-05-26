@@ -3698,6 +3698,38 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		wp_reset_postdata();
 
 		$response['updated_list'] = $elementList;
+		$response['separatedForms'] = get_option('_rex_separated_forms');
+
+		wp_send_json_success($response);
+	}
+
+	public function rex_wpcf7_unseparate_form() {
+		$nonce = $_POST['nonce_param'];
+
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
+			wp_send_json_error(new WP_Error('R001', 'Nonce Error!'));
+		}
+
+		$formID = $_POST['formID'];
+
+		$response = array();
+
+		$separatedForms = get_option('_rex_separated_forms');
+		unset($separatedForms[array_search($formID, $separatedForms)]);
+		update_option('_rex_separated_forms', $separatedForms);
+		$response['sep'] = $separatedForms;
+		
+		$result = wp_update_post( array(
+			'ID' => $formID,
+			'post_title' => $_POST['newName']
+		), true );
+		$response['res'] = $result;
+		$response['nam'] = $_POST['newName'];
+		$response['nam'] = $_POST['newName'];
+
+		if (is_wp_error($result)) {
+			wp_send_json_error(new WP_Error('F002', 'Impossible to update the form title'));
+		}
 
 		wp_send_json_success($response);
 	}
@@ -3878,7 +3910,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @return JSON operation result
 	 * @since  2.0.0
 	 */
-	public function rex_clone_element() {
+	public function rex_separate_element() {
 		$nonce = $_POST['nonce_param'];
 		
 		$response = array(
@@ -3897,6 +3929,15 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$oldID = $_POST['old_id'];
 		$newID = Rexbuilder_Utilities::duplicate($oldID);
 		$response['new_id'] = $newID;
+
+		$separatedForms = get_option('_rex_separated_forms');
+
+		if ($separatedForms && count($separatedForms) > 0) {
+			array_push($separatedForms, $newID);
+			update_option('_rex_separated_forms', $separatedForms);
+		} else {
+			update_option('_rex_separated_forms', array($newID));
+		}
 
 		wp_send_json_success( $response );
 	}
@@ -3939,7 +3980,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @return JSON update response
 	 * @since  2.0.0
 	 */
-	public function	rex_update_buttons_ids(){
+	public function rex_update_buttons_ids() {
 		$nonce = $_POST['nonce_param'];
 		
 		$response = array(

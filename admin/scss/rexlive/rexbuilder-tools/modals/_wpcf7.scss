@@ -11,7 +11,7 @@
 	}
 
 	.active,
-	.l-svg-icons > svg {
+	:not(.tool-button) .l-svg-icons > svg {
 		background-color: $palette-color-6;
 	}
 }

@@ -173,11 +173,11 @@ defined('ABSPATH') or exit;
 														<div class="rexwpcf7-cont_row valign-wrapper">
 																<div class="bl_d-iblock input-field with-text-left rex-wpcf7-modal-column-w253 pl4 rex-input-prefixed ">
 																		<span class="prefix">
-																				<?php Rexbuilder_Utilities::get_icon('#B020-Checked'); ?>
+																			<?php Rexbuilder_Utilities::get_icon('#B020-Checked'); ?>
 																		</span>
 																		<input type="text" id="rex-wpcf7-send-message" name="" class="rex-wpcf7-send-message">
 																		<label for="rex-wpcf7-send-message">
-																				<?php _e('Success Message', 'rexpansive-builder');?>
+																			<?php _e('Success Message', 'rexpansive-builder');?>
 																		</label>
 																</div>
 																<div class="bl_d-iblock ml19 tippy"  data-tippy-content="<?php _e('Success Message Color', 'rexpansive-builder');?>">
@@ -192,6 +192,17 @@ defined('ABSPATH') or exit;
 																		<div class="label-px">px</div>
 																</div>
 														</div>
+												</div>
+												<div id="rex-wpcf7-create-model" class="bl_modal-row rex-wpcf7-modal-row-tall modal-row-grey">
+													<div class="input-field with-text-left rex-input-prefixed">
+														<input type="text" class="bl_modal-row__input">
+														<label for="rex-wpcf7-create-model">
+															<?php _e('Form template name', 'rexpansive-builder');?>
+														</label>
+													</div>
+													<div class="tool-button tool-button--green bl_modal-row__button">
+														<?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+													</div>
 												</div>
 										</div>
 								</div>

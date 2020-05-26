@@ -881,13 +881,15 @@ var Rexbuilder_Rexbutton = (function ($) {
 		var buttonData = data.buttonData;
 		var newID = data.newID;
 		var buttonID = buttonData.buttonTarget.button_id;
+
+		
 		var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(
 			'.rex-button-wrapper[data-rex-button-id="' +
-				buttonID +
-				'"][data-rex-button-number="' +
-				buttonData.buttonTarget.button_number +
-				'"]'
-		);
+			buttonID +
+			'"][data-rex-button-number="' +
+			buttonData.buttonTarget.button_number +
+			'"]'
+			);
 		$buttonWrapper.addClass('rex-separate-button');
 		$buttonWrapper.attr('data-rex-button-id', newID);
 		$buttonWrapper.attr('data-rex-button-number', 1);

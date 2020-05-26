@@ -94,7 +94,7 @@ var Rexlive_Modals = (function ($) {
     Button_Edit_Modal.init();
 
     // Element import tab
-    Element_Import_Modal.init();
+    Form_Import_Modal.init();
 
     // Element chooser
     Element_Choose_Modal.init();
