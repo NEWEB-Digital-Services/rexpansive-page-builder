@@ -80,7 +80,7 @@ define( 'REXPANSIVE_BUILDER_UPLOADS_FOLDER', 'rexpansive-builder' );
  * Global variable to set the state of the release
  */
 define( 'REXPANSIVE_BUILDER_PRODUCTION_STYLES', true );
-define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', false );
+define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', true );
 
 /**
  * ACF inclusion definitions

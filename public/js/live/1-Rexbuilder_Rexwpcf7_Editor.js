@@ -1471,6 +1471,21 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		updateSpanDataInDB(formID, columnContentData);
 	}
 
+	function removeSeparatedForm(data) {
+		var formTarget = data.formTarget;
+		var newName = data.newName;
+
+		var form = Rexbuilder_Util.rexContainer.querySelector(
+			'.rex-element-wrapper[data-rex-element-id="' + formTarget.element_id + '"]'
+		);
+
+		Rexbuilder_Util.removeClass(form, 'rex-separate-form');
+
+		var shortcode = form.querySelector('.string-shortcode').getAttribute('shortcode');
+		shortcode = shortcode.replace(/title\=\".*\"/, 'title="' + newName + '"');
+		form.querySelector('.string-shortcode').setAttribute('shortcode', shortcode);
+	}
+
 	function fixBlocksHeight() {
 		var rowTools = document.getElementById('rex-wpcf7-tools');
 
@@ -2052,6 +2067,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		updateFormInDB: updateFormInDB,
 		updateSpanDataInDB: updateSpanDataInDB,
 		setRowsSortable: setRowsSortable,
+		removeSeparatedForm: removeSeparatedForm,
 
 		/* --- Form manipulation --- */
 

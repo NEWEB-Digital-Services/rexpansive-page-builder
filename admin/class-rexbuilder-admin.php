@@ -3710,28 +3710,24 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			wp_send_json_error(new WP_Error('R001', 'Nonce Error!'));
 		}
 
+		// $response = array();
 		$formID = $_POST['formID'];
-
-		$response = array();
 
 		$separatedForms = get_option('_rex_separated_forms');
 		unset($separatedForms[array_search($formID, $separatedForms)]);
 		update_option('_rex_separated_forms', $separatedForms);
-		$response['sep'] = $separatedForms;
 		
-		$result = wp_update_post( array(
+		$updatePostResult = wp_update_post(array(
 			'ID' => $formID,
 			'post_title' => $_POST['newName']
-		), true );
-		$response['res'] = $result;
-		$response['nam'] = $_POST['newName'];
-		$response['nam'] = $_POST['newName'];
+		), true);
 
-		if (is_wp_error($result)) {
+		if (is_wp_error($updatePostResult)) {
 			wp_send_json_error(new WP_Error('F002', 'Impossible to update the form title'));
 		}
 
-		wp_send_json_success($response);
+		// Everything ok
+		wp_send_json_success();
 	}
 
 	/**

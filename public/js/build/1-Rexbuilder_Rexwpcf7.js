@@ -1496,7 +1496,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		};
 
 		// Element ID
-
 		columnContentData.target.element_id = $formColumn.parents('.rex-element-wrapper').attr('data-rex-element-id');
 
 		// Row number

@@ -10,15 +10,10 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 	'use strict';
 
 	var wpcf7_form_editor_properties;
-
 	var elementData;
-
 	var reverseData;
-
 	var resetData;
-
 	var formMailSettings;
-
 	var formMessages;
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
@@ -242,18 +237,14 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
 	var _openFormEditorModal = function (data) {
 		elementData = data.elementData;
-
 		_updateFormEditorModal(elementData);
 
 		var formID = elementData.element_target.element_id;
-
 		_getFormSettings(formID);
 
 		Rexlive_Modals_Utils.openModal(
 			wpcf7_form_editor_properties.$self.parent('.rex-modal-wrap'), // $target
-
 			false, // target_only
-
 			['wpcf7-editing-form'] // additional_class
 		);
 	};
@@ -383,27 +374,28 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 	};
 
 	var _updatePanel = function () {
-		/* Whole Form Options */
+		// Create template row
+		if (elementData.element_target.is_separated) {
+			wpcf7_form_editor_properties.$self.find('#rex-wpcf7-create-template').removeClass('bl_modal-row--hidden');
+		}
+
+		if (elementData.element_target.form_title) {
+			wpcf7_form_editor_properties.$form_create_template_text.val(elementData.element_target.form_title);
+			wpcf7_form_editor_properties.$form_create_template_text.siblings('label').addClass('active');
+		}
 
 		// E-Mail
-
 		if (wpcf7_form_editor_properties.$form_mail_to.val() != '') {
 			wpcf7_form_editor_properties.$form_mail_to.siblings('label, .prefix').addClass('active');
 		}
 
 		// Input Preview
-
 		wpcf7_form_editor_properties.$input_preview.css({
 			color: elementData.wpcf7_data.content.text_color,
-
 			'font-size': elementData.wpcf7_data.content.font_size,
-
 			'background-color': elementData.wpcf7_data.content.background_color,
-
 			'border-color': elementData.wpcf7_data.content.border_color,
-
 			'border-width': elementData.wpcf7_data.content.border_width,
-
 			'border-radius': elementData.wpcf7_data.content.border_radius
 		});
 
@@ -411,13 +403,10 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			function () {
 				$(this).css({
 					color: elementData.wpcf7_data.content.text_color_hover,
-
 					'background-color': elementData.wpcf7_data.content.background_color_hover,
-
 					'border-color': elementData.wpcf7_data.content.border_color_hover
 				});
 			},
-
 			function () {
 				$(this).css({
 					color: elementData.wpcf7_data.content.text_color,
@@ -2036,9 +2025,16 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 		return formDataHTML;
 	};
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
-
-	///////////////////////////////////////////////////////////////////////////////////////////////
+	function removeSeparatedForm(newName) {
+		var data = {
+			eventName: 'rexlive:remove_separate_form',
+			data_to_send: {
+				formTarget: elementData.element_target,
+				newName: newName
+			}
+		};
+		Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
+	}
 
 	var needToSave = false;
 
@@ -2064,10 +2060,11 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 		wpcf7_form_editor_properties.$reset_button.on('click', function () {
 			needToSave = false;
 
+			var oldIsSeparated = elementData.element_target.is_separated;
 			elementData = jQuery.extend(true, {}, resetData);
+			elementData.element_target.is_separated = oldIsSeparated;
 
 			_updatePanel();
-
 			_applyChanges();
 		});
 
@@ -2100,7 +2097,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 		wpcf7_form_editor_properties.$form_create_template_button.on('click', function (clickEvent) {
 			clickEvent.preventDefault();
 
-			var templateName = wpcf7_form_editor_properties.$form_create_model_text.val();
+			var newTemplateName = wpcf7_form_editor_properties.$form_create_template_text.val();
 
 			// Remove the form from the separated list (db options)
 			$.ajax({
@@ -2111,28 +2108,29 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 					action: 'rex_wpcf7_unseparate_form',
 					nonce_param: live_editor_obj.rexnonce,
 					formID: elementData.element_target.element_id,
-					newName: templateName
+					newName: newTemplateName
 				},
 				beforeSend: function () {
+					// Show loading spinner
 					wpcf7_form_editor_properties.$self.addClass('rex-modal--loading');
 				},
 				success: function (response) {
-					console.log( response );
 					if (!response.success) return;
 
-					// Update lateral menu list
+					elementData.element_target.is_separated = false;
+
+					// Update lateral menu list (async)
 					Form_Import_Modal.updateList();
 
-					// Hide this button
-					wpcf7_form_editor_properties.$form_create_template_button.addClass('bl_modal-row__element--hidden')
-					
-					// Remove separated class from DOM
-					// Change shortcode title in DOM
-				},
-				error: function (response) {
-					console.error(response)
+					// Hide the modal row
+					wpcf7_form_editor_properties.$self.find('#rex-wpcf7-create-template').addClass('bl_modal-row--hidden');
+
+					// Remove "separate" class in DOM and
+					// change shortcode title in DOM
+					removeSeparatedForm(newTemplateName);
 				},
 				complete: function () {
+					// Hide loading spinner
 					wpcf7_form_editor_properties.$self.removeClass('rex-modal--loading');
 				}
 			});
@@ -2542,8 +2540,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			$form_send_message_color_runtime: $container.find('#rex-wpcf7-send-message-color-runtime'),
 
 			$form_send_message_color_preview: $container.find('#rex-wpcf7-send-message-color-preview-icon'),
-			$form_create_model_text: $container.find('#rex-wpcf7-create-model .bl_modal-row__input'),
-			$form_create_template_button: $container.find('#rex-wpcf7-create-model .bl_modal-row__button')
+			$form_create_template_text: $container.find('#rex-wpcf7-create-template .bl_modal-row__input'),
+			$form_create_template_button: $container.find('#rex-wpcf7-create-template .bl_modal-row__button')
 		};
 
 		elementData = {

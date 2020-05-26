@@ -193,10 +193,11 @@ defined('ABSPATH') or exit;
 																</div>
 														</div>
 												</div>
-												<div id="rex-wpcf7-create-model" class="bl_modal-row rex-wpcf7-modal-row-tall modal-row-grey">
+												<!-- Create template -->
+												<div id="rex-wpcf7-create-template" class="bl_modal-row bl_modal-row--all-centered bl_modal-row--tall bl_modal-row--hidden modal-row-grey">
 													<div class="input-field with-text-left rex-input-prefixed">
-														<input type="text" class="bl_modal-row__input">
-														<label for="rex-wpcf7-create-model">
+														<input id="rex-wpcf7-create-template-input" type="text" class="bl_modal-row__input">
+														<label for="rex-wpcf7-create-template-input">
 															<?php _e('Form template name', 'rexpansive-builder');?>
 														</label>
 													</div>

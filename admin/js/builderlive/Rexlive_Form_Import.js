@@ -53,6 +53,7 @@ var Form_Import_Modal = (function ($) {
 
 			elementImportProps.$self.find('.element-list__element').each(function (i, element) {
 				element.style.display = '';
+				$(element).removeClass('element-list__element--separated');
 
 				currentList.push({
 					id: element.getAttribute('data-rex-element-id'),
@@ -99,12 +100,14 @@ var Form_Import_Modal = (function ($) {
 				}
 			}
 
-			// Hiding separated forms
-			data.separatedForms.forEach(function (formID) {
-				elementImportProps.$self
-					.find('.element-list__element[data-rex-element-id="' + formID + '"]')
-					.addClass('element-list__element--separated');
-			});
+			if (data.separatedForms) {
+				// Hiding separated forms
+				data.separatedForms.forEach(function (formID) {
+					elementImportProps.$self
+						.find('.element-list__element[data-rex-element-id="' + formID + '"]')
+						.addClass('element-list__element--separated');
+				});
+			}
 		}
 	}
 

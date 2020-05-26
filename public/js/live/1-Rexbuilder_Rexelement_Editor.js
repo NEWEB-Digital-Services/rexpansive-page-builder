@@ -140,7 +140,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 				'"]'
 		);
 
-		$elementWrapper.addClass('rex-separate-element');
+		$elementWrapper.addClass('rex-separate-form');
 		$elementWrapper.attr('data-rex-element-id', newID);
 		$elementWrapper.attr('data-rex-element-number', 1);
 
@@ -259,7 +259,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 		// If separating, get true
 		// If not separating, check the flag
-		var needToAddElementStyle = Rexbuilder_Util.hasClass(elementWrapper, 'rex-separate-element') || !flagElementFound;
+		var needToAddElementStyle = Rexbuilder_Util.hasClass(elementWrapper, 'rex-separate-form') || !flagElementFound;
 
 		// Removing medium editor placeholder if there
 		var $textWrap = $elementWrapper.parents('.text-wrap');

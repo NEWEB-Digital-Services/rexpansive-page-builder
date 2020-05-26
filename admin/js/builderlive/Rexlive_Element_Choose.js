@@ -220,6 +220,7 @@ var Element_Choose_Modal = (function ($) {
 			switch (optionSelected) {
 				case 'remove': // Need to create a new element based on the current element
 					oldElementID = elementData.element_target.element_id;
+					elementData.element_target.is_separated = true;
 
 					// Saving the new element in the DB
 					_cloneElement();

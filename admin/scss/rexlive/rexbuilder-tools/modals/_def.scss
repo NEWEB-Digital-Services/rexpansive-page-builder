@@ -15,6 +15,14 @@
 		padding: 0;
 	}
 
+	&--all-centered {
+		@include flex-center-both;
+	}
+
+	&--hidden {
+		display: none;
+	}
+
 	&--clickable {
 		cursor: pointer;
 	}
@@ -23,13 +31,22 @@
 		padding: 12px;
 	}
 
+	&--tall {
+		height: 97px;
+		padding-top: 27px;
+		padding-bottom: 27px;
+	}
+
 	&__input {
-		#rex-wpcf7-create-model & {
-			width: 200px;
+		#rex-wpcf7-create-template & {
+			width: 310px;
 		}
 	}
 
-	// &__button {}
+	&__button {
+		width: 30px;
+		height: 30px;
+	}
 
 	&__element {
 		&--hidden {
