@@ -242,6 +242,10 @@ var Rexlive_Page_Margins = (function ($) {
     _applyContainerDistances();
   };
 
+  var _resetData = function() {
+
+  };
+
   var _init = function ($container) {
     var $self = $container;
     container_margins_modal_properties = {
@@ -274,7 +278,8 @@ var Rexlive_Page_Margins = (function ($) {
     // saveGlobal: _saveGlobal,
     // savePage: _savePage,
     applyData: _applyData,
-    getData: _getData
+    getData: _getData,
+    resetData: _resetData
   };
 
 })(jQuery);

@@ -198,7 +198,9 @@ class Rexbuilder_RexSlider {
 							<?php } ?>
 							</div>
 						</a>
-						<figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>
+						<figcaption class="pswp-item-caption" itemprop="caption description">
+							<?php do_action( 'rexbuilder_slider_pswp_item_caption' ); ?>
+						</figcaption>
 					</figure>
 					<?php
 				}
@@ -285,6 +287,13 @@ class Rexbuilder_RexSlider {
 			}
 
 			do_action( 'rex_slider_after_gallery_inside', $slider_id );
+			if( 'true' == $photoswipe ) {
+				?>
+				<div class="pswp-item-caption pswp-item-caption__global" itemprop="caption description">
+					<?php do_action( 'rexbuilder_block_pswp_item_caption' ); ?>
+				</div>
+				<?php
+			}
 			?>
 			</div>
 			<?php

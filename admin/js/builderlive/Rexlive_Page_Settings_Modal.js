@@ -26,7 +26,7 @@ var Rexlive_Page_Settings_Modal = (function ($) {
   };
 
   var _resetModal = function() {
-
+    Rexlive_Page_Margins.resetData();
   };
 
   /**
@@ -54,6 +54,7 @@ var Rexlive_Page_Settings_Modal = (function ($) {
       switch( this.getAttribute('data-rex-option' ) ) {
         case 'save':
           _closeModal( false );
+          _saveSettings();
           break;
         case 'reset':
           _resetModal();
