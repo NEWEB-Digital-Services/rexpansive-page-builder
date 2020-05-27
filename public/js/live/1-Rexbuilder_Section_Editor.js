@@ -768,6 +768,7 @@ var Rexbuilder_Section_Editor = (function($) {
       showPalette: false,
       showInput: true,
       showButtons: false,
+      containerClassName: "sp-draggable sp-meditor",
       beforeShow: function() {
         Rexbuilder_Color_Palette.show({
           $target: $spGlRowBackground,
@@ -789,6 +790,7 @@ var Rexbuilder_Section_Editor = (function($) {
       showPalette: false,
       showInput: true,
       showButtons: false,
+      containerClassName: "sp-draggable sp-meditor",
       beforeShow: function() {
         Rexbuilder_Overlay_Palette.show({
           $target: $spGlRowOverlay,
@@ -867,6 +869,9 @@ var Rexbuilder_Section_Editor = (function($) {
         default: break;
       }
     });
+
+    $spGlRowBackground.spectrum("container").draggable();
+    $spGlRowOverlay.spectrum("container").draggable();
   }
 
   // spectrum handlers

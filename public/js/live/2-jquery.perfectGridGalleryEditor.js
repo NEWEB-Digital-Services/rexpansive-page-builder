@@ -2582,6 +2582,7 @@
     },
 
     updateBlocksSizes: function( data ) {
+      if ( 'undefined' === typeof data ) return;
       this.properties.gridstackInstance.batchUpdate();
       for( var i=0; i < data.length; i++ ) {
         var elem = this.element.querySelector( this.settings.itemSelector + '[data-rexbuilder-block-id="' + data[i].rexID + '"]' );

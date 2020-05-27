@@ -1341,6 +1341,7 @@ var Rexbuilder_Block_Editor = (function($) {
       showPalette: false,
       showInput: true,
       showButtons: false,
+      containerClassName: "sp-draggable sp-meditor",
       beforeShow: function() {
         Rexbuilder_Color_Palette.show({
           $target: $spGlBlockBackground,
@@ -1361,6 +1362,7 @@ var Rexbuilder_Block_Editor = (function($) {
       showPalette: false,
       showInput: true,
       showButtons: false,
+      containerClassName: "sp-draggable sp-meditor",
       beforeShow: function() {
         Rexbuilder_Overlay_Palette.show({
           $target: $spGlBlockOverlay,
@@ -1439,7 +1441,11 @@ var Rexbuilder_Block_Editor = (function($) {
         default: break;
       }
     });
-  };
+
+    // make pickers draggable
+    $spGlBlockBackground.spectrum("container").draggable();
+    $spGlBlockOverlay.spectrum("container").draggable();
+  }
 
   function spBlockBackgroundOnMove(color) {
     backgroundPickerUsed = true;
