@@ -3,15 +3,82 @@
  * @since x.x.x
  */
 var Wpcf7_Edit_Content_Modal = (function ($) {
+	/* ===== Globals ===== */
 	var wpcf7_content_editor_properties;
 	var editPoint;
-	var columnContentData;
 	var reverseData;
 	var resetData;
 	var needToRemoveSpanData = true; // Needs to be set false the first time an edit happens
-	var tinyMCE_editor;
-	var tinyMCE_label_editor;
+
+	var tinyMCEFieldEditor;
+	var fieldEditor;
+
+	var tinyMCELabelEditor;
+	var labelEditor;
+
 	var needToSave = false;
+	var columnContentData = {
+		wpcf7_required_field: '',
+		wpcf7_email: '',
+		wpcf7_only_numbers: '',
+		wpcf7_default_check: '',
+		wpcf7_placeholder: '',
+		wpcf7_list_fields: [],
+		wpcf7_file_max_dimensions: '',
+		wpcf7_button: {
+			text: '',
+			font_size: '',
+			height: '',
+			width: '',
+			border_width: '',
+			border_radius: '',
+			margin_top: '',
+			margin_right: '',
+			margin_bottom: '',
+			margin_left: '',
+			padding_top: '',
+			padding_right: '',
+			padding_bottom: '',
+			padding_left: '',
+			text_color: '',
+			text_color_hover: '',
+			background_color: '',
+			background_color_hover: '',
+			border_color: '',
+			border_color_hover: ''
+		},
+		input_width: '',
+		input_height: '',
+		font_size: '',
+		border_width: '',
+		border_radius: '',
+		background_color: '',
+		background_color_hover: '',
+		border_color: '',
+		border_color_hover: '',
+		placeholder_color: '',
+		placeholder_hover_color: '',
+		select_color_after_selection: '',
+		text_color: '',
+		text_color_hover: '',
+		text_color_focus: '',
+		label_text: '',
+		text: '',
+		type: '',
+		field_class: '',
+		input_type: '',
+		target: {
+			element_id: '',
+			row_number: '',
+			column_number: ''
+		}
+	};
+
+	var defaultColumnContentValues = {
+		input_width: '100%',
+		input_height: '100%',
+		font_size: '15px'
+	};
 
 	/**
 	 * @param {jQuery} $target input field
@@ -591,19 +658,14 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		wpcf7_content_editor_properties.$content_input_font_size.val(/[0-9]+/.exec(columnContentData.font_size));
 
 		// Label Editor
-		tinyMCE_label_editor = tinyMCE.get('wpcf7_label_editor');
-		console.log(tinyMCE_label_editor);
-
 		// Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
 		columnContentData.label_text = columnContentData.label_text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, '');
-		tinyMCE_label_editor.setContent(columnContentData.label_text);
-		_linkLabelTextEditorListeners();
+		tinyMCELabelEditor.setContent(columnContentData.label_text);
 
-		// Text Editor
-		tinyMCE_editor = tinyMCE.get('wpcf7_text_editor');
-		columnContentData.text = columnContentData.text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, ''); // Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
-		tinyMCE_editor.setContent(columnContentData.text);
-		_linkTextEditorListeners();
+		// Field Editor
+		// Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
+		columnContentData.text = columnContentData.text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, '');
+		tinyMCEFieldEditor.setContent(columnContentData.text);
 
 		// File Max Dimensions
 		wpcf7_content_editor_properties.$content_file_max_dimensions.val(
@@ -950,25 +1012,19 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		columnContentData.input_height = wpcf7_content_editor_properties.$content_input_height.val() + 'px';
 
 		// Font size
-
 		columnContentData.font_size = wpcf7_content_editor_properties.$content_input_font_size.val() + 'px';
 
 		// Label text editor
-
-		columnContentData.label_text = tinyMCE_label_editor.getContent();
-
+		columnContentData.label_text = tinyMCELabelEditor.getContent();
 		// Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
-
 		columnContentData.label_text = columnContentData.label_text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, '');
 
-		// Text editor
-
-		columnContentData.text = tinyMCE_editor.getContent();
+		// Field editor
+		columnContentData.text = tinyMCEFieldEditor.getContent();
 
 		columnContentData.text = columnContentData.text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, ''); // Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
 
 		// File max dimensions
-
 		columnContentData.wpcf7_file_max_dimensions = wpcf7_content_editor_properties.$content_file_max_dimensions.val();
 
 		var dimensionsUnit = wpcf7_content_editor_properties.$content_file_max_dimensions_unit.val();
@@ -976,7 +1032,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		columnContentData.wpcf7_file_max_dimensions += dimensionsUnit;
 
 		// List fields
-
 		var $listFields = wpcf7_content_editor_properties.$field_list.find('.wpcf7-select-field');
 
 		columnContentData.wpcf7_list_fields = [];
@@ -986,7 +1041,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		}
 
 		// Button
-
 		columnContentData.wpcf7_button.text = wpcf7_content_editor_properties.$content_button_text.val();
 
 		columnContentData.wpcf7_button.font_size =
@@ -2576,13 +2630,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		});
 	};
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-
-	var _linkDocumentListeners = function () {
-		// Clicking outside the modal
-
+	function _linkListeners() {
+		// Click outside the modal
 		wpcf7_content_editor_properties.$modal.click(function (e) {
 			if ($(e.target).is('.rex-modal-wrap')) {
 				needToSave = true;
@@ -2590,15 +2639,12 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		});
 
 		// Closes the modal
-
 		wpcf7_content_editor_properties.$close_button.on('click', function () {
 			needToSave = false;
-
 			_closeModal();
 		});
 
 		// Reset Panel with data when was opened, updates button in page
-
 		wpcf7_content_editor_properties.$reset_button.on('click', function () {
 			needToSave = false;
 
@@ -2696,7 +2742,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		});
 
 		// When modal is closed in any manner
-
 		wpcf7_content_editor_properties.$modal.on('rexlive:this_modal_closed', function () {
 			/* 	This event is triggered also when clicking out of the modal. 
 
@@ -3185,21 +3230,18 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 			_updateDeleteFieldListener();
 		});
-	};
+	}
 
 	var _updateDeleteFieldListener = function () {
 		wpcf7_content_editor_properties.$delete_list_field = wpcf7_content_editor_properties.$self.find(
 			'.rex-wpcf7-delete-list-field'
 		);
-
 		wpcf7_content_editor_properties.$delete_list_field.off('click'); // Removing the listeners to the delete buttons
-
 		wpcf7_content_editor_properties.$delete_list_field.on('click', _handleClickDeleteRow); // Adding the listeners to the delete buttons
 	};
 
 	var _handleClickDeleteRow = function (event) {
 		var $target = $(event.target).parents('.rexwpcf7-cont_row');
-
 		var rowNumber = /[0-9]+/.exec(/field-[0-9]+/.exec($target.find("[type='text']")[0].classList))[0];
 
 		$target.remove();
@@ -3208,281 +3250,186 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		for (var i = 0; i < $listFields.length; i++) {
 			var classToRemove = /field\-[0-9]+/.exec($listFields[i].classList)[0];
-
 			$($listFields[i]).removeClass(classToRemove);
-
 			$($listFields[i]).addClass('field-' + (i + 1));
 		}
 
 		_updateColumnContentLive({
 			type: 'wpcf7-list-remove',
-
 			value: rowNumber
 		});
 	};
 
-	var _linkTextEditorListeners = function () {
-		tinyMCE_editor.on('keyup', _handleTextEditorEvents);
+	/**
+	 * Retrieving the TinyMCE editors that will be used to edit different
+	 * CF7 Form fields and labels.
+	 * @since		2.0.5
+	 */
+	function setupTMCEEditors() {
+		/* Field Editor */
+		tinyMCEFieldEditor = tinyMCE.get('wpcf7_text_editor');
+		fieldEditor = document.getElementById('wpcf7_text_editor');
 
-		tinyMCE_editor.on('change', _handleTextEditorEvents);
+		tinyMCEFieldEditor.on('NodeChange keyup', handleFieldEditorChanges.bind(null, 'tmce'));
+		fieldEditor.addEventListener('keyup', handleFieldEditorChanges.bind(null, 'dom'));
 
-		tinyMCE_editor.on('undo', _handleTextEditorEvents);
+		function handleFieldEditorChanges(type) {
+			_updateColumnContentLive({
+				type: 'wpcf7-text-editor',
+				value: 'tmce' === type ? tinyMCEFieldEditor.getContent() : fieldEditor.value
+			});
 
-		tinyMCE_editor.on('redo', _handleTextEditorEvents);
+			if ('tmce' === type) {
+				fieldEditor.value = tinyMCEFieldEditor.getContent();
+			} else {
+				tinyMCEFieldEditor.setContent(fieldEditor.value);
+			}
+		}
 
-		tinyMCE_editor.on('cut', _handleTextEditorEvents);
+		/* Label Editor */
+		tinyMCELabelEditor = tinyMCE.get('wpcf7_label_editor');
+		labelEditor = document.getElementById('wpcf7_label_editor');
 
-		tinyMCE_editor.on('paste', _handleTextEditorEvents);
-	};
+		tinyMCELabelEditor.on('NodeChange keyup', handleLabelEditorChanges.bind(null, 'tmce'));
+		labelEditor.addEventListener('keyup', handleLabelEditorChanges.bind(null, 'dom'));
 
-	var _handleTextEditorEvents = function () {
-		_updateColumnContentLive({
-			type: 'wpcf7-text-editor',
+		function handleLabelEditorChanges(type) {
+			_updateColumnContentLive({
+				type: 'wpcf7-label-text-editor',
+				value: 'tmce' === type ? tinyMCELabelEditor.getContent() : labelEditor.value
+			});
 
-			value: tinyMCE_editor.getContent()
-		});
-	};
-
-	function _linkLabelTextEditorListeners() {
-		tinyMCE_label_editor.on('keyup', _handleLabelTextEditorEvents);
-
-		tinyMCE_label_editor.on('change', _handleLabelTextEditorEvents);
-
-		tinyMCE_label_editor.on('undo', _handleLabelTextEditorEvents);
-
-		tinyMCE_label_editor.on('redo', _handleLabelTextEditorEvents);
-
-		tinyMCE_label_editor.on('cut', _handleLabelTextEditorEvents);
-
-		tinyMCE_label_editor.on('paste', _handleLabelTextEditorEvents);
+			if ('tmce' === type) {
+				labelEditor.value = tinyMCELabelEditor.getContent();
+			} else {
+				tinyMCELabelEditor.setContent(labelEditor.value);
+			}
+		}
 	}
 
-	function _handleLabelTextEditorEvents() {
-		_updateColumnContentLive({
-			type: 'wpcf7-label-text-editor',
-
-			value: tinyMCE_label_editor.getContent()
-		});
-	}
-
-	var _init = function () {
+	function init() {
 		var $self = $('#rex-wpcf7-content-editor');
-
 		var $accordions = $self.find('.rex-accordion');
-
 		var $outerAccordion = $self.find('.rexpansive-accordion-outer');
-
 		var $container = $self;
 
 		$outerAccordion.rexAccordion({
 			open: {},
-
 			close: {},
-
 			selectors: {
 				self: '.rexpansive-accordion-outer',
-
 				toggle: '.rex-accordion-outer--toggle',
-
 				content: '.rex-accordion-outer--content'
 			}
 		});
 
 		wpcf7_content_editor_properties = {
 			$self: $self,
-
 			$modal: $container.parent('.rex-modal-wrap'),
-
 			$close_button: $container.find('.rex-cancel-button'),
-
 			$apply_changes_button: $container.find('.rex-apply-button'),
-
 			$reset_button: $container.find('.rex-reset-button'),
-
 			$button_preview: $container.find('#rex-wpcf7-button-modal-preview'),
-
 			$content_required_field: $container.find('#wpcf7-required-field'),
-
 			$content_only_numbers: $container.find('#wpcf7-only-numbers'),
-
 			$content_set_email: $container.find('#wpcf7-set-email'),
-
 			$content_placeholder: $container.find('#wpcf7-placeholder'),
-
 			$content_input_default_check: $container.find('#wpcf7-default-check'),
-
 			$content_input_label_editor: $container.find('#wpcf7-label-text-editor'),
-
 			$content_input_text_editor: $container.find('#wpcf7-text-editor'),
-
 			$content_file_max_dimensions: $container.find('#wpcf7-file-max-dimensions'),
-
 			$content_file_max_dimensions_unit: $container.find('#wpcf7-file-max-dimensions-unit'),
-
 			$field_list: $container.find('#wpcf7-list-fields'),
-
 			$add_list_field: $container.find('#rex-wpcf7-add-list-field'),
-
 			$delete_list_field: '',
-
 			$content_input_width: $container.find('#wpcf7-input-width'),
-
 			$content_input_width_type: $container.find('.wpcf7-input-width-type'),
-
 			$content_input_height: $container.find('#wpcf7-input-height'),
-
 			$content_input_font_size: $container.find('#wpcf7-set-font-size'),
-
 			$content_preview_text: $container.find('#rex-wpcf7-preview-text'),
-
 			$content_text_color_value: $container.find('#rex-wpcf7-text-color'),
-
 			$content_text_color_runtime: $container.find('#rex-wpcf7-text-color-runtime'),
-
 			$content_text_color_preview: $container.find('#rex-wpcf7-text-color-preview-icon'),
-
 			$content_text_color_palette_buttons: $self.find('#content-text-color-palette .bg-palette-selector'),
-
 			$content_preview_text_focus: $container.find('#rex-wpcf7-preview-focus'),
-
 			$content_text_color_focus_value: $container.find('#rex-wpcf7-focus-color'),
-
 			$content_text_color_focus_runtime: $container.find('#rex-wpcf7-focus-color-runtime'),
-
 			$content_text_color_focus_preview: $container.find('#rex-wpcf7-focus-color-preview-icon'),
-
 			$content_text_color_focus_palette_buttons: $self.find('#focus-text-color-palette .bg-palette-selector'),
-
 			$content_preview_select: $container.find('#rex-wpcf7-preview-select-text'),
-
 			$content_select_color_value: $container.find('#rex-wpcf7-select-text-color'),
-
 			$content_select_color_runtime: $container.find('#rex-wpcf7-select-text-color-runtime'),
-
 			$content_select_color_preview: $container.find('#rex-wpcf7-select-text-color-preview-icon'),
-
 			$content_select_color_palette_buttons: $self.find('#select-color-palette .bg-palette-selector'),
-
 			$content_preview_select_after_selection: $container.find('#rex-wpcf7-preview-select-text-after-selection'),
-
 			$content_select_color_after_selection_value: $container.find('#rex-wpcf7-select-text-color-after-selection'),
-
 			$content_select_color_after_selection_runtime: $container.find(
 				'#rex-wpcf7-select-text-color-after-selection-runtime'
 			),
-
 			$content_select_color_after_selection_preview: $container.find(
 				'#rex-wpcf7-select-text-color-after-selection-preview-icon'
 			),
-
 			$content_select_color_after_selection_palette_buttons: $self.find(
 				'#select-color-after-selection-palette .bg-palette-selector'
 			),
-
 			$content_preview_placeholder: $container.find('#rex-wpcf7-preview-placeholder'),
-
 			$content_placeholder_color_value: $container.find('#rex-wpcf7-placeholder-color'),
-
 			$content_placeholder_color_runtime: $container.find('#rex-wpcf7-placeholder-color-runtime'),
-
 			$content_placeholder_color_preview: $container.find('#rex-wpcf7-placeholder-color-preview-icon'),
-
 			$content_placeholder_color_palette_buttons: $self.find('#placeholder-color-palette .bg-palette-selector'),
-
 			$content_preview_placeholder_hover: $container.find('#rex-wpcf7-preview-placeholder-hover'),
-
 			$content_placeholder_hover_color_value: $container.find('#rex-wpcf7-placeholder-hover-color'),
-
 			$content_placeholder_hover_color_runtime: $container.find('#rex-wpcf7-placeholder-hover-color-runtime'),
-
 			$content_placeholder_hover_color_preview: $container.find('#rex-wpcf7-placeholder-hover-color-preview-icon'),
-
 			$content_placeholder_hover_color_palette_buttons: $self.find(
 				'#hover-placeholder-color-palette .bg-palette-selector'
 			),
-
 			$content_button_text: $container.find('#rex-wpcf7-button-text'),
-
 			$content_button_text_font_size: $container.find('#wpcf7-button-text-font-size'),
-
 			$content_button_height: $container.find('#wpcf7-button-height'),
-
 			$content_button_width: $container.find('#wpcf7-button-width'),
-
 			$content_button_border_width: $container.find('#wpcf7-button-border-width'),
-
 			$content_button_border_radius: $container.find('#wpcf7-button-border-radius'),
-
 			$content_button_margin_top: $container.find('#wpcf7-button-margin-top'),
-
 			$content_button_margin_right: $container.find('#wpcf7-button-margin-right'),
-
 			$content_button_margin_bottom: $container.find('#wpcf7-button-margin-bottom'),
-
 			$content_button_margin_left: $container.find('#wpcf7-button-margin-left'),
-
 			$content_button_padding_top: $container.find('#wpcf7-button-padding-top'),
-
 			$content_button_padding_right: $container.find('#wpcf7-button-padding-right'),
-
 			$content_button_padding_bottom: $container.find('#wpcf7-button-padding-bottom'),
-
 			$content_button_padding_left: $container.find('#wpcf7-button-padding-left'),
-
 			$content_button_text_color_value: $container.find('#rex-wpcf7-button-text-color'),
-
 			$content_button_text_color_preview: $container.find('#rex-wpcf7-button-text-color-preview-icon'),
-
 			$content_preview_button_text_color_hover: $container.find('#rex-wpcf7-preview-button-text-color-hover'),
-
 			$content_button_text_color_hover_value: $container.find('#rex-wpcf7-button-text-color-hover'),
-
 			$content_button_text_color_hover_runtime: $container.find('#rex-wpcf7-button-text-color-hover-runtime'),
-
 			$content_button_text_color_hover_preview: $container.find('#rex-wpcf7-button-text-color-hover-preview-icon'),
-
 			$content_button_hover_text_color_palette_buttons: $self.find(
 				'#button-hover-text-color-palette .bg-palette-selector'
 			),
-
 			$content_preview_button_background_color: $container.find('#rex-wpcf7-preview-button-background-color'),
-
 			$content_button_background_color_value: $container.find('#rex-wpcf7-button-background-color'),
-
 			$content_button_background_color_preview: $container.find('#rex-wpcf7-button-background-color-preview-icon'),
-
 			$content_preview_button_background_color_hover: $container.find(
 				'#rex-wpcf7-preview-button-background-color-hover'
 			),
-
 			$content_button_background_color_hover_value: $container.find('#rex-wpcf7-button-background-color-hover'),
-
 			$content_button_background_color_hover_runtime: $container.find(
 				'#rex-wpcf7-button-background-color-hover-runtime'
 			),
-
 			$content_button_background_color_hover_preview: $container.find(
 				'#rex-wpcf7-button-background-color-hover-preview-icon'
 			),
-
 			$content_button_hover_background_color_palette_buttons: $self.find(
 				'#button-hover-background-color-palette .bg-palette-selector'
 			),
-
 			$content_preview_button_border_color: $container.find('#rex-wpcf7-preview-button-border-color'),
-
 			$content_button_border_color_value: $container.find('#rex-wpcf7-button-border-color'),
-
 			$content_button_border_color_preview: $container.find('#rex-wpcf7-button-border-color-preview-icon'),
-
 			$content_preview_button_border_color_hover: $container.find('#rex-wpcf7-preview-button-border-color-hover'),
-
 			$content_button_border_color_hover_value: $container.find('#rex-wpcf7-button-border-color-hover'),
-
 			$content_button_border_color_hover_runtime: $container.find('#rex-wpcf7-button-border-color-hover-runtime'),
-
 			$content_button_border_color_hover_preview: $container.find('#rex-wpcf7-button-border-color-hover-preview-icon'),
-
 			$content_button_hover_border_color_palette_buttons: $self.find(
 				'#button-hover-border-color-palette .bg-palette-selector'
 			)
@@ -3490,19 +3437,14 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		wpcf7_content_editor_properties.$field_list.sortable({
 			revert: true,
-
 			handle: '.rexwpcf7-sort',
-
 			cursor: 'pointer',
-
 			update: function () {
 				var $listFields = wpcf7_content_editor_properties.$field_list.find('.wpcf7-select-field');
 
 				for (var i = 0; i < $listFields.length; i++) {
 					var classToRemove = /field\-[0-9]+/.exec($listFields[i].classList)[0];
-
 					$($listFields[i]).removeClass(classToRemove);
-
 					$($listFields[i]).addClass('field-' + (i + 1));
 				}
 
@@ -3514,168 +3456,38 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 				_updateColumnContentLive({
 					type: 'wpcf7-list',
-
 					value: {
 						fields: listFieldsArray,
-
 						type: 'sorting'
 					}
 				});
 			}
 		});
 
-		columnContentData = {
-			wpcf7_required_field: '',
-
-			wpcf7_email: '',
-
-			wpcf7_only_numbers: '',
-
-			wpcf7_default_check: '',
-
-			wpcf7_placeholder: '',
-
-			wpcf7_list_fields: [],
-
-			wpcf7_file_max_dimensions: '',
-
-			wpcf7_button: {
-				text: '',
-
-				font_size: '',
-
-				height: '',
-
-				width: '',
-
-				border_width: '',
-
-				border_radius: '',
-
-				margin_top: '',
-
-				margin_right: '',
-
-				margin_bottom: '',
-
-				margin_left: '',
-
-				padding_top: '',
-
-				padding_right: '',
-
-				padding_bottom: '',
-
-				padding_left: '',
-
-				text_color: '',
-
-				text_color_hover: '',
-
-				background_color: '',
-
-				background_color_hover: '',
-
-				border_color: '',
-
-				border_color_hover: ''
-			},
-
-			input_width: '',
-
-			input_height: '',
-
-			font_size: '',
-
-			border_width: '',
-
-			border_radius: '',
-
-			background_color: '',
-
-			background_color_hover: '',
-
-			border_color: '',
-
-			border_color_hover: '',
-
-			placeholder_color: '',
-
-			placeholder_hover_color: '',
-
-			select_color_after_selection: '',
-
-			text_color: '',
-
-			text_color_hover: '',
-
-			text_color_focus: '',
-
-			label_text: '',
-
-			text: '',
-
-			type: '',
-
-			field_class: '',
-
-			input_type: '',
-
-			target: {
-				element_id: '',
-
-				row_number: '',
-
-				column_number: ''
-			}
-		};
-
-		defaultColumnContentValues = {
-			input_width: '100%',
-
-			input_height: '100%',
-
-			font_size: '15px'
-		};
-
 		$accordions.rexAccordion({ open: {}, close: {} });
 
-		_linkDocumentListeners();
-
+		_linkListeners();
 		_linkTextInputs();
-
 		_linkNumberInputs();
-
 		_linkTextColorEditor();
-
 		_linkTextFocusColorEditor();
-
 		_linkSelectTextColorEditor();
-
 		_linkSelectTextColorAfterSelectionEditor();
-
 		_linkPlaceholderColorEditor();
-
 		_linkPlaceholderHoverColorEditor();
-
 		_linkButtonTextColorEditor();
-
 		_linkButtonTextColorHoverEditor();
-
 		_linkButtonBackgroundColorEditor();
-
 		_linkButtonBackgroundColorHoverEditor();
-
 		_linkButtonBorderColorEditor();
-
 		_linkButtonBorderColorHoverEditor();
-	};
+	}
 
 	return {
-		init: _init,
+		init: init,
+		setupTMCEEditors: setupTMCEEditors,
 
 		// Modal functions
-
 		openColumnContentEditorModal: _openColumnContentEditorModal
 	};
 })(jQuery);

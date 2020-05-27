@@ -798,7 +798,9 @@ var Rexbuilder_RexSlider = (function($) {
         var $slide = $button.parents(".rex-slider__slide");
         var $data_area = $slide.find(".rex-slider__slide-data");
         var action = $button.attr("value");
-        var slide_id = $slide.attr("data-slider-slide-id");
+				var slide_id = $slide.attr("data-slider-slide-id");
+				
+				console.log( 'clicco bottone', action );
 
         switch (action) {
           case "add-slide":
