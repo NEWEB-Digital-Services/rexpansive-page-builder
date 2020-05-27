@@ -70,15 +70,13 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
  */
   var _setScroll = function(stop){
     this.stopScrolling = stop;
-  }
+  };
   
   var scrollY;
 
   var _scrollFrame = function (step) {
     scrollY = $frameBuilderWindow.scrollTop();
-    $frameBuilderWindow.scrollTop(
-      scrollY + step
-    );
+    $frameBuilderWindow.scrollTop( scrollY + step );
     if (!Rexbuilder_Util_Admin_Editor.stopScrolling) {
       setTimeout(function () {
         _scrollFrame(step);
@@ -1360,7 +1358,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
             .siblings('.tool-button--color-preview')
             .css('background-color','');
         }
-      })
+      });
     }
   };
 
@@ -1527,6 +1525,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         bgColorPickerUsed = false;
       },
     });
+
+    _addSpectrumCustomCloseButton( $highlightRowSetBackgroundColor );
+    _addSpectrumCustomSaveButtonNew( $highlightRowSetBackgroundColor );
   };
 
   /**
@@ -1605,6 +1606,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         overlayPickerUsed = false;
       },
     });
+
+    _addSpectrumCustomCloseButton( $highlightRowSetOverlay );
+    _addSpectrumCustomSaveButtonNew( $highlightRowSetOverlay );
   };
 
   /**
@@ -1711,6 +1715,33 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       e.stopPropagation();
       e.preventDefault();
       $picker.spectrum('container').find('.sp-choose').trigger('click');
+    });
+  };
+
+  var _addSpectrumCustomSaveButtonNew = function( $picker ) {
+    var choose = tmpl('tmpl-tool-save', {});
+    var $choose = $(choose);
+    var $option = $choose.find('.rex-modal-option');
+    $picker.spectrum('container').append($choose);
+
+    // @todo distinguish between pickers
+    $option.on('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      switch( this.getAttribute('data-rex-option' ) ) {
+        case 'save':
+          $picker.spectrum('container').find('.sp-choose').trigger('click');
+          break;
+        case 'reset':
+        console.log($picker)
+        console.log(hightlightRowInfo)
+          // if ( null !== resetData.color ) {
+          //   background_block_color_properties.$color_value.spectrum('set', resetData.color);
+          //   background_block_color_properties.$color_value.spectrum('container').find('.sp-input').trigger('change');
+          // }
+          break;
+        default: break;
+      }
     });
   };
 

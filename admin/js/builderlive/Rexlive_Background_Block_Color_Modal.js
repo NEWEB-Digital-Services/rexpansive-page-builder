@@ -117,7 +117,7 @@ var Background_Block_Color_Modal = (function($) {
 
     $option.on('click', function(event) {
       event.preventDefault();
-      switch( this.getAttribute('data-rex-option' ) ) {
+      switch( this.getAttribute('data-rex-option') ) {
         case 'save':
           background_block_color_properties.$color_value.spectrum('hide');
           break;
