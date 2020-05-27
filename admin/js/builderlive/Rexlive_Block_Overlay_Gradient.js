@@ -147,7 +147,7 @@ var Rexlive_Block_Overlay_Gradient = (function($) {
       modal_props.$gradient_type.val("");
       modal_props.$gradient_angle.val("");
     }
-  }
+  };
 
   var _updateLive = function() {
     var data_updateBlockGradient = {

@@ -150,6 +150,16 @@ defined('ABSPATH') or exit;
 </div>
 </script>
 
+<script type="text/x-tmpl" id="tmpl-tool-save">
+<div class="rex-modal__outside-footer">
+    <div class="tool-button tool-button--inline tool-button--confirm tool-button--modal rex-modal-option tippy" data-tippy-content="<?php _e( 'Save', 'rexpansive-builder' ); ?>" data-rex-option="save">
+        <span class="rex-button btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z016-Checked'); ?></span></div>
+    <div class="tool-button tool-button--inline tool-button--modal rex-modal-option tippy" data-rex-option="reset" data-tippy-content="<?php _e( 'Reset', 'rexpansive-builder' ); ?>">
+        <span class="rex-button btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z014-Refresh'); ?></span>
+    </div>
+</div>
+</script>
+
 <script type="text/x-tmpl" id="tmpl-accordion-gallery-item">
 <div class="rex-accordion-gallery__item" data-gallery-item-id="{%=o.id%}" data-gallery-item-url="{%=o.url%}" data-gallery-item-size="{%=o.size%}" style="background-image:url({%=o.preview%})">
     <div class="tool-button tool-button--inline tool-button--deactivate rex-accordion-gallery__item__remove">

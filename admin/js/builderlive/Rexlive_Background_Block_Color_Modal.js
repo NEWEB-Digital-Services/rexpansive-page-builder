@@ -10,6 +10,7 @@ var Background_Block_Color_Modal = (function($) {
   var bgColorActive;
   var target;
   var changeColorEvent;
+  var resetData;
 
   var _updateColorModal = function(data) {
     target = data.target;
@@ -33,6 +34,7 @@ var Background_Block_Color_Modal = (function($) {
     } else {
       background_block_color_properties.$color_active.prop("checked", false);
     }
+    resetData = data;
   };
 
   var _applyBackgroundColor = function() {
@@ -99,9 +101,34 @@ var Background_Block_Color_Modal = (function($) {
     var $close = $(close);
     background_block_color_properties.$color_value.spectrum('container').append($close);
 
+    var options = tmpl('tmpl-tool-save',{});
+    var $options = $(options);
+    var $option = $options.find('.rex-modal-option');
+    background_block_color_properties.$color_value.spectrum('container').append($options);
+
     $close.on('click', function(e) {
       e.preventDefault();
+      if ( null !== resetData.color ) {
+        background_block_color_properties.$color_value.spectrum('set', resetData.color);
+        background_block_color_properties.$color_value.spectrum('container').find('.sp-input').trigger('change');
+      }
       background_block_color_properties.$color_value.spectrum('hide');
+    });
+
+    $option.on('click', function(event) {
+      event.preventDefault();
+      switch( this.getAttribute('data-rex-option' ) ) {
+        case 'save':
+          background_block_color_properties.$color_value.spectrum('hide');
+          break;
+        case 'reset':
+          if ( null !== resetData.color ) {
+            background_block_color_properties.$color_value.spectrum('set', resetData.color);
+            background_block_color_properties.$color_value.spectrum('container').find('.sp-input').trigger('change');
+          }
+          break;
+        default: break;
+      }
     });
 
     background_block_color_properties.$color_palette_buttons.on(

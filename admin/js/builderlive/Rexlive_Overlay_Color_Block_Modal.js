@@ -9,6 +9,7 @@ var Overlay_Color_block_Modal = (function($) {
   var colorActive;
   var target;
   var changeColorEvent;
+  var resetData;
 
   var _updateOverlayModal = function(data) {
     target = data.target;
@@ -28,6 +29,7 @@ var Overlay_Color_block_Modal = (function($) {
     } else {
       overlay_block_properties.$overlay_active.prop("checked", false);
     }
+    resetData = data;
   };
 
   var _applyOverlay = function() {
@@ -85,9 +87,30 @@ var Overlay_Color_block_Modal = (function($) {
     var $close = $(close);
     overlay_block_properties.$overlay_color_value.spectrum('container').append($close);
 
+    var options = tmpl('tmpl-tool-save',{});
+    var $options = $(options);
+    var $option = $options.find('.rex-modal-option');
+    overlay_block_properties.$overlay_color_value.spectrum('container').append($options);
+
     $close.on('click', function(e) {
       e.preventDefault();
       overlay_block_properties.$overlay_color_value.spectrum('hide');
+    });
+
+    $option.on('click', function(event) {
+      event.preventDefault();
+      switch( this.getAttribute('data-rex-option' ) ) {
+        case 'save':
+          overlay_block_properties.$overlay_color_value.spectrum('hide');
+          break;
+        case 'reset':
+          if ( null !== resetData.color ) {
+            overlay_block_properties.$overlay_color_value.spectrum('set', resetData.color);
+            overlay_block_properties.$overlay_color_value.spectrum('container').find('.sp-input').trigger('change');
+          }
+          break;
+        default: break;
+      }
     });
 
     overlay_block_properties.$overlay_color_palette_buttons.on(
