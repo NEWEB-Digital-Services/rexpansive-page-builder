@@ -665,6 +665,10 @@ var Rexbuilder_Live_Utilities = (function($) {
 			Rexbuilder_Rexwpcf7_Editor.removeSeparatedForm(e.settings.data_to_send);
 		});
 
+		Rexbuilder_Util.$document.on("rexlive:separateCurrentPageForms", function (e) {
+			Rexbuilder_Rexelement_Editor.separateCurrentPageForms(e.settings.payload);
+		});
+
 		/* ===== CF7 ===== */
 		Rexbuilder_Util.$document.on('rexlive:wpcf7_add_field', function (e) {
 			Rexbuilder_Rexwpcf7_Editor.addField(e.settings.data_to_send);

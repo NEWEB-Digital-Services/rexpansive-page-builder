@@ -592,6 +592,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		// Label Editor
 		tinyMCE_label_editor = tinyMCE.get('wpcf7_label_editor');
+		console.log(tinyMCE_label_editor);
 
 		// Removes p empty elements with standard whitespaces, non-breaking spaces and bullet points
 		columnContentData.label_text = columnContentData.label_text.replace(/<p>[\u25A0\u00A0\s]*<\/p>/g, '');

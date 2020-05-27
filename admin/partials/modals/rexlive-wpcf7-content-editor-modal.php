@@ -69,6 +69,7 @@ defined('ABSPATH') or exit;
 						'',
 						'wpcf7_label_editor',
 						array(
+							'default_editor' => 'TinyMCE',
 							'textarea_rows' => 10,
 							'wpautop' => false,
 							'editor_height' => 100,
@@ -393,6 +394,7 @@ defined('ABSPATH') or exit;
 							'',
 							'wpcf7_text_editor',
 							array('textarea_rows' => 10,
+								'default_editor' => 'TinyMCE',
 								'wpautop' => false,
 								'editor_height' => 100,
 								'media_buttons' => false,

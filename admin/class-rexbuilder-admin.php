@@ -3756,7 +3756,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		}
 
 		// Separate forms in site
-		self::separate_forms_in_posts( $_POST['element_id']/* , $button_ids  */);
+		self::separate_forms_in_posts($_POST['element_id'], $_POST['postID']);
 
 		$response['delete_result'] = wp_delete_post( $_POST['element_id'] );
 
@@ -4244,7 +4244,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @return void
 	 * @since  2.0.5
 	 */
-	private static function separate_forms_in_posts( $rexFormID/* , &$button_ids */ ) {
+	private static function separate_forms_in_posts( $rexFormID, $currentPostID ) {
 		global $wpdb;
 		$posts_with_forms = $wpdb->get_results(
 			$wpdb->prepare( 
@@ -4258,21 +4258,19 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			),
 			ARRAY_A
 		);
-		
-		// $originalButton = stripslashes( get_option( "_rex_button_{$rexFormID}_html" ) );
+
 		// pattern to extract blocks form html
 		$block_pattern = '\[(\[?)(RexpansiveBlock)(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*+(?:\[(?!\/\2\])[^\[]*+)*+)\[\/\2\])?)(\]?)';
 		// pattern to find (and remove) doctype, html and body from an html string
 		$clean_html_re = '/(<!DOCTYPE[^>]*>|<html>|<body>|<\/html>|<\/body>)/m';
 		
 		$block_html_dom = new DOMDocument();
-		// $original_button_dom = new DOMDocument();
 		
 		if ( count( $posts_with_forms ) > 0 ) {
 			
 			foreach( $posts_with_forms as $post ) {
 				$post_id = (int)$post['post_id'];
-				if ( ! Rexbuilder_Utilities::check_post_exists( $post_id ) ) continue;
+				if ( ! Rexbuilder_Utilities::check_post_exists( $post_id ) || $post_id == $currentPostID ) continue;
 
 				// manipulate post shortcode
 				$post_shortcode = get_post_meta( $post_id, '_rexbuilder_shortcode', true );
@@ -4286,18 +4284,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 					$block_html_dom->loadHTML( $block_content );
 					$block_html_xpath = new DOMXpath($block_html_dom);
 
-					// $original_button_dom->loadHTML( $originalButton );
-					// $original_button_xpath = new DOMXpath( $original_button_dom );
-
-					/* Non dovrebbe servirmi lo span data perché c'è già nel post */
-
-					// find rex-button-data to append to the separated button
-					// $button_data_to_append = $original_button_xpath->query('//*[@class="rex-element-data"]');
-					// $button_data_el = $block_html_dom->importNode( $button_data_to_append[0], true );
-
 					$form_els = $block_html_xpath->query('//*[@class="rex-element-wrapper"][@data-rex-element-id="' . $rexFormID . '"]');
 					foreach( $form_els as $form_el ) {
-						/* Separazione */
+						/* Separation */
 
 						// Duplicate post and get new ID
 						$newID = Rexbuilder_Utilities::duplicate($rexFormID);
@@ -4330,19 +4319,6 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 						
 						$element_data_el = $block_html_xpath->query('//*[@class="rex-element-data"]', $form_el);
 						$element_data_el[0]->setAttribute('data-synchronize', 'true');
-
-						// array_push( $button_ids, $new_id );
-						// array_push( $buttons_ids_in_page, $new_id );
-						
-						// remove original rex-button-data if any
-						// foreach( $form_el->childNodes as $form_el_childs ) {
-						// 	if ( false !== strpos( $form_el_childs->getAttribute('class'), 'rex-button-data' ) ) {
-						// 		$form_el_childs->parentNode->removeChild( $form_el_childs );
-						// 	}
-						// }
-						
-						// prepend new rex-button-data
-						// $form_el->insertBefore( $button_data_el, $form_el->firstChild );
 					}
 						
 					$new_block_content = $block_html_dom->saveHTML();
@@ -4350,13 +4326,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 					
 					// substitute the old definition with the new one
 					$new_post_shortcode = str_replace( $block_content, $clean_new_block_content, $new_post_shortcode );
-
-					Rexbuilder_Utilities::write_log('NEW POST SHORTCODE');
-					Rexbuilder_Utilities::write_log($new_post_shortcode);
 				}
 
 				update_post_meta( $post_id, '_rexbuilder_shortcode', $new_post_shortcode );
-				// update_post_meta( $post_id, '_rexbuilder_buttons_ids_in_page', json_encode( $buttons_ids_in_page ) );
 			}
 		}
 

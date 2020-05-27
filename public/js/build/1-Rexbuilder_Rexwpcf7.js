@@ -59,6 +59,16 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		// }
 	};
 
+	var errorMessagesClasses = [
+		'wpcf7-validation-errors',
+		'wpcf7-aborted',
+		'wpcf7-acceptance-missing',
+		'wpcf7-spam-blocked',
+		'wpcf7-mail-sent-ng'
+	];
+
+	var okMessagesClasses = ['wpcf7-mail-sent-ok'];
+
 	/* ===== CSS Rules Functions ===== */
 
 	function _fixFormCustomStyle() {
@@ -434,14 +444,15 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 		for (var i = 0; i < styleSheet.cssRules.length; i++) {
 			if (
-				// Chrome, Firefox
 				styleSheet.cssRules[i].selectorText == formMessageSelector ||
-				// Edge
 				styleSheet.cssRules[i].selectorText == formMessageEdgeSelector
 			) {
 				switch (rule) {
 					case 'text-color':
 						styleSheet.cssRules[i].style.color = value;
+						break;
+					case 'border-color':
+						styleSheet.cssRules[i].style.borderColor = value;
 						break;
 					case 'font-size':
 						styleSheet.cssRules[i].style.fontSize = value;
@@ -881,10 +892,19 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		updateFormRule(formID, 'margin-right', formData.margin_right);
 		updateFormRule(formID, 'margin-bottom', formData.margin_bottom);
 
-		updateFormMessageRule(formID, 'wpcf7-validation-errors', 'text-color', formData.error_message_color);
-		updateFormMessageRule(formID, 'wpcf7-validation-errors', 'font-size', formData.error_message_font_size);
-		updateFormMessageRule(formID, 'wpcf7-mail-sent-ok ', 'text-color', formData.send_message_color);
-		updateFormMessageRule(formID, 'wpcf7-mail-sent-ok ', 'font-size', formData.send_message_font_size);
+		// Error messages
+		errorMessagesClasses.forEach(function (className) {
+			updateFormMessageRule(formID, className, 'text-color', formData.error_message_color);
+			updateFormMessageRule(formID, className, 'border-color', formData.error_message_color);
+			updateFormMessageRule(formID, className, 'font-size', formData.error_message_font_size);
+		});
+
+		// Ok messages
+		okMessagesClasses.forEach(function (className) {
+			updateFormMessageRule(formID, className, 'text-color', formData.send_message_color);
+			updateFormMessageRule(formID, className, 'border-color', formData.send_message_color);
+			updateFormMessageRule(formID, className, 'font-size', formData.send_message_font_size);
+		});
 
 		updateFormColumnsRule(formID, 'padding-top', formData.columns.padding_top);
 		updateFormColumnsRule(formID, 'padding-left', formData.columns.padding_left);
@@ -1129,6 +1149,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		}
 
 		if (inputType != 'submit') {
+			updateColumnContentFocusRule(formID, rowNumber, columnNumber, cssSelector, 'text-color', textColorFocus);
+
 			updateColumnContentHoverRule(formID, rowNumber, columnNumber, cssSelector, 'color', textColorHover);
 			updateColumnContentHoverRule(
 				formID,
@@ -1360,8 +1382,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				buttonBorderColorHover
 			);
 		}
-
-		updateColumnContentFocusRule(formID, rowNumber, columnNumber, cssSelector, 'text-color', textColorFocus);
 
 		_updateSpanData(formID, columnContentData);
 	}
@@ -2872,21 +2892,25 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 		addFormRule(formID, formRule);
 
+		// Error messages
 		var formValidationErrorRule = '';
 
 		formValidationErrorRule += 'color:' + formData.error_message_color + ';';
-
 		formValidationErrorRule += 'font-size:' + formData.error_message_font_size + ';';
 
-		addFormMessageRule(formID, 'wpcf7-validation-errors', formValidationErrorRule);
+		errorMessagesClasses.forEach(function (className) {
+			addFormMessageRule(formID, className, formValidationErrorRule);
+		});
 
+		// Ok message
 		var formSendMessageRule = '';
 
 		formSendMessageRule += 'color:' + formData.send_message_color + ';';
-
 		formSendMessageRule += 'font-size:' + formData.send_message_font_size + ';';
 
-		addFormMessageRule(formID, 'wpcf7-mail-sent-ok', formSendMessageRule);
+		okMessagesClasses.forEach(function (className) {
+			addFormMessageRule(formID, className, formSendMessageRule);
+		});
 
 		var formColumnsRule = '';
 
@@ -2949,7 +2973,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 		var columnContentFocusRule = '';
 
-		if (inputType != 'select') {
+		if (-1 === ['select', 'submit'].indexOf(inputType)) {
 			columnContentFocusRule += 'color: ' + columnContentData.text_color_focus + ';';
 
 			addColumnContentFocusRule(formID, rowNumber, columnNumber, cssSelector, columnContentFocusRule);
@@ -2959,37 +2983,21 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			var columnContentFileButtonRule = '';
 
 			columnContentFileButtonRule += 'font-size: ' + columnContentData.wpcf7_button.font_size + ';';
-
 			columnContentFileButtonRule += 'height: ' + columnContentData.wpcf7_button.height + ';';
-
 			columnContentFileButtonRule += 'width: ' + columnContentData.wpcf7_button.width + ';';
-
 			columnContentFileButtonRule += 'border-width: ' + columnContentData.wpcf7_button.border_width + ';';
-
 			columnContentFileButtonRule += 'border-radius: ' + columnContentData.wpcf7_button.border_radius + ';';
-
 			columnContentFileButtonRule += 'border-style: solid;';
-
 			columnContentFileButtonRule += 'margin-top: ' + columnContentData.wpcf7_button.margin_top + ';';
-
 			columnContentFileButtonRule += 'margin-right: ' + columnContentData.wpcf7_button.margin_right + ';';
-
 			columnContentFileButtonRule += 'margin-bottom: ' + columnContentData.wpcf7_button.margin_bottom + ';';
-
 			columnContentFileButtonRule += 'margin-left: ' + columnContentData.wpcf7_button.margin_left + ';';
-
 			columnContentFileButtonRule += 'padding-top: ' + columnContentData.wpcf7_button.padding_top + ';';
-
 			columnContentFileButtonRule += 'padding-right: ' + columnContentData.wpcf7_button.padding_right + ';';
-
 			columnContentFileButtonRule += 'padding-bottom: ' + columnContentData.wpcf7_button.padding_bottom + ';';
-
 			columnContentFileButtonRule += 'padding-left: ' + columnContentData.wpcf7_button.padding_left + ';';
-
 			columnContentFileButtonRule += 'color: ' + columnContentData.wpcf7_button.text_color + ';';
-
 			columnContentFileButtonRule += 'background-color: ' + columnContentData.wpcf7_button.background_color + ';';
-
 			columnContentFileButtonRule += 'border-color: ' + columnContentData.wpcf7_button.border_color + ';';
 
 			var columnContentFileButtonHoverRule = '';

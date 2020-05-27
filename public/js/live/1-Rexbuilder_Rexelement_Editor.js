@@ -166,6 +166,55 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 	}
 
 	/**
+	 * Situation:
+	 * The form with the passed ID has been deleted, and its "instances" in other
+	 * site's posts have been separated.
+	 *
+	 * This function separates its "instances" in the current page, avoiding the
+	 * need of a page refresh. To make this possible, the DB side of this page
+	 * has not been edited while deleting the other forms.
+	 * @param {Object} payload { formID }
+	 * @since	2.0.5
+	 */
+	function separateCurrentPageForms(payload) {
+		var formID = payload.formID;
+
+		var elementWrappers = Rexbuilder_Util.$rexContainer
+			.find('.rex-element-wrapper[data-rex-element-id="' + formID + '"]')
+			.get();
+
+		elementWrappers.forEach(function (wrapper) {
+			$.post(
+				_plugin_frontend_settings.rexajax.ajaxurl,
+				{
+					action: 'rex_separate_element',
+					nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+					elementID: formID
+				},
+				function (response) {
+					console.log( response );
+					if (!response.success) return;
+
+					var newID = response.data.new_id;
+
+					var partialElementData = {
+						element_target: {
+							element_id: formID,
+							element_number: wrapper.dataset.rexElementNumber
+						}
+					};
+
+					console.log( { elementID: newID, oldElementID: formID, elementData: partialElementData } );
+
+					separateRexElement({ newID: newID, elementData: partialElementData });
+					refreshSeparatedRexElement({ elementID: newID, oldElementID: formID, elementData: partialElementData });
+				},
+				'json'
+			);
+		});
+	}
+
+	/**
 	 * Refreshes the element from the shortcode. This happens when we
 	 * have a separate element
 	 * @param  data
@@ -706,6 +755,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 		/* --- Element Separation --- */
 		separateRexElement: separateRexElement,
+		separateCurrentPageForms: separateCurrentPageForms,
 		refreshSeparatedRexElement: refreshSeparatedRexElement
 	};
 })(jQuery);

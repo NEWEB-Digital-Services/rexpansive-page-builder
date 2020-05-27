@@ -175,6 +175,11 @@ var Form_Import_Modal = (function ($) {
 		var formID = element.getAttribute('data-rex-element-id');
 		if (!formID) return;
 
+		var postID = parseInt(
+			Rexbuilder_Util_Admin_Editor.frameBuilder.contentDocument.getElementById('id-post').getAttribute('data-post-id')
+		);
+		if (!postID) return;
+
 		$.ajax({
 			type: 'POST',
 			dataType: 'json',
@@ -182,7 +187,8 @@ var Form_Import_Modal = (function ($) {
 			data: {
 				action: 'rex_delete_rexelement',
 				nonce_param: live_editor_obj.rexnonce,
-				element_id: formID
+				element_id: formID,
+				postID: postID
 			},
 			beforeSend: function () {
 				elementImportProps.$self.addClass('rex-modal--loading');
@@ -190,7 +196,9 @@ var Form_Import_Modal = (function ($) {
 			success: function (response) {
 				if (!response.success && !response.data.error) return;
 
-				// Deleting happened
+				/* Deleting happened */
+
+				_separateCurrentPageForms(formID);
 
 				element.style.display = 'none';
 				_checkIfShowMessage();
@@ -398,6 +406,13 @@ var Form_Import_Modal = (function ($) {
 		// Saves The Changes
 		_deleteElementThumbnail(element_id);
 	};
+
+	function _separateCurrentPageForms(formID) {
+		Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage({
+			eventName: 'rexlive:separateCurrentPageForms',
+			payload: { formID: formID }
+		});
+	}
 
 	function _loadDefaultForms() {
 		$.ajax({

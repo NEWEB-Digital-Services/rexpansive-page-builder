@@ -18,7 +18,8 @@ var Rexpansive_Builder_Admin_TextEditor = (function($) {
   
     // if( -1 == searchTextFill ) {
   
-    var tinyMCE_editor = tinyMCE.get('rexbuilder_editor');
+		var tinyMCE_editor = tinyMCE.get('rexbuilder_editor');
+		console.log( tinyMCE.get() );
   
     if (typeof id != "undefined" && id !== null) {
       $save_button.val(id);

@@ -26,6 +26,12 @@ $input-min-width: 115px;
 					.wpcf7-column-content {
 						width: 100%;
 
+						// Fix for twenty-sixteen theme
+						p,
+						label {
+							margin: 0;
+						}
+
 						label {
 							display: block;
 						}
@@ -113,6 +119,10 @@ $input-min-width: 115px;
 		.wpcf7-submit {
 			min-width: 150px;
 			min-height: 40px;
+
+			&:focus {
+				outline: none;
+			}
 		}
 
 		.wpcf7-submit,
