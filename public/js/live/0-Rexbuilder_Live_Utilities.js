@@ -24,14 +24,24 @@ var Rexbuilder_Live_Utilities = (function($) {
 	var _addSpectrumCustomSaveButton = function( $picker ) {
 		// var choose = tmpl('tmpl-tool-save', {});
 		// var choose = '<div class="rex-modal__outside-footer"><div id="rex-model__add-new-model" class="tool-button tool-button--inline tool-button--save"><span class="btn-save--edited"><i class="l-svg-icons"><svg><use xlink:href="#A006-Save"></use></svg></i></span><span class="btn-save--saved"><i class="l-svg-icons"><svg><use xlink:href="#A006-Save"></use></svg></i></span></div></div>';
-		var choose = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-save');
-		var $choose = $(choose);
-		$picker.spectrum('container').append($choose);
+		var options = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-save');
+		var $options = $(options);
+		$picker.spectrum('container').append($options);
+		var $choose = $options.find('.rex-modal-option');
 
 		$choose.on('click', function(e) {
 			e.stopPropagation();
 			e.preventDefault();
-			$picker.spectrum('container').find('.sp-choose').trigger('click');
+			switch( this.getAttribute('data-rex-option' ) ) {
+        		case 'save':
+					$picker.spectrum('container').find('.sp-choose').trigger('click');
+					break;
+				case 'reset':
+					$picker.spectrum('set', $picker.attr("data-color-on-show") );
+					$picker.spectrum('container').find('.sp-input').trigger('change');
+					break;
+				default: break;
+			}
 		});
 	};
 
