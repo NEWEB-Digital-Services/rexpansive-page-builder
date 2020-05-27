@@ -1,4 +1,4 @@
-var Form_Import_Modal = (function($) {
+var Form_Import_Modal = (function ($) {
 	'use strict';
 	var elementImportProps = {};
 	var image_uploader_frame_direct; // Used for the media library opener
@@ -18,7 +18,7 @@ var Form_Import_Modal = (function($) {
 				action: 'rex_get_form_list',
 				nonce_param: live_editor_obj.rexnonce
 			},
-			success: function(response) {
+			success: function (response) {
 				if (!response.success) {
 					$(elementImportProps.self).addClass('rex-elements-list--hidden');
 					$(elementImportProps.pluginNotActiveMessage).removeClass('lateral-menu-message--hidden');
@@ -36,7 +36,7 @@ var Form_Import_Modal = (function($) {
 				var event = jQuery.Event('rexlive:lateralMenuReady');
 				$(document).trigger(event);
 			},
-			complete: function() {
+			complete: function () {
 				elementImportProps.$self.removeClass('rex-modal--loading');
 			}
 		});
@@ -47,68 +47,71 @@ var Form_Import_Modal = (function($) {
 
 		if (0 === updatedList.length) {
 			$(elementImportProps.noFormsMessage).removeClass('lateral-menu-message--hidden');
-		} else {
-			$(elementImportProps.noFormsMessage).addClass('lateral-menu-message--hidden');
+			return;
+		}
 
-			var currentList = [];
+		$(elementImportProps.noFormsMessage).addClass('lateral-menu-message--hidden');
 
-			elementImportProps.$self.find('.element-list__element').each(function(i, element) {
-				element.style.display = '';
-				$(element).removeClass('element-list__element--separated');
+		var currentList = [];
 
-				currentList.push({
-					id: element.getAttribute('data-rex-element-id'),
-					found: false
-				});
+		elementImportProps.$self.find('.element-list__element').each(function (i, element) {
+			element.style.display = '';
+			$(element).removeClass('element-list__element--separated');
+
+			currentList.push({
+				id: element.getAttribute('data-rex-element-id'),
+				found: false
 			});
+		});
 
-			for (var i = 0; i < updatedList.length; i++) {
-				updatedList[i].found = false;
-			}
+		for (var i = 0; i < updatedList.length; i++) {
+			updatedList[i].found = false;
+		}
 
-			for (var i = 0; i < updatedList.length; i++) {
-				for (var j = 0; j < currentList.length; j++) {
-					if (updatedList[i].id == currentList[j].id) {
-						updatedList[i].found = true;
-						currentList[j].found = true;
-						break;
-					}
+		for (var i = 0; i < updatedList.length; i++) {
+			for (var j = 0; j < currentList.length; j++) {
+				if (updatedList[i].id == currentList[j].id) {
+					updatedList[i].found = true;
+					currentList[j].found = true;
+					break;
 				}
 			}
+		}
 
-			tmpl.arg = 'element';
-			for (var i = 0; i < updatedList.length; i++) {
-				if (!updatedList[i].found) {
-					elementImportProps.$self
-						.find('.element-list')
-						.prepend(
-							tmpl('rexlive-tmpl-element-item-list', {
-								id: updatedList[i].id,
-								name: updatedList[i].name,
-								preview: updatedList[i].preview_image_url || ''
-							})
-						)
-						.find('.rex-element-wrapper')
-						.prepend(updatedList[i].element_data_html[0]);
-				}
-			}
+		// currentList = [];
 
-			for (var i = 0; i < currentList.length; i++) {
-				if (!currentList[i].found) {
-					elementImportProps.$self
-						.find('.element-list__element[data-rex-element-id="' + currentList[i].id + '"]')
-						.remove();
-				}
+		tmpl.arg = 'element';
+		for (var i = 0; i < updatedList.length; i++) {
+			if (!updatedList[i].found) {
+				elementImportProps.$self
+					.find('.element-list')
+					.prepend(
+						tmpl('rexlive-tmpl-element-item-list', {
+							id: updatedList[i].id,
+							name: updatedList[i].name,
+							preview: updatedList[i].preview_image_url || ''
+						})
+					)
+					.find('.rex-element-wrapper')
+					.prepend(updatedList[i].element_data_html[0]);
 			}
+		}
 
-			if (data.separatedForms) {
-				// Hiding separated forms
-				data.separatedForms.forEach(function(formID) {
-					elementImportProps.$self
-						.find('.element-list__element[data-rex-element-id="' + formID + '"]')
-						.addClass('element-list__element--separated');
-				});
+		for (var i = 0; i < currentList.length; i++) {
+			if (!currentList[i].found) {
+				elementImportProps.$self
+					.find('.element-list__element[data-rex-element-id="' + currentList[i].id + '"]')
+					.remove();
 			}
+		}
+
+		if (data.separatedForms) {
+			// Hiding separated forms
+			data.separatedForms.forEach(function (formID) {
+				elementImportProps.$self
+					.find('.element-list__element[data-rex-element-id="' + formID + '"]')
+					.addClass('element-list__element--separated');
+			});
 		}
 	}
 
@@ -120,7 +123,7 @@ var Form_Import_Modal = (function($) {
 	 * @return {null}
 	 * @since  2.0.x
 	 */
-	var _saveElementThumbnail = function(element_selected, selected_image_id, selected_image_size) {
+	var _saveElementThumbnail = function (element_selected, selected_image_id, selected_image_size) {
 		$.ajax({
 			type: 'GET',
 			dataType: 'json',
@@ -134,8 +137,8 @@ var Form_Import_Modal = (function($) {
 				set_post_thumbnail_result: null,
 				set_post_thumbnail_url_result: null
 			},
-			success: function(response) {},
-			error: function(response) {}
+			success: function (response) {},
+			error: function (response) {}
 		});
 	};
 
@@ -145,7 +148,7 @@ var Form_Import_Modal = (function($) {
 	 * @return {null}
 	 * @since  x.x.x
 	 */
-	var _deleteElementThumbnail = function(element_to_delete) {
+	var _deleteElementThumbnail = function (element_to_delete) {
 		$.ajax({
 			type: 'GET',
 			dataType: 'json',
@@ -157,8 +160,8 @@ var Form_Import_Modal = (function($) {
 				delete_post_thumbnail_result: null,
 				delete_post_thumbnail_url_result: null
 			},
-			success: function(response) {},
-			error: function(response) {}
+			success: function (response) {},
+			error: function (response) {}
 		});
 	};
 
@@ -168,49 +171,44 @@ var Form_Import_Modal = (function($) {
 	 * @since 	2.0.x
 	 * @version	2.0.5			Switched from XHR to AJAX
 	 */
-	var deleteElement = function(element) {
-		var element_id = element.getAttribute('data-rex-element-id');
+	function deleteForm(element) {
+		var formID = element.getAttribute('data-rex-element-id');
+		if (!formID) return;
 
-		if (element_id) {
-			var wantToDelete = confirm(live_editor_obj.labels.rexelements.confirm_delete);
+		$.ajax({
+			type: 'POST',
+			dataType: 'json',
+			url: live_editor_obj.ajaxurl,
+			data: {
+				action: 'rex_delete_rexelement',
+				nonce_param: live_editor_obj.rexnonce,
+				element_id: formID
+			},
+			beforeSend: function () {
+				elementImportProps.$self.addClass('rex-modal--loading');
+			},
+			success: function (response) {
+				if (!response.success && !response.data.error) return;
 
-			if (wantToDelete) {
-				$.ajax({
-					type: 'POST',
-					dataType: 'json',
-					url: live_editor_obj.ajaxurl,
-					data: {
-						action: 'rex_delete_rexelement',
-						nonce_param: live_editor_obj.rexnonce,
-						element_id: element_id
-					},
-					beforeSend: function() {
-						elementImportProps.$self.addClass('rex-modal--loading');
-					},
-					success: function(response) {
-						if (!response.success && !response.data.error) return;
+				// Deleting happened
 
-						// Deleting happened
+				element.style.display = 'none';
+				_checkIfShowMessage();
+			},
+			error: function (response, textStatus, errorThrown) {
+				alert('Something went wrong when trying to delete the Contact Form. Please try again.');
 
-						element.style.display = 'none';
-						_checkIfShowMessage();
-					},
-					error: function(response, textStatus, errorThrown) {
-						alert('Something went wrong when trying to delete the Contact Form. Please try again.');
-
-						console.error('[Rexpansive] Something went wrong with your deletion AJAX request.', {
-							status: response.status,
-							message: textStatus,
-							errorThrown: errorThrown
-						});
-					},
-					complete: function() {
-						elementImportProps.$self.removeClass('rex-modal--loading');
-					}
+				console.error('[Rexpansive] Something went wrong with your deletion AJAX request.', {
+					status: response.status,
+					message: textStatus,
+					errorThrown: errorThrown
 				});
+			},
+			complete: function () {
+				elementImportProps.$self.removeClass('rex-modal--loading');
 			}
-		}
-	};
+		});
+	}
 
 	/**
 	 * Edits the element thumbnail.
@@ -220,7 +218,7 @@ var Form_Import_Modal = (function($) {
 	 * @return {media uploader}
 	 * @since  x.x.x
 	 */
-	var editElementThumbnail = function(element_id, thumbnail_id) {
+	var editElementThumbnail = function (element_id, thumbnail_id) {
 		// sets default image size
 		setUserSetting('imgsize', 'medium');
 
@@ -238,7 +236,8 @@ var Form_Import_Modal = (function($) {
 		//create a new Library, base on defaults
 		//you can put your attributes in
 		var insertImage = wp.media.controller.Library.extend({
-			defaults: _.defaults({
+			defaults: _.defaults(
+				{
 					id: 'live-image-element',
 					title: 'Edit Element Thumbnail',
 					allowLocalEdits: true,
@@ -270,12 +269,12 @@ var Form_Import_Modal = (function($) {
 	  });*/
 
 		//reset selection in popup, when open the popup
-		image_uploader_frame_direct.on('open', function() {
+		image_uploader_frame_direct.on('open', function () {
 			var attachment;
 			var selection = image_uploader_frame_direct.state('live-image-element').get('selection');
 
 			//remove all the selection first
-			selection.each(function(video) {
+			selection.each(function (video) {
 				attachment = wp.media.attachment(video.attributes.id);
 				attachment.fetch();
 				selection.remove(attachment ? [attachment] : []);
@@ -292,7 +291,7 @@ var Form_Import_Modal = (function($) {
 			}
 		});
 
-		image_uploader_frame_direct.on('select', function() {
+		image_uploader_frame_direct.on('select', function () {
 			var state = image_uploader_frame_direct.state('live-image-element');
 			var sectionTarget = state.get('liveTarget');
 			var eventName = state.get('eventName');
@@ -316,7 +315,7 @@ var Form_Import_Modal = (function($) {
 			//org code from /wp-includes/js/media-editor.js, arround `line 603 -- send: { ... attachment: function( props, attachment ) { ... `
 			var display;
 			var obj_attachment;
-			selection.each(function(attachment) {
+			selection.each(function (attachment) {
 				display = state.display(attachment).toJSON();
 				obj_attachment = attachment.toJSON();
 
@@ -335,7 +334,7 @@ var Form_Import_Modal = (function($) {
 			_updateElementThumbnail(display.src, display.size, obj_attachment.id);
 		});
 
-		image_uploader_frame_direct.on('close', function() {
+		image_uploader_frame_direct.on('close', function () {
 			// Resets the option for the image size
 			setUserSetting('imgsize', 'medium');
 		});
@@ -352,7 +351,7 @@ var Form_Import_Modal = (function($) {
 	 * @return {null}
 	 * @since  x.x.x
 	 */
-	var _updateElementThumbnail = function(display_src, display_size, obj_attachment_id) {
+	var _updateElementThumbnail = function (display_src, display_size, obj_attachment_id) {
 		var element_selected = image_uploader_frame_direct.state('live-image-element').get('selected_element');
 		var element = $('.element-list__element[data-rex-element-id="' + element_selected + '"]');
 
@@ -380,7 +379,7 @@ var Form_Import_Modal = (function($) {
 	 * @return {null}
 	 * @since  x.x.x
 	 */
-	var resetElementThumbnail = function(element_id) {
+	var resetElementThumbnail = function (element_id) {
 		var element = $('.element-list__element[data-rex-element-id="' + element_id + '"]');
 
 		element.attr('data-rex-element-thumbnail-id', '');
@@ -409,10 +408,10 @@ var Form_Import_Modal = (function($) {
 				action: 'rex_load_default_forms',
 				nonce_param: live_editor_obj.rexnonce
 			},
-			beforeSend: function() {
+			beforeSend: function () {
 				$(elementImportProps.loadingPlaceholder).removeClass('loading-placeholder--hidden');
 			},
-			success: function(response) {
+			success: function (response) {
 				if (!response.success) {
 					this.error(response, response.data[0].message, response.data[0].code);
 					return;
@@ -420,15 +419,15 @@ var Form_Import_Modal = (function($) {
 
 				refreshElements(response.data);
 			},
-			error: function(response, textStatus, errorThrown) {
+			error: function (response, textStatus, errorThrown) {
 				$(elementImportProps.noFormsMessage).removeClass('lateral-menu-message--hidden');
 
-				Rexbuilder_Util_Admin_Editor.displayAjaxError({ response: response, textStatus: textStatus,
-						errorThrown: errorThrown },
+				Rexbuilder_Util_Admin_Editor.displayAjaxError(
+					{ response: response, textStatus: textStatus, errorThrown: errorThrown },
 					'Something went wrong when trying to import the Contact Forms. Please try again after refreshing the page.'
 				);
 			},
-			complete: function() {
+			complete: function () {
 				$(elementImportProps.loadingPlaceholder).addClass('loading-placeholder--hidden');
 			}
 		});
@@ -437,7 +436,7 @@ var Form_Import_Modal = (function($) {
 	function _checkIfShowMessage() {
 		var elements = elementImportProps.$self.find('.element-list__element').get();
 
-		elements = elements.filter(function(element) {
+		elements = elements.filter(function (element) {
 			return 'none' !== element.style.display;
 		});
 
@@ -448,7 +447,7 @@ var Form_Import_Modal = (function($) {
 	}
 
 	function _linkListeners() {
-		elementImportProps.importFormsButton.addEventListener('click', function(clickEvent) {
+		elementImportProps.importFormsButton.addEventListener('click', function (clickEvent) {
 			clickEvent.stopPropagation();
 
 			// Show loading placeholder
@@ -482,12 +481,12 @@ var Form_Import_Modal = (function($) {
 		var mouseClientX = 0,
 			mouseClientY = 0;
 
-		Rexlive_Base_Settings.$document.on('dragstart', '.element-list li', function(event) {
+		Rexlive_Base_Settings.$document.on('dragstart', '.element-list li', function (event) {
 			Rexbuilder_Util_Admin_Editor.dragImportType = 'rexelement';
 			Rexbuilder_Util_Admin_Editor.hideLateralMenu();
 
 			event.originalEvent.dataTransfer.effectAllowed = 'all';
-			dragoverqueue_processtimer = setInterval(function() {
+			dragoverqueue_processtimer = setInterval(function () {
 				DragDropFunctions.ProcessDragOverQueue();
 			}, 100);
 
@@ -507,7 +506,7 @@ var Form_Import_Modal = (function($) {
 		});
 
 		// definisce quando bisogna scrollare in alto o in basso
-		Rexlive_Base_Settings.$document.on('drag', '.element-list li', function(event) {
+		Rexlive_Base_Settings.$document.on('drag', '.element-list li', function (event) {
 			Rexbuilder_Util_Admin_Editor.setScroll(true);
 			Rexbuilder_Util_Admin_Editor.checkLateralMenu(mouseClientX);
 
@@ -522,7 +521,7 @@ var Form_Import_Modal = (function($) {
 			}
 		});
 
-		Rexlive_Base_Settings.$document.on('dragend', '.element-list li', function(event) {
+		Rexlive_Base_Settings.$document.on('dragend', '.element-list li', function (event) {
 			clearInterval(dragoverqueue_processtimer);
 
 			Rexbuilder_Util_Admin_Editor.setScroll(true);
@@ -538,7 +537,7 @@ var Form_Import_Modal = (function($) {
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
 		});
 
-		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function() {
+		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
 			var $rexContainer = $(Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow.document)
 				.find('.rex-container')
 				.eq(0);
@@ -546,7 +545,7 @@ var Form_Import_Modal = (function($) {
 			var mousePosition = {};
 			var mousePositionToIFrame = {};
 
-			$frameContentWindow.on('dragover', function(event) {
+			$frameContentWindow.on('dragover', function (event) {
 				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexelement') {
 					// mouse position for scrolling
 					event.preventDefault();
@@ -556,7 +555,7 @@ var Form_Import_Modal = (function($) {
 				}
 			});
 
-			$rexContainer.on('dragenter', '.grid-stack-row', function(event) {
+			$rexContainer.on('dragenter', '.grid-stack-row', function (event) {
 				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexelement') {
 					currentElement = $(event.target);
 					currentElementChangeFlag = true;
@@ -565,7 +564,7 @@ var Form_Import_Modal = (function($) {
 				}
 			});
 
-			$rexContainer.on('dragover', '.grid-stack-row', function(event) {
+			$rexContainer.on('dragover', '.grid-stack-row', function (event) {
 				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexelement') {
 					// Updating mouseClinentX & mouseClientY variables to make possible
 					// dragging even on sections
@@ -589,7 +588,7 @@ var Form_Import_Modal = (function($) {
 				}
 			});
 
-			$rexContainer.on('drop', '.grid-stack-row', function(event) {
+			$rexContainer.on('drop', '.grid-stack-row', function (event) {
 				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexelement') {
 					event.preventDefault();
 					event.stopPropagation();
@@ -606,8 +605,7 @@ var Form_Import_Modal = (function($) {
 						} else {
 							textData = e.dataTransfer.getData('text/plain');
 						}
-						var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find(
-						'.drop-marker');
+						var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('.drop-marker');
 
 						textData = textData.trim();
 
@@ -657,7 +655,7 @@ var Form_Import_Modal = (function($) {
 
 		var DragDropFunctions = {
 			dragoverqueue: [],
-			GetMouseBearingsPercentage: function($element, elementRect, mousePos) {
+			GetMouseBearingsPercentage: function ($element, elementRect, mousePos) {
 				if (!elementRect) {
 					elementRect = $element.get(0).getBoundingClientRect();
 				}
@@ -666,7 +664,7 @@ var Form_Import_Modal = (function($) {
 					y: ((mousePos.y - elementRect.top) / (elementRect.bottom - elementRect.top)) * 100
 				};
 			},
-			OrchestrateDragDrop: function($element, elementRect, mousePos) {
+			OrchestrateDragDrop: function ($element, elementRect, mousePos) {
 				//If no element is hovered or element hovered is the placeholder -> not valid -> return false;
 				if (!$element || $element.length == 0 || !elementRect || !mousePos) {
 					return false;
@@ -681,9 +679,9 @@ var Form_Import_Modal = (function($) {
 
 				// If I have to go inside the element
 				if ($element.hasClass('rex-element-wrapper') || $element.parents('.rex-element-wrapper').length != 0) {
-					$element = $element.hasClass('rex-element-wrapper') ?
-						$element :
-						$element.parents('.rex-element-wrapper').eq(0);
+					$element = $element.hasClass('rex-element-wrapper')
+						? $element
+						: $element.parents('.rex-element-wrapper').eq(0);
 					customBreakPoints = jQuery.extend(true, {}, breakPointNumber);
 					fixedBreakPoints = true;
 					breakPointNumber.x = 50;
@@ -773,7 +771,7 @@ var Form_Import_Modal = (function($) {
 					}
 				}
 			},
-			DecideBeforeAfter: function($targetElement, mousePercents, mousePos) {
+			DecideBeforeAfter: function ($targetElement, mousePercents, mousePos) {
 				if (mousePos) {
 					mousePercents = this.GetMouseBearingsPercentage($targetElement, null, mousePos);
 				}
@@ -805,13 +803,13 @@ var Form_Import_Modal = (function($) {
 					}
 				}
 			},
-			checkVoidElement: function($element) {
+			checkVoidElement: function ($element) {
 				return $element.is(selectorVoidElements);
 			},
-			calculateDistance: function(elementData, mouseX, mouseY) {
+			calculateDistance: function (elementData, mouseX, mouseY) {
 				return Math.sqrt(Math.pow(elementData.x - mouseX, 2) + Math.pow(elementData.y - mouseY, 2));
 			},
-			FindValidParent: function($element, direction) {
+			FindValidParent: function ($element, direction) {
 				switch (direction) {
 					case 'left':
 						while (true) {
@@ -904,7 +902,7 @@ var Form_Import_Modal = (function($) {
 						break;
 				}
 			},
-			addPlaceHolder: function($element, position, placeholder) {
+			addPlaceHolder: function ($element, position, placeholder) {
 				if (!placeholder) placeholder = this.getPlaceHolder();
 				this.removePlaceholder();
 				switch (position) {
@@ -936,18 +934,18 @@ var Form_Import_Modal = (function($) {
 						break;
 				}
 			},
-			removePlaceholder: function() {
+			removePlaceholder: function () {
 				Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('.drop-marker').remove();
 			},
-			getPlaceHolder: function() {
+			getPlaceHolder: function () {
 				return $('<div class="drop-marker drop-marker--rex-wpcf7"></div>');
 			},
-			PlaceInside: function($element) {
+			PlaceInside: function ($element) {
 				var placeholder = this.getPlaceHolder();
 				placeholder.addClass('horizontal').css('width', $element.width() + 'px');
 				this.addPlaceHolder($element, 'inside-append', placeholder);
 			},
-			PlaceBefore: function($element) {
+			PlaceBefore: function ($element) {
 				var placeholder = this.getPlaceHolder();
 
 				var inlinePlaceholder =
@@ -968,7 +966,7 @@ var Form_Import_Modal = (function($) {
 				this.addPlaceHolder($element, 'before', placeholder);
 			},
 
-			PlaceAfter: function($element) {
+			PlaceAfter: function ($element) {
 				var placeholder = this.getPlaceHolder();
 				var inlinePlaceholder =
 					$element.css('display') == 'inline' ||
@@ -985,12 +983,12 @@ var Form_Import_Modal = (function($) {
 				this.addPlaceHolder($element, 'after', placeholder);
 			},
 
-			findNearestElement: function($container, clientX, clientY) {
+			findNearestElement: function ($container, clientX, clientY) {
 				var _this = this;
 				var previousElData = null;
 				var childElement = $container.children(':not(.drop-marker,[data-dragcontext-marker])');
 				if (childElement.length > 0) {
-					childElement.each(function() {
+					childElement.each(function () {
 						if ($(this).is('.drop-marker')) return;
 
 						var offset = $(this).get(0).getBoundingClientRect();
@@ -1078,11 +1076,11 @@ var Form_Import_Modal = (function($) {
 					}
 				}
 			},
-			AddEntryToDragOverQueue: function($element, elementRect, mousePos) {
+			AddEntryToDragOverQueue: function ($element, elementRect, mousePos) {
 				var newEvent = [$element, elementRect, mousePos];
 				this.dragoverqueue.push(newEvent);
 			},
-			ProcessDragOverQueue: function($element, elementRect, mousePos) {
+			ProcessDragOverQueue: function ($element, elementRect, mousePos) {
 				var processing = this.dragoverqueue.pop();
 				this.dragoverqueue = [];
 				if (processing && processing.length == 3) {
@@ -1092,11 +1090,11 @@ var Form_Import_Modal = (function($) {
 					this.OrchestrateDragDrop($el, elRect, mousePos);
 				}
 			},
-			GetContextMarker: function() {
+			GetContextMarker: function () {
 				var $contextMarker = $('<div data-dragcontext-marker><span data-dragcontext-marker-text></span></div>');
 				return $contextMarker;
 			},
-			AddContainerContext: function($element, position) {
+			AddContainerContext: function ($element, position) {
 				var $contextMarker = this.GetContextMarker();
 				this.ClearContainerContext();
 				if ($element.is('html,body')) {
@@ -1110,15 +1108,15 @@ var Form_Import_Modal = (function($) {
 						var name = this.getElementName($element);
 						$contextMarker.find('[data-dragcontext-marker-text]').html(name);
 						if (
-							Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('body [data-sh-parent-marker]')
-							.length != 0
+							Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('body [data-sh-parent-marker]').length != 0
 						) {
 							Rexbuilder_Util_Admin_Editor.$frameBuilder
 								.contents()
 								.find('body [data-sh-parent-marker]')
 								.first()
 								.before($contextMarker);
-						} else {}
+						} else {
+						}
 						break;
 					case 'sibling':
 						this.PositionContextMarker($contextMarker, $element.parent());
@@ -1127,21 +1125,21 @@ var Form_Import_Modal = (function($) {
 						$contextMarker.find('[data-dragcontext-marker-text]').html(name);
 						$contextMarker.attr('data-dragcontext-marker', name.toLowerCase());
 						if (
-							Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('body [data-sh-parent-marker]')
-							.length != 0
+							Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('body [data-sh-parent-marker]').length != 0
 						) {
 							Rexbuilder_Util_Admin_Editor.$frameBuilder
 								.contents()
 								.find('body [data-sh-parent-marker]')
 								.first()
 								.before($contextMarker);
-						} else {}
+						} else {
+						}
 						break;
 					default:
 						break;
 				}
 			},
-			PositionContextMarker: function($contextMarker, $element) {
+			PositionContextMarker: function ($contextMarker, $element) {
 				var rect = $element.get(0).getBoundingClientRect();
 				$contextMarker.css({
 					height: rect.height + 4 + 'px',
@@ -1152,10 +1150,10 @@ var Form_Import_Modal = (function($) {
 				if (rect.top + Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('body').scrollTop() < 24)
 					$contextMarker.find('[data-dragcontext-marker-text]').css('top', '0px');
 			},
-			ClearContainerContext: function() {
+			ClearContainerContext: function () {
 				Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('[data-dragcontext-marker]').remove();
 			},
-			getElementName: function($element) {
+			getElementName: function ($element) {
 				return $element.prop('tagName');
 			}
 		};
@@ -1184,7 +1182,7 @@ var Form_Import_Modal = (function($) {
 		updateList: updateList,
 
 		//Element functions
-		deleteElement: deleteElement,
+		deleteForm: deleteForm,
 		editElementThumbnail: editElementThumbnail,
 		resetElementThumbnail: resetElementThumbnail
 	};
