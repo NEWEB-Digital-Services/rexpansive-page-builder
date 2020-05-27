@@ -1285,7 +1285,9 @@ var Rexbuilder_Block_Editor = (function($) {
   var $actualBlockContainerTools;
 
   var bgColorActive;          // is background color active on the actual edited block?
+  var bgColorActiveValue;     // background color on picker opening
   var overlayActive;          // is overlay color active on the actual edited block?
+  var overlayActiveValue;     // overlay color on picker opening
 
   var backgroundColorEventSettings;   // setting object for the background color event
   var overlayColorEventSettings;      // setting object for the overlay color event
@@ -1327,6 +1329,8 @@ var Rexbuilder_Block_Editor = (function($) {
 
     // close button HTML
     var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
+    // confirm/reset buttons HTML
+    var options = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-save');
 
     $spGlBlockBackground.spectrum({
       color: '',
@@ -1372,9 +1376,34 @@ var Rexbuilder_Block_Editor = (function($) {
     var $spBlockBkgrClose = $(close);
     $spGlBlockBackground.spectrum('container').append($spBlockBkgrClose);
 
-    $spBlockBkgrClose.on('click', function(e) {
-      e.preventDefault();
+    $spBlockBkgrClose.on('click', function(event) {
+      event.preventDefault();
+      if ( null !== bgColorActiveValue ) {
+        $spGlBlockBackground.spectrum('set', bgColorActiveValue);
+        $spGlBlockBackground.spectrum('container').find('.sp-input').trigger('change');
+      }
       $spGlBlockBackground.spectrum('hide');
+    });
+
+    // create confirm/reset buttons for background color
+    var $spBlockBkgrOptions = $(options);
+    var $spBlockBkgrOption = $spBlockBkgrOptions.find('.rex-modal-option');
+    $spGlBlockBackground.spectrum('container').append($spBlockBkgrOptions);
+
+    $spBlockBkgrOption.on('click', function(event) {
+      event.preventDefault();
+      switch( this.getAttribute('data-rex-option' ) ) {
+        case 'save':
+          $spGlBlockBackground.spectrum('hide');
+          break;
+        case 'reset':
+          if ( null !== bgColorActiveValue ) {
+            $spGlBlockBackground.spectrum('set', bgColorActiveValue);
+            $spGlBlockBackground.spectrum('container').find('.sp-input').trigger('change');
+          }
+          break;
+        default: break;
+      }
     });
 
     // create close button for overlay color
@@ -1383,17 +1412,40 @@ var Rexbuilder_Block_Editor = (function($) {
 
     $spBlockOverlayClose.on('click', function(e) {
       e.preventDefault();
+      if ( null !== overlayActiveValue ) {
+        $spGlBlockOverlay.spectrum('set', overlayActiveValue);
+        $spGlBlockOverlay.spectrum('container').find('.sp-input').trigger('change');
+      }
       $spGlBlockOverlay.spectrum('hide');
     });
-  }
+
+    // create confirm/reset buttons for overlay color
+    var $spBlockOverlayOptions = $(options);
+    var $spBlockOverlayOption = $spBlockOverlayOptions.find('.rex-modal-option');
+    $spGlBlockOverlay.spectrum('container').append($spBlockOverlayOptions);
+
+    $spBlockOverlayOption.on('click', function(event) {
+      event.preventDefault();
+      switch( this.getAttribute('data-rex-option' ) ) {
+        case 'save':
+          $spGlBlockOverlay.spectrum('hide');
+          break;
+        case 'reset':
+          if ( null !== overlayActiveValue ) {
+            $spGlBlockOverlay.spectrum('set', overlayActiveValue);
+            $spGlBlockOverlay.spectrum('container').find('.sp-input').trigger('change');
+          }
+          break;
+        default: break;
+      }
+    });
+  };
 
   function spBlockBackgroundOnMove(color) {
     backgroundPickerUsed = true;
 
     backgroundColorEventSettings.data_to_send.active = true;
-    backgroundColorEventSettings.data_to_send.color = backgroundColorEventSettings.data_to_send.active
-      ? ( color ? color.toRgbString() : '' )
-      : "";
+    backgroundColorEventSettings.data_to_send.color = backgroundColorEventSettings.data_to_send.active ? ( color ? color.toRgbString() : '' ) : "";
 
     var event = jQuery.Event("rexlive:change_block_bg_color");
     event.settings = backgroundColorEventSettings;
@@ -1426,6 +1478,7 @@ var Rexbuilder_Block_Editor = (function($) {
     $actualBtn = null;
     $actualBlockContainerTools = null;
     bgColorActive = false;
+    bgColorActiveValue = null;
 
     backgroundPickerUsed = false;
   }
@@ -1472,6 +1525,7 @@ var Rexbuilder_Block_Editor = (function($) {
     $actualBtn = null;
     $actualBlockContainerTools = null;
     overlayActive = false;
+    overlayActiveValue = null;
 
     overlayPickerUsed = false;
   }
@@ -1488,13 +1542,11 @@ var Rexbuilder_Block_Editor = (function($) {
 
     backgroundColorEventSettings.data_to_send.target.rexID = $actualBlock.attr("data-rexbuilder-block-id");
     backgroundColorEventSettings.data_to_send.target.sectionID = $actualSection.attr("data-rexlive-section-id");
-    backgroundColorEventSettings.data_to_send.target.modelNumber = typeof $actualSection.attr("data-rexlive-model-number") != "undefined"
-    ? $actualSection.attr("data-rexlive-model-number")
-    : "";
+    backgroundColorEventSettings.data_to_send.target.modelNumber = typeof $actualSection.attr("data-rexlive-model-number") != "undefined" ? $actualSection.attr("data-rexlive-model-number") : "";
 
     // retrieving actual color background, if any
     bgColorActive = $actualBlockData.attr('data-color_bg_block_active');
-    var colorActive = $actualBlockData.attr('data-color_bg_block');
+    bgColorActiveValue = $actualBlockData.attr('data-color_bg_block');
 
     // maintain tools visible
     Rexbuilder_Util_Editor.manageElement = true;
@@ -1502,7 +1554,7 @@ var Rexbuilder_Block_Editor = (function($) {
 
     // set and open spectrum
     backgroundPickerUsed = false;
-    $spGlBlockBackground.spectrum('set',colorActive);
+    $spGlBlockBackground.spectrum('set',bgColorActiveValue);
 
     $spGlBlockBackground.spectrum('show');
     $spGlBlockBackground.spectrum('container').css('top', ev.pageY + 'px');
@@ -1561,7 +1613,7 @@ var Rexbuilder_Block_Editor = (function($) {
       }
     }
 
-    var colorActive = $actualBlockData.attr('data-overlay_block_color');
+    overlayActiveValue = $actualBlockData.attr('data-overlay_block_color');
 
     // maintain tools visible
     Rexbuilder_Util_Editor.manageElement = true;
@@ -1569,7 +1621,7 @@ var Rexbuilder_Block_Editor = (function($) {
 
     // set and open spectrum
     overlayPickerUsed = false;
-    $spGlBlockOverlay.spectrum('set',colorActive);
+    $spGlBlockOverlay.spectrum('set',overlayActiveValue);
 
     $spGlBlockOverlay.spectrum('show');
     $spGlBlockOverlay.spectrum('container').css('top', ev.pageY + 'px');
