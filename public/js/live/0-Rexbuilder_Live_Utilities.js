@@ -74,7 +74,6 @@ var Rexbuilder_Live_Utilities = (function($) {
 			$textWrap.remove();
 			$div.attr("style", css);
 			$div.html(textWrapContent);
-			console.log( $div.get(0).outerHTML );
 			$div.find(".text-editor-span-fix").remove();
 			$div.find(".medium-insert-buttons").remove();
 		}
