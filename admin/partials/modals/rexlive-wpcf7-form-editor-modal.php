@@ -198,7 +198,7 @@ defined('ABSPATH') or exit;
 													<div class="input-field with-text-left rex-input-prefixed">
 														<input id="rex-wpcf7-create-template-input" type="text" class="bl_modal-row__input">
 														<label for="rex-wpcf7-create-template-input">
-															<?php _e('Form template name', 'rexpansive-builder');?>
+															<?php _e('Form Template Name', 'rexpansive-builder');?>
 														</label>
 													</div>
 													<div class="tool-button tool-button--green bl_modal-row__button">
