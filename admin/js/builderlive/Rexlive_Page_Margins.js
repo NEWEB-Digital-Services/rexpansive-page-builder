@@ -4,6 +4,7 @@ var Rexlive_Page_Margins = (function ($) {
   var container_margins_modal_properties;
   var defaultSeparators;
   var actualValues;
+  var resetData;
 
   // var _resetDistances = function () {
   //   container_margins_modal_properties.$container_separator_top.val(defaultSeparators.top);
@@ -150,10 +151,15 @@ var Rexlive_Page_Margins = (function ($) {
     container_margins_modal_properties.$separatorContext.filter('[value=' + context + ']').prop('checked',true);
 
     actualValues = _getDistanceValues();
+    resetData = actualValues;
   };
 
-  var _updateData = function( data )
-  {
+  var _setData = function(data) {
+    container_margins_modal_properties.$separatorContext.filter('[value=' + data.context + ']').prop('checked',true);
+    container_margins_modal_properties.$separatorValsTop.filter('[data-context=' + data.context + ']').val( data.vals.top );
+  };
+
+  var _updateData = function( data ) {
     switch( data.context )
     {
       case 'global':
@@ -242,8 +248,11 @@ var Rexlive_Page_Margins = (function ($) {
     _applyContainerDistances();
   };
 
-  var _resetData = function() {
-
+  var _resetModal = function() {
+    if ( resetData ) {
+      _setData( resetData );
+    }
+    _applyData();
   };
 
   var _init = function ($container) {
@@ -279,7 +288,8 @@ var Rexlive_Page_Margins = (function ($) {
     // savePage: _savePage,
     applyData: _applyData,
     getData: _getData,
-    resetData: _resetData
+    resetData: _resetModal,
+    updateData: _updateData
   };
 
 })(jQuery);

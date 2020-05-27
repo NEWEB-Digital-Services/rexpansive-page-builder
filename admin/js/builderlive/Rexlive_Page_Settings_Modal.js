@@ -36,6 +36,7 @@ var Rexlive_Page_Settings_Modal = (function ($) {
   var _linkDocumentListeners = function() {
     page_settings_props.$close_button.on('click', function(e) {
       e.preventDefault();
+      _resetModal();
       _closeModal();
     });
 
