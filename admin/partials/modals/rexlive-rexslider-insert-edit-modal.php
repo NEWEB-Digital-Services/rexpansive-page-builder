@@ -171,14 +171,11 @@ defined('ABSPATH') or exit;
             </button>
         </div> -->
         <div class="rex-modal__outside-footer">
-            <div id="rex-insert-video-block-save" class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save Slider', 'rexpansive-builder' ); ?>">
-                <div class="btn-save--wrap">
-                    <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-                    <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-                </div>
+            <div class="tool-button tool-button--inline tool-button--confirm tool-button--modal rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save Slider', 'rexpansive-builder' ); ?>">
+                <span class="rex-button btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z016-Checked'); ?></span>
             </div>
-            <div class="tool-button tool-button--inline tool-button--cancel tool-button--modal rex-undo-button tippy" data-tippy-content="<?php esc_attr_e( 'Undo', 'rexpansive-builder' ); ?>" data-slider-to-edit="">
-                <?php Rexbuilder_Utilities::get_icon('#A003-Undo'); ?>
+            <div class="tool-button tool-button--inline tool-button--modal rex-undo-button tippy" data-tippy-content="<?php esc_attr_e( 'Reset', 'rexpansive-builder' ); ?>" data-slider-to-edit="">
+                <?php Rexbuilder_Utilities::get_icon('#Z014-Refresh'); ?>
             </div>
         </div>
     </div>

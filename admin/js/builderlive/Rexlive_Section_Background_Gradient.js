@@ -34,7 +34,7 @@ var Rexlive_Section_Background_Gradient = (function($) {
         showAlpha: true,
         showInput: true,
         showButtons: false,
-        containerClassName: 'sp-container-default',
+        containerClassName: 'sp-container-default sp-draggable sp-meditor',
         replacerClassName: 'sp-replacer__gradient',
         clickoutFiresChange: true,
         preferredFormat: "hex",
@@ -58,7 +58,15 @@ var Rexlive_Section_Background_Gradient = (function($) {
         }
       });
 
-      Rexbuilder_Util_Admin_Editor.addSpectrumCustomSaveButton($el);
+      var resetCb = function() {
+        var resetData = $el.attr('data-color-on-show');
+        if ( resetData ) {
+          handler.setColor(resetData, 0);
+          $el.spectrum('set', resetData);
+        }
+      };
+
+      Rexbuilder_Util_Admin_Editor.addSpectrumCustomSaveButton($el, resetCb);
       Rexbuilder_Util_Admin_Editor.addSpectrumCustomCloseButton($el);
     });
   };

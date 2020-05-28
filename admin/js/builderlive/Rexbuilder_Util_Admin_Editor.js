@@ -1453,81 +1453,94 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
    * @since 2.0.0
    */
   var _initBackgroundColorPicker = function() {
-    var bgColorPickerUsed = false;
-    var bgColorActive = false;
-    var eventSettings = {
-      eventName: null,
-      data_to_send: {
-        color: null,
-        sectionTarget: {
-          sectionID: null,
-          modelNumber: null
-        }
-      },
-    };
+    $highlightRowSetBackgroundColor.each( function(i, el) {
+      var $el = $(el);
 
-    $highlightRowSetBackgroundColor.spectrum({
-      replacerClassName: 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum',
-      preferredFormat: "hex",
-      showPalette: false,
-      showAlpha: true,
-      showInput: true,
-      showButtons: false,
-      beforeShow: function() {
-        Rexlive_Color_Palette.show({
-          $target: $fastRowSetBkgrCol,
-          object: "section",
-          action: "background"
-        });
-      },
-      show: function() {
-        var container = $highlightRowSetBackgroundColor.spectrum('container')[0];
-        container.style.top = ( parseInt( container.style.top ) + 10 ) + 'px';
-        
-        bgColorPickerUsed = false;
-        eventSettings.data_to_send.sectionTarget.sectionID = $highlightSectionId.val();
-        eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
-        bgColorActive = JSON.parse( hightlightRowInfo.color_bg_section_active );
-      },
-      change: function() {
-        //
-      },
-      move: function(color) {
-        eventSettings.data_to_send.active = true;
-        eventSettings.data_to_send.color = color.toRgbString();
-        if( bgColorActive ) {
-          eventSettings.eventName = "rexlive:change_section_bg_color";
-        } else {
-          eventSettings.eventName = "rexlive:apply_background_color_section";
-        }
+      var bgColorPickerUsed = false;
+      var bgColorActive = false;
+      var eventSettings = {
+        eventName: null,
+        data_to_send: {
+          color: null,
+          sectionTarget: {
+            sectionID: null,
+            modelNumber: null
+          }
+        },
+      };
 
-        _sendIframeBuilderMessage(eventSettings);
-
-        bgColorPickerUsed = true;
-      },
-      hide: function(color) {
-        Rexlive_Color_Palette.hide();
-        if(bgColorPickerUsed) {
-          // Synch top toolbar tools
-          Rexbuilder_Util_Admin_Editor.highlightRowSetData({
-            color_bg_section_active: "true",
-            color_bg_section: color.toRgbString(),
+      $el.spectrum({
+        replacerClassName: 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum',
+        preferredFormat: "hex",
+        showPalette: false,
+        showAlpha: true,
+        showInput: true,
+        showButtons: false,
+        containerClassName: "sp-draggable sp-meditor",
+        beforeShow: function() {
+          Rexlive_Color_Palette.show({
+            $target: $el,
+            object: "section",
+            action: "background"
           });
-          Rexbuilder_Util_Admin_Editor.updateBkgrColTool();
-
+        },
+        show: function() {
+          var container = $el.spectrum('container')[0];
+          container.style.top = ( parseInt( container.style.top ) + 10 ) + 'px';
+          
+          bgColorPickerUsed = false;
+          eventSettings.data_to_send.sectionTarget.sectionID = $highlightSectionId.val();
+          eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
+          bgColorActive = JSON.parse( hightlightRowInfo.color_bg_section_active );
+        },
+        change: function() {
+          //
+        },
+        move: function(color) {
           eventSettings.data_to_send.active = true;
           eventSettings.data_to_send.color = color.toRgbString();
+          if( bgColorActive ) {
+            eventSettings.eventName = "rexlive:change_section_bg_color";
+          } else {
+            eventSettings.eventName = "rexlive:apply_background_color_section";
+          }
 
-          eventSettings.eventName = "rexlive:apply_background_color_section";
           _sendIframeBuilderMessage(eventSettings);
-        }
 
-        bgColorPickerUsed = false;
-      },
+          bgColorPickerUsed = true;
+        },
+        hide: function(color) {
+          Rexlive_Color_Palette.hide();
+          if(bgColorPickerUsed) {
+            // Synch top toolbar tools
+            Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+              color_bg_section_active: "true",
+              color_bg_section: color.toRgbString(),
+            });
+            Rexbuilder_Util_Admin_Editor.updateBkgrColTool();
+
+            eventSettings.data_to_send.active = true;
+            eventSettings.data_to_send.color = color.toRgbString();
+
+            eventSettings.eventName = "rexlive:apply_background_color_section";
+            _sendIframeBuilderMessage(eventSettings);
+          }
+
+          bgColorPickerUsed = false;
+        },
+      });
+
+      var resetCb = function() {
+        if ( null !== hightlightRowInfo.color_bg_section ) {
+          $el.spectrum('set', hightlightRowInfo.color_bg_section);
+          $el.spectrum('container').find('.sp-input').trigger('change');
+        }
+      };
+
+      _addSpectrumCustomCloseButton( $el );
+      _addSpectrumCustomSaveButton( $el, resetCb );
     });
 
-    _addSpectrumCustomCloseButton( $highlightRowSetBackgroundColor );
-    _addSpectrumCustomSaveButtonNew( $highlightRowSetBackgroundColor );
   };
 
   /**
@@ -1537,78 +1550,90 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
    * @since 2.0.0
    */
   var _initOverlayColorPicker = function() {
-    var overlayPickerUsed = false;
-    var overlayColorActive = false;
-    var eventSettings = {
-      eventName: null,
-      data_to_send: {
-        color: null,
-        sectionTarget: {
-          sectionID: null,
-          modelNumber: null
-        }
-      },
-    };
+    $highlightRowSetOverlay.each( function(i, el) {
+      var $el = $(el);
+      var overlayPickerUsed = false;
+      var overlayColorActive = false;
+      var eventSettings = {
+        eventName: null,
+        data_to_send: {
+          color: null,
+          sectionTarget: {
+            sectionID: null,
+            modelNumber: null
+          }
+        },
+      };
 
-    $highlightRowSetOverlay.spectrum({
-      replacerClassName: 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum',
-      preferredFormat: "hex",
-      showPalette: false,
-      showAlpha: true,
-      showInput: true,
-      showButtons: false,
-      beforeShow: function() {
-        Rexlive_Overlay_Palette.show({
-          $target: $fastRowSetOverlay,
-          object: "section",
-          action: "overlay"
-        });
-      },
-      show: function() {
-        var container = $highlightRowSetOverlay.spectrum('container')[0];
-        container.style.top = ( parseInt( container.style.top ) + 10 ) + 'px';
-
-        overlayPickerUsed = false;
-        eventSettings.data_to_send.sectionTarget.sectionID = $highlightSectionId.val();
-        eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
-        overlayColorActive = JSON.parse( hightlightRowInfo.row_overlay_active );
-      },
-      move: function(color) {
-        eventSettings.data_to_send.active = true;
-        eventSettings.data_to_send.color = color.toRgbString();
-        if( overlayColorActive ) {
-          eventSettings.eventName = "rexlive:change_section_overlay_color";
-        } else {
-          eventSettings.eventName = "rexlive:change_section_overlay";
-        }
-
-        _sendIframeBuilderMessage(eventSettings);
-
-        overlayPickerUsed = true;
-      },
-      hide: function(color) {
-        Rexlive_Overlay_Palette.hide();
-        if(overlayPickerUsed) {
-          // Synch top toolbar tools
-          Rexbuilder_Util_Admin_Editor.highlightRowSetData({
-            row_overlay_active: "true",
-            row_overlay_color: color.toRgbString(),
+      $el.spectrum({
+        replacerClassName: 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum',
+        preferredFormat: "hex",
+        showPalette: false,
+        showAlpha: true,
+        showInput: true,
+        showButtons: false,
+        containerClassName: "sp-draggable sp-meditor",
+        beforeShow: function() {
+          Rexlive_Overlay_Palette.show({
+            $target: $el,
+            object: "section",
+            action: "overlay"
           });
-          Rexbuilder_Util_Admin_Editor.updateBkgrOverlayTool();
+        },
+        show: function() {
+          var container = $el.spectrum('container')[0];
+          container.style.top = ( parseInt( container.style.top ) + 10 ) + 'px';
 
+          overlayPickerUsed = false;
+          eventSettings.data_to_send.sectionTarget.sectionID = $highlightSectionId.val();
+          eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
+          overlayColorActive = JSON.parse( hightlightRowInfo.row_overlay_active );
+        },
+        move: function(color) {
           eventSettings.data_to_send.active = true;
           eventSettings.data_to_send.color = color.toRgbString();
+          if( overlayColorActive ) {
+            eventSettings.eventName = "rexlive:change_section_overlay_color";
+          } else {
+            eventSettings.eventName = "rexlive:change_section_overlay";
+          }
 
-          eventSettings.eventName = "rexlive:change_section_overlay";
           _sendIframeBuilderMessage(eventSettings);
-        }
 
-        overlayPickerUsed = false;
-      },
+          overlayPickerUsed = true;
+        },
+        hide: function(color) {
+          Rexlive_Overlay_Palette.hide();
+          if(overlayPickerUsed) {
+            // Synch top toolbar tools
+            Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+              row_overlay_active: "true",
+              row_overlay_color: color.toRgbString(),
+            });
+            Rexbuilder_Util_Admin_Editor.updateBkgrOverlayTool();
+
+            eventSettings.data_to_send.active = true;
+            eventSettings.data_to_send.color = color.toRgbString();
+
+            eventSettings.eventName = "rexlive:change_section_overlay";
+            _sendIframeBuilderMessage(eventSettings);
+          }
+
+          overlayPickerUsed = false;
+        },
+      });
+
+      var resetCb = function() {
+        if ( null !== hightlightRowInfo.row_overlay_color ) {
+          $el.spectrum('set', hightlightRowInfo.row_overlay_color);
+          $el.spectrum('container').find('.sp-input').trigger('change');
+        }
+      };
+
+      _addSpectrumCustomCloseButton( $highlightRowSetOverlay, resetCb );
+      _addSpectrumCustomSaveButton( $highlightRowSetOverlay, resetCb );
     });
 
-    _addSpectrumCustomCloseButton( $highlightRowSetOverlay );
-    _addSpectrumCustomSaveButtonNew( $highlightRowSetOverlay );
   };
 
   /**
@@ -1704,9 +1729,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       res.push( prefs[i] + value );
     }
     return res;
-  }
+  };
 
-  var _addSpectrumCustomSaveButton = function( $picker ) {
+  var _addSpectrumCustomSaveButtonOld = function( $picker ) {
     var choose = tmpl('tmpl-tool-simple-save', {});
     var $choose = $(choose);
     $picker.spectrum('container').append($choose);
@@ -1718,7 +1743,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     });
   };
 
-  var _addSpectrumCustomSaveButtonNew = function( $picker ) {
+  var _addSpectrumCustomSaveButton = function( $picker, resetCb ) {
     var choose = tmpl('tmpl-tool-save', {});
     var $choose = $(choose);
     var $option = $choose.find('.rex-modal-option');
@@ -1733,12 +1758,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
           $picker.spectrum('container').find('.sp-choose').trigger('click');
           break;
         case 'reset':
-        console.log($picker)
-        console.log(hightlightRowInfo)
-          // if ( null !== resetData.color ) {
-          //   background_block_color_properties.$color_value.spectrum('set', resetData.color);
-          //   background_block_color_properties.$color_value.spectrum('container').find('.sp-input').trigger('change');
-          // }
+          if ( 'function' === typeof resetCb ) {
+            resetCb.call();
+          }
           break;
         default: break;
       }
