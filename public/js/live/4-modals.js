@@ -2763,18 +2763,14 @@
       var rex_block_id = $elem.attr("data-rexbuilder-block-id");
       var sectionID = $section.attr("data-rexlive-section-id");
       var modelNumber =
-        typeof $section.attr("data-rexlive-model-number") != "undefined"
-          ? $section.attr("data-rexlive-model-number")
-          : "";
+        typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
       var $elemData = $elem.children(".rexbuilder-block-data");
       var $itemContent = $elem.find(".grid-item-content");
       var $textcontent = $elem.find('.text-wrap');
 
       var color = $elemData.attr("data-color_bg_block");
       var colorActive =
-        typeof $elemData.attr("data-color_bg_elem_active") != "undefined"
-          ? $elemData.attr("data-color_bg_elem_active")
-          : true;
+        typeof $elemData.attr("data-color_bg_elem_active") != "undefined" ? $elemData.attr("data-color_bg_elem_active") : false;
       if (color == "") {
         color = "rgba(0,0,0,0)";
       }
@@ -2789,9 +2785,7 @@
       };
 
       var overlayColor =
-        typeof $elemData.attr("data-overlay_block_color") != "undefined"
-          ? $elemData.attr("data-overlay_block_color")
-          : "";
+        typeof $elemData.attr("data-overlay_block_color") != "undefined" ? $elemData.attr("data-overlay_block_color") : "";
       if (overlayColor == "") {
         overlayColor = "rgba(0,0,0,0)";
       }
@@ -2806,9 +2800,7 @@
       } else {
         overlayActive =
           typeof $elemData.attr("data-overlay_block_color_active") !=
-          "undefined"
-            ? $elemData.attr("data-overlay_block_color_active")
-            : false;
+          "undefined" ? $elemData.attr("data-overlay_block_color_active") : false;
       }
 
       var $blockOverlayDiv = $elem.find(".responsive-block-overlay");

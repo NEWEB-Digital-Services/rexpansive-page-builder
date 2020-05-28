@@ -1223,7 +1223,7 @@ var Rexbuilder_Dom_Util = (function($) {
     $elemData.attr("data-color_bg_elem_active", data.active);
 
     if( 'undefined' !== typeof Rexbuilder_Block_Editor ) {
-      Rexbuilder_Block_Editor.updateBlockBackgroundColorTool($elem,data.color);
+      Rexbuilder_Block_Editor.updateBlockBackgroundColorTool($elem,data.color,data.active);
     }
   };
 
@@ -1430,7 +1430,7 @@ var Rexbuilder_Dom_Util = (function($) {
     }
 
     if( 'undefined' !== typeof Rexbuilder_Block_Editor ) {
-      Rexbuilder_Block_Editor.updateBlockOverlayColorTool( $elem, color );
+      Rexbuilder_Block_Editor.updateBlockOverlayColorTool( $elem, color, active );
     }
   };
 
