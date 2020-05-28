@@ -1472,44 +1472,28 @@
       };
 
       var old_idImage =
-        typeof $elemData.attr("data-id_image_bg_block") == "undefined"
-          ? ""
-          : $elemData.attr("data-id_image_bg_block");
+        typeof $elemData.attr("data-id_image_bg_block") == "undefined" ? "" : $elemData.attr("data-id_image_bg_block");
       var old_imageUrl =
-        typeof $elemData.attr("data-image_bg_block") == "undefined"
-          ? ""
-          : $elemData.attr("data-image_bg_block");
+        typeof $elemData.attr("data-image_bg_block") == "undefined" ? "" : $elemData.attr("data-image_bg_block");
       var old_width =
-        typeof $itemContent.attr("data-background_image_width") == "undefined"
-          ? ""
-          : $itemContent.attr("data-background_image_width");
+        typeof $itemContent.attr("data-background_image_width") == "undefined" ? "" : $itemContent.attr("data-background_image_width");
       var old_height =
-        typeof $itemContent.attr("data-background_image_height") == "undefined"
-          ? ""
-          : $itemContent.attr("data-background_image_height");
+        typeof $itemContent.attr("data-background_image_height") == "undefined" ? "" : $itemContent.attr("data-background_image_height");
       var old_activeImage =
-        typeof $elemData.attr("data-image_bg_elem_active") != "undefined"
-          ? $elemData.attr("data-image_bg_elem_active")
-          : true;
+        typeof $elemData.attr("data-image_bg_elem_active") != "undefined" ? $elemData.attr("data-image_bg_elem_active") : true;
 
       var defaultTypeImage;
       if (old_activeImage.toString() == "true") {
         defaultTypeImage =
-          $elem.parents(".grid-stack-row").attr("data-layout") == "fixed"
-            ? "full"
-            : "natural";
+          $elem.parents(".grid-stack-row").attr("data-layout") == "fixed" ? "full" : "natural";
       } else {
         defaultTypeImage = "";
       }
 
       var old_typeBGimage =
-        typeof $elemData.attr("data-type_bg_block") == "undefined"
-          ? defaultTypeImage
-          : $elemData.attr("data-type_bg_block");
+        typeof $elemData.attr("data-type_bg_block") == "undefined" ? defaultTypeImage : $elemData.attr("data-type_bg_block");
       var old_photoswipe =
-        typeof $elemData.attr("data-photoswipe") == "undefined"
-          ? ""
-          : $elemData.attr("data-photoswipe");
+        typeof $elemData.attr("data-photoswipe") == "undefined" ? "" : $elemData.attr("data-photoswipe");
 
       var oldOpt = {
         active: old_activeImage,
@@ -1538,7 +1522,7 @@
 			Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOpt);
 			
       if (data.updateBlockHeight) {
-				if (old_imageUrl !== data.urlImage) {
+				if (old_imageUrl !== data.urlImage || ( old_typeBGimage !== data.typeBGimage && 'natural' == data.typeBGimage ) ) {
 					galleryEditorInstance.resizeBlockWithNewImage(elem);
 				}
 			}
