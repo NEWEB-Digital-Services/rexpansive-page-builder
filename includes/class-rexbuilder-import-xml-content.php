@@ -463,7 +463,7 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 		/**
 		 *	Launching the import on all items
 		 */
-		public function run_import_all($createNewIfAlreadyExists) {
+		public function run_import_all($createNewIfAlreadyExists = false) {
 			foreach($this->posts as $post) {
 				$result = $this->import_post( $post, $createNewIfAlreadyExists );
 			}

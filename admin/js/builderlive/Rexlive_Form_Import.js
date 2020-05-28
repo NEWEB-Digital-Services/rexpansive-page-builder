@@ -78,8 +78,6 @@ var Form_Import_Modal = (function ($) {
 			}
 		}
 
-		// currentList = [];
-
 		tmpl.arg = 'element';
 		for (var i = 0; i < updatedList.length; i++) {
 			if (!updatedList[i].found) {
@@ -517,7 +515,7 @@ var Form_Import_Modal = (function ($) {
 		var elements = elementImportProps.$self.find('.element-list__element').get();
 
 		elements = elements.filter(function (element) {
-			return 'none' !== element.style.display;
+			return 'none' !== $(element).css('display');
 		});
 
 		if (0 === elements.length) {

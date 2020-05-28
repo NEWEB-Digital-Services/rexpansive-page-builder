@@ -2018,6 +2018,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			$this->Installer->push_to_queue( array( 'task' => 'import_forms_end' ) );
 		}
 
+		$this->Installer->push_to_queue( array( 'task' => 'check_imported_content' ) );
+
 		// dispatch the installation process
 		$this->Installer->save()->dispatch();
 
@@ -3849,8 +3851,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-xml-content.php';
 
 		// Importing the forms from XML file
-		// $forms_definition_url = 'http://localhost/rexpansive/wp-content/uploads/default-forms.xml';
-		$forms_definition_url = 'http://tutorial.neweb.info/wp-content/uploads/default-forms.xml';
+		$forms_definition_url = REXPANSIVE_BUILDER_DEFAULT_FORMS_IMPORT_LOCATION;
 		$xml_file = Rexbuilder_Import_Utilities::upload_media_file($forms_definition_url, 'xml');
 
 		if(file_exists($xml_file['file'])) {
