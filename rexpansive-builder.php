@@ -71,8 +71,12 @@ define( 'REXPANSIVE_BUILDER_IMPORT_SOURCE', 'https://neweb.info/plugins/rexpansi
 define( 'REXPANSIVE_BUILDER_TMPL_FOLDER', 'rexpansive-builder' );
 
 /**
- * Name of the folder in which save the custom sprite icons
- * that a user can upload
+ * Path for templates imports
+ */
+define( 'REXPANSIVE_BUILDER_DEFAULT_TEMPLATES_IMPORT_LOCATION', 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/rex-models.xml' );
+
+/**
+ * Path for form imports
  */
 define( 'REXPANSIVE_BUILDER_DEFAULT_FORMS_IMPORT_LOCATION', 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/default-forms.xml' );
 

@@ -37,7 +37,6 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 			self::import_buttons();
 			self::import_icons();
 			self::import_models();
-			// self::import_forms();
 		}
 
 		/**
@@ -114,7 +113,7 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 		 * @since  2.0.1
 		 */
 		public static function import_models_resources() {
-			$models_definition_url = 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/rex-models.xml';
+			$models_definition_url = REXPANSIVE_BUILDER_DEFAULT_TEMPLATES_IMPORT_LOCATION;
 			$xml_file = Rexbuilder_Import_Utilities::upload_media_file( $models_definition_url, 'xml' );
 
 			$post_count = 0;
@@ -259,7 +258,7 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 			// import eventually media from the model
 			// beware of the ids
 
-			$models_definition_url = 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/rex-models.xml';
+			$models_definition_url = REXPANSIVE_BUILDER_DEFAULT_TEMPLATES_IMPORT_LOCATION;
 			$xml_file = Rexbuilder_Import_Utilities::upload_media_file( $models_definition_url, 'xml' );
 
 			if( file_exists( $xml_file['file'] ) ) {

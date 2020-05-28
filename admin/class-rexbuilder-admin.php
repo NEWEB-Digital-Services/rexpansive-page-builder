@@ -3882,22 +3882,21 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		// The Query
 		$query = new WP_Query( $args );
 
-		// if ($query->have_posts()) {
-			while ($query->have_posts()) {
-				$query->the_post();
-				
-				$elementData = array();
-				
-				$elementData["id"] = get_the_ID();
-				$elementData["name"] = get_the_title();
-				$elementData["preview_image_url"] = get_the_post_thumbnail_url();
-				$elementData["element_data_html"] = get_post_meta(get_the_ID(), "_rex_element_data_html");
+		while ($query->have_posts()) {
+			$query->the_post();
+			
+			$elementData = array();
+			
+			$elementData["id"] = get_the_ID();
+			$elementData["name"] = get_the_title();
+			$elementData["preview_image_url"] = get_the_post_thumbnail_url();
+			$elementData["element_data_html"] = get_post_meta(get_the_ID(), "_rex_element_data_html");
 
-				array_push($elementList, $elementData);
-			}
-		// }
+			array_push($elementList, $elementData);
+		}
 
 		$response["updated_list"] = $elementList;
+		$response['separatedForms'] = get_option('_rex_separated_forms');
 		
 		// Restore original Post Data
 		// wp_reset_postdata();
