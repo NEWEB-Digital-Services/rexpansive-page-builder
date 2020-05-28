@@ -1709,7 +1709,7 @@ var Rexbuilder_Block_Editor = (function($) {
     }
   };
 
-  var _updateBlockBackgroundColorTool = function($target, color) {
+  var _updateBlockBackgroundColorTool = function($target, color, active) {
     // Set tool picker
     var $picker_top = $target
       .find('.rexlive-block-toolbox.top-tools')
@@ -1719,7 +1719,7 @@ var Rexbuilder_Block_Editor = (function($) {
       .find('.rexlive-block-toolbox.bottom-tools')
       .find('.edit-block-color-background');
 
-    if( "" != color ) {
+    if( "" != color && active ) {
       // $picker_bottom
       //   .val(color)
       //   .spectrum('set',color);
@@ -1782,6 +1782,7 @@ var Rexbuilder_Block_Editor = (function($) {
   }
 
   var _updateBlockOverlayColorToolLive = function( $target, color ) {
+    console.log('_updateBlockOverlayColorToolLive')
     // Set live picker
     var $picker_top = $target
       .parents('.grid-stack-item')
@@ -1820,7 +1821,7 @@ var Rexbuilder_Block_Editor = (function($) {
     }
   };
 
-  var _updateBlockOverlayColorTool = function($target, color) {
+  var _updateBlockOverlayColorTool = function($target, color, active) {
     // Set tool picker
     var $picker_top = $target
       .find('.rexlive-block-toolbox.top-tools')
@@ -1830,7 +1831,7 @@ var Rexbuilder_Block_Editor = (function($) {
       .find('.rexlive-block-toolbox.bottom-tools')
       .find('.edit-block-overlay-color');
 
-    if( "" != color ) {
+    if( "" != color && active ) {
       // $picker_bottom
       //   .val(color)
       //   .spectrum('set',color);
