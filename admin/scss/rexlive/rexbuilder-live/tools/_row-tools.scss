@@ -124,7 +124,7 @@
 		font-size: 10px;
 		max-width: 20px;
 		left: 2px;
-		padding-top: 20px;
+		padding-top: 10px;
 
 		&--section {
 			font-size: 10px;
@@ -393,6 +393,9 @@
 	.section-toolBox {
 		.switch-toggle {
 			padding-right: 0;
+		}
+		.switch-dimension {
+			display: none;
 		}
 		.bl_switch {
 			padding-right: 4px;

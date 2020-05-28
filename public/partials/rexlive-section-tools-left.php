@@ -22,7 +22,7 @@ $layout = ( isset( $atts['layout'] ) && ! empty( $atts['layout'] ) ? $atts['layo
 
 <div class="bl_d-flex bl_ai-c tools-area tool-area--side tool-area--left">
 
-    <div class="switch-toggle switch-live">
+    <div class="switch-toggle switch-live switch-dimension">
         <input type="radio" class="edit-row-width" data-section_width="full" id="row-dimension-full-<?php echo $section_rex_id; ?>" name="row-dimension-<?php echo $section_rex_id; ?>" value="100%" <?php checked( 'full', $dimension, true ); ?>>
         <label class="tippy" data-tippy-content="<?php _e('Full','rexpansive-builder'); ?>" for="row-dimension-full-<?php echo $section_rex_id; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span></label>
         <input type="radio" class="edit-row-width" data-section_width="boxed" id="row-dimension-boxed-<?php echo $section_rex_id; ?>" name="row-dimension-<?php echo $section_rex_id; ?>" value="<?php echo ( 'boxed' == $dimension ? esc_attr( $atts['section_width'] ) : '80%' ); ?>" <?php checked( 'boxed', $dimension, true ); ?>>
