@@ -9,10 +9,12 @@
 			<p><strong>Fixed</strong>: On an imported template, at the first moment the tools are not correctly visible</p>
 			<p><strong>Fixed</strong>: On an imported template, text editor doesn't work</p>
 			<p><strong>Update</strong>: Block dimensions indicator is now at bottom left of the block</p>
+			<p><strong>Update</strong>: On image size change, if user set natural, the block auto resizes to fit image</p>
 			<p><strong>Update</strong>: When dragging a RexButton the lateral menu disappears / appears acording to the mouse position</p>
 			<p><strong>Update</strong>: When dragging a RexButton the placeholder is more visible</p>
 			<p><strong>Update</strong>: Photoswipe on a RexSlider opens only the images in the slider</p>
 			<p><strong>Update</strong>: Changing a row or a block property on layouts different from default, save only that property, leaving the other properties synchronized with the default ones</p>
+			<p><strong>Add</strong>: Confirm/Reset buttons to confirm or reset changes made inside a modal or with a color picker</p>
 			<p><strong>Add</strong>: Row label, to customize the navigator labels</p>
 			<p><strong>Add</strong>: Reset button on rows and blocks to reset their properties with the default</p>
 			<p><strong>Add</strong>: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. old forms will not be affected</p>

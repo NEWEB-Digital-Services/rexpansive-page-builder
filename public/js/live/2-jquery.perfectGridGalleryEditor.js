@@ -53,7 +53,7 @@
     } else {
       addClass(el, className);
     }
-  }
+  };
 
   /**
    * Get js animation end event name
@@ -2517,6 +2517,12 @@
     },
 
     focusElementEditing: function($elem) {
+      var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
+      var tot_items = items.length, i=0;
+      for( i=0; i < tot_items; i++ ) {
+        removeClass( items[i], 'focused' );
+      }
+
       if ( $elem.length > 0 ) {
         $elem.addClass("focused");
       }

@@ -205,11 +205,13 @@ For the more experienced among us: you can insert CSS anywhere.
  * Fixed: On a copied row, text editor doesn't work
  * Fixed: On an imported template, at the first moment the tools are not correctly visible
  * Fixed: On an import template, text editor doesn't work
+ * Update: On image size change, if user set natural, the block auto resizes to fit image
  * Update: Block dimensions indicator is now at bottom left of the block
  * Update: When dragging a RexButton the lateral menu disappears / appears acording to the mouse position
  * Update: When dragging a RexButton the placeholder is more visible
  * Update: Photoswipe on a RexSlider opens only the images in the slider
  * Update: Change a row or a block property on layouts different from default, saves only that property, leaving the other properties synchronized with the default ones
+ * Add: Confirm/Reset buttons to confirm or reset changes made inside a modal or with a color picker
  * Add: Row label, to customize the navigator labels
  * Add: Reset button on rows and blocks to reset their properties with the default
  * Add: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. old forms will not be affected
