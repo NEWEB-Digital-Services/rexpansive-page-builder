@@ -99,7 +99,7 @@ var Element_Choose_Modal = (function ($) {
 			dataType: 'json',
 			url: live_editor_obj.ajaxurl,
 			data: {
-				action: 'rex_separate_element',
+				action: 'rex_separate_form',
 				nonce_param: live_editor_obj.rexnonce,
 				old_id: oldElementID
 			},

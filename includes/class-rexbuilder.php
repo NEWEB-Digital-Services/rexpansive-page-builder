@@ -340,7 +340,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_load_default_forms', $plugin_admin, 'rex_load_default_forms' );
 		$this->loader->add_action( 'wp_ajax_rex_wpcf7_unseparate_form', $plugin_admin, 'rex_wpcf7_unseparate_form' );
 		$this->loader->add_action( 'wp_ajax_rex_delete_rexelement', $plugin_admin, 'rex_delete_rexelement' );
-		$this->loader->add_action( 'wp_ajax_rex_separate_element', $plugin_admin, 'rex_separate_element' );
+		$this->loader->add_action( 'wp_ajax_rex_separate_form', $plugin_admin, 'rex_separate_form' );
 
 		// COLOR PALETTE APIs
 		$this->loader->add_action( 'wp_ajax_rex_save_palette_color', $plugin_admin, 'rex_save_palette_color' );

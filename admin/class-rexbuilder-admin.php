@@ -3909,8 +3909,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @return JSON operation result
 	 * @since  2.0.0
 	 */
-	public function rex_separate_element() {
-		Rexbuilder_Utilities::write_log($_POST);
+	public function rex_separate_form() {
 		$nonce = $_POST['nonce_param'];
 		
 		$response = array(
