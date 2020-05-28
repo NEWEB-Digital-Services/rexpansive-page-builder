@@ -4,12 +4,17 @@
 	width: 100%;
 	max-height: 100%;
 	overflow: hidden;
+
+	&:hover {
+		overflow: visible;
+	}
+
 	// .mCSB_scrollTools {
 	// 	right: 10px;
 	// 	// visibility: hidden;
 	// 	.mCSB_draggerContainer {
 	// 		margin: 20px 0;
- 	// 		/*margin-top: 5%;
+	// 		/*margin-top: 5%;
 	// 		margin-bottom: 5%;*/
 	// 	}
 	// 	.mCSB_dragger {

@@ -619,8 +619,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var gridstack = $gallery.data("gridstack");
     var $section = $elem.parents(".rexpansive_section");
     var $newBlock;
-
+		// console.log( 'elem', $elem.get(0).outerHTML );
+		
     $newBlock = $elem.clone(false);
+		// console.log( 'new b',$newBlock.get(0).outerHTML );
 		var $newBlockData = $newBlock.children(".rexbuilder-block-data");
 		
     galleryEditorInstance._removeHandles($newBlock);
@@ -647,7 +649,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var videoTypeActive = Rexbuilder_Util.destroyVideo($itemContent, false);
 
     // Rexbuilder_Util_Editor.removeScrollBar($newBlock);
-    Rexbuilder_Live_Utilities.removeTextEditor($newBlock);
+		Rexbuilder_Live_Utilities.removeTextEditor($newBlock);
     Rexbuilder_Live_Utilities.removeColorPicker($newBlock);
     galleryEditorInstance._prepareElement($newBlock[0]);
     galleryEditorInstance.unFocusElementEditing($newBlock);
@@ -667,7 +669,16 @@ var Rexbuilder_CreateBlocks = (function ($) {
     gridstack.batchUpdate();
     gridstack.update($newBlock[0], x, y, w, h);
 		gridstack.commit();
-		
+
+		// Rexwpcf7 operations
+		$newBlock.find('.rexwpcf7-column-tools').remove();
+
+		$newBlock.find('.rex-element-wrapper').each(function (index, element) {
+			var id = element.getAttribute('data-rex-element-id');
+
+			Rexbuilder_Rexwpcf7_Editor.addMissingTools(id);
+		});
+
 		// RexButtons operations
 		Rexbuilder_Rexbutton.refreshNumbers();
 		Rexbuilder_Rexbutton.updateButtonListInPage();

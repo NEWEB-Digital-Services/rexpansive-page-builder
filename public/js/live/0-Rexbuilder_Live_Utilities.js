@@ -671,8 +671,8 @@ var Rexbuilder_Live_Utilities = (function($) {
 			Rexbuilder_Rexelement_Editor.refreshSeparatedRexElement(e.settings.data_to_send);
 		});
 
-		Rexbuilder_Util.$document.on("rexlive:remove_separate_element", function (e) {
-			Rexbuilder_Rexelement.removeSeparateElement(e.settings.data_to_send);
+		Rexbuilder_Util.$document.on("rexlive:remove_separate_form", function (e) {
+			Rexbuilder_Rexwpcf7_Editor.removeSeparatedForm(e.settings.data_to_send);
 		});
 
 		/* ===== CF7 ===== */

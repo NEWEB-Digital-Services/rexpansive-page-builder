@@ -117,13 +117,17 @@ var Model_Lateral_Menu = (function ($) {
 
 		/**
 		 * Handling element delete
-		 * @param  {MouseEvent} e) Click event
-		 * @return {null}
+		 * @param		{MouseEvent}	clickEvent
+		 * @since		2.0.x
+		 * @version	2.0.5					Added modal for confirm of deletion
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.element-list__element--delete', function (e) {
-			var element = this.parentNode.parentNode.parentNode;
-			// @todo open modal with message and ask confirm before delete
-			Form_Import_Modal.deleteElement(element);
+		Rexlive_Base_Settings.$document.on('click', '.element-list__element--delete', function (clickEvent) {
+			var form = $(clickEvent.target).parents('.element-list__element').get(0);
+			if (!form) return;
+
+			// Form_Import_Modal.deleteForm(element);
+
+			Delete_Model_Modal.openModal({ type: 'form', element: form });
 		});
 
 		/**

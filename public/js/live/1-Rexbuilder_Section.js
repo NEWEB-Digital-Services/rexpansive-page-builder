@@ -598,7 +598,17 @@ var Rexbuilder_Section = (function($) {
 
     // launch the grid on the new section
 		$row.perfectGridGalleryEditor({editorMode: true});
+
+		// Rexwpcf7 operations
+		$newSection.find('.rexwpcf7-column-tools').remove();
+
+		$newSection.find('.rex-element-wrapper').each(function (index, element) {
+			var id = element.getAttribute('data-rex-element-id');
+
+			Rexbuilder_Rexwpcf7_Editor.addMissingTools(id);
+		});
 		
+		// Rexbutton operations
 		Rexbuilder_Rexbutton.refreshNumbers();
 		Rexbuilder_Rexbutton.updateButtonListInPage();
 

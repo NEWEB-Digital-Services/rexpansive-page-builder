@@ -403,7 +403,9 @@ class Rexbuilder_Utilities {
 		  'post_type' => $oldpost->post_type,
 		  'post_author' => 1
 		);
-		$new_post_id = wp_insert_post($post);
+		
+		$new_post_id = wp_insert_post($post, true);
+		
 		// Copy post metadata
 		$data = get_post_custom($post_id);
 		foreach ( $data as $key => $values) {

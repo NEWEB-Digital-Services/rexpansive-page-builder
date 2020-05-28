@@ -17,7 +17,7 @@ defined('ABSPATH') or exit;
         </div>
         <div class="modal-content modal-content--text">
             <div class="layout-page-changed-description">
-                <strong><?php _e( 'WARNING!', 'rexpansive-builder' ); ?></strong> <?php _e( 'If you delete this template button, and it is present within the pages, it will still be saved but will be made totally independent. Continue?', 'rexpansive-builder' ); ?>
+                <strong><?php _e( 'WARNING!', 'rexpansive-builder' ); ?></strong> <?php _e( 'If you delete this template and it is present within the pages, it will still be saved but will be made totally independent. Continue?', 'rexpansive-builder' ); ?>
             </div>
         </div>
         <div class="rex-modal__outside-footer">

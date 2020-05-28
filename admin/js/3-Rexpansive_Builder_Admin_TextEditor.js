@@ -18,17 +18,17 @@ var Rexpansive_Builder_Admin_TextEditor = (function($) {
   
     // if( -1 == searchTextFill ) {
   
-    var tinyMCE_editor = tinyMCE.get('rexbuilder_editor');
+		var tinyMCE_editor = tinyMCE.get('rexbuilder_editor');
   
     if (typeof id != "undefined" && id !== null) {
       $save_button.val(id);
     }
   
-    if (typeof tinyMCE_editor === "undefined" || tinyMCE_editor === null) { // text editor
+		if (typeof tinyMCE_editor === "undefined" || tinyMCE_editor === null) { // text editor
       $('#rexbuilder_editor').val(content);
       $('#rexbuilder_editor').text(content);
     } else {
-      tinyMCE_editor.setContent(content);
+			tinyMCE_editor.setContent(content);
       tinyMCE_editor.save({ no_events: true });
     }
   

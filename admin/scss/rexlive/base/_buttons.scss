@@ -48,6 +48,10 @@
 		@include bl-btn--blue;
 	}
 
+	&.tool-button--pink {
+		@include bl-btn--pink;
+	}
+
 	// Not using the mixin 'cause it would be used just here
 	&.tool-button--green {
 		background-color: rgb(0, 190, 0);

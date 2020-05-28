@@ -288,8 +288,7 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 		 * @since				2.0.5
 		 */
 		public static function import_forms_resources() {
-			$forms_definition_url = 'http://builderlive.neweb.info/wp-content/uploads/default-forms.xml';
-			// $models_definition_url = 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/rex-models.xml';
+			$forms_definition_url = REXPANSIVE_BUILDER_DEFAULT_FORMS_IMPORT_LOCATION;
 			$xml_file = Rexbuilder_Import_Utilities::upload_media_file( $forms_definition_url, 'xml' );
 
 			$post_count = 0;
@@ -364,9 +363,7 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 		 */
 		private static function import_forms() {
 			// Importing the forms from XML file
-			// $forms_definition_url = 'http://localhost/neweb_builderlive/wp-content/uploads/default-forms.xml';
-			// $forms_definition_url = 'http://tutorial.neweb.info/wp-content/uploads/default-forms.xml';
-			$forms_definition_url = 'http://builderlive.neweb.info/wp-content/uploads/default-forms.xml';
+			$forms_definition_url = REXPANSIVE_BUILDER_DEFAULT_FORMS_IMPORT_LOCATION;
 			$xml_file = Rexbuilder_Import_Utilities::upload_media_file($forms_definition_url, 'xml');
 	
 			if(file_exists($xml_file['file'])) {

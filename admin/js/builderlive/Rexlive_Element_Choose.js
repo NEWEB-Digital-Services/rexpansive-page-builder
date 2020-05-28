@@ -99,7 +99,7 @@ var Element_Choose_Modal = (function ($) {
 			dataType: 'json',
 			url: live_editor_obj.ajaxurl,
 			data: {
-				action: 'rex_separate_element',
+				action: 'rex_separate_form',
 				nonce_param: live_editor_obj.rexnonce,
 				old_id: oldElementID
 			},
@@ -220,6 +220,7 @@ var Element_Choose_Modal = (function ($) {
 			switch (optionSelected) {
 				case 'remove': // Need to create a new element based on the current element
 					oldElementID = elementData.element_target.element_id;
+					elementData.element_target.is_separated = true;
 
 					// Saving the new element in the DB
 					_cloneElement();

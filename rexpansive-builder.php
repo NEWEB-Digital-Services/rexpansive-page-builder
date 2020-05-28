@@ -74,13 +74,19 @@ define( 'REXPANSIVE_BUILDER_TMPL_FOLDER', 'rexpansive-builder' );
  * Name of the folder in which save the custom sprite icons
  * that a user can upload
  */
+define( 'REXPANSIVE_BUILDER_DEFAULT_FORMS_IMPORT_LOCATION', 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/default-forms.xml' );
+
+/**
+ * Name of the folder in which save the custom sprite icons
+ * that a user can upload
+ */
 define( 'REXPANSIVE_BUILDER_UPLOADS_FOLDER', 'rexpansive-builder' );
 
 /**
  * Global variable to set the state of the release
  */
 define( 'REXPANSIVE_BUILDER_PRODUCTION_STYLES', true );
-define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', false );
+define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', true );
 
 /**
  * ACF inclusion definitions

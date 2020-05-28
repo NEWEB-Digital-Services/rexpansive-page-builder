@@ -6,18 +6,18 @@ var Delete_Model_Modal = (function($) {
 
   /**
    * Open the modal window
-   * @param  {Object} info data of the model to delete: {type, id}
+   * @param  {Object} info data of the model to delete: {type, element}
    * @return {void}
    * @since  2.0.5
    */
-  var _openModal = function(info) {
+  var openModal = function(info) {
     if ( info ) {
       targetInfo = info;
     }
     Rexlive_Modals_Utils.openModal( delete_model_props.$self.parent(".rex-modal-wrap") );
   };
 
-  var _closeModal = function() {
+  var closeModal = function() {
     targetInfo = null;
     Rexlive_Modals_Utils.closeModal( delete_model_props.$self.parent(".rex-modal-wrap") );
   };
@@ -34,6 +34,7 @@ var Delete_Model_Modal = (function($) {
               Button_Import_Modal.deleteButton( targetInfo.element );
               break;
             case 'form':
+							Form_Import_Modal.deleteForm(targetInfo.element);
               break;
             default:
               break;
@@ -46,11 +47,11 @@ var Delete_Model_Modal = (function($) {
           break;
       }
 
-      _closeModal();
+      closeModal();
     });
   };
 
-  var _init = function() {
+  var init = function() {
     targetInfo = null;
     var $self = $("#rex-delete-model");
     delete_model_props = {
@@ -61,8 +62,8 @@ var Delete_Model_Modal = (function($) {
   };
 
   return {
-    init: _init,
-    openModal: _openModal,
-    closeModal: _closeModal
+    init: init,
+    openModal: openModal,
+    closeModal: closeModal
   };
 })(jQuery);

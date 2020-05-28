@@ -5,8 +5,9 @@ var Form_Import_Modal = (function ($) {
 
 	/**
 	 * Updates the element list using an AJAX call.
-	 * @return {null}
-	 * @since  2.0.x
+	 * @return	{null}
+	 * @since		2.0.x
+	 * @version	2.0.5
 	 */
 	function updateList() {
 		$.ajax({
@@ -46,59 +47,63 @@ var Form_Import_Modal = (function ($) {
 
 		if (0 === updatedList.length) {
 			$(elementImportProps.noFormsMessage).removeClass('lateral-menu-message--hidden');
-		} else {
-			$(elementImportProps.noFormsMessage).addClass('lateral-menu-message--hidden');
+			return;
+		}
 
-			var currentList = [];
+		$(elementImportProps.noFormsMessage).addClass('lateral-menu-message--hidden');
 
-			elementImportProps.$self.find('.element-list__element').each(function (i, element) {
-				element.style.display = '';
+		var currentList = [];
 
-				currentList.push({
-					id: element.getAttribute('data-rex-element-id'),
-					found: false
-				});
+		elementImportProps.$self.find('.element-list__element').each(function (i, element) {
+			element.style.display = '';
+			$(element).removeClass('element-list__element--separated');
+
+			currentList.push({
+				id: element.getAttribute('data-rex-element-id'),
+				found: false
 			});
+		});
 
-			for (var i = 0; i < updatedList.length; i++) {
-				updatedList[i].found = false;
-			}
+		for (var i = 0; i < updatedList.length; i++) {
+			updatedList[i].found = false;
+		}
 
-			for (var i = 0; i < updatedList.length; i++) {
-				for (var j = 0; j < currentList.length; j++) {
-					if (updatedList[i].id == currentList[j].id) {
-						updatedList[i].found = true;
-						currentList[j].found = true;
-						break;
-					}
+		for (var i = 0; i < updatedList.length; i++) {
+			for (var j = 0; j < currentList.length; j++) {
+				if (updatedList[i].id == currentList[j].id) {
+					updatedList[i].found = true;
+					currentList[j].found = true;
+					break;
 				}
 			}
+		}
 
-			tmpl.arg = 'element';
-			for (var i = 0; i < updatedList.length; i++) {
-				if (!updatedList[i].found) {
-					elementImportProps.$self
-						.find('.element-list')
-						.prepend(
-							tmpl('rexlive-tmpl-element-item-list', {
-								id: updatedList[i].id,
-								name: updatedList[i].name,
-								preview: updatedList[i].preview_image_url || ''
-							})
-						)
-						.find('.rex-element-wrapper')
-						.prepend(updatedList[i].element_data_html[0]);
-				}
+		tmpl.arg = 'element';
+		for (var i = 0; i < updatedList.length; i++) {
+			if (!updatedList[i].found) {
+				elementImportProps.$self
+					.find('.element-list')
+					.prepend(
+						tmpl('rexlive-tmpl-element-item-list', {
+							id: updatedList[i].id,
+							name: updatedList[i].name,
+							preview: updatedList[i].preview_image_url || ''
+						})
+					)
+					.find('.rex-element-wrapper')
+					.prepend(updatedList[i].element_data_html[0]);
 			}
+		}
 
-			for (var i = 0; i < currentList.length; i++) {
-				if (!currentList[i].found) {
-					elementImportProps.$self
-						.find('.element-list__element[data-rex-element-id="' + currentList[i].id + '"]')
-						.remove();
-				}
+		for (var i = 0; i < currentList.length; i++) {
+			if (!currentList[i].found) {
+				elementImportProps.$self
+					.find('.element-list__element[data-rex-element-id="' + currentList[i].id + '"]')
+					.remove();
 			}
+		}
 
+		if (data.separatedForms) {
 			// Hiding separated forms
 			if ( data.separatedForms ) {
 				data.separatedForms.forEach(function (formID) {
@@ -164,51 +169,60 @@ var Form_Import_Modal = (function ($) {
 	 * Send a POST request to delete an element.
 	 * @param		{Element}	element	The element to delete from the lateral menu
 	 * @since 	2.0.x
-	 * @version	2.0.5			Switched from XHR to AJAX
+	 * @version	2.0.5			- Switched from XHR to AJAX.
+	 * 										- Added live separation calls. They need to happen
+	 * 											before the deletion, 'cause the separation actually
+	 * 											duplicates EXISTING posts and then changes their IDs.
 	 */
-	var deleteElement = function (element) {
-		var element_id = element.getAttribute('data-rex-element-id');
+	function deleteForm(element) {
+		var formID = element.getAttribute('data-rex-element-id');
+		var postID = parseInt(
+			Rexbuilder_Util_Admin_Editor.frameBuilder.contentDocument.getElementById('id-post').getAttribute('data-post-id')
+		);
 
-		if (element_id) {
-			var wantToDelete = confirm(live_editor_obj.labels.rexelements.confirm_delete);
+		if (!postID || !formID) return;
 
-			if (wantToDelete) {
-				$.ajax({
-					type: 'POST',
-					dataType: 'json',
-					url: live_editor_obj.ajaxurl,
-					data: {
-						action: 'rex_delete_rexelement',
-						nonce_param: live_editor_obj.rexnonce,
-						element_id: element_id
-					},
-					beforeSend: function () {
-						elementImportProps.$self.addClass('rex-modal--loading');
-					},
-					success: function (response) {
-						if (!response.success && !response.data.error) return;
+		var calls = _prepareLiveSeparationCalls(formID);
 
-						// Deleting happened
+		// When all the separation calls succeded, delete the form in the db and separate it in other pages
+		$.when.apply($, calls).then(function () {
+			// All calls have succeded
+			$.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: live_editor_obj.ajaxurl,
+				data: {
+					action: 'rex_delete_rexelement',
+					nonce_param: live_editor_obj.rexnonce,
+					element_id: formID,
+					postID: postID
+				},
+				beforeSend: function () {
+					elementImportProps.$self.addClass('rex-modal--loading');
+				},
+				success: function (response) {
+					if (!response.success && !response.data.error) return;
 
-						element.style.display = 'none';
-						_checkIfShowMessage();
-					},
-					error: function (response, textStatus, errorThrown) {
-						alert('Something went wrong when trying to delete the Contact Form. Please try again.');
+					/* Deleting happened */
 
-						console.error('[Rexpansive] Something went wrong with your deletion AJAX request.', {
-							status: response.status,
-							message: textStatus,
-							errorThrown: errorThrown
-						});
-					},
-					complete: function () {
-						elementImportProps.$self.removeClass('rex-modal--loading');
-					}
-				});
-			}
-		}
-	};
+					element.style.display = 'none';
+					_checkIfShowMessage();
+				},
+				error: function (response, textStatus, errorThrown) {
+					alert('Something went wrong when trying to delete the Contact Form. Please try again.');
+
+					console.error('[Rexpansive] Something went wrong with your deletion AJAX request.', {
+						status: response.status,
+						message: textStatus,
+						errorThrown: errorThrown
+					});
+				},
+				complete: function () {
+					elementImportProps.$self.removeClass('rex-modal--loading');
+				}
+			});
+		});
+	}
 
 	/**
 	 * Edits the element thumbnail.
@@ -399,6 +413,72 @@ var Form_Import_Modal = (function ($) {
 		_deleteElementThumbnail(element_id);
 	};
 
+	/**
+	 * Returns an array of AJAX calls that separate the forms
+	 * with the passed ID in the current page.
+	 * @param		{String}	formID
+	 * @return	{Array}		Array of AJAX calls
+	 * @since		2.0.5
+	 */
+	function _prepareLiveSeparationCalls(formID) {
+		var elementWrappers = $(Rexbuilder_Util_Admin_Editor.frameBuilder.contentDocument)
+			.find('.rex-container .rex-element-wrapper[data-rex-element-id="' + formID + '"]')
+			.get();
+
+		var calls = [];
+
+		elementWrappers.forEach(function (wrapper) {
+			calls.push(
+				$.post(
+					live_editor_obj.ajaxurl,
+					{
+						action: 'rex_separate_form',
+						nonce_param: live_editor_obj.rexnonce,
+						old_id: formID
+					},
+					function (response) {
+						if (!response.success) return;
+
+						var newID = response.data.new_id;
+
+						// Data needed to the below function
+						var partialElementData = {
+							element_target: {
+								element_id: formID,
+								element_number: wrapper.dataset.rexElementNumber
+							}
+						};
+
+						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage({
+							eventName: 'rexlive:separate_rex_element',
+							data_to_send: {
+								newID: newID,
+								elementData: partialElementData
+							}
+						});
+
+						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage({
+							eventName: 'rexlive:refresh_separated_rex_element',
+							data_to_send: {
+								elementID: newID,
+								oldElementID: formID,
+								elementData: partialElementData
+							}
+						});
+
+						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage({
+							eventName: 'rexlive:lock_synchronize_on_element',
+							data_to_send: partialElementData
+						});
+					},
+					'json'
+				)
+			);
+		});
+
+		return calls;
+	}
+
 	function _loadDefaultForms() {
 		$.ajax({
 			type: 'POST',
@@ -437,7 +517,7 @@ var Form_Import_Modal = (function ($) {
 		var elements = elementImportProps.$self.find('.element-list__element').get();
 
 		elements = elements.filter(function (element) {
-			return 'none' !== element.style.display;
+			return 'none' !== $(element).css('display');
 		});
 
 		if (0 === elements.length) {
@@ -1182,7 +1262,7 @@ var Form_Import_Modal = (function ($) {
 		updateList: updateList,
 
 		//Element functions
-		deleteElement: deleteElement,
+		deleteForm: deleteForm,
 		editElementThumbnail: editElementThumbnail,
 		resetElementThumbnail: resetElementThumbnail
 	};

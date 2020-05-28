@@ -23,7 +23,7 @@ var Rexlive_RexSlider_TextEditor = (function($) {
     if (typeof id != "undefined" && id !== null) {
       $save_button.val(id);
     }
-  
+	
     if (typeof tinyMCE_editor === "undefined" || tinyMCE_editor === null) { // text editor
       $('#rexbuilder_editor').val(content);
       $('#rexbuilder_editor').text(content);
@@ -71,14 +71,15 @@ var Rexlive_RexSlider_TextEditor = (function($) {
       var editor = $('#rexbuilder_editor');
       var editor_value = editor.val();
       var $blockToSave = $($(this).val());
-      var block_type = $blockToSave.attr('data-block_type');
-
+			var block_type = $blockToSave.attr('data-block_type');
+			
       switch (block_type) {
         case 'image':
           $blockToSave.find('.element-preview .backend-image-preview').empty().append(editor_value.replace(/'/ig, "’"));
           break;
         case 'slide':
-          $blockToSave.find('textarea[name=rex-slider--slide-text]').text(editor_value.replace(/'/ig, "’"));
+					$blockToSave.find('textarea[name=rex-slider--slide-text]').text(editor_value.replace(/'/ig, "’"));
+					
           if ("" != editor_value) {
             $blockToSave.find('.rex-slider__slide-edit[value=text]').addClass('rex-slider__slide-edit__field-active-notice');
           } else {
@@ -122,8 +123,8 @@ var Rexlive_RexSlider_TextEditor = (function($) {
 
   var init = function() {
     _cache_variables();
-    _listen_events();
-
+		_listen_events();
+		
     this.$text_editor = $text_editor;
     this.$text_editor_modal_wrap = $text_editor_modal_wrap;
   };
