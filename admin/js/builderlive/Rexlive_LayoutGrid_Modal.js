@@ -37,7 +37,7 @@ var LayoutGrid_Modal = (function($) {
 
   var _setLayout = function(layoutName) {
     section_layout_modal_properties.$choose_layout.prop("checked", ( "fixed" == layoutName ? true : false ) );
-  }
+  };
 
   /**
    * Get the choosed layout. Used with the radio buttons

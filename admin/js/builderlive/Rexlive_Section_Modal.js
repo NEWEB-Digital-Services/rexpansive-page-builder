@@ -5,7 +5,7 @@ var Section_Modal = (function($) {
   var resetData;
 
   var _openSectionModal = function(data, mousePosition) {
-    resetData = data;    
+    resetData = data;
     _clearSectionModal();
     _updateSectionModal(data);
     Rexlive_Modals_Utils.positionModal( section_config_modal_properties.$self, mousePosition );

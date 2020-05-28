@@ -137,9 +137,9 @@
       Rexbuilder_Section_Editor.updateSectionLayoutTool($section,data);
       
       // if('undefined' == typeof e.settings.forged) {
-        //   var layout = ( e.target.checked ? 'fixed' : 'masonry' );
-        //   $section.find('.edit-row-layout-checkbox').prop('checked',layout);
-        // }
+      //   var layout = ( e.target.checked ? 'fixed' : 'masonry' );
+      //   $section.find('.edit-row-layout-checkbox').prop('checked',layout);
+      // }
 
       Rexbuilder_Dom_Util.updateGridLayoutDomProperties($gallery, data.layout);
       galleryInstance.updateGridLayout(data.layout, reverseData);
@@ -533,8 +533,11 @@
         );
       }
 
-      // delegate the Hold Grid logic to collapse grid button
-      $section.find('.collapse-grid').trigger('click');
+      // trigger collapse only if there is the case
+      if ( $section.attr('data-rex-collapse-grid') === e.settings.data_to_send.holdGrid ) {
+        // delegate the Hold Grid logic to collapse grid button
+        $section.find('.collapse-grid').trigger('click');
+      }
     });
 
     $document.on("rexlive:change_section_name", function(e) {
