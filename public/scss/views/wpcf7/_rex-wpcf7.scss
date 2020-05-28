@@ -18,10 +18,13 @@ $input-min-width: 115px;
 			.wpcf7-row {
 				display: flex;
 				width: 100%;
-				min-height: 72px;
 
 				.wpcf7-column {
 					display: flex;
+
+					&.column-empty {
+						min-height: 72px;
+					}
 
 					.wpcf7-column-content {
 						width: 100%;

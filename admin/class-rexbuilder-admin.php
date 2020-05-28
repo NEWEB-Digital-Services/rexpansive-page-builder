@@ -3910,6 +3910,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @since  2.0.0
 	 */
 	public function rex_separate_element() {
+		Rexbuilder_Utilities::write_log($_POST);
 		$nonce = $_POST['nonce_param'];
 		
 		$response = array(

@@ -262,18 +262,14 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 	var _applyChanges = function () {
 		var formDataToIframe = {
 			eventName: 'rexlive:update_wcpf7_page',
-
 			data_to_send: {
 				reverseFormData: jQuery.extend(true, {}, reverseData),
-
 				actionFormData: jQuery.extend(true, {}, elementData),
-
 				needToSave: needToSave
 			}
 		};
 
 		reverseData = jQuery.extend(true, {}, formDataToIframe.data_to_send.actionFormData);
-
 		Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(formDataToIframe);
 	};
 
@@ -810,16 +806,14 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	var _updateFormLive = function (data) {
+		_updateFormDataFromPanel();
+		
 		var formDataToIframe = {
 			eventName: 'rexlive:updateFormLive',
-
 			data_to_send: {
 				element_target: elementData.element_target,
-
 				propertyType: data.type,
-
 				propertyName: data.name,
-
 				newValue: data.value
 			}
 		};
@@ -847,27 +841,18 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 		Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(formDataToIframe);
 	};
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////
-
 	/// LINKING PANEL TOOLS
-
-	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	var _linkNumberInputs = function () {
 		var outputString = '';
 
 		// Border Width
-
 		var _updateBorderWidth = function (newBorderSize) {
-			// outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
-
 			outputString = newBorderSize + 'px';
 
 			_updateFormLive({
 				type: 'border-width',
-
 				name: 'border-width',
-
 				value: outputString
 			});
 		};
@@ -986,14 +971,11 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
 		var _updateColumnsPaddingLeft = function (newColumnsPaddingLeft) {
 			// outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
-
 			outputString = newColumnsPaddingLeft + 'px';
 
 			_updateFormLive({
 				type: 'columns-padding',
-
 				name: 'padding-left',
-
 				value: outputString
 			});
 		};
@@ -1002,9 +984,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
 		_linkKeyUpListenerInputNumber(
 			wpcf7_form_editor_properties.$form_columns_padding_left,
-
 			_updateColumnsPaddingLeft,
-
 			false
 		);
 
@@ -1012,25 +992,19 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
 		var _updateColumnsPaddingRight = function (newColumnsPaddingRight) {
 			// outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
-
 			outputString = newColumnsPaddingRight + 'px';
 
 			_updateFormLive({
 				type: 'columns-padding',
-
 				name: 'padding-right',
-
 				value: outputString
 			});
 		};
 
 		_linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$form_columns_padding_right, false);
-
 		_linkKeyUpListenerInputNumber(
 			wpcf7_form_editor_properties.$form_columns_padding_right,
-
 			_updateColumnsPaddingRight,
-
 			false
 		);
 
@@ -1038,25 +1012,19 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
 		var _updateColumnsPaddingBottom = function (newColumnsPaddingBottom) {
 			// outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
-
 			outputString = newColumnsPaddingBottom + 'px';
 
 			_updateFormLive({
 				type: 'columns-padding',
-
 				name: 'padding-bottom',
-
 				value: outputString
 			});
 		};
 
 		_linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$form_columns_padding_bottom, false);
-
 		_linkKeyUpListenerInputNumber(
 			wpcf7_form_editor_properties.$form_columns_padding_bottom,
-
 			_updateColumnsPaddingBottom,
-
 			false
 		);
 

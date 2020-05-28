@@ -3114,20 +3114,15 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 			if ('acceptance' === inputType) {
 				labelRule += 'font-size: ' + columnContentData.font_size + ';';
-
 				labelRule += 'cursor:pointer;';
 
 				addColumnContentRule(formID, rowNumber, columnNumber, cssSelector + ' .wpcf7-list-item-label', labelRule);
 
 				addColumnContentRule(
 					formID,
-
 					rowNumber,
-
 					columnNumber,
-
 					cssSelector + ' :not(:checked) ~ .wpcf7-list-item-label::before',
-
 					'border-color:' + columnContentData.text_color + ';'
 				);
 
@@ -3137,13 +3132,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 				addColumnContentRule(
 					formID,
-
 					rowNumber,
-
 					columnNumber,
-
 					cssSelector + ' :checked ~ .wpcf7-list-item-label::before',
-
 					checkedRule
 				);
 			}

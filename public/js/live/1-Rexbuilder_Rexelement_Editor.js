@@ -176,43 +176,61 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 	 * @param {Object} payload { formID }
 	 * @since	2.0.5
 	 */
-	function separateCurrentPageForms(payload) {
-		var formID = payload.formID;
+	// function separateCurrentPageForms(payload) {
+	// 	var formID = payload.formID;
 
-		var elementWrappers = Rexbuilder_Util.$rexContainer
-			.find('.rex-element-wrapper[data-rex-element-id="' + formID + '"]')
-			.get();
+	// 	var elementWrappers = Rexbuilder_Util.$rexContainer
+	// 		.find('.rex-element-wrapper[data-rex-element-id="' + formID + '"]')
+	// 		.get();
 
-		elementWrappers.forEach(function (wrapper) {
-			$.post(
-				_plugin_frontend_settings.rexajax.ajaxurl,
-				{
-					action: 'rex_separate_element',
-					nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-					elementID: formID
-				},
-				function (response) {
-					console.log( response );
-					if (!response.success) return;
+	// 	var calls = [];
 
-					var newID = response.data.new_id;
+	// 	elementWrappers.forEach(function (wrapper) {
+	// 		calls.push(
+	// 			$.post(
+	// 				_plugin_frontend_settings.rexajax.ajaxurl,
+	// 				{
+	// 					action: 'rex_separate_element',
+	// 					nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+	// 					old_id: formID
+	// 				},
+	// 				function (response) {
+	// 					console.log(response);
+	// 					if (!response.success) return;
 
-					var partialElementData = {
-						element_target: {
-							element_id: formID,
-							element_number: wrapper.dataset.rexElementNumber
-						}
-					};
+	// 					var newID = response.data.new_id;
 
-					console.log( { elementID: newID, oldElementID: formID, elementData: partialElementData } );
+	// 					var partialElementData = {
+	// 						element_target: {
+	// 							element_id: formID,
+	// 							element_number: wrapper.dataset.rexElementNumber
+	// 						}
+	// 					};
 
-					separateRexElement({ newID: newID, elementData: partialElementData });
-					refreshSeparatedRexElement({ elementID: newID, oldElementID: formID, elementData: partialElementData });
-				},
-				'json'
-			);
-		});
-	}
+	// 					console.log({ newID, oldElementID: formID, elementData: partialElementData });
+
+	// 					separateRexElement({ newID: newID, elementData: partialElementData });
+	// 					refreshSeparatedRexElement({ elementID: newID, oldElementID: formID, elementData: partialElementData });
+	// 				},
+	// 				'json'
+	// 			)
+	// 		);
+	// 	});
+
+	// 	// Can't pass a literal array, so use apply.
+	// 	$.when
+	// 		.apply($, calls)
+	// 		.then(function () {
+	// 			// Do your success stuff
+	// 		})
+	// 		.fail(function () {
+	// 			// Probably want to catch failure
+	// 		})
+	// 		.always(function () {
+	// 			// Or use always if you want to do the same thing
+	// 			// whether the call succeeds or fails
+	// 		});
+	// }
 
 	/**
 	 * Refreshes the element from the shortcode. This happens when we
@@ -247,6 +265,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 				elementID: elementID
 			},
 			success: function (response) {
+				console.log(response);
 				if (!response.success) return;
 
 				var formFieldsString = response.data.form_content.toString().trim();
@@ -755,7 +774,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 		/* --- Element Separation --- */
 		separateRexElement: separateRexElement,
-		separateCurrentPageForms: separateCurrentPageForms,
+		// separateCurrentPageForms: separateCurrentPageForms,
 		refreshSeparatedRexElement: refreshSeparatedRexElement
 	};
 })(jQuery);

@@ -395,6 +395,7 @@ class Rexbuilder_Utilities {
 	* @return [int] The duplicated Post ID
 	*/
 	public static function duplicate($post_id) {
+		self::write_log($post_id);
 		$title   = get_the_title($post_id);
 		$oldpost = get_post($post_id);
 		$post    = array(
@@ -403,7 +404,9 @@ class Rexbuilder_Utilities {
 		  'post_type' => $oldpost->post_type,
 		  'post_author' => 1
 		);
-		$new_post_id = wp_insert_post($post);
+		self::write_log($post);
+		$new_post_id = wp_insert_post($post, true);
+		self::write_log($new_post_id);
 		// Copy post metadata
 		$data = get_post_custom($post_id);
 		foreach ( $data as $key => $values) {

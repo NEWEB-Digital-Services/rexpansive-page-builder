@@ -22,7 +22,6 @@ $input-min-width: 115px;
 			.wpcf7-row {
 				display: flex;
 				width: 100%;
-				min-height: 72px;
 				position: relative;
 
 				&:hover {
@@ -33,19 +32,20 @@ $input-min-width: 115px;
 				.wpcf7-column {
 					display: flex;
 
-					&:hover {
+					// &:hover {
 						.wpcf7-add-new-form-content {
 							display: block;
 						}
-					}
+					// }
 
 					&.with-button {
+						min-height: 72px;
 						justify-content: center;
 					}
 
 					.wpcf7-add-new-form-content {
 						margin: auto 0;
-						display: none;
+						// display: none;
 					}
 
 					.wpcf7-add-new-row {

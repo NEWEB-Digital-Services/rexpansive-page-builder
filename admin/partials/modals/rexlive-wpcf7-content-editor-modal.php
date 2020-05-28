@@ -393,16 +393,19 @@ defined('ABSPATH') or exit;
 					<?php wp_editor(
 							'',
 							'wpcf7_text_editor',
-							array('textarea_rows' => 10,
+							array(
 								'default_editor' => 'TinyMCE',
+								'textarea_rows' => 10,
 								'wpautop' => false,
 								'editor_height' => 100,
 								'media_buttons' => false,
-								'teeny' => false,
 								'tinymce' => array(
-								// 'toolbar1' => 'bold',    // Toolbar fields
-										'block_formats' => 'Paragraph=p;'
+									// 'toolbar1' => 'bold',    // Toolbar fields
+									'block_formats' => 'Paragraph=p;'
 								),
+								'quicktags' => array( 
+									'buttons' => 'strong,em,del,ins,underline,link,code,ul,ol,li,more,close'
+								)
 							)
 					);?>
 				</div>
