@@ -1290,7 +1290,7 @@
 						y: 0,
 						w: this.gridBlocks[ i ].w,
 						h: this.gridBlocks[ i ].h
-					} )
+					} );
 					this.gridBlocks[ i ].hide = false;
 				} else {
 					this.gridBlocks[ i ].hide = true;

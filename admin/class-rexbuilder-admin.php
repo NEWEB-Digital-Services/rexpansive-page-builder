@@ -859,7 +859,10 @@ class Rexbuilder_Admin {
 		$page_info = get_current_screen();
 
 		if ( isset( $page_info ) && $this->builder_active_on_this_post_type_list( $page_info->post_type ) ) {
-			$actions['rexbuilder'] = '<b><a target="_blank" href="' . admin_url( 'post.php?post=' . $post_object->ID . '&action=edit&rexlive=true' ) . '">REXPANSIVE</a></b>';
+			$active = get_post_meta( $post_object->ID, '_rexbuilder_active', true );
+			if ( 'true' == $active ) {
+				$actions['rexbuilder'] = '<b><a target="_blank" href="' . admin_url( 'post.php?post=' . $post_object->ID . '&action=edit&rexlive=true' ) . '">REXPANSIVE</a></b>';
+			}
 		}
 
 		return $actions;
