@@ -201,11 +201,11 @@ For the more experienced among us: you can insert CSS anywhere.
 == Changelog ==
 
 = 2.0.5 – =
- * Fixed: RexModel ID and Label for the navigator
- * Fixed: Grid on mobile and reset row properties
  * Fixed: On a copied row, text editor doesn't work
  * Fixed: On an imported template, at the first moment the tools are not correctly visible
  * Fixed: On an import template, text editor doesn't work
+ * Fixed: When deleting a RexButton from the list, separates the ones accross the pages
+ * Fixed: Images url on installed contents
  * Update: On image size change, if user set natural, the block auto resizes to fit image
  * Update: Block dimensions indicator is now at bottom left of the block
  * Update: When dragging a RexButton the lateral menu disappears / appears acording to the mouse position

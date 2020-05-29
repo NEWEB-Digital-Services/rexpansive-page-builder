@@ -4,11 +4,11 @@
 	<changelog>
 		<![CDATA[
 			<h4><strong>v2.0.5</strong> – </h4>
-			<p><strong>Fixed</strong>: RexModel ID and Label for the navigator</p>
-			<p><strong>Fixed</strong>: Grid on mobile and reset row properties</p>
 			<p><strong>Fixed</strong>: On a copied row, text editor doesn't work</p>
 			<p><strong>Fixed</strong>: On an imported template, at the first moment the tools are not correctly visible</p>
 			<p><strong>Fixed</strong>: On an imported template, text editor doesn't work</p>
+			<p><strong>Fixed</strong>: When deleting a RexButton from the list, separates the ones accross the pages</p>
+ 			<p><strong>Fixed</strong>: Images url on installed contents</p>
 			<p><strong>Update</strong>: Block dimensions indicator is now at bottom left of the block</p>
 			<p><strong>Update</strong>: On image size change, if user set natural, the block auto resizes to fit image</p>
 			<p><strong>Update</strong>: When dragging a RexButton the lateral menu disappears / appears acording to the mouse position</p>
