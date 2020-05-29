@@ -200,33 +200,37 @@ For the more experienced among us: you can insert CSS anywhere.
 
 == Changelog ==
 
-= 2.0.5 – =
+= 2.0.5 – May 29, 2020 =
+ * Added: Confirm/Reset buttons to confirm or reset changes made inside a modal or with a color picker
+ * Added: Row label, to customize the navigator labels
+ * Added: Reset button on rows and blocks to reset their properties with the "Desktop" default
+ * Added: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. Old forms will not be affected
+ * Updated: On image size change, if user set natural, the block auto resizes to fit image
+ * Updated: Block dimensions indicator is now at bottom left of the block
+ * Updated: When dragging a RexButton the lateral menu disappears / appears acording to the mouse position
+ * Updated: When dragging a RexButton the placeholder is more visible
+ * Updated: Photoswipe on a RexSlider opens only the images in the slider
+ * Updated: Change a row or a block property on layouts different from default, saves only that property, leaving the other properties synchronized with the "Desktop" default ones
  * Fixed: On a copied row, text editor doesn't work
  * Fixed: On an imported template, at the first moment the tools are not correctly visible
  * Fixed: On an import template, text editor doesn't work
  * Fixed: When deleting a RexButton from the list, separates the ones accross the pages
  * Fixed: Images url on installed contents
- * Update: On image size change, if user set natural, the block auto resizes to fit image
- * Update: Block dimensions indicator is now at bottom left of the block
- * Update: When dragging a RexButton the lateral menu disappears / appears acording to the mouse position
- * Update: When dragging a RexButton the placeholder is more visible
- * Update: Photoswipe on a RexSlider opens only the images in the slider
- * Update: Change a row or a block property on layouts different from default, saves only that property, leaving the other properties synchronized with the default ones
- * Add: Confirm/Reset buttons to confirm or reset changes made inside a modal or with a color picker
- * Add: Row label, to customize the navigator labels
- * Add: Reset button on rows and blocks to reset their properties with the default
- * Add: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. Old forms will not be affected
 
 = 2.0.4 – April 29, 2020 =
- * Update: Improved performances on frontend
- * Update: Navigator style
- * Add: Lazy load content by default on every page
+ * Added: Lazy load content by default on every page
+ * Updated: Improved performances on frontend
+ * Updated: Navigator style
  * Fixed: Block heights calculation
  * Fixed: When a lot of text was copied within a block, the top bar disappeared
  * Fixed: Builder tools style problems with TwentyTwenty Theme
  * Fixed: Zoom all images and RexSlider
 
 = 2.0.3 – February 13, 2020 =
+* Added: Fast Load (loads images and videos on page scroll)
+* Added: Custom class for the RexButton
+* Added: Inline icon option
+* Updated: Mp4 videos are not cut
 * Fixed: Block heights on other layouts than default
 * Fixed: Pasting text inside other text
 * Fixed: Page cloning with a RexSlider
@@ -235,18 +239,15 @@ For the more experienced among us: you can insert CSS anywhere.
 * Fixed: Delete of a copied row with a video block
 * Fixed: Block with link and photoswipe
 * Fixed: Block with RexSlider height
-* Added: Fast Load (loads images and videos on page scroll)
-* Added: Custom class for the RexButton
-* Added: Inline icon option
-* Update: Mp4 videos are not cut
 
 = 2.0.2 - November 15, 2019 =
 * Added: Hold grid button (prevents collapse on mobile)
-* Update: Background image on block with text remains full when added
+* Updated: Background image on block with text remains full when added
 * Fixed: Mp4 video size
 * Fixed: YouTube video position
 
 = 2.0.1 - October 28, 2019 =
+* Added: Replace an inserted icon
 * Fixed: Install default contents (models, buttons, icons)
 * Fixed: Block heights calculation
 * Fixed: Draft editing
@@ -255,10 +256,9 @@ For the more experienced among us: you can insert CSS anywhere.
 * Fixed: Overlay on slider blocks
 * Fixed: Video inside slider on iOS
 * Fixed: Inline YouTube video
-* Added: Replace an inserted icon
 
 = 2.0.0 - August 23, 2019 =
-* Update: LIVE Page Builder available!!
+* Updated: LIVE Page Builder available!!
 
 = 1.0.10 - June 29, 2017 =
 * Added: Draggable windows on Rexpansive Builder
@@ -279,10 +279,10 @@ For the more experienced among us: you can insert CSS anywhere.
 
 = 1.0.6 – January 17, 2017 =
 * Added: Now you can see the dimensions of the blocks in the backend area
-* Changed: Now when you change the behaviour of the row between masonry and grid, the type of the images remains the original
+* Updated: Now when you change the behaviour of the row between masonry and grid, the type of the images remains the original
 
 = 1.0.5 – July 20, 2016 =
-* Changed: Default unit measure of the block internal padding; now it’s in pixels
+* Updated: Default unit measure of the block internal padding; now it’s in pixels
 * Fixed: When you insert an image you can choose correctly its size, using the Media Upload panel
 
 = 1.0.4 – May 10, 2016 =

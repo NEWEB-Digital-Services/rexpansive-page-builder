@@ -3,31 +3,35 @@
 	<latest>2.0.5</latest>
 	<changelog>
 		<![CDATA[
-			<h4><strong>v2.0.5</strong> – </h4>
-			<p><strong>Fixed</strong>: On a copied row, text editor doesn't work</p>
-			<p><strong>Fixed</strong>: On an imported template, at the first moment the tools are not correctly visible</p>
-			<p><strong>Fixed</strong>: On an imported template, text editor doesn't work</p>
-			<p><strong>Fixed</strong>: When deleting a RexButton from the list, separates the ones accross the pages</p>
- 			<p><strong>Fixed</strong>: Images url on installed contents</p>
+			<h4><strong>v2.0.5</strong> – May 29, 2020</h4>
+			<p><strong>Added</strong>: Confirm/Reset buttons to confirm or reset changes made inside a modal or with a color picker</p>
+			<p><strong>Added</strong>: Row label, to customize the navigator labels</p>
+			<p><strong>Added</strong>: Reset button on rows and blocks to reset their properties with the "Desktop" default</p>
+			<p><strong>Added</strong>: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. Old forms will not be affected</p>
 			<p><strong>Update</strong>: Block dimensions indicator is now at bottom left of the block</p>
 			<p><strong>Update</strong>: On image size change, if user set natural, the block auto resizes to fit image</p>
 			<p><strong>Update</strong>: When dragging a RexButton the lateral menu disappears / appears acording to the mouse position</p>
 			<p><strong>Update</strong>: When dragging a RexButton the placeholder is more visible</p>
 			<p><strong>Update</strong>: Photoswipe on a RexSlider opens only the images in the slider</p>
-			<p><strong>Update</strong>: Changing a row or a block property on layouts different from default, save only that property, leaving the other properties synchronized with the default ones</p>
-			<p><strong>Add</strong>: Confirm/Reset buttons to confirm or reset changes made inside a modal or with a color picker</p>
-			<p><strong>Add</strong>: Row label, to customize the navigator labels</p>
-			<p><strong>Add</strong>: Reset button on rows and blocks to reset their properties with the default</p>
-			<p><strong>Add</strong>: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. Old forms will not be affected</p>
+			<p><strong>Update</strong>: Change a row or a block property on layouts different from default, saves only that property, leaving the other properties synchronized with the "Desktop" default ones</p>
+			<p><strong>Fixed</strong>: On a copied row, text editor doesn't work</p>
+			<p><strong>Fixed</strong>: On an imported template, at the first moment the tools are not correctly visible</p>
+			<p><strong>Fixed</strong>: On an imported template, text editor doesn't work</p>
+			<p><strong>Fixed</strong>: When deleting a RexButton from the list, separates the ones accross the pages</p>
+ 			<p><strong>Fixed</strong>: Images url on installed contents</p>
 			<h4><strong>v2.0.4</strong> – April 29, 2020</h4>
+			<p><strong>Added</strong>: Lazy load content by default on every page</p>
 			<p><strong>Update</strong>: Improved performances on frontend</p>
 			<p><strong>Update</strong>: Navigator style</p>
-			<p><strong>Add</strong>: Lazy load content by default on every page</p>
 			<p><strong>Fixed</strong>: Block heights calculation</p>
 			<p><strong>Fixed</strong>: When a lot of text was copied within a block, the top bar disappeared</p>
 			<p><strong>Fixed</strong>: Builder tools style problems with TwentyTwenty Theme</p>
 			<p><strong>Fixed</strong>: Zoom all images and RexSlider</p>
 			<h4><strong>v2.0.3</strong> – February 13, 2020</h4>
+			<p><strong>Added</strong>: Fast Load (loads images and videos on page scroll)</p>
+			<p><strong>Added</strong>: Custom class for the RexButton</p>
+			<p><strong>Added</strong>: Inline icon option</p>
+			<p><strong>Update</strong>: Mp4 videos are not cut</p>
 			<p><strong>Fixed</strong>: Block heights on other layouts than default</p>
 			<p><strong>Fixed</strong>: Pasting text inside other text</p>
 			<p><strong>Fixed</strong>: Page cloning with a RexSlider</p>
@@ -36,16 +40,13 @@
 			<p><strong>Fixed</strong>: Delete of a copied row with a video block</p>
 			<p><strong>Fixed</strong>: Block with link and photoswipe</p>
 			<p><strong>Fixed</strong>: Block with RexSlider height</p>
-			<p><strong>Added</strong>: Fast Load (loads images and videos on page scroll)</p>
-			<p><strong>Added</strong>: Custom class for the RexButton</p>
-			<p><strong>Added</strong>: Inline icon option</p>
-			<p><strong>Update</strong>: Mp4 videos are not cut</p>
 			<h4><strong>v2.0.2</strong> – November 15, 2019</h4>
 			<p><strong>Added</strong>: Hold grid button (prevents collapse on mobile)</p>
 			<p><strong>Update</strong>: Background image on block with text remains full when added</p>
 			<p><strong>Fixed</strong>: Mp4 video size</p>
 			<p><strong>Fixed</strong>: YouTube video position</p>
 			<h4><strong>v2.0.1</strong> – October 28, 2019</h4>
+			<p><strong>Added</strong>: Replace an inserted icon</p>
 			<p><strong>Fixed</strong>: Install default contents (models, buttons, icons)</p>
 			<p><strong>Fixed</strong>: Block heights calculation</p>
 			<p><strong>Fixed</strong>: Draft editing</p>
@@ -54,7 +55,6 @@
 			<p><strong>Fixed</strong>: Overlay on slider blocks</p>
 			<p><strong>Fixed</strong>: Video inside slider on iOS</p>
 			<p><strong>Fixed</strong>: Inline YouTube video</p>
-			<p><strong>Added</strong>: Replace an inserted icon</p>
 			<h4><strong>v2.0.0</strong> – August 22, 2019</h4>
 			<p><strong>Update</strong>: LIVE Page Builder available!!</p>
 			<h4><strong>v1.1.4</strong> – December 28, 2018</h4>
@@ -123,12 +123,12 @@
 			<p><strong>Fixed</strong>: Fixed TextFill for any url</p>
 			<h4><strong>v1.0.6</strong> - November 23, 2016</h4>
 			<p><strong>Added</strong>: Now you can see the dimensions of the blocks in the backend area</p>
-			<p><strong>Changed</strong>: Now when you change the behaviour of the row between masonry and grid, the type of the images remains the original</p>
+			<p><strong>Updated</strong>: Now when you change the behaviour of the row between masonry and grid, the type of the images remains the original</p>
 			<h4><strong>v1.0.5</strong> - July 20, 2016</h4>
 			<p><strong>Added</strong>: Now you can set the borders of a entire row</p>
 			<p><strong>Added</strong>: Now you can set the zoom on all the images of a row only with one click!</p>
-			<p><strong>Changed</strong>: Changed the behavoiur of a full image on a masonry row; it fits the content block</p>
-			<p><strong>Changed</strong>: Changed the default unit measure of the block internal padding; now it's in pixels</p>
+			<p><strong>Updated</strong>: Changed the behavoiur of a full image on a masonry row; it fits the content block</p>
+			<p><strong>Updated</strong>: Changed the default unit measure of the block internal padding; now it's in pixels</p>
 			<p><strong>Fixed</strong>: When you insert an image you can choose correctly its size, using the Media Upload panel</p>
 			<p><strong>Fixed</strong>: The vertical navigation dots now are under the zoom of photo</p>
 			<h4><strong>v1.0.4</strong> - May 10, 2016</h4>
@@ -140,7 +140,7 @@
 			<p><strong>Fixed</strong>: Fixed the TextFill</p>
 			<p><strong>Fixed</strong>: Fixed the TextResize</p>
 			<h4><strong>v1.0.2</strong> - April 15, 2016</h4>
-			<p><strong>Changed</strong>: now if you choose full-height on a boxed section, its content fits the device height</p>
+			<p><strong>Updated</strong>: now if you choose full-height on a boxed section, its content fits the device height</p>
 			<p><strong>Fixed</strong>: Fixed a tooltip problem on the page builder</p>
 			<p><strong>Fixed</strong>: Fixed a bug on the vertical navigation if the user insert a section name with a special character</p>
 			<p><strong>Fixed</strong>: Fixed a bug on the page builder with the visualization of empty, transparent and natural image blocks</p>
