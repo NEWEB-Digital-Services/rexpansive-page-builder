@@ -8,8 +8,8 @@
   "scripts": {
     "dev": "gulp dev --development",
     "build": "gulp build --production",
-    "deploy:win": "gulp build --production && gulp standardBuild --production",
-    "deploy:mac": "gulp build --production && gulp macBuild --production"
+    "deploy:win": "gulp deployWin --production",
+    "deploy:mac": "gulp deployMac --production"
   },
   "devDependencies": {
     "eslint-config-google": "^0.9.1",
