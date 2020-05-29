@@ -18,7 +18,7 @@
  * Description:       The new and awesome plugin to build a page in 1 minute! Expand your mind!
  * Version:           2.0.5
  * Author:            NEWEB - Digital Agency
- * Author URI:        https://www.neweb.info/      
+ * Author URI:        https://www.neweb.info/
  * Text Domain:       rexpansive-builder
  * Domain Path:       /languages
  */

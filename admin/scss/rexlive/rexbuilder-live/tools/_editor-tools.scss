@@ -1,7 +1,7 @@
 // LIVE
 .text-wrap {
   ::selection {
-    background: rgba($palette-color-1, 0.5);
+		background: rgba($palette-color-1, 0.5);
   }
 }
 
@@ -258,7 +258,7 @@
     font-size: 10px;
     @include fill-icon(#000);
     @include bl-btn--hover-shadow;
-    
+
     &[data-addon="wordpressImages"] {
       padding: 0;
       overflow: hidden;
@@ -404,7 +404,7 @@ input.me-insert-embed__value[type=text] {
   }
 }
 
-.medium-insert-embeds, 
+.medium-insert-embeds,
 .mediumInsert-embeds {
   max-width: 400px;
   margin: 0 auto;

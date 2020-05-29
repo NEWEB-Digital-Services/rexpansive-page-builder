@@ -1,6 +1,6 @@
 /**
  * Object that handles the live text editor inside the blocks
- * 
+ *
  * @since 2.0.0
  */
 var TextEditor = (function ($) {
@@ -48,7 +48,7 @@ var TextEditor = (function ($) {
 
   /**
    * @deprecated
-   * @param {jQuery Element} $textWrap 
+   * @param {jQuery Element} $textWrap
    */
   var _addMediumInsertToElement = function ($textWrap) {
     $textWrap.mediumInsert({
@@ -164,7 +164,7 @@ var TextEditor = (function ($) {
 
   /**
    * Setting a color picker button for a generic medium editor toolbar
-   * 
+   *
    * @param {Node} element DOM element to apply spectrum color picker
    * @param {Function} setFunction call back function to invoce on color change
    * @since 2.0.0
@@ -483,7 +483,7 @@ var TextEditor = (function ($) {
         editorInstance.execAction(action);
       }
     }
-    
+
   });
 
   /**
@@ -1187,7 +1187,7 @@ var TextEditor = (function ($) {
       this.on(this.deleteRexbuttonBtn, "click", this.handleClickDeleteRexbutton.bind(this));
       this.on(this.editRexbuttonBtn, "click", this.handleClickEditRexbutton.bind(this));
     },
-  
+
 
     showAnchorPreview: function (event) {
       var anchorLinkPreview = document.getElementsByClassName("medium-editor-anchor-preview");
@@ -1195,7 +1195,7 @@ var TextEditor = (function ($) {
         anchorLinkPreview[i].style.display = "block";
       }
 		},
-		
+
 		hideAnchorPreview: function (event) {
       var anchorLinkPreview = document.getElementsByClassName("medium-editor-anchor-preview");
       for (var i = 0; i < anchorLinkPreview.length; i++) {
@@ -1277,7 +1277,7 @@ var TextEditor = (function ($) {
       this.rexbuttonToolsTop.style.width = targetCoords.width + "px";
       this.rexbuttonToolsTop.style.left = (targetCoords.left + ((targetCoords.width - this.rexbuttonToolsTop.offsetWidth) / 2)) + "px";
       this.rexbuttonToolsTop.style.top = (window.scrollY + targetCoords.top - this.rexbuttonToolsTop.offsetHeight) + "px";
-      
+
       this.rexbuttonToolsBottom.style.width = targetCoords.width + "px";
       this.rexbuttonToolsBottom.style.left = (targetCoords.left + ((targetCoords.width - this.rexbuttonToolsBottom.offsetWidth) / 2)) + "px";
       // this.rexbuttonToolsBottom.style.top = (window.scrollY + targetCoords.top - this.rexbuttonToolsBottom.offsetHeight) + "px";
@@ -1425,7 +1425,7 @@ var TextEditor = (function ($) {
     },
 
     /**
-     * 
+     *
      * @param {Object} el element to move caret
      * @param {integer} offset caret position
      */
@@ -1441,7 +1441,7 @@ var TextEditor = (function ($) {
 
     /**
      * Checks if there is rexbutton after or before cursor
-     * @param {*} node 
+     * @param {*} node
      */
     isSafeInsert: function (node) {
       var $node = $(node);
@@ -1550,13 +1550,13 @@ var TextEditor = (function ($) {
   /**
    * Custom MediumEditor extension to handle Wordpress Media Library insert
    * and embed iframes
-   * 
+   *
    * Insert Media from Library, 4 dev methods
    * 1) Insert HTML command form Medium Editor
    * 2) Paste HTML from Medium Editor
    * 3) Save/Restore selection from Rangy (cons: creates a lot of spans to memorize selection ranges)
    * 4) TextRange from Rangy
-   * 
+   *
    * Insert Embed from input text
    * @since 2.0.0
    */
@@ -1679,7 +1679,7 @@ var TextEditor = (function ($) {
     },
 
     /**
-     * @param {EVENT} event 
+     * @param {EVENT} event
      */
     handleBlur: function(event) {
       if( $(event.target).parents("#me-edit-inline-image-toolbar").length == 0 && $(event.target).parents("#me-edit-inline-svg-toolbar").length == 0 && !$(event.target).is(".me-insert-embed__value") && 0 == $(event.target).parents(".me-insert-embed").length ) {
@@ -1758,7 +1758,7 @@ var TextEditor = (function ($) {
               break;
             case 4:
               // Method 4)
-              var editor = this.base.getFocusedElement();
+							var editor = this.base.getFocusedElement();
               this.traceSelection = rangy.getSelection().saveCharacterRanges(editor);
               break;
             default:
@@ -1818,7 +1818,7 @@ var TextEditor = (function ($) {
           this.hideEditImgToolbar();
         } else { // If no positive results is received.
           this.hideAllToolbars();
-        } 
+        }
       }
     },
 
@@ -1832,7 +1832,7 @@ var TextEditor = (function ($) {
 
     handleImageInsertReplace: function (event) {
       var imgHTML = '<img class="wp-image-' + event.imgData.idImage + ' ' + event.imgData.align + '" data-image-id="' + event.imgData.idImage + '" src="' + event.imgData.urlImage + '" alt="" width="' + event.imgData.width + '" height="' + event.imgData.height + '">';
-      
+
       // handling image with external link inside
       if( '' !== event.displayData.linkUrl )
       {
@@ -1850,14 +1850,14 @@ var TextEditor = (function ($) {
           // Method 3)
           if (this.traceSelection) {
             rangy.restoreSelection(this.traceSelection);
-            var range = this.getFirstRange();        
+            var range = this.getFirstRange();
           }
           break;
         case 4:
           // Method 4)
           if (this.traceSelection) {
             rangy.getSelection().restoreCharacterRanges(this.traceEditor, this.traceSelection);
-            var range = this.getFirstRange();            
+            var range = this.getFirstRange();
             range.refresh();
           }
           break;
@@ -1880,7 +1880,7 @@ var TextEditor = (function ($) {
             // select the wrapping link if present
             if ( event.displayData.previousLink )
             {
-              restoreRange.selectNode(this.traceImg.parentElement);  
+              restoreRange.selectNode(this.traceImg.parentElement);
             }
             else
             {
@@ -1953,10 +1953,10 @@ var TextEditor = (function ($) {
                     wrapTagName = "p";
                   }
 
-                  this.wrap( imgNode, document.createElement(wrapTagName) );                  
+                  this.wrap( imgNode, document.createElement(wrapTagName) );
                 }
               default:
-                break;                
+                break;
             }
           }
           break;
@@ -2069,7 +2069,7 @@ var TextEditor = (function ($) {
         if("undefined" === typeof this.traceImg.getAttribute("inline-photoswipe")) {
           this.traceImg.setAttribute("inline-photoswipe", true);
         } else {
-          this.traceImg.setAttribute("inline-photoswipe", 
+          this.traceImg.setAttribute("inline-photoswipe",
             this.traceImg.getAttribute("inline-photoswipe") == "true" ? false : true
           );
         }
@@ -2224,10 +2224,10 @@ var TextEditor = (function ($) {
       //this.videoEditToolbar.classList.add("medium-editor-toolbar-active");
     },
 
-    viewEditInlineSVGToolbar: function( target ) 
+    viewEditInlineSVGToolbar: function( target )
     {
 			this.traceSVG = target;
-			
+
       this.placeEditInlineSVGToolbar();
       this.checkToolbarTools();
       this.inlineSVGEditToolbar.classList.add("medium-editor-toolbar-active");
@@ -2289,13 +2289,13 @@ var TextEditor = (function ($) {
     {
       var that = this;
       var inlineSVGCoords = this.traceSVG.getBoundingClientRect();
-      
+
       this.mirrorSVGResize.style.width = inlineSVGCoords.width + "px";
       this.mirrorSVGResize.style.height = inlineSVGCoords.height + "px";
       this.mirrorSVGResize.style.top = inlineSVGCoords.top + window.scrollY + "px";
       this.mirrorSVGResize.style.left = inlineSVGCoords.left + window.scrollX + "px";
       this.mirrorSVGResize.style.display = "block";
-      
+
       var $mirrorSVGResize = $(this.mirrorSVGResize);
       var $resizable = $(this.traceSVG).parents('i');
 
@@ -2332,13 +2332,13 @@ var TextEditor = (function ($) {
     videoResizableEnable: function() {
       var that = this;
       var videoCoords = this.traceVideo.getBoundingClientRect();
-      
+
       this.mirrorVideoResize.style.width = videoCoords.width + "px";
       this.mirrorVideoResize.style.height = videoCoords.height + "px";
-      this.mirrorVideoResize.style.top = videoCoords.top + window.scrollY + "px"; 
+      this.mirrorVideoResize.style.top = videoCoords.top + window.scrollY + "px";
       this.mirrorVideoResize.style.left = videoCoords.left + window.scrollX + "px";
       this.mirrorVideoResize.style.display = "block";
-      
+
       var $mirrorVideoResize = $(this.mirrorVideoResize);
       var $resizable = $(this.traceVideo);
 
@@ -2374,9 +2374,9 @@ var TextEditor = (function ($) {
     handleRemoveInlineElement: function(event){
 
       this.hideAllToolbars();
-      
+
     // var baseElementsOneInnerHTML = this.base.elements[1].innerHTML;
-    //   var baseElementsOneInnerTEXT = this.base.elements[1].innerText;    
+    //   var baseElementsOneInnerTEXT = this.base.elements[1].innerText;
     //   console.log(this.base.elements[1].innerHTML);
     //   console.log(this.base.elements[1].innerText);
     //   if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) || MediumEditor.util.isKey(event, MediumEditor.util.keyCode.DELETE)) {
@@ -2389,7 +2389,7 @@ var TextEditor = (function ($) {
     //         this.hideEditVideoToolbar();
     //       }
     //     }
-    //   }   
+    //   }
 
     },
 
@@ -2438,7 +2438,7 @@ var TextEditor = (function ($) {
       if( this.traceImg ) {
         if( 'undefined' !== typeof $(this.mirrorResize).data('uiResizable') ) {
           $(this.mirrorResize).resizable("destroy");
-        }        
+        }
         this.mirrorResize.style.display = "";
         this.mirrorResize.style.margin = "";
         this.mirrorResize.style.position = "";
@@ -2453,14 +2453,14 @@ var TextEditor = (function ($) {
       if( this.traceVideo ) {
         if( 'undefined' !== typeof $(this.mirrorVideoResize).data('uiResizable') ) {
           $(this.mirrorVideoResize).resizable("destroy");
-        }       
+        }
         this.mirrorVideoResize.style.display = "";
         this.mirrorVideoResize.style.margin = "";
         this.mirrorVideoResize.style.position = "";
         this.mirrorVideoResize.style.top = "";
         this.mirrorVideoResize.style.left = "";
       }
-      this.traceVideo = null;     
+      this.traceVideo = null;
       //this.videoEditToolbar.classList.remove("medium-editor-toolbar-active");
     },
 
@@ -2468,7 +2468,7 @@ var TextEditor = (function ($) {
       if( this.traceSVG ) {
         if( 'undefined' !== typeof $(this.mirrorSVGResize).data('uiResizable') ) {
           $(this.mirrorSVGResize).resizable("destroy");
-        }        
+        }
         this.mirrorSVGResize.style.display = "";
         this.mirrorSVGResize.style.margin = "";
         this.mirrorSVGResize.style.position = "";
@@ -2491,12 +2491,12 @@ var TextEditor = (function ($) {
       this.hideEditInlineSVGToolbar();
     },
 
-    pasteMediaHTML: function(html) {  
+    pasteMediaHTML: function(html) {
       this.base.restoreSelection();
       html = '<div class="media-embed-wrap">' + html + '</div>';
       this.base.pasteHTML(html, {
         cleanPastedHTML: false,
-        cleanAttrs: ['dir'] 
+        cleanAttrs: ['dir']
       });
       this.hideAllToolbars();
       this.mediaBtn.classList.remove("embed-value-visibile");
@@ -2582,7 +2582,7 @@ var TextEditor = (function ($) {
               that.traceEditor.focus();
             }
           });
-        }        
+        }
       // This brace closes the "IF" element on line 1613. -A
       // }
     },
@@ -2650,26 +2650,26 @@ var TextEditor = (function ($) {
             var prevEl = iconNode.previousElementSibling;
             var nextEl = iconNode.nextElementSibling;
             var wrapTagName = "";
-  
+
             if( nextEl ) {
               wrapTagName = nextEl.tagName.toLowerCase();
             } else if ( prevEl ) {
               wrapTagName = prevEl.tagName.toLowerCase();
             }
-            
+
             if( this.emptyLine(nextEl) ) {
               rangy.dom.removeNode(nextEl);
             }
-  
+
             if( this.emptyLine(prevEl) ) {
               rangy.dom.removeNode(prevEl);
             }
-  
+
             if( "div" === wrapTagName || "span" === wrapTagName || "" === wrapTagName ) {
               wrapTagName = "p";
             }
-  
-            this.wrap( iconNode, document.createElement(wrapTagName) );                  
+
+            this.wrap( iconNode, document.createElement(wrapTagName) );
           }
         }
       }
@@ -2696,10 +2696,10 @@ var TextEditor = (function ($) {
     checkContent: function(event) {
       if ("click" == event.type) {
 				var editor = this.base.getFocusedElement();
-				
+
         if ( this.checkOnlyIcons(editor) ) {
 					var svg = event.currentTarget;
-					
+
           // go deep until the element has no childs
           while( svg.childElementCount !== 0 ) {
             svg = svg.children[svg.childElementCount-1];
@@ -2712,7 +2712,7 @@ var TextEditor = (function ($) {
 
           if ( svg.tagName.toUpperCase() === 'SVG' ) {
             svg = svg.parentNode;
-          }          
+          }
 
           // create a space to allow the editing
           var fix = document.createElement('span');
@@ -3367,7 +3367,7 @@ var TextEditor = (function ($) {
         hideOnClick: false
       },
 		});
-		
+
     _addEditableInputEvents();
   };
 
@@ -3377,7 +3377,7 @@ var TextEditor = (function ($) {
 
   /**
    * Removes medium editor placeholder of the $textWrap passed via parameter
-   * @param {JQuery} $textWrap 
+   * @param {JQuery} $textWrap
    */
   var _removePlaceholder = function ($textWrap) {
     editorInstance.getExtensionByName("placeholder").hidePlaceholder($textWrap[0]);
