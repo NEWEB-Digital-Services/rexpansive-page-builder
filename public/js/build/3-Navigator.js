@@ -4,16 +4,16 @@ var Rex_Navigator = (function ($) {
   var verticalNav;
   var $touch_navigation_links;
 	var navigationItems;
-	
+
   var $sections;
   var sections;
 	var tot_sections;
 	var sectionsWithID;
 	var tot_sectionsWithID;
 
-
   var _updateNavigatorDom = function ($navigatorWrap) {
-    var $sections = Rexbuilder_Util.$rexContainer.children(".rexpansive_section");
+		var $sections = Rexbuilder_Util.$rexContainer.children(".rexpansive_section");
+
     $sections.each(function (i, sec) {
       var $section = $(sec);
       var name = $section.attr("data-rexlive-section-name");
@@ -25,7 +25,7 @@ var Rex_Navigator = (function ($) {
           sectionID: newSafeName,
           number: i + 1
 				});
-				
+
         $navigatorWrap.children("ul").append(navItem);
       }
     });
@@ -50,13 +50,13 @@ var Rex_Navigator = (function ($) {
       }
     });
   }
-	
+
 	/**
 	 * Updates the active element of the navigator.
 	 * @returns	{void}
 	 * @since		?.?.?
 	 * @version	2.0.4			Changed in vanilla js
-	 * 
+	 *
 	 * Use this function if you want to keep in memory
 	 * last section with an ID visited
 	 */
@@ -291,7 +291,7 @@ var Rex_Navigator = (function ($) {
     }
 
 		verticalNav = document.querySelector('.vertical-nav');
-		
+
     if ( verticalNav ) {
       Rexbuilder_Util.$window.on('scroll', function () {
         updateNavigation();
@@ -301,7 +301,7 @@ var Rex_Navigator = (function ($) {
     }
 
 		updateNavigator();
-		
+
 		_prepareNavigationLabel();
   }
 

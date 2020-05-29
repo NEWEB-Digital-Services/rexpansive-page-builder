@@ -6,7 +6,6 @@ var BlockOptions_Modal = (function($) {
 
   var _openBlockOptionsModal = function(data) {
     resetData = data;
-    console.log(resetData)
     _updateBlockOptionsModal( data );
     Rexlive_Modals_Utils.openModal(
       block_options_properties.$self.parent(".rex-modal-wrap")
@@ -71,7 +70,7 @@ var BlockOptions_Modal = (function($) {
       e.preventDefault();
       _closeBlockOptionsModal( true );
     });
-    
+
     // confirm-refresh options
     block_options_properties.$options_buttons.on('click', function(event) {
       event.preventDefault();

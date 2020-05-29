@@ -28,11 +28,11 @@ var Rexpansive_Builder_Admin_Rxcf = (function($) {
       Rexpansive_Builder_Admin_Modals.OpenModal($modal_wrap);
       $panel.addClass('rex-modal--loading');
       $editor.val('');
-      
+
       var cf = {
         id: $(this).attr('data-cfid'),
       };
-      
+
       $save.val(cf.id);
 
       // ajax call to retrieve the shortcode
@@ -75,7 +75,6 @@ var Rexpansive_Builder_Admin_Rxcf = (function($) {
           success: function (response) {
             if (response.success) {
               // $editor.val(response.data.shortcode);
-              console.log(response);
             }
           },
           complete: function(response) {

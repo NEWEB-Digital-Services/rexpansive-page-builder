@@ -90,9 +90,6 @@
         },
 
         refreshGrid: function() {
-            // console.log('refreshGrid');
-            // console.log(this.$element);
-
             this._defineDynamicPrivateProperties();
 
             this._setGridPadding();
@@ -103,7 +100,6 @@
             var G = this;
             this.$element.packery('layout');
             $('.perfect-grid-item').each(function () {
-                console.log('refreshing item');
                 G.fitLayoutGrid(this);
             });
         },
@@ -318,12 +314,10 @@
 
         // Calculate fixed blocks height
         _calculateBlockHeightFixed: function () {
-            //console.log('calculating block height');
             var Gallery = this;
             this.$element.find(this.settings.itemSelector + ':not(.horizontal-carousel):not(.wrapper-expand-effect)')
                 .add(this.$element.find(this.settings.itemSelector + '.only-gallery'))
                 .each(function () {
-                    // console.log($(this).attr('id'), '->', $(this).attr('data-height'));
                     $(this).height((Gallery.properties.singleWidth * $(this).attr('data-height')) - (Gallery.properties.halfSeparator * 2));
                 });
         },
@@ -365,9 +359,7 @@
 
         _setParentGridPadding: function () {
             var $parent = $(this.$element.parent());
-            //console.log('setting grid padding');
             if (this._viewport().width >= 768 && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this._check_parent_class("rex-block-grid"))) {
-                //console.log('setting grid padding');
                 this.properties.setDesktopPadding = true;
                 if( this._check_parent_class("rex-block-grid") ) {
                     this.properties.setMobilePadding = true;
@@ -439,7 +431,6 @@
                 if(this.settings.fullHeight == 'false') {
                     this._calculateBlockHeightFixed();
                 } else {;
-                    // console.log('bbb');
                     var wrap_height = this._viewport().height;
 
                     this.properties.singleWidth = wrap_height / ( this.properties.gridTotalArea / 12 );
@@ -458,7 +449,6 @@
             this.$element.find(this.settings.itemSelector + ':not(.horizontal-carousel):not(.wrapper-expand-effect)')
                 .add(this.$element.find(this.settings.itemSelector + '.only-gallery'))
                 .each(function() {
-                    // console.log($(this).attr('id'), '->', $(this).attr('data-height'));
                     $(this).height( ( Gallery.properties.singleWidth * $(this).attr('data-height') ) - ( Gallery.properties.halfSeparator * 2 ) );
             });
         },

@@ -4,7 +4,7 @@
 
 	var inputElementCheck = function(i) {
 		var id;
-				
+
 		if(typeof this._id === 'undefined') {
 			id = '#' + i;
 		} else {
@@ -14,13 +14,13 @@
 		var $el = jQuery(id);
 
 		if(re_number.test($el.val()) || $el.val() === '' ) {
+			// Correct number
 			$el.css('border-color', '#ddd');
 			check = true;
-			//console.log('numero corretto');
 		} else {
+			// Wrong number
 			$el.css('border-color', 'red');
 			check = check && false;
-			//console.log('numero errato');
 		}
 	};
 
@@ -31,15 +31,15 @@
 	};
 
 	tinymce.PluginManager.add('rexbuilder_textfill_button', function( editor, url ) {
-		editor.addButton( 'rexbuilder_textfill_button', { 
+		editor.addButton( 'rexbuilder_textfill_button', {
 			title: 'Text Fill',
 			icon: 'icon custom-icon',
 			onclick: function() {
-				editor.windowManager.open( { 
+				editor.windowManager.open( {
 					title: 'Insert text fill',
-					body: [{ 
-						type: 'textbox', 
-						name: 'title', 
+					body: [{
+						type: 'textbox',
+						name: 'title',
 						label: 'Your text',
 						autofocus: true
 					},
@@ -75,8 +75,8 @@
 						classes: 'tf-background-color'
 					},
 					{
-						type: 'textbox', 
-						name: 'maxFontSize', 
+						type: 'textbox',
+						name: 'maxFontSize',
 						label: 'Max Font Size',
 					},
 					{
@@ -134,7 +134,7 @@
 						label: 'Margin Left',
 						classes: 'marginset',
 						oninput: inputElementCheck
-					}], 
+					}],
 					onsubmit: function( e ) {
 						var window_id = this._id,
 							inputs = jQuery('#' + window_id + '-body').find('.mce-formitem input'),
@@ -180,23 +180,19 @@
 							inputElementCheck(jQuery(this).attr('id'));
 						});
 
-						//console.log(check);
-
 						inputs.filter('.mce-marginset').each(function() {
 							inputElementCheck(jQuery(this).attr('id'));
 						});
-
-						//console.log(check);
 
 						//if(e.data.uploadUrl === '' || !re_weburl.test(e.data.uploadUrl)) { //this control is for production (it doesnt works with localhost)
 						if(e.data.uploadUrl === '') {
 							//editor.windowManager.alert('Plese, insert an image for the background');
 							jQuery(inputs.get(1)).css('border-color', 'red');
 							check = check && false;
-							//console.log('url non presente');
+							// URL not present
 						} else {
-							//console.log('url presente');
-							
+							// URL presente
+
 						}
 
 						//console.log(check);
@@ -252,12 +248,12 @@
 						if( '' !== e.data.marginLeft ) {
 							shortcode += ' margin_left="' + e.data.marginLeft + '"';
 						}
-						shortcode += ']' + e.data.title + '[/TextFill]'; 
+						shortcode += ']' + e.data.title + '[/TextFill]';
 
 						editor.insertContent( shortcode );
 					},
 				});
-			} 
+			}
 		});
 	});
 
@@ -381,5 +377,5 @@
 		//now open the popup
 		textfill_background_frame.open();
 	};
-	
+
 })(jQuery);

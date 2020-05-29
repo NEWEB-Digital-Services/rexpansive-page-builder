@@ -47,11 +47,10 @@ var CustomLayouts_Modal = (function($) {
       },
       success: function(response) {
         if (response.success) {
-          // console.log("custom layouts updated");
+          // custom layouts updated
         }
       },
       error: function(response) {
-        // console.log("error");
       }
     });
   };

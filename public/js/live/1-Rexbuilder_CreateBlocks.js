@@ -46,7 +46,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     e.stopImmediatePropagation();
     var $section = $(e.target).parents(".rexpansive_section");
     var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
-    
+
     // calculate the new block dimensions
     var indx = new IndexedGrid(12);
     var bs = galleryInstance.getGridstackNodes();
@@ -62,12 +62,12 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var new_dim = _findDimension( holes, negGrid );
     var new_w;
     var new_h;
-    
-    if( new_dim.w > 2 && new_dim.h > 2 ) { 
+
+    if( new_dim.w > 2 && new_dim.h > 2 ) {
       new_w = new_dim.w;
       new_h = new_dim.h;
     }
-    
+
     var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, new_w, new_h, "text");
     var el = $el[0];
     TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
@@ -120,7 +120,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
       }
 		}
-		
+
 		var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
 		if (addBlockButton) {
 			blockWidth = 4;
@@ -131,7 +131,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 			blockWidth = ratio <= 50 ? 12 : ratio <= 75 ? 6 : 4;
 			blockHeight = Math.ceil(100 / galleryInstance.properties.singleHeight);
 		}
-		
+
     var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, blockWidth, blockHeight, "text");
     var el = $el[0];
     TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
@@ -141,16 +141,16 @@ var Rexbuilder_CreateBlocks = (function ($) {
     event.target = el;
     event.offsetY = 0;
 		galleryInstance.$element.trigger(event);
-		
+
     Rexbuilder_Util.editedDataInfo.addBlockData( data.sectionTarget.sectionID, el.getAttribute('data-rexbuilder-block-id') );
 
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
 		}
-		
+
 		var ev;
-    
+
     if (addBlockButton) {
 			ev = jQuery.Event('rexlive:completeImportButton');
 			ev.settings = {
@@ -226,7 +226,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         blockW = Math.max(Math.round(w * 6 / gridWidth), 1);
       }
 			blockH = Math.max(Math.round(h * blockW / w), 1);
-			
+
       if (galleryInstance.settings.galleryLayout == "fixed") {
         $el = galleryInstance.createNewBlock("fixed", blockW, blockH, "image");
         type = "full";
@@ -479,7 +479,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
       $el = $elem;
       $textWrap = $el.find(".text-wrap");
 		}
-		
+
 		var $elData = $el.children('.rexbuilder-block-data');
 
 		$el.addClass('block-has-slider');
@@ -619,12 +619,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var gridstack = $gallery.data("gridstack");
     var $section = $elem.parents(".rexpansive_section");
     var $newBlock;
-		// console.log( 'elem', $elem.get(0).outerHTML );
-		
+
     $newBlock = $elem.clone(false);
-		// console.log( 'new b',$newBlock.get(0).outerHTML );
 		var $newBlockData = $newBlock.children(".rexbuilder-block-data");
-		
+
     galleryEditorInstance._removeHandles($newBlock);
 
     var newRexID = Rexbuilder_Util.createBlockID();
@@ -640,7 +638,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     $newBlockData.attr("id", newBlockID + "-builder-data");
 
     sanitizeBlockContent( $newBlock[0] );
-		
+
 		$newBlock.appendTo($gallery.eq(0));
 
     var w = parseInt($newBlock.attr("data-gs-width"));
@@ -700,7 +698,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     Rexbuilder_Util.startVideoPlugin($itemContent);
 
 		var $textWrap = $newBlock.find(".text-wrap");
-		
+
     if ($elem.hasClass("block-has-slider")) {
       var $oldSlider = $elem.find('.text-wrap').children('.rex-slider-wrap[data-rex-slider-active="true"]');
       $textWrap.children().remove();
@@ -723,7 +721,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
       var newBlock = $newBlock[0];
       TextEditor.addElementToTextEditor( newBlock.querySelector(".text-wrap") );
 		}
-		
+
     // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
     // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($newBlock.find('input[name=edit-block-overlay-color]')[0]);
     // Rexbuilder_Block_Editor.updateBlockTools($newBlock);
@@ -758,15 +756,15 @@ var Rexbuilder_CreateBlocks = (function ($) {
    * @param  {Element} textWrap text wrap
    * @return {void}
    * @since  2.0.3
-   * 
-   * @todo generate the style to view correctly the button live 
+   *
+   * @todo generate the style to view correctly the button live
    * @todo handling the copy of a section with multiple sync buttons
    */
   var sanitizeButtons = function( textWrap ) {
     if ( ! textWrap ) {
       return;
     }
-    
+
     var buttonWrappers = [].slice.call( textWrap.getElementsByClassName('rex-button-wrapper') );
     var tot_buttonWrappers = buttonWrappers.length, i;
     var buttonData, buttonModelID, temp;
@@ -776,7 +774,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
       if ( Rexbuilder_Util.hasClass( buttonWrappers[i], 'rex-separate-button' ) ) {
         buttonWrappers[i].setAttribute('data-rex-button-id', Rexbuilder_Util.createBlockID());
         buttonWrappers[i].setAttribute('data-rex-button-number', '1');
-        // @todo generate the style to view correctly the button live 
+        // @todo generate the style to view correctly the button live
       } else {    // synched button
         buttonModelID = buttonWrappers[i].getAttribute( 'data-rex-button-id' );
         temp = [].slice.call( document.querySelectorAll('.rex-button-wrapper[data-rex-button-id="' + buttonModelID + '"]'));
@@ -799,7 +797,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
   var _insertHTMLBlock = function ($elem, $gallery, updatePosition, updateHeight) {
     updatePosition = 'undefined' !== typeof updatePosition ? updatePosition : true;
     updateHeight = 'undefined' !== typeof updateHeight ? updateHeight : true;
-    
+
     if ($gallery.length > 0) {
       var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
       var gridstack = $gallery.data("gridstack");
@@ -856,7 +854,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         }
       }
 
-      gridstack.addWidget($newBlock[0], 0, 0, w, h, true, 1, 500, 1); 
+      gridstack.addWidget($newBlock[0], 0, 0, w, h, true, 1, 500, 1);
 
       if ( updatePosition ) {
         gridstack.batchUpdate();

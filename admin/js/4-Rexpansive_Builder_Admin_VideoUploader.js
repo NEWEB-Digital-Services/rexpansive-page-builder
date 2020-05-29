@@ -42,7 +42,6 @@ var Rexpansive_Builder_Admin_VideoUploader = (function($) {
       }
       background_modal_properties.$video_mp4.prop('checked', false);
       if(!selection.length){
-        console.log(selection);
         video_modal_properties.$video_mp4.prop('checked', false);
       }*/
       // video_modal_properties.$video_mp4_id.val('');

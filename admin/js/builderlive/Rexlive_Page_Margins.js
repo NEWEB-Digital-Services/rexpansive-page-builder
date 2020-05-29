@@ -45,7 +45,7 @@ var Rexlive_Page_Margins = (function ($) {
           distances: to_sent
         }
       };
-  
+
       Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_container_margins);
 
       _updateData(to_sent);
@@ -137,7 +137,7 @@ var Rexlive_Page_Margins = (function ($) {
         container_margins_modal_properties.$separatorValsTop.filter('[data-context=custom]').val( s_custom_obj.container_distancer.top );
       }
     }
-    
+
     if ( '' !== s_global )
     {
       var s_global_obj = JSON.parse( s_global );
@@ -224,7 +224,7 @@ var Rexlive_Page_Margins = (function ($) {
   var _applyData = function () {
     var data_margins = _getDistanceValues();
     var data_is_changed = _checkChanges( data_margins );
-    
+
     if ( false !== data_margins && data_is_changed ) {
       $.ajax({
         type: "POST",
@@ -238,12 +238,12 @@ var Rexlive_Page_Margins = (function ($) {
           // selected_margins: container_margins_modal_properties.selected_margins,
         },
         success: function () {
-          // console.log("end!");
+          // end!
         },
         error: function () { },
         complete: function () { }
       });
-  
+
     }
     _applyContainerDistances();
   };

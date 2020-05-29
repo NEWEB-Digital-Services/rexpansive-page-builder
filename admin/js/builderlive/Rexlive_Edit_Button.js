@@ -7,7 +7,7 @@ var Button_Edit_Modal = (function ($) {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     /**
-     * 
+     *
      * @param {jQuery} $target input field
      * @param {Boolean} negativeNumbers true if allow negative numbers
      */
@@ -57,7 +57,7 @@ var Button_Edit_Modal = (function ($) {
         });
     };
     /**
-     * 
+     *
      * @param {jQuery} $target input field
      * @param {function} callbackFunction  function to call when a valid input is insered. Function will be called with new value as argument
      * @param {Boolean} negativeNumbers true if allow negative numbers
@@ -169,7 +169,7 @@ var Button_Edit_Modal = (function ($) {
         _updateButtonData(data);
         _updatePanel();
         _verifyTextBoxEffectsOnOpenModal();
-    };        
+    };
 
     /* Change the status of textbox when the user change the link textbox */
     /* $("#rex-button-link-target").on("change", function() {
@@ -317,7 +317,7 @@ var Button_Edit_Modal = (function ($) {
         button_editor_properties.$button_padding_top.val(buttonData.padding_top.replace('px', ''));
         button_editor_properties.$button_padding_right.val(buttonData.padding_right.replace('px', ''));
         button_editor_properties.$button_padding_left.val(buttonData.padding_left.replace('px', ''));
-        button_editor_properties.$button_padding_bottom.val(buttonData.padding_bottom.replace('px', '')); 
+        button_editor_properties.$button_padding_bottom.val(buttonData.padding_bottom.replace('px', ''));
 
         button_editor_properties.$button_link_target.val(buttonData.link_target);
         button_editor_properties.$button_link_type.val(buttonData.link_type);
@@ -389,7 +389,7 @@ var Button_Edit_Modal = (function ($) {
     };
 
     /**
-     * checks if buttons properties 
+     * checks if buttons properties
      */
 
     var _checkEditsModel = function () {
@@ -407,7 +407,7 @@ var Button_Edit_Modal = (function ($) {
             resetData.padding_top == buttonData.padding_top &&
             resetData.padding_bottom == buttonData.padding_bottom &&
             resetData.padding_right == buttonData.padding_right &&
-            resetData.padding_left == buttonData.padding_left && 
+            resetData.padding_left == buttonData.padding_left &&
             // name
             resetData.buttonTarget.button_name == buttonData.buttonTarget.button_name &&
             // button text
@@ -416,7 +416,7 @@ var Button_Edit_Modal = (function ($) {
             // dimensions
             resetData.button_height == buttonData.button_height &&
             resetData.button_width == buttonData.button_width &&
-            // background            
+            // background
             resetData.background_color == buttonData.background_color &&
             // hover
             resetData.hover_color == buttonData.hover_color &&
@@ -511,7 +511,7 @@ var Button_Edit_Modal = (function ($) {
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_width, false);
         _linkKeyUpListenerInputNumber(button_editor_properties.$button_width, _updateButtonWidth, false);
-        
+
         // BORDER WIDTH
         var _updateBorderWidth = function (newBorderWidth) {
             outputString = isNaN(parseInt(newBorderWidth)) ? defaultButtonValues.border.width : newBorderWidth + "px";
@@ -558,7 +558,7 @@ var Button_Edit_Modal = (function ($) {
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_padding_top, false);
-        _linkKeyUpListenerInputNumber(button_editor_properties.$button_padding_top, _updatePaddingTop, false); 
+        _linkKeyUpListenerInputNumber(button_editor_properties.$button_padding_top, _updatePaddingTop, false);
 
         // MARGIN BOTTOM
         var _updateMarginBottom = function (newMarginBottom) {
@@ -998,7 +998,7 @@ var Button_Edit_Modal = (function ($) {
 
     /**
      * Updates array of ids used removing the passed ID and, if flag is set to "true", DB.
-     * 
+     *
      * @param {Object} data
      * @param {String} data.rexID Button ID to remove
      * @param {Boolean} data.updateDB true if update DB
@@ -1017,7 +1017,7 @@ var Button_Edit_Modal = (function ($) {
     }
     /**
      * Updates array of ids used adding the passed ID.
-     * 
+     *
      * @param {string} rexID Rexbutton ID to add
      */
     var _addIDButton = function (newID) {
@@ -1057,7 +1057,7 @@ var Button_Edit_Modal = (function ($) {
         _separateButton(rexID);
         // the button will be the first with the new ID
         _updateTarget({
-            id: rexID, 
+            id: rexID,
             number: 1
         });
         editingModelButton = false;
@@ -1070,7 +1070,7 @@ var Button_Edit_Modal = (function ($) {
     /**
      * Ajax function to update used rexbuttons ids on db.
      * If passed an object as {separate: true, rexID: id of new button} on ajax call success will be end separation of rexbutton
-     * @param {Obj} data 
+     * @param {Obj} data
      */
     var _updateButtonsIDSUsed = function (data) {
         var separatingButton = typeof data != "undefined" ? data.separate : false;
@@ -1204,7 +1204,7 @@ var Button_Edit_Modal = (function ($) {
         currentMargin = isNaN(parseInt(buttonData.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : buttonData.margin_left;
         buttonCSS += "margin-left: " + currentMargin + ";";
         buttonCSS += "}";
-                
+
         buttonCSS += ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]";
         buttonCSS += " .rex-button-text{";
         // checking paddings, if they are not valid default value will be applied
@@ -1217,14 +1217,14 @@ var Button_Edit_Modal = (function ($) {
         currentPadding = isNaN(parseInt(buttonData.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : buttonData.padding_left;
         buttonCSS += "padding-left: " + currentPadding + ";";
         buttonCSS += "}";
-        
+
         buttonCSS += ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]";
         buttonCSS += " .rex-button-background{";
         buttonCSS += "background-color: " + buttonData.background_color + ";";
         //background-image
         //background-gradient
 
-        
+
         buttonCSS += "border-color: " + buttonData.border_color + ";";
 
         // checking border dimensions, if they are not valid default value will be applied
@@ -1252,7 +1252,7 @@ var Button_Edit_Modal = (function ($) {
     var _createButtonHtml = function () {
         var buttonHTML = "";
         tmpl.arg = "button";
-        
+
         var defaults = {
             text: "Learn More",
             link_target: "#",
@@ -1317,7 +1317,7 @@ var Button_Edit_Modal = (function ($) {
     };
 
     /**
-     * @param {Object} data 
+     * @param {Object} data
      * @param {String} data.type Container type to update
      * @param {String} data.propertyName Css rule to update
      * @param {*} data.newValue New value of css rule
@@ -1481,7 +1481,7 @@ var Button_Edit_Modal = (function ($) {
 
             $button_name: $container.find("#rex-button__name")
 				};
-				
+
         rexButtonsJSON = JSON.parse($("#rex-buttons-json-css").text());
         buttonsIDsUsed = JSON.parse($("#rex-buttons-ids-used").text());
         _linkDocumentListeners();
@@ -1553,7 +1553,6 @@ var Button_Edit_Modal = (function ($) {
         _initPanelChoose();
 
         $accordions.rexAccordion({open:{},close:{},});
-        //console.log("$accordions:",$accordions);
     };
 
     return {
