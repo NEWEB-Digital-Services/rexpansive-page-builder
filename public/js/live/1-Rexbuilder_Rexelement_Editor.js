@@ -198,7 +198,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 				elementID: elementID
 			},
 			success: function (response) {
-				console.log(response);
 				if (!response.success) return;
 
 				var formFieldsString = response.data.form_content.toString().trim();

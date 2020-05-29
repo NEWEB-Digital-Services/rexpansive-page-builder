@@ -2875,19 +2875,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		var formRule = '';
 
 		formRule += 'background-color: ' + formData.background_color + ';';
-
 		formRule += 'border-style: solid;';
-
 		formRule += 'border-color: ' + formData.border_color + ';';
-
 		formRule += 'border-width: ' + formData.border_width + ';';
-
 		formRule += 'margin-top: ' + formData.margin_top + ';';
-
 		formRule += 'margin-left: ' + formData.margin_left + ';';
-
 		formRule += 'margin-right: ' + formData.margin_right + ';';
-
 		formRule += 'margin-bottom: ' + formData.margin_bottom + ';';
 
 		addFormRule(formID, formRule);
@@ -3085,28 +3078,24 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 				// columnContentRule += 'overflow: hidden;';
 			} else {
-				// Text, Number, Email, Textarea, Select
+				// Text, Number, Email, Textarea, Select, Radio, Checkbox
 
 				columnContentRule += 'background-color: ' + columnContentData.background_color + ';';
-
 				columnContentRule += 'border-color: ' + columnContentData.border_color + ';';
-
-				columnContentRule += 'border-style: solid;';
-
 				columnContentRule += 'border-width: ' + columnContentData.border_width + ';';
-
 				columnContentRule += 'border-radius: ' + columnContentData.border_radius + ';';
-
 				columnContentHoverRule += 'background-color: ' + columnContentData.background_color_hover + ';';
-
 				columnContentHoverRule += 'border-color: ' + columnContentData.border_color_hover + ';';
+
+				if (-1 === ['radio', 'acceptance'].indexOf(inputType)) {
+					columnContentRule += 'border-style: solid;';
+				}
 			}
 
 			var labelRule = '';
 
 			if ('radio' === inputType) {
 				labelRule += 'font-size: ' + columnContentData.font_size + ';';
-
 				labelRule += 'cursor:pointer;';
 
 				addColumnContentRule(formID, rowNumber, columnNumber, cssSelector + ' .wpcf7-radio-label', labelRule);
@@ -3117,7 +3106,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				labelRule += 'cursor:pointer;';
 
 				addColumnContentRule(formID, rowNumber, columnNumber, cssSelector + ' .wpcf7-list-item-label', labelRule);
-
 				addColumnContentRule(
 					formID,
 					rowNumber,
@@ -3163,13 +3151,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 				addColumnContentRule(
 					formID,
-
 					rowNumber,
-
 					columnNumber,
-
 					cssSelector + '::placeholder',
-
 					columnContentPlaceholderRule
 				);
 
@@ -3179,13 +3163,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 				addColumnContentPlaceholderHoverRule(
 					formID,
-
 					rowNumber,
-
 					columnNumber,
-
 					cssSelector,
-
 					columnContentPlaceholderHoverRule
 				);
 			}

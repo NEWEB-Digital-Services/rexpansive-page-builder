@@ -7,8 +7,6 @@ $input-min-width: 115px;
 		display: flex;
 		flex-wrap: wrap;
 		cursor: default;
-		// padding-top: 13px;
-		// margin-top: 10px;
 
 		&:hover {
 			outline: 2px solid $palette-color-1;
@@ -33,9 +31,9 @@ $input-min-width: 115px;
 					display: flex;
 
 					// &:hover {
-						.wpcf7-add-new-form-content {
-							display: block;
-						}
+					.wpcf7-add-new-form-content {
+						display: block;
+					}
 					// }
 
 					&.with-button {
@@ -45,7 +43,6 @@ $input-min-width: 115px;
 
 					.wpcf7-add-new-form-content {
 						margin: auto 0;
-						// display: none;
 					}
 
 					.wpcf7-add-new-row {
