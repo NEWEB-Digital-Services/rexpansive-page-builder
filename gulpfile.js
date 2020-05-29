@@ -563,3 +563,7 @@ exports.standardZip = standardZip;
 // Final build tasks
 exports.standardBuild = series(createTempLiveFolder, standardZip, removeTempLiveFolder);
 exports.macBuild = series(createTempLiveFolder, macZip, removeTempLiveFolder);
+
+// Deploy tasks
+exports.deployWin = series(exports.build, exports.standardBuild);
+exports.deployMac = series(exports.build, exports.macBuild);
