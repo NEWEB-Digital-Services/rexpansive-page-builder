@@ -1679,18 +1679,40 @@ class Rexbuilder_Public
 			// Check for section titles; if no one has a title, don't display the navigation
 			$titles = array();
 			$labels = array();
-			foreach ( $content_shortcodes[3] as $attrs ) {
-				$x = shortcode_parse_atts( trim($attrs) );
+			foreach ( $content_shortcodes[3] as $index => $attrs ) {
+				$section_attrs = shortcode_parse_atts( trim($attrs) );
 
-				// retrieve section names
-				if ( isset( $x['section_name'] ) && $x['section_name'] != '' ) {
-					$titles[] = $x['section_name'];
-				}
+				if ( 'RexpansiveSection' === $content_shortcodes[2][$index] ) {
+					// retrieve section names
+					if ( isset( $section_attrs['section_name'] ) && $section_attrs['section_name'] != '' ) {
+						$titles[] = $section_attrs['section_name'];
+					}
 
-				// retrieve section nav labels
-				if ( isset( $x['section_nav_label'] ) && $x['section_nav_label'] != '' ) {
-					$labels[] = $x['section_nav_label'];
-				}
+					// retrieve section nav labels
+					if ( isset( $section_attrs['section_nav_label'] ) && $section_attrs['section_nav_label'] != '' ) {
+						$labels[] = $section_attrs['section_nav_label'];
+					}
+				} else if ( 'RexModel' === $content_shortcodes[2][$index] && isset( $section_attrs['id'] ) ) {
+					// handling RexModel
+					$modelShortcode = get_post_field( 'post_content', (int)$section_attrs['id'] );
+
+					if ( ! empty( $modelShortcode ) ) {
+						preg_match_all("/$pattern/", $modelShortcode, $model_shortcodes);
+
+						foreach ( $model_shortcodes[3] as $i => $a ) {
+							$model_attrs = shortcode_parse_atts( trim($a) );
+							// retrieve section names
+							if ( isset( $model_attrs['section_name'] ) && $model_attrs['section_name'] != '' ) {
+								$titles[] = $model_attrs['section_name'];
+							}
+
+							// retrieve section nav labels
+							if ( isset( $model_attrs['section_nav_label'] ) && $model_attrs['section_nav_label'] != '' ) {
+								$labels[] = $model_attrs['section_nav_label'];
+							}
+						}
+					}
+				}	
 			}
 
 			if ( count( $titles ) > 0 ) {

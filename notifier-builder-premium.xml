@@ -4,6 +4,7 @@
 	<changelog>
 		<![CDATA[
 			<h4><strong>v2.0.5</strong> – </h4>
+			<p><strong>Fixed</strong>: RexModel ID and Label for the navigator</p>
 			<p><strong>Fixed</strong>: Grid on mobile and reset row properties</p>
 			<p><strong>Fixed</strong>: On a copied row, text editor doesn't work</p>
 			<p><strong>Fixed</strong>: On an imported template, at the first moment the tools are not correctly visible</p>
@@ -17,7 +18,7 @@
 			<p><strong>Add</strong>: Confirm/Reset buttons to confirm or reset changes made inside a modal or with a color picker</p>
 			<p><strong>Add</strong>: Row label, to customize the navigator labels</p>
 			<p><strong>Add</strong>: Reset button on rows and blocks to reset their properties with the default</p>
-			<p><strong>Add</strong>: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. old forms will not be affected</p>
+			<p><strong>Add</strong>: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. Old forms will not be affected</p>
 			<h4><strong>v2.0.4</strong> – April 29, 2020</h4>
 			<p><strong>Update</strong>: Improved performances on frontend</p>
 			<p><strong>Update</strong>: Navigator style</p>

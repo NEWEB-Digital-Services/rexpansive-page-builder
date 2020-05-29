@@ -18,12 +18,12 @@ defined('ABSPATH') or exit;
         </div>
         <div class="modal-content modal-content--text">
             <div class="layout-page-changed-description">
-                <strong><?php _e( 'WARNING:', 'rexpansive-builder' ); ?></strong> <?php _e( 'you are about to reset the settings of this element to those of the default layout. Are you sure?', 'rexpansive-builder' ); ?>
+                <strong><?php _e( 'WARNING!', 'rexpansive-builder' ); ?></strong> <?php _e( 'You are about to reset the settings of this element to those of the "Desktop" default layout. Are you sure?', 'rexpansive-builder' ); ?>
             </div>
         </div>
         <div class="rex-modal__outside-footer">
-            <div class="tool-button tool-button--inline tool-button--save rex-resynch-content-option tippy" data-tippy-content="<?php _e( 'Yes','rexpansive-builder' ); ?>" data-rex-option="save">
-                <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+            <div class="tool-button tool-button--inline tool-button--confirm tool-button--modal rex-resynch-content-option tippy" data-tippy-content="<?php _e( 'Yes','rexpansive-builder' ); ?>" data-rex-option="save">
+                <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z016-Checked'); ?></span>
             </div>
         </div>
     </div>

@@ -201,6 +201,7 @@ For the more experienced among us: you can insert CSS anywhere.
 == Changelog ==
 
 = 2.0.5 – =
+ * Fixed: RexModel ID and Label for the navigator
  * Fixed: Grid on mobile and reset row properties
  * Fixed: On a copied row, text editor doesn't work
  * Fixed: On an imported template, at the first moment the tools are not correctly visible
@@ -214,7 +215,7 @@ For the more experienced among us: you can insert CSS anywhere.
  * Add: Confirm/Reset buttons to confirm or reset changes made inside a modal or with a color picker
  * Add: Row label, to customize the navigator labels
  * Add: Reset button on rows and blocks to reset their properties with the default
- * Add: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. old forms will not be affected
+ * Add: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. Old forms will not be affected
 
 = 2.0.4 – April 29, 2020 =
  * Update: Improved performances on frontend

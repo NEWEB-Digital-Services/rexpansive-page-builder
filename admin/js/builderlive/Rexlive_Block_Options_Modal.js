@@ -6,7 +6,6 @@ var BlockOptions_Modal = (function($) {
 
   var _openBlockOptionsModal = function(data) {
     resetData = data;
-    console.log(resetData)
     _updateBlockOptionsModal( data );
     Rexlive_Modals_Utils.openModal(
       block_options_properties.$self.parent(".rex-modal-wrap")
