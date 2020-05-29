@@ -20,11 +20,9 @@ var Rexlive_Ajax_Calls = (function($) {
       },
       success: function(response) {
         if (response.success) {
-          // console.log(response);
         }
       },
       error: function(response) {
-        // console.log(response);
       }
     });
   };
@@ -32,7 +30,7 @@ var Rexlive_Ajax_Calls = (function($) {
   /**
    * Delete a color palette by ID
    * @param {Object} data object with ID of the color to delete
-   * @param {Object} callbacks object with a list of callbacks to call and parameter 
+   * @param {Object} callbacks object with a list of callbacks to call and parameter
    *                            to assign in case of success or error
    */
   var _deletePaletteColor = function( data, callbacks ) {
@@ -74,11 +72,9 @@ var Rexlive_Ajax_Calls = (function($) {
       },
       success: function(response) {
         if (response.success) {
-          // console.log(response);
         }
       },
       error: function(response) {
-        // console.log(response);
       }
     });
   };
@@ -86,7 +82,7 @@ var Rexlive_Ajax_Calls = (function($) {
   /**
    * Delete an overlay palette by ID
    * @param {Object} data object with ID of the overlay to delete
-   * @param {Object} callbacks object with a list of callbacks to call and parameter 
+   * @param {Object} callbacks object with a list of callbacks to call and parameter
    *                            to assign in case of success or error
    */
   var _deletePaletteOverlayColor = function( data, callbacks ) {
@@ -134,7 +130,7 @@ var Rexlive_Ajax_Calls = (function($) {
             var $item = $(item);
 
             $list.find(".palette__add-gradient").before( $item );
-  
+
             $item.css("background", data.gradient_preview);
             $item.attr("data-gradient-id", data.ID);
             $item.attr("data-gradient-value", data.gradient);
@@ -142,7 +138,6 @@ var Rexlive_Ajax_Calls = (function($) {
         }
       },
       error: function(response) {
-        // console.log(response);
       }
     });
   };
@@ -168,7 +163,6 @@ var Rexlive_Ajax_Calls = (function($) {
         }
       },
       error: function(response) {
-        // console.log(response);        
       }
     });
   };
@@ -194,7 +188,7 @@ var Rexlive_Ajax_Calls = (function($) {
             var $item = $(item);
 
             $list.find(".palette__add-gradient").before( $item );
-  
+
             $item.css("background", data.gradient_preview);
             $item.attr("data-gradient-id", data.ID);
             $item.attr("data-gradient-value", data.gradient);
@@ -202,7 +196,6 @@ var Rexlive_Ajax_Calls = (function($) {
         }
       },
       error: function(response) {
-        // console.log(response);
       }
     });
   };
@@ -228,7 +221,6 @@ var Rexlive_Ajax_Calls = (function($) {
         }
       },
       error: function(response) {
-        // console.log(response);
       }
     });
   };

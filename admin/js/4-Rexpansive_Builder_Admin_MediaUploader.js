@@ -75,7 +75,6 @@ var Rexpansive_Builder_Admin_MediaUploader = (function($) {
           options.url = display.linkUrl;
 
         if ('image' === obj_attachment.type) {
-          //console.log(obj_attachment);
           var img_prev_src;
           img_prev_src = display.src;
 
@@ -129,7 +128,7 @@ var Rexpansive_Builder_Admin_MediaUploader = (function($) {
             html = html.replace(/\bdata.isnaturalimage\b/, '');
           }
 
-          /*html = '<li id="block_' + global_section_reference.sectIndex + '_' + global_section_reference.internalIndex + '" class="image item no-border z-depth-1 hoverable svg-ripple-effect" data-block_type="image" data-block-custom-classes=\'\' data-content-padding=\'\' data-bg_settings=\'' + JSON.stringify( bg_setts ) + '\'>' + 
+          /*html = '<li id="block_' + global_section_reference.sectIndex + '_' + global_section_reference.internalIndex + '" class="image item no-border z-depth-1 hoverable svg-ripple-effect" data-block_type="image" data-block-custom-classes=\'\' data-content-padding=\'\' data-bg_settings=\'' + JSON.stringify( bg_setts ) + '\'>' +
                 element_actions +
                 '<div class="element-data">' +
                   '<textarea class="data-text-content" display="none"></textarea>' +
@@ -176,9 +175,9 @@ var Rexpansive_Builder_Admin_MediaUploader = (function($) {
     //now open the popup
     image_uploader_frame.open();
   }	// RenderMediaUploader END
-  
+
   return {
     RenderMediaUploader: RenderMediaUploader
   };
-  
+
 })(jQuery);

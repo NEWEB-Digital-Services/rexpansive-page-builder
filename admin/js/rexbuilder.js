@@ -1,6 +1,6 @@
 /*!
  * Rexpansive builder
- * 
+ *
  */
 
 ;(function ($) {
@@ -24,7 +24,7 @@
 
     Rexpansive_Builder_Admin_Lightbox.init();
     Rexpansive_Builder_Admin_Rxcf.init();
-    
+
     Rexpansive_Builder_Admin_PositionEditor.init();
     Rexpansive_Builder_Admin_PaddingEditor.init();
     Rexpansive_Builder_Admin_TextEditor.init();
@@ -50,8 +50,8 @@
     // var notice_video_template = $('#rexbuilder-tmpl-notice-video').html().trim();
 
     // var counter = 0,
-    //   collect = [];	
-      
+    //   collect = [];
+
     // Define an array for collect all of the sections
 
     var $text_editor = $('#rexeditor-modal'),
@@ -98,8 +98,8 @@
     // var $lean_overlay = $('.lean-overlay');
 
 		/**
-		 * Open a modal dialog box	
-		 * @param {jQuery Object} $target modal to open  
+		 * Open a modal dialog box
+		 * @param {jQuery Object} $target modal to open
 		 * @param {boolean} 	target_only active only the modal not the overlay
 		 * @param {Array} 		additional_class Array of additional classes
 		 */
@@ -1238,7 +1238,7 @@
 
 		/**
 		 * Slider Shortcode Function Creation
-		 * 
+		 *
 		 * @param	slider	Object	an object representing the slider
 		 */
     var createSliderShortcode = function (slider) {
@@ -1299,7 +1299,7 @@
 
 		/**
 		 * Open Links editor for a Slide
-		 * 
+		 *
 		 * @param	state	string	state of the modal
 		 */
     var openSlideLinksEditor = function (state, slide) {
@@ -1494,7 +1494,6 @@
             }
           },
           error: function (response) {
-            console.log(response);
             rexslider_modal_properties.$modal.removeClass('rex-modal--loading');
           }
         });
@@ -1573,7 +1572,6 @@
 									var w = el.getAttribute('data-sizex'),
 										h = el.getAttribute('data-sizey');
 									if(w >= 2 && h == resized_widget_info.size_y) {
-										console.log('posso procedere');
 										console.log(next_position+1);
 										var wgd = {
 											col:,
@@ -1583,7 +1581,7 @@
 										}
 										that.mutate_widget_in_gridmap($(el), next_position+1);
 									}
-								}								
+								}
 							});
 						},*/
           },
@@ -1884,7 +1882,7 @@
         sectionGrid = sectionGrid.join('');
 
         setBuilderTimeStamp();
-        
+
         $(Rexpansive_Builder_Admin_Utilities.meta_box_selector).val(sectionGrid);
 
         /*var ed = tinyMCE.get('content');
@@ -1921,13 +1919,13 @@
     $(window).on('resize', function () {
       var new_widget_dim, i;
       Rexpansive_Builder_Admin_Config.set_grid_dimensions();
-      
+
       var real_area = $('#rexbuilder').parent('.meta-box-sortables').width();
 
       new_widget_dim = Math.round((
-        (real_area - 46 - 
+        (real_area - 46 -
           grid_settings.widget_margins * (grid_settings.grid_columns * 2))) / grid_settings.grid_columns);
-      
+
       grid_settings.widget_dimension = new_widget_dim;
       for (i = 0; i < Rexpansive_Builder_Admin_Config.collect.length; i++) {
         Rexpansive_Builder_Admin_Config.collect[i].sectionRef.find('.gridster > ul').css('width', '100%');
@@ -2195,7 +2193,7 @@
       if( Rexpansive_Builder_Admin_Utilities.builderlive ) {
         shortcode += ' edit_from_backend="true"';
       }
-      
+
       shortcode += ']' + data + '[/RexpansiveSection]';
       return shortcode;
     };
@@ -3840,8 +3838,6 @@
 
       var clean_custom_classes = custom_classes.trim() + ' ' + overlay_infos.trim() + ' ' + holded_info;
 
-      //console.log(clean_custom_classes);
-
       var config_settings = {
         gutter: gutter,
         isFull: isFull,
@@ -3872,7 +3868,7 @@
 			$(this).parents('.builder-row').attr('data-layout', layout);
 		});*/
 
-		/*$(document).on('change', '.builder-edit-row-layout', function() {			
+		/*$(document).on('change', '.builder-edit-row-layout', function() {
 			var layout = $(this).val();
 			var $row = $(this).parents('.builder-row');
 			$row.attr('data-layout', layout);
@@ -3954,7 +3950,7 @@
 		/**
 		 *	Force to collect the data before saving the post
 		 */
-    $('#post').on('submit', function (e) {      
+    $('#post').on('submit', function (e) {
       var i;
 
       if (_plugin_backend_settings.activate_builder && $('#builder-switch').prop('checked')) {
@@ -4146,7 +4142,6 @@
             options.url = display.linkUrl;
 
           if ('image' === obj_attachment.type) {
-            //console.log(obj_attachment);
             var img_prev_src;
             img_prev_src = display.src;
 
@@ -4200,7 +4195,7 @@
               html = html.replace(/\bdata.isnaturalimage\b/, '');
             }
 
-						/*html = '<li id="block_' + global_section_reference.sectIndex + '_' + global_section_reference.internalIndex + '" class="image item no-border z-depth-1 hoverable svg-ripple-effect" data-block_type="image" data-block-custom-classes=\'\' data-content-padding=\'\' data-bg_settings=\'' + JSON.stringify( bg_setts ) + '\'>' + 
+						/*html = '<li id="block_' + global_section_reference.sectIndex + '_' + global_section_reference.internalIndex + '" class="image item no-border z-depth-1 hoverable svg-ripple-effect" data-block_type="image" data-block-custom-classes=\'\' data-content-padding=\'\' data-bg_settings=\'' + JSON.stringify( bg_setts ) + '\'>' +
 									element_actions +
 									'<div class="element-data">' +
 										'<textarea class="data-text-content" display="none"></textarea>' +
@@ -4266,7 +4261,7 @@
           displayUserSettings: true,
           multiple: false,
           library: wp.media.query({ type: 'image' }),
-          type: 'image',//audio, video, application/pdf, ... etc	            
+          type: 'image',//audio, video, application/pdf, ... etc
         }, wp.media.controller.Library.prototype.defaults)
       });
 
@@ -4531,7 +4526,7 @@
           displayUserSettings: true,
           multiple: false,
           library: wp.media.query({ type: 'video' }),
-          type: 'video',//audio, video, application/pdf, ... etc	            
+          type: 'video',//audio, video, application/pdf, ... etc
         }, wp.media.controller.Library.prototype.defaults)
       });
 
@@ -4648,7 +4643,7 @@
           displayUserSettings: true,
           multiple: false,
           library: wp.media.query({ type: 'image' }),
-          type: 'image',//audio, video, application/pdf, ... etc	            
+          type: 'image',//audio, video, application/pdf, ... etc
         }, wp.media.controller.Library.prototype.defaults)
       });
 
@@ -5130,7 +5125,7 @@
 		 * Handle Insert or Edit Slide Image
 		 * @param {*} $data
 		 * @param {*} $preview
-		 * @param {*} image_id 
+		 * @param {*} image_id
 		 */
     function SlideImageMediaHandler($data, $preview, image_id) {
       image_id = typeof image_id !== 'undefined' ? image_id : null;

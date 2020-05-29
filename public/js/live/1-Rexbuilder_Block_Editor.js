@@ -102,7 +102,7 @@ var Rexbuilder_Block_Editor = (function($) {
             imageSize: activeImage ? imageSize :"",
             active: activeImage,
             updateBlockHeight: ( blockTextEmpty ? true : false ),
-            tools: tools,        
+            tools: tools,
             sectionTarget: {
               sectionID: sectionID,
               modelNumber: modelNumber,
@@ -388,7 +388,7 @@ var Rexbuilder_Block_Editor = (function($) {
     Rexbuilder_Util.$document.on('click', '.edit-block-content', function(e) {
       var $btn = $(e.target);
       var $elem = $btn.parents(".grid-stack-item");
-      
+
       var event = jQuery.Event("dblclick");
       event.target = $elem.get(0);
       event.offsetY = 0;
@@ -396,7 +396,7 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     /**
-     * Edit the block content position 
+     * Edit the block content position
      * @since 2.0.0
      */
     Rexbuilder_Util.$document.on('click', '.edit-block-content-position', function(e) {
@@ -443,7 +443,7 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     /**
-     * Edit the block accordion 
+     * Edit the block accordion
      * @since 2.0.0
      */
     Rexbuilder_Util.$document.on('click', '.edit-block-accordion', function(e) {
@@ -519,7 +519,7 @@ var Rexbuilder_Block_Editor = (function($) {
         typeof $section.attr("data-rexlive-model-number") != "undefined"
           ? $section.attr("data-rexlive-model-number")
           : "";
-      
+
       var slides = [];
       var $slideshow = $elem.find('.rex-slideshow');
       if ( $slideshow.length > 0 )
@@ -541,7 +541,7 @@ var Rexbuilder_Block_Editor = (function($) {
           },
         }
       };
-      
+
       var data = {
         eventName: "rexlive:editBlockSlideshow",
         activeBlockData: settings,
@@ -582,7 +582,7 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     /**
-     * Edit the block gradient 
+     * Edit the block gradient
      * @since 2.0.0
      */
     Rexbuilder_Util.$document.on('click', '.edit-block-gradient', function(e) {
@@ -622,7 +622,7 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     /**
-     * Edit the block image settings 
+     * Edit the block image settings
      * @since 2.0.0
      */
     Rexbuilder_Util.$document.on('click', '.edit-block-image-position', function(e) {
@@ -637,7 +637,7 @@ var Rexbuilder_Block_Editor = (function($) {
         typeof $section.attr("data-rexlive-model-number") != "undefined"
           ? $section.attr("data-rexlive-model-number")
           : "";
-  
+
       var idImage =
         typeof $elemData.attr("data-id_image_bg_block") == "undefined"
           ? ""
@@ -685,7 +685,7 @@ var Rexbuilder_Block_Editor = (function($) {
           rexID: rex_block_id
         },
       };
-  
+
       var blockFlexImgPosition =
         typeof $elemData.attr("data-block_flex_img_position") == "undefined"
           ? ""
@@ -711,7 +711,7 @@ var Rexbuilder_Block_Editor = (function($) {
         w: parseInt( $elem.attr('data-gs-width')),
         h: parseInt( $elem.attr('data-gs-height'))
       };
-  
+
       var settings = {
         imageBG: imageData,
         flexImgPosition: img_position,
@@ -721,28 +721,28 @@ var Rexbuilder_Block_Editor = (function($) {
         },
         blockState: blockState
       };
-  
+
       Rexbuilder_Util_Editor.manageElement = true;
       var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
-  
+
       var data = {
         eventName: "rexlive:editBlockImageSettings",
         activeBlockData: settings,
         mousePosition: mousePosition
       };
-  
+
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
-  
+
     /**
      * Triggering the event on MediumEditor when the user close the HTML editor window pressing the saving button
      * @since 2.0.0
      */
     Rexbuilder_Util.$document.on('rexlive:SetcustomHTML',function(e) {
       TextEditor.triggerMEEvent({
-        name:"rexlive:mediumEditor:saveHTMLContent", 
-        data: e.settings.data_to_send, 
-        editable: null        
+        name:"rexlive:mediumEditor:saveHTMLContent",
+        data: e.settings.data_to_send,
+        editable: null
       });
     });
 
@@ -752,8 +752,8 @@ var Rexbuilder_Block_Editor = (function($) {
      */
     Rexbuilder_Util.$document.on('rexlive:inlineImageEdit',function(e) {
       TextEditor.triggerMEEvent({
-        name:"rexlive:mediumEditor:inlineImageEdit", 
-        data: e.settings.data_to_send, 
+        name:"rexlive:mediumEditor:inlineImageEdit",
+        data: e.settings.data_to_send,
         editable: null
       });
     });
@@ -764,8 +764,8 @@ var Rexbuilder_Block_Editor = (function($) {
      */
     Rexbuilder_Util.$document.on('rexlive:mediumEditor:inlineVideoEditor',function(e) {
       TextEditor.triggerMEEvent({
-        name:"rexlive:mediumEditor:inlineVideoEditor:Transfer", 
-        data: e.settings.data_to_send, 
+        name:"rexlive:mediumEditor:inlineVideoEditor:Transfer",
+        data: e.settings.data_to_send,
         editable: null
       });
     });
@@ -776,8 +776,8 @@ var Rexbuilder_Block_Editor = (function($) {
      */
     Rexbuilder_Util.$document.on('rexlive:mediumEditor:inlineSVG',function(e) {
       TextEditor.triggerMEEvent({
-        name:"rexlive:mediumEditor:inlineSVG:transfer", 
-        data: e.settings.data_to_send, 
+        name:"rexlive:mediumEditor:inlineSVG:transfer",
+        data: e.settings.data_to_send,
         editable: null
       });
     });
@@ -896,7 +896,7 @@ var Rexbuilder_Block_Editor = (function($) {
         flagPickerUsed = true;
       },
       change: function(color) {
-        // 
+        //
       },
       hide: function(color) {
         Rexbuilder_Color_Palette.hide();
@@ -998,7 +998,7 @@ var Rexbuilder_Block_Editor = (function($) {
         },
       }
 		};
-		
+
     $picker.spectrum({
       replacerClassName: block_picker_classes,
       preferredFormat: "hex",
@@ -1034,20 +1034,20 @@ var Rexbuilder_Block_Editor = (function($) {
       move: function(color) {
         settings.data_to_send.active = true;
 				settings.data_to_send.color =  color.toRgbString();
-				
+
         if( overlayActive ) {
           var event = jQuery.Event("rexlive:change_block_overlay_color");
         } else {
           var event = jQuery.Event("rexlive:change_block_overlay");
         }
-        
+
         event.settings = settings;
         Rexbuilder_Util.$document.trigger(event);
 
         flagPickerUsed = true;
       },
       change: function(color) {
-        // 
+        //
       },
       hide: function(color) {
         Rexbuilder_Overlay_Palette.hide();
@@ -1176,7 +1176,7 @@ var Rexbuilder_Block_Editor = (function($) {
 
   /**
    * Check if a text wrap is empty
-   * 
+   *
    * @param  {Element} elem text element
    * @return {Boolean}      is empty or not
    * @since  2.0.4
@@ -1202,7 +1202,7 @@ var Rexbuilder_Block_Editor = (function($) {
 	 * @returns		{void}
    * @since			2.0.0
 	 * @version		2.0.4		Transformed into vanilla js
-   * @deprecated 2.0.4 
+   * @deprecated 2.0.4
    */
   function _setBlockColorBackgroundPicker() {
   	var inputs = Array.prototype.slice.call(document.querySelectorAll('input[name=edit-block-color-background]'));
@@ -1219,7 +1219,7 @@ var Rexbuilder_Block_Editor = (function($) {
 	 * @returns		{void}
    * @since			2.0.0
 	 * @version		2.0.4		Transformed into vanilla js
-   * @deprecated 2.0.4 
+   * @deprecated 2.0.4
    */
   function _setBlockOverlayColorPicker() {
   	var inputs = Array.prototype.slice.call(document.querySelectorAll('input[name=edit-block-overlay-color]'));
@@ -1457,7 +1457,7 @@ var Rexbuilder_Block_Editor = (function($) {
     event.settings = backgroundColorEventSettings;
     Rexbuilder_Util.$document.trigger(event);
   }
-  
+
   function spBlockBackgroundOnHide(color) {
     if ( backgroundPickerUsed && color ) {
       if( $actualBlockContainerTools.hasClass('top-tools') ) {
@@ -1499,7 +1499,7 @@ var Rexbuilder_Block_Editor = (function($) {
     } else {
       var event = jQuery.Event("rexlive:change_block_overlay");
     }
-    
+
     event.settings = overlayColorEventSettings;
     Rexbuilder_Util.$document.trigger(event);
   }
@@ -1665,7 +1665,7 @@ var Rexbuilder_Block_Editor = (function($) {
       .parents('.grid-stack-item')
       .find('.rexlive-block-toolbox.bottom-tools')
       .find('.edit-block-image-position');
-    
+
     $image_position_tool
       .removeClass('tool-button--hide');
   }
@@ -1782,7 +1782,6 @@ var Rexbuilder_Block_Editor = (function($) {
   }
 
   var _updateBlockOverlayColorToolLive = function( $target, color ) {
-    console.log('_updateBlockOverlayColorToolLive')
     // Set live picker
     var $picker_top = $target
       .parents('.grid-stack-item')

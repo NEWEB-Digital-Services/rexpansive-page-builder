@@ -76,7 +76,6 @@ var TextEditor = (function ($) {
             replace: {
               label: '<span class="fa fa-pencil"></span>',
               clicked: function ($el) {
-                // console.log($el);
               }
             },
           },
@@ -427,14 +426,6 @@ var TextEditor = (function ($) {
         default:
           return false;
       }
-      // for(var i=0;i<this.all_actions.length;i++) {
-      //   console.log(this.base.queryCommandState(this.all_actions[i]));
-      //   if( this.base.queryCommandState(this.all_actions[i]) ) {
-      //     this.action_active = this.all_actions[i];
-      //     return true;
-      //   }
-      // }
-      // return false;
     },
 
     setInactive: function () {
@@ -2372,25 +2363,7 @@ var TextEditor = (function ($) {
     },
 
     handleRemoveInlineElement: function(event){
-
       this.hideAllToolbars();
-
-    // var baseElementsOneInnerHTML = this.base.elements[1].innerHTML;
-    //   var baseElementsOneInnerTEXT = this.base.elements[1].innerText;
-    //   console.log(this.base.elements[1].innerHTML);
-    //   console.log(this.base.elements[1].innerText);
-    //   if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) || MediumEditor.util.isKey(event, MediumEditor.util.keyCode.DELETE)) {
-    //     // MediumEditor.util.isKey == 8, 446
-    //     if(baseElementsOneInnerTEXT != "" && baseElementsOneInnerHTML != "<p><br></p>") {
-    //       this.hideEditImgToolbar();
-    //       this.hideEditVideoToolbar();
-    //       if(baseElementsOneInnerHTML != "<p><br></p>") {
-    //         this.hideEditImgToolbar();
-    //         this.hideEditVideoToolbar();
-    //       }
-    //     }
-    //   }
-
     },
 
     placeMirrorImg: function(el) {

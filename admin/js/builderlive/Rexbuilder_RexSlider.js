@@ -799,8 +799,6 @@ var Rexbuilder_RexSlider = (function($) {
         var $data_area = $slide.find(".rex-slider__slide-data");
         var action = $button.attr("value");
 				var slide_id = $slide.attr("data-slider-slide-id");
-				
-				console.log( 'clicco bottone', action );
 
         switch (action) {
           case "add-slide":
@@ -835,7 +833,7 @@ var Rexbuilder_RexSlider = (function($) {
             var slide_text = $slide_text_wrap.text();
             var slide_selector =
               ".rex-slider__slide[data-slider-slide-id=" + slide_id + "]";
-            
+
             // rexslider_modal_properties.$modal.addClass('push-down-modal');
             Rexlive_RexSlider_TextEditor.openTextEditor(slide_selector, slide_text, true, ["hide-padding-position"]);
             break;
@@ -1178,7 +1176,7 @@ var Rexbuilder_RexSlider = (function($) {
         var $selectWrap = $button
           .parents('#rex-slider-block')
           .find(".rx__select-wrap");
-        
+
         $selectedOptionImport = $selectWrap
           .children("select")
           .find(":selected");
@@ -1202,7 +1200,7 @@ var Rexbuilder_RexSlider = (function($) {
         var $selectWrap = $button
           .parents('#rex-slider-block')
           .find(".rx__select-wrap");
-        
+
         $selectedOptionImport = $selectWrap
           .children("select")
           .find(":selected");

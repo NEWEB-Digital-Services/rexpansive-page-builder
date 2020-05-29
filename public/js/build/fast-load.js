@@ -13,7 +13,7 @@
   if ( isMobile ) {
     queuing = true;
 	}
-	
+
   var PROMISE_EXISTS = typeof Promise !== "undefined" && Promise.toString().indexOf( "[native code]" ) !== -1;
 
   var scrollobserverSection;
@@ -24,9 +24,9 @@
 
   var imgVisibleQueue = [];
   var videoVisibleQueue = [];
-  
+
   var imgProcessingQueue = [];
-  var videoProcessingQueue = [];  
+  var videoProcessingQueue = [];
 
   // counting the processing videos
   var videoProcessingCounter = 0;
@@ -57,7 +57,7 @@
     if ( null === src ) {
       return;
     }
-		
+
     bkgrSimulator.style.backgroundImage = 'url(' + src + ')';
   }
 
@@ -88,7 +88,7 @@
       // on case of loading error, repush the image on the visibile queue
       // so the next interval can be reprocessed
       tempImg.onerror = function() {
-        console.log('error')
+        console.error('Error while lazy loading background image')
         imgVisibleQueue.push( el );
       };
     }
@@ -137,7 +137,7 @@
   				reject( new Error( 'Image didn\'t load successfully; error code:' + request.statusText ) );
   			}
   		};
-			
+
   		request.onerror = function() {
 				console.error("XHR Request didn't go correctly!");
 				imgVisibleQueue.push(el);
@@ -172,7 +172,7 @@
 
     // if video can play
     el.addEventListener('canplaythrough', onCanPlayThroughCallback);
-    
+
     // if error, try to reload the resource
     el.addEventListener('error', onErrorCallback);
 
@@ -185,14 +185,9 @@
     // el.addEventListener('abort',testCb);
   }
 
-  function testCb(event) {
-    console.log(event.type)
-  }
-
   var onCanPlayThroughCallback = function(event) {
     event.currentTarget.play().then(function () {
-			// console.log( '2' );
-			
+
 		});
     if ( queuing ) { videoProcessingCounter--; }
     // remove data-src attribute only if the
@@ -209,7 +204,6 @@
   }
 
   var onErrorCallback = function(event) {
-    // console.log('onErrorCallback')
     // reset the video
     for ( var source in event.currentTarget.children ) {
       var videoSource = event.currentTarget.children[source];
@@ -231,16 +225,16 @@
       for ( var source in el.children ) {
         var videoSource = el.children[source];
         if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
-					
+
           var src = videoSource.getAttribute('data-src');
           if ( src ) {
-						
+
             videoSource.src = src;
             // videoSource.removeAttribute('data-src');
           }
         }
 			}
-			
+
 			el.load();
     }
   }
@@ -248,7 +242,7 @@
   function sectionIntersectionObserverCallback(entries, sectionObserver) {
     var tot_entries = entries.length, i;
     var imgWrapper, videoWrapper;
-    
+
     for( i=0; i < tot_entries; i++ ) {
       imgWrapper = null;
       videoWrapper = null;
@@ -275,10 +269,9 @@
 
         // check video background
         if ( videoWrapper ) {
-					// console.log( 'LAZY LOAD SECTION VIDEO' );
 					lazyLoadVideoHTML( videoWrapper );
         }
-        
+
         // stop observing section
         sectionObserver.unobserve(entries[i].target);
       }
@@ -311,19 +304,14 @@
             lazyLoadBkgrImg( imgWrapper );
           }
 				}
-				
+
         if ( videoWrapper ) {
-					// console.log( entries[i].intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused );
-					
+
           if ( entries[i].intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused ) {
-            // console.log('fast-load.js - 375 - play()')
             videoWrapper.play().then(function () {
-							// console.log( '1' );
-							
+
 						});
           } else {
-						// console.log( 'LAZY LOAD BLOCK VIDEO' );
-						
             lazyLoadVideoHTML( videoWrapper );
           }
         }
@@ -341,7 +329,7 @@
   /**
    * New intersection observer handler
    * checking going in viewport and going out
-   * 
+   *
    */
   var handleIntersectionObserverSmart = function() {
     if ( ! "IntersectionObserver" in window) {
@@ -353,7 +341,7 @@
     var tot_sections = sections.length, i;
 
     scrollobserverSection = new IntersectionObserver(
-      sectionIntersectionObserverCallback, 
+      sectionIntersectionObserverCallback,
       {
         threshold: [0, 0.5 ,1],
         rootMargin: '100% 0% 100% 0%'
@@ -377,7 +365,7 @@
     var tot_blocks = blocks.length, j;
 
     scrollobserverBlock = new IntersectionObserver(
-      blockIntersectionObserverCallback, 
+      blockIntersectionObserverCallback,
       {
         threshold: [0, 0.5 ,1],
         rootMargin: '100% 0% 100% 0%'
@@ -433,7 +421,7 @@
 
       now = Date.now();
 	    delta = now - then;
-  
+
       if (delta > interval) {
         checkQueue();
         then = now - (delta % interval);
@@ -506,7 +494,6 @@
       var totPQ = videoProcessingQueue.length;
       while ( i < totPQ ) {
 				var temp = videoProcessingQueue.shift();
-				// console.log( 'LAZY LOAD QUEUE VIDEO' );
 				lazyLoadVideoHTML( temp );
         i++;
         videoProcessingCounter++;

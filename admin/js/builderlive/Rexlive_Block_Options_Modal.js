@@ -70,7 +70,7 @@ var BlockOptions_Modal = (function($) {
       e.preventDefault();
       _closeBlockOptionsModal( true );
     });
-    
+
     // confirm-refresh options
     block_options_properties.$options_buttons.on('click', function(event) {
       event.preventDefault();
