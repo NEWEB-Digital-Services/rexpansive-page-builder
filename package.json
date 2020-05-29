@@ -6,9 +6,10 @@
   "author": "neweb",
   "license": "ISC",
   "scripts": {
-    "build": "gulp build",
-    "deploy:win": "gulp build && gulp standardBuild",
-    "deploy:mac": "gulp build && gulp macBuild"
+    "dev": "gulp dev --development",
+    "build": "gulp build --production",
+    "deploy:win": "gulp build --production && gulp standardBuild --production",
+    "deploy:mac": "gulp build --production && gulp macBuild --production"
   },
   "devDependencies": {
     "eslint-config-google": "^0.9.1",
@@ -17,11 +18,12 @@
     "gulp-clean": "^0.4.0",
     "gulp-cli": "^2.1.0",
     "gulp-concat": "^2.6.0",
+    "gulp-mode": "^1.0.2",
     "gulp-plumber": "^1.2.0",
     "gulp-rename": "^1.2.2",
     "gulp-sass": "^4.0.2",
     "gulp-size": "^2.1.0",
-    "gulp-sourcemaps": "^2.6.4",
+    "gulp-sourcemaps": "^2.6.5",
     "gulp-svg-sprite": "^1.4.0",
     "gulp-uglify": "^1.5.1",
     "gulp-util": "^3.0.8",

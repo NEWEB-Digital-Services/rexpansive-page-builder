@@ -12,6 +12,17 @@ const autoprefixer = require('gulp-autoprefixer');
 const rename = require('gulp-rename');
 const gulpUtil = require('gulp-util');
 const svgSprite = require('gulp-svg-sprite');
+const sourcemaps = require('gulp-sourcemaps');
+const mode = require('gulp-mode')();
+
+// If mode.production() returns the passed string, we are in production mode
+const production = 'test' === mode.production('test');
+
+const sassConfig = {
+	// Default: nested
+	// Values: nested, expanded, compact, compressed
+	outputStyle: production ? 'compressed' : 'nested'
+};
 
 /** LIVE BUILDER */
 /** SPRITES TASKS */
@@ -53,6 +64,7 @@ exports.liveSprites = liveSprites;
 /** END SPRITES TASKS */
 
 // LIVE
+// Not used in development or production tasks
 function liveBuilderStyle(cb) {
 	return src('admin/scss/rexlive/live-def.scss')
 		.pipe(
@@ -77,16 +89,11 @@ exports.liveBuilderStyle = liveBuilderStyle;
 
 // ADMIN
 function adminBuilderStyle(cb, dev) {
-	let sassConfig = {
-		sourcemap: false
-	};
-
-	if (!dev) {
-		sassConfig.outputStyle = 'compressed';
-	}
-
 	return src('admin/scss/rexlive/tools-def.scss')
+		.pipe(mode.development(sourcemaps.init()))
+		.pipe(mode.development(sourcemaps.identityMap()))
 		.pipe(sass(sassConfig))
+		.pipe(mode.development(sourcemaps.write()))
 		.pipe(plumber())
 		.pipe(
 			autoprefixer({
@@ -185,7 +192,7 @@ var builderlive_admin = [
 	'admin/js/builderlive/Rexlive_Page_Settings_Modal.js',
 	'admin/js/builderlive/Rexlive_Delete_Model_Modal.js',
 	'admin/js/builderlive/Rexlive_Resynch_Content_Modal.js',
-	'admin/js/builderlive/Rexbuilder_Starting.js',
+	'admin/js/builderlive/Rexbuilder_Starting.js'
 ];
 
 function adminScript(cb) {
@@ -270,7 +277,7 @@ function builderliveEditor(cb) {
 }
 
 function watchBuilderliveEditor(cb) {
-	watch( builderlive_public_editor, builderlive );
+	watch(builderlive_public_editor, builderlive);
 	cb();
 }
 
@@ -321,22 +328,17 @@ function builderlive(cb) {
 }
 
 function watchBuilderLive(cb) {
-	watch( builderlive_public, builderlive );
+	watch(builderlive_public, builderlive);
 	cb();
 }
 
 // LIVE CSS
 function builderliveEditorStyle(cb, dev) {
-	let sassConfig = {
-		sourcemap: false
-	};
-
-	if (!dev) {
-		sassConfig.outputStyle = 'compressed';
-	}
-
 	return src('live/builderlive-editor.scss')
+		.pipe(mode.development(sourcemaps.init()))
+		.pipe(mode.development(sourcemaps.identityMap()))
 		.pipe(sass(sassConfig))
+		.pipe(mode.development(sourcemaps.write()))
 		.pipe(plumber())
 		.pipe(
 			autoprefixer({
@@ -361,18 +363,11 @@ function watchBuilderliveEditorStyle(cb) {
 
 // PUBLIC CSS
 function builderliveStyle(cb, dev) {
-	let sassConfig = {
-		sourcemap: true
-	};
-
-	if (!dev) {
-		sassConfig = {
-			outputStyle: 'compressed'
-		};
-	}
-
 	return src('public/builderlive-public.scss')
+		.pipe(mode.development(sourcemaps.init()))
+		.pipe(mode.development(sourcemaps.identityMap()))
 		.pipe(sass(sassConfig))
+		.pipe(mode.development(sourcemaps.write()))
 		.pipe(plumber())
 		.pipe(
 			autoprefixer({
