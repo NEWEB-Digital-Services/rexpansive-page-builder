@@ -28,7 +28,6 @@
 }
 
 .fadeInAndOut {
-  -webkit-animation-name: fadeInAndOut;
   animation-name: fadeInAndOut;
 }
 
@@ -261,33 +260,16 @@
   border-color: #fff;
   border-width: 0;
   border-style: solid;
-  // &:before {
-  //   content: '';
-  //   transition: border-width $border-in-duration $experiment, z-index 10ms ease ( $border-in-duration + $fade-content-duration );
-  //   position: absolute;
-  //   top: 0;
-  //   left: 0;
-  //   // opacity: 1;
-  //   width: 100%;
-  //   height: 100%;
-  //   z-index: 100;
-  //   background-color: transparent;
-  //   border-color: #fff;
-  //   border-width: 0;
-  //   border-style: solid;
-  // }
-  .perfect-grid-item {
+
+	.perfect-grid-item {
     opacity: 0;
     transition: opacity $fade-content-duration $ease-in-cubic ( $border-in-duration + $fade-content-duration );
-  }
+	}
+
   &.run-animation {
-    // border-width: 40px 70px 30px 70px;
     border-width: 60px 60px 0 60px;
-    // &:before {
-    //   border-width: 40px 70px 30px 70px;
-    //   z-index: -1000;
-    // }
-    .perfect-grid-item {
+
+		.perfect-grid-item {
       opacity: 1;
     }
   }
@@ -297,7 +279,8 @@
   .perfect-grid-item {
     opacity: 0;
     transition: opacity $slide-opacity-duration $ease-in-cubic;
-  }
+	}
+
   &.run-animation {
     .perfect-grid-item {
       opacity: 1;
@@ -317,11 +300,13 @@
         }
       }
     }
-  }
+	}
+
   .rex-indicator--animate-line {
     .rex-indicator__dot {
       transition-delay: $slide-opacity-duration;
-    }
+		}
+
     .rex-indicator__wrap--horizontal,
     .rex-indicator__wrap--vertical {
       .rex-indicator__line {
@@ -333,17 +318,21 @@
 
 .fade-all {
   opacity: 0;
-  transition: opacity $fade-all-duration $fade-all-ease;
+	transition: opacity $fade-all-duration $fade-all-ease;
+
   .responsive-overlay {
     opacity: 0;
     transition: opacity $fade-all-duration $fade-all-ease 1s;
-  }
+	}
+
   .perfect-grid-item {
     opacity: 0;
     transition: opacity $fade-all-duration $fade-all-ease 1.5s;
-  }
+	}
+
   &.run-animation {
-    opacity: 1;
+		opacity: 1;
+
     .responsive-overlay,
     .perfect-grid-item {
       opacity: 1;
@@ -352,11 +341,14 @@
 }
 
 .fade-element-in {
-  opacity: 0;
-  @include safariFlickerFix;
+	opacity: 0;
+
+	@include safariFlickerFix;
+
   &.rex-element--animated {
     transition: opacity 0.5s $fade-all-ease;
-  }
+	}
+
   &.run-animation {
     opacity: 1;
   }

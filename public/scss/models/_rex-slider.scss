@@ -75,8 +75,10 @@
 
   .rex-slider-element {
     width: 100%;
-    height: 100%;
-    @include backgroundCover();
+		height: 100%;
+
+		@include backgroundCover();
+
     &:after {
       // @include soft-shadow();
       content: '';
@@ -274,7 +276,7 @@
 }
 
 .full-height-section {
-  .block-has-slider { 
+  .block-has-slider {
     .mCSB_container {
       height: inherit;
     }
