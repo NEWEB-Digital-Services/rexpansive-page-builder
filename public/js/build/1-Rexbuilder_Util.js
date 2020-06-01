@@ -1264,7 +1264,7 @@ var Rexbuilder_Util = (function($) {
     Rexbuilder_Util.rexContainer.setAttribute( "data-rex-layout-selected", chosenLayoutName );
     Rexbuilder_Util.activeLayout = chosenLayoutName;
 
-    // new page (?)
+    // new page or old builder page
     if ( $rexbuilderLayoutData.children(".layouts-customizations").attr("data-empty-customizations") == "true" && $rexbuilderModelData.children(".models-customizations").attr("data-empty-models-customizations") == "true" ) {
       if ( _isMobile() ) {
         if ( ! Rexbuilder_Util.blockGridUnder768 ) {
@@ -1275,15 +1275,105 @@ var Rexbuilder_Util = (function($) {
         Rexbuilder_Util.removeCollapsedGrids();
       }
 
-      // tracing empty page data
-      var emptySectionData = [{
-        section_rex_id: document.querySelector('.rexpansive_section.empty-section').getAttribute('data-rexlive-section-id'),
-        targets:[{
-          name:'self',
-          props: {}
-        }]
-      }];
-      Rexbuilder_Util.editedDataInfo = new RexEditedData( emptySectionData );
+      var emptySection = document.querySelector('.rexpansive_section.empty-section');
+      if ( emptySection ) {
+        // tracing empty page data
+        var emptySectionData = [{
+          section_rex_id: emptySection.getAttribute('data-rexlive-section-id'),
+          targets:[{
+            name:'self',
+            props: {}
+          }]
+        }];
+        Rexbuilder_Util.editedDataInfo = new RexEditedData( emptySectionData );
+      } else {
+        // tracing data created from old builder
+        var oldSections = Array.prototype.slice.call( document.getElementsByClassName('rexpansive_section') );
+        var k, tot_oldSections = oldSections.length;
+        var oldSectionsData = [];
+        for( k=0; k<tot_oldSections; k++ ) {
+          var tempData = {};
+          var sData = oldSections[k].querySelector('.section-data');
+
+          tempData.section_rex_id = oldSections[k].getAttribute('data-rexlive-section-id');
+          tempData.targets = [];
+          var tempTarget = {
+            name: '',
+            props: {}
+          };
+
+          tempTarget.name = 'self';
+          tempTarget.props.section_name = sData.getAttribute('data-section_name');
+          tempTarget.props.section_nav_label = sData.getAttribute('data-section_nav_label');
+          tempTarget.props.color_bg_section = sData.getAttribute('data-color_bg_section');
+          tempTarget.props.color_bg_section_active = ( '' !== tempTarget.props.color_bg_section ? true : false );
+          tempTarget.props.image_bg_section_active = sData.getAttribute('data-image_bg_section_active');
+          tempTarget.props.image_bg_section = sData.getAttribute('data-image_bg_section');
+          tempTarget.props.image_width = sData.getAttribute('data-image_width');
+          tempTarget.props.image_height = sData.getAttribute('data-image_height');
+          tempTarget.props.id_image_bg_section = sData.getAttribute('data-id_image_bg_section');
+          tempTarget.props.image_size = sData.getAttribute('data-image_size');
+          tempTarget.props.video_bg_id = sData.getAttribute('data-video_bg_id_section');
+          tempTarget.props.video_mp4_url = sData.getAttribute('data-video_mp4_url');
+          tempTarget.props.video_bg_width_section = sData.getAttribute('data-video_bg_width_section');
+          tempTarget.props.video_bg_height_section = sData.getAttribute('data-video_bg_height_section');
+          tempTarget.props.video_bg_url_section = sData.getAttribute('data-video_bg_url_section');
+          tempTarget.props.video_bg_url_vimeo_section = sData.getAttribute('data-video_bg_url_vimeo_section');
+          tempTarget.props.block_distance = sData.getAttribute('data-block_distance');
+          tempTarget.props.row_separator_top = sData.getAttribute('data-row_separator_top');
+          tempTarget.props.row_separator_bottom = sData.getAttribute('data-row_separator_bottom');
+          tempTarget.props.row_separator_right = sData.getAttribute('data-row_separator_right');
+          tempTarget.props.row_separator_left = sData.getAttribute('data-row_separator_left');
+          tempTarget.props.margin = sData.getAttribute('data-margin');
+          tempTarget.props.row_margin_top = sData.getAttribute('data-row_margin_top');
+          tempTarget.props.row_margin_bottom = sData.getAttribute('data-row_margin_bottom');
+          tempTarget.props.row_margin_right = sData.getAttribute('data-row_margin_right');
+          tempTarget.props.row_margin_left = sData.getAttribute('data-row_margin_left');
+          tempTarget.props.custom_classes = sData.getAttribute('data-custom_classes');
+          tempTarget.props.row_overlay_color = sData.getAttribute('data-row_overlay_color');
+          tempTarget.props.row_overlay_active = sData.getAttribute('data-row_overlay_active');
+
+          tempData.targets.push(tempTarget);
+
+          var blocksData = Array.prototype.slice.call( oldSections[k].getElementsByClassName('rexbuilder-block-data') );
+          var z, tot_blocksData = blocksData.length;
+          for ( z=0; z<tot_blocksData; z++ ) {
+            var tempBlockTarget = {
+              name: blocksData[z].getAttribute('data-rexbuilder_block_id'),
+              props: {
+                color_bg_block: blocksData[z].getAttribute('data-color_bg_block'),
+                color_bg_block_active: blocksData[z].getAttribute('data-color_bg_block_active'),
+                image_bg_url: blocksData[z].getAttribute('data-image_bg_url'),
+                image_width: blocksData[z].getAttribute('data-image_width'),
+                image_height: blocksData[z].getAttribute('data-image_height'),
+                id_image_bg: blocksData[z].getAttribute('data-id_image_bg'),
+                image_size: blocksData[z].getAttribute('data-image_size'),
+                image_bg_elem_active: blocksData[z].getAttribute('data-image_bg_elem_active'),
+                type_bg_image: blocksData[z].getAttribute('data-type_bg_image'),
+                video_bg_id: blocksData[z].getAttribute('data-video_bg_id'),
+                video_bg_width: blocksData[z].getAttribute('data-video_bg_width'),
+                video_bg_height: blocksData[z].getAttribute('data-video_bg_height'),
+                video_mp4_url: blocksData[z].getAttribute('data-video_mp4_url'),
+                video_bg_url_youtube: blocksData[z].getAttribute('data-video_bg_url_youtube'),
+                video_bg_url_vimeo: blocksData[z].getAttribute('data-video_bg_url_vimeo'),
+                photoswipe: blocksData[z].getAttribute('data-photoswipe'),
+                block_custom_class: blocksData[z].getAttribute('data-block_custom_class'),
+                block_padding: blocksData[z].getAttribute('data-block_padding'),
+                overlay_block_color: blocksData[z].getAttribute('data-overlay_block_color'),
+                overlay_block_color_active: blocksData[z].getAttribute('data-overlay_block_color_active'),
+                linkurl: blocksData[z].getAttribute('data-linkurl'),
+                block_flex_position: blocksData[z].getAttribute('data-block_flex_position'),
+                block_flex_img_position: blocksData[z].getAttribute('data-block_flex_img_position'),
+              }
+            };
+            tempData.targets.push(tempBlockTarget);
+          }
+
+          oldSectionsData.push(tempData);
+        }
+
+        Rexbuilder_Util.editedDataInfo = new RexEditedData( oldSectionsData );
+      }
 
       return response;
     }
@@ -1383,6 +1473,8 @@ var Rexbuilder_Util = (function($) {
         probableLayoutSelectedSections = layoutSelectedSections;
       }
     }
+
+    console.log(layoutSelectedSections)
 
     // tracing page data
     Rexbuilder_Util.editedDataInfo = new RexEditedData( ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ) );

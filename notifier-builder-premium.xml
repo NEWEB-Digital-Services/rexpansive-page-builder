@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <notifier>
-	<latest>2.0.5</latest>
+	<latest>2.0.6</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.0.6</strong> – </h4>
+			<p><strong>Fixed</strong>: Generation of pages saved with old builder (versions prior to 2.0)</p>
 			<h4><strong>v2.0.5</strong> – May 29, 2020</h4>
 			<p><strong>Added</strong>: Confirm/Reset buttons to confirm or reset changes made inside a modal or with a color picker</p>
 			<p><strong>Added</strong>: Row label, to customize the navigator labels</p>
