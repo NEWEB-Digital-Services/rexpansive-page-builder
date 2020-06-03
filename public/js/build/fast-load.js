@@ -111,7 +111,9 @@
 
 		if (null !== src && -1 === el.style.backgroundImage.indexOf(src) && !isLazyLoading) {
 			loadResource(src, el)
-				.then(function () {})
+				.then(function () {
+					_dispatchResourceLoadedEvent(el);
+				})
 				.catch(function (err) {
 					console.error(err);
 				});
@@ -155,6 +157,17 @@
 		});
 	}
 
+	function _dispatchResourceLoadedEvent(element) {
+		// Create the event
+		var event = document.createEvent('Event');
+
+		// Define that the event name is 'resourceLazyLoaded'
+		event.initEvent('rexbuilder:resourceLazyLoaded', true, true);
+
+		// target can be any Element or other EventTarget.
+		element.dispatchEvent(event);
+	}
+
 	/**
 	 * Adding listeners to the video element to lazy load
 	 * @param {Element} el video element
@@ -169,6 +182,8 @@
 				// tracing the callback to succesfully remove it
 				// after the call
 				el.addEventListener('play', function cb(event) {
+					// _dispatchResourceLoadedEvent(event.currentTarget);
+
 					loader.className = loader.className.replace('video-tool--view', '').trim();
 					pause.className = pause.className + ' video-tool--view';
 					event.currentTarget.removeEventListener(event.type, cb);
