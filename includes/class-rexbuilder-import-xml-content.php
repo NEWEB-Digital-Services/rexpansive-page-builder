@@ -144,9 +144,6 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 				'meta_input'		=>	$meta_input,
 			);
 
-			Rexbuilder_Utilities::write_log($args['import_id']);
-			Rexbuilder_Utilities::write_log(false === get_post_status( $args['import_id'] ));
-
 			// if( !post_exists( $args['post_title'], '', $args['post_date'] ) ) {
 			if( false === get_post_status( $args['import_id'] ) ) {
 
