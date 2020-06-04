@@ -1,6 +1,6 @@
 /**
  * Edit content of wpcf7 forms
- * @since x.x.x
+ * @since 2.0.x
  */
 var Wpcf7_Edit_Content_Modal = (function ($) {
 	/* ===== Globals ===== */
@@ -8,7 +8,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 	var editPoint;
 	var reverseData;
 	var resetData;
-	var needToRemoveSpanData = true; // Needs to be set false the first time an edit happens
 
 	var tinyMCEFieldEditor;
 	var fieldEditor;
@@ -167,7 +166,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 	var _openColumnContentEditorModal = function (data) {
 		columnContentData = jQuery.extend(true, {}, data.columnContentData);
 		editPoint = data.columnContentData.target;
-		needToRemoveSpanData = !data.spanDataExists; // If the span data already exists, we don't have to remove it
+		// needToRemoveSpanData = !data.spanDataExists; // If the span data already exists, we don't have to remove it
 		var inputType = columnContentData.input_type;
 
 		_updateColumnContentEditorModal(columnContentData);
@@ -1673,10 +1672,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			show: function () {},
 
 			move: function (color) {
-				if (needToRemoveSpanData) {
-					needToRemoveSpanData = false;
-				}
-
 				colorTEXT = color.toRgbString();
 
 				wpcf7_content_editor_properties.$content_background_color_preview.hide();
@@ -1723,71 +1718,67 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 	};
 
 	var _linkTextColorEditor = function () {
+		var $valueInput = wpcf7_content_editor_properties.$content_text_color_value;
 		var colorTEXT;
+		var resetColor;
 
-		wpcf7_content_editor_properties.$content_text_color_value.spectrum({
-			replacerClassName: 'btn-floating',
+		function updateColorLive(color) {
+			colorTEXT = color.toRgbString();
 
+			wpcf7_content_editor_properties.$content_text_color_preview.hide();
+			wpcf7_content_editor_properties.$content_preview_text.css('background-color', colorTEXT);
+
+			_updateColumnContentLive({
+				type: 'text-color',
+				name: 'text-color',
+				value: colorTEXT
+			});
+		}
+
+		$valueInput.spectrum({
+			replacerClassName: 'btn-floating spectrum-placeholder',
 			preferredFormat: 'hex',
-
-			showPalette: false,
-
 			showAlpha: true,
-
+			showPalette: false,
 			showInput: true,
-
 			showButtons: false,
-
-			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-
-			show: function () {},
-
-			move: function (color) {
-				if (needToRemoveSpanData) {
-					needToRemoveSpanData = false;
-				}
-
-				colorTEXT = color.toRgbString();
-
-				wpcf7_content_editor_properties.$content_text_color_preview.hide();
-
-				wpcf7_content_editor_properties.$content_preview_text.css('background-color', colorTEXT);
-
-				_updateColumnContentLive({
-					type: 'text-color',
-
-					name: 'text-color',
-
-					value: colorTEXT
-				});
+			containerClassName: 'rexbuilder-materialize-wrap sp-draggable sp-meditor',
+			show: function (color) {
+				resetColor = color;
+				console.log(resetColor.toRgbString());
 			},
-
-			change: function (color) {},
-
+			move: updateColorLive,
 			hide: function (color) {
 				columnContentData.text_color = color.toRgbString();
-			},
-
-			cancelText: '',
-
-			chooseText: ''
+			}
 		});
 
-		var close = tmpl('tmpl-tool-close', {});
+		var $closeButton = $(Rexbuilder_Admin_Templates.getTemplate('tmpl-tool-close'));
+		var $bottomTools = $(Rexbuilder_Admin_Templates.getTemplate('tmpl-tool-save'));
 
-		var $close = $(close);
+		$valueInput.spectrum('container').append($closeButton);
+		$valueInput.spectrum('container').append($bottomTools);
 
-		wpcf7_content_editor_properties.$content_text_color_value.spectrum('container').append($close);
-
-		$close.on('click', function (e) {
+		$closeButton.on('click', function (e) {
 			e.preventDefault();
+			$valueInput.spectrum('hide');
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			updateColorLive(resetColor);
+		});
 
-			wpcf7_content_editor_properties.$content_text_color_value.spectrum('hide');
+		$bottomTools.on('click', '[data-rex-option="save"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('hide');
+		});
+
+		$bottomTools.on('click', '[data-rex-option="reset"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			updateColorLive(resetColor);
 		});
 
 		wpcf7_content_editor_properties.$content_text_color_preview.on('click', function () {
-			wpcf7_content_editor_properties.$content_text_color_value.spectrum('show');
-
+			$valueInput.spectrum('show');
 			return false;
 		});
 	};
@@ -1797,67 +1788,45 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		wpcf7_content_editor_properties.$content_text_color_focus_value.spectrum({
 			replacerClassName: 'btn-floating',
-
 			preferredFormat: 'hex',
-
 			showPalette: false,
-
 			showAlpha: true,
-
 			showInput: true,
-
 			showButtons: false,
-
 			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-
 			show: function () {},
-
 			move: function (color) {
-				if (needToRemoveSpanData) {
-					needToRemoveSpanData = false;
-				}
-
 				colorTEXT = color.toRgbString();
 
 				wpcf7_content_editor_properties.$content_text_color_focus_preview.hide();
-
 				wpcf7_content_editor_properties.$content_preview_text_focus.css('background-color', colorTEXT);
 
 				_updateColumnContentLive({
 					type: 'text-focus',
-
 					name: 'text-color',
-
 					value: colorTEXT
 				});
 			},
-
 			change: function (color) {},
-
 			hide: function (color) {
 				columnContentData.text_color_focus = color.toRgbString();
 			},
-
 			cancelText: '',
-
 			chooseText: ''
 		});
 
 		var close = tmpl('tmpl-tool-close', {});
-
 		var $close = $(close);
 
 		wpcf7_content_editor_properties.$content_text_color_focus_value.spectrum('container').append($close);
 
 		$close.on('click', function (e) {
 			e.preventDefault();
-
 			wpcf7_content_editor_properties.$content_text_color_focus_value.spectrum('hide');
 		});
 
 		wpcf7_content_editor_properties.$content_text_color_focus_preview.on('click', function () {
 			wpcf7_content_editor_properties.$content_text_color_focus_value.spectrum('show');
-
 			return false;
 		});
 	};
@@ -1867,67 +1836,45 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		wpcf7_content_editor_properties.$content_select_color_value.spectrum({
 			replacerClassName: 'btn-floating',
-
 			preferredFormat: 'hex',
-
 			showPalette: false,
-
 			showAlpha: true,
-
 			showInput: true,
-
 			showButtons: false,
-
 			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-
 			show: function () {},
-
 			move: function (color) {
-				if (needToRemoveSpanData) {
-					needToRemoveSpanData = false;
-				}
-
 				colorTEXT = color.toRgbString();
 
 				wpcf7_content_editor_properties.$content_select_color_preview.hide();
-
 				wpcf7_content_editor_properties.$content_preview_select.css('background-color', colorTEXT);
 
 				_updateColumnContentLive({
 					type: 'text-color',
-
 					name: 'text-color',
-
 					value: colorTEXT
 				});
 			},
-
 			change: function (color) {},
-
 			hide: function (color) {
 				columnContentData.text_color = color.toRgbString();
 			},
-
 			cancelText: '',
-
 			chooseText: ''
 		});
 
 		var close = tmpl('tmpl-tool-close', {});
-
 		var $close = $(close);
 
 		wpcf7_content_editor_properties.$content_select_color_value.spectrum('container').append($close);
 
 		$close.on('click', function (e) {
 			e.preventDefault();
-
 			wpcf7_content_editor_properties.$content_select_color_value.spectrum('hide');
 		});
 
 		wpcf7_content_editor_properties.$content_select_color_preview.on('click', function () {
 			wpcf7_content_editor_properties.$content_select_color_value.spectrum('show');
-
 			return false;
 		});
 	};
@@ -1937,67 +1884,45 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		wpcf7_content_editor_properties.$content_select_color_after_selection_value.spectrum({
 			replacerClassName: 'btn-floating',
-
 			preferredFormat: 'hex',
-
 			showPalette: false,
-
 			showAlpha: true,
-
 			showInput: true,
-
 			showButtons: false,
-
 			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-
 			show: function () {},
-
 			move: function (color) {
-				if (needToRemoveSpanData) {
-					needToRemoveSpanData = false;
-				}
-
 				colorTEXT = color.toRgbString();
 
 				wpcf7_content_editor_properties.$content_select_color_after_selection_preview.hide();
-
 				wpcf7_content_editor_properties.$content_preview_select_after_selection.css('background-color', colorTEXT);
 
 				_updateColumnContentLive({
 					type: 'select-color',
-
 					name: 'text-color',
-
 					value: colorTEXT
 				});
 			},
-
 			change: function (color) {},
-
 			hide: function (color) {
 				columnContentData.select_color_after_selection = color.toRgbString();
 			},
-
 			cancelText: '',
-
 			chooseText: ''
 		});
 
 		var close = tmpl('tmpl-tool-close', {});
-
 		var $close = $(close);
 
 		wpcf7_content_editor_properties.$content_select_color_after_selection_value.spectrum('container').append($close);
 
 		$close.on('click', function (e) {
 			e.preventDefault();
-
 			wpcf7_content_editor_properties.$content_select_color_after_selection_value.spectrum('hide');
 		});
 
 		wpcf7_content_editor_properties.$content_select_color_after_selection_preview.on('click', function () {
 			wpcf7_content_editor_properties.$content_select_color_after_selection_value.spectrum('show');
-
 			return false;
 		});
 	};
@@ -2007,67 +1932,45 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		wpcf7_content_editor_properties.$content_placeholder_color_value.spectrum({
 			replacerClassName: 'btn-floating',
-
 			preferredFormat: 'hex',
-
 			showPalette: false,
-
 			showAlpha: true,
-
 			showInput: true,
-
 			showButtons: false,
-
 			containerClassName: 'rexbuilder-materialize-wrap block-placeholder-color-picker',
-
 			show: function () {},
-
 			move: function (color) {
-				if (needToRemoveSpanData) {
-					needToRemoveSpanData = false;
-				}
-
 				colorTEXT = color.toRgbString();
 
 				wpcf7_content_editor_properties.$content_placeholder_color_preview.hide();
-
 				wpcf7_content_editor_properties.$content_preview_placeholder.css('background-color', colorTEXT);
 
 				_updateColumnContentLive({
 					type: 'placeholder-color',
-
 					name: 'text-color',
-
 					value: colorTEXT
 				});
 			},
-
 			change: function (color) {},
-
 			hide: function (color) {
 				columnContentData.placeholder_color = color.toRgbString();
 			},
-
 			cancelText: '',
-
 			chooseText: ''
 		});
 
 		var close = tmpl('tmpl-tool-close', {});
-
 		var $close = $(close);
 
 		wpcf7_content_editor_properties.$content_placeholder_color_value.spectrum('container').append($close);
 
 		$close.on('click', function (e) {
 			e.preventDefault();
-
 			wpcf7_content_editor_properties.$content_placeholder_color_value.spectrum('hide');
 		});
 
 		wpcf7_content_editor_properties.$content_placeholder_color_preview.on('click', function () {
 			wpcf7_content_editor_properties.$content_placeholder_color_value.spectrum('show');
-
 			return false;
 		});
 	};
@@ -2077,67 +1980,45 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		wpcf7_content_editor_properties.$content_placeholder_hover_color_value.spectrum({
 			replacerClassName: 'btn-floating',
-
 			preferredFormat: 'hex',
-
 			showPalette: false,
-
 			showAlpha: true,
-
 			showInput: true,
-
 			showButtons: false,
-
 			containerClassName: 'rexbuilder-materialize-wrap block-placeholder-color-picker',
-
 			show: function () {},
-
 			move: function (color) {
-				if (needToRemoveSpanData) {
-					needToRemoveSpanData = false;
-				}
-
 				colorTEXT = color.toRgbString();
 
 				wpcf7_content_editor_properties.$content_placeholder_hover_color_preview.hide();
-
 				wpcf7_content_editor_properties.$content_preview_placeholder_hover.css('background-color', colorTEXT);
 
 				_updateColumnContentLive({
 					type: 'placeholder-color-hover',
-
 					name: 'text-color',
-
 					value: colorTEXT
 				});
 			},
-
 			change: function (color) {},
-
 			hide: function (color) {
 				columnContentData.placeholder_hover_color = color.toRgbString();
 			},
-
 			cancelText: '',
-
 			chooseText: ''
 		});
 
 		var close = tmpl('tmpl-tool-close', {});
-
 		var $close = $(close);
 
 		wpcf7_content_editor_properties.$content_placeholder_hover_color_value.spectrum('container').append($close);
 
 		$close.on('click', function (e) {
 			e.preventDefault();
-
 			wpcf7_content_editor_properties.$content_placeholder_hover_color_value.spectrum('hide');
 		});
 
 		wpcf7_content_editor_properties.$content_placeholder_hover_color_preview.on('click', function () {
 			wpcf7_content_editor_properties.$content_placeholder_hover_color_value.spectrum('show');
-
 			return false;
 		});
 	};
@@ -2147,35 +2028,21 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		wpcf7_content_editor_properties.$content_button_text_color_value.spectrum({
 			replacerClassName: 'btn-floating',
-
 			preferredFormat: 'hex',
-
 			showPalette: false,
-
 			showAlpha: true,
-
 			showInput: true,
-
 			showButtons: false,
-
 			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-
 			show: function () {},
-
 			move: function (color) {
-				if (needToRemoveSpanData) {
-					needToRemoveSpanData = false;
-				}
-
 				colorTEXT = color.toRgbString();
 
 				wpcf7_content_editor_properties.$content_button_text_color_preview.hide();
 
 				_updateColumnContentLive({
 					type: 'button-text-color',
-
 					name: 'text-color',
-
 					value: colorTEXT
 				});
 
@@ -2183,33 +2050,26 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 					color: colorTEXT
 				});
 			},
-
 			change: function (color) {},
-
 			hide: function (color) {
 				columnContentData.wpcf7_button.text_color = color.toRgbString();
 			},
-
 			cancelText: '',
-
 			chooseText: ''
 		});
 
 		var close = tmpl('tmpl-tool-close', {});
-
 		var $close = $(close);
 
 		wpcf7_content_editor_properties.$content_button_text_color_value.spectrum('container').append($close);
 
 		$close.on('click', function (e) {
 			e.preventDefault();
-
 			wpcf7_content_editor_properties.$content_button_text_color_value.spectrum('hide');
 		});
 
 		wpcf7_content_editor_properties.$content_button_text_color_preview.on('click', function () {
 			wpcf7_content_editor_properties.$content_button_text_color_value.spectrum('show');
-
 			return false;
 		});
 	};
@@ -2219,37 +2079,22 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		wpcf7_content_editor_properties.$content_button_text_color_hover_value.spectrum({
 			replacerClassName: 'btn-floating',
-
 			preferredFormat: 'hex',
-
 			showPalette: false,
-
 			showAlpha: true,
-
 			showInput: true,
-
 			showButtons: false,
-
 			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-
 			show: function () {},
-
 			move: function (color) {
-				if (needToRemoveSpanData) {
-					needToRemoveSpanData = false;
-				}
-
 				colorTEXT = color.toRgbString();
 
 				wpcf7_content_editor_properties.$content_button_text_color_hover_preview.hide();
-
 				wpcf7_content_editor_properties.$content_preview_button_text_color_hover.css('background-color', colorTEXT);
 
 				_updateColumnContentLive({
 					type: 'button-text-color-hover',
-
 					name: 'text-color',
-
 					value: colorTEXT
 				});
 
@@ -2267,33 +2112,26 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 					}
 				);
 			},
-
 			change: function (color) {},
-
 			hide: function (color) {
 				columnContentData.wpcf7_button.text_color_hover = color.toRgbString();
 			},
-
 			cancelText: '',
-
 			chooseText: ''
 		});
 
 		var close = tmpl('tmpl-tool-close', {});
-
 		var $close = $(close);
 
 		wpcf7_content_editor_properties.$content_button_text_color_hover_value.spectrum('container').append($close);
 
 		$close.on('click', function (e) {
 			e.preventDefault();
-
 			wpcf7_content_editor_properties.$content_button_text_color_hover_value.spectrum('hide');
 		});
 
 		wpcf7_content_editor_properties.$content_button_text_color_hover_preview.on('click', function () {
 			wpcf7_content_editor_properties.$content_button_text_color_hover_value.spectrum('show');
-
 			return false;
 		});
 	};
@@ -2303,37 +2141,22 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		wpcf7_content_editor_properties.$content_button_background_color_value.spectrum({
 			replacerClassName: 'btn-floating',
-
 			preferredFormat: 'hex',
-
 			showPalette: false,
-
 			showAlpha: true,
-
 			showInput: true,
-
 			showButtons: false,
-
 			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-
 			show: function () {},
-
 			move: function (color) {
-				if (needToRemoveSpanData) {
-					needToRemoveSpanData = false;
-				}
-
 				colorTEXT = color.toRgbString();
 
 				wpcf7_content_editor_properties.$content_button_background_color_preview.hide();
-
 				wpcf7_content_editor_properties.$content_preview_button_background_color.css('background-color', colorTEXT);
 
 				_updateColumnContentLive({
 					type: 'button-background-color',
-
 					name: 'background-color',
-
 					value: colorTEXT
 				});
 
@@ -2341,33 +2164,26 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 					'background-color': colorTEXT
 				});
 			},
-
 			change: function (color) {},
-
 			hide: function (color) {
 				columnContentData.wpcf7_button.background_color = color.toRgbString();
 			},
-
 			cancelText: '',
-
 			chooseText: ''
 		});
 
 		var close = tmpl('tmpl-tool-close', {});
-
 		var $close = $(close);
 
 		wpcf7_content_editor_properties.$content_button_background_color_value.spectrum('container').append($close);
 
 		$close.on('click', function (e) {
 			e.preventDefault();
-
 			wpcf7_content_editor_properties.$content_button_background_color_value.spectrum('hide');
 		});
 
 		wpcf7_content_editor_properties.$content_button_background_color_preview.on('click', function () {
 			wpcf7_content_editor_properties.$content_button_background_color_value.spectrum('show');
-
 			return false;
 		});
 	};
@@ -2377,41 +2193,26 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		wpcf7_content_editor_properties.$content_button_background_color_hover_value.spectrum({
 			replacerClassName: 'btn-floating',
-
 			preferredFormat: 'hex',
-
 			showPalette: false,
-
 			showAlpha: true,
-
 			showInput: true,
-
 			showButtons: false,
-
 			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-
 			show: function () {},
-
 			move: function (color) {
-				if (needToRemoveSpanData) {
-					needToRemoveSpanData = false;
-				}
-
 				colorTEXT = color.toRgbString();
 
 				wpcf7_content_editor_properties.$content_button_background_color_hover_preview.hide();
 
 				wpcf7_content_editor_properties.$content_preview_button_background_color_hover.css(
 					'background-color',
-
 					colorTEXT
 				);
 
 				_updateColumnContentLive({
 					type: 'button-background-color-hover',
-
 					name: 'background-color',
-
 					value: colorTEXT
 				});
 
@@ -2429,33 +2230,26 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 					}
 				);
 			},
-
 			change: function (color) {},
-
 			hide: function (color) {
 				columnContentData.wpcf7_button.background_color_hover = color.toRgbString();
 			},
-
 			cancelText: '',
-
 			chooseText: ''
 		});
 
 		var close = tmpl('tmpl-tool-close', {});
-
 		var $close = $(close);
 
 		wpcf7_content_editor_properties.$content_button_background_color_hover_value.spectrum('container').append($close);
 
 		$close.on('click', function (e) {
 			e.preventDefault();
-
 			wpcf7_content_editor_properties.$content_button_background_color_hover_value.spectrum('hide');
 		});
 
 		wpcf7_content_editor_properties.$content_button_background_color_hover_preview.on('click', function () {
 			wpcf7_content_editor_properties.$content_button_background_color_hover_value.spectrum('show');
-
 			return false;
 		});
 	};
@@ -2465,37 +2259,22 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		wpcf7_content_editor_properties.$content_button_border_color_value.spectrum({
 			replacerClassName: 'btn-floating',
-
 			preferredFormat: 'hex',
-
 			showPalette: false,
-
 			showAlpha: true,
-
 			showInput: true,
-
 			showButtons: false,
-
 			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-
 			show: function () {},
-
 			move: function (color) {
-				if (needToRemoveSpanData) {
-					needToRemoveSpanData = false;
-				}
-
 				colorTEXT = color.toRgbString();
 
 				wpcf7_content_editor_properties.$content_button_border_color_preview.hide();
-
 				wpcf7_content_editor_properties.$content_preview_button_border_color.css('border-color', colorTEXT);
 
 				_updateColumnContentLive({
 					type: 'button-border-color',
-
 					name: 'border-color',
-
 					value: colorTEXT
 				});
 
@@ -2503,33 +2282,26 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 					'border-color': colorTEXT
 				});
 			},
-
 			change: function (color) {},
-
 			hide: function (color) {
 				columnContentData.wpcf7_button.border_color = color.toRgbString();
 			},
-
 			cancelText: '',
-
 			chooseText: ''
 		});
 
 		var close = tmpl('tmpl-tool-close', {});
-
 		var $close = $(close);
 
 		wpcf7_content_editor_properties.$content_button_border_color_value.spectrum('container').append($close);
 
 		$close.on('click', function (e) {
 			e.preventDefault();
-
 			wpcf7_content_editor_properties.$content_button_border_color_value.spectrum('hide');
 		});
 
 		wpcf7_content_editor_properties.$content_button_border_color_preview.on('click', function () {
 			wpcf7_content_editor_properties.$content_button_border_color_value.spectrum('show');
-
 			return false;
 		});
 	};
@@ -2539,37 +2311,22 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 		wpcf7_content_editor_properties.$content_button_border_color_hover_value.spectrum({
 			replacerClassName: 'btn-floating',
-
 			preferredFormat: 'hex',
-
 			showPalette: false,
-
 			showAlpha: true,
-
 			showInput: true,
-
 			showButtons: false,
-
 			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-
 			show: function () {},
-
 			move: function (color) {
-				if (needToRemoveSpanData) {
-					needToRemoveSpanData = false;
-				}
-
 				colorTEXT = color.toRgbString();
 
 				wpcf7_content_editor_properties.$content_button_border_color_hover_preview.hide();
-
 				wpcf7_content_editor_properties.$content_preview_button_border_color_hover.css('border-color', colorTEXT);
 
 				_updateColumnContentLive({
 					type: 'button-border-color-hover',
-
 					name: 'border-color',
-
 					value: colorTEXT
 				});
 
@@ -2587,33 +2344,26 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 					}
 				);
 			},
-
 			change: function (color) {},
-
 			hide: function (color) {
 				columnContentData.wpcf7_button.border_color_hover = color.toRgbString();
 			},
-
 			cancelText: '',
-
 			chooseText: ''
 		});
 
 		var close = tmpl('tmpl-tool-close', {});
-
 		var $close = $(close);
 
 		wpcf7_content_editor_properties.$content_button_border_color_hover_value.spectrum('container').append($close);
 
 		$close.on('click', function (e) {
 			e.preventDefault();
-
 			wpcf7_content_editor_properties.$content_button_border_color_hover_value.spectrum('hide');
 		});
 
 		wpcf7_content_editor_properties.$content_button_border_color_hover_preview.on('click', function () {
 			wpcf7_content_editor_properties.$content_button_border_color_hover_value.spectrum('show');
-
 			return false;
 		});
 	};
@@ -2698,10 +2448,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 				_updateColumnContentLive({
 					type: 'wpcf7-list',
-
 					value: {
 						fields: listFieldsArray,
-
 						type: 'resetting'
 					}
 				});
@@ -2711,83 +2459,67 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		// Applies changes
 		wpcf7_content_editor_properties.$apply_changes_button.on('click', function () {
 			needToSave = !_.isEqual(columnContentData, resetData);
-
 			_closeModal();
 		});
 
 		// When modal is closed in any manner
 		wpcf7_content_editor_properties.$modal.on('rexlive:this_modal_closed', function () {
-			/* 	This event is triggered also when clicking out of the modal. 
+			/* 	This event is triggered also when clicking out of the modal.
 					In that case it's considered like a "want to save" action */
-
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage({ eventName: 'rexlive:clearFormOutlines' });
 			Rexbuilder_Util_Admin_Editor.searchFocusedElement();
 
 			var wasSetEmail = undefined !== wpcf7_content_editor_properties.$content_set_email.attr('checked');
-
 			var wasSetOnlyNumbers = undefined !== wpcf7_content_editor_properties.$content_only_numbers.attr('checked');
 
 			if (!needToSave) {
 				columnContentData = jQuery.extend(true, {}, resetData);
-
 				_updatePanel();
 			}
 
 			_updateColumnContentDataFromPanel();
-
 			_applyData();
 
 			var isSetRequiredField = columnContentData.wpcf7_required_field;
-
 			var isSetEmail = columnContentData.wpcf7_email;
-
 			var isSetOnlyNumbers = columnContentData.wpcf7_only_numbers;
 
 			/* Setting the DOM properties */
-
 			_updateColumnContentLive({
 				type: 'wpcf7-required',
-
 				value: isSetRequiredField
 			});
 
 			if (isSetEmail) {
 				_updateColumnContentLive({
 					type: 'wpcf7-email',
-
 					value: true
 				});
 			} else if (isSetOnlyNumbers) {
 				_updateColumnContentLive({
 					type: 'wpcf7-only-numbers',
-
 					value: true
 				});
 			} else if (!isSetEmail && wasSetEmail) {
 				_updateColumnContentLive({
 					type: 'wpcf7-email',
-
 					value: false
 				});
 			} else if (!isSetOnlyNumbers && wasSetOnlyNumbers) {
 				_updateColumnContentLive({
 					type: 'wpcf7-only-numbers',
-
 					value: false
 				});
 			}
 
 			_updateColumnContentLive({
 				type: 'button-text',
-
 				name: 'button-text',
-
 				value: columnContentData.wpcf7_button.text
 			});
 
 			_updateColumnContentLive({
 				type: 'wpcf7-placeholder',
-
 				value: columnContentData.wpcf7_placeholder
 			});
 
@@ -2799,7 +2531,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 			_updateColumnContentLive({
 				type: 'wpcf7-required',
-
 				value: isSetRequiredField
 			});
 		});
@@ -2813,7 +2544,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 			_updateColumnContentLive({
 				type: 'wpcf7-email',
-
 				value: isSetEmail
 			});
 		});
@@ -2827,7 +2557,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 			_updateColumnContentLive({
 				type: 'wpcf7-only-numbers',
-
 				value: isSetOnlyNumbers
 			});
 		});
@@ -2838,243 +2567,181 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 			_updateColumnContentLive({
 				type: 'wpcf7-default-check',
-
 				value: isSetDefaultCheck
 			});
 		});
 
 		wpcf7_content_editor_properties.$content_input_width_type.on('click', function () {
 			var widthValue = wpcf7_content_editor_properties.$content_input_width.val();
-
 			var widthType = $(this).val();
 
 			switch (widthType) {
 				case 'percentage':
 					widthValue = widthValue + '%';
-
 					break;
-
 				case 'pixel':
 					widthValue = widthValue + 'px';
-
 					break;
 			}
 
 			_updateColumnContentLive({
 				type: 'width',
-
 				name: 'width',
-
 				value: widthValue
 			});
 		});
 
 		// Text Color Palette
-
 		wpcf7_content_editor_properties.$content_text_color_palette_buttons.on('click', function (event) {
 			var color = $(event.currentTarget).find('.bg-palette-value').val();
 
 			$(event.currentTarget).addClass('palette-color-active');
 
 			wpcf7_content_editor_properties.$content_preview_text.hide();
-
 			wpcf7_content_editor_properties.$content_text_color_palette_buttons
-
 				.not(event.currentTarget)
-
 				.removeClass('palette-color-active');
-
 			wpcf7_content_editor_properties.$content_text_color_value.spectrum('set', color);
-
 			wpcf7_content_editor_properties.$content_text_color_runtime.val(color);
 
 			columnContentData.text_color = color;
 
 			_updateColumnContentLive({
 				type: 'text-color',
-
 				name: 'text-color',
-
 				value: color
 			});
 		});
 
 		// Text Color Focus Palette
-
 		wpcf7_content_editor_properties.$content_text_color_focus_palette_buttons.on('click', function (event) {
 			var color = $(event.currentTarget).find('.bg-palette-value').val();
 
 			$(event.currentTarget).addClass('palette-color-active');
 
 			wpcf7_content_editor_properties.$content_preview_text_focus.hide();
-
 			wpcf7_content_editor_properties.$content_text_color_focus_palette_buttons
-
 				.not(event.currentTarget)
-
 				.removeClass('palette-color-active');
-
 			wpcf7_content_editor_properties.$content_text_color_focus_value.spectrum('set', color);
-
 			wpcf7_content_editor_properties.$content_text_color_focus_runtime.val(color);
 
 			columnContentData.text_color_focus = color;
 
 			_updateColumnContentLive({
 				type: 'text-focus',
-
 				name: 'text-color',
-
 				value: color
 			});
 		});
 
 		// Select Color Palette
-
 		wpcf7_content_editor_properties.$content_select_color_palette_buttons.on('click', function (event) {
 			var color = $(event.currentTarget).find('.bg-palette-value').val();
 
 			$(event.currentTarget).addClass('palette-color-active');
 
 			wpcf7_content_editor_properties.$content_preview_select.hide();
-
 			wpcf7_content_editor_properties.$content_select_color_palette_buttons
-
 				.not(event.currentTarget)
-
 				.removeClass('palette-color-active');
-
 			wpcf7_content_editor_properties.$content_select_color_value.spectrum('set', color);
-
 			wpcf7_content_editor_properties.$content_select_color_runtime.val(color);
 
 			columnContentData.text_color = color;
 
 			_updateColumnContentLive({
 				type: 'text-color',
-
 				name: 'text-color',
-
 				value: color
 			});
 		});
 
 		// Select Color Ater Selection Palette
-
 		wpcf7_content_editor_properties.$content_select_color_after_selection_palette_buttons.on('click', function (event) {
 			var color = $(event.currentTarget).find('.bg-palette-value').val();
 
 			$(event.currentTarget).addClass('palette-color-active');
 
 			wpcf7_content_editor_properties.$content_preview_select_after_selection.hide();
-
 			wpcf7_content_editor_properties.$content_select_color_after_selection_palette_buttons
-
 				.not(event.currentTarget)
-
 				.removeClass('palette-color-active');
-
 			wpcf7_content_editor_properties.$content_select_color_after_selection_value.spectrum('set', color);
-
 			wpcf7_content_editor_properties.$content_select_color_after_selection_runtime.val(color);
 
 			columnContentData.select_color_after_selection = color;
 
 			_updateColumnContentLive({
 				type: 'select-color',
-
 				name: 'text-color',
-
 				value: color
 			});
 		});
 
 		// Placeholder Color Palette
-
 		wpcf7_content_editor_properties.$content_placeholder_color_palette_buttons.on('click', function (event) {
 			var color = $(event.currentTarget).find('.bg-palette-value').val();
 
 			$(event.currentTarget).addClass('palette-color-active');
 
 			wpcf7_content_editor_properties.$content_preview_placeholder.hide();
-
 			wpcf7_content_editor_properties.$content_placeholder_color_palette_buttons
-
 				.not(event.currentTarget)
-
 				.removeClass('palette-color-active');
-
 			wpcf7_content_editor_properties.$content_placeholder_color_value.spectrum('set', color);
-
 			wpcf7_content_editor_properties.$content_placeholder_color_runtime.val(color);
 
 			columnContentData.placeholder_color = color;
 
 			_updateColumnContentLive({
 				type: 'placeholder-color',
-
 				name: 'text-color',
-
 				value: color
 			});
 		});
 
 		// Placeholder Color Hover Palette
-
 		wpcf7_content_editor_properties.$content_placeholder_hover_color_palette_buttons.on('click', function (event) {
 			var color = $(event.currentTarget).find('.bg-palette-value').val();
 
 			$(event.currentTarget).addClass('palette-color-active');
 
 			wpcf7_content_editor_properties.$content_preview_placeholder_hover.hide();
-
 			wpcf7_content_editor_properties.$content_placeholder_hover_color_palette_buttons
-
 				.not(event.currentTarget)
-
 				.removeClass('palette-color-active');
 
 			wpcf7_content_editor_properties.$content_placeholder_hover_color_value.spectrum('set', color);
-
 			wpcf7_content_editor_properties.$content_placeholder_hover_color_runtime.val(color);
 
 			columnContentData.placeholder_hover_color = color;
 
 			_updateColumnContentLive({
 				type: 'placeholder-color-hover',
-
 				name: 'text-color',
-
 				value: color
 			});
 		});
 
 		// Button Hover Text Color Palette
-
 		wpcf7_content_editor_properties.$content_button_hover_text_color_palette_buttons.on('click', function (event) {
 			var color = $(event.currentTarget).find('.bg-palette-value').val();
 
 			$(event.currentTarget).addClass('palette-color-active');
 
 			wpcf7_content_editor_properties.$content_preview_button_text_color_hover.hide();
-
 			wpcf7_content_editor_properties.$content_button_hover_text_color_palette_buttons
-
 				.not(event.currentTarget)
-
 				.removeClass('palette-color-active');
-
 			wpcf7_content_editor_properties.$content_button_text_color_hover_value.spectrum('set', color);
-
 			wpcf7_content_editor_properties.$content_button_text_color_hover_runtime.val(color);
 
 			columnContentData.wpcf7_button.text_color_hover = color;
 
 			_updateColumnContentLive({
 				type: 'button-text-color-hover',
-
 				name: 'text-color',
-
 				value: color
 			});
 
@@ -3094,7 +2761,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		});
 
 		// Button Hover Background Color Palette
-
 		wpcf7_content_editor_properties.$content_button_hover_background_color_palette_buttons.on('click', function (
 			event
 		) {
@@ -3103,24 +2769,17 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			$(event.currentTarget).addClass('palette-color-active');
 
 			wpcf7_content_editor_properties.$content_preview_button_background_color_hover.hide();
-
 			wpcf7_content_editor_properties.$content_button_hover_background_color_palette_buttons
-
 				.not(event.currentTarget)
-
 				.removeClass('palette-color-active');
-
 			wpcf7_content_editor_properties.$content_button_background_color_hover_value.spectrum('set', color);
-
 			wpcf7_content_editor_properties.$content_button_background_color_hover_runtime.val(color);
 
 			columnContentData.wpcf7_button.background_color_hover = color;
 
 			_updateColumnContentLive({
 				type: 'button-background-color-hover',
-
 				name: 'background-color',
-
 				value: color
 			});
 
@@ -3140,31 +2799,23 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		});
 
 		// Button Hover Border Color Palette
-
 		wpcf7_content_editor_properties.$content_button_hover_border_color_palette_buttons.on('click', function (event) {
 			var color = $(event.currentTarget).find('.bg-palette-value').val();
 
 			$(event.currentTarget).addClass('palette-color-active');
 
 			wpcf7_content_editor_properties.$content_preview_button_border_color_hover.hide();
-
 			wpcf7_content_editor_properties.$content_button_hover_border_color_palette_buttons
-
 				.not(event.currentTarget)
-
 				.removeClass('palette-color-active');
-
 			wpcf7_content_editor_properties.$content_button_border_color_hover_value.spectrum('set', color);
-
 			wpcf7_content_editor_properties.$content_button_border_color_hover_runtime.val(color);
 
 			columnContentData.wpcf7_button.border_color_hover = color;
 
 			_updateColumnContentLive({
 				type: 'button-border-color-hover',
-
 				name: 'border-color',
-
 				value: color
 			});
 
@@ -3199,7 +2850,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			});
 
 			_linkListListeners();
-
 			_updateDeleteFieldListener();
 		});
 	}
