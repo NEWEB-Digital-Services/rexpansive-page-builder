@@ -1308,7 +1308,7 @@
 		var timeline = anime.timeline( {
 			duration: 200,
 			easing: 'easeInOutQuad',
-			begin: function() {
+			begin: function(anim) {
 				// handle filter click here
 			},
 			complete: function( anim ) {
@@ -1328,10 +1328,20 @@
 			top: function( target, index ) {
 				return ( toMaintainCoords[ index ].y * that.properties.singleHeight ) + 'px';
 			},
+			begin: function( anim ) {
+				anim.animatables.forEach(function(el) {
+					Utils.removeClass(el.target, 'rex-block--filtered');
+				});
+			}
 		} ).add( {
 			targets: toRemove,
 			scale: 0,
-			opacity: 0
+			opacity: 0,
+			complete: function( anim ) {
+				anim.animatables.forEach(function(el) {
+					Utils.addClass(el.target, 'rex-block--filtered');
+				});
+			}
 		}, '-=200' );
 	};
 
