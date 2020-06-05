@@ -43,15 +43,9 @@ var Form_Import_Modal = (function ($) {
 	}
 
 	function refreshElements(data) {
-		var updatedList = data.updated_list;
-
-		if (0 === updatedList.length) {
-			$(elementImportProps.noFormsMessage).removeClass('lateral-menu-message--hidden');
-			return;
-		}
-
 		$(elementImportProps.noFormsMessage).addClass('lateral-menu-message--hidden');
 
+		var updatedList = data.updated_list;
 		var currentList = [];
 
 		elementImportProps.$self.find('.element-list__element').each(function (i, element) {
@@ -105,13 +99,24 @@ var Form_Import_Modal = (function ($) {
 
 		if (data.separatedForms) {
 			// Hiding separated forms
-			if ( data.separatedForms ) {
+			if (data.separatedForms) {
 				data.separatedForms.forEach(function (formID) {
 					elementImportProps.$self
 						.find('.element-list__element[data-rex-element-id="' + formID + '"]')
 						.addClass('element-list__element--separated');
 				});
 			}
+		}
+
+		var elements = elementImportProps.$self.find('.element-list__element').get();
+
+		elements = elements.filter(function (element) {
+			// Checks the computed display property
+			return 'none' !== $(element).css('display');
+		});
+
+		if (0 === elements.length) {
+			$(elementImportProps.noFormsMessage).removeClass('lateral-menu-message--hidden');
 		}
 	}
 

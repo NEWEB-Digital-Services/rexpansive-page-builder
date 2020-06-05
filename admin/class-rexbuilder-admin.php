@@ -3855,7 +3855,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-xml-content.php';
 
 		// Importing the forms from XML file
-		$forms_definition_url = REXPANSIVE_BUILDER_DEFAULT_FORMS_IMPORT_LOCATION;
+		// $forms_definition_url = REXPANSIVE_BUILDER_DEFAULT_FORMS_IMPORT_LOCATION;
+		$forms_definition_url = 'http://localhost/rexpansive/wp-content/uploads/default-forms.xml';
 		$xml_file = Rexbuilder_Import_Utilities::upload_media_file($forms_definition_url, 'xml');
 
 		if(file_exists($xml_file['file'])) {

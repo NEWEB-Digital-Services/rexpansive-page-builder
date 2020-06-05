@@ -19,24 +19,18 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 	var _getFormSettings = function (formID) {
 		$.ajax({
 			type: 'POST',
-
 			dataType: 'json',
-
 			url: live_editor_obj.ajaxurl,
-
 			data: {
 				action: 'rex_wpcf7_get_mail_settings',
-
 				nonce_param: live_editor_obj.rexnonce,
-
 				form_id: formID
 			},
-
 			beforeSend: function () {
 				wpcf7_form_editor_properties.$self.addClass('rex-modal--loading');
 			},
-
 			success: function (response) {
+				console.log( response.data.mail_settings );
 				if (response.success) {
 					formMailSettings = response.data.mail_settings[0];
 
@@ -74,39 +68,26 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 		var formID = elementData.element_target.element_id;
 
 		// Mail settings
-
 		formMailSettings.recipient = wpcf7_form_editor_properties.$form_mail_to.val();
 
 		// Messages
-
 		formMessages.validation_error = wpcf7_form_editor_properties.$form_error_message.val();
-
 		formMessages.mail_sent_ok = wpcf7_form_editor_properties.$form_send_message.val();
 
 		$.ajax({
 			type: 'POST',
-
 			dataType: 'json',
-
 			url: live_editor_obj.ajaxurl,
-
 			data: {
 				action: 'rex_wpcf7_save_mail_settings',
-
 				nonce_param: live_editor_obj.rexnonce,
-
 				form_id: formID,
-
 				new_mail_settings: formMailSettings,
-
 				new_messages: formMessages
 			},
-
 			success: function (response) {
-				if (response.success) {
-				}
+				// if (response.success) {}
 			},
-
 			error: function (response) {}
 		});
 	};
