@@ -5,17 +5,24 @@
  */
 global $post;
 
+// get buttons saved
+$defaultButtonsIDs = '[]';
+$buttonsIDsJSON = get_option( '_rex_buttons_ids', $defaultButtonsIDs );
+$stripped = stripslashes( $buttonsIDsJSON );
+$buttonsIDsUsed = json_decode($stripped, true);
+
+// get sections saved
+$defaultIDs = null;
+$sectionsIDsJSON = get_option( '_rex_section_ids_used', $defaultIDs );
+$sectionsIDsUsed = json_decode( $sectionsIDsJSON, true );
+
+// get layouts available
 $mobile = array("id" => "mobile", "label" => "Mobile", "min" => "320", "max" => "767", "type" => "standard");
 $tablet = array("id" => "tablet", "label" => "Tablet", "min" => "768", "max" => "1024", "type" => "standard");
 $default = array("id" => "default", "label" => "My Desktop", "min" => "1025", "max" => "", "type" => "standard");
 $defaultLayoutsAvaiable = array($mobile, $tablet, $default);
 
 $layoutsAvaiable = get_option( '_rex_responsive_layouts', $defaultLayoutsAvaiable );
-
-$defaultIDs = null;
-$sectionsIDsJSON = get_option( '_rex_section_ids_used', $defaultIDs );
-
-$sectionsIDsUsed = json_decode( $sectionsIDsJSON, true );
 
 $rexbuilderShortcode = get_post_meta( $post->ID, '_rexbuilder_shortcode', true );
 

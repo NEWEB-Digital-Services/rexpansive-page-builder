@@ -422,8 +422,7 @@ class Rexbuilder_Utilities {
 	 * @return	Boolean    Is there a Vimeo video in page?
 	 * @since		2.0.4
 	 */
-	public static function check_vimeo_video_in_page()
-	{
+	public static function check_vimeo_video_in_page() {
 		global $post;
 		$customizations_array = array();
 		$customizations_names = get_post_meta($post->ID, '_rex_responsive_layouts_names', true);
@@ -442,5 +441,41 @@ class Rexbuilder_Utilities {
 		preg_match($re, $customizationsString, $matches, PREG_OFFSET_CAPTURE, 0);
 
 		return ( ! empty( $matches ) );
+	}
+
+	/**
+	 * Generate generic builderlive information
+	 * @return string
+	 * @since  2.0.6
+	 */
+	public static function generate_builderlive_base_data() {
+		$buttonsIDsJSON = get_option( '_rex_buttons_ids', '[]' );
+
+		$sectionsIDsJSON = get_option( '_rex_section_ids_used', '[]' );
+
+		$mobile = array("id" => "mobile", "label" => "Mobile", "min" => "320", "max" => "767", "type" => "standard");
+		$tablet = array("id" => "tablet", "label" => "Tablet", "min" => "768", "max" => "1024", "type" => "standard");
+		$default = array("id" => "default", "label" => "My Desktop", "min" => "1025", "max" => "", "type" => "standard");
+		$defaultLayoutsAvaiable = array($mobile, $tablet, $default);
+
+		$layoutsAvaiable = get_option( '_rex_responsive_layouts', $defaultLayoutsAvaiable );
+?>
+<div id="rex-buttons-ids-used" style="display: none;"><?php echo $buttonsIDsJSON; ?></div>
+<div id="sections-ids-used" style="display: none;"><?php echo $sectionsIDsJSON; ?></div>
+<div id="layout-avaiable-dimensions" style="display:none;"><?php echo json_encode( $layoutsAvaiable ); ?></div>
+
+<div id="rexbuilder-model-data" style="display:none;">
+    <div class="models-customizations" data-empty-models-customizations="true"></div>
+    <div class="available-models-customizations-names">[]</div>
+</div>
+<div id="rexbuilder-layout-data" style="display: none;">
+    <div class="layouts-customizations" data-empty-customizations="true"></div>
+    <div id="available-layouts-names">[]</div>
+</div>
+
+<div id="rexbuilder-layout-data-live" style="display: none;"></div><!-- // Current data of the builder -->
+<div id="rexbuilder-layouts-sections-order" style="display: none;"></div><!-- // Current order of the sections -->
+<div id="rexbuilder-default-layout-state" style="display: none;" data-empty-default-customization="true"></div>
+<?php
 	}
 }
