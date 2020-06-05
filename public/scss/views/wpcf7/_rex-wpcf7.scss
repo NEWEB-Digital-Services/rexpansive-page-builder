@@ -3,6 +3,14 @@ $input-min-width: 115px;
 .wpcf7 {
 	position: relative;
 
+	input,
+	textarea,
+	select {
+		&:focus {
+			outline: none;
+		}
+	}
+
 	.wpcf7-form:not(.no-builder-form) {
 		@import 'rex-wpcf7-radios';
 		@import 'rex-wpcf7-checkboxes';

@@ -117,7 +117,7 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 
 			foreach( $temp_wp_namespace->postmeta as $postmeta ) {
 				if( is_serialized( (string)$postmeta->meta_value ) ) {
-					$meta_input[(string) $postmeta->meta_key] = maybe_unserialize((string)$postmeta->meta_value);				
+					$meta_input[(string) $postmeta->meta_key] = maybe_unserialize((string)$postmeta->meta_value);
 				} else {
 					$meta_input[(string) $postmeta->meta_key] = (string)$postmeta->meta_value;
 				}
@@ -237,7 +237,7 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 
 			foreach( $temp_wp_namespace->postmeta as $postmeta ) :
 				if(is_serialized((string)$postmeta->meta_value)) {
-					$meta_input[(string) $postmeta->meta_key] = maybe_unserialize((string)$postmeta->meta_value);				
+					$meta_input[(string) $postmeta->meta_key] = maybe_unserialize((string)$postmeta->meta_value);
 				} else {
 					$meta_input[(string) $postmeta->meta_key] = (string)$postmeta->meta_value;
 				}
@@ -520,7 +520,7 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 		/**
 		 *	Launching the import specified for an item
 		 */
-		public function run_single_import( $id ) {	
+		public function run_single_import( $id ) {
 			$this->import_post( $this->posts[$id] );
 		}
 
@@ -542,10 +542,10 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 
 		/**
 		 *	Import the taxonomies
-		 */	
+		 */
 		public function run_import_all_taxonomies() {
 			foreach( $this->taxonomies as $taxonomy ) {
-				$this->import_term( $taxonomy );	
+				$this->import_term( $taxonomy );
 			}
 		}
 
@@ -563,7 +563,7 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 		 */
 		public function run_check_all_taxonomies_parents() {
 			foreach( $this->taxonomies as $taxonomy ) {
-				$this->check_term_parent( $taxonomy );	
+				$this->check_term_parent( $taxonomy );
 			}
 		}
 
@@ -582,7 +582,7 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 
 			// check if the term exists and retrieve the new ID
 			if( $term_actual_info = term_exists( $term_name, $term_taxonomy ) ) {
-				
+
 				// searching term parent
 				if ( empty( $term_parent ) ) {
 					$parent = 0;

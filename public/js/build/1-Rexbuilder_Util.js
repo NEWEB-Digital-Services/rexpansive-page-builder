@@ -227,13 +227,13 @@ var Rexbuilder_Util = (function($) {
 
   var _updateSectionsID = function() {
     if ( ! Rexbuilder_Util.rexContainer ) return;
-    
+
     var id;
     var $sec;
     var sections = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName( 'rexpansive_section' ) );
     var tot_sections = sections.length, i;
     for( i=0; i < tot_sections; i++ ) {
-      var sectionId = sections[i].getAttribute( 'data-rexlive-section-id' );    
+      var sectionId = sections[i].getAttribute( 'data-rexlive-section-id' );
       if ( null === sectionId || '' === sectionId ) {
         id = _createSectionID();
         sections[i].setAttribute( 'data-rexlive-section-id', id );
@@ -703,7 +703,7 @@ var Rexbuilder_Util = (function($) {
           Rexbuilder_Util.chosenLayoutData = ordered[i];
         }
       }
-    } 
+    }
 
     if (selectedLayoutName === "") {
       selectedLayoutName = "default";
@@ -750,7 +750,7 @@ var Rexbuilder_Util = (function($) {
   //creating default page layout, merging with models default layout
   var _getDefaultPageLayout = function(layoutDataPage, layoutDataModels) {
     var defaultLayoutSections = [];
-    var i, j, p, q; 
+    var i, j, p, q;
     var tot_layoutDataPage, tot_layoutDataPag_sections, tot_defaultLayoutSections, tot_layoutDataModels, tot_layoutDataModels_customizations;
     for (i = 0, tot_layoutDataPage = layoutDataPage.length; i < tot_layoutDataPage; i++) {
       if (layoutDataPage[i].name == "default") {
@@ -992,7 +992,7 @@ var Rexbuilder_Util = (function($) {
     var i, j, m, n;
     var tot_layoutSelectedSections, tot_defaultLayoutSections, tot_sectionCustom_targets, tot_sectionDefault_targets;
 		var targetFounded;
-		
+
     // merging custom data with default data
     if (Rexbuilder_Util.activeLayout != "default") {
       for (i = 0, tot_layoutSelectedSections = layoutSelectedSections.length; i < tot_layoutSelectedSections; i++) {
@@ -1166,7 +1166,7 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
-		
+
     //updaiting dom custom layout
     _createPageCustomizationsDataLive(layoutSelectedSections);
 
@@ -1215,11 +1215,11 @@ var Rexbuilder_Util = (function($) {
     d.style[prop] = value;
     return d.style[prop] === value;
 	};
-	
+
 	/**
    * Clear editing info for the sections
    * Used at change layout
-   * 
+   *
    * @since		2.0.0
    * @version	2.0.4		Was in Rexbuilder_Util_Editor, moved here
    * @todo		Make it vanilla JS
@@ -1242,12 +1242,12 @@ var Rexbuilder_Util = (function($) {
 		var layout = Rexbuilder_Util.chooseLayout();
 		Rexbuilder_Util.edit_dom_layout(layout);
 	};
-  
+
   var _edit_dom_layout = function( chosenLayoutName ) {
     var response = {
       collapse_needed: false,
     };
-    
+
     // No change layout, simple resize
     if ( chosenLayoutName == Rexbuilder_Util.activeLayout && chosenLayoutName == "default" ) {
       if ( _isMobile() ) {
@@ -1474,8 +1474,6 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
-    console.log(layoutSelectedSections)
-
     // tracing page data
     Rexbuilder_Util.editedDataInfo = new RexEditedData( ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ) );
 
@@ -1504,7 +1502,7 @@ var Rexbuilder_Util = (function($) {
         if ( mergedEdits[meIndex].section_is_model.toString() == "true" ) {
           sectionObj.modelID = mergedEdits[meIndex].section_model_id;
           sectionObj.modelNumber = mergedEdits[meIndex].section_model_number;
-          section = Rexbuilder_Util.rexContainer.querySelector( 
+          section = Rexbuilder_Util.rexContainer.querySelector(
             'section[data-rexlive-section-id="' +
               mergedEdits[meIndex].section_rex_id +
               '"][data-rexlive-model-number="' +
@@ -1521,14 +1519,14 @@ var Rexbuilder_Util = (function($) {
           } else {
             Rexbuilder_Util.removeClass( section, 'rex-hide-section' );
 						$section = $(section);
-						
+
             response.collapse_needed += _updateDOMelements( $section, mergedEdits[meIndex].targets, forceCollapseElementsGrid, meIndex );
           }
           sectionDomOrder.push(sectionObj);
         }
       }
 		}
-		
+
     Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
 
     Rexbuilder_Util.domUpdating = false;          // edit_dom_layout
@@ -1562,7 +1560,7 @@ var Rexbuilder_Util = (function($) {
         for (var i = 1, tot_target = targets.length; i < tot_target; i++) {
           var elem = gallery.querySelector('div[data-rexbuilder-block-id="' + targets[i].name + '"]');
           if ( null === elem ) continue;
-          
+
           var hideElement = typeof targets[i].props.hide == "undefined" ? false : targets[i].props.hide.toString() == "true";
           if ( hideElement ) {
             if ( ! Rexbuilder_Util.hasClass( elem, 'rex-hide-element' ) ) {
@@ -1643,7 +1641,7 @@ var Rexbuilder_Util = (function($) {
 
 					Rexbuilder_Util.updateDOMSingleElement(options);
 				}
-			} 
+			}
     }
 
     updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
@@ -1696,7 +1694,7 @@ var Rexbuilder_Util = (function($) {
       galleryEditorInstance.collapseElements();
       galleryEditorInstance.collapseElementsProperties();
 		}
-		
+
     // must use this launcher
     if ( galleryEditorInstance.properties.gridstackInstance ) {
         galleryEditorInstance.properties.gridstackInstance.commit();
@@ -1729,7 +1727,7 @@ var Rexbuilder_Util = (function($) {
   /**
    * Updating a single block element according to the saved info.
 	 * @param		{Object}	options						contains the following parameters
-	 * 
+	 *
 	 * The options param contains the following params:
    * @param		{jQuery}	$elem							block to edit
    * @param		{Object}	targetProps				block properties
@@ -1785,7 +1783,7 @@ var Rexbuilder_Util = (function($) {
 				// increaseHeight: itemData.getAttribute("data-element_height_increased"),
 				realFluid: itemData.getAttribute('data-element_real_fluid')
 			};
-			
+
       var positionData = {
         x:
           typeof targetProps["gs_x"] == "undefined"
@@ -1817,7 +1815,7 @@ var Rexbuilder_Util = (function($) {
       };
       _updateElementDimensions($elem[0], $itemData[0], positionData);
 		}
-		
+
     // Update block video
     var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"]))
       ? parseInt(targetProps["video_bg_id"])
@@ -2059,7 +2057,7 @@ var Rexbuilder_Util = (function($) {
 						}
 					}
 					$itemData.attr("data-photoswipe", targetProps["photoswipe"]);
-					
+
           break;
         case "linkurl":
           if (!Rexbuilder_Util.editorMode) {
@@ -3148,7 +3146,7 @@ var Rexbuilder_Util = (function($) {
       for (var prop in obj) {
         if (obj.hasOwnProperty(prop)) {
           if (Object.prototype.toString.call(obj[prop]) === '[object Object]') {
-            // If we're doing a deep merge 
+            // If we're doing a deep merge
             // and the property is an object
             target[prop] = merge(target[prop], obj[prop]);
           } else {
@@ -3158,7 +3156,7 @@ var Rexbuilder_Util = (function($) {
         }
       }
     };
-    
+
     merger(obj1);
     merger(obj2);
 
@@ -3306,7 +3304,7 @@ var Rexbuilder_Util = (function($) {
             index = tempIndex;
           }
         }
-        
+
         // generation grid state
         var state = [];
         for(var i=0, tot_rowCustomizations_targets = rowCustomizations[index].targets.length; i<tot_rowCustomizations_targets; i++) {
@@ -3726,7 +3724,7 @@ var Rexbuilder_Util = (function($) {
   }
 
   /**
-   * todo to finish ( hide video did not start ) 
+   * todo to finish ( hide video did not start )
    */
   var _playAllVideos = function() {
     var mp4Videos = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('mp4-player') );
@@ -3824,7 +3822,7 @@ var Rexbuilder_Util = (function($) {
 			y: Math.floor( val / maxWidth )
     }
   }
-  
+
   /**
    * Compare N strings to find the unique words inside
    * @param {Array} s_arr array of strings to diff
@@ -3990,7 +3988,7 @@ var Rexbuilder_Util = (function($) {
         if ( mergedEdits[meIndex].section_is_model.toString() == "true" ) {
           sectionObj.modelID = mergedEdits[meIndex].section_model_id;
           sectionObj.modelNumber = mergedEdits[meIndex].section_model_number;
-          section = Rexbuilder_Util.rexContainer.querySelector( 
+          section = Rexbuilder_Util.rexContainer.querySelector(
             'section[data-rexlive-section-id="' +
               mergedEdits[meIndex].section_rex_id +
               '"][data-rexlive-model-number="' +
@@ -4012,7 +4010,7 @@ var Rexbuilder_Util = (function($) {
         }
       }
     }
-    
+
 		Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
 
     Rexbuilder_Util.domUpdating = false;        // handleLayoutChange FRONTEND
@@ -4029,11 +4027,11 @@ var Rexbuilder_Util = (function($) {
   function updateRexGrid( section, targets, forceCollapseElementsGrid ) {
 		var $section = $(section);
 		var $gallery = $section.find('.grid-stack-row');
-		
+
 		var collapseGrid = targets[0].props.collapse_grid;
 
     // right spot?
-    
+
     if ( -1 !== targets[0].props.custom_classes.indexOf('rex-block-grid') ) {
       collapseGrid = false;
     } /**else {
@@ -4063,7 +4061,7 @@ var Rexbuilder_Util = (function($) {
     		}
     	}
 		}
-		
+
 
     var targetName, targetProps;
     var $elem, $itemData, $itemContent;
@@ -4073,7 +4071,7 @@ var Rexbuilder_Util = (function($) {
       if ( !targets[i].notDisplay || Rexbuilder_Util.activeLayout == "default" ) {
         targetName = targets[i].name;
         targetProps = targets[i].props;
-        
+
         $elem = $gallery.find( '.perfect-grid-item[data-rexbuilder-block-id="' + targetName + '"]' );
         elem = $elem[0];
         $itemData = $elem.children(".rexbuilder-block-data");
@@ -4107,18 +4105,18 @@ var Rexbuilder_Util = (function($) {
 				}
       }
 		}
-	
+
 		updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
-		
+
 		/** @todo Need to check forceCollapseElementsGrid too? */
 		/* if ( collapseGrid ) {
 			// Collapsing only if there's a mobile layout saved in DB
 			// because if not, data are already ok (they're changed
-			// in function _mergeSections) 
+			// in function _mergeSections)
 		} */
-		
+
 	}
-	
+
 	/**
 	 * Removes duplicate values from an Array.
 	 * Valid only with values that are comparable with ===.
@@ -4135,8 +4133,8 @@ var Rexbuilder_Util = (function($) {
 	/**
 	 * Determines if a given element matches the given selector,
 	 * or if it's a child of the element that matches the given selector.
-	 * @param		{Element}		element 
-	 * @param		{String}		selector 
+	 * @param		{Element}		element
+	 * @param		{String}		selector
 	 * @returns	{Boolean}		Does the given element match, or is a child
 	 * 											of the element that matches the given selector?
 	 * @since		2.0.5
@@ -4158,7 +4156,7 @@ var Rexbuilder_Util = (function($) {
     this.isIframe = ( window.location !== window.parent.location );
 
     _plugin_frontend_settings.scroll_animation_offset = 0;
-    
+
     Rexbuilder_Util.changedFrontLayout = false;
 
     if ( _plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing ) {

@@ -56,12 +56,12 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 		 * Create custom uploads folder, to save custom information
 		 * Add to installation methods, to prevent bugs when user only updates the plugin
 		 * and not installs it from scratch
-		 * 
+		 *
 		 * The folder tree would be
 		 * \-rexpansive-builder
 		 * \--assets
 		 * \---symbol
-		 * 
+		 *
 		 * @return null
 		 * @since  2.0.2
 		 */
@@ -141,7 +141,7 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 		private static function import_models_start() {
 			wp_defer_term_counting( true );
 			wp_defer_comment_counting( true );
-	
+
 			wp_suspend_cache_invalidation( true );
 		}
 
@@ -156,10 +156,10 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 			$xml_file = get_transient( 'rexpansive_models_xml' );
 
 			wp_suspend_cache_invalidation( false );
-		
+
 			wp_defer_term_counting( false );
 			wp_defer_comment_counting( false );
-			
+
 			if( file_exists( $xml_file['file'] ) ) {
 				Rexbuilder_Import_Utilities::remove_media_file( $xml_file['file'] );
 			}
@@ -194,8 +194,8 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 
 					// tracing the imported content
 					if ( null !== $result['post_id'] ) {
-						$info = array( 
-							'post_id' => $result['post_id'], 
+						$info = array(
+							'post_id' => $result['post_id'],
 							'post_type' => $result['args']['post_type']
 						);
 						array_push( $imported_content, $info );
@@ -209,7 +209,7 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 		}
 
 		/**
-		 * Checking the imported content: 
+		 * Checking the imported content:
 		 * - fix urls
 		 * @return void
 		 * @since  2.0.5
@@ -264,19 +264,19 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 			if( file_exists( $xml_file['file'] ) ) {
 
 				$Xml = new Rexbuilder_Import_Xml_Content( $xml_file['file'] );
-		
+
 				wp_defer_term_counting( true );
 				wp_defer_comment_counting( true );
-		
+
 				wp_suspend_cache_invalidation( true );
-		
+
 				$Xml->run_import_all();
-		
+
 				wp_suspend_cache_invalidation( false );
-		
+
 				wp_defer_term_counting( false );
 				wp_defer_comment_counting( false );
-				
+
 				Rexbuilder_Import_Utilities::remove_media_file( $xml_file['file'] );
 			}
 		}
@@ -315,7 +315,7 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 		private static function import_forms_start() {
 			wp_defer_term_counting( true );
 			wp_defer_comment_counting( true );
-	
+
 			wp_suspend_cache_invalidation( true );
 		}
 
@@ -330,10 +330,10 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 			$xml_file = get_transient( 'rexpansive_forms_xml' );
 
 			wp_suspend_cache_invalidation( false );
-		
+
 			wp_defer_term_counting( false );
 			wp_defer_comment_counting( false );
-			
+
 			if( file_exists( $xml_file['file'] ) ) {
 				Rexbuilder_Import_Utilities::remove_media_file( $xml_file['file'] );
 			}
@@ -353,34 +353,6 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 			if( file_exists( $xml_file['file'] ) ) {
 				$xml = new Rexbuilder_Import_Xml_Content($xml_file['file']);
 				$xml->run_import_all(true);
-			}
-		}
-
-		/**
-		 * Import default cf7 forms
-		 * @since	2.0.5
-		 */
-		private static function import_forms() {
-			// Importing the forms from XML file
-			$forms_definition_url = REXPANSIVE_BUILDER_DEFAULT_FORMS_IMPORT_LOCATION;
-			$xml_file = Rexbuilder_Import_Utilities::upload_media_file($forms_definition_url, 'xml');
-	
-			if(file_exists($xml_file['file'])) {
-				$xml = new Rexbuilder_Import_Xml_Content($xml_file['file']);
-	
-				wp_defer_term_counting(true);
-				wp_defer_comment_counting(true);
-		
-				wp_suspend_cache_invalidation(true);
-		
-				$xml->run_import_all();
-		
-				wp_suspend_cache_invalidation(false);
-		
-				wp_defer_term_counting(false);
-				wp_defer_comment_counting(false);
-				
-				Rexbuilder_Import_Utilities::remove_media_file($xml_file['file']);
 			}
 		}
 
