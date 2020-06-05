@@ -1474,8 +1474,6 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
-    console.log(layoutSelectedSections)
-
     // tracing page data
     Rexbuilder_Util.editedDataInfo = new RexEditedData( ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ) );
 

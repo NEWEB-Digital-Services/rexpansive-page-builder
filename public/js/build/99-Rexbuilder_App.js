@@ -38,7 +38,7 @@ var Rexbuilder_App = (function($) {
         newContainer.appendChild( toWrap );
       }
     }
-  }
+  };
 
   var _linkDocumentListeners = function() {
     function handleYTPStart(e) {
@@ -1004,12 +1004,30 @@ var Rexbuilder_App = (function($) {
 		}
 	}
 
+  var hooks = [];
+
+  function addAction( action, cb ) {
+    if ( 'undefined' === typeof hooks[action] ) hooks[action] = [];
+
+    hooks[action].push( cb );
+  }
+
+  function doAction( action ) {
+    if ( 'undefined' === typeof hooks[action] ) return;
+
+    hooks[action].forEach(function( cb ) {
+      cb.call();
+    });
+  }
+
 	function init() {
 		Rexbuilder_Util.init();
 		Rexbuilder_Dom_Util.init();
 
 		$sections = Rexbuilder_Util.$rexContainer.find('.rexpansive_section');
 		$grids = Rexbuilder_Util.$rexContainer.find('.grid-stack-row');
+
+    doAction( 'builder_before_launch_grids' );
 
 		_launchGrids();
 
@@ -1075,7 +1093,7 @@ var Rexbuilder_App = (function($) {
             {
               el.innerHTML = el.getAttribute('data-final-value');
             }
-          })
+          });
         }
       }
 
@@ -1208,7 +1226,7 @@ var Rexbuilder_App = (function($) {
   			return {
           instance: gridInstances[ i ],
           index: i
-        }
+        };
   		}
   	}
 
@@ -1353,6 +1371,8 @@ var Rexbuilder_App = (function($) {
     load: load,
     handleLiveResize: handleLiveResize,
     handleFrontEndResize: handleFrontEndResize,
+
+    addAction: addAction,
 
     // RexGrid functions
     getRexGridInstance: getRexGridInstance,

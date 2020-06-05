@@ -56,10 +56,10 @@ var HtmlEditor_Modal = (function($) {
       
       _applyHTML();
 
-      html_editor_modal_properties.$self.addClass("setting-saving").on(Rexbuilder_Util_Admin_Editor.animationEvent, function(e) {
+      // html_editor_modal_properties.$self.addClass("setting-saving").on(Rexbuilder_Util_Admin_Editor.animationEvent, function(e) {
         _closeModal(); 
-        html_editor_modal_properties.$self.removeClass("setting-saving");
-      });
+        // html_editor_modal_properties.$self.removeClass("setting-saving");
+      // });
     });
 
     html_editor_modal_properties.$close_button.on("click", function(e) {
