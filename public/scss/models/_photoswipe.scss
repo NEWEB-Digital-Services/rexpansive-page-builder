@@ -28,9 +28,15 @@ a {
 .pswp-item-thumb {
 	visibility: hidden;
 }
+
 .pswp-item-caption {
 	display: none;
+
+	.pswp-hide-icon & {
+		display: none;
+	}
 }
+
 .pswp__caption {
 	display: none;
 }
@@ -41,8 +47,8 @@ a {
 	}
 }
 
-.pswp__button--close:hover, 
-.pswp__button--share:hover, 
+.pswp__button--close:hover,
+.pswp__button--share:hover,
 .pswp__button--fs:hover,
 .pswp__button--zoom:hover,
 .pswp--zoomed-in:hover {
@@ -51,34 +57,34 @@ a {
 }
 
 .pswp__button--close:hover {
-	background-position: 0 -44px; 
+	background-position: 0 -44px;
 }
 
 .pswp__button--share:hover {
-	background-position: -44px -44px; 
+	background-position: -44px -44px;
 }
 
 .pswp__button--fs:hover {
-  	display: none; 
+  	display: none;
 }
 
 .pswp--supports-fs .pswp__button--fs:hover {
-  	display: block; 
+  	display: block;
 }
 
 .pswp--fs .pswp__button--fs:hover {
-  	background-position: -44px 0; 
+  	background-position: -44px 0;
 }
 
 .pswp--zoom-allowed .pswp__button--zoom:hover {
-  	display: block; 
+  	display: block;
  }
 
 .pswp__button--zoom:hover {
 	display: none;
-  	background-position: -88px 0; 
+  	background-position: -88px 0;
 }
 
 .pswp--zoomed-in .pswp__button--zoom:hover {
-  	background-position: -132px 0; 
+  	background-position: -132px 0;
 }
