@@ -20,8 +20,7 @@
  * @subpackage Rexbuilder/public
  * @author     Neweb <info@neweb.info>
  */
-class Rexbuilder_Public
-{
+class Rexbuilder_Public {
 	/**
 	 * The ID of this plugin.
 	 *
@@ -604,9 +603,9 @@ class Rexbuilder_Public
 	}
 
 	public function include_js_template() {
-		if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
+		/*if ( ! current_user_can( 'edit_posts' ) && ! current_user_can( 'edit_pages' ) ) {
 			return;
-		}
+		}*/
 		if ( ! isset( $this->plugin_options['post_types'] ) ) {
 			return;
 		}
