@@ -30,7 +30,6 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 				wpcf7_form_editor_properties.$self.addClass('rex-modal--loading');
 			},
 			success: function (response) {
-				console.log( response.data.mail_settings );
 				if (response.success) {
 					formMailSettings = response.data.mail_settings[0];
 
