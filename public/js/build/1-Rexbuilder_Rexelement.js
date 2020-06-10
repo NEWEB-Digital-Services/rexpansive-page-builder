@@ -105,7 +105,6 @@ var Rexbuilder_Rexelement = (function ($) {
 		var elementIsForm = 0 !== $elementWrapper.find('.wpcf7-form').length;
 
 		// Adding form style if the element is a form
-
 		if (elementIsForm) {
 			Rexbuilder_Rexwpcf7.refreshFormStyle($elementWrapper.find('.wpcf7-form'), true);
 
@@ -137,7 +136,10 @@ var Rexbuilder_Rexelement = (function ($) {
 			// The first time a form is separated, this flag is generated before the separation
 			// This is fixed by setting this flag to true when separating (Element Choose Modal)
 			is_separated: Rexbuilder_Util.hasClass(elementWrapper, 'rex-separate-form'),
-			form_title: elementWrapper.querySelector('.string-shortcode').getAttribute('shortcode').match(/title\=\"(.*)\"/)[1]
+			form_title: elementWrapper
+				.querySelector('.string-shortcode')
+				.getAttribute('shortcode')
+				.match(/title\=\"(.*)\"/)[1]
 		};
 
 		var $form = $elementWrapper.find('.wpcf7-form');

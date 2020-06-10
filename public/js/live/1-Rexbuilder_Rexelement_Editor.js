@@ -261,7 +261,14 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 		// If separating, get true
 		// If not separating, check the flag
-		var needToAddElementStyle = Rexbuilder_Util.hasClass(elementWrapper, 'rex-separate-form') || !flagElementFound;
+		/*var needToAddElementStyle = Rexbuilder_Util.hasClass(elementWrapper, 'rex-separate-form') || !flagElementFound;*/
+		// Always true because when importing a form a second time, the new one needs to have inline styles
+		// applied by Rexbuilder_Rexwpcf7.guessWidthToSet().
+		// This should not cause class duplication issues beacuse the Rexbuilder_Rexelement.addElementStyle() function
+		// called inside Rexbuilder_Rexwpcf7_Editor.updateDBFormsInPage(), who gets called only when a form with the same
+		// ID is already in page, refreshes the styles instead of just adding them
+		// (Not deleting this variable completely beacuse may need changes in the future)
+		var needToAddElementStyle = true;
 
 		// Removing medium editor placeholder if there
 		var $textWrap = $elementWrapper.parents('.text-wrap');
@@ -611,7 +618,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 				Rexbuilder_Rexwpcf7.fixInputs();
 				Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
 
-				// non c'è in separate (importa poco)
+				// It's not in 'separate' function (don't care too much)
 				$elementWrapper.removeClass('importing-element');
 			} else {
 				Rexbuilder_Rexwpcf7_Editor.updateDBFormsInPage(elementID, needToAddElementStyle);
