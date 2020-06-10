@@ -19,18 +19,16 @@ if( isset($_GET['post']) && "" !== $_GET['post'] ) {
 	$post_id = $_GET['post'];
 }
 
-$source = get_permalink($post_id);
-if( get_post_status( $post_id ) == "auto-draft"){
-//	$source .= "&preview=true&editor=true";
-	$source= add_query_arg( array(
-			'preview' => 'true',
-			'editor' => 'true',
-		), $source );
+$source = apply_filters( 'rexbuilder_iframe_src', get_permalink( $post_id ) );
+if( get_post_status( $post_id ) == "auto-draft" ) {
+	$source = add_query_arg( array(
+		'preview' => 'true',
+		'editor' => 'true',
+	), $source );
 } else{
-//	$source .= "&editor=true";
-	$source= add_query_arg( array(
-			'editor' => 'true',
-		), $source );
+	$source = add_query_arg( array(
+		'editor' => 'true',
+	), $source );
 }
 
 global $layoutsAvaiable;
