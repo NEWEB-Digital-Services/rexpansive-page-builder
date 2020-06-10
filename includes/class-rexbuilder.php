@@ -164,6 +164,7 @@ class Rexbuilder {
 		// require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-timeline-event-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-timeline-pro-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-timeline-pro-event-shortcode.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-form-wrapper-shortcode.php';
 
 		$this->loader = new Rexbuilder_Loader();
 
@@ -186,7 +187,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
 	}
-	
+
 	/**
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
@@ -197,7 +198,7 @@ class Rexbuilder {
 	 * @edit 06-03-2019
 	 */
 	private function define_admin_hooks() {
-		
+
 		$plugin_admin = new Rexbuilder_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wpml_translation_update', $plugin_admin, 'wpml_translation_update_fix', 90 );
@@ -221,11 +222,11 @@ class Rexbuilder {
 		$this->loader->add_filter( 'acf/settings/url', $plugin_admin, 'acf_settings_url' );
 		$this->loader->add_filter( 'acf/settings/show_admin', $plugin_admin, 'acf_settings_show_admin' );
 		$this->loader->add_action( 'acf/init', $plugin_admin, 'define_acf_fields' );
-		
+
 		$this->loader->add_filter( 'acf/location/rule_types', $plugin_admin, 'acf_rule_type_rexpansive_builder' );
 		$this->loader->add_filter( 'acf/location/rule_values/rexpansive_builder', $plugin_admin, 'acf_rule_values_rexpansive_builder' );
 		$this->loader->add_filter( 'acf/location/rule_match/rexpansive_builder', $plugin_admin, 'acf_rule_match_rexpansive_builder', 10, 3 );
-		
+
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_head_add_column' );
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_reorder' );
 		$this->loader->add_action( 'manage_rex_slider_posts_custom_column', $plugin_admin, 'rexpansive_slider_columns_content', 10, 2 );
@@ -250,15 +251,15 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_options_menu' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'update_notifier_menu' );
-		
+
 		$this->loader->add_action( 'admin_bar_menu', $plugin_admin, 'add_top_bar_plugin_options_menu', 1000 );
-		
+
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_name . '.php' );
 		$this->loader->add_filter( 'plugin_action_links_' . $plugin_basename, $plugin_admin, 'add_action_links' );
-		
-		// live builder		
+
+		// live builder
 		$this->loader->add_filter( 'content_save_pre', $plugin_admin, 'rex_fix_post_content' );
-		
+
 		// attaching some filters and actions only if there is a livebuilder page
 		if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
 			$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'rexlive_body_class' );
@@ -267,11 +268,11 @@ class Rexbuilder {
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_custom_sprites' );
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_live_editing' );
 		}
-		
+
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'create_builder_modals' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'create_builder_templates' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites' );
-		
+
 		// The if is here to prevent conflicts between versions and Gutenberg
 		if( Rexbuilder_Utilities::is_version( '>=', '5.0' ) && ! Rexbuilder_Utilities::check_plugin_active( 'classic-editor/classic-editor.php' ) ) {
 			// Checks if WC product
@@ -291,15 +292,15 @@ class Rexbuilder {
 				$this->loader->add_action( 'rexpansive_builder_before_rexbuilder_header', $plugin_admin, 'add_switch_under_post_title' );
 			}
 		}
-		
+
 		$this->loader->add_action( 'edit_form_after_title', $plugin_admin, 'add_switch_under_post_title' );
-		
+
 		$this->loader->add_filter( 'upload_mimes', $plugin_admin, 'register_xml_json_mime_type' );
 		$this->loader->add_action( 'upgrader_process_complete', $plugin_admin, 'import_models' );
 		$this->loader->add_action( 'rexpansive_builder_after_contacts_settings', $plugin_admin, 'import_models' );
-		
+
 		$this->loader->add_filter( 'rexbuilder_admin_post_type_active', $plugin_admin, 'add_builder_assets_on_contact_form_page' );
-		
+
 		// Ajax functions
 		// settings
 		$this->loader->add_action( 'wp_ajax_rexpansive_install_contents', $plugin_admin, 'rexpansive_install_contents' );
@@ -308,12 +309,12 @@ class Rexbuilder {
 
 		// Live builder
 		$this->loader->add_action( 'wp_ajax_rex_change_builder_activation_status', $plugin_admin, 'rex_change_builder_activation_status' );
-		
+
 		$this->loader->add_action( 'wp_ajax_rex_edit_slider_from_builder', $plugin_admin, 'rex_edit_slider_from_builder' );
 		$this->loader->add_action( 'wp_ajax_rex_create_slider_from_builder', $plugin_admin, 'rex_create_slider_from_builder' );
 		$this->loader->add_action( 'wp_ajax_rex_create_rexslider_admin_markup', $plugin_admin, 'rex_create_rexslider_admin_markup' );
 		$this->loader->add_action( 'wp_ajax_live_refresh_builder', $plugin_admin, 'live_refresh_builder' );
-		
+
 		// models ajax actions
 		$this->loader->add_action( 'wp_ajax_rex_create_model_from_builder', $plugin_admin, 'rex_create_model_from_builder' );
 		$this->loader->add_action( 'wp_ajax_rex_save_model_customization', $plugin_admin, 'rex_save_model_customization' );
@@ -355,7 +356,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_get_rxcf', $plugin_admin, 'rex_get_rxcf' );
 		$this->loader->add_action( 'wp_ajax_rex_save_rxcf', $plugin_admin, 'rex_save_rxcf' );
 	}
-	
+
 	/**
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
@@ -365,7 +366,7 @@ class Rexbuilder {
 	 */
 	private function define_public_hooks() {
 		$plugin_public = new Rexbuilder_Public( $this->get_plugin_name(), $this->get_version() );
-		
+
 		$this->loader->add_action( 'after_setup_theme', $plugin_public, 'remove_shortcodes_from_live' );
 
 		$this->loader->add_filter( 'wpseo_metadesc', $plugin_public, 'filter_yoast_seo_description' );
@@ -390,7 +391,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'shortcode_atts_wpcf7', $plugin_public, 'cf7_custom_style', 10, 4 );
 		$this->loader->add_filter( 'the_content', $plugin_public, "generate_builder_content");
 
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );		
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_vertical_dots' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_post_id' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_popup_content_template' );
@@ -419,7 +420,7 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'wp_ajax_rexlive_save_customization_layout', $plugin_public, 'rexlive_save_customization_layout' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_customization_layout', $plugin_public, 'rexlive_save_customization_layout' );
-		
+
 		$this->loader->add_action( 'wp_ajax_rexlive_save_custom_css', $plugin_public, 'rexlive_save_custom_css' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_custom_css', $plugin_public, 'rexlive_save_custom_css' );
 
@@ -434,7 +435,7 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'wp_ajax_rexlive_edit_model_shortcode_builder', $plugin_public, 'rexlive_edit_model_shortcode_builder' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_edit_model_shortcode_builder', $plugin_public, 'rexlive_edit_model_shortcode_builder' );
-		
+
 		$this->loader->add_action( 'wp_ajax_rexlive_save_sections_rexids', $plugin_public, 'rexlive_save_sections_rexids' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_sections_rexids', $plugin_public, 'rexlive_save_sections_rexids' );
 
@@ -487,6 +488,7 @@ class Rexbuilder {
 		// $this->loader->add_shortcode( 'RexTimeline', 'Rexbuilder_Timeline', 'render' );
 		$this->loader->add_shortcode( 'RexTimelineProEvent', 'Rexbuilder_Timeline_Pro_Event', 'render' );
 		$this->loader->add_shortcode( 'RexTimelinePro', 'Rexbuilder_Timeline_Pro', 'render' );
+		$this->loader->add_shortcode( 'RexFormWrapper', 'Rexbuilder_FormWrapper', 'render' );
 	}
 
 	/**
