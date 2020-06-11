@@ -4,7 +4,7 @@
  "option_name"
  "option_value"
 
- 
+
 _rex_buttons_ids
 
 [\"9UEc\"]
@@ -882,7 +882,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 		var newID = data.newID;
 		var buttonID = buttonData.buttonTarget.button_id;
 
-		
+
 		var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(
 			'.rex-button-wrapper[data-rex-button-id="' +
 			buttonID +
@@ -1217,6 +1217,15 @@ var Rexbuilder_Rexbutton = (function ($) {
 			$buttonWrapper.wrap('<p class="rex-buttons-paragraph"></p>');
 			_endFixingButtonImported($buttonWrapper);
 		});
+
+		if (Rexbuilder_Util.editorMode) {
+			Rexbuilder_Util.$rexContainer.find('.rex-button-container').on('click'/* , '.rex-button-container' */, function (clickEvent) {
+				// console.log( clickEvent );
+				// clickEvent.preventDefault();
+				// debugger
+				// console.log( 'aa' );
+			});
+		}
 	};
 
 	/**
