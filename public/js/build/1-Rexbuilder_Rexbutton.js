@@ -1217,15 +1217,6 @@ var Rexbuilder_Rexbutton = (function ($) {
 			$buttonWrapper.wrap('<p class="rex-buttons-paragraph"></p>');
 			_endFixingButtonImported($buttonWrapper);
 		});
-
-		if (Rexbuilder_Util.editorMode) {
-			Rexbuilder_Util.$rexContainer.find('.rex-button-container').on('click'/* , '.rex-button-container' */, function (clickEvent) {
-				// console.log( clickEvent );
-				// clickEvent.preventDefault();
-				// debugger
-				// console.log( 'aa' );
-			});
-		}
 	};
 
 	/**
