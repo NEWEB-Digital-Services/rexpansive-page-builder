@@ -1447,7 +1447,9 @@
 	RexGrid.prototype.removeAllGridBlocks = function() {
 		var i;
 		for( i=0; i<this.gridBlocksTotal; i++ ) {
-			this.gridBlocks[i].el.parentNode.removeChild( this.gridBlocks[i].el );
+			if ( this.gridBlocks[i].el.parentNode ) {
+				this.gridBlocks[i].el.parentNode.removeChild( this.gridBlocks[i].el );
+			}
 		}
 
 		this.gridBlocks = [];
