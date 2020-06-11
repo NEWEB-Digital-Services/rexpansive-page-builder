@@ -42,7 +42,7 @@ var HtmlEditor_Modal = (function($) {
     var customHTML = editor.getValue();
     var data_customHTML = {
       eventName: "rexlive:SetcustomHTML",
-      data_to_send: {                     
+      data_to_send: {
         customHTML: customHTML
       }
     };
@@ -53,13 +53,13 @@ var HtmlEditor_Modal = (function($) {
   var _linkDocumentListeners = function() {
     html_editor_modal_properties.$save_button.on("click", function(e) {
       e.preventDefault();
-      
+
       _applyHTML();
 
-      html_editor_modal_properties.$self.addClass("setting-saving").on(Rexbuilder_Util_Admin_Editor.animationEvent, function(e) {
-        _closeModal(); 
-        html_editor_modal_properties.$self.removeClass("setting-saving");
-      });
+      // html_editor_modal_properties.$self.addClass("setting-saving").on(Rexbuilder_Util_Admin_Editor.animationEvent, function(e) {
+        _closeModal();
+        // html_editor_modal_properties.$self.removeClass("setting-saving");
+      // });
     });
 
     html_editor_modal_properties.$close_button.on("click", function(e) {
@@ -103,7 +103,7 @@ var HtmlEditor_Modal = (function($) {
 
     // var beautify = ace.require("ace/ext/beautify"); // get reference to extension
     // beautify.beautify(editor.session);
-    
+
     defaultHTML = "";
     _linkDocumentListeners();
   };
