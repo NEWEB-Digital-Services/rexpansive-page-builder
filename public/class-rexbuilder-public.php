@@ -82,7 +82,7 @@ class Rexbuilder_Public {
 			// post status class
 			global $post;
 			$classes[] = 'rexbuilder-live--' . $post->post_status;
-			
+
 			// live builder extra tools classes
 			$ex_tools = array();
 			$experimental_tools = apply_filters( 'rexbuilder_live_experimental_tools', $ex_tools );
@@ -150,7 +150,7 @@ class Rexbuilder_Public {
 			wp_enqueue_style('gridstack-style', REXPANSIVE_BUILDER_URL . $folder . 'gridstack/dist/gridstack.css', array(), $ver, 'all');
 
 			wp_enqueue_style('rexpansive-builder-rexbutton-style', REXPANSIVE_BUILDER_URL . $folder . 'css/rex_buttons.css', array(), $ver, 'all');
-			if( Rexbuilder_Utilities::isBuilderLive() ) 
+			if( Rexbuilder_Utilities::isBuilderLive() )
 			{
 				wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $folder . 'css/public-editor.css', array(), $ver, 'all');
 				wp_enqueue_style('rexpansive-builder-editor-style', REXPANSIVE_BUILDER_URL .'admin/css/live-def.css', array(), $ver, 'all');
@@ -215,13 +215,13 @@ class Rexbuilder_Public {
 
 			if( Rexbuilder_Utilities::isBuilderLive() ) {
 				wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
-				
+
 				//include media libray
 				wp_enqueue_media();
 
 				// TIPPY
 				wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tippy.all.min.js', array( 'jquery' ), null, true );
-	
+
 				// RANGY
 				wp_enqueue_script( 'rangy-core', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-core.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rangy-classapplier', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-classapplier.js', array( 'jquery' ), null, true );
@@ -239,7 +239,7 @@ class Rexbuilder_Public {
 				wp_enqueue_script('0-Rexbuilder_Live_Templates', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Templates.js', array('jquery'), $ver, true);
 				wp_enqueue_script('0-Rexbuilder_Live_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Utilities.js', array('jquery'), $ver, true);
 				wp_enqueue_script('0-Rexbuilder_RexEditedData', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_RexEditedData.js', array('jquery'), $ver, true);
-				
+
 				wp_enqueue_script('0-Rexbuilder_Array_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Array_Utilities.js', array('jquery'), $ver, true);
 				wp_enqueue_script('1-RexColorPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Color_Palette.js', array('jquery'), $ver, true);
 				wp_enqueue_script('1-RexOverlayPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Overlay_Palette.js', array('jquery'), $ver, true);
@@ -322,11 +322,11 @@ class Rexbuilder_Public {
 				wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrolled.js', array('jquery'), $ver, true);
 			}
 			wp_enqueue_script('rex-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexAccordion.js', array('jquery'), $ver, true);
-			
+
 			if ( false !== strpos( $customEffects, 'rex-indicator__placeholder' ) ) {
 				wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
 			}
-			
+
 			if( !Rexbuilder_Utilities::isBuilderLive() ) {
 				if ( false !== strpos( $customEffects, 'rex-effect' ) ) {
 					wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . 'public/js/vendor/pixi.min.js', array('jquery'), $ver, true);
@@ -336,7 +336,7 @@ class Rexbuilder_Public {
 				if ( false !== strpos( $customEffects, 'rex-num-spin' ) ) {
 					wp_enqueue_script('odometer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/odometer.min.js', array('jquery'), $ver, true);
 				}
-				
+
 				if ( false !== strpos( $customEffects, 'rex-slideshow' ) ) {
 					wp_enqueue_script('rex-slideshow', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexSlideshow.js', array('jquery'), $ver, true);
 				}
@@ -382,12 +382,12 @@ class Rexbuilder_Public {
 			if( !Rexbuilder_Utilities::isBuilderLive() ) {
 				wp_enqueue_script('4-jqueryScrollify', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrollify.js', array('jquery'), $ver, true);
 			}
-			
+
 			if( Rexbuilder_Utilities::isBuilderLive() ) {
 				wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . 'public/js/live/2-jquery.perfectGridGalleryEditor.js', array('jquery'), null, true);
-				
+
 			}
-			
+
 			wp_enqueue_script('rexbuilder-app', REXPANSIVE_BUILDER_URL . 'public/js/build/99-Rexbuilder_App.js', array('jquery'), $ver, true);
 			wp_enqueue_script('rex-grid', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rex-grid.js', array(), $ver, true);
 			wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . 'public/js/rexbuilder-public.js', array('jquery'), $ver, true);
@@ -423,7 +423,7 @@ class Rexbuilder_Public {
 			$front_end_settings = $this->get_plugin_frontend_settings();
 
 			$customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
-			
+
 			if( Rexbuilder_Utilities::isBuilderLive() ) {
 				wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
 
@@ -447,7 +447,7 @@ class Rexbuilder_Public {
 				if ( false !== strpos( $customEffects, 'rex-num-spin' ) ) {
 					wp_enqueue_script('odometer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/odometer.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
 				}
-				
+
 				if ( false !== strpos( $customEffects, 'rex-slideshow' ) ) {
 					wp_enqueue_script('rex-slideshow', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexSlideshow.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
 				}
@@ -636,7 +636,7 @@ class Rexbuilder_Public {
 		$upload_dir = wp_upload_dir();
 		$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
 
-		if ( file_exists( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ) ) 
+		if ( file_exists( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ) )
 		{
 		?>
 		<div style="display:none"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
@@ -665,7 +665,7 @@ class Rexbuilder_Public {
 		endif;
 
 		$response['error'] = false;
-		
+
 		$formID = $_POST['form_id'];
 		// Updating the form fields
 		$newFormString = $_POST['new_form_string'];
@@ -699,7 +699,7 @@ class Rexbuilder_Public {
 		endif;
 
 		$response['error'] = false;
-		
+
 		$formID = $_POST['form_id'];
 		$newRowString = $_POST['row_to_add_string'];
 
@@ -729,7 +729,7 @@ class Rexbuilder_Public {
 		$response['error'] = false;
 
 		$formIDs = $_POST['form_id'];
-		
+
 		for ($i = 0; $i < count($formIDs); $i++) {
 			$formsHTML[$i] = get_post_meta($formIDs[$i], "_form");
 		}
@@ -812,7 +812,7 @@ class Rexbuilder_Public {
 		$response['shortcode'] = $shortcode;
 		$response['shortcode_transformed'] = do_shortcode($shortcode);
 		$response['element_data_html'] = get_post_meta($elementID, "_rex_element_data_html");
-		
+
 		$postType = get_post_type($elementID);
 		if ($postType == "wpcf7_contact_form") {
 			$response['form_content'] = get_post_meta($elementID, "_form");
@@ -821,11 +821,6 @@ class Rexbuilder_Public {
 		wp_send_json_success($response);
 	}
 
-	/**
-	 * Saves wpcf7 data
-	 * @return model with no image
-	 * @since  x.x.x
-	 */
 	public function rex_element_get_span_data () {
 		$nonce = $_POST['nonce_param'];
 
@@ -834,16 +829,16 @@ class Rexbuilder_Public {
 			'msg' => ''
 		);
 
-		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
+
 			$response['error'] = true;
 			$response['msg'] = 'Nonce Error!';
 			wp_send_json_error($response);
-		endif;
+		}
 
-		$response['error'] = false;
+		// $response['error'] = false;
 
 		$elementID = $_POST['element_id'];
-
 		$response['element_data_html'] = get_post_meta($elementID, "_rex_element_data_html");
 
 		wp_send_json_success($response);
@@ -933,7 +928,7 @@ class Rexbuilder_Public {
 		}
 
 		$response['error'] = false;
-		
+
 		$clearData = stripslashes($_POST['ids_used']);
 		update_option("_rex_section_ids_used", $clearData);
 
@@ -942,7 +937,7 @@ class Rexbuilder_Public {
 
 	/**
 	 * Saving custom CSS on a single page
-	 * 
+	 *
 	 * @return JSON saving response
 	 * @since  2.0.0
 	 */
@@ -975,7 +970,7 @@ class Rexbuilder_Public {
 	/**
 	 * Tracing custom effects present on a page
 	 * to load js resources in an optimized way
-	 * 
+	 *
 	 * @return JSON saving response
 	 * @since  2.0.0
 	 */
@@ -1004,7 +999,7 @@ class Rexbuilder_Public {
 		foreach ( $custom_effects as $key => $effect ) {
 			if ( 'true' == $effect['active'] ) {
 				array_push( $custom_effects_active, $effect['condition'] );
-			}    
+			}
 		}
 
 		update_post_meta( $post_id_to_update, '_rexbuilder_custom_effects', join( $custom_effects_active, ',' ) );
@@ -1014,7 +1009,7 @@ class Rexbuilder_Public {
 
 	/**
 	 * Saving available layouts names on a single page
-	 * 
+	 *
 	 * @return JSON saving response
 	 * @since  2.0.0
 	 */
@@ -1064,7 +1059,7 @@ class Rexbuilder_Public {
 		$post_id_to_update = intval($_POST['post_id_to_update']);
 
 		$names = $_POST['names'];
-		
+
 		update_post_meta($post_id_to_update, '_rex_model_customization_names', $names);
 		wp_send_json_success($response);
 	}
@@ -1120,7 +1115,7 @@ class Rexbuilder_Public {
 
 		$targets = $_POST['targets'];
 		$layout_name = $_POST['layout_name'];
-		
+
 		$targetsData = stripslashes($targets);
 		update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $targetsData);
 
@@ -1169,7 +1164,7 @@ class Rexbuilder_Public {
 			$post_args = array(
 				'ID' => $postID
 			);
-			
+
 			foreach( $fieldData as $field ) {
 				foreach( $field['info'] as $info ) {
 					switch( $info['table'] ) {
@@ -1194,7 +1189,7 @@ class Rexbuilder_Public {
 									if ( ! empty( $old_value ) ) {
 										$explode_old_value = explode( ',', $old_value );
 									} else {
-										$explode_old_value = array();   
+										$explode_old_value = array();
 									}
 									if ( ! empty( $field['prev_value'] ) ) {
 										foreach( $explode_old_value as $i => $media_list_id ) {
@@ -1243,7 +1238,7 @@ class Rexbuilder_Public {
 	 *    Ajax call to save sections status
 	 *
 	 *    @since 1.0.15
-	 * 
+	 *
 	 */
 	public function rexlive_save_shortcode()
 	{
@@ -1312,7 +1307,7 @@ class Rexbuilder_Public {
 		$embed = '[embed]' . $url_to_embed . '[/embed]';    // The html / php structure is constructed for the final value
 
 		$response['shortcode'] = $embed;    // $response['shortcode'] is equal to the value of $ embed preconfigured above
-		
+
 		// Must run the shortcode in this manner
 		// Cause do_shortcode do not work for [embed]
 
@@ -1364,7 +1359,7 @@ class Rexbuilder_Public {
 			);
 
 			wp_update_post( $argsModel );
-			
+
 			$argsQuery = array(
 				'post_type'		=>	'rex_model',
 				'post_status'	=>	'private',
@@ -1380,7 +1375,7 @@ class Rexbuilder_Public {
 				}
 			}
 			wp_reset_postdata();
-			
+
 			update_post_meta($model_to_edit, '_save_from_backend', "false" );
 			$response['model_id'] = $argsModel["ID"];
 		} else {
@@ -1485,7 +1480,7 @@ class Rexbuilder_Public {
 		<div id="id-post" data-post-id="<?php echo esc_attr( $page_id ); ?>"></div>
 		<?php
 	}
-	
+
 	/**
 	 * Filtering post_content to add builder live information
 	 * @since 2.0.0
@@ -1499,7 +1494,7 @@ class Rexbuilder_Public {
 		if ( ! isset ( $post ) ) return $content;
 
 		$builder_active = apply_filters('rexbuilder_post_active', get_post_meta($post->ID, '_rexbuilder_active', true));
-		
+
 		// builderlive is not active on this post
 		if ( 'true' != $builder_active ) return $content;
 
@@ -1520,7 +1515,7 @@ class Rexbuilder_Public {
 			$globalMarginsDecoded = json_decode($globalMarginsStripped, true);
 			$pageMarginsStripped = stripslashes( $pageMargins );
 			$pageMarginsDecoded = json_decode($pageMarginsStripped, true);
-			
+
 			if ( $pageMarginsDecoded !== null ) {
 				$rexContainerMargins = "margin-top: ".$pageMarginsDecoded["top"]."px";
 				if($pageMarginsDecoded["top"] > 0){
@@ -1552,17 +1547,17 @@ class Rexbuilder_Public {
 		if( get_post_meta( $post->ID, '_save_from_backend', true ) == "false" ) {
 			$backendEditing = "false";
 		}
-		
+
 		require REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-page-information.php";
 
 		?>
 		<div class="rex-container" data-rex-layout-selected="" data-backend-edited="<?php echo $backendEditing;?>">
-		<?php 
+		<?php
 		echo $rexbuilderShortcode;
 		do_action( 'rexbuilder_builder_after_live_content' );
 		?>
 		</div>
-		<?php 
+		<?php
 		if ( isset( $editor ) && $editor == "true" ) {
 		?>
 			<div class="bl_d-flex bl_jc-c add-new-section__wrap">
@@ -1620,7 +1615,7 @@ class Rexbuilder_Public {
 			}
 		}
 	}
-	
+
 	/**
 	 * Printing the custom buttons style
 	 * @return void
@@ -1645,7 +1640,7 @@ class Rexbuilder_Public {
 			}
 		}
 	}
-	
+
 	/**
 	 *    Prepare the html template for the vertical internal navigation (dots)
 	 *
@@ -1664,7 +1659,7 @@ class Rexbuilder_Public {
 
 		if ( !empty($nav) && !empty( Rexbuilder_Utilities::get_plugin_templates_path( 'rexbuilder-' . $nav . '-template.php', '' ) ) ) {
 			$rexbuilderShortcode = get_post_meta($post->ID, '_rexbuilder_shortcode', true);
-			
+
 			if ($rexbuilderShortcode == "") {
 				$rexbuilderShortcode = $post->post_content;
 			}
@@ -1707,14 +1702,14 @@ class Rexbuilder_Public {
 							}
 						}
 					}
-				}	
+				}
 			}
 
 			if ( count( $titles ) > 0 ) {
 				include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-' . $nav . '-template.php');
 			} else {
 				if ( Rexbuilder_Utilities::isBuilderLive() ){
-					?> 
+					?>
 					<nav class="vertical-nav nav-editor-mode-enable">
 						<ul>
 						</ul>
@@ -1724,7 +1719,7 @@ class Rexbuilder_Public {
 			}
 		} else {
 			if( Rexbuilder_Utilities::isBuilderLive() ){
-				?> 
+				?>
 				<nav class="vertical-nav nav-editor-mode-disable">
 					<ul>
 					</ul>
@@ -1763,7 +1758,7 @@ class Rexbuilder_Public {
 				$content = get_post_meta( $post->ID, '_rexbuilder_shortcode', true );
 				$stripped_content = preg_replace('#\[[^\]]+\]#', '', $content);
 				$stripped_content = strip_tags($stripped_content);
-				
+
 				$stripped_content_lenght = strlen( $stripped_content );
 				if ( 0 === $stripped_content_lenght ) {
 					$stripped_content = get_the_title();
@@ -1871,8 +1866,8 @@ class Rexbuilder_Public {
 	 */
 	public function cf7_custom_style($out, $pairs, $atts, $shortcode) {
 		$cstyle = '';
-		
-		// adding a global suffix, to prevent duplicate 
+
+		// adding a global suffix, to prevent duplicate
 		// contact forms on the same page conflicts
 		global $rsuffix;
 		if ( !isset ( $rsuffix ) )
@@ -1884,7 +1879,7 @@ class Rexbuilder_Public {
 			$rsuffix++;
 		}
 		$cclass = 'rxcf7-custom-style-' . ( isset( $atts['id'] ) ? $atts['id'] : '' ) . '-' . $rsuffix;
-		
+
 		if( isset( $atts['input_color'] ) || isset( $atts['input_width'] ) || isset( $atts['input_height'] ) || isset( $atts['input_font_size'] ) || isset( $atts['input_font_weight'] ) || isset( $atts['input_letter_spacing'] ) || isset( $atts['input_padding'] ) || isset( $atts['input_border'] ) || isset( $atts['input_border_width'] ) || isset( $atts['input_border_radius'] ) || isset( $atts['input_background'] ) || isset( $atts['input_required_color'] ) || isset( $atts['input_required_background'] ) || isset( $atts['input_required_border'] ) || isset( $atts['form_background'] ) || isset( $atts['form_padding'] ) || isset( $atts['form_font_size'] ) || isset( $atts['form_text_align'] ) || isset( $atts['form_width'] ) || isset( $atts['placeholder_color'] ) || isset( $atts['placeholder_font_weight'] ) || isset( $atts['placeholder_letter_spacing'] ) || isset( $atts['placeholder_text_transform'] ) || isset( $atts['text_color'] ) || isset( $atts['link_color'] ) || isset( $atts['submit_color'] ) || isset( $atts['submit_background'] ) || isset( $atts['submit_border'] ) || isset( $atts['submit_border_radius'] ) || isset( $atts['submit_padding'] ) || isset( $atts['submit_width'] ) || isset( $atts['submit_font_size'] ) || isset( $atts['submit_font_weight'] ) || isset( $atts['submit_letter_spacing'] ) || isset( $atts['submit_height'] ) || isset( $atts['reset_color'] ) || isset( $atts['reset_background'] ) || isset( $atts['reset_border'] ) || isset( $atts['reset_border_radius'] ) || isset( $atts['reset_padding'] ) || isset( $atts['reset_width'] ) || isset( $atts['reset_font_size'] ) || isset( $atts['reset_height'] ) || isset( $atts['error_color'] ) || isset( $atts['error_background'] ) || isset( $atts['error_border'] ) || isset( $atts['success_color'] ) || isset( $atts['success_background'] ) || isset( $atts['success_border'] ) || isset( $atts['acceptance_color'] ) || isset( $atts['acceptance_line_height'] ) || isset( $atts['acceptance_text_align'] ) || isset( $atts['acceptance_letter_spacing'] ) || isset( $atts['acceptance_font_size'] ) || isset( $atts['checkbox_border'] ) || isset( $atts['checkbox_border_width'] ) || isset( $atts['checkbox_background'] ) || isset( $atts['loader_background'] ) || isset( $atts['loader_color'] ) ) {
 			ob_start();
 
@@ -2239,7 +2234,7 @@ class Rexbuilder_Public {
 			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing { color:<?php echo $atts['error_color']; ?>; }
 			<?php
 			}
-			
+
 			/* Error background */
 			if( isset( $atts['error_background'] ) && "" !== $atts['error_background'] ) {
 			?>
@@ -2260,7 +2255,7 @@ class Rexbuilder_Public {
 			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok { color:<?php echo $atts['success_color']; ?>; }
 			<?php
 			}
-			
+
 			/* Success background */
 			if( isset( $atts['success_background'] ) && "" !== $atts['success_background'] ) {
 			?>
@@ -2325,7 +2320,7 @@ class Rexbuilder_Public {
 			.wpcf7 .wpcf7-form.rxcf7-custom-checkbox.<?php echo $cclass; ?> .rex-checkbox__indicator:after{border-width:0 <?php echo $atts['checkbox_border_width']; ?>px <?php echo $atts['checkbox_border_width']; ?>px 0;}
 			<?php
 			}
-			
+
 			/* Checkbox background color */
 			if( isset( $atts['checkbox_background'] ) && "" !== $atts['checkbox_background'] ) {
 			?>

@@ -1011,14 +1011,6 @@ var Rex_Save_Listeners = (function($) {
     if (mode == "shortcode") {
       textWrap = itemContent.querySelector('.text-wrap');
       if ( ! Rexbuilder_Util.hasClass( elem, "block-has-slider" ) ) {
-        // var $savingBlock = $textWrap.clone(false);
-        // $savingBlock.find(".medium-insert-buttons").remove();
-        // $savingBlock.find(".text-editor-span-fix").remove();
-        // $savingBlock.find(".ui-sortable").removeClass("ui-sortable");
-        // $savingBlock.find(".ui-sortable-handle").removeClass("ui-sortable-handle");
-        // $savingBlock.find("figure").removeAttr("style");
-        // $savingBlock.find("figure").removeAttr("class");
-
         var savingBlock = textWrap.cloneNode(true);
         var tmpMIB = savingBlock.querySelector('.medium-insert-buttons');
         var tmpTESF = savingBlock.querySelector('.text-editor-span-fix');
@@ -1033,36 +1025,36 @@ var Rex_Save_Listeners = (function($) {
         if ( tmpFIG ) {
           tmpFIG.removeAttribute('style');
           tmpFIG.removeAttribute('class');
-        }
+				}
 
-        // retrieve the block content
-        // if there is some, or there is an img, an iframe or an icon inline
-        if ( savingBlock.textContent.trim() == '' ) {
-          if ( savingBlock.getElementsByTagName('iframe').length > 0 || savingBlock.getElementsByTagName('img').length > 0 || savingBlock.getElementsByTagName('i').length > 0 || savingBlock.getElementsByTagName('form').length > 0 || savingBlock.getElementsByTagName('hr').length > 0 ) {
-            if( savingBlock.getElementsByTagName('form').length > 0 ) {
-              [].slice.call( savingBlock.getElementsByClassName('rex-element-container') ).forEach( function(el) {
-                $(el).empty();
-                var elementShortcode = $(el).siblings(".string-shortcode").attr("shortcode");
-                $(el).append(elementShortcode);
-              });
-            }
-            content = savingBlock.innerHTML.trim();
-          } else {
-            content = '';
+				// Replacing cf7 forms with appropriate shortcodes
+				Array.prototype.slice.call(savingBlock.getElementsByClassName('rex-elements-paragraph')).forEach(function (el) {
+					var formID = el.querySelector('.rex-element-wrapper').getAttribute('data-rex-element-id');
+					var cf7Shortcode = el.querySelector('.string-shortcode').getAttribute('shortcode');
+
+					// Replacing the outerHTML the HTML element gets entirely deleted
+					el.outerHTML = '[RexFormWrapper id="' + formID + '"]' + cf7Shortcode + '[/RexFormWrapper]';
+				});
+
+				// Retrieve the block content
+				if (savingBlock.textContent.trim() == '') {
+					if (
+						savingBlock.getElementsByTagName('iframe').length > 0 ||
+						savingBlock.getElementsByTagName('img').length > 0 ||
+						savingBlock.getElementsByTagName('i').length > 0 ||
+						savingBlock.getElementsByTagName('form').length > 0 ||
+						savingBlock.getElementsByTagName('hr').length > 0
+					) {
+						content = savingBlock.innerHTML.trim();
+					} else {
+						content = '';
 					}
-        } else {
-          // Saves element shortcode so it remains updated
-					Array.prototype.slice
-						.call(savingBlock.getElementsByClassName('rex-element-container'))
-						.forEach(function (el) {
-							$(el).empty();
-							var elementShortcode = $(el).siblings('.string-shortcode').attr('shortcode');
-							$(el).append(elementShortcode);
-						});
-          content = savingBlock.innerHTML.trim();
-          // why do this after the retrieving of the HTML?
-          [].slice.call( savingBlock.getElementsByClassName('rex-button-data') ).forEach( function(el) {
-            el.removeAttribute('data-synchronize');
+				} else {
+					content = savingBlock.innerHTML.trim();
+
+					// Why are we doing this after the retrieving of the HTML?
+					Array.prototype.slice.call(savingBlock.getElementsByClassName('rex-button-data')).forEach(function (el) {
+						el.removeAttribute('data-synchronize');
 					});
 				}
       } else {

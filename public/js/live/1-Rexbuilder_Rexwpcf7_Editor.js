@@ -1707,14 +1707,12 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		}
 	}
 
-	function _getDBFormsInPage() {
+	function _setupFormsInPage() {
 		var $elementWrappers = Rexbuilder_Util.$rexContainer
 			.find('.rex-element-wrapper')
 			.has('.wpcf7-form:not(.no-builder-form)');
 
-		if (0 === $elementWrappers.length) {
-			return;
-		}
+		if (0 === $elementWrappers.length) return;
 
 		idsInPage = [];
 
@@ -1741,19 +1739,16 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				form_id: idsInPage
 			},
 			success: function (response) {
-				if (response.success) {
-					var i = 0;
+				if (!response.success) return;
 
-					for (i = 0; i < idsInPage.length; i++) {
-						$formsInPage[idsInPage[i]] = $(response.data.html_forms[i].toString().trim());
-					}
-
-					setRowsSortable();
-					Rexbuilder_Rexwpcf7.fixInputs();
-					Rexbuilder_Rexelement.addStyles();
+				for (var i = 0; i < idsInPage.length; i++) {
+					$formsInPage[idsInPage[i]] = $(response.data.html_forms[i].toString().trim());
 				}
-			},
-			error: function (response) {}
+
+				setRowsSortable();
+				Rexbuilder_Rexwpcf7.fixInputs();
+				Rexbuilder_Rexelement.addStyles();
+			}
 		});
 	}
 
@@ -2052,10 +2047,10 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 
 		// Adding necessary toolboxes on forms, form rows and form columns
 		_addFormToolsToDOM();
-
 		_addRowToolsToDOM();
 		_addColumnToolsToDOM();
-		_getDBFormsInPage();
+
+		_setupFormsInPage();
 	}
 
 	return {
@@ -2070,7 +2065,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		removeSeparatedForm: removeSeparatedForm,
 
 		/* --- Form manipulation --- */
-
 		addField: addField,
 		addNewRow: addNewRow,
 		addRow: addRow,
@@ -2079,7 +2073,6 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 		deleteColumnContent: deleteColumnContent,
 
 		/* --- Modals --- */
-
 		updateFormLive: updateFormLive,
 		updateFormContentLive: updateFormContentLive,
 		updateColumnContentLive: updateColumnContentLive,
