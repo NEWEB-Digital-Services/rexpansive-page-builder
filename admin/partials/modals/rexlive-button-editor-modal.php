@@ -404,15 +404,6 @@ defined('ABSPATH') or exit;
 			</div>
 		</div>
 		<!-- FOOTER -->
-		<!-- <div class="rex-modal__outside-footer">
-			<div class="tool-button tool-button--inline tool-button--save rex-apply-button tippy" data-tippy-content="<?php /* _e('save', 'rexpansive-builder'); */ ?>" data-rex-option="save">
-				<span class="rex-button save-page btn-save--wrap"><?php /* Rexbuilder_Utilities::get_icon('#A006-Save'); */ ?></span>
-			</div>
-			<div class="tool-button tool-button--inline tool-button--cancel rex-reset-button tippy" data-rex-option="continue" data-tippy-content="<?php /* _e('reset', 'rexpansive-builder'); */ ?>">
-				<span class="rex-button continue btn-save--wrap"><?php /* Rexbuilder_Utilities::get_icon('#Z003-Close'); */ ?></span>
-			</div>
-		</div> -->
-
 		<div class="rex-modal__outside-footer">
 			<div class="tool-button tool-button--inline tool-button--confirm tool-button--modal rex-apply-button tippy" data-tippy-content="<?php _e('Save', 'rexpansive-builder'); ?>">
 				<span class="rex-button save-page btn-save--wrap">
