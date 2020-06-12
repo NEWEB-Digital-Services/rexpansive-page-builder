@@ -16,6 +16,12 @@ $defaultIDs = null;
 $sectionsIDsJSON = get_option( '_rex_section_ids_used', $defaultIDs );
 $sectionsIDsUsed = json_decode( $sectionsIDsJSON, true );
 
+// Get blocks saved
+// $defaultBlocksIDs = null;
+// $blocksIDsJSON = get_option( '_rex_blocks_ids_used', $defaultBlocksIDs );
+// $blocksIDsUsed = json_decode( $blocksIDsJSON, true );
+$blocksIDsJSON = get_option( '_rex_blocks_ids_used', '[]' );
+
 // get layouts available
 $mobile = array("id" => "mobile", "label" => "Mobile", "min" => "320", "max" => "767", "type" => "standard");
 $tablet = array("id" => "tablet", "label" => "Tablet", "min" => "768", "max" => "1024", "type" => "standard");
@@ -102,20 +108,23 @@ if (!empty($customizations_names)) {
     }
 }
 ?>
-<div id="rex-buttons-ids-used" style="display: none;"><?php 
+<div id="rex-buttons-ids-used" style="display: none;"><?php
 if ( $buttonsIDsUsed == null ) {
     echo "[]";
 } else {
     echo json_encode( $buttonsIDsUsed );
 }
 ?></div>
-<div id="sections-ids-used" style="display: none;"><?php 
+<div id="sections-ids-used" style="display: none;">
+<?php
 if ($sectionsIDsUsed == null) {
     echo "[]";
 } else {
     echo json_encode($sectionsIDsUsed);
 }
-?></div>
+?>
+</div>
+<div id="blocks-ids-used" style="display: none;"><?php echo $blocksIDsJSON; ?></div>
 <div id="layout-avaiable-dimensions" style="display:none;"><?php echo json_encode($layoutsAvaiable); ?></div>
 <div id="rexbuilder-model-data" style="display:none;">
     <div class="models-customizations" <?php
@@ -136,9 +145,9 @@ if ($sectionsIDsUsed == null) {
                 } else{
                     $customTargets = "";
                 }
-                
+
                 echo '<div class="model-customization-data" data-model-layout-name="' . $customName . '">';
-                
+
                 if($customTargets != ""){
                     echo json_encode($customTargets);
                 } else{
@@ -166,7 +175,7 @@ if ($sectionsIDsUsed == null) {
                 $sectionRexID = $section_targets["section_rex_id"];
                 $sectionModelNumber = $section_targets["section_model_number"];
                 $sectionModelID = $section_targets["section_model_id"];
-                
+
                 if(isset($section_targets["section_hide"])){
                     $hideSection = $section_targets["section_hide"];
                 } else {
@@ -204,9 +213,9 @@ if ($sectionsIDsUsed == null) {
         }
     }
     ?></div>
-    <div id="available-layouts-names"><?php 
+    <div id="available-layouts-names"><?php
     if($customizations_names != ""){
-        echo json_encode($customizations_names); 
+        echo json_encode($customizations_names);
     }else{
         echo "[]";
     }

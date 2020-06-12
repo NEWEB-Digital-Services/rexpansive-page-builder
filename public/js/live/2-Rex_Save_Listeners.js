@@ -330,9 +330,113 @@ var Rex_Save_Listeners = (function($) {
                 // Section names updated!
               }
             },
-            error: function(response) {}
+            error: function (response, textStatus, errorThrown) {
+							Rexbuilder_Util.displayAjaxError(
+								{
+									response: response,
+									textStatus: textStatus,
+									errorThrown: errorThrown
+								},
+								'Error while saving sections IDs'
+							);
+						}
           })
-        );
+				);
+
+				// Blocks IDs used
+				// (callback hell)
+				ajaxCalls.push(
+					$.ajax({
+						type: 'GET',
+						dataType: 'json',
+						url: _plugin_frontend_settings.rexajax.ajaxurl,
+						data: {
+							action: 'rexlive_get_blocks_rexids',
+							nonce_param: _plugin_frontend_settings.rexajax.rexnonce
+						},
+						success: function (response) {
+							if (!response.success) {
+								this.error(response, response.data[0].message, response.data[0].code);
+								return;
+							}
+
+							// Synchronizing the IDs with the DB Array
+							Rexbuilder_Util.updateBlocksIDsUsed(JSON.parse(response.data.currentIDsUsed));
+
+							// If a block is going to be removed, remove its ID from the used IDs Array.
+							// Looping through all page sections because there could be some "new" sections
+							// created by and undo event, so all sections need to be tracked and all the
+							// blocks' IDs need to be updated according to their status (removing or not)
+							Array.prototype.slice
+								.call(Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section'))
+								.forEach(function (section) {
+									// Looping through all section's blocks
+									Array.prototype.slice
+										.call(section.getElementsByClassName('grid-stack-item'))
+										.forEach(function (block) {
+											if (Rexbuilder_Util.hasClass(section, 'removing_section')) {
+												// Remove all blocks' RexIDs in the current section
+												Rexbuilder_Util.removeBlockID(block.getAttribute('data-rexbuilder-block-id'));
+											} else {
+												var isRemovingBlock = Rexbuilder_Util.hasClass(block, 'removing_block');
+
+												// Shorthand for less code nesting
+												Rexbuilder_Util[isRemovingBlock ? 'removeBlockID' : 'addBlockID'](
+													block.getAttribute('data-rexbuilder-block-id')
+												);
+											}
+										});
+								});
+
+							Rexbuilder_Util.saveBlocksIDsUsed();
+
+							// Saving blocks' IDs in the DB
+							$.ajax({
+								type: 'POST',
+								dataType: 'json',
+								url: _plugin_frontend_settings.rexajax.ajaxurl,
+								data: {
+									action: 'rexlive_save_blocks_rexids',
+									nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+									ids_used: JSON.stringify(Rexbuilder_Util.getBlocksIDsUsed())
+								},
+								success: function (response) {
+									if (!response.success) {
+										this.error(response, response.data[0].message, response.data[0].code);
+										return;
+									}
+								},
+								error: function (response, textStatus, errorThrown) {
+									Rexbuilder_Util.displayAjaxError(
+										{
+											response: response,
+											textStatus: textStatus,
+											errorThrown: errorThrown
+										},
+										'Error while saving blocks IDs'
+									);
+								}
+							});
+						},
+						error: function (response, textStatus, errorThrown) {
+							Rexbuilder_Util.displayAjaxError(
+								{
+									response: response,
+									textStatus: textStatus,
+									errorThrown: errorThrown
+								},
+								'Error while getting blocks IDs'
+							);
+						}
+					})
+				);
+
+
+
+
+        // ajaxCalls.push(
+
+				// );
       } else {
         //ajax calls
         ajaxCalls.push(

@@ -76,7 +76,6 @@ var Rexbuilder_Util = (function($) {
 
   /**
    * Global vars
-   * @type {Mixed}
    */
   var editorMode = false;
   var windowIsResizing = false;
@@ -86,13 +85,22 @@ var Rexbuilder_Util = (function($) {
   var $pageCustomizationsDataDiv;
   var $liveDataContainer;
   var $layoutsDomOrder;
-  var $defaultLayoutState;
-  var $usedIDSContainer;
-  var sectionIDSused;
+	var $defaultLayoutState;
   var frontAvailableLayouts;
   var startFrontLayout;
   var changedFrontLayout;
-  var layoutSavedInfo;
+	var layoutSavedInfo;
+
+	// Sections IDs used
+  var $usedIDSContainer;
+	var sectionIDSused;
+
+	// Blocks IDs used
+
+	// DOM Element containing the IDs. It's only used at init to create an Array that also contains the IDs.
+	// This DOM Element is updated everytime the user saves, and never read (except at init)
+  var $usedBlocksIDsContainer;
+	var blocksIDsUsed;
 
   var $rexbuilderLayoutData;
   var $rexbuilderModelData;
@@ -147,9 +155,9 @@ var Rexbuilder_Util = (function($) {
 
   var _getSectionNamesUsed = function() {
     return sectionIDSused;
-  };
+	};
 
-  var _addSectionID = function(rex_id) {
+	var _addSectionID = function(rex_id) {
     var i;
     for (i = sectionIDSused.length - 1; i >= 0; i--) {
       if (rex_id == sectionIDSused[i]) {
@@ -176,56 +184,30 @@ var Rexbuilder_Util = (function($) {
 
   var _createSectionID = function() {
     var id;
-    var flag;
+    var isValidID;
     var idLength = 4;
     var i;
     do {
-      flag = true;
+      isValidID = true;
       id = createRandomID(idLength);
       if (id == "self") {
-        flag = false;
+        isValidID = false;
       } else {
         for (i = 0; i < sectionIDSused.length; i++) {
           if (id == sectionIDSused[i]) {
-            flag = false;
+            isValidID = false;
             break;
           }
         }
       }
-    } while (!flag);
+    } while (!isValidID);
 
     _addSectionID(id);
 
     return id;
-  };
+	};
 
-  var createBlockID = function() {
-    var id;
-    var flag;
-    var idLength = 4;
-    var $this;
-
-    do {
-      flag = true;
-      id = createRandomID(idLength);
-      if (id == "self") {
-        flag = false;
-      } else {
-        Rexbuilder_Util.$rexContainer.find(".grid-stack-item").each(function() {
-          $this = $(this);
-          if (
-            $this.attr("data-rexbuilder-block-id") !== undefined &&
-            $this.attr("data-rexbuilder-block-id") == id
-          ) {
-            flag = false;
-          }
-        });
-      }
-    } while (!flag);
-    return id;
-  };
-
-  var _updateSectionsID = function() {
+  var _updateSectionsIDs = function() {
     if ( ! Rexbuilder_Util.rexContainer ) return;
 
     var id;
@@ -240,7 +222,7 @@ var Rexbuilder_Util = (function($) {
         _fix_tools_ids( sections[i], id );
       }
     }
-  };
+	};
 
   /**
    * Fix tools IDs for a new page section
@@ -290,7 +272,101 @@ var Rexbuilder_Util = (function($) {
     }
 
     Rexbuilder_Util.lastSectionNumber = last;
+	};
+
+	function _storeBlocksIDsUsed() {
+		blocksIDsUsed = $usedBlocksIDsContainer.length > 0 ? JSON.parse($usedBlocksIDsContainer.text()) : [];
+	}
+
+	function saveBlocksIDsUsed() {
+		$usedBlocksIDsContainer.text(JSON.stringify(blocksIDsUsed));
+	}
+
+	function updateBlocksIDsUsed(newBlocksIDsUsed) {
+		blocksIDsUsed = newBlocksIDsUsed;
+		saveBlocksIDsUsed();
+	}
+
+	function getBlocksIDsUsed() {
+		return blocksIDsUsed;
+	}
+
+	/**
+	 * Adds the new RexID to the Array and then removed the duplicates from it.
+	 * In this way the addition of already existing RexIDs is prevented.
+	 * (May not be so much readable, but requires less lines of code)
+	 * @param {String} newBlockID
+	 * @since	2.0.6
+	 */
+  function addBlockID(newBlockID) {
+		blocksIDsUsed.push(newBlockID);
+		blocksIDsUsed = Rexbuilder_Util.removeArrayDuplicates(blocksIDsUsed);
+	}
+
+  function removeBlockID(blockID) {
+		var i = blocksIDsUsed.length - 1;
+
+    for (; i >= 0; i--) {
+      if (blockID == blocksIDsUsed[i]) {
+        break;
+      }
+		}
+
+    if (i > -1) {
+      blocksIDsUsed.splice(i, 1);
+      saveBlocksIDsUsed();
+    }
   };
+
+	/**
+	 * Generates a new unique block RexID and adds it to the blocksIDsUsed Array.
+	 * This function, its linked variables and functions need to stay in the "build" folder,
+	 * because in certain situations it may be needed in the public (frontend) side.
+	 * @returns	{newID}
+	 * @since		2.0.?
+	 * @version	2.0.6		Edited check in the for loop, not checking page blocks' RexIDs anymore
+	 * 									but used RexIDs blocks (that are global, not referenced only to the current page).
+	 * 									Now the RexIDs are unique for the whole website.
+	 */
+  function createBlockID() {
+		var newID;
+		var isValidID;
+
+		do {
+			newID = createRandomID(4);
+
+			if (newID === 'self') {
+				// 'self' may be misleading because how the page data is saved.
+				// Sections' own data is referenced as 'self'
+				isValidID = false;
+			} else {
+				isValidID = -1 === blocksIDsUsed.indexOf(newID);
+			}
+		} while (!isValidID);
+
+		addBlockID(newID);
+
+		return newID;
+	}
+
+	function _updateBlocksIDs() {
+		if (!Rexbuilder_Util.rexContainer) return;
+
+		var blocks = Array.prototype.slice.call(
+			Rexbuilder_Util.rexContainer.getElementsByClassName('grid-stack-item')
+		);
+		var newID;
+		var currentBlockID;
+
+		for (var i = 0; i < blocks.length; i++) {
+			currentBlockID = blocks[i].getAttribute('data-rexbuilder-block-id');
+
+			if (null === currentBlockID || '' === currentBlockID) {
+				newID = createBlockID();
+				blocks[i].setAttribute('data-rexbuilder-block-id', newID);
+			}
+		}
+	}
 
   var _findLayoutType = function(name) {
     if (name == "default" || name == "tablet" || name == "mobile") {
@@ -4147,6 +4223,61 @@ var Rexbuilder_Util = (function($) {
 		return 0 !== $(element).parents(selector).length;
 	}
 
+	/**
+	 * Displays errros in the console and optionally in an alert. Used to standardize error displaying
+	 * @param	{String}	consoleMessage	Will be displayed in the console, together with error info, as an error
+	 * @param	{String}	alertMessage		[OPTIONAL] Will be displayed in an alert
+	 * @since	2.0.6
+	 */
+	function displayError(consoleMessage, alertMessage) {
+		/* === Console === */
+		if ('string' !== typeof consoleMessage) {
+			consoleMessage = consoleMessage.toString();
+		}
+
+		if (!/^\[Rexpansive\]/.test(consoleMessage)) {
+			consoleMessage = '[Rexpansive] ' + consoleMessage;
+		}
+
+		console.error(consoleMessage);
+
+		/* === Alert === */
+		if (alertMessage && 'string' === typeof alertMessage) {
+			alert(alertMessage);
+		}
+	}
+
+	/**
+	 * Displays errros of a jQuery AJAX request in the console and optionally in an alert.
+	 * Used to standardize AJAX error displaying
+	 * @param	{Object}	errorsObj				Object containing the arguments of an error of a jQuery AJAX request
+	 * 																	(response, textStatus, errorThrown)
+	 * @param	{String}	consoleMessage	Will be displayed in the console, together with error info, as an error
+	 * @param	{String}	alertMessage		[OPTIONAL] Will be displayed in an alert
+	 * @since	2.0.6
+	 */
+	function displayAjaxError(errorsObj, consoleMessage, alertMessage) {
+		/* === Console === */
+		if ('string' !== typeof consoleMessage) {
+			consoleMessage = consoleMessage.toString();
+		}
+
+		if (!/^\[Rexpansive\]/.test(consoleMessage)) {
+			consoleMessage = '[Rexpansive] ' + consoleMessage;
+		}
+
+		console.error(consoleMessage, {
+			status: errorsObj.response.status,
+			message: errorsObj.textStatus,
+			errorThrown: errorsObj.errorThrown
+		});
+
+		/* === Alert === */
+		if (alertMessage && 'string' === typeof alertMessage) {
+			alert(alertMessage);
+		}
+	}
+
   // init the utilities
   var init = function() {
     this.globalViewport = Rexbuilder_Util.viewport();
@@ -4198,9 +4329,14 @@ var Rexbuilder_Util = (function($) {
     $liveDataContainer = $("#rexbuilder-layout-data-live");
     $layoutsDomOrder = $("#rexbuilder-layouts-sections-order");
     $defaultLayoutState = $("#rexbuilder-default-layout-state");
-    $usedIDSContainer = $("#sections-ids-used");
+
+		$usedIDSContainer = $("#sections-ids-used");
     _storeNamesUsed();
-    this.$rexContainer = $(".rex-container");
+
+		$usedBlocksIDsContainer = $("#blocks-ids-used");
+		_storeBlocksIDsUsed()
+
+		this.$rexContainer = $(".rex-container");
     this.rexContainer = this.$rexContainer[0];
 
     this.backendEdited = false;
@@ -4224,7 +4360,8 @@ var Rexbuilder_Util = (function($) {
 
     this.loadWidth = Rexbuilder_Util.globalViewport.width;
 
-    _updateSectionsID();
+		_updateSectionsIDs();
+		_updateBlocksIDs();
     Rexbuilder_Dom_Util.fixModelNumbers();
     _updateSectionsNumber();
 
@@ -4253,10 +4390,6 @@ var Rexbuilder_Util = (function($) {
     chooseLayout: chooseLayout,
     predictLayout: predictLayout,
     setContainer: setContainer,
-    createSectionID: _createSectionID,
-    createBlockID: createBlockID,
-    addSectionID: _addSectionID,
-    removeSectionID: _removeSectionID,
     createRandomID: createRandomID,
     createRandomNumericID: _createRandomNumericID,
     responsiveLayouts: responsiveLayouts,
@@ -4308,8 +4441,6 @@ var Rexbuilder_Util = (function($) {
     getDefaultLayoutState: _getDefaultLayoutState,
     updateSectionOrderCustomLayouts: _updateSectionOrderCustomLayouts,
     updateGridsHeights: _updateGridsHeights,
-    getSectionNamesUsed: _getSectionNamesUsed,
-    saveSectionNamesUsed: _saveSectionNamesUsed,
     updateDOMSingleElement: _updateDOMSingleElement,
     getDefaultBlockMeasure: _getDefaultBlockMeasure,
     doneResizing: doneResizing,
@@ -4321,10 +4452,6 @@ var Rexbuilder_Util = (function($) {
     changedFrontLayout: changedFrontLayout,
     startFrontLayout: startFrontLayout,
     findFrontLayout: _findFrontLayout,
-    hasClass: hasClass,
-    addClass: addClass,
-    removeClass: removeClass,
-    toggleClass: toggleClass,
     parents: _parents,
     rtimeOut: rtimeOut,
     rInterval: rInterval,
@@ -4333,7 +4460,32 @@ var Rexbuilder_Util = (function($) {
 		removeArrayDuplicates: removeArrayDuplicates,
 		isOrIsChild: isOrIsChild,
 
+		// Class utilities
+		hasClass: hasClass,
+		addClass: addClass,
+		removeClass: removeClass,
+		toggleClass: toggleClass,
+
+		// Sections IDs
+		createSectionID: _createSectionID,
+		addSectionID: _addSectionID,
+		removeSectionID: _removeSectionID,
+		saveSectionNamesUsed: _saveSectionNamesUsed,
+		getSectionNamesUsed: _getSectionNamesUsed,
+
+		// Blocks IDs
+		createBlockID: createBlockID,
+		addBlockID: addBlockID,
+		removeBlockID: removeBlockID,
+		saveBlocksIDsUsed: saveBlocksIDsUsed,
+		updateBlocksIDsUsed: updateBlocksIDsUsed,
+		getBlocksIDsUsed: getBlocksIDsUsed,
+
 		// Grids lazy loading
 		clearSectionsEdited: clearSectionsEdited,
+
+		// Error displaying
+		displayError: displayError,
+		displayAjaxError: displayAjaxError
   };
 })(jQuery);

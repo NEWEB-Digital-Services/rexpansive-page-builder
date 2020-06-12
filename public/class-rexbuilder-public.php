@@ -936,6 +936,44 @@ class Rexbuilder_Public {
 	}
 
 	/**
+	 * Get blocks RexIDs
+	 * @since 2.0.6
+	 */
+	public function rexlive_get_blocks_rexids() {
+		$nonce = $_GET['nonce_param'];
+
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
+			wp_send_json_error(new WP_Error('R001', 'Nonce Error!'));
+		}
+
+		$response = array();
+
+		$response['currentIDsUsed'] = get_option("_rex_blocks_ids_used");
+
+		wp_send_json_success($response);
+	}
+
+	/**
+	 * Save blocks RexIDs
+	 * @since 2.0.6
+	 */
+	public function rexlive_save_blocks_rexids() {
+		$nonce = $_POST['nonce_param'];
+
+		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
+			wp_send_json_error(new WP_Error('R001', 'Nonce Error!'));
+		}
+
+		if (!isset($_POST['ids_used'])) {
+			wp_send_json_error(new WP_Error('R003', 'No IDs passed!'));
+		}
+
+		update_option("_rex_blocks_ids_used", stripslashes($_POST['ids_used']));
+
+		wp_send_json_success();
+	}
+
+	/**
 	 * Saving custom CSS on a single page
 	 *
 	 * @return JSON saving response

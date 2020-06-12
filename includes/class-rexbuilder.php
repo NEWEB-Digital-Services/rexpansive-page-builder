@@ -439,6 +439,12 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rexlive_save_sections_rexids', $plugin_public, 'rexlive_save_sections_rexids' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_sections_rexids', $plugin_public, 'rexlive_save_sections_rexids' );
 
+		$this->loader->add_action( 'wp_ajax_rexlive_get_blocks_rexids', $plugin_public, 'rexlive_get_blocks_rexids' );
+		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_get_blocks_rexids', $plugin_public, 'rexlive_get_blocks_rexids' );
+
+		$this->loader->add_action( 'wp_ajax_rexlive_save_blocks_rexids', $plugin_public, 'rexlive_save_blocks_rexids' );
+		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_blocks_rexids', $plugin_public, 'rexlive_save_blocks_rexids' );
+
 		$this->loader->add_action( 'wp_ajax_rexlive_save_editable_fields', $plugin_public, 'rexlive_save_editable_fields' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_editable_fields', $plugin_public, 'rexlive_save_editable_fields' );
 

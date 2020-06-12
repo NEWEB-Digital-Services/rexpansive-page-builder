@@ -201,9 +201,9 @@ class Rexbuilder_Utilities {
 		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
 		return is_plugin_active( $plugin_name );
 	}
-	
+
 	/**
-	 * Create a new Rexbuilder valid ID, checking if not already present on 
+	 * Create a new Rexbuilder valid ID, checking if not already present on
 	 * a common pool of ids
 	 *
 	 * @param Array $pool
@@ -215,7 +215,7 @@ class Rexbuilder_Utilities {
 		$id;
 		$flag;
 		$idLength = 4;
-		
+
 		do
 		{
 			$flag = true;
@@ -235,10 +235,10 @@ class Rexbuilder_Utilities {
 				}
 			}
 		} while (!$flag);
-	
+
 		return $id;
 	}
-	
+
 	/**
 	 * Create a random string with a certain width
 	 * with numbers and chars
@@ -252,14 +252,14 @@ class Rexbuilder_Utilities {
 		$text = "";
 		$possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		$possibleLength = strlen($possible);
-	
+
 		for ($i = 0; $i < $n; $i++)
 		{
 			$rnum = mt_rand() / (mt_getrandmax() + 1);
 			$temp = (int)(floor($rnum * $possibleLength));
 			$text .= $possible{$temp};
 		}
-	
+
 		return $text;
 	}
 
@@ -303,12 +303,12 @@ class Rexbuilder_Utilities {
 		$result = [];
 		$result['scripts'] = [];
 		$result['styles'] = [];
-	
+
 		// Print all loaded Scripts
 		if ( $scripts )
 		{
 			global $wp_scripts;
-			foreach( $wp_scripts->queue as $script ) 
+			foreach( $wp_scripts->queue as $script )
 			{
 				$result['scripts'][] =  array(
 					'handle' => $wp_scripts->registered[$script]->handle,
@@ -316,7 +316,7 @@ class Rexbuilder_Utilities {
 				);
 			}
 		}
-	
+
 		// Print all loaded Styles (CSS)
 		if ( $styles )
 		{
@@ -329,7 +329,7 @@ class Rexbuilder_Utilities {
 				);
 			}
 		}
-	
+
 		return $result;
 	}
 
@@ -355,7 +355,7 @@ class Rexbuilder_Utilities {
 
 	/**
 	 * Checks if rexpansive builder is active on a specific post
-	 * 
+	 *
 	 * @return Boolean
 	 * @since  2.0.0
 	 */
@@ -375,7 +375,7 @@ class Rexbuilder_Utilities {
 	/**
 	 * Add a string of attribute=value to a shortcode
 	 * The string can contain more than one attribute
-	 * 
+	 *
 	 * @param String &$shortcode The string of the original shortcode, passed by reference
 	 * @param array  $atts      Array of options
 	 * @version 2.0.0
@@ -388,7 +388,7 @@ class Rexbuilder_Utilities {
 		}
 	}
 
-	/** 
+	/**
 	* Duplicates a post & its meta and it returns the new duplicated Post ID
 	* (https://gist.github.com/eduwass/90c36565c41ac01cafe3)
 	* @param  [int] $post_id The Post you want to clone
@@ -403,9 +403,9 @@ class Rexbuilder_Utilities {
 		  'post_type' => $oldpost->post_type,
 		  'post_author' => 1
 		);
-		
+
 		$new_post_id = wp_insert_post($post, true);
-		
+
 		// Copy post metadata
 		$data = get_post_custom($post_id);
 		foreach ( $data as $key => $values) {
@@ -452,6 +452,7 @@ class Rexbuilder_Utilities {
 		$buttonsIDsJSON = get_option( '_rex_buttons_ids', '[]' );
 
 		$sectionsIDsJSON = get_option( '_rex_section_ids_used', '[]' );
+		$blocksIDsJSON = get_option( '_rex_blocks_ids_used', '[]' );
 
 		$mobile = array("id" => "mobile", "label" => "Mobile", "min" => "320", "max" => "767", "type" => "standard");
 		$tablet = array("id" => "tablet", "label" => "Tablet", "min" => "768", "max" => "1024", "type" => "standard");
@@ -462,6 +463,7 @@ class Rexbuilder_Utilities {
 ?>
 <div id="rex-buttons-ids-used" style="display: none;"><?php echo $buttonsIDsJSON; ?></div>
 <div id="sections-ids-used" style="display: none;"><?php echo $sectionsIDsJSON; ?></div>
+<div id="blocks-ids-used" style="display: none;"><?php echo $blocksIDsJSON; ?></div>
 <div id="layout-avaiable-dimensions" style="display:none;"><?php echo json_encode( $layoutsAvaiable ); ?></div>
 
 <div id="rexbuilder-model-data" style="display:none;">

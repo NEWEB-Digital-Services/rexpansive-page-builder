@@ -11,7 +11,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var $saveBtn;
   var $undoBtn;
   var $redoBtn;
-  
+
   var $highlightSectionId;
   var $highlightModelId;
   var $highlightModelEditing;
@@ -20,7 +20,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var $highlightRowSetLayout;
   var $highlightRowSetLayoutCheckbox;
   var $highlightRowSetCollapse;
-  
+
   var $highlightRowSetBackgroundImg;
   var $highlightRowSetBackgroundColor;
   var $highlightRowSetOverlay;
@@ -71,7 +71,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var _setScroll = function(stop){
     this.stopScrolling = stop;
   };
-  
+
   var scrollY;
 
   var _scrollFrame = function (step) {
@@ -101,7 +101,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         } else {
           Rexbuilder_Util_Admin_Editor.pageSaved = false;
 				}
-				
+
 				$saveBtn.addClass("page-edited");
       }
 
@@ -132,7 +132,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       if( event.data.eventName == "rexlive:viewTopFastTools" ) {
         Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.removeClass("top-fast-tools--hide");
       }
-      
+
       if( event.data.eventName == "rexlive:hideTopFastTools" ) {
         Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.addClass("top-fast-tools--hide");
       }
@@ -274,7 +274,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       if (event.data.eventName == "rexlive:editBlockAccordion") {
         Rexlive_Block_Accordion.openModal(event.data.activeBlockData);
       }
-      
+
       if (event.data.eventName == "rexlive:editBlockSlideshow") {
         Rexlive_Block_Slideshow.openModal(event.data.activeBlockData);
       }
@@ -318,7 +318,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       if (event.data.eventName == "rexlive:openRexWpcf7EditForm") {
         Wpcf7_Edit_Form_Modal.openFormEditorModal(event.data);
       }
-      
+
       if (event.data.eventName == "rexlive:editRemoveModal") {
         Model_Edit_Modal.openModal(event.data.modelData);
       }
@@ -346,7 +346,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
           Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.attr( "data-rex-edited-backend", false );
           Rexbuilder_Util_Admin_Editor.activeSavePageButton();
           // Rexbuilder_Util_Admin_Editor.$body.removeClass('page-edited');
-          
+
           // add saved layout indicator
           Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-builder-layout.active-layout").parent().addClass('layout-saved');
 
@@ -786,10 +786,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
           },
           activeLayout: hightlightRowInfo.layout,
           fullHeight: hightlightRowInfo.full_height,
-  
+
           section_width: hightlightRowInfo.section_width,
           dimension: hightlightRowInfo.dimension,
-  
+
           rowDistances: {
             gutter: hightlightRowInfo.block_distance,
             top: hightlightRowInfo.row_separator_top,
@@ -797,7 +797,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
             bottom: hightlightRowInfo.row_separator_bottom,
             left: hightlightRowInfo.row_separator_left,
           },
-  
+
           marginsSection: {
             top: hightlightRowInfo.row_margin_top,
             right: hightlightRowInfo.row_margin_right,
@@ -805,7 +805,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
             left: hightlightRowInfo.row_margin_left,
           },
           photoswipe: false,
-  
+
           sectionName: hightlightRowInfo.section_name,
           sectionNavLabel: hightlightRowInfo.section_nav_label,
           customClasses: hightlightRowInfo.custom_classes
@@ -1262,8 +1262,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   }
 
   var _updateBkgrImgTool = function() {
-    if( 'undefined' !== typeof hightlightRowInfo.id_image_bg_section && 
-        '' !== hightlightRowInfo.id_image_bg_section && 
+    if( 'undefined' !== typeof hightlightRowInfo.id_image_bg_section &&
+        '' !== hightlightRowInfo.id_image_bg_section &&
         'undefined' !== typeof hightlightRowInfo.image_bg_section &&
         '' !== hightlightRowInfo.image_bg_section) {
       $highlightRowSetBackgroundImg
@@ -1289,7 +1289,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       });
     }
   };
-  
+
   var _updateBkgrColTool = function() {
     if( '' !== hightlightRowInfo.color_bg_section ) {
       $highlightRowSetBackgroundColor
@@ -1487,7 +1487,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         show: function() {
           var container = $el.spectrum('container')[0];
           container.style.top = ( parseInt( container.style.top ) + 10 ) + 'px';
-          
+
           bgColorPickerUsed = false;
           eventSettings.data_to_send.sectionTarget.sectionID = $highlightSectionId.val();
           eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
@@ -1801,7 +1801,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   */
 
   var triggeredLoad;
- 
+
   var _forceTriggerLoad = function () {
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
     if(isIE){
@@ -1811,7 +1811,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
     }
 	}
-	
+
 	function searchFocusedElement() {
 		var $focusedEl = $(
 			Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow.document.querySelector('.item--me-focus')
@@ -1848,18 +1848,20 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 	/**
 	 * Displays in an alert and in the console errors of a jQuery AJAX request.
 	 * @param	{Object}	errorsObj				Object containing the arguments of an error of a jQuery AJAX request
+	 * 																	(response, textStatus, errorThrown)
 	 * @param	{String}	alertMessage		Will be displayed in an alert
 	 * @param	{String}	consoleMessage	[OPTIONAL] Will be displayed in the console, together with error info, as an error
 	 * @since	2.0.5
+	 * @todo	Write like the Rexbuilder_Util one
 	 */
 	function displayAjaxError(errorsObj, alertMessage, consoleMessage) {
+		alert(alertMessage);
+
 		consoleMessage = consoleMessage || '[Rexpansive] Something went wrong with your AJAX request.';
 
 		if (!/^\[Rexpansive\]/.test(consoleMessage)) {
 			consoleMessage = '[Rexpansive] ' + consoleMessage;
 		}
-
-		alert(alertMessage);
 
 		console.error(consoleMessage, {
 			status: errorsObj.response.status,
@@ -1875,10 +1877,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     $frameContainer = this.$rexpansiveContainer.find( ".rexpansive-live-frame-container" );
     this.$frameBuilder = this.$rexpansiveContainer.find( "#rexpansive-live-frame" );
 		this.frameBuilder = this.$frameBuilder.get(0);
-		
+
     frameBuilderWindow = this.$frameBuilder[0].contentWindow;
 		$frameBuilderWindow = $(frameBuilderWindow);
-		
+
 		// Used to handle opening/closing of the lateral menu
 		// while dragging items from it to the iframe
 		this.isLateralMenuOpen = false;
@@ -1927,7 +1929,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     $configRowSetVideo = $toolboxConfig.find('.edit-row-video-background-toolbox');
     $fastRowSetVideo = $toolboxFast.find('.edit-row-video-background-toolbox');
     $highlightRowSetVideo = $configRowSetVideo.add($fastRowSetVideo);
-    
+
     $saveBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find( ".btn-save" );
     $undoBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find( ".btn-undo" );
     $redoBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find( ".btn-redo" );
