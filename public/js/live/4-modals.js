@@ -135,7 +135,7 @@
 
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Section_Editor.updateSectionLayoutTool($section,data);
-      
+
       // if('undefined' == typeof e.settings.forged) {
       //   var layout = ( e.target.checked ? 'fixed' : 'masonry' );
       //   $section.find('.edit-row-layout-checkbox').prop('checked',layout);
@@ -405,7 +405,7 @@
       // if('undefined' == typeof e.settings.forged) {
       //   $section.find('.edit-row-width[data-section_width='+widthType+']').prop('checked',true).val(sectionWidth);
       // }
-      
+
       $section.attr("data-rexlive-section-edited", true);
     });
 
@@ -475,7 +475,7 @@
       var reverseData = {
         elements: elementsBefore
       };
-      
+
       if (data.photoswipe.toString() == "true") {   // add photoswipe to all blocks
         Rexbuilder_Dom_Util.enablePhotoswipeAllBlocksSection($section);
       }
@@ -572,7 +572,7 @@
       $section.attr("data-rexlive-section-edited", true);
 
       Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'section_name' );
-      
+
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
@@ -620,7 +620,7 @@
       $section.attr("data-rexlive-section-edited", true);
 
       Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'section_nav_label' );
-      
+
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
@@ -792,7 +792,7 @@
       // tracing data
       Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'color_bg_section' );
       Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'color_bg_section_active' );
-      
+
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -863,7 +863,7 @@
         reverseData
       );
     });
-    
+
     $document.on("rexlive:updateSectionOverlayGradient", function(e) {
       var data = e.settings.data_to_send;
 
@@ -1098,11 +1098,11 @@
         typeof $sectionData.attr("data-video_bg_id_section") == "undefined"
           ? ""
           : $sectionData.attr("data-video_bg_id_section");
-      var mp4VideoWidth = 
+      var mp4VideoWidth =
         typeof $sectionData.attr("data-video_bg_width_section") == "undefined"
           ? ""
           : $sectionData.attr("data-video_bg_width_section");
-      var mp4VideoHeight = 
+      var mp4VideoHeight =
         typeof $sectionData.attr("data-video_bg_height_section") == "undefined"
           ? ""
           : $sectionData.attr("data-video_bg_height_section");
@@ -1300,7 +1300,7 @@
       Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'color_bg_block' );
       Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'color_bg_block_active' );
 
-      $elem.attr("data-rexlive-element-edited", true);      
+      $elem.attr("data-rexlive-element-edited", true);
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1360,7 +1360,7 @@
       Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'overlay_block_color' );
       Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'overlay_block_color_active' );
 
-      $elem.attr("data-rexlive-element-edited", true);      
+      $elem.attr("data-rexlive-element-edited", true);
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1422,7 +1422,7 @@
       Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'overlay_block_color' );
       Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'overlay_block_color_active' );
 
-      $elem.attr("data-rexlive-element-edited", true);      
+      $elem.attr("data-rexlive-element-edited", true);
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1456,7 +1456,7 @@
           .find('section[data-rexlive-section-id="' + target.sectionID + '"]')
           .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
 			}
-			
+
       var elem = $elem.get(0);
 
       var $itemContent = $elem.find(".grid-item-content");
@@ -1521,9 +1521,9 @@
         typeBGimage: data.typeBGimage,
         photoswipe: data.photoswipe
 			};
-			
+
 			Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOpt);
-			
+
       if (data.updateBlockHeight) {
 				if (old_imageUrl !== data.urlImage || ( old_typeBGimage !== data.typeBGimage && 'natural' == data.typeBGimage ) ) {
 					galleryEditorInstance.resizeBlockWithNewImage(elem);
@@ -1543,7 +1543,7 @@
       Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'image_bg_elem_active' );
       Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'type_bg_image' );
 
-      $elem.attr("data-rexlive-element-edited", true);     
+      $elem.attr("data-rexlive-element-edited", true);
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1605,7 +1605,7 @@
 
       Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'photoswipe' );
 
-      $elem.attr("data-rexlive-element-edited", true);      
+      $elem.attr("data-rexlive-element-edited", true);
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1741,7 +1741,7 @@
         $itemContent: $itemContent,
         videoOpt: videoOptions
       };
-      $elem.attr("data-rexlive-element-edited", true);   
+      $elem.attr("data-rexlive-element-edited", true);
 
       switch( data.typeVideo ) {
         case 'mp4':
@@ -1829,7 +1829,7 @@
 
       Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'block_padding' );
 
-      $elem.attr("data-rexlive-element-edited", true);      
+      $elem.attr("data-rexlive-element-edited", true);
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1909,7 +1909,7 @@
         reverseData
       );
     });
-    
+
     $document.on("rexlive:apply_flex_image_position_block", function(e) {
       var data = e.settings.data_to_send;
 
@@ -1965,7 +1965,7 @@
 
       Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'block_flex_img_position' );
 
-      $elem.attr("data-rexlive-element-edited", true);      
+      $elem.attr("data-rexlive-element-edited", true);
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -2025,7 +2025,7 @@
 
       Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'block_custom_class' );
 
-      $elem.attr("data-rexlive-element-edited", true);      
+      $elem.attr("data-rexlive-element-edited", true);
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -2101,8 +2101,8 @@
      */
     $document.on("rexlive:setTextGradient", function(e) {
       TextEditor.triggerMEEvent({
-        name:"rexlive:mediumeditor:setTextGradient", 
-        data: e.settings.data_to_send, 
+        name:"rexlive:mediumeditor:setTextGradient",
+        data: e.settings.data_to_send,
         editable: null
       });
     });
@@ -2299,7 +2299,12 @@
       };
       var actionData = {
         buttonProperties: jQuery.extend(true, {}, data.actionButtonData)
-      };
+			};
+
+			if (data.needToSave) {
+				Rexbuilder_Util_Editor.builderEdited(false);
+			}
+
       Rexbuilder_Rexbutton.updateButton(actionData);
 
       Rexbuilder_Util_Editor.pushAction(
@@ -2321,7 +2326,7 @@
       if ( data.needToSave ) {
         Rexbuilder_Util_Editor.builderEdited(false);
       }
-      
+
       Rexbuilder_Rexwpcf7.updateColumnContent(actionData);
       Rexbuilder_Rexwpcf7_Editor.updateColumnContentShortcode(actionData);
 
@@ -2345,7 +2350,7 @@
       if ( data.needToSave ) {
         Rexbuilder_Util_Editor.builderEdited(false);
       }
-      
+
       Rexbuilder_Rexwpcf7.updateForm(actionData);
 
       Rexbuilder_Util_Editor.pushAction(
@@ -2398,7 +2403,7 @@
         // reset: no property customized on this layout
         Rexbuilder_Util.editedDataInfo.setBulkBlockData( event.settings.data.targetInfo.sectionID, event.settings.data.targetInfo.rexID, false );
       }
-      
+
       Rexbuilder_Util_Editor.builderEdited( '' !== event.settings.data.targetInfo.modelNumber );
     });
 
@@ -2514,7 +2519,7 @@
 
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 		});
-		
+
     // Launch to the iframe parent the event to open the Media Uploader
     $document.on("click", ".add-new-block-image", function(e) {
       e.preventDefault();
@@ -2883,7 +2888,7 @@
       if ( '' !== $textcontent.text().trim() ) {
         defaultTypeImage = 'full';
       }
-      
+
       var typeBGimage =
         typeof $elemData.attr("data-type_bg_block") == "undefined"
           ? defaultTypeImage
@@ -2997,7 +3002,7 @@
           ? ""
           : $elemData.attr("data-block_flex_img_position");
       if ( '' === blockFlexImgPosition ) blockFlexImgPosition = 'center middle';
-      
+
       var blockFlexImgPositionArr = blockFlexImgPosition.split(" ");
       var blockFlexImgPositionString = blockFlexImgPositionArr[1] + "-" + blockFlexImgPositionArr[0];
       var img_position = {
@@ -3174,7 +3179,7 @@
     $document.on("click", ".update-model-button", function(e) {
       var $button = $(this);
       var $section = $button.parents(".rexpansive_section");
-      
+
       var sectionID = $section.attr("data-rexlive-section-id");
       var modelID =
         typeof $section.attr("data-rexlive-model-id") != "undefined"
@@ -3221,9 +3226,9 @@
             layoutActive: Rexbuilder_Util.activeLayout
           }
         };
-        
+
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-        
+
         var event = jQuery.Event("rexlive:saveModel");
         $document.trigger(event);
       }

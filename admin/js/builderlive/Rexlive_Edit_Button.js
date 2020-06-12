@@ -3,7 +3,9 @@
  * @since 2.0.0
  */
 var Button_Edit_Modal = (function ($) {
-    "use strict";
+		"use strict";
+
+		var needToSave = false;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     /**
@@ -1309,7 +1311,8 @@ var Button_Edit_Modal = (function ($) {
             eventName: "rexlive:update_button_page",
             data_to_send: {
                 reverseButtonData: jQuery.extend(true, {}, reverseData),
-                actionButtonData: jQuery.extend(true, {}, buttonData)
+								actionButtonData: jQuery.extend(true, {}, buttonData),
+								needToSave: needToSave
             }
         };
         reverseData = jQuery.extend(true, {}, buttonDataToIframe.data_to_send.actionButtonData);
@@ -1360,10 +1363,18 @@ var Button_Edit_Modal = (function ($) {
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
     var _linkDocumentListeners = function () {
+				// Click outside the modal
+				button_editor_properties.$modal.click(function (e) {
+					if ($(e.target).is('.rex-modal-wrap')) {
+						needToSave = !_.isEqual(buttonData, resetData);
+					}
+				});
+
         /**
          * Reset Panel with data when was opened, updates button in page
          */
         button_editor_properties.$reset_button.on("click", function () {
+						needToSave = false;
             buttonData = jQuery.extend(true, {}, resetData);
             _updatePanel();
             _applyData();
@@ -1381,11 +1392,7 @@ var Button_Edit_Modal = (function ($) {
          * Applyes changes to button and, if button is model, updates DB
          */
         button_editor_properties.$close_button.on("click", function () {
-            // _updateButtonDataFromPanel();
-            // _applyData();
-            // if (editingModelButton) {
-            //     _saveButtonOnDB();
-            // }
+						needToSave = false;
             buttonData = jQuery.extend(true, {}, resetData);
             _updatePanel();
             _applyData();
@@ -1396,11 +1403,7 @@ var Button_Edit_Modal = (function ($) {
          * Applyes changes to button and, if button is model, updates DB
          */
         button_editor_properties.$apply_changes_button.on("click", function () {
-            // _updateButtonDataFromPanel();
-            // _applyData();
-            // if (editingModelButton) {
-            //     _saveButtonOnDB();
-            // }
+						needToSave = !_.isEqual(buttonData, resetData);
             _closeModal();
         });
 
