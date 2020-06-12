@@ -5,11 +5,12 @@
 var Button_Edit_Modal = (function ($) {
 	'use strict';
 
+	var templateCloseButton = Rexbuilder_Admin_Templates.getTemplate('tmpl-tool-close');
+	var templateSaveAndResetButtons = Rexbuilder_Admin_Templates.getTemplate('tmpl-tool-save');
+
 	var needToSave = false;
 
-	///////////////////////////////////////////////////////////////////////////////////////////////
 	/**
-	 *
 	 * @param {jQuery} $target input field
 	 * @param {Boolean} negativeNumbers true if allow negative numbers
 	 */
@@ -702,269 +703,393 @@ var Button_Edit_Modal = (function ($) {
 		});
 	};
 
-	var _linkTextColorEditor = function () {
+	function _linkTextColorEditor() {
+		var $valueInput = button_editor_properties.$button_label_text_color_value;
 		var colorTEXT;
-		button_editor_properties.$button_label_text_color_value.spectrum({
-			replacerClassName: 'btn-floating',
+		var resetColor;
+
+		function updateColorLive(color) {
+			colorTEXT = color.toRgbString();
+
+			button_editor_properties.$button_label_text_color_preview.hide();
+			button_editor_properties.$button_label_text.css('color', colorTEXT);
+
+			_updateButtonLive({
+				type: 'container',
+				name: 'color',
+				value: colorTEXT
+			});
+		}
+
+		$valueInput.spectrum({
+			replacerClassName: 'btn-floating spectrum-placeholder',
 			preferredFormat: 'hex',
-			showPalette: false,
 			showAlpha: true,
 			showInput: true,
 			showButtons: false,
-			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-			show: function () {},
-			move: function (color) {
-				colorTEXT = color.toRgbString();
-				button_editor_properties.$button_label_text_color_preview.hide();
-				button_editor_properties.$button_label_text.css('color', colorTEXT);
-				_updateButtonLive({
-					type: 'container',
-					name: 'color',
-					value: colorTEXT
-				});
+			showPalette: false,
+			containerClassName: 'rexbuilder-materialize-wrap sp-draggable sp-meditor',
+			show: function (color) {
+				resetColor = color;
 			},
-			change: function (color) {},
+			move: updateColorLive,
 			hide: function (color) {
 				buttonData.text_color = color.toRgbString();
-			},
-			cancelText: '',
-			chooseText: ''
+			}
 		});
 
-		var close = tmpl('tmpl-tool-close', {});
-		var $close = $(close);
-		button_editor_properties.$button_label_text_color_value.spectrum('container').append($close);
+		var $closeButton = $(templateCloseButton);
+		var $bottomTools = $(templateSaveAndResetButtons);
 
-		$close.on('click', function (e) {
+		$valueInput.spectrum('container').append($closeButton);
+		$valueInput.spectrum('container').append($bottomTools);
+
+		$closeButton.on('click', function (e) {
 			e.preventDefault();
-			button_editor_properties.$button_label_text_color_value.spectrum('hide');
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			$valueInput.spectrum('hide');
+			updateColorLive(resetColor);
+		});
+
+		$bottomTools.on('click', '[data-rex-option="save"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('hide');
+		});
+
+		$bottomTools.on('click', '[data-rex-option="reset"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			updateColorLive(resetColor);
 		});
 
 		button_editor_properties.$button_label_text_color_preview.on('click', function () {
-			button_editor_properties.$button_label_text_color_value.spectrum('show');
+			$valueInput.spectrum('show');
 			return false;
 		});
-	};
+	}
 
-	var _linkBackgroundColorEditor = function () {
+	function _linkBackgroundColorEditor() {
+		var $valueInput = button_editor_properties.$button_background_color_value;
 		var colorTEXT;
-		button_editor_properties.$button_background_color_value.spectrum({
-			replacerClassName: 'btn-floating',
+		var resetColor;
+
+		function updateColorLive(color) {
+			colorTEXT = color.toRgbString();
+
+			button_editor_properties.$button_background_color_preview.hide();
+			button_editor_properties.$button_preview_background.css('background-color', colorTEXT);
+
+			_updateButtonLive({
+				type: 'background',
+				name: 'background-color',
+				value: colorTEXT
+			});
+		}
+
+		$valueInput.spectrum({
+			replacerClassName: 'btn-floating spectrum-placeholder',
 			preferredFormat: 'hex',
-			showPalette: false,
 			showAlpha: true,
 			showInput: true,
 			showButtons: false,
-			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-			show: function () {},
-			move: function (color) {
-				colorTEXT = color.toRgbString();
-				button_editor_properties.$button_background_color_preview.hide();
-				button_editor_properties.$button_preview_background.css('background-color', colorTEXT);
-				_updateButtonLive({
-					type: 'background',
-					name: 'background-color',
-					value: colorTEXT
-				});
+			showPalette: false,
+			containerClassName: 'rexbuilder-materialize-wrap sp-draggable sp-meditor',
+			show: function (color) {
+				resetColor = color;
 			},
-			change: function (color) {},
+			move: updateColorLive,
 			hide: function (color) {
 				buttonData.background_color = color.toRgbString();
-			},
-			cancelText: '',
-			chooseText: ''
+			}
 		});
 
-		var close = tmpl('tmpl-tool-close', {});
-		var $close = $(close);
-		button_editor_properties.$button_background_color_value.spectrum('container').append($close);
+		var $closeButton = $(templateCloseButton);
+		var $bottomTools = $(templateSaveAndResetButtons);
 
-		$close.on('click', function (e) {
+		$valueInput.spectrum('container').append($closeButton);
+		$valueInput.spectrum('container').append($bottomTools);
+
+		$closeButton.on('click', function (e) {
 			e.preventDefault();
-			button_editor_properties.$button_background_color_value.spectrum('hide');
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			$valueInput.spectrum('hide');
+			updateColorLive(resetColor);
+		});
+
+		$bottomTools.on('click', '[data-rex-option="save"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('hide');
+		});
+
+		$bottomTools.on('click', '[data-rex-option="reset"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			updateColorLive(resetColor);
 		});
 
 		button_editor_properties.$button_background_color_preview.on('click', function () {
-			button_editor_properties.$button_background_color_value.spectrum('show');
+			$valueInput.spectrum('show');
 			return false;
 		});
-	};
+	}
 
-	var _linkBackgroundHoverColorEditor = function () {
+	function _linkBackgroundHoverColorEditor() {
+		var $valueInput = button_editor_properties.$button_background_hover_color_value;
 		var colorTEXT;
-		button_editor_properties.$button_background_hover_color_value.spectrum({
-			replacerClassName: 'btn-floating',
+		var resetColor;
+
+		function updateColorLive(color) {
+			colorTEXT = color.toRgbString();
+
+			button_editor_properties.$button_background_hover_color_preview.hide();
+			button_editor_properties.$button_preview_background_hover.css('background-color', colorTEXT);
+
+			_updateButtonLive({
+				type: 'backgroundHover',
+				name: 'background-color',
+				value: colorTEXT
+			});
+		}
+
+		$valueInput.spectrum({
+			replacerClassName: 'btn-floating spectrum-placeholder',
 			preferredFormat: 'hex',
-			showPalette: false,
 			showAlpha: true,
 			showInput: true,
 			showButtons: false,
-			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-			show: function () {},
-			move: function (color) {
-				colorTEXT = color.toRgbString();
-				button_editor_properties.$button_background_hover_color_preview.hide();
-				button_editor_properties.$button_preview_background_hover.css('background-color', colorTEXT);
-				_updateButtonLive({
-					type: 'backgroundHover',
-					name: 'background-color',
-					value: colorTEXT
-				});
+			showPalette: false,
+			containerClassName: 'rexbuilder-materialize-wrap sp-draggable sp-meditor',
+			show: function (color) {
+				resetColor = color;
 			},
-			change: function (color) {},
+			move: updateColorLive,
 			hide: function (color) {
 				buttonData.hover_color = color.toRgbString();
-			},
-			cancelText: '',
-			chooseText: ''
+			}
 		});
 
-		var close = tmpl('tmpl-tool-close', {});
-		var $close = $(close);
-		button_editor_properties.$button_background_hover_color_value.spectrum('container').append($close);
+		var $closeButton = $(templateCloseButton);
+		var $bottomTools = $(templateSaveAndResetButtons);
 
-		$close.on('click', function (e) {
+		$valueInput.spectrum('container').append($closeButton);
+		$valueInput.spectrum('container').append($bottomTools);
+
+		$closeButton.on('click', function (e) {
 			e.preventDefault();
-			button_editor_properties.$button_background_hover_color_value.spectrum('hide');
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			$valueInput.spectrum('hide');
+			updateColorLive(resetColor);
+		});
+
+		$bottomTools.on('click', '[data-rex-option="save"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('hide');
+		});
+
+		$bottomTools.on('click', '[data-rex-option="reset"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			updateColorLive(resetColor);
 		});
 
 		button_editor_properties.$button_background_color_preview.on('click', function () {
-			button_editor_properties.$button_background_hover_color_value.spectrum('show');
+			$valueInput.spectrum('show');
 			return false;
 		});
-	};
+	}
 
-	var _linkBorderHoverColorEditor = function () {
+	function _linkBorderHoverColorEditor() {
+		var $valueInput = button_editor_properties.$button_border_hover_color_value;
 		var colorTEXT;
-		button_editor_properties.$button_border_hover_color_value.spectrum({
-			replacerClassName: 'btn-floating',
+		var resetColor;
+
+		function updateColorLive(color) {
+			colorTEXT = color.toRgbString();
+
+			button_editor_properties.$button_border_hover_color_preview.hide();
+			button_editor_properties.$button_preview_border_hover.css('background-color', colorTEXT);
+
+			_updateButtonLive({
+				type: 'borderHover',
+				name: 'border-color',
+				value: colorTEXT
+			});
+		}
+
+		$valueInput.spectrum({
+			replacerClassName: 'btn-floating spectrum-placeholder',
 			preferredFormat: 'hex',
-			showPalette: false,
 			showAlpha: true,
 			showInput: true,
 			showButtons: false,
-			containerClassName: 'rexbuilder-materialize-wrap block-border-color-picker',
-			show: function () {},
-			move: function (color) {
-				colorTEXT = color.toRgbString();
-				button_editor_properties.$button_border_hover_color_preview.hide();
-				button_editor_properties.$button_preview_border_hover.css('background-color', colorTEXT);
-				_updateButtonLive({
-					type: 'borderHover',
-					name: 'border-color',
-					value: colorTEXT
-				});
+			showPalette: false,
+			containerClassName: 'rexbuilder-materialize-wrap sp-draggable sp-meditor',
+			show: function (color) {
+				resetColor = color;
 			},
-			change: function (color) {},
+			move: updateColorLive,
 			hide: function (color) {
 				buttonData.hover_border = color.toRgbString();
-			},
-			cancelText: '',
-			chooseText: ''
+			}
 		});
 
-		var close = tmpl('tmpl-tool-close', {});
-		var $close = $(close);
-		button_editor_properties.$button_border_hover_color_value.spectrum('container').append($close);
+		var $closeButton = $(templateCloseButton);
+		var $bottomTools = $(templateSaveAndResetButtons);
 
-		$close.on('click', function (e) {
+		$valueInput.spectrum('container').append($closeButton);
+		$valueInput.spectrum('container').append($bottomTools);
+
+		$closeButton.on('click', function (e) {
 			e.preventDefault();
-			button_editor_properties.$button_border_hover_color_value.spectrum('hide');
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			$valueInput.spectrum('hide');
+			updateColorLive(resetColor);
+		});
+
+		$bottomTools.on('click', '[data-rex-option="save"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('hide');
+		});
+
+		$bottomTools.on('click', '[data-rex-option="reset"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			updateColorLive(resetColor);
 		});
 
 		button_editor_properties.$button_border_color_preview.on('click', function () {
-			button_editor_properties.$button_border_hover_color_value.spectrum('show');
+			$valueInput.spectrum('show');
 			return false;
 		});
-	};
+	}
 
-	var _linkTextHoverColorEditor = function () {
+	function _linkTextHoverColorEditor() {
+		var $valueInput = button_editor_properties.$button_text_hover_color_value;
 		var colorTEXT;
-		button_editor_properties.$button_text_hover_color_value.spectrum({
-			replacerClassName: 'btn-floating',
+		var resetColor;
+
+		function updateColorLive(color) {
+			colorTEXT = color.toRgbString();
+			button_editor_properties.$button_text_hover_color_preview.hide();
+			button_editor_properties.$button_preview_text_hover.css('background-color', colorTEXT);
+			_updateButtonLive({
+				type: 'textHover',
+				name: 'color',
+				value: colorTEXT
+			});
+		}
+
+		$valueInput.spectrum({
+			replacerClassName: 'btn-floating spectrum-placeholder',
 			preferredFormat: 'hex',
-			showPalette: false,
 			showAlpha: true,
 			showInput: true,
 			showButtons: false,
-			containerClassName: 'rexbuilder-materialize-wrap block-text-color-picker',
-			show: function () {},
-			move: function (color) {
-				colorTEXT = color.toRgbString();
-				button_editor_properties.$button_text_hover_color_preview.hide();
-				button_editor_properties.$button_preview_text_hover.css('background-color', colorTEXT);
-				_updateButtonLive({
-					type: 'textHover',
-					name: 'color',
-					value: colorTEXT
-				});
+			showPalette: false,
+			containerClassName: 'rexbuilder-materialize-wrap sp-draggable sp-meditor',
+			show: function (color) {
+				resetColor = color;
 			},
-			change: function (color) {},
+			move: updateColorLive,
 			hide: function (color) {
 				buttonData.hover_text = color.toRgbString();
-			},
-			cancelText: '',
-			chooseText: ''
+			}
 		});
 
-		var close = tmpl('tmpl-tool-close', {});
-		var $close = $(close);
-		button_editor_properties.$button_text_hover_color_value.spectrum('container').append($close);
+		var $closeButton = $(templateCloseButton);
+		var $bottomTools = $(templateSaveAndResetButtons);
 
-		$close.on('click', function (e) {
+		$valueInput.spectrum('container').append($closeButton);
+		$valueInput.spectrum('container').append($bottomTools);
+
+		$closeButton.on('click', function (e) {
 			e.preventDefault();
-			button_editor_properties.$button_text_hover_color_value.spectrum('hide');
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			$valueInput.spectrum('hide');
+			updateColorLive(resetColor);
+		});
+
+		$bottomTools.on('click', '[data-rex-option="save"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('hide');
+		});
+
+		$bottomTools.on('click', '[data-rex-option="reset"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			updateColorLive(resetColor);
 		});
 
 		button_editor_properties.$button_text_hover_color_preview.on('click', function () {
-			button_editor_properties.$button_text_hover_color_value.spectrum('show');
+			$valueInput.spectrum('show');
 			return false;
 		});
-	};
+	}
 
-	var _linkBorderColorEditor = function () {
+	function _linkBorderColorEditor() {
+		var $valueInput = button_editor_properties.$button_border_color_value;
 		var colorTEXT;
-		button_editor_properties.$button_border_color_value.spectrum({
-			replacerClassName: 'btn-floating',
+		var resetColor;
+
+		function updateColorLive(color) {
+			colorTEXT = color.toRgbString();
+
+			button_editor_properties.$button_border_color_preview.hide();
+			button_editor_properties.$button_preview_border.css('border-color', colorTEXT);
+
+			_updateButtonLive({
+				type: 'background',
+				name: 'border-color',
+				value: colorTEXT
+			});
+		}
+
+		$valueInput.spectrum({
+			replacerClassName: 'btn-floating spectrum-placeholder',
 			preferredFormat: 'hex',
-			showPalette: false,
 			showAlpha: true,
 			showInput: true,
 			showButtons: false,
-			containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-			show: function () {},
-			move: function (color) {
-				colorTEXT = color.toRgbString();
-				button_editor_properties.$button_border_color_preview.hide();
-				button_editor_properties.$button_preview_border.css('border-color', colorTEXT);
-				_updateButtonLive({
-					type: 'background',
-					name: 'border-color',
-					value: colorTEXT
-				});
+			showPalette: false,
+			containerClassName: 'rexbuilder-materialize-wrap sp-draggable sp-meditor',
+			show: function (color) {
+				resetColor = color;
 			},
-			change: function (color) {},
+			move: updateColorLive,
 			hide: function (color) {
 				buttonData.border_color = color.toRgbString();
-			},
-			cancelText: '',
-			chooseText: ''
+			}
 		});
 
-		var close = tmpl('tmpl-tool-close', {});
-		var $close = $(close);
-		button_editor_properties.$button_border_color_value.spectrum('container').append($close);
+		var $closeButton = $(templateCloseButton);
+		var $bottomTools = $(templateSaveAndResetButtons);
 
-		$close.on('click', function (e) {
+		$valueInput.spectrum('container').append($closeButton);
+		$valueInput.spectrum('container').append($bottomTools);
+
+		$closeButton.on('click', function (e) {
 			e.preventDefault();
-			button_editor_properties.$button_border_color_value.spectrum('hide');
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			$valueInput.spectrum('hide');
+			updateColorLive(resetColor);
+		});
+
+		$bottomTools.on('click', '[data-rex-option="save"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('hide');
+		});
+
+		$bottomTools.on('click', '[data-rex-option="reset"]', function (e) {
+			e.preventDefault();
+			$valueInput.spectrum('set', resetColor.toRgbString());
+			updateColorLive(resetColor);
 		});
 
 		button_editor_properties.$button_border_color_preview.on('click', function () {
-			button_editor_properties.$button_border_color_value.spectrum('show');
+			$valueInput.spectrum('show');
 			return false;
 		});
-	};
+	}
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////
 	// Saving functions, here are also functions to manage ids of buttons
