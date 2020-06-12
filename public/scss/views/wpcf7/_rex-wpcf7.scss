@@ -3,19 +3,6 @@ $input-min-width: 115px;
 .wpcf7 {
 	position: relative;
 
-	input[type='text'],
-	input[type='number'],
-	input[type='email'],
-	textarea,
-	select {
-		// Want to override themes' padding
-		padding-left: 18px !important;
-
-		&:focus {
-			outline: none;
-		}
-	}
-
 	.wpcf7-form:not(.no-builder-form) {
 		@import 'rex-wpcf7-radios';
 		@import 'rex-wpcf7-checkboxes';
@@ -23,6 +10,19 @@ $input-min-width: 115px;
 		display: flex;
 		flex-wrap: wrap;
 		cursor: default;
+
+		input[type='text'],
+		input[type='number'],
+		input[type='email'],
+		textarea,
+		select {
+			// Want to override themes' padding
+			padding-left: 18px !important;
+
+			&:focus {
+				outline: none;
+			}
+		}
 
 		.wpcf7-rows {
 			display: block;

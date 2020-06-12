@@ -213,36 +213,48 @@
 }
 
 .block-toolBox__fast-configuration {
-	.tool-button--inline {
-		max-width: $block-tools-size;
-		max-height: $block-tools-size;
-	}
-	.tool-button--double-icon--wrap {
-		max-height: $block-tools-size;
-		margin: 0 5px;
-		margin-right: 10px;
+	width: 100%;
+	height: 0px;
+	justify-content: center;
+
+	> div {
+		position: relative;
+		bottom: 10px;
 	}
 
 	.tool-button {
+		&.edit-block-video-background {
+			padding: 5px;
+		}
+
 		&:not(.tool-button--double-icon) {
 			padding: 0;
 			overflow: hidden;
 		}
-	}
 
-	.tool-button {
 		&.tool-button--block-bottom--fix {
 			margin-right: 10px;
 			margin-left: 5px;
 			padding: 5px;
 		}
-	}
 
-	.edit-block-video-background {
-		&.tool-button {
-			padding: 5px;
+		&--double-icon--wrap {
+			max-height: $block-tools-size;
+			margin: 0 5px;
+			margin-right: 10px;
+		}
+
+		&--inline {
+			max-width: $block-tools-size;
+			max-height: $block-tools-size;
 		}
 	}
+
+	// .edit-block-video-background {
+	// 	&.tool-button {
+	// 		padding: 5px;
+	// 	}
+	// }
 }
 
 .block-toolBox__config-tools {
@@ -292,12 +304,15 @@
 				display: none;
 			}
 		}
+
 		.rexlive-top-block-tools {
 			padding: 0;
 		}
+
 		.rexlive-block-toolbox.mobile-tools {
 			display: block;
 		}
+
 		.rexlive-block-toolbox.bottom-tools,
 		.block-toolBox__editor-tools,
 		.rexlive-block-toolbox.floating-tools,
@@ -313,6 +328,10 @@
 		}
 
 		.rexlive-block-toolbox {
+			&.bottom-tools {
+				display: none !important;
+			}
+
 			.block-toolBox__config-tools {
 				.block-toolBox__config-list {
 					.builder-delete-block {
