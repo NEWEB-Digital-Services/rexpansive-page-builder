@@ -3,6 +3,19 @@ $input-min-width: 115px;
 .wpcf7 {
 	position: relative;
 
+	input[type='text'],
+	input[type='number'],
+	input[type='email'],
+	textarea,
+	select {
+		// Want to override themes' padding
+		padding-left: 18px !important;
+
+		&:focus {
+			outline: none;
+		}
+	}
+
 	.wpcf7-form:not(.no-builder-form) {
 		display: flex;
 		flex-wrap: wrap;
@@ -29,12 +42,11 @@ $input-min-width: 115px;
 
 				.wpcf7-column {
 					display: flex;
+					align-items: center;
 
-					// &:hover {
 					.wpcf7-add-new-form-content {
 						display: block;
 					}
-					// }
 
 					&.with-button {
 						min-height: 72px;
@@ -51,16 +63,8 @@ $input-min-width: 115px;
 
 					.wpcf7-column-content {
 						width: 100%;
-
-						// Fix for twenty-sixteen theme
-						p,
-						label {
-							margin: 0;
-						}
-
-						label {
-							display: block;
-						}
+						// display: flex;
+						// align-items: center;
 
 						.wpcf7-form-control-wrap {
 							display: inline-block;
@@ -86,6 +90,16 @@ $input-min-width: 115px;
 							.wpcf7-acceptance {
 								overflow: hidden;
 							}
+						}
+
+						// Fix for twenty-sixteen theme
+						p,
+						label {
+							margin: 0;
+						}
+
+						label {
+							display: block;
 						}
 					}
 

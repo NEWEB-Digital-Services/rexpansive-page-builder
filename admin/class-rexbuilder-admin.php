@@ -93,12 +93,12 @@ class Rexbuilder_Admin {
 
 				if( 1 == $value ) {
 
-					$page_builder = new Rexbuilder_Meta_Box( 
+					$page_builder = new Rexbuilder_Meta_Box(
 						$this->plugin_name,
-						'rexbuilder', 
-						'Rexpansive Builder', 
-						$key, 
-						'normal', 
+						'rexbuilder',
+						'Rexpansive Builder',
+						$key,
+						'normal',
 						'high',
 						'rexpansive-builder rexbuilder-materialize-wrap'
 					);
@@ -140,11 +140,11 @@ class Rexbuilder_Admin {
 	 * @param Array $obj
 	 * @return void
 	 * @since 2.0.0
-	 * 
+	 *
 	 */
 	public function wpml_translation_update_fix ( $obj ) {
 		// Insert fix
-		if ( isset($obj['type']) && isset($obj['context']) && 'insert' === $obj['type'] && 'post' === $obj['context'] ) 
+		if ( isset($obj['type']) && isset($obj['context']) && 'insert' === $obj['type'] && 'post' === $obj['context'] )
 		{
 			// getting the code details of the translation
 			$post_type_info = explode( '_', $obj['element_type'] );
@@ -156,10 +156,10 @@ class Rexbuilder_Admin {
 				// query the database to find the original source of the translation
 				global $wpdb;
 				$result = $wpdb->get_row(
-					$wpdb->prepare( 
+					$wpdb->prepare(
 						"
-						SELECT * 
-						FROM {$wpdb->prefix}icl_translations 
+						SELECT *
+						FROM {$wpdb->prefix}icl_translations
 						WHERE element_type LIKE %s
 						AND trid = %d
 						AND language_code = %s
@@ -209,7 +209,7 @@ class Rexbuilder_Admin {
 		if( $this->builder_active_on_this_post_type( $page_info ) ) {
 			wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), null, 'all' );
 			wp_enqueue_style( 'materialize', REXPANSIVE_BUILDER_URL . 'admin/css/materialize.min.css', array(), null, 'all' );
-			
+
 			wp_enqueue_style( 'spectrum-style', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.css', array(), null, 'all' );
 
 			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), null, 'all' );
@@ -268,7 +268,7 @@ class Rexbuilder_Admin {
 
 		if( $this->builder_active_on_this_post_type( $page_info ) ) {
 			wp_enqueue_media();
-			
+
 			if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
 				// loader
 				wp_enqueue_script( 'nprogress', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/nprogress.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
@@ -278,11 +278,11 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'grapick', REXPANSIVE_BUILDER_URL . 'admin/grapick/grapick.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true );
 				// actual dimension plugion
 				wp_enqueue_script( 'jquery-actual', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/jquery.actual.min.js', array('jquery'),  REXPANSIVE_BUILDER_VERSION, true );
-				
+
 				// photoswipe
 				wp_enqueue_script( 'photoswipe', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Photoswipe/photoswipe.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
 				wp_enqueue_script( 'photoswipe-ui', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Photoswipe/photoswipe-ui-default.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
-				
+
 				// tippy
 				wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/tippy.all.min.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
 
@@ -298,7 +298,7 @@ class Rexbuilder_Admin {
 
 				global $post;
 				$source = get_permalink($post->ID);
-				
+
 				wp_enqueue_script( 'rexlive-start', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive-admin.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
 				wp_localize_script( 'rexlive-start', 'live_editor_obj', $this->get_plugin_admin_settings( $source ) );
 			} else {
@@ -367,7 +367,7 @@ class Rexbuilder_Admin {
 
 		if( $this->builder_active_on_this_post_type( $page_info ) ) {
 			wp_enqueue_media();
-			
+
 			if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
 
 				// loader
@@ -378,11 +378,11 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'grapick', REXPANSIVE_BUILDER_URL . 'admin/grapick/grapick.min.js', array('jquery'), null, true );
 				// actual dimension plugion
 				wp_enqueue_script( 'jquery-actual', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/jquery.actual.min.js', array('jquery'),  null, true );
-				
+
 				// photoswipe
 				wp_enqueue_script( 'photoswipe', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Photoswipe/photoswipe.min.js', array('jquery'), null, true);
 				wp_enqueue_script( 'photoswipe-ui', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Photoswipe/photoswipe-ui-default.min.js', array('jquery'), null, true);
-				
+
 				// tippy
 				wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/tippy.all.min.js', array( 'jquery' ), null, true );
 
@@ -401,6 +401,7 @@ class Rexbuilder_Admin {
 				// wp_enqueue_script( 'rexbuilder-admin-config', REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Config.js', array( 'jquery' ), null, true );
 				// wp_enqueue_script( 'rexbuilder-admin-utilities', REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Utilities.js', array( 'jquery' ), null, true );
 				// wp_enqueue_script( 'rexbuilder-admin-modals', REXPANSIVE_BUILDER_URL . 'admin/js/1-Rexpansive_Builder_Admin_Modals.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexbuilder-admin-templates', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Admin_Templates.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexbuilder-media-uploader', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_MediaUploader.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexbuilder-admin-text-editor', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_RexSlider_TextEditor.js', array( 'jquery' ), null, true );
 				// wp_enqueue_script( 'rexbuilder-admin-padding-editor', REXPANSIVE_BUILDER_URL . 'admin/js/3-Rexpansive_Builder_Admin_PaddingEditor.js', array( 'jquery' ), null, true );
@@ -409,7 +410,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-ajax-calls', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Ajax_Calls.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-color-palette', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Color_Palette.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-overlay-palette', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Overlay_Palette.js', array( 'jquery' ), null, true );
-			
+
 				wp_enqueue_script( 'rexlive-modals-utils', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals_Utils.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-insert-video-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Insert_Video_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-layout-grid-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_LayoutGrid_Modal.js', array( 'jquery' ), null, true );
@@ -431,7 +432,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-section-background-gradient', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Section_Background_Gradient.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-section-overlay-gradient', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Section_Overlay_Gradient.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-section-background-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Section_Background_Modal.js', array( 'jquery' ), null, true );
-				
+
 				wp_enqueue_script( 'rexlive-css-editor-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_CSS_Editor_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-html-editor-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Html_Editor_Modal.js', array( 'jquery' ), null, true );
 
@@ -470,7 +471,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'Rexlive-Model-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Import.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Button-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Button_Import.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Button-Edit', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Edit_Button.js', array( 'jquery' ), null, true );
-				
+
 				wp_enqueue_script( 'rexlive-delete-model', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Delete_Model_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-resynch-content', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Resynch_Content_Modal.js', array( 'jquery' ), null, true );
 
@@ -492,7 +493,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-page-settings-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Page_Settings_Modal.js', array( 'jquery' ), null, true );
 				global $post;
 				$source = get_permalink($post->ID);
-				
+
 				wp_enqueue_script( 'rexlive-start', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Starting.js', array( 'jquery' ), null, true );
 				wp_localize_script( 'rexlive-start', 'live_editor_obj', $this->get_plugin_admin_settings( $source ) );
 			} else {
@@ -599,7 +600,7 @@ class Rexbuilder_Admin {
 	 * Hooking on post duplication action of the Duplicate Post plugin
 	 * Fixing builder information, like:
 	 * - handlinge rexslider
-	 * 
+	 *
 	 * @param  Integer $new_post_id     Duplicated post ID
 	 * @param  WP_Post $old_post_object Old post object
 	 * @param  WP_Post $new_post_status New post object
@@ -682,7 +683,7 @@ class Rexbuilder_Admin {
 
 	/**
 	 * Disable Gutenberg on live builder
-	 * 
+	 *
 	 * @since 2.0.0
 	 */
 	public function disable_gutenberg_on_live( $state ) {
@@ -699,7 +700,7 @@ class Rexbuilder_Admin {
 	 */
 	public function print_install_launcher() {
 		$content_installed = get_option( REXPANSIVE_BUILDER_INSTALL_OPTION );
-		
+
 		if ( false === $content_installed ) {
 			update_option( REXPANSIVE_BUILDER_INSTALL_OPTION, true );
 			?>
@@ -708,8 +709,8 @@ class Rexbuilder_Admin {
 ;(function($) {
 	function dispatch_install() {
 		$.ajax({
-			type: "POST", 
-			url: ajaxurl, 
+			type: "POST",
+			url: ajaxurl,
 			data: {
 				'action': 'rexpansive_install_contents',
 				'nonce_param': '<?php echo wp_create_nonce( 'install-contents-nonce' ); ?>',
@@ -717,8 +718,8 @@ class Rexbuilder_Admin {
 					'request': 'Run install process'
 				}
 			},
-			success: function(data) { 
-				console.log(data); 
+			success: function(data) {
+				console.log(data);
 			}
 		});
 	}
@@ -763,7 +764,7 @@ class Rexbuilder_Admin {
 	 */
 	public function add_top_bar_plugin_options_menu() {
 		global $wp_admin_bar;
-		
+
 		$wp_admin_bar->add_menu( array(
 				'id'	=>	'rexpansive-builder-top',
 				'title'	=>	__( '<img src="'. REXPANSIVE_BUILDER_URL . 'admin/img/favicon.ico" style="vertical-align:middle;margin-right:5px" alt="Rexpansive Builder" title="Rexpansive Builder" />Rexpansive Builder' ),
@@ -820,7 +821,7 @@ class Rexbuilder_Admin {
 		$upload_dir = wp_upload_dir();
 		$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
 
-		if ( file_exists( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ) ) 
+		if ( file_exists( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ) )
 		{
 		?>
 		<div style="display:none"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
@@ -1552,7 +1553,7 @@ class Rexbuilder_Admin {
 	public function acf_settings_path( $path ) {
 		// update path
 		$path = plugin_dir_url( __FILE__ ) . 'lib/acf/advanced-custom-fields/';
-		
+
 		// return
 		return $path;
 	}
@@ -1566,7 +1567,7 @@ class Rexbuilder_Admin {
 	public function acf_settings_dir( $dir ) {
 		// update path
 		$dir = plugin_dir_url( __FILE__ ) . 'lib/acf/advanced-custom-fields/';
-		
+
 		// return
 		return $dir;
 	}
@@ -1592,7 +1593,7 @@ class Rexbuilder_Admin {
 		$choices['Basic']['rexpansive_builder'] = 'Rexpansive Builder';
 		return $choices;
 	}
-	
+
 	/**
 	 * ACF Rule Values: Rexpansive Builder
 	 *
@@ -1623,14 +1624,14 @@ class Rexbuilder_Admin {
 				$query->the_post();
 
 				$title = apply_filters( 'the_title', $query->post->post_title, $query->post->ID );
-				
+
 				$choices[ $query->post->ID ] = $title;
 			}
 		}
 
 		return $choices;
 	}
-	
+
 	/**
 	 * ACF Rule Match: Rexpansive Builder
 	 *
@@ -1641,24 +1642,24 @@ class Rexbuilder_Admin {
 	 * @since 1.1.0
 	 */
 	public function acf_rule_match_rexpansive_builder( $match, $rule, $options ) {
-			
+
 		if ( !isset( $options['post_id'] ) || ! $options['post_id'] ) {
 			return false;
 		}
-		
+
 		$builder_active = get_post_meta( $options['post_id'], '_rexbuilder_active', true );
 		$has_builder = false;
 		if( 'true' == $builder_active ) {
 			$has_builder = true;
 		}
 
-		if ( '==' == $rule['operator'] ) { 
+		if ( '==' == $rule['operator'] ) {
 			$match = $has_builder;
-		
+
 		} elseif ( '!=' == $rule['operator'] ) {
 			$match = ! $has_builder;
 		}
-		
+
 		return $match;
 	}
 
@@ -1667,12 +1668,12 @@ class Rexbuilder_Admin {
 	 *
 	 *	@since	1.0.3
 	 */
-	public function update_notifier_menu() {  
+	public function update_notifier_menu() {
 		$xml = $this->get_latest_theme_version(21600); // This tells the function to cache the remote call for 21600 seconds (6 hours)
 
 		if( isset($xml) && $xml ) {
 			$theme_data = get_plugin_data( REXPANSIVE_BUILDER_PATH . 'rexpansive-builder.php' ); // Get theme data from style.css (current version is what we want)
-			
+
 			if(version_compare($theme_data['Version'], $xml->latest) == -1) {
 				add_dashboard_page( $theme_data['Name'] . 'Plugin Updates', $theme_data['Name'] . '<span class="update-plugins count-1"><span class="update-count">Updates</span></span>', 'administrator', strtolower($theme_data['Name']) . '-updates', array( $this, 'update_notifier' ) );
 			}
@@ -1682,23 +1683,23 @@ class Rexbuilder_Admin {
 	/**
 	 *	Render the page
 	 */
-	public function update_notifier() { 
+	public function update_notifier() {
 		$xml = $this->get_latest_theme_version(21600); // This tells the function to cache the remote call for 21600 seconds (6 hours)
 		$theme_data = get_plugin_data( REXPANSIVE_BUILDER_PATH . 'rexpansive-builder.php' ) // Get theme data from style.css (current version is what we want) ?>
 
 		<div class="wrap">
-		
+
 			<div id="icon-tools" class="icon32"></div>
 			<h2><?php echo $theme_data['Name']; ?> Plugin Updates</h2>
 			<div id="message" class="updated below-h2"><p><strong>There is a new version of the <?php echo $theme_data['Name']; ?> plugin available.</strong> You have version <?php echo $theme_data['Version']; ?> installed. Update to version <?php echo $xml->latest; ?>.</p></div>
 
 			<h2>Check your email to get the automatic update download link</h2>
-			
+
 			<!-- <a href="http://rexpansive.neweb.info/download/1450/" class="update-notify-link" title="Update" style="background-image:url(<?php echo WP_PLUGIN_DIR . '/rexpansive-builder/screenshot.png'; ?>);">
 				<h2>Version <?php echo $xml->latest; ?></h2>
 				Download this update
-				<?php 
-					// echo do_shortcode( '[rexArrow type="download" target="_self" color="#ffffff" link="http://rexpansive.neweb.info/download/1450/" isinsidelink="true"]Download this update[/rexArrow]' ); 
+				<?php
+					// echo do_shortcode( '[rexArrow type="download" target="_self" color="#ffffff" link="http://rexpansive.neweb.info/download/1450/" isinsidelink="true"]Download this update[/rexArrow]' );
 				?>
 			</a> -->
 			<!-- <img style="float: left; margin: 0 20px 20px 0; border: 1px solid #ddd;" src="<?php echo WP_PLUGIN_DIR . '/rexpansive-builder/screenshot.png'; ?>" /> -->
@@ -1710,22 +1711,22 @@ class Rexbuilder_Admin {
 				<p>Extract the zip's contents, look for the extracted plugin folder, and after you have all the new files upload them using FTP to the <strong>/wp-content/plugins/<?php echo strtolower($theme_data['Name']); ?>/</strong> folder overwriting the old ones (this is why it's important to backup any changes you've made to the plugin files).</p>
 				<p>If you didn't make any changes to the plugin files, you are free to overwrite them with the new ones without the risk of losing plugin settings, pages, posts, etc, and backwards compatibility is guaranteed.</p>
 			</div>
-			
+
 				<div class="clear"></div>
-			
+
 			<h3 class="title">Changelog</h3>
 			<?php echo $xml->changelog; ?>
 
 		</div>
-		
+
 	<?php }
 
-	// This function retrieves a remote xml file on my server to see if there's a new update 
+	// This function retrieves a remote xml file on my server to see if there's a new update
 	// For performance reasons this function caches the xml content in the database for XX seconds ($interval variable)
 	public function get_latest_theme_version($interval) {
 		// remote xml file location
 		$notifier_file_url = 'https://www.neweb.info/notifier-builder-premium.xml';
-		
+
 		$db_cache_field = 'rexpansive-builder-premium-notifier-cache';
 		$db_cache_field_last_updated = 'rexpansive-builder-premium-notifier-last-updated';
 		$last = get_option( $db_cache_field_last_updated );
@@ -1745,10 +1746,10 @@ class Rexbuilder_Admin {
 				$cache = file_get_contents($notifier_file_url); // ...if not, use the common file_get_contents()
 			}
 
-			if ($cache) {			
+			if ($cache) {
 				// we got good results
 				update_option( $db_cache_field, $cache );
-				update_option( $db_cache_field_last_updated, time() );			
+				update_option( $db_cache_field_last_updated, time() );
 			}
 			// read from the cache file
 			$notifier_data = get_option( $db_cache_field );
@@ -1757,9 +1758,9 @@ class Rexbuilder_Admin {
 			// cache file is fresh enough, so read from it
 			$notifier_data = get_option( $db_cache_field );
 		}
-		
-		$xml = simplexml_load_string($notifier_data); 
-		
+
+		$xml = simplexml_load_string($notifier_data);
+
 		return $xml;
 	}
 
@@ -1820,7 +1821,7 @@ class Rexbuilder_Admin {
 						});
 					});
 					})(jQuery);
-	
+
 				</script>
 			</div>
 			<?php
@@ -1865,13 +1866,13 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	public function create_builder_modals() {
 		$page_info = get_current_screen();
 
-		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) { 
-			return; 
+		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) {
+			return;
 		}
 		if( !isset( $this->plugin_options['post_types'] ) ) {
 			return;
 		}
-		if ( get_user_option('rich_editing') == 'true') { 
+		if ( get_user_option('rich_editing') == 'true') {
 			if( $this->builder_active_on_this_post_type( $page_info ) ) {
 				if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
 					include_once( 'partials/rexlive-modals-display.php' );
@@ -1908,8 +1909,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 			$post_to_activate = $this->plugin_options['post_types'];
 
-			if( isset( $post_to_activate[$page_info->id] ) ) { 
-				if( ( $post_to_activate[$page_info->id] == 1 ) && 
+			if( isset( $post_to_activate[$page_info->id] ) ) {
+				if( ( $post_to_activate[$page_info->id] == 1 ) &&
 					( $post_to_activate[$page_info->post_type] == 1 ) ) {
 					$active = true;
 				}
@@ -1933,7 +1934,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 			$post_to_activate = $this->plugin_options['post_types'];
 
-			if( isset( $post_to_activate[$post_type] ) && $post_to_activate[$post_type] == 1 ) { 
+			if( isset( $post_to_activate[$post_type] ) && $post_to_activate[$post_type] == 1 ) {
 				$active = true;
 			}
 		}
@@ -1985,18 +1986,18 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$this->Installer->push_to_queue( array( 'task' => 'create_icons_folder' ) );
 		$this->Installer->push_to_queue( array( 'task' => 'import_buttons' ) );
 		$this->Installer->push_to_queue( array( 'task' => 'import_icons' ) );
-		
+
 		// Models
 		if ( 0 !== $post_count ) {
 			$this->Installer->push_to_queue( array( 'task' => 'import_models_start' ) );
 
 			while ( $index < $post_count ) {
-				$this->Installer->push_to_queue( array( 
-					'task' => 'import_models_interval', 
-					'args' => array( 
-						'start' => $index, 
-						'end' => $index + 10 
-					) 
+				$this->Installer->push_to_queue( array(
+					'task' => 'import_models_interval',
+					'args' => array(
+						'start' => $index,
+						'end' => $index + 10
+					)
 				) );
 				$index = $index + 10;
 			}
@@ -2012,7 +2013,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			$this->Installer->push_to_queue( array( 'task' => 'import_forms_start' ) );
 
 			while ( $index < $post_count ) {
-				$this->Installer->push_to_queue( array( 
+				$this->Installer->push_to_queue( array(
 					'task' => 'import_forms_all'
 				) );
 				$index = $index + 100;
@@ -2074,7 +2075,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 					'l-svg-icons' => array()
 				);
 			}
-		 
+
 			$symbolsHTML = '';
 
 			foreach ($spritesData as $index => $spriteData) {
@@ -2172,7 +2173,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 		wp_send_json_success( $response );
 	}
-	
+
 	/**
 	 * Saving a palette color to reuse it around the pages
 	 * @since 2.0.0
@@ -2391,7 +2392,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 	/**
 	 * Ajax function to get the CF7 enhanced shortcode
-	 * 
+	 *
 	 * @since 1.1.3
 	 * @return JSON
 	 */
@@ -2431,7 +2432,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 	/**
 	 * Ajax function to save the CF7 enhanced shortcode
-	 * 
+	 *
 	 * @since 1.1.3
 	 * @return JSON
 	 */
@@ -2489,8 +2490,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 	public function rexbuilder_add_custom_buttons() {
 		global $typenow;
-		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) { 
-			return; 
+		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) {
+			return;
 		}
 		if( ! array_key_exists( 'post_types', $this->plugin_options) ) {
 			return;
@@ -2498,9 +2499,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		if( ! array_key_exists( $typenow, $this->plugin_options['post_types'] ) ) {
 			return;
 		}
-		if ( get_user_option('rich_editing') == 'true') { 
-			add_filter('mce_external_plugins', array( $this, 'rexbuilder_add_tinymce_plugin' ) ); 
-			add_filter('mce_buttons', array( $this, 'rexbuilder_register_custom_buttons' ) ); 
+		if ( get_user_option('rich_editing') == 'true') {
+			add_filter('mce_external_plugins', array( $this, 'rexbuilder_add_tinymce_plugin' ) );
+			add_filter('mce_buttons', array( $this, 'rexbuilder_register_custom_buttons' ) );
 		}
 	}
 
@@ -2537,7 +2538,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 		$response['status'] = $_POST['status'];
 
-		$response['result'] = update_post_meta( $_POST['post_id'] ,"_rexbuilder_active", $_POST['status'] );		
+		$response['result'] = update_post_meta( $_POST['post_id'] ,"_rexbuilder_active", $_POST['status'] );
 
 		wp_send_json_success( $response );
 	}
@@ -2704,7 +2705,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			'post_status'		=>	'publish',
 			'post_type'		=>	'rex_slider'
 		);
-		
+
 		$slider_id_insert = wp_insert_post( $args );
 
 		if( $slider_id_insert != 0) {
@@ -2869,7 +2870,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				} else {
 					$slide_values['field_5948eb01358e1'] = "";
 				}
-				
+
 				array_push( $values, $slide_values );
 			}
 
@@ -2911,7 +2912,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			'post_status'		=>	'publish',
 			'post_type'			=>	'rex_slider'
 		);
-		
+
 		$new_slider_id = wp_insert_post( $args );
 
 		if ( 0 === $new_slider_id ) {
@@ -2922,11 +2923,11 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		// and add them to the new slider
 		global $wpdb;
 		$slider_definition = $wpdb->get_results(
-			$wpdb->prepare( 
+			$wpdb->prepare(
 				"
-				SELECT * 
-				FROM {$wpdb->prefix}postmeta 
-				WHERE post_id = %d AND 
+				SELECT *
+				FROM {$wpdb->prefix}postmeta
+				WHERE post_id = %d AND
 				meta_key LIKE '%_rex_%'
 				",
 				$original_slider_id
@@ -3108,12 +3109,12 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		}
 
 		$response['error'] = false;
-		
+
 		update_option("_rex_responsive_layouts", $_POST['custom_layouts']);
 
 		wp_send_json_success($response);
 	}
-	
+
 	/**
 	 *	Ajax call to create a rex_model from the builder
 	 *
@@ -3185,7 +3186,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			);
 
 			update_post_meta($model_insert_id, '_save_from_backend', "false" );
-			
+
 			$query = new WP_Query( $argsQuery );
 			if ( $query->have_posts() ) {
 				while ( $query->have_posts() ) {
@@ -3275,7 +3276,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	/**
 	 * Undocumented function
 	 *
-	 * @return 
+	 * @return
 	 * @todo Review with spani85
 	 */
 	public function print_rex_buttons_style_backend()
@@ -3293,9 +3294,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		}
 		if($style != ''){
 			wp_add_inline_style('rexliveStyle', $style);
-		}	
+		}
 	}
-	
+
 	/**
 	 * Saves the model thumbnail
 	 * @return model with new image
@@ -3324,8 +3325,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 		$response['set_post_thumbnail_result'] = set_post_thumbnail($model_target, $image_selected);
 		$response['set_post_thumbnail_url_result'] = update_post_meta(
-			$model_target, 
-			'selected_image_size', 
+			$model_target,
+			'selected_image_size',
 			$image_size
 		);
 
@@ -3357,8 +3358,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 		$response['delete_post_thumbnail_result'] = delete_post_thumbnail($model_target);
 		$response['delete_post_thumbnail_url_result'] = update_post_meta(
-			$model_target, 
-			'selected_image_size', 
+			$model_target,
+			'selected_image_size',
 			""
 		);
 
@@ -3418,7 +3419,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		endif;
 
 		$response['error'] = false;
-		
+
 		// WP_Query arguments
 		$args = array(
 			'post_type'              => array( 'rex_model' ),
@@ -3436,9 +3437,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		if ( $query->have_posts() ) {
 			while ( $query->have_posts() ) {
 				$query->the_post();
-				
+
 				$modelData = array();
-				
+
 				$modelData["id"] = get_the_ID();
 				$modelData["name"] = get_the_title();
 				$modelData["preview_image_url"] = get_the_post_thumbnail_url();
@@ -3460,7 +3461,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 	/**
 	 * Save model edits
-	 * @return JSON 
+	 * @return JSON
 	 * @since  2.0.0
 	 */
 	public function rex_save_model_customization(){
@@ -3572,9 +3573,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				$re = '/rexlive_section_id="([a-zA-Z0-9]+)"/m';
 				preg_match_all($re, $modelShortcode, $matches, PREG_SET_ORDER, 0);
 				$response['sectionRexID'] = $matches;
-				
+
 				$modelCustomizationsNames = get_post_meta($post->ID, '_rex_model_customization_names', true);
-				
+
 				// Getting buttons HTML in model
 				$regexpButton = '/data-rex-button-id="([a-zA-Z0-9]+)"/m';
 				preg_match_all($regexpButton, $modelShortcode, $buttonsFound, PREG_SET_ORDER, 0);
@@ -3596,11 +3597,11 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				// }
 
 				// $response['rexElementsHTML'] = $temp;
-				
+
 				if($modelCustomizationsNames == ""){
 					$modelCustomizationsNames = array();
 				}
-		
+
 				$response['customizations_names'] = $modelCustomizationsNames;
 
 				//Customizations Data
@@ -3625,8 +3626,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$response['args'] = $args;
 
 		wp_send_json_success( $response );
-	}		
-	
+	}
+
 	/**
 	 * Delete a RexModel, knowing the id
 	 * @return JSON delete operation response
@@ -3634,12 +3635,12 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 */
 	public function rex_delete_rexmodel() {
 		$nonce = $_POST['nonce_param'];
-		
+
 		$response = array(
 			'error' => false,
 			'msg' => '',
 		);
-		
+
 		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
 			$response['error'] = true;
 			$response['msg'] = 'Nonce Error!';
@@ -3669,11 +3670,11 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
 			wp_send_json_error(new WP_Error('R001', 'Nonce Error!'));
 		}
-		
+
 		if (!Rexbuilder_Utilities::check_plugin_active('contact-form-7/wp-contact-form-7.php')) {
 			wp_send_json_error(new WP_Error('F001', 'The Contact Form 7 plugin is not active! Please enable it from the backend.'));
 		}
-		
+
 		$elementList = array();
 
 		// WP_Query arguments
@@ -3687,9 +3688,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		if ( $query->have_posts() ) {
 			while ( $query->have_posts() ) {
 				$query->the_post();
-				
+
 				$elementData = array();
-				
+
 				$elementData["id"] = get_the_ID();
 				$elementData["name"] = get_the_title();
 				$elementData["preview_image_url"] = get_the_post_thumbnail_url();
@@ -3721,7 +3722,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$separatedForms = get_option('_rex_separated_forms');
 		unset($separatedForms[array_search($formID, $separatedForms)]);
 		update_option('_rex_separated_forms', $separatedForms);
-		
+
 		$updatePostResult = wp_update_post(array(
 			'ID' => $formID,
 			'post_title' => $_POST['newName']
@@ -3742,18 +3743,18 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 */
 	public function rex_delete_rexelement() {
 		$nonce = $_POST['nonce_param'];
-		
+
 		$response = array(
 			'error' => false,
 			'msg' => '',
 		);
-		
+
 		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
 			$response['error'] = true;
 			$response['msg'] = 'Nonce Error!';
 			wp_send_json_error($response);
 		}
-		
+
 		if ( !isset( $_POST['element_id'] ) ) {
 			$response['error'] = true;
 			$response['msg'] = 'ID Error!';
@@ -3796,8 +3797,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 		$response['set_post_thumbnail_result'] = set_post_thumbnail($element_target, $image_selected);
 		$response['set_post_thumbnail_url_result'] = update_post_meta(
-			$element_target, 
-			'selected_image_size', 
+			$element_target,
+			'selected_image_size',
 			$image_size
 		);
 
@@ -3829,8 +3830,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 		$response['delete_post_thumbnail_result'] = delete_post_thumbnail($element_target);
 		$response['delete_post_thumbnail_url_result'] = update_post_meta(
-			$element_target, 
-			'selected_image_size', 
+			$element_target,
+			'selected_image_size',
 			""
 		);
 
@@ -3862,16 +3863,16 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 			wp_defer_term_counting(true);
 			wp_defer_comment_counting(true);
-	
+
 			wp_suspend_cache_invalidation(true);
-	
-			$xml->run_import_all();
-	
+
+			$xml->run_import_all(true);
+
 			wp_suspend_cache_invalidation(false);
-	
+
 			wp_defer_term_counting(false);
 			wp_defer_comment_counting(false);
-			
+
 			Rexbuilder_Import_Utilities::remove_media_file($xml_file['file']);
 		}
 
@@ -3887,9 +3888,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 		while ($query->have_posts()) {
 			$query->the_post();
-			
+
 			$elementData = array();
-			
+
 			$elementData["id"] = get_the_ID();
 			$elementData["name"] = get_the_title();
 			$elementData["preview_image_url"] = get_the_post_thumbnail_url();
@@ -3900,7 +3901,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 		$response["updated_list"] = $elementList;
 		$response['separatedForms'] = get_option('_rex_separated_forms');
-		
+
 		// Restore original Post Data
 		// wp_reset_postdata();
 
@@ -3914,20 +3915,20 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 */
 	public function rex_separate_form() {
 		$nonce = $_POST['nonce_param'];
-		
+
 		$response = array(
 			'error' => false,
 			'msg' => '',
 		);
-		
+
 		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
 			$response['error'] = true;
 			$response['msg'] = 'Nonce Error!';
 			wp_send_json_error($response);
 		endif;
-		
+
 		$response['error'] = false;
-		
+
 		$oldID = $_POST['old_id'];
 		$newID = Rexbuilder_Utilities::duplicate($oldID);
 		$response['new_id'] = $newID;
@@ -3951,20 +3952,20 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 */
 	public function rex_update_button() {
 		$nonce = $_POST['nonce_param'];
-		
+
 		$response = array(
 			'error' => false,
 			'msg' => '',
 		);
-		
+
 		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
 			$response['error'] = true;
 			$response['msg'] = 'Nonce Error!';
 			wp_send_json_error($response);
 		endif;
-		
+
 		$response['error'] = false;
-		
+
 		$id_button = $_POST["id_button"];
 		$html_button = trim( $_POST["html_button"] );
 		$css_button = $_POST["css_button"];
@@ -3976,7 +3977,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$response['idButton'] = $id_button;
 		wp_send_json_success( $response );
 	}
-	
+
 	/**
 	 * Update RexButton ids list
 	 * @return JSON update response
@@ -3984,18 +3985,18 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 */
 	public function rex_update_buttons_ids() {
 		$nonce = $_POST['nonce_param'];
-		
+
 		$response = array(
 			'error' => false,
 			'msg' => '',
 		);
-		
+
 		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
 			$response['error'] = true;
 			$response['msg'] = 'Nonce Error!';
 			wp_send_json_error($response);
 		endif;
-		
+
 		$response['error'] = false;
 		$buttons_ids = $_POST["ids_used"];
 		update_option( '_rex_buttons_ids', $buttons_ids );
@@ -4010,12 +4011,12 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 */
 	public function rex_delete_rexbutton() {
 		$nonce = $_POST['nonce_param'];
-		
+
 		$response = array(
 			'error' => false,
 			'msg' => '',
 		);
-		
+
 		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce') ) {
 			$response['error'] = true;
 			$response['msg'] = 'Nonce Error!';
@@ -4071,7 +4072,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 	/**
 	 * Search the button to delete around the posts, and separate them
-	 * 
+	 *
 	 * @param  String $rexButtonID button to delete
 	 * @param  Array &$button_ids button ids in site list
 	 * @return void
@@ -4080,10 +4081,10 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	private static function separate_buttons_in_posts( $rexButtonID, &$button_ids ) {
 		global $wpdb;
 		$posts_with_buttons = $wpdb->get_results(
-			$wpdb->prepare( 
+			$wpdb->prepare(
 				"
-				SELECT DISTINCT post_id 
-				FROM {$wpdb->prefix}postmeta 
+				SELECT DISTINCT post_id
+				FROM {$wpdb->prefix}postmeta
 				WHERE meta_key LIKE '_rexbuilder_buttons_ids_in_page'
 				AND meta_value LIKE %s
 				",
@@ -4102,7 +4103,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$original_button_dom = new DOMDocument();
 
 		if ( count( $posts_with_buttons ) > 0 ) {
-			
+
 			foreach( $posts_with_buttons as $post ) {
 				$post_id = (int)$post['post_id'];
 				if ( ! Rexbuilder_Utilities::check_post_exists( $post_id ) ) continue;
@@ -4120,7 +4121,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				foreach( $blocks[5] as $block_content ) {
 					// check blocks with button
 					if ( false === strpos($block_content, 'data-rex-button-id="' . $rexButtonID . '"') ) continue;
-					
+
 					$block_html_dom->loadHTML( $block_content );
 					$block_html_xpath = new DOMXpath( $block_html_dom );
 
@@ -4167,10 +4168,10 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		}
 
 		$templates_with_buttons = $wpdb->get_results(
-			$wpdb->prepare( 
+			$wpdb->prepare(
 				"
 				SELECT DISTINCT ID, post_content
-				FROM {$wpdb->prefix}posts 
+				FROM {$wpdb->prefix}posts
 				WHERE post_type LIKE 'rex_model'
 				AND post_content LIKE %s
 				",
@@ -4190,7 +4191,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				foreach( $blocks[5] as $block_content ) {
 					// check blocks with button
 					if ( false === strpos($block_content, 'data-rex-button-id="' . $rexButtonID . '"') ) continue;
-					
+
 					$block_html_dom->loadHTML( $block_content );
 					$block_html_xpath = new DOMXpath( $block_html_dom );
 
@@ -4241,7 +4242,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 	/**
 	 * Search the button to delete around the posts, and separate them
-	 * 
+	 *
 	 * @param  String $rexButtonID button to delete
 	 * @param  Array &$button_ids button ids in site list
 	 * @return void
@@ -4250,10 +4251,10 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	private static function separate_forms_in_posts( $rexFormID, $currentPostID ) {
 		global $wpdb;
 		$posts_with_forms = $wpdb->get_results(
-			$wpdb->prepare( 
+			$wpdb->prepare(
 				"
 				SELECT DISTINCT post_id
-				FROM {$wpdb->prefix}postmeta 
+				FROM {$wpdb->prefix}postmeta
 				WHERE meta_key LIKE '_rexbuilder_shortcode'
 				AND meta_value LIKE %s
 				",
@@ -4266,11 +4267,11 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$block_pattern = '\[(\[?)(RexpansiveBlock)(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*+(?:\[(?!\/\2\])[^\[]*+)*+)\[\/\2\])?)(\]?)';
 		// pattern to find (and remove) doctype, html and body from an html string
 		$clean_html_re = '/(<!DOCTYPE[^>]*>|<html>|<body>|<\/html>|<\/body>)/m';
-		
+
 		$block_html_dom = new DOMDocument();
-		
+
 		if ( count( $posts_with_forms ) > 0 ) {
-			
+
 			foreach( $posts_with_forms as $post ) {
 				$post_id = (int)$post['post_id'];
 				if ( ! Rexbuilder_Utilities::check_post_exists( $post_id ) || $post_id == $currentPostID ) continue;
@@ -4283,7 +4284,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				foreach( $blocks[5] as $block_content ) {
 					// check blocks with form
 					if ( false === strpos($block_content, 'data-rex-element-id="' . $rexFormID . '"') ) continue;
-					
+
 					$block_html_dom->loadHTML( $block_content );
 					$block_html_xpath = new DOMXpath($block_html_dom);
 
@@ -4319,14 +4320,14 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 						$insideShortcode = $element_container_el[0]->textContent;
 						$insideShortcode = str_replace($rexFormID, $newID, $insideShortcode);
 						$element_container_el[0]->textContent = $insideShortcode;
-						
+
 						$element_data_el = $block_html_xpath->query('//*[@class="rex-element-data"]', $form_el);
 						$element_data_el[0]->setAttribute('data-synchronize', 'true');
 					}
-						
+
 					$new_block_content = $block_html_dom->saveHTML();
 					$clean_new_block_content = trim( preg_replace($clean_html_re, '', $new_block_content) );
-					
+
 					// substitute the old definition with the new one
 					$new_post_shortcode = str_replace( $block_content, $clean_new_block_content, $new_post_shortcode );
 				}
@@ -4338,10 +4339,10 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		return;
 
 		$templates_with_buttons = $wpdb->get_results(
-			$wpdb->prepare( 
+			$wpdb->prepare(
 				"
 				SELECT DISTINCT ID, post_content
-				FROM {$wpdb->prefix}posts 
+				FROM {$wpdb->prefix}posts
 				WHERE post_type LIKE 'rex_model'
 				AND post_content LIKE %s
 				",
@@ -4361,7 +4362,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				foreach( $blocks[5] as $block_content ) {
 					// check blocks with button
 					if ( false === strpos($block_content, 'data-rex-button-id="' . $rexFormID . '"') ) continue;
-					
+
 					$block_html_dom->loadHTML( $block_content );
 					$block_html_xpath = new DOMXpath( $block_html_dom );
 
@@ -4409,10 +4410,10 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			}
 		}
 	}
-	
+
 	/**
 	 * Ajax call to get a rex_model and insert in the builder
-	 * 
+	 *
 	 * @since 1.1.2
 	 * @return JSON
 	 */
@@ -4467,7 +4468,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 					preg_match_all( "/$pattern/", $contents, $result_rows);
 					foreach( $result_rows[2] as $i => $section ) {
 						if( $section == 'RexpansiveSection') {
-		
+
 							$section_content = $result_rows[5][$i];
 							$section_attr = shortcode_parse_atts( trim( $result_rows[3][$i] ) );
 
@@ -4478,10 +4479,10 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 								'video'		=>	'',
 								'youtube'	=>	'',
 							);
-			
+
 							$section_bg_style = array();
 							$section_bg_button_preview_style = '';
-			
+
 							if( array_key_exists('color_bg_section', $section_attr) && '' != $section_attr['color_bg_section'] ) {
 								$section_bg_style['background-color'] = $section_attr['color_bg_section'];
 								$section_bg_style['background-image'] = '';
@@ -4494,22 +4495,22 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 								$section_bg_setts['url'] = wp_get_attachment_url( $section_attr['id_image_bg_section'] );
 								$section_bg_button_preview_style .= 'background-image:url(' . wp_get_attachment_url( $section_attr['id_image_bg_section'] ) . ');';
 							}
-			
+
 							if(array_key_exists('video_bg_id_section', $section_attr) && $section_attr['video_bg_id_section'] != 'undefined') :
 								$section_bg_setts['video'] = $section_attr['video_bg_id_section'];
 							endif;
-			
+
 							if(array_key_exists('video_bg_url_section', $section_attr) && $section_attr['video_bg_url_section'] != 'undefined') :
 								$section_bg_setts['youtube'] = $section_attr['video_bg_url_section'];
 							endif;
-			
+
 							if(array_key_exists('video_bg_url_vimeo_section', $section_attr) && $section_attr['video_bg_url_vimeo_section'] != 'undefined') :
 								$section_bg_setts['vimeo'] = $section_attr['video_bg_url_vimeo_section'];
 							endif;
-			
+
 							$response['info']['section_bg_settings'] = $section_bg_setts;
 							$section_bg_setts = json_encode( $section_bg_setts );
-			
+
 							$section_dimension = '';
 							if( '' != $section_attr['dimension'] ) {
 								$section_dimension = $section_attr['dimension'];
@@ -4529,16 +4530,16 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 								'custom_classes' => '',
 								'section_width'	=>	'',
 							);
-			
+
 							$section_has_overlay = false;
 							$section_overlay_style = '';
-			
+
 							$section_overlay_color = '';
-			
+
 							if( array_key_exists( 'responsive_background', $section_attr ) && '' != $section_attr['responsive_background'] ) {
 							$section_overlay_color = $section_attr['responsive_background'];
 							}
-			
+
 							if( array_key_exists( 'block_distance', $section_attr ) && '' != $section_attr['block_distance'] ) {
 							$background_responsive['gutter'] = $section_attr['block_distance'];
 							}
@@ -4556,7 +4557,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 							if( array_key_exists( 'section_width', $section_attr ) && '' != $section_attr['section_width'] ) {
 								$background_responsive['section_width'] = $section_attr['section_width'];
 							}
-			
+
 							$custom_section_name = '';
 							if(array_key_exists('section_name', $section_attr) && $section_attr['section_name'] != 'undefined') :
 								$custom_section_name = $section_attr['section_name'];
@@ -4574,7 +4575,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 							$response['info']['section_has_overlay'] = $section_has_overlay;
 							$response['info']['section_overlay_style'] = $section_overlay_style;
 							$response['info']['section_model'] = $query->post->ID;
-							
+
 							$blocks = array();
 
 							ob_start();
@@ -4608,11 +4609,11 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 										$background_block_setts['bg_img_type'] = $block_attr['type_bg_block'];
 									} else if( array_key_exists('color_bg_block', $block_attr) && array_key_exists('type_bg_block', $block_attr) && 	$block_attr['color_bg_block'] != '' && $block_attr['type_bg_block'] != 'full' ) {
 										$style .= 'background-color:' . $block_attr['color_bg_block'] . ';';
-							
+
 										if( array_key_exists('type_bg_block', $block_attr) && $block_attr['type_bg_block'] == 'natural' ) {
 											$style .= 'background-image:url(' . wp_get_attachment_url( $block_attr['id_image_bg_block'] ) . ');';
 										}
-							
+
 										$background_block_setts['color'] = $block_attr['color_bg_block'];
 										$background_block_setts['image'] = $block_attr['id_image_bg_block'];
 										$background_block_setts['url'] = wp_get_attachment_url( $block_attr['id_image_bg_block'] );
@@ -4625,53 +4626,53 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 										$background_block_setts['image'] = $block_attr['id_image_bg_block'];
 										$background_block_setts['url'] = wp_get_attachment_url ($block_attr['id_image_bg_block'] );
 										$background_block_setts['bg_img_type'] = $block_attr['type_bg_block'];
-							
+
 										$classEmpty = 'hidden';
 									}
-							
+
 									if(array_key_exists('video_bg_id', $block_attr) && $block_attr['video_bg_id'] != 'undefined') :
 										$background_block_setts['video'] = $block_attr['video_bg_id'];
 									else :
 										$background_block_setts['video'] = '';
 									endif;
-							
+
 									if(array_key_exists('video_bg_url', $block_attr) && $block_attr['video_bg_url'] != 'undefined') :
 										$background_block_setts['youtube'] = $block_attr['video_bg_url'];
 									else :
 										$background_block_setts['youtube'] = '';
 									endif;
-							
+
 									if(array_key_exists('video_bg_url_vimeo', $block_attr) && $block_attr['video_bg_url_vimeo'] != 'undefined') :
 										$background_block_setts['vimeo'] = $block_attr['video_bg_url_vimeo'];
 									else :
 										$background_block_setts['vimeo'] = '';
 									endif;
-							
+
 									$video_has_audio = '0';
 									if(array_key_exists('video_has_audio', $block_attr) && $block_attr['video_has_audio'] != 'undefined') :
 										$video_has_audio =  $block_attr['video_has_audio'];
 									endif;
-							
+
 									if(array_key_exists('photoswipe', $block_attr) && $block_attr['photoswipe'] != 'undefined') :
 										$background_block_setts['photoswipe'] = $block_attr['photoswipe'];
 									else :
 										$background_block_setts['photoswipe'] = '';
 									endif;
-							
+
 									if(array_key_exists('linkurl', $block_attr) && $block_attr['linkurl'] != 'undefined') :
 										$background_block_setts['linkurl'] = $block_attr['linkurl'];
 									else :
 										$background_block_setts['linkurl'] = '';
 									endif;
-							
+
 									if(array_key_exists('image_size', $block_attr) && $block_attr['image_size'] != 'undefined') :
 										$background_block_setts['image_size'] = $block_attr['image_size'];
 									else :
 										$background_block_setts['image_size'] = '';
 									endif;
-							
+
 									$element_preview_position_classes = '';
-							
+
 									if(array_key_exists('block_custom_class', $block_attr) && $block_attr['block_custom_class'] != 'undefined') :
 										$background_block_setts['block_custom_class'] = $block_attr['block_custom_class'];
 										$block_custom_classes = $block_attr['block_custom_class'];
@@ -4707,30 +4708,30 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 										$background_block_setts['block_custom_class'] = '';
 										$block_custom_classes = '';
 									endif;
-							
+
 									if(array_key_exists('block_padding', $block_attr) && $block_attr['block_padding'] != 'undefined') :
 										$content_padding_settings = $block_attr['block_padding'];
 									else :
 										$content_padding_settings = '';
 									endif;
-							
+
 									if(array_key_exists('overlay_block_color', $block_attr) && $block_attr['overlay_block_color'] != 'undefined') :
 										$background_block_setts['overlay_block_color'] = $block_attr['overlay_block_color'];
 									endif;
-							
+
 									$style .= '"';
-							
+
 									$define_borders = ' with-border';
 									if( $background_block_setts['color'] != '' || ( $background_block_setts['image'] != '' && $background_block_setts['bg_img_type'] != 'natural' ) ) :
 										if( $background_block_setts['color'] != 'rgba(255,255,255,0)' ) :
 											$define_borders = ' no-border';
 										endif;
 									endif;
-							
+
 									$temp_block_setts = $background_block_setts;
-							
+
 									$background_block_setts = json_encode( $background_block_setts );
-							
+
 									// Preapre the zak effect settings
 									$zak_effect_setts = array(
 										'side' => '',
@@ -4746,38 +4747,38 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 									if(array_key_exists('zak_side', $block_attr) && $block_attr['zak_side'] != 'undefined') {
 										$zak_effect_setts['side'] = $block_attr['zak_side'];
 									}
-							
+
 									if(array_key_exists('zak_background', $block_attr) && $block_attr['zak_background'] != 'undefined') {
 										$zak_effect_setts['background_url'] = wp_get_attachment_url( $block_attr['zak_background'] );
 										$zak_effect_setts['background_id'] = $block_attr['zak_background'];
 									}
-							
+
 									if(array_key_exists('zak_title', $block_attr) && $block_attr['zak_title'] != 'undefined') {
 										$zak_effect_setts['title'] = $block_attr['zak_title'];
 									}
-							
+
 									if(array_key_exists('zak_icon', $block_attr) && $block_attr['zak_icon'] != 'undefined') {
 										$zak_effect_setts['icon_url'] = ( $block_attr['zak_icon'] ) ? wp_get_attachment_url( $block_attr['zak_icon'] ) : '';
 										$zak_effect_setts['icon_id'] = $block_attr['zak_icon'];
 									}
 									$zak_effect_setts['content'] = ($result_block[5][$i]);
-							
+
 									if(array_key_exists('zak_foreground', $block_attr) && $block_attr['zak_foreground'] != 'undefined') :
 										if( '' != $block_attr['zak_foreground'] ) :
 											$zak_effect_setts['foreground_url'] = wp_get_attachment_url( $block_attr['zak_foreground'] );
 											$zak_effect_setts['foreground_id'] = $block_attr['zak_foreground'];
 										endif;
-									endif;														
-							
+									endif;
+
 									//var_dump(mysql_real_escape_string($result_block[5][$i]));
-							
+
 									$zak_effect_setts = json_encode( $zak_effect_setts );
-							
-									$block_content = $result_block[5][$i];																			
-							
+
+									$block_content = $result_block[5][$i];
+
 									$block_content = preg_replace('/^<\/p>/', '', $block_content);
 									$block_content = preg_replace('/<p>+$/', '', $block_content);
-							
+
 									$slider_data_markup = "";
 									$actions_args = array(
 										'block_has_slider' => false
@@ -4840,8 +4841,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 											</div>
 											<div class="element-preview-wrap<?php echo $element_preview_position_classes; ?>"<?php echo $style; ?>>
 											<div class="element-preview">
-												<?php 
-												if( $block_attr['type_bg_block'] == '' && $block_attr['color_bg_block'] == '' ) { 
+												<?php
+												if( $block_attr['type_bg_block'] == '' && $block_attr['color_bg_block'] == '' ) {
 													$control = true;
 												} else {
 													$control = false;
@@ -4881,13 +4882,13 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 										case 'video':
 									?>
 											<div class="element-data">
-											<textarea class="data-text-content" display="none"><?php echo $block_content; ?></textarea>	
+											<textarea class="data-text-content" display="none"><?php echo $block_content; ?></textarea>
 											</div>
 											<div class="element-preview-wrap<?php echo $element_preview_position_classes; ?>"<?php echo $style; ?>>
-											<div class="element-preview"><?php echo $block_content; ?></div>	
+											<div class="element-preview"><?php echo $block_content; ?></div>
 											</div>
 									<?php
-											break;	
+											break;
 										case 'expand':
 									?>
 											<div class="element-data">
@@ -4934,7 +4935,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
   if('' != $temp_block_setts['youtube'] || '' != $temp_block_setts['video'] || '' != $temp_block_setts['vimeo'] ) :
 	echo ' ' . 'rex-active-video-notice';
   endif;
-?>"<?php 
+?>"<?php
   if( '' != $temp_block_setts['overlay_block_color'] ) :
 	echo ' style="background-color:' . $temp_block_setts['overlay_block_color'] . '"';
   endif;
@@ -4983,24 +4984,24 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 */
 	function live_refresh_builder() {
 		$nonce = $_POST['rexnonce'];
-		
+
 		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
 			die( 'Do not do this!' );
 		endif;
-	
-	
+
+
 		if ( current_user_can( 'edit_posts' ) ) :
 			$pattern = get_shortcode_regex();
 			$contents = get_post_field('post_content', $_POST['post_id']);
 			if( !empty( $contents ) ) :
 				preg_match_all( "/$pattern/", $contents, $result_rows);
-	
+
 				foreach( $result_rows[2] as $i => $section ) :
 					if( $section == 'RexpansiveSection') :
-	
+
 						$section_content = $result_rows[5][$i];
 						$section_attr = shortcode_parse_atts( trim( $result_rows[3][$i] ) );
-						
+
 						$section_bg_setts = array(
 							'color' 	=> '',
 							'image' 	=> '',
@@ -5008,10 +5009,10 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 							'video'		=>	'',
 							'youtube'	=>	'',
 						);
-	
+
 						$section_bg_style = '';
 						$section_bg_button_preview_style = '';
-	
+
 						if( '' != $section_attr['color_bg_section'] ) {
 							$section_bg_style = ' style="';
 							$section_bg_style .= 'background-color:' . esc_attr( $section_attr['color_bg_section'] );
@@ -5026,37 +5027,37 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 							$section_bg_style .= ';"';
 							$section_bg_button_preview_style .= ' style="background-image:url(' . wp_get_attachment_url( $section_attr['id_image_bg_section'] ) . ');" ';
 						}
-	
+
 						if(array_key_exists('video_bg_id_section', $section_attr) && $section_attr['video_bg_id_section'] != 'undefined') :
 							$section_bg_setts['video'] = $section_attr['video_bg_id_section'];
 						endif;
-	
+
 						if(array_key_exists('video_bg_url_section', $section_attr) && $section_attr['video_bg_url_section'] != 'undefined') :
 							$section_bg_setts['youtube'] = $section_attr['video_bg_url_section'];
 						endif;
-	
+
 						if(array_key_exists('video_bg_url_vimeo_section', $section_attr) && $section_attr['video_bg_url_vimeo_section'] != 'undefined') :
 							$section_bg_setts['vimeo'] = $section_attr['video_bg_url_vimeo_section'];
 						endif;
-	
+
 						$section_bg_setts = json_encode( $section_bg_setts );
-	
+
 						$section_dimension = '';
 						if( '' != $section_attr['dimension'] ) {
 							$section_dimension = $section_attr['dimension'];
 						}
-	
+
 						$background_responsive = array(
 							'gutter' => '20',
 							'isFull' => '',
 							'custom_classes' => '',
 							'section_width'	=>	'',
 						);
-	
+
 						$section_has_overlay = false;
 						$section_overlay_style = '';
 						$section_overlay_color = '';
-	
+
 						if( array_key_exists( 'responsive_background', $section_attr ) && '' != $section_attr['responsive_background'] ) {
 							$section_overlay_color = $section_attr['responsive_background'];
 						}
@@ -5077,15 +5078,15 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 						if( array_key_exists( 'section_width', $section_attr ) && '' != $section_attr['section_width'] ) {
 							$background_responsive['section_width'] = $section_attr['section_width'];
 						}
-				
+
 						$custom_section_name = '';
 						if(array_key_exists('section_name', $section_attr) && $section_attr['section_name'] != 'undefined') :
 							$custom_section_name = $section_attr['section_name'];
 						endif;
-						
+
 						?>
 						<div class='builder-row clearfix z-depth-1' data-count='' data-gridcontent='' data-gridproperties='<?php echo $section_bg_setts; ?>' data-griddimension='<?php echo esc_attr( $section_dimension ); ?>' data-layout='<?php echo esc_attr( $section_attr["layout"] ); ?>' data-section-overlay-color='<?php echo $section_overlay_color; ?>' data-sectionid='<?php echo esc_attr( $custom_section_name ); ?>' data-backresponsive='<?php echo htmlspecialchars(json_encode($background_responsive)); ?>' data-row-separator-top='<?php echo ( isset( $section_attr["row_separator_top"] ) ? esc_attr( $section_attr["row_separator_top"] ) : '' ); ?>' data-row-separator-bottom='<?php echo ( isset( $section_attr["row_separator_bottom"] ) ? esc_attr( $section_attr["row_separator_bottom"] ) : '' ); ?>' data-row-separator-right='<?php echo ( isset( $section_attr["row_separator_right"] ) ? esc_attr( $section_attr["row_separator_right"] ) : '' ); ?>' data-row-separator-left='<?php echo ( isset( $section_attr["row_separator_left"] ) ? esc_attr( $section_attr["row_separator_left"] ) : '' ); ?>' data-section-active-photoswipe='<?php echo ( isset( $section_attr["row_active_photoswipe"] ) ? esc_attr( $section_attr["row_active_photoswipe"] ) : '' ); ?>'>
-	
+
 							<div class="builder-row-contents">
 								<div class="builder-edit-row-header">
 									<button class="btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexpansive-builder'); ?>">
@@ -5095,10 +5096,10 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 								<div class="builder-edit-row-wrap clearfix row valign-wrapper">
 									<div class="col s4 rex-edit-dimension-wrap valign-wrapper">
 										<div>
-											<input type="radio" 
-												id="section-full-<?php echo esc_attr( $checkbox_index ); ?>" 
-												name="section-dimension-<?php echo esc_attr( $checkbox_index ); ?>" 
-												class="builder-edit-row-dimension with-gap" 
+											<input type="radio"
+												id="section-full-<?php echo esc_attr( $checkbox_index ); ?>"
+												name="section-dimension-<?php echo esc_attr( $checkbox_index ); ?>"
+												class="builder-edit-row-dimension with-gap"
 												value="full" title="Full"
 											<?php
 											checked( $section_attr['dimension'], 'full', 1 );
@@ -5108,8 +5109,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 											</label>
 										</div>
 										<div>
-											<input id="section-boxed-<?php echo esc_attr( $checkbox_index ); ?>" type="radio" 
-												name="section-dimension-<?php echo esc_attr( $checkbox_index ); ?>" 
+											<input id="section-boxed-<?php echo esc_attr( $checkbox_index ); ?>" type="radio"
+												name="section-dimension-<?php echo esc_attr( $checkbox_index ); ?>"
 												class="builder-edit-row-dimension with-gap" value="boxed" title="Boxed"
 											<?php
 											checked( $section_attr['dimension'], 'boxed', 1 );
@@ -5119,8 +5120,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 											</label>
 										</div>
 										<div class="rex-edit-layout-wrap" style="display:none;">
-											<input id="section-fixed-<?php echo esc_attr( $checkbox_index ); ?>" type="radio" 
-												name="section-layout-<?php echo esc_attr( $checkbox_index ); ?>" 
+											<input id="section-fixed-<?php echo esc_attr( $checkbox_index ); ?>" type="radio"
+												name="section-layout-<?php echo esc_attr( $checkbox_index ); ?>"
 												class="builder-edit-row-layout with-gap" value="fixed" title="Fixed"
 											<?php
 											checked( $section_attr['layout'], 'fixed', 1 );
@@ -5128,8 +5129,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 											<label for="section-fixed-<?php echo esc_attr( $checkbox_index ); ?>" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexpansive-builder' ); ?>">
 												<i class="material-icons">&#xE8F1;<span class="rex-ripple"></span></i>
 											</label>
-											<input id="section-masonry-<?php echo esc_attr( $checkbox_index ); ?>" type="radio" 
-												name="section-layout-<?php echo esc_attr( $checkbox_index ); ?>" 
+											<input id="section-masonry-<?php echo esc_attr( $checkbox_index ); ?>" type="radio"
+												name="section-layout-<?php echo esc_attr( $checkbox_index ); ?>"
 												class="builder-edit-row-layout with-gap" value="masonry" title="Masonry"
 											<?php
 											checked( $section_attr['layout'], 'masonry', 1 );
@@ -5138,9 +5139,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 												<i class="material-icons">&#xE871;<span class="rex-ripple"></span></i>
 											</label>
 										</div>
-	
+
 									</div>
-	
+
 									<div class="builder-buttons col s4 center-align">
 										<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Image', 'rexpansive-builder' ); ?>">
 											<i class="material-icons rex-icon">p</i>
@@ -5178,7 +5179,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 											</ul>
 										</div>
 									</div>
-									
+
 									<!-- Icon button -->
 									<div class="col s4 right-align builder-setting-buttons">
 										<div class="background_section_preview btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Row background', 'rexpansive-builder' ); ?>"<?php echo $section_bg_button_preview_style; ?>></div>
@@ -5194,7 +5195,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 									</div>
 								</div>
 								<div class="builder-row-edit">
-									
+
 									<div class="builder-elements">
 										<div class="gridster">
 											<ul <?php echo $section_bg_style; ?>>
@@ -5203,9 +5204,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 														preg_match_all( "/$pattern/", $section_content, $result_block);
 														foreach( $result_block[3] as $i => $attrs ) :
 															$block_attr = shortcode_parse_atts( trim( $attrs ) );
-	
+
 															// Prepare the background block settings
-	
+
 															$background_block_setts = array(
 																'color' => '',
 																'image' => '',
@@ -5221,21 +5222,21 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 															);
 															$style = ' style="';
 															$classEmpty = '';
-	
+
 															if( array_key_exists('image_bg_block', $block_attr) && array_key_exists('type_bg_block', $block_attr) && $block_attr['image_bg_block'] != '' && $block_attr['type_bg_block'] == 'full' ) {
 																$style .= 'background-image:url(' . wp_get_attachment_url ($block_attr['id_image_bg_block'] ) . ');';
 																$background_block_setts['image'] = $block_attr['id_image_bg_block'];
 																$background_block_setts['url'] = wp_get_attachment_url ($block_attr['id_image_bg_block'] );
 																$background_block_setts['bg_img_type'] = $block_attr['type_bg_block'];
-													
+
 																$classEmpty = 'hidden';
 															} else if( array_key_exists('color_bg_block', $block_attr) && array_key_exists('type_bg_block', $block_attr) && $block_attr['color_bg_block'] != '' && $block_attr['type_bg_block'] != 'full' ) {
 																$style .= 'background-color:' . $block_attr['color_bg_block'] . ';';
-													
+
 																if( array_key_exists('type_bg_block', $block_attr) && $block_attr['type_bg_block'] == 'natural' ) {
 																	$style .= 'background-image:url(' . wp_get_attachment_url( $block_attr['id_image_bg_block'] ) . ');';
 																}
-													
+
 																$background_block_setts['color'] = $block_attr['color_bg_block'];
 																$background_block_setts['image'] = $block_attr['id_image_bg_block'];
 																$background_block_setts['url'] = wp_get_attachment_url( $block_attr['id_image_bg_block'] );
@@ -5249,53 +5250,53 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 																$background_block_setts['image'] = $block_attr['id_image_bg_block'];
 																$background_block_setts['url'] = wp_get_attachment_url ($block_attr['id_image_bg_block'] );
 																$background_block_setts['bg_img_type'] = $block_attr['type_bg_block'];
-													
+
 																$classEmpty = 'hidden';
 															}
-													
+
 															if(array_key_exists('video_bg_id', $block_attr) && $block_attr['video_bg_id'] != 'undefined') :
 																$background_block_setts['video'] = $block_attr['video_bg_id'];
 															else :
 																$background_block_setts['video'] = '';
 															endif;
-													
+
 															if(array_key_exists('video_bg_url', $block_attr) && $block_attr['video_bg_url'] != 'undefined') :
 																$background_block_setts['youtube'] = $block_attr['video_bg_url'];
 															else :
 																$background_block_setts['youtube'] = '';
 															endif;
-													
+
 															if(array_key_exists('video_bg_url_vimeo', $block_attr) && $block_attr['video_bg_url_vimeo'] != 'undefined') :
 																$background_block_setts['vimeo'] = $block_attr['video_bg_url_vimeo'];
 															else :
 																$background_block_setts['vimeo'] = '';
 															endif;
-													
+
 															$video_has_audio = '0';
 															if(array_key_exists('video_has_audio', $block_attr) && $block_attr['video_has_audio'] != 'undefined') :
 																$video_has_audio =  $block_attr['video_has_audio'];
 															endif;
-													
+
 															if(array_key_exists('photoswipe', $block_attr) && $block_attr['photoswipe'] != 'undefined') :
 																$background_block_setts['photoswipe'] = $block_attr['photoswipe'];
 															else :
 																$background_block_setts['photoswipe'] = '';
 															endif;
-													
+
 															if(array_key_exists('linkurl', $block_attr) && $block_attr['linkurl'] != 'undefined') :
 																$background_block_setts['linkurl'] = $block_attr['linkurl'];
 															else :
 																$background_block_setts['linkurl'] = '';
 															endif;
-													
+
 															if(array_key_exists('image_size', $block_attr) && $block_attr['image_size'] != 'undefined') :
 																$background_block_setts['image_size'] = $block_attr['image_size'];
 															else :
 																$background_block_setts['image_size'] = '';
 															endif;
-													
+
 															$element_preview_position_classes = '';
-													
+
 															if(array_key_exists('block_custom_class', $block_attr) && $block_attr['block_custom_class'] != 'undefined') :
 																$background_block_setts['block_custom_class'] = $block_attr['block_custom_class'];
 																$block_custom_classes = $block_attr['block_custom_class'];
@@ -5331,30 +5332,30 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 																$background_block_setts['block_custom_class'] = '';
 																$block_custom_classes = '';
 															endif;
-													
+
 															if(array_key_exists('block_padding', $block_attr) && $block_attr['block_padding'] != 'undefined') :
 																$content_padding_settings = $block_attr['block_padding'];
 															else :
 																$content_padding_settings = '';
 															endif;
-													
+
 															if(array_key_exists('overlay_block_color', $block_attr) && $block_attr['overlay_block_color'] != 'undefined') :
 																$background_block_setts['overlay_block_color'] = $block_attr['overlay_block_color'];
 															endif;
-													
+
 															$style .= '"';
-													
+
 															$define_borders = ' with-border';
 															if( $background_block_setts['color'] != '' || ( $background_block_setts['image'] != '' && $background_block_setts['bg_img_type'] != 'natural' ) ) :
 																if( $background_block_setts['color'] != 'rgba(255,255,255,0)' ) :
 																	$define_borders = ' no-border';
 																endif;
 															endif;
-													
+
 															$temp_block_setts = $background_block_setts;
-													
+
 															$background_block_setts = json_encode( $background_block_setts );
-													
+
 															// Preapre the zak effect settings
 															$zak_effect_setts = array(
 																'side' => '',
@@ -5370,38 +5371,38 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 															if(array_key_exists('zak_side', $block_attr) && $block_attr['zak_side'] != 'undefined') {
 																$zak_effect_setts['side'] = $block_attr['zak_side'];
 															}
-													
+
 															if(array_key_exists('zak_background', $block_attr) && $block_attr['zak_background'] != 'undefined') {
 																$zak_effect_setts['background_url'] = wp_get_attachment_url( $block_attr['zak_background'] );
 																$zak_effect_setts['background_id'] = $block_attr['zak_background'];
 															}
-													
+
 															if(array_key_exists('zak_title', $block_attr) && $block_attr['zak_title'] != 'undefined') {
 																$zak_effect_setts['title'] = $block_attr['zak_title'];
 															}
-													
+
 															if(array_key_exists('zak_icon', $block_attr) && $block_attr['zak_icon'] != 'undefined') {
 																$zak_effect_setts['icon_url'] = ( $block_attr['zak_icon'] ) ? wp_get_attachment_url( $block_attr['zak_icon'] ) : '';
 																$zak_effect_setts['icon_id'] = $block_attr['zak_icon'];
 															}
 															$zak_effect_setts['content'] = ($block_content);
-													
+
 															if(array_key_exists('zak_foreground', $block_attr) && $block_attr['zak_foreground'] != 'undefined') :
 																if( '' != $block_attr['zak_foreground'] ) :
 																	$zak_effect_setts['foreground_url'] = wp_get_attachment_url( $block_attr['zak_foreground'] );
 																	$zak_effect_setts['foreground_id'] = $block_attr['zak_foreground'];
 																endif;
-															endif;														
-													
+															endif;
+
 															//var_dump(mysql_real_escape_string($result_block[5][$i]));
-													
+
 															$zak_effect_setts = json_encode( $zak_effect_setts );
-													
-															$block_content = $result_block[5][$i];																			
-													
+
+															$block_content = $result_block[5][$i];
+
 															$block_content = preg_replace('/^<\/p>/', '', $block_content);
 															$block_content = preg_replace('/<p>+$/', '', $block_content);
-													
+
 															$slider_data_markup = "";
 															$actions_args = array(
 																'block_has_slider' => false
@@ -5465,8 +5466,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				</div>
 				<div class="element-preview-wrap<?php echo $element_preview_position_classes; ?>"<?php echo $style; ?>>
 					<div class="element-preview">
-					<?php 
-						if( $block_attr['type_bg_block'] == '' && $block_attr['color_bg_block'] == '' ) { 
+					<?php
+						if( $block_attr['type_bg_block'] == '' && $block_attr['color_bg_block'] == '' ) {
 							$control = true;
 						} else {
 							$control = false;
@@ -5508,10 +5509,10 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 					case 'video':
 				?>
 				<div class="element-data">
-					<textarea class="data-text-content" display="none"><?php echo esc_textarea( $block_content ); ?></textarea>	
+					<textarea class="data-text-content" display="none"><?php echo esc_textarea( $block_content ); ?></textarea>
 				</div>
 				<div class="element-preview-wrap<?php echo $element_preview_position_classes; ?>"<?php echo $style; ?>>
-					<div class="element-preview"><?php echo $block_content; ?></div>	
+					<div class="element-preview"><?php echo $block_content; ?></div>
 				</div>
 				<?php
 					break;
@@ -5556,12 +5557,12 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				case 'default':
 					break;
 			}
-		?>	
+		?>
 	<div class="element-visual-info<?php
 		if('' != $temp_block_setts['youtube'] || '' != $temp_block_setts['video'] || '' != $temp_block_setts['vimeo'] ) :
 			echo ' ' . 'rex-active-video-notice';
 		endif;
-	?>"<?php 
+	?>"<?php
 		if( '' != $temp_block_setts['overlay_block_color'] ) :
 			echo ' style="background-color:' . esc_attr( $temp_block_setts['overlay_block_color'] ) . '"';
 		endif;
@@ -5622,15 +5623,15 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 						<div class="builder-edit-row-wrap clearfix row valign-wrapper">
 							<div class="col s4">
 								<div class="rex-edit-dimension-wrap">
-									<input id="section-full-0" type="radio" 
-										name="section-dimension-0" 
+									<input id="section-full-0" type="radio"
+										name="section-dimension-0"
 										class="builder-edit-row-dimension with-gap" value="full" checked title="Full" />
 									<label for="section-full-0" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full', 'rexpansive-builder' ); ?>">
 										<!--<i class="material-icons">&#xE30B;</i>-->
 										<i class="material-icons rex-icon">v<span class="rex-ripple"></i>
 									</label>
-									<input id="section-boxed-0" type="radio" 
-										name="section-dimension-0" 
+									<input id="section-boxed-0" type="radio"
+										name="section-dimension-0"
 										class="builder-edit-row-dimension with-gap" value="boxed" title="Boxed" />
 									<label for="section-boxed-0" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed', 'rexpansive-builder' ); ?>">
 										<!--<i class="material-icons">&#xE30C;</i>-->
@@ -5638,21 +5639,21 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 									</label>
 								</div>
 								<div class="rex-edit-layout-wrap" style="display:none;">
-									<input id="section-fixed-0" type="radio" 
-										name="section-layout-0" 
+									<input id="section-fixed-0" type="radio"
+										name="section-layout-0"
 										class="builder-edit-row-layout with-gap" value="fixed" checked title="Grid Layout" />
 									<label for="section-fixed-0" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexpansive-builder' ); ?>">
 										<i class="material-icons">&#xE8F1;<span class="rex-ripple"></span></i>
 									</label>
-									<input id="section-masonry-0" type="radio" 
-										name="section-layout-0" 
+									<input id="section-masonry-0" type="radio"
+										name="section-layout-0"
 										class="builder-edit-row-layout with-gap" value="masonry" title="Masonry Layout" />
 									<label for="section-masonry-0"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Masonry Layout', 'rexpansive-builder' ); ?>">
 										<i class="material-icons">&#xE871;<span class="rex-ripple"></span></i>
 									</label>
 								</div>
 							</div>
-							
+
 							<div class="builder-buttons col s4 center-align">
 								<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Image', 'rexpansive-builder' ); ?>">
 									<i class="material-icons rex-icon">p</i>
@@ -5690,7 +5691,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 									</ul>
 								</div>
 							</div>
-							
+
 							<div class="col s4 right-align builder-setting-buttons">
 								<div class="background_section_preview btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Row background', 'rexpansive-builder' ); ?>"></div>
 								<button class="btn-floating builder-section-config tooltipped" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive-builder'); ?>">
@@ -5748,23 +5749,23 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 						</div>
 					</div>
 				</div>
-			
+
 			<?php
 				endif;
 			?>
-				
+
 		<?php
 		endif;
-	
+
 		exit();
 	}
 
 	/**
-	 * is_edit_page 
+	 * is_edit_page
 	 * function to check if the current page is a post edit page
-	 * 
+	 *
 	 * @author Ohad Raz <admin@bainternet.info>
-	 * 
+	 *
 	 * @param  string  $new_edit what page to check for accepts new - new post page ,edit - edit post page, null for either
 	 * @return boolean
 	 */
@@ -5772,8 +5773,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		global $pagenow;
 		//make sure we are on the backend
 		if (!is_admin()) return false;
-	
-	
+
+
 		if($new_edit == "edit") {
 			return in_array( $pagenow, array( 'post.php' ) );
 		} elseif($new_edit == "new") {//check for new post page
@@ -5782,7 +5783,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			return in_array( $pagenow, array( 'post.php', 'post-new.php' ) );
 		}
 	}
-	   
+
 	/**
 	 * Allowing XML import
 	 *
@@ -5813,21 +5814,21 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				$xml_file = Rexbuilder_Import_Utilities::upload_media_file( $forms_url, 'xml' );
 
 				if( file_exists( $xml_file['file'] ) ) {
-		
+
 					$Xml = new Rexbuilder_Import_Xml_Content( $xml_file['file'] );
-			
+
 					wp_defer_term_counting( true );
 					wp_defer_comment_counting( true );
-			
+
 					wp_suspend_cache_invalidation( true );
-			
+
 					$Xml->run_import_all();
-			
+
 					wp_suspend_cache_invalidation( false );
-			
+
 					wp_defer_term_counting( false );
 					wp_defer_comment_counting( false );
-					
+
 					update_option( 'rexbuilder_models_imported', '1' );
 					Rexbuilder_Import_Utilities::remove_media_file( $xml_file['file'] );
 

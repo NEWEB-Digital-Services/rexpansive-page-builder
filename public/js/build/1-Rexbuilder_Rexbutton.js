@@ -4,7 +4,7 @@
  "option_name"
  "option_value"
 
- 
+
 _rex_buttons_ids
 
 [\"9UEc\"]
@@ -882,7 +882,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 		var newID = data.newID;
 		var buttonID = buttonData.buttonTarget.button_id;
 
-		
+
 		var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(
 			'.rex-button-wrapper[data-rex-button-id="' +
 			buttonID +

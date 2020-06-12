@@ -301,7 +301,7 @@
 		} else {
 			addClass(el, className);
 		}
-	}
+	};
 
 	function foundParents(el, className) {
 		if( null === el.parentNode || el.parentNode instanceof HTMLDocument ) { return null; }
@@ -322,6 +322,14 @@
 		}
 		return source;
 	}
+
+	PopUpContent.prototype.openPopup = function() {
+		var hEvent = new Event('mouseover');
+		var cEvent = new Event('click');
+		
+		getPopUpContent.call( this, hEvent );
+		togglePopUp.call( this, cEvent );
+	};
 
 	// PopUpContent.prototype.destroy = function () {
 	// 	function removeInstance(instance) {

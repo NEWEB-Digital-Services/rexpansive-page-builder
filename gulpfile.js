@@ -114,6 +114,7 @@ function watchAdminBuilderStyle(cb) {
 
 // ADMIN JS
 var builderlive_admin = [
+	'admin/js/builderlive/Rexbuilder_Admin_Templates.js',
 	'admin/js/builderlive/Rexlive_MediaUploader.js',
 	'admin/js/builderlive/Rexlive_RexSlider_TextEditor.js',
 	'admin/js/builderlive/Rexlive_Ajax_Calls.js',

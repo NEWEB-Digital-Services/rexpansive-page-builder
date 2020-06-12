@@ -185,7 +185,7 @@ class Rexbuilder_Section {
 			$videoMp4Height = $videoMP4Data["height"];
 
 			$bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
-			$bg_video_markup .= '<video class="rex-video-container"' . ( ! $editor ? ' preload="none"' : ' preload autoplay' ) . ' loop muted playsinline>';
+			$bg_video_markup .= '<video class="rex-video-container"' . ( ! $editor ? ' preload="none"' : ' preload autoplay' ) . ' loop muted playsinline width="' . $videoMp4Width  . '" height="' . $videoMp4Height . '">';
 			if ( !$editor ) {
 				$bg_video_markup .= '<source type="video/mp4" data-res-lazy-loading="false" data-src="' . $video_mp4_url . '" />';
 				$bg_video_markup .= '</video>';

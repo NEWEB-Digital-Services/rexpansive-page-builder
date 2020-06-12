@@ -24,6 +24,23 @@
 		};
 	}
 
+	function throttle(callback, limit) {
+		var wait = false; // Initially, we're not waiting
+		return function () {
+			// We return a throttled function
+			if (!wait) {
+				// If we're not waiting
+				callback.call(); // Execute users function
+				wait = true; // Prevent future invocations
+				setTimeout(function () {
+					// After a period of time
+					wait = false; // And allow future invocations
+				}, limit);
+			}
+		};
+	}
+
+
 	var globalViewport = _viewport();
 
 	function SplitScrollable() {
@@ -80,7 +97,7 @@
 		}
 
 		_fixStickyHeight.call(this);
-		
+
 		// resizeCallbacksArray.push(_handleResize.bind(this));
 
 		// check first scroll
@@ -180,7 +197,7 @@
 	 * @since		1.0.0
 	 */
 	function _fixStickyHeight() {
-		this.opacityElsWrapper.style.height = parseFloat( getComputedStyle( this.opacityEls[this.opacityEls.length-1], null ).top.replace("px", "") ) + 
+		this.opacityElsWrapper.style.height = parseFloat( getComputedStyle( this.opacityEls[this.opacityEls.length-1], null ).top.replace("px", "") ) +
 		( this.opacityEls[this.opacityEls.length-1].offsetHeight ) + 'px';
 	}
 
@@ -224,6 +241,8 @@
 	function _handleScroll() {
 		var guessedIndex = _guessIndex.call(this);
 
+		// console.log( guessedIndex );
+
 		// get last guess
 		if ( guessedIndex ) {
 			if ( this.actualScrollEl !== guessedIndex ) {
@@ -246,7 +265,7 @@
 
 		// De-comment for debugging
 		// this.debugEl.innerText = totscroll + ' + ' + globalViewport.height + ' = ' + ( totscroll + globalViewport.height ) + '\n';
-		
+
 		for( i=0; i < this.totScrollElsToWatch; i++ ) {
 			if ( this.scrollElsToWatch[i] ) {
 				offsetEl = offsetAbsolute( this.scrollElsToWatch[i] );
@@ -481,7 +500,7 @@
 	function intersectionObserverCallback(entries, observer) {
 		var entry;
 		var entryIndex;
-		
+
 		var tot_entries = entries.length;
 		var i = 0;
 		for (; i < tot_entries; i++) {
@@ -542,7 +561,7 @@
 			if (entry.intersectionRatio > 0.8) {
 				// activeElementOnScroll.call(this, entryIndex)
 				entry.target.setAttribute('data-ratio-greater-08', 1);
-				
+
 			} else {
 				entry.target.setAttribute('data-ratio-greater-08', 0);
 			}
@@ -602,17 +621,17 @@
 
 	SplitScrollable.prototype.destroy = function () {
 		removeClass(this.element, this.options.splitScrollActiveElClass);
-		
+
 		// Destroy wrappers
 		_destroyWrappers.call(this);
-		
+
 		function removeInstance(instance) {
 			return instance.element !== this.element;
 		}
-		
+
 		instances = instances.filter(removeInstance.bind(this));
 	}
-	
+
 	/**
 	 * Static function that retrieves the SplitScrollable
 	 * instance of the DOM Element passed.
@@ -634,7 +653,7 @@
 
 	// Invoking global Events watchers
 	// _watchScroll();
-	window.addEventListener('scroll', debounce( scrollHandler, 150, true ));
+	window.addEventListener('scroll', throttle( scrollHandler, 50 ));
 	// _watchResize();
 	window.addEventListener('resize', debounce( resizeHandler, 150 ));
 

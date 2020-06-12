@@ -1122,7 +1122,12 @@ var Rexbuilder_App = (function($) {
 
       $linksToSmooth = $linksToSmooth.not(_filterLinksToSmooth);
 
-      function handleLinkToSmooth() {
+      function handleLinkToSmooth(clickEvent) {
+				// Needed to prevent scrolling when clicking on a RexButton to edit it
+				if (Rexbuilder_Util.editorMode && clickEvent.currentTarget.matches('.rex-button-container')) {
+					return;
+				}
+
         if ( location.pathname.replace(/^\//, "") == this.pathname.replace(/^\//, "") && location.hostname == this.hostname ) {
           var target = $(this.hash);
           target = target.length
