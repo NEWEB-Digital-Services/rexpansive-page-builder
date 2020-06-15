@@ -4,7 +4,7 @@ defined('ABSPATH') or exit;
 
 ?>
 <script type="text/x-tmpl" id="rexlive-tmpl-custom-layout-button">
-<div class="layout-container tool-option">
+<div class="layout-container tool-option layout--custom">
     <div class="btn-builder-layout builder-{%=customLayout.id%}-layout" data-min-width="{%=customLayout.minWidth%}" data-max-width="{%=customLayout.maxWidth%}" data-name="{%=customLayout.id%}" data-layout-type="custom">
         <i class="l-svg-icons"><svg><use xlink:href="#A009-Range"></use></svg></i>
         <div class="layout-custom-number">
@@ -15,7 +15,7 @@ defined('ABSPATH') or exit;
 </script>
 
 <script type="text/x-tmpl" id="rexlive-tmpl-custom-layout-button-list">
-<div class="layout-container tool-option tool-button_list--item tippy" data-tippy-content="Custom">
+<div class="layout-container tool-option tool-button_list--item layout--custom tippy" data-tippy-content="{%=customLayout.label%}" data-tippy-placement="left">
     <div class="btn-builder-layout builder-{%=customLayout.id%}-layout" data-min-width="{%=customLayout.minWidth%}" data-max-width="{%=customLayout.maxWidth%}" data-name="{%=customLayout.id%}" data-layout-type="custom">
         <span class="layout__icon"><i class="l-svg-icons"><svg><use xlink:href="#A009-Range"></use></svg></i></span>
         <div class="layout-custom-number">

@@ -49,8 +49,7 @@ var Rexlive_Modals_Utils = (function($) {
    */
   var _closeModal = function($target, target_only, additional_class) {
     target_only = typeof target_only !== "undefined" ? target_only : false;
-    additional_class =
-      typeof additional_class !== "undefined" ? additional_class : [];
+    additional_class = typeof additional_class !== "undefined" ? additional_class : [];
 
     if (!target_only && !$target.hasClass("rex-in--up")) {
       $("body").removeClass("rex-modal-open");

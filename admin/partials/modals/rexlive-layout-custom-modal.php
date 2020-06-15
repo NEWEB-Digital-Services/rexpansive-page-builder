@@ -128,6 +128,15 @@ $layout_list_type = "dropdown";
           <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
         </div>
       </div>
+      <div class="bl_modal-row"><div class="bl_modal__option-wrap"></div></div>
+    </div>
+    <div class="rex-modal__outside-footer">
+      <div class="tool-button tool-button--inline tool-button--confirm tool-button--modal rex-modal-option tippy" data-tippy-content="<?php _e('Save','rexpansive-builder'); ?>" data-rex-option="save">
+          <span class="rex-button btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z016-Checked'); ?></span>
+      </div>
+      <div class="tool-button tool-button--inline tool-button--modal rex-modal-option tippy" data-rex-option="reset" data-tippy-content="<?php _e('Reset','rexpansive-builder'); ?>">
+          <span class="rex-button btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z014-Refresh'); ?></span>
+      </div>
     </div>
   </div>
 </div>

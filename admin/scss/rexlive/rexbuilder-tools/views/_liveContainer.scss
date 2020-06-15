@@ -16,7 +16,7 @@ $live-bar-height: 50px;
 	&.layout-window--active {
 		.builder-config-layouts {
 			// border-color: $palette-color-1;
-			@include fill-icon($palette-color-1);
+			// @include fill-icon($palette-color-1);
 		}
 	}
 }
