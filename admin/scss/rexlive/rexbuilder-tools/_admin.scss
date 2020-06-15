@@ -1,5 +1,5 @@
 /*!
- * Rexpansive builder 
+ * Rexpansive builder
  */
 // #rexbuilder {
 //   &.postbox {
@@ -270,18 +270,18 @@ padding-left: 4px;
 }
 
 .rex-modal {
-  input[type=date], 
-  input[type=datetime-local], 
-  input[type=datetime], 
-  input[type=email], 
-  input[type=month], 
-  input[type=number], 
-  input[type=password], 
-  input[type=search], 
-  input[type=tel], 
-  input[type=text], 
-  input[type=time], 
-  input[type=url], 
+  input[type=date],
+  input[type=datetime-local],
+  input[type=datetime],
+  input[type=email],
+  input[type=month],
+  input[type=number],
+  input[type=password],
+  input[type=search],
+  input[type=tel],
+  input[type=text],
+  input[type=time],
+  input[type=url],
   input[type=week] {
     min-height: auto;
   }
@@ -584,7 +584,7 @@ margin-left: 10px;
 }*/
 /*#section-set-class-wrap {
 width: 100%;
-margin-left: 5px; 
+margin-left: 5px;
 }*/
 input#section-has-overlay + label {
   padding-left: 19px;
@@ -666,7 +666,7 @@ label:active .rex-ripple:after,
   box-shadow: 0 0 0 15px rgba(3, 155, 255, 0.08);
 }
 
-/*.sp-picker-container .sp-cancel, 
+/*.sp-picker-container .sp-cancel,
 .sp-picker-container .sp-choose {
 font-size: 0;
 }*/
@@ -1136,7 +1136,7 @@ border-bottom: 1px dotted #aaa;
   right: -12px;
   top: -12px;
   font-size: 0;
-  line-height: 1;
+	line-height: 1;
 }
 
 .builder-edit-row-header .builder-delete-row i {
@@ -3112,7 +3112,7 @@ input[id^="section-fixed"] + label i {
     background-size: 6px;
     background-repeat: repeat;
     background-image: url("../img/transparent.jpg");
-  
+
     .sp-preview {
       background-image: none;
       width: 100%;
@@ -3120,14 +3120,14 @@ input[id^="section-fixed"] + label i {
       margin: 0;
       border: none;
     }
-    
+
     .sp-preview-inner {
       top: -1px;
       right: -1px;
       bottom: -1px;
       left: -1px;
     }
-    
+
     .sp-dd {
       display: none;
     }
@@ -3955,7 +3955,7 @@ select.rx__form-input {
   align-items: center;
   border: 1px solid transparent;
   box-shadow: none;
-  display: inline-flex;  
+  display: inline-flex;
   justify-content: flex-start;
   line-height: 1.5;
   position: relative;

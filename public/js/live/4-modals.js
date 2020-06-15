@@ -1524,10 +1524,8 @@
 
 			Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOpt);
 
-      if (data.updateBlockHeight) {
-				if (old_imageUrl !== data.urlImage || ( old_typeBGimage !== data.typeBGimage && 'natural' == data.typeBGimage ) ) {
-					galleryEditorInstance.resizeBlockWithNewImage(elem);
-				}
+			if ('masonry' === galleryEditorInstance.settings.galleryLayout) {
+				galleryEditorInstance.updateElementHeight(elem);
 			}
 
       var actionData = {

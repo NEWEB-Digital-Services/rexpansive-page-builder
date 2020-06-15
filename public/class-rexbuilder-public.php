@@ -948,7 +948,7 @@ class Rexbuilder_Public {
 
 		$response = array();
 
-		$response['currentIDsUsed'] = get_option( "_rex_blocks_ids_used", '[]' );
+		$response['currentIDsUsed'] = get_option( "_rex_blocks_ids_used", "[]" );
 
 		wp_send_json_success($response);
 	}
@@ -965,7 +965,7 @@ class Rexbuilder_Public {
 		}
 
 		if (!isset($_POST['ids_used'])) {
-			wp_send_json_error(new WP_Error('R003', 'No IDs passed!'));
+			wp_send_json_error(new WP_Error('R003', 'No Blocks IDs passed!'));
 		}
 
 		update_option("_rex_blocks_ids_used", stripslashes($_POST['ids_used']));

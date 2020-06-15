@@ -4334,7 +4334,7 @@ var Rexbuilder_Util = (function($) {
     _storeNamesUsed();
 
 		$usedBlocksIDsContainer = $("#blocks-ids-used");
-		_storeBlocksIDsUsed()
+		_storeBlocksIDsUsed();
 
 		this.$rexContainer = $(".rex-container");
     this.rexContainer = this.$rexContainer[0];
