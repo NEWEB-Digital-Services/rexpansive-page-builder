@@ -38,7 +38,7 @@
 		&.tool-area--side {
 			background-color: $palette-color-4;
 			animation-delay: 300ms;
-			
+
 			.tool-button--flat {
 				&:hover {
 					@include fill-icon(rgba(255, 255, 255, 0.5));
@@ -394,12 +394,15 @@
 		.switch-toggle {
 			padding-right: 0;
 		}
+
 		.switch-dimension {
 			display: none;
 		}
+
 		.bl_switch {
 			padding-right: 4px;
 		}
+
 		.tools-area {
 			&.tool-area--center {
 				padding-left: 2px !important;
@@ -407,11 +410,20 @@
 			}
 		}
 	}
+
 	.row-toolBox__fast-configuration {
 		.tool-button--double-icon--wrap {
 			&.tool-button--distance-fix {
 				margin-right: 5px;
 			}
+		}
+	}
+}
+
+@media screen and (max-width: 1024px) {
+	.section-toolBox {
+		.builder-delete-row {
+			display: none;
 		}
 	}
 }

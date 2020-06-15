@@ -1,6 +1,8 @@
+// NOT INCLUDED IN DEV TASK
 /* ---------- ROW TOOLS --------- */
 .builder-edit-row-header {
 	position: relative;
+
 	.builder-delete-row {
 		position: absolute;
 		width: 24px;
@@ -9,6 +11,7 @@
 		top: -12px;
 		font-size: 0;
 		line-height: 1;
+
 		i {
 			font-size: 1rem;
 			line-height: 1;
@@ -42,21 +45,21 @@
 		}
 	}
 	.builder-edit-row-dimension {
-		&[type=radio] {
+		&[type='radio'] {
 			&:checked {
-				&+label {
+				& + label {
 					padding-left: 19px;
 				}
 			}
 			&:not(:checked) {
-				&+label {
+				& + label {
 					padding-left: 19px;
 				}
 			}
 		}
 	}
 	.builder-edit-row-wrap {
-		[type="radio"]+label {
+		[type='radio'] + label {
 			&:after,
 			&:before {
 				width: 15px;
@@ -72,7 +75,7 @@
 		i {
 			line-height: 40px;
 		}
-		&[value="empty"] {
+		&[value='empty'] {
 			i {
 				font-size: 24px;
 			}
@@ -187,7 +190,8 @@
 			margin-top: 5px;
 			height: $new-row-btn-dimension;
 		}
-		.btn, .btn-floating {
+		.btn,
+		.btn-floating {
 			width: $new-row-btn-dimension;
 			height: $new-row-btn-dimension;
 			padding: 0;

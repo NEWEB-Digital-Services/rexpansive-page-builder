@@ -1,5 +1,5 @@
 /*!
- * Rexpansive builder 
+ * Rexpansive builder
  */
 // #rexbuilder {
 //   &.postbox {
@@ -566,7 +566,7 @@ input[type=checkbox]:checked + label .rex-icon {
 }*/
 /*#section-set-class-wrap {
 	width: 100%;
-	margin-left: 5px; 
+	margin-left: 5px;
 }*/
 input#section-has-overlay + label {
   padding-left: 19px;
@@ -648,7 +648,7 @@ label:active .rex-ripple:after,
   box-shadow: 0 0 0 15px rgba(3, 155, 255, 0.08);
 }
 
-/*.sp-picker-container .sp-cancel, 
+/*.sp-picker-container .sp-cancel,
 .sp-picker-container .sp-choose {
 	font-size: 0;
 }*/
@@ -1330,7 +1330,7 @@ label:active .rex-ripple:after,
       &.btn-bordered--active {
         border-color: #039be5;
         i {
-          color: #039be5;            
+          color: #039be5;
         }
       }
       &.btn-bordered--inactive {
@@ -1365,7 +1365,7 @@ label:active .rex-ripple:after,
       &.btn-bordered.btn-bordered--inactive {
         border-color: #039be5;
         i {
-          color: #039be5;            
+          color: #039be5;
         }
       }
     }
@@ -1433,7 +1433,7 @@ label:active .rex-ripple:after,
   // overflow-y: auto;
   border-radius: 2px;
   // will-change: top, opacity;
-  
+
   max-width: 405px;
   max-height: 580px;
   max-height: 630px;
@@ -3337,7 +3337,7 @@ input[id^="section-fixed"] + label i {
 
 #modal-text-fill .modal-content > div {
   padding: 4px 0;
-} 
+}
 
 #textfill-set-align-wrap {
   padding-bottom: 15px;
@@ -3408,7 +3408,7 @@ input[id^="section-fixed"] + label i {
   float: left;
 }
 .rex-space-12 {
-  width: 12px;  
+  width: 12px;
 }
 
 .rex-lightbox {
@@ -3455,7 +3455,7 @@ input[id^="section-fixed"] + label i {
   transition: opacity 333ms cubic-bezier(0.4, 0, 0.22, 1);
 }
 
-.rex-lightbox--animated-in .rex-lightbox__bg, 
+.rex-lightbox--animated-in .rex-lightbox__bg,
 .rex-lightbox--animated-in .rex-lightbox__zoom-wrap {
   -webkit-transition: none;
   -o-transition: none;
@@ -3481,7 +3481,7 @@ input[id^="section-fixed"] + label i {
   padding: 50px;
 }
 
-.rex-lightbox__container, 
+.rex-lightbox__container,
 .rex-lightbox__zoom-wrap {
   -ms-touch-action: none;
   touch-action: none;
@@ -3492,7 +3492,7 @@ input[id^="section-fixed"] + label i {
   bottom: 0;
 }
 
-.rex-lightbox__container, 
+.rex-lightbox__container,
 .rex-lightbox__img {
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -3502,7 +3502,7 @@ input[id^="section-fixed"] + label i {
   -webkit-touch-callout: none;
 }
 
-.rex-lightbox__container, 
+.rex-lightbox__container,
 .rex-lightbox__zoom-wrap {
   -webkit-backface-visibility: hidden;
   will-change: transform;
