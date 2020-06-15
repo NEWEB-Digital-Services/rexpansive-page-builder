@@ -1181,10 +1181,12 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     activeLayoutPage = layout;
     this.$responsiveToolbar
       .find(".btn-builder-layout.active-layout")
-      .removeClass("active-layout");
+      .removeClass("active-layout")
+      .parent().removeClass('layout-container--active');
     this.$responsiveToolbar
       .find('.btn-builder-layout[data-name="' + activeLayoutPage + '"]')
-      .addClass("active-layout");
+      .addClass("active-layout")
+      .parent().addClass('layout-container--active');
     this.$rexpansiveContainer.attr('data-active-layout', layout);
   };
 
@@ -1940,7 +1942,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     activeLayoutPageLabel = "default";
     this.$responsiveToolbar
       .find(".builder-default-layout")
-      .addClass("active-layout");
+      .addClass("active-layout")
+      .parent().addClass('layout-container--active');
     this.activeWidth = 0;
 
     input_selector =

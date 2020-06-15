@@ -3109,8 +3109,45 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		}
 
 		$response['error'] = false;
+		$saved_layouts = get_option( '_rex_responsive_layouts' );
+		$updated_layouts = $_POST['custom_layouts'];
 
-		update_option("_rex_responsive_layouts", $_POST['custom_layouts']);
+		// update layouts names
+		update_option( "_rex_responsive_layouts", $updated_layouts );
+
+		// remove useless customizations from posts
+		function diff_layout_by_id( $a1, $a2 ) {
+			return ( $a1['id'] === $a2['id'] ? 0 : -1 );
+		}
+
+		$deletable_layouts = array_udiff( $saved_layouts, $updated_layouts, 'diff_layout_by_id' );
+
+		global $wpdb;
+		foreach ( $deletable_layouts as $key => $layout ) {
+			if ( 'standard' === $layout['type'] ) continue;
+
+			// update reponsive layout names for single posts
+			// search posts with this layout
+			$this_customization_posts = $wpdb->get_results(
+				"
+				SELECT DISTINCT post_id 
+				FROM {$wpdb->prefix}postmeta
+				WHERE meta_key LIKE '_rex_customization_{$layout['id']}'
+				",
+				ARRAY_A
+			);
+
+			foreach( $this_customization_posts as $post ) {
+				// update customizations names
+				$names = get_post_meta( (int)$post['post_id'], '_rex_responsive_layouts_names', true );
+				$updated_names = array_diff( $names, array( $layout['id'] ) );
+				$updated_names = array_values( $updated_names );
+				update_post_meta( (int)$post['post_id'], '_rex_responsive_layouts_names', $updated_names );
+
+				// remove customization
+				delete_post_meta( (int)$post['post_id'], "_rex_customization_{$layout['id']}" );
+			}
+		}
 
 		wp_send_json_success($response);
 	}

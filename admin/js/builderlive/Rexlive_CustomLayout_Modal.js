@@ -24,11 +24,7 @@ var CustomLayouts_Modal = (function($) {
       custom_layouts_modal_props.$layoutsList
         .find(".layout__item")
         .each(function() {
-          if (
-            $(this)
-              .find("input[name=rexlive-layout-id]")
-              .val() == id
-          ) {
+          if ( $(this).find("input[name=rexlive-layout-id]").val() == id ) {
             flag = false;
           }
         });
@@ -36,7 +32,9 @@ var CustomLayouts_Modal = (function($) {
     return id;
   };
 
-  var _updateLayoutsDB = function(updatedLayouts) {
+  var _updateLayoutsDB = function( updatedLayouts ) {
+    if ( !_isDataChanged( updatedLayouts ) ) return;
+
     $.ajax({
       type: "POST",
       dataType: "json",
@@ -46,9 +44,21 @@ var CustomLayouts_Modal = (function($) {
         nonce_param: live_editor_obj.rexnonce,
         custom_layouts: updatedLayouts
       },
+      beforeSend: function() {
+        NProgress.start();
+      },
       success: function(response) {
         if (response.success) {
           // custom layouts updated
+          Rexbuilder_Util_Admin_Editor.$frameBuilder.one('load', function() {
+            NProgress.done();
+            custom_layouts_modal_props.$buttonsWrapper.addClass('test');
+            custom_layouts_modal_props.$buttonsWrapper.one('mouseout', function() {
+              custom_layouts_modal_props.$buttonsWrapper.removeClass('test');
+            });
+          });
+
+          Rexbuilder_Util_Admin_Editor.frameBuilder.src = Rexbuilder_Util_Admin_Editor.frameBuilder.src;
         }
       },
       error: function(response) {
@@ -182,6 +192,10 @@ var CustomLayouts_Modal = (function($) {
       .find( '.layout input[name="rexlive-layout-id"][value="' + activeLayout + '"]' )
       .parents(".layout")
       .addClass("active-on-page");
+  };
+
+  var _isDataChanged = function( data ) {
+    return JSON.stringify( resetData ) !== JSON.stringify( data );
   };
 
   var _openModal = function() {
@@ -341,7 +355,7 @@ var CustomLayouts_Modal = (function($) {
       event.preventDefault();
       switch( this.getAttribute('data-rex-option' ) ) {
         case 'save':
-          _updateLayoutsDB(_getLayoutsData());
+          _updateLayoutsDB( _getLayoutsData() );
           _closeModal();
           break;
         case 'reset':
