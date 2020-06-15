@@ -17,9 +17,6 @@ $sectionsIDsJSON = get_option( '_rex_section_ids_used', $defaultIDs );
 $sectionsIDsUsed = json_decode( $sectionsIDsJSON, true );
 
 // Get blocks saved
-// $defaultBlocksIDs = null;
-// $blocksIDsJSON = get_option( '_rex_blocks_ids_used', $defaultBlocksIDs );
-// $blocksIDsUsed = json_decode( $blocksIDsJSON, true );
 $blocksIDsJSON = get_option( '_rex_blocks_ids_used', '[]' );
 
 // get layouts available

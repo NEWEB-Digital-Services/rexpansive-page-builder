@@ -360,12 +360,12 @@ var Rex_Save_Listeners = (function($) {
 								return;
 							}
 
-							// Synchronizing the IDs with the DB Array
+							// Synchronizing the IDs with the DB Array stored in Rexbuilder_Util
 							Rexbuilder_Util.updateBlocksIDsUsed(JSON.parse(response.data.currentIDsUsed));
 
 							// If a block is going to be removed, remove its ID from the used IDs Array.
 							// Looping through all page sections because there could be some "new" sections
-							// created by and undo event, so all sections need to be tracked and all the
+							// created by an undo event, so all sections need to be scanned and all the
 							// blocks' IDs need to be updated according to their status (removing or not)
 							Array.prototype.slice
 								.call(Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section'))
@@ -380,7 +380,7 @@ var Rex_Save_Listeners = (function($) {
 											} else {
 												var isRemovingBlock = Rexbuilder_Util.hasClass(block, 'removing_block');
 
-												// Shorthand for less code nesting
+												// Shorthand for less code nesting (not writing an if)
 												Rexbuilder_Util[isRemovingBlock ? 'removeBlockID' : 'addBlockID'](
 													block.getAttribute('data-rexbuilder-block-id')
 												);
@@ -390,7 +390,7 @@ var Rex_Save_Listeners = (function($) {
 
 							Rexbuilder_Util.saveBlocksIDsUsed();
 
-							// Saving blocks' IDs in the DB
+							// Saving updated blocks' IDs in the DB
 							$.ajax({
 								type: 'POST',
 								dataType: 'json',
@@ -398,6 +398,7 @@ var Rex_Save_Listeners = (function($) {
 								data: {
 									action: 'rexlive_save_blocks_rexids',
 									nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+									// Retrieving the DB Array stored in Rexbuilder_Util
 									ids_used: JSON.stringify(Rexbuilder_Util.getBlocksIDsUsed())
 								},
 								success: function (response) {
@@ -430,13 +431,6 @@ var Rex_Save_Listeners = (function($) {
 						}
 					})
 				);
-
-
-
-
-        // ajaxCalls.push(
-
-				// );
       } else {
         //ajax calls
         ajaxCalls.push(
