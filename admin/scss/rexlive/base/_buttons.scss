@@ -21,16 +21,18 @@
 	z-index: 30;
 	padding: 5px;
 	cursor: pointer;
-	// position: relative;
 	line-height: 1;
-	// transition: opacity 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
+
+	@include bl-btn;
+	@include bl-btn--hover-shadow;
 
 	&.tool-button--inline {
 		display: inline-block;
 	}
 
-	@include bl-btn;
-	@include bl-btn--hover-shadow;
+	&.tool-button--inline-flex {
+		display: inline-flex;
+	}
 
 	&.active {
 		@include bl-btn--hover;
@@ -193,11 +195,6 @@
 		}
 	}
 
-	&.tool-button--confirm {
-		background-color: $palette-color-1;
-		@include fill-icon(#fff);
-	}
-
 	&.tool-button--image-preview {
 		background-position: center;
 		background-repeat: no-repeat;
@@ -239,7 +236,7 @@
 		padding: 0;
 	}
 
-	&--centered {
+	&.tool-button--centered {
 		@include flex-center-both;
 	}
 }
