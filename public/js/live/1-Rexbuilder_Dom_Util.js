@@ -171,7 +171,7 @@ var Rexbuilder_Dom_Util = (function($) {
     if ( Rexbuilder_Util.editorMode )
     {
       Rexbuilder_Section_Editor.updateSectionDimensionTool( $section, rowSettings );
-      Rexbuilder_Section_Editor.updateSectionLayoutTool( $section, rowSettings ); 
+      Rexbuilder_Section_Editor.updateSectionLayoutTool( $section, rowSettings );
     }
   };
 
@@ -260,7 +260,7 @@ var Rexbuilder_Dom_Util = (function($) {
       Rexbuilder_Block_Editor.updateBlockImagePositionTool($itemContent, data);
 		}
 	};
-	
+
   var _addImageNaturalBgBlock = function($itemContent, data) {
     var $imageDiv = $itemContent.find(".rex-image-wrapper");
     var $overlayDiv = $itemContent.find(".responsive-block-overlay");
@@ -481,11 +481,11 @@ var Rexbuilder_Dom_Util = (function($) {
 
     var tempSrc = $videoWrap.find("source");
 		var tempSrcUrl = ( ! Rexbuilder_Util.editorMode ? tempSrc.attr('data-src') : tempSrc.attr('src') );
-		
-		
+
+
     if ( ($videoWrap.length != 0 && tempSrcUrl != mp4Data.linkMp4) || $videoWrap.length == 0 ) {
 			_removeMp4Video($target, true);
-			
+
       $target.addClass("mp4-player");
 			tmpl.arg = "video";
 
@@ -496,7 +496,7 @@ var Rexbuilder_Dom_Util = (function($) {
         if ( Rexbuilder_Util.editorMode )
         {
           insert_after = ".section-toolBox";
-        } 
+        }
         else
         {
           insert_after = ".section-data";
@@ -547,10 +547,10 @@ var Rexbuilder_Dom_Util = (function($) {
     v_w = el.getAttribute('data-rex-video-width');
     v_h = el.getAttribute('data-rex-video-height');
 		var maxWidth = '100%';
-		
+
     c_w = el.offsetWidth;
     c_h = el.offsetHeight;
-	
+
     if ( ( v_w / v_h ) > ( c_w / c_h ) ) {
       maxWidth =  ( ( ( c_h * v_w ) / v_h ) * 100 ) / c_w;
       maxWidth = maxWidth + '%';
@@ -713,7 +713,7 @@ var Rexbuilder_Dom_Util = (function($) {
     } else {
       return;
     }
-    
+
     var type = videoOptions.typeVideo;
     if (type == "") {
       _removeMp4Video($target, true);
@@ -1038,7 +1038,7 @@ var Rexbuilder_Dom_Util = (function($) {
    */
   var _updateFlexPostition = function($elem, flexPosition) {
     if ( $elem.hasClass("block-has-slider") ) return;
-      
+
     var flexClasses =
       "rex-flex-top rex-flex-middle rex-flex-bottom rex-flex-left rex-flex-center rex-flex-right";
     $elem.removeClass(flexClasses);
@@ -1122,7 +1122,7 @@ var Rexbuilder_Dom_Util = (function($) {
       $target
         .css("background-color", color);
     }
-    
+
     if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
       Rexbuilder_Section_Editor.updateRowBackgroundColorToolLive( $target, color );
     }
@@ -1176,7 +1176,7 @@ var Rexbuilder_Dom_Util = (function($) {
       $target = Rexbuilder_Util.$rexContainer
         .find( section_selector )
         .find( block_selector );
-      
+
       target = $target[0];
       if( -1 !== getComputedStyle(target)['background'].indexOf('linear-gradient') ) {
         target.style.background = '';
@@ -1302,7 +1302,7 @@ var Rexbuilder_Dom_Util = (function($) {
     } else {
       $overlayElem.removeClass("rex-active-overlay");
     }
-    
+
     if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
       Rexbuilder_Section_Editor.updateRowOverlayColorTool( $section, overlay );
     }
@@ -1362,7 +1362,7 @@ var Rexbuilder_Dom_Util = (function($) {
             data.rexID +
             '"] .responsive-block-overlay'
 				);
-				
+
 			var $overlayTargets = Rexbuilder_Util.$rexContainer.find(
 				'[data-rexbuilder-block-id="' + data.rexID + '"] .slider-overlay'
 			);
@@ -1620,7 +1620,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var models = [];
     var i;
     var flagNumbers;
-    
+
     if ( ! Rexbuilder_Util.rexContainer ) {
       return;
     }
@@ -1976,7 +1976,7 @@ var Rexbuilder_Dom_Util = (function($) {
    * @return {void}
    * @since  2.0.5
    */
-  function _updateBulkBlock( targetInfo, changedData, defaultData ) {
+  function updateBulkBlock( targetInfo, changedData, defaultData ) {
     var $elem;
     if ( targetInfo.modelNumber != "" ) {
       $elem = Rexbuilder_Util.$rexContainer
@@ -1992,7 +1992,14 @@ var Rexbuilder_Dom_Util = (function($) {
       $elem = Rexbuilder_Util.$rexContainer
         .find('section[data-rexlive-section-id="' + targetInfo.sectionID + '"]')
         .find('div [data-rexbuilder-block-id="' + targetInfo.rexID + '"]');
-    }
+		}
+
+		var elem = $elem.get(0);
+
+		var $section = $elem.parents('.rexpansive_section');
+		var $gallery = $section.find('.grid-stack-row');
+		var galleryData = $gallery.data();
+		var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
 
     var defaultProps;
     var i, tot = defaultData.length;
@@ -2007,7 +2014,8 @@ var Rexbuilder_Dom_Util = (function($) {
     var colorChanged = false;
     var imageChanged = false;
     var videoMp4Changed = false;
-    var overlayChanged = false;
+		var overlayChanged = false;
+		var dimPosChanged = false;
 
     for( var prop in changedData ) {
       if ( ! changedData[prop] ) continue;
@@ -2016,7 +2024,7 @@ var Rexbuilder_Dom_Util = (function($) {
         case 'color_bg_block_active':
           if ( colorChanged ) break;
 
-          _updateBlockBackgroundColor({ 
+          _updateBlockBackgroundColor({
             $elem: $elem,
             color: defaultProps.color_bg_block,
             active: defaultProps.color_bg_block_active
@@ -2046,7 +2054,8 @@ var Rexbuilder_Dom_Util = (function($) {
           imageChanged = true;
 
           break;
-        case 'video_bg_id':
+				case 'video_has_audio':
+				case 'video_bg_id':
         case 'video_bg_width':
         case 'video_bg_height':
         case 'video_mp4_url':
@@ -2121,12 +2130,71 @@ var Rexbuilder_Dom_Util = (function($) {
         case 'block_flex_img_position':
           var flexCoords = defaultProps.block_flex_img_position.split(' ');
           _updateImageFlexPostition( $elem, { x: flexCoords[0], y: flexCoords[1] } );
-          break;
+					break;
+				case 'block_animation':
+				case 'block_has_scrollbar':
+				case 'block_ratio':
+				case 'element_edited':
+				case 'element_real_fluid':
+				case 'rexbuilder_block_id':
+				case 'slider_dimension_ratio':
+				case 'type':
+					// What are these?
+					break;
+				case 'hide':
+					if (defaultProps.hide || Rexbuilder_Util.hasClass(elem, 'removing_block')) {
+						_updateRemovingBlock($elem, defaultProps.hide, galleryEditorInstance);
+					}
+					break;
+				case 'col':
+				case 'row':
+				case 'size_x':
+				case 'size_y':
+				case 'gs_x':
+				case 'gs_y':
+				case 'gs_start_h':
+				case 'gs_width':
+				case 'gs_height':
+					if (dimPosChanged) break;
+
+
+					var posY = defaultProps.gs_y;
+
+					if ('masonry' === galleryEditorInstance.settings.galleryLayout) {
+						// Even if there are Strings, the multiplication has place correctly because of type coercion
+						posY = defaultProps.gs_y * galleryEditorInstance.settings.cellHeightMasonry;
+					}
+
+					var height = defaultProps.gs_height;
+
+					if ('masonry' === galleryEditorInstance.settings.galleryLayout) {
+						// Even if there are Strings, the multiplication has place correctly because of type coercion
+						height = defaultProps.gs_height * galleryEditorInstance.settings.cellHeightMasonry;
+					}
+
+					var positionData = {
+						x: defaultProps.gs_x,
+						y: posY,
+						w: defaultProps.gs_width,
+						h: height,
+						startH: defaultProps.gs_start_h,
+						realFluid: defaultProps.element_real_fluid,
+						gridstackInstance: galleryEditorInstance.properties.gridstackInstance
+					};
+
+					Rexbuilder_Util.updateElementDimensions(elem, elem.querySelector('.rexbuilder-block-data'), positionData);
+
+					galleryEditorInstance.checkBlockDimension(elem);
+					galleryEditorInstance.updateSizeViewerText(elem);
+
+					dimPosChanged = true;
+					break;
+
         default: break;
       }
     }
   }
-  
+
   /**
    * @param {String} HTML representing a single element
    * @return {Element}
@@ -2391,6 +2459,6 @@ var Rexbuilder_Dom_Util = (function($) {
     updateGridLayoutDomProperties: _updateGridLayoutDomProperties,
     htmlToElement: htmlToElement,
     updateBulkSection: _updateBulkSection,
-    updateBulkBlock: _updateBulkBlock
+    updateBulkBlock: updateBulkBlock
   };
 })(jQuery);

@@ -2379,31 +2379,59 @@
     });
 
     // apply the reset of the content properties to default
-    $document.on('rexlive:apply_reSynchContent', function(event) {
-      // default layout, do nothing
-      if ( Rexbuilder_Util.activeLayout == "default" ) return;
+    $document.on('rexlive:apply_reSynchContent', function (event) {
+			// default layout, do nothing
+			if (Rexbuilder_Util.activeLayout == 'default') return;
 
-      var defaultContent = document.getElementById('rexbuilder-layout-data').querySelector('.customization-wrap[data-customization-name="default"]').querySelector('.section-targets[data-section-rex-id="' + event.settings.data.targetInfo.sectionID + '"]').textContent;
-      var defaultProps = ( '' !== defaultContent ? JSON.parse( defaultContent ) : {} );
+			var targetInfo = event.settings.data.targetInfo;
 
-      if ( 'self' === event.settings.data.targetInfo.rexID ) {
-        // live synch of options
-        var traceSectionData = Rexbuilder_Util.editedDataInfo.getSectionData( event.settings.data.targetInfo.sectionID );
-        Rexbuilder_Dom_Util.updateBulkSection( event.settings.data.targetInfo, traceSectionData, defaultProps );
+			var defaultContent = document
+				.getElementById('rexbuilder-layout-data')
+				.querySelector('.customization-wrap[data-customization-name="default"]')
+				.querySelector('.section-targets[data-section-rex-id="' + targetInfo.sectionID + '"]').textContent;
+			var defaultProps = '' !== defaultContent ? JSON.parse(defaultContent) : {};
 
-        // reset: no property customized on this layout
-        Rexbuilder_Util.editedDataInfo.setBulkSectionData( event.settings.data.targetInfo.sectionID, false );
-      } else {
-        // live synch of options
-        var traceBlockData = Rexbuilder_Util.editedDataInfo.getBlockData( event.settings.data.targetInfo.sectionID, event.settings.data.targetInfo.rexID );
-        Rexbuilder_Dom_Util.updateBulkBlock( event.settings.data.targetInfo, traceBlockData, defaultProps );
+			if ('self' === targetInfo.rexID) {
+				// live synch of options
+				var traceSectionData = Rexbuilder_Util.editedDataInfo.getSectionData(targetInfo.sectionID);
+				Rexbuilder_Dom_Util.updateBulkSection(targetInfo, traceSectionData, defaultProps);
 
-        // reset: no property customized on this layout
-        Rexbuilder_Util.editedDataInfo.setBulkBlockData( event.settings.data.targetInfo.sectionID, event.settings.data.targetInfo.rexID, false );
-      }
+				// reset: no property customized on this layout
+				Rexbuilder_Util.editedDataInfo.setBulkSectionData(targetInfo.sectionID, false);
 
-      Rexbuilder_Util_Editor.builderEdited( '' !== event.settings.data.targetInfo.modelNumber );
-    });
+				// Applying default props to all sections' blocks
+				defaultProps.forEach(function (prop) {
+					if ('self' === prop.name) return;
+
+					var blockTargetInfo = {
+						sectionID: targetInfo.sectionID,
+						modelNumber: targetInfo.modelNumber,
+						rexID: prop.name
+					};
+
+					Rexbuilder_Dom_Util.updateBulkBlock(
+						blockTargetInfo,
+						Rexbuilder_Util.editedDataInfo.getBlockData(blockTargetInfo.sectionID, blockTargetInfo.rexID),
+						defaultProps
+					);
+
+					// reset: no property customized on this layout
+					Rexbuilder_Util.editedDataInfo.setBulkBlockData(blockTargetInfo.sectionID, blockTargetInfo.rexID, false);
+				});
+			} else {
+				// live synch of options
+				Rexbuilder_Dom_Util.updateBulkBlock(
+					targetInfo,
+					Rexbuilder_Util.editedDataInfo.getBlockData(targetInfo.sectionID, targetInfo.rexID),
+					defaultProps
+				);
+
+				// reset: no property customized on this layout
+				Rexbuilder_Util.editedDataInfo.setBulkBlockData(targetInfo.sectionID, targetInfo.rexID, false);
+			}
+
+			Rexbuilder_Util_Editor.builderEdited('' !== targetInfo.modelNumber);
+		});
 
     /**
      * Handling the click on section configuration button

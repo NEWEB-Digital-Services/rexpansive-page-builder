@@ -86,7 +86,7 @@
 			for( var t in this.startData ) {
 				temp.push( this.startData[t] );
 			}
-			
+
 			this.startData = temp;
 		}
 	}
@@ -126,19 +126,15 @@
 						}
 					}
 				} else {	// block
-					for ( z=0; z < tracePropsBlock.length; z++ ) {
-						// if ( 'undefined' === typeof data[i].targets[j].props[tracePropsBlock[z]] || '' === data[i].targets[j].props[tracePropsBlock[z]] ) {
-						if ( 'undefined' === typeof data[i].targets[j].props[tracePropsBlock[z]] ) {
-							targetState.props[tracePropsBlock[z]] = false;
-						} else {
-							targetState.props[tracePropsBlock[z]] = true;
-						}
+					for (var prop in data[i].targets[j].props) {
+						targetState.props[prop] = 'undefined' !== typeof prop;
 					}
 				}
 				state.targets.push( targetState );
 			}
 			result.push( state );
 		}
+
 		this.editedInfo = result;
 	}
 
