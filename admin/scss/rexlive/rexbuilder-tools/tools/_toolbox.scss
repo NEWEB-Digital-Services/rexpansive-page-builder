@@ -386,11 +386,25 @@
       display: block;
       width: 4px;
       height: 4px;
-      background-color: $icon-active-color;
+      background-color: $icon-base-color;
       top: 50%;
       right: 8px;
       border-radius: 50%;
       transform: translate(0,-50%);
+    }
+  }
+  &:hover {
+    &.layout-saved {
+      &:before {
+        background-color: $icon-active-color;
+      }
+    }
+  }
+  &.layout-container--active {
+    &.layout-saved {
+      &:before {
+        background-color: $icon-active-color;
+      }
     }
   }
 }
@@ -570,6 +584,10 @@
     position: relative;
     z-index: 100000;
   }
+}
+
+.rexlive-responsive-buttons-wrapper.test {
+  background-color: red;
 }
 
 .tool-option--full-filled {

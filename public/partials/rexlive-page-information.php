@@ -163,48 +163,51 @@ if ($sectionsIDsUsed == null) {
     if (!$flag_page_customization) {
         echo ' data-empty-customizations="true">';
     } else {?>>
-				<?php
+		<?php
         foreach ( $customizations_array as $customization ) {
             $customization_name = $customization['name'];
-            echo '<div class="customization-wrap" data-customization-name="'.$customization_name.'">';
+            echo '<div class="customization-wrap" data-customization-name="' . $customization_name . '">';
             $sections = $customization['sections'];
-            foreach($sections as $section_targets){
-                $sectionRexID = $section_targets["section_rex_id"];
-                $sectionModelNumber = $section_targets["section_model_number"];
-                $sectionModelID = $section_targets["section_model_id"];
 
-                if(isset($section_targets["section_hide"])){
-                    $hideSection = $section_targets["section_hide"];
-                } else {
-                    $hideSection = "false";
+            if ( $sections ) {
+                foreach( $sections as $section_targets ) {
+                    $sectionRexID = $section_targets["section_rex_id"];
+                    $sectionModelNumber = $section_targets["section_model_number"];
+                    $sectionModelID = $section_targets["section_model_id"];
+
+                    if( isset( $section_targets["section_hide"] ) ) {
+                        $hideSection = $section_targets["section_hide"];
+                    } else {
+                        $hideSection = "false";
+                    }
+
+                    if( isset( $section_targets["section_created_live"] ) ) {
+                        $createdLive = $section_targets["section_created_live"];
+                    } else {
+                        $createdLive = "false";
+                    }
+
+                    if( isset( $section_targets["targets"] ) ) {
+                        $targets = $section_targets["targets"];
+                    } else{
+                        $targets = "";
+                    }
+
+                    echo '<div class="section-targets"';
+                    echo ' data-section-rex-id="' . $sectionRexID . '"';
+                    echo ' data-model-id="'.$sectionModelID.'"';
+                    echo ' data-model-number="'.$sectionModelNumber.'"';
+                    echo ' data-section-hide="'.$hideSection.'"';
+                    echo ' data-section-created-live="'.$createdLive.'"';
+                    echo '>';
+
+                    if ( $targets != "" ) {
+                        echo json_encode($targets);
+                    } else {
+                        echo "[]";
+                    }
+                    echo '</div>';
                 }
-
-                if(isset($section_targets["section_created_live"])){
-                    $createdLive = $section_targets["section_created_live"];
-                } else {
-                    $createdLive = "false";
-                }
-
-                if(isset($section_targets["targets"])){
-                    $targets = $section_targets["targets"];
-                } else{
-                    $targets = "";
-                }
-
-                echo '<div class="section-targets"';
-                echo ' data-section-rex-id="' . $sectionRexID . '"';
-                echo ' data-model-id="'.$sectionModelID.'"';
-                echo ' data-model-number="'.$sectionModelNumber.'"';
-                echo ' data-section-hide="'.$hideSection.'"';
-                echo ' data-section-created-live="'.$createdLive.'"';
-                echo '>';
-
-                if($targets != ""){
-                    echo json_encode($targets);
-                } else {
-                    echo "[]";
-                }
-                echo '</div>';
             }
             echo '</div>';
         }

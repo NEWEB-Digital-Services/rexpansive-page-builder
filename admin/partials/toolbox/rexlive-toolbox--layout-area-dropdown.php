@@ -55,7 +55,7 @@ defined('ABSPATH') or exit;
       default:
         ob_start();
         ?>
-        <div class="layout-container tool-option tool-button_list--item tool-button_list--item--custom tippy<?php echo ( false !== strpos( $saved_layouts_string, $layout['id'] ) ? ' layout-saved' : '' ); ?>" data-tippy-content="<?php echo ( "" != $layout['label'] ? esc_attr( $layout['label'] ) : 'Custom-' . $layout['id'] ); ?>" data-tippy-placement="left">
+        <div class="layout-container tool-option tool-button_list--item layout--custom tippy<?php echo ( false !== strpos( $saved_layouts_string, $layout['id'] ) ? ' layout-saved' : '' ); ?>" data-tippy-content="<?php echo ( "" != $layout['label'] ? esc_attr( $layout['label'] ) : 'Custom-' . $layout['id'] ); ?>" data-tippy-placement="left">
           <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']; ?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>" data-layout-type="custom">
             <span class="layout__icon"><?php Rexbuilder_Utilities::get_icon('#A009-Range'); ?></span>
             <div class="layout-custom-number">

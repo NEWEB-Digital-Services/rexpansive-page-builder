@@ -948,7 +948,7 @@ class Rexbuilder_Public {
 
 		$response = array();
 
-		$response['currentIDsUsed'] = get_option("_rex_blocks_ids_used", "[]");
+		$response['currentIDsUsed'] = get_option( "_rex_blocks_ids_used", "[]" );
 
 		wp_send_json_success($response);
 	}
