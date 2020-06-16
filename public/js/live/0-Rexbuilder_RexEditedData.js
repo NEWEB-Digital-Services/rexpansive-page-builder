@@ -32,7 +32,8 @@
 		'row_margin_left',
 		'custom_classes',				// custom classes
 		'row_overlay_color',			// overlay color
-		'row_overlay_active'
+		'row_overlay_active',
+		'layout',						// layout
 	];
 
 	// synch block props

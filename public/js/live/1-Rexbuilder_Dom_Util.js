@@ -1821,6 +1821,8 @@ var Rexbuilder_Dom_Util = (function($) {
     var overlayChanged = false;
     var classChanged = false;
 
+    var galleryInstance = $section.find('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
+
     for( var prop in changedData ) {
       if ( ! changedData[prop] ) continue;
       switch( prop ) {
@@ -1894,7 +1896,6 @@ var Rexbuilder_Dom_Util = (function($) {
         case 'row_separator_left':
           if ( gutterChanged ) break;
 
-          var galleryInstance = $section.find('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
           _updateRowDistances( $section, {
             rowDistances: {
               gutter: defaultProps.block_distance,
@@ -1922,7 +1923,6 @@ var Rexbuilder_Dom_Util = (function($) {
         case 'row_margin_left':
           if( marginChanged ) break;
 
-          var galleryInstance = $section.find('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
           _updateSectionMargins( $section, {
             marginsSection: {
               top: defaultProps.row_margin_top,
@@ -1957,6 +1957,22 @@ var Rexbuilder_Dom_Util = (function($) {
           });
           overlayChanged = true;
 
+          break;
+        case 'layout':
+          var $galleryElement = $section.find('.perfect-grid-gallery');
+
+          _updateSectionLayout($galleryElement, {
+            layout: defaultProps.layout,
+            galleryInstance: galleryInstance,
+            singleWidth: defaultProps.grid_cell_width,
+            singleHeight: ( 'masonry' === defaultProps.layout ? 5 : defaultProps.grid_cell_width ),
+            blocksDisposition: $.extend(
+              true,
+              {},
+              galleryInstance.createActionDataMoveBlocksGrid()
+            ),
+          });
+          
           break;
         default: break;
       }
@@ -2019,6 +2035,8 @@ var Rexbuilder_Dom_Util = (function($) {
 		var videoMp4Changed = false;
 		var overlayChanged = false;
 		var dimPosChanged = false;
+
+    console.log(changedData);
 
 		for (var prop in changedData) {
 			if (!changedData[prop]) continue;

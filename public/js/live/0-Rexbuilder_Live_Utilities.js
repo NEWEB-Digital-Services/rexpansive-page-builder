@@ -505,7 +505,6 @@ var Rexbuilder_Live_Utilities = (function($) {
 		* Listen a complete change layout event
 		*/
 		Rexbuilder_Util.$document.on("rexlive:changeLayout", function(event) {
-			console.log(event);
 			var data = event.settings;
 			Rexbuilder_Util_Editor.undoStackArray = [];
 			Rexbuilder_Util_Editor.redoStackArray = [];
