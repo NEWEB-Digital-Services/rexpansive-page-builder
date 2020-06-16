@@ -48,17 +48,20 @@ var CustomLayouts_Modal = (function($) {
         NProgress.start();
       },
       success: function(response) {
-        if (response.success) {
+        if ( response.success ) {
           // custom layouts updated
-          Rexbuilder_Util_Admin_Editor.$frameBuilder.one('load', function() {
+          // Rexbuilder_Util_Admin_Editor.$frameBuilder.one('load', function() {
             NProgress.done();
-            custom_layouts_modal_props.$buttonsWrapper.addClass('test');
-            custom_layouts_modal_props.$buttonsWrapper.one('mouseout', function() {
-              custom_layouts_modal_props.$buttonsWrapper.removeClass('test');
-            });
-          });
+            if ( 1 === response.data.new_layouts ) {
+              // make ranges toolbar visible
+              custom_layouts_modal_props.$buttonsWrapper.addClass('tool-button-floating--active');
+              custom_layouts_modal_props.$buttonsWrapper.one('mouseout', function() {
+                custom_layouts_modal_props.$buttonsWrapper.removeClass('tool-button-floating--active');
+              });
+            }
+          // });
 
-          Rexbuilder_Util_Admin_Editor.frameBuilder.src = Rexbuilder_Util_Admin_Editor.frameBuilder.src;
+          // Rexbuilder_Util_Admin_Editor.frameBuilder.src = Rexbuilder_Util_Admin_Editor.frameBuilder.src;
         }
       },
       error: function(response) {

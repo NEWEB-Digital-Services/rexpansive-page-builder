@@ -3096,19 +3096,21 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			'msg' => '',
 		);
 
-		if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+		if ( !wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) {
 			$response['error'] = true;
 			$response['msg'] = 'Nonce Error!';
 			wp_send_json_error($response);
-		endif;
+		}
 
-		if (!isset($_POST['custom_layouts'])) {
+		if ( !isset( $_POST['custom_layouts'] ) ) {
 			$response['error'] = true;
 			$response['msg'] = 'Data error!';
 			wp_send_json_error($response);
 		}
 
 		$response['error'] = false;
+		$response['new_layouts'] = 0;
+
 		$saved_layouts = get_option( '_rex_responsive_layouts' );
 		$updated_layouts = $_POST['custom_layouts'];
 
@@ -3120,7 +3122,15 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			return ( $a1['id'] === $a2['id'] ? 0 : -1 );
 		}
 
+		// detect for one new layout
+		$new_layouts = array_udiff( $updated_layouts, $saved_layouts, 'diff_layout_by_id' );
+		$new_layouts = array_values( $new_layouts );
+
+		$response['new_layouts'] = count( $new_layouts );
+
+		// detect for deleted layouts
 		$deletable_layouts = array_udiff( $saved_layouts, $updated_layouts, 'diff_layout_by_id' );
+		$deletable_layouts = array_values( $deletable_layouts );
 
 		global $wpdb;
 		foreach ( $deletable_layouts as $key => $layout ) {
