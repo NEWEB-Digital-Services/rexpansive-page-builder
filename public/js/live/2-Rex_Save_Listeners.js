@@ -882,7 +882,7 @@ var Rex_Save_Listeners = (function($) {
           saveBlockDisposition &&
           !check_edit
         ) {
-          clearPropsElem(block_props.props);
+          _clearPropsElem(block_props.props);
         }
 
         targets.push(block_props);
@@ -891,7 +891,7 @@ var Rex_Save_Listeners = (function($) {
     return targets;
   };
 
-  var clearPropsElem = function(props) {
+  var _clearPropsElem = function(props) {
     for (var propName in props) {
       switch (propName) {
         case "rex_id":

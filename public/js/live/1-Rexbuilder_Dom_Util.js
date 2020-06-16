@@ -1976,176 +1976,194 @@ var Rexbuilder_Dom_Util = (function($) {
    * @return {void}
    * @since  2.0.5
    */
-  function updateBulkBlock( targetInfo, changedData, defaultData ) {
-    var $elem;
-    if ( targetInfo.modelNumber != "" ) {
-      $elem = Rexbuilder_Util.$rexContainer
-        .find(
-          'section[data-rexlive-section-id="' +
-            targetInfo.sectionID +
-            '"][data-rexlive-model-number="' +
-            targetInfo.modelNumber +
-            '"]'
-        )
-        .find('div [data-rexbuilder-block-id="' + targetInfo.rexID + '"]');
-    } else {
-      $elem = Rexbuilder_Util.$rexContainer
-        .find('section[data-rexlive-section-id="' + targetInfo.sectionID + '"]')
-        .find('div [data-rexbuilder-block-id="' + targetInfo.rexID + '"]');
+	function updateBulkBlock(targetInfo, changedData, defaultData) {
+		var $block;
+		if (targetInfo.modelNumber != '') {
+			$block = Rexbuilder_Util.$rexContainer
+				.find(
+					'section[data-rexlive-section-id="' +
+						targetInfo.sectionID +
+						'"][data-rexlive-model-number="' +
+						targetInfo.modelNumber +
+						'"]'
+				)
+				.find('div [data-rexbuilder-block-id="' + targetInfo.rexID + '"]');
+		} else {
+			$block = Rexbuilder_Util.$rexContainer
+				.find('section[data-rexlive-section-id="' + targetInfo.sectionID + '"]')
+				.find('div [data-rexbuilder-block-id="' + targetInfo.rexID + '"]');
 		}
 
-		var elem = $elem.get(0);
+		// Vanilla JS
+		var block = $block.get(0);
+		var blockData = block.querySelector('.rexbuilder-block-data');
 
-		var $section = $elem.parents('.rexpansive_section');
-		var $gallery = $section.find('.grid-stack-row');
-		var galleryData = $gallery.data();
-		var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
+		var $section = $block.parents('.rexpansive_section');
+		var galleryEditorInstance = $section.find('.grid-stack-row').data('plugin_perfectGridGalleryEditor');
 
-    var defaultProps;
-    var i, tot = defaultData.length;
-    for( i=0; i<tot; i++ ) {
-      if ( targetInfo.rexID === defaultData[i].name ) {
-        defaultProps = defaultData[i].props;
-        break;
-      }
-    }
+		var defaultProps;
+		var i,
+			tot = defaultData.length;
+		for (i = 0; i < tot; i++) {
+			if (targetInfo.rexID === defaultData[i].name) {
+				defaultProps = defaultData[i].props;
+				break;
+			}
+		}
 
-    // handle multiple value props, to prevent duplicate reset
-    var colorChanged = false;
-    var imageChanged = false;
-    var videoMp4Changed = false;
+		// var defaultLayout = defaultData[0].props.layout
+
+		// handle multiple value props, to prevent duplicate reset
+		var colorChanged = false;
+		var imageChanged = false;
+		var videoMp4Changed = false;
 		var overlayChanged = false;
 		var dimPosChanged = false;
 
-    for( var prop in changedData ) {
-      if ( ! changedData[prop] ) continue;
-      switch( prop ) {
-        case 'color_bg_block':
-        case 'color_bg_block_active':
-          if ( colorChanged ) break;
+		for (var prop in changedData) {
+			if (!changedData[prop]) continue;
 
-          _updateBlockBackgroundColor({
-            $elem: $elem,
-            color: defaultProps.color_bg_block,
-            active: defaultProps.color_bg_block_active
-          });
-          colorChanged = true;
+			switch (prop) {
+				case 'color_bg_block':
+				case 'color_bg_block_active':
+					if (colorChanged) break;
 
-          break;
-        case 'image_bg_url':
-        case 'image_width':
-        case 'image_height':
-        case 'id_image_bg':
-        case 'image_size':
-        case 'image_bg_elem_active':
-        case 'type_bg_image':
-          if ( imageChanged ) break;
+					_updateBlockBackgroundColor({
+						$elem: $block,
+						color: defaultProps.color_bg_block,
+						active: defaultProps.color_bg_block_active
+					});
+					colorChanged = true;
 
-          _updateImageBG( $elem.find(".grid-item-content"), {
-            width: defaultProps.image_width,
-            height: defaultProps.image_height,
-            sizeImage: defaultProps.image_size,
-            idImage: defaultProps.id_image_bg,
-            urlImage: defaultProps.image_bg_url,
-            active: defaultProps.image_bg_elem_active,
-            typeBGimage: defaultProps.type_bg_image
-          });
+					break;
+				case 'image_bg_url':
+				case 'image_width':
+				case 'image_height':
+				case 'id_image_bg':
+				case 'image_size':
+				case 'image_bg_elem_active':
+				case 'type_bg_image':
+					if (imageChanged) break;
 
-          imageChanged = true;
+					_updateImageBG($block.find('.grid-item-content'), {
+						width: defaultProps.image_width,
+						height: defaultProps.image_height,
+						sizeImage: defaultProps.image_size,
+						idImage: defaultProps.id_image_bg,
+						urlImage: defaultProps.image_bg_url,
+						active: defaultProps.image_bg_elem_active,
+						typeBGimage: defaultProps.type_bg_image
+					});
 
-          break;
+					imageChanged = true;
+
+					break;
 				case 'video_has_audio':
 				case 'video_bg_id':
-        case 'video_bg_width':
-        case 'video_bg_height':
-        case 'video_mp4_url':
-          if( videoMp4Changed ) break;
+				case 'video_bg_width':
+				case 'video_bg_height':
+				case 'video_mp4_url':
+					if (videoMp4Changed) break;
 
-          _updateVideos( $elem, {
-            typeVideo: 'mp4',
-            mp4Data: {
-              linkMp4: defaultProps.video_mp4_url,
-              idMp4: defaultProps.video_bg_id,
-              width: defaultProps.video_bg_width,
-              height: defaultProps.video_bg_height,
-            }
-          });
+					_updateVideos($block, {
+						typeVideo: 'mp4',
+						mp4Data: {
+							linkMp4: defaultProps.video_mp4_url,
+							idMp4: defaultProps.video_bg_id,
+							width: defaultProps.video_bg_width,
+							height: defaultProps.video_bg_height
+						}
+					});
 
-          videoMp4Changed = true;
-        case 'video_bg_url_youtube':
-          _updateVideos( $elem, {
-            typeVideo: 'youtube',
-            vimeoUrl: defaultProps.video_bg_url_youtube
-          });
-          break;
-        case 'video_bg_url_vimeo':
-          _updateVideos( $elem, {
-            typeVideo: 'vimeo',
-            vimeoUrl: defaultProps.video_bg_url_vimeo
-          });
-          break;
-        case 'photoswipe':
-          _updateBlockPhotoswipe({
-            $elem: $elem,
-            photoswipe: defaultProps.photoswipe
-          });
-          break;
-        case 'block_custom_class':
-          var classList = defaultProps.block_custom_class.trim().split(/\s+/);
-          _updateCustomClasses( $elem, classList );
-          break;
-        case 'block_padding':
-          var paddingType = ( -1 !== defaultProps.block_padding.indexOf('px') ? 'px' : ( -1 !== defaultProps.block_padding.indexOf('%') ? '%' : '' ) );
-          var paddingString = defaultProps.block_padding;
-          paddingString = paddingString.replace( /px|%/g, '' );
-          var paddingVals = paddingString.split(';');
+					videoMp4Changed = true;
+				case 'video_bg_url_youtube':
+					_updateVideos($block, {
+						typeVideo: 'youtube',
+						vimeoUrl: defaultProps.video_bg_url_youtube
+					});
+					break;
+				case 'video_bg_url_vimeo':
+					_updateVideos($block, {
+						typeVideo: 'vimeo',
+						vimeoUrl: defaultProps.video_bg_url_vimeo
+					});
+					break;
+				case 'photoswipe':
+					_updateBlockPhotoswipe({
+						$elem: $block,
+						photoswipe: defaultProps.photoswipe
+					});
+					break;
+				case 'block_custom_class':
+					var classList = defaultProps.block_custom_class.trim().split(/\s+/);
+					_updateCustomClasses($block, classList);
+					break;
+				case 'block_padding':
+					var paddingType =
+						-1 !== defaultProps.block_padding.indexOf('px')
+							? 'px'
+							: -1 !== defaultProps.block_padding.indexOf('%')
+							? '%'
+							: '';
+					var paddingString = defaultProps.block_padding;
+					paddingString = paddingString.replace(/px|%/g, '');
+					var paddingVals = paddingString.split(';');
 
-          _updateBlockPaddings( $elem, {
-            top: paddingVals[0],
-            right: paddingVals[1],
-            bottom: paddingVals[2],
-            left: paddingVals[3],
-            type: paddingType
-          });
-          break;
-        case 'overlay_block_color':
-        case 'overlay_block_color_active':
-          if ( overlayChanged ) break;
+					_updateBlockPaddings($block, {
+						top: paddingVals[0],
+						right: paddingVals[1],
+						bottom: paddingVals[2],
+						left: paddingVals[3],
+						type: paddingType
+					});
+					break;
+				case 'overlay_block_color':
+				case 'overlay_block_color_active':
+					if (overlayChanged) break;
 
-          _updateBlockOverlay( {
-            $elem: $elem,
-            color: defaultProps.overlay_block_color,
-            active: defaultProps.overlay_block_color_active
-          });
+					_updateBlockOverlay({
+						$elem: $block,
+						color: defaultProps.overlay_block_color,
+						active: defaultProps.overlay_block_color_active
+					});
 
-          overlayChanged = true;
-          break;
-        case 'linkurl':
-          _updateBlockUrl( $elem, defaultProps.linkurl );
-          break;
-        case 'block_flex_position':
-          var flexCoords = defaultProps.block_flex_position.split(' ');
-          _updateFlexPostition( $elem, { x: flexCoords[0], y: flexCoords[1] } );
-          break;
-        case 'block_flex_img_position':
-          var flexCoords = defaultProps.block_flex_img_position.split(' ');
-          _updateImageFlexPostition( $elem, { x: flexCoords[0], y: flexCoords[1] } );
+					overlayChanged = true;
+					break;
+				case 'linkurl':
+					_updateBlockUrl($block, defaultProps.linkurl);
+					break;
+				case 'block_flex_position':
+					var flexCoords = defaultProps.block_flex_position.split(' ');
+					_updateFlexPostition($block, { x: flexCoords[0], y: flexCoords[1] });
+					break;
+				case 'block_flex_img_position':
+					var flexCoords = defaultProps.block_flex_img_position.split(' ');
+					_updateImageFlexPostition($block, { x: flexCoords[0], y: flexCoords[1] });
 					break;
 				case 'block_animation':
+					blockData.setAttribute('data-block_animation', defaultProps[prop] || 'fadeInUpBig');
+					break;
 				case 'block_has_scrollbar':
+					blockData.setAttribute('data-block_has_scrollbar', defaultProps[prop] || 'false');
+					break;
 				case 'block_ratio':
+					blockData.setAttribute('data-block_ratio', defaultProps[prop] || '');
+					break;
 				case 'element_edited':
-				case 'element_real_fluid':
-				case 'rexbuilder_block_id':
+					block.setAttribute('data-rexlive-element-edited', defaultProps[prop] || false);
+					break;
 				case 'slider_dimension_ratio':
+					blockData.setAttribute('data-slider_ratio', defaultProps[prop] || '');
+					break;
 				case 'type':
-					// What are these?
+					blockData.setAttribute('data-type', defaultProps[prop]);
 					break;
 				case 'hide':
-					if (defaultProps.hide || Rexbuilder_Util.hasClass(elem, 'removing_block')) {
-						_updateRemovingBlock($elem, defaultProps.hide, galleryEditorInstance);
+					if (defaultProps.hide || Rexbuilder_Util.hasClass(block, 'removing_block')) {
+						_updateRemovingBlock($block, defaultProps.hide, galleryEditorInstance);
 					}
 					break;
+				case 'element_real_fluid':
 				case 'col':
 				case 'row':
 				case 'size_x':
@@ -2157,43 +2175,95 @@ var Rexbuilder_Dom_Util = (function($) {
 				case 'gs_height':
 					if (dimPosChanged) break;
 
+					try {
+						console.log('%c BULK DIMENSIONS POSITIONS', 'color: red;');
+						console.log(defaultProps);
+						console.log(galleryEditorInstance);
 
-					var posY = defaultProps.gs_y;
+						var resetY = defaultProps.gs_y;
+						// var resetWidth =
+						// 	window.innerWidth < 768 || galleryEditorInstance.properties.oneColumModeActive
+						// 		? 12
+						// 		: defaultProps.gs_width;
+						var resetWidth = defaultProps.gs_width;
+						var resetHeight = defaultProps.gs_height;
 
-					if ('masonry' === galleryEditorInstance.settings.galleryLayout) {
-						// Even if there are Strings, the multiplication has place correctly because of type coercion
-						posY = defaultProps.gs_y * galleryEditorInstance.settings.cellHeightMasonry;
+						if (defaultData[0].props.layout !== galleryEditorInstance.settings.galleryLayout) {
+							// The default layout and the current are DIFFERENT
+							// Even if there are Strings, all the multiplications take place correctly thanks to type coercion
+							if ('masonry' === galleryEditorInstance.settings.galleryLayout) {
+								/* === Default is Fixed, the current layout is Masonry === */
+								/**
+								 * MASONRY HEIGHT
+								 * (FixedWidth * SingleWidth * BlockRatio) / 5
+								 * FixedWidth = value in 12ths units, coming from Fixed layout
+								 * The parenthesis calculates the block height in pixels, the division by 5 is made because the current
+								 * layout is Masonry
+								 * (The parenthesis calculation is needed because it's not possible to get the default layout Single
+								 * Height to calculate the block height)
+								 */
+								resetHeight = Math.round(
+									(resetWidth * galleryEditorInstance.properties.singleWidth * defaultProps['block_ratio']) / 5
+								);
+
+								/**
+								 * MASONRY Y
+								 * (FixedY * SingleWidth) / 5
+								 * FixedY = value in 12ths units, coming from Fixed layout
+								 * The parenthesis calculates the block Y value in pixels, the division by 5 is made because the current
+								 * layout is Masonry
+								 */
+								resetY = Math.round((resetY * galleryEditorInstance.properties.singleWidth) / 5);
+							} else {
+								/* === Default is Masonry, the current layout is Fixed === */
+								/**
+								 * FIXED HEIGHT
+								 * MasonryWidth * BlockRatio
+								 * Multiplying directly the width value because it's always Fixed-like (in 12ths units).
+								 */
+								resetHeight = Math.round(resetWidth * defaultProps['block_ratio']);
+
+								/**
+								 * FIXED Y
+								 * (MasonryY * 5) / SingleWidth
+								 * The parenthesis calculation is made because the Y is a "Masonry Y". The flow is:
+								 * 1. Get the Y value in pixels
+								 * 2. Transform it in Fixed-like by dividing by the Single Width
+								 * (Practically, we are doing the exact opposite of Masonry Y calculation)
+								 */
+								resetY = Math.round((resetY * 5) / galleryEditorInstance.properties.singleWidth);
+							}
+						}
+
+						var positionData = {
+							x: defaultProps.gs_x,
+							y: resetY,
+							w: resetWidth,
+							h: resetHeight,
+							startH: defaultProps.gs_start_h,
+							realFluid: defaultProps.element_real_fluid,
+							gridstackInstance: galleryEditorInstance.properties.gridstackInstance
+						};
+
+						console.log(positionData);
+
+						Rexbuilder_Util.updateElementDimensions(block, blockData, positionData);
+
+						galleryEditorInstance.checkBlockDimension(block);
+						galleryEditorInstance.updateSizeViewerText(block);
+
+						dimPosChanged = true;
+					} catch (err) {
+						Rexbuilder_Util.displayError('Something went wrong while resetting dimensions and positions');
+						console.error(err);
 					}
-
-					var height = defaultProps.gs_height;
-
-					if ('masonry' === galleryEditorInstance.settings.galleryLayout) {
-						// Even if there are Strings, the multiplication has place correctly because of type coercion
-						height = defaultProps.gs_height * galleryEditorInstance.settings.cellHeightMasonry;
-					}
-
-					var positionData = {
-						x: defaultProps.gs_x,
-						y: posY,
-						w: defaultProps.gs_width,
-						h: height,
-						startH: defaultProps.gs_start_h,
-						realFluid: defaultProps.element_real_fluid,
-						gridstackInstance: galleryEditorInstance.properties.gridstackInstance
-					};
-
-					Rexbuilder_Util.updateElementDimensions(elem, elem.querySelector('.rexbuilder-block-data'), positionData);
-
-					galleryEditorInstance.checkBlockDimension(elem);
-					galleryEditorInstance.updateSizeViewerText(elem);
-
-					dimPosChanged = true;
 					break;
 
-        default: break;
-      }
-    }
-  }
+				default:
+					break;
+			}
+		}
+	}
 
   /**
    * @param {String} HTML representing a single element
