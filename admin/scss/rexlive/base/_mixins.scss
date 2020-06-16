@@ -139,12 +139,13 @@
 }
 
 @mixin bl-btn--add-mdm {
-  padding: 5px;
+  display: inline-flex;
+  padding: 3px;
   background-color: transparent;
-  @include fill-icon($palette-color-1);
-  border: 2px solid $palette-color-1;
+  @include fill-icon($palette-color-4);
+  border: 2px solid $palette-color-4;
   &:hover {
-    @include fill-icon($palette-color-1);
+    @include fill-icon($palette-color-4);
   }
 }
 

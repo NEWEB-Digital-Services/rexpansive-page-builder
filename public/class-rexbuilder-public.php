@@ -1540,7 +1540,7 @@ class Rexbuilder_Public {
 
 		if( Rexbuilder_Utilities::isBuilderLive() ) {
 			$editor = ( isset( $_GET['editor'] ) ? $_GET['editor'] : false );
-		} else{
+		} else {
 			$editor = false;
 		}
 
@@ -1608,7 +1608,7 @@ class Rexbuilder_Public {
 			<?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-color-palette.php"; ?>
 			<?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-overlay-palette.php"; ?>
 		<?php
-			}
+		}
 		?>
 	</div>
 	<?php

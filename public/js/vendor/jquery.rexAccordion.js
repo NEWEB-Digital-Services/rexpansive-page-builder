@@ -62,14 +62,14 @@
     var toggle = [];
     tempToggle.each( function(i,el) {
       if ( $(el).closest(that.settings.selectors.self).is(that.$element) ) {
-        toggle.push(el)
+        toggle.push(el);
       }
     });
 
     var content = [];
     tempContent.each( function(i,el) {
       if ( $(el).closest(that.settings.selectors.self).is(that.$element) ) {
-        content.push(el)
+        content.push(el);
       }
     });
 
