@@ -1612,11 +1612,11 @@ var Rexbuilder_Util = (function($) {
 
   /**
    * Updating DOM elements
-   * @param  {[type]} $section                  [description]
-   * @param  {[type]} targets                   [description]
-   * @param  {[type]} forceCollapseElementsGrid [description]
-   * @param  {[type]} meIndex                   [description]
-   * @return {[type]}                           [description]
+   * @param  {[type]} $section
+   * @param  {[type]} targets
+   * @param  {[type]} forceCollapseElementsGrid
+   * @param  {[type]} meIndex
+   * @return {[type]}
    */
   var _updateDOMelements = function( $section, targets, forceCollapseElementsGrid, meIndex ) {
     var $gallery = $section.find(".grid-stack-row");
@@ -1814,7 +1814,7 @@ var Rexbuilder_Util = (function($) {
    * @since		2.0.0
 	 * @version	2.0.4			Switched parameters in options Object and added collapsing handling
    */
-  function _updateDOMSingleElement( options ) {
+  function updateDOMSingleElement( options ) {
 		var $elem = options.$elem;
 		var elem = $elem.get(0);
 		var targetProps = options.targetProps;
@@ -1888,8 +1888,9 @@ var Rexbuilder_Util = (function($) {
           ? positionDataActive.realFluid
           : targetProps["element_real_fluid"],
         gridstackInstance: gridstackInstance
-      };
-      _updateElementDimensions($elem[0], $itemData[0], positionData);
+			};
+
+      updateElementDimensions($elem[0], $itemData[0], positionData);
 		}
 
     // Update block video
@@ -3165,7 +3166,7 @@ var Rexbuilder_Util = (function($) {
    * @since 2.0.0
    * @date 11-07-2019 Rewrite for vanilla JS
    */
-  var _updateElementDimensions = function(elem, elemData, posData) {
+  var updateElementDimensions = function(elem, elemData, posData) {
     var x = parseInt(posData.x);
     var y = parseInt(posData.y);
     var w = parseInt(posData.w);
@@ -4412,7 +4413,7 @@ var Rexbuilder_Util = (function($) {
     findLayoutType: _findLayoutType,
     updateModelsLive: _updateModelsLive,
     getLayoutSectionTargets: _getLayoutSectionTargets,
-    updateElementDimensions: _updateElementDimensions,
+    updateElementDimensions: updateElementDimensions,
     getGridLayout: _getGridLayout,
     customizationExists: _customizationExists,
     getDefaultBlockProps: _getDefaultBlockProps,
@@ -4441,7 +4442,7 @@ var Rexbuilder_Util = (function($) {
     getDefaultLayoutState: _getDefaultLayoutState,
     updateSectionOrderCustomLayouts: _updateSectionOrderCustomLayouts,
     updateGridsHeights: _updateGridsHeights,
-    updateDOMSingleElement: _updateDOMSingleElement,
+    updateDOMSingleElement: updateDOMSingleElement,
     getDefaultBlockMeasure: _getDefaultBlockMeasure,
     doneResizing: doneResizing,
     getCoord: getCoord,
