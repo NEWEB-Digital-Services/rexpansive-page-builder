@@ -104,6 +104,7 @@ if (!empty($customizations_names)) {
         array_push($customizations_array, $customization);
     }
 }
+
 ?>
 <div id="rex-buttons-ids-used" style="display: none;"><?php
 if ( $buttonsIDsUsed == null ) {
