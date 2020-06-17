@@ -851,7 +851,7 @@ var Rex_Save_Listeners = (function($) {
     if (saveBlockDisposition) {
       section_props.props.gridEdited = true;
       section_props.props.full_height = gridGallery.getAttribute("data-full-height");
-      section_props.props.layout = gridGallery.getAttribute("data-layout");
+      // section_props.props.layout = gridGallery.getAttribute("data-layout");
     } else {
       section_props.props.gridEdited = false;
     }
@@ -1557,7 +1557,9 @@ var Rex_Save_Listeners = (function($) {
 
       var props = {};
 
-      props["collapse_grid"] = collapse_grid;
+      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.collapse_grid ) ) {
+        props["collapse_grid"] = collapse_grid;
+      }
       props["grid_cell_width"] = grid_cell_width;
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.section_name ) ) {
         props["section_name"] = section_name;
@@ -1625,7 +1627,11 @@ var Rex_Save_Listeners = (function($) {
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.block_distance ) ) {
         props["block_distance"] = block_distance;
       }
-      props["layout"] = layout;
+
+			if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.layout ) ) {
+				props["layout"] = layout;
+      }
+
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.custom_classes ) ) {
         props["custom_classes"] = custom_classes;
       }

@@ -1408,6 +1408,8 @@ var Rexbuilder_Util = (function($) {
           tempTarget.props.custom_classes = sData.getAttribute('data-custom_classes');
           tempTarget.props.row_overlay_color = sData.getAttribute('data-row_overlay_color');
           tempTarget.props.row_overlay_active = sData.getAttribute('data-row_overlay_active');
+          tempTarget.props.layout = sData.getAttribute('data-layout');
+          tempTarget.props.collapse_grid = oldSections[k].getAttribute('data-rex-collapse-grid');
 
           tempData.targets.push(tempTarget);
 
@@ -1548,7 +1550,7 @@ var Rexbuilder_Util = (function($) {
       } else {
         probableLayoutSelectedSections = layoutSelectedSections;
       }
-    }
+		}
 
     // tracing page data
     Rexbuilder_Util.editedDataInfo = new RexEditedData( ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ) );
@@ -1767,6 +1769,18 @@ var Rexbuilder_Util = (function($) {
 
 		// Collapsing blocks if needed
     if ( targets[0].props.collapse_grid ) {
+			if (targets[0].props.noMobileLayoutSaved) {
+				console.log( 'noMobileLayoutSaved' );
+				Rexbuilder_Util.editedDataInfo.setSectionData(
+					galleryEditorInstance.$section.attr('data-rexlive-section-id'),
+					'collapse_grid'
+				);
+				Rexbuilder_Util.editedDataInfo.setSectionData(
+					galleryEditorInstance.$section.attr('data-rexlive-section-id'),
+					'layout'
+				);
+			}
+
       galleryEditorInstance.collapseElements();
       galleryEditorInstance.collapseElementsProperties();
 		}

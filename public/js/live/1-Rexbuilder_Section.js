@@ -208,7 +208,7 @@ var Rexbuilder_Section = (function($) {
       $section.removeClass('rex-block-grid');
       var cls = $section.children('.section-data').attr('data-custom_classes');
       $section.children('.section-data').attr('data-custom_classes', cls.replace( /\s*rex-block-grid/, '' ));
-      
+
       galleryEditorInstance.collapseElementsProperties();
       galleryEditorInstance.collapseElements(reverseData);
 
@@ -379,6 +379,7 @@ var Rexbuilder_Section = (function($) {
     }
 
     Rexbuilder_Util.editedDataInfo.setSectionData( $section.attr('data-rexlive-section-id'), 'collapse_grid' );
+		Rexbuilder_Util.editedDataInfo.setSectionData( $section.attr('data-rexlive-section-id'), 'layout' );
 
     var data = {
       eventName: "rexlive:edited",
@@ -533,7 +534,7 @@ var Rexbuilder_Section = (function($) {
    * Handling the copy of a section
    * @since 2.0.0
    */
-  function handleBuilderCopyRow(e) {		
+  function handleBuilderCopyRow(e) {
     Rexbuilder_Util_Editor.sectionCopying = true;
     var $section = $(e.currentTarget).parents(".rexpansive_section");
     var $newSection = $section.clone(false);
@@ -612,7 +613,7 @@ var Rexbuilder_Section = (function($) {
 
 			Rexbuilder_Rexwpcf7_Editor.addMissingTools(id);
 		});
-		
+
 		// Rexbutton operations
 		Rexbuilder_Rexbutton.refreshNumbers();
 		Rexbuilder_Rexbutton.updateButtonListInPage();
@@ -621,7 +622,7 @@ var Rexbuilder_Section = (function($) {
     Rexbuilder_Util.$rexContainer.sortable("refresh");
 
     launchSectionTextEditors( $row[0] );
-    
+
     // update the tools
     // Rexbuilder_Section_Editor.updateRowTools( $newSection );
     // Rexbuilder_Block_Editor.updateBlockToolsOnRow( $newSection );
@@ -698,7 +699,7 @@ var Rexbuilder_Section = (function($) {
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
     // @todo (handle also blocks inside the copied section...)
-    Rexbuilder_Util.editedDataInfo.addSectionData( $newSection.attr("data-rexlive-section-id") ); 
+    Rexbuilder_Util.editedDataInfo.addSectionData( $newSection.attr("data-rexlive-section-id") );
     if (Rexbuilder_Util.activeLayout == "default") {
       Rexbuilder_Util.updateDefaultLayoutStateSection(
         $newSection,
@@ -802,7 +803,7 @@ var Rexbuilder_Section = (function($) {
 
 		// $newSectionData.after( tmpl("tmpl-toolbox-section", new_row_defaults) );
     $newSectionData.after(Rexbuilder_Live_Templates.getTemplate('tmpl-toolbox-section', new_row_defaults));
-		
+
     // add after the last row
     switch( newRowPosition ) {
       case 'bottom':
@@ -921,7 +922,7 @@ var Rexbuilder_Section = (function($) {
       rowSeparatorRight: 20,
       rowSeparatorLeft: 20
     };
-    
+
     // var newSection = tmpl("tmpl-new-section", new_row_defaults);
     var newSection = Rexbuilder_Live_Templates.getTemplate('tmpl-new-section', new_row_defaults);
 
@@ -1330,7 +1331,7 @@ var Rexbuilder_Section = (function($) {
           var $row = $newSection.find(".grid-stack-row");
 
 					$row.perfectGridGalleryEditor({editorMode:true});
-					
+
 					// Replacing RexButtons in the model with the fresh HTML from the DB
 					_replaceRexButtons($row, response);
 
@@ -1367,7 +1368,7 @@ var Rexbuilder_Section = (function($) {
             var $itemContent = $(blocks[i]).find('.grid-item-content');
 
             var blockData = blocks[i].querySelector('.rexbuilder-block-data');
-            
+
             // update image tool
             var imageActive = blockData.getAttribute('data-image_bg_elem_active');
             var imageUrl = blockData.getAttribute('data-image_bg_block')
@@ -1504,12 +1505,12 @@ var Rexbuilder_Section = (function($) {
     });
     //$model_to_import.children().remove();
 	}
-	
+
 	/**
 	 * Replaces model RexButtons with the DB-retrieved HTML
-	 * @param		{jQuery}	$row 
-	 * @param		{jQuery}	$buttonsWrappers 
-	 * @param		{Object}	response 
+	 * @param		{jQuery}	$row
+	 * @param		{jQuery}	$buttonsWrappers
+	 * @param		{Object}	response
 	 * @returns	{void}
 	 * @since		2.0.4
 	 */
@@ -1550,9 +1551,9 @@ var Rexbuilder_Section = (function($) {
     Rexbuilder_Util.$rexContainer.on("click", ".builder-delete-row", handleBuilderDeleteRow);
     Rexbuilder_Util.$rexContainer.on("click", ".builder-copy-row", handleBuilderCopyRow);
 		Rexbuilder_Util.$rexContainer.on("click", ".collapse-grid", handleCollapseGrid);
-		
+
 		Rexbuilder_Util.$document.on("click", ".add-new-section", handleAddNewSection);
-		
+
     Rexbuilder_Util.$document.on("rexlive:collapse_row", handleCollapseRow);
     Rexbuilder_Util.$document.on("rexlive:collapsingElementsEnded", handleCollapsingElementsEnded);
 
@@ -1685,7 +1686,7 @@ var Rexbuilder_Section = (function($) {
       $(section).find('.section-data').after(string);
     }
   }
-	
+
 	function _prependToolBox() {
 		tmpl.arg = 'section';
 
@@ -1852,10 +1853,10 @@ var Rexbuilder_Section = (function($) {
         Rex_Navigator.fixNavigatorItemOrder($section);
       }
 		});
-		
+
 		// _prependToolBox()
     _prependToolBoxVanilla();
-		
+
     // linking listeners to row setting buttons
     _addSectionToolboxListeners();
   };

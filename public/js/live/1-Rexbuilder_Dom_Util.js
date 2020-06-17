@@ -1976,19 +1976,19 @@ var Rexbuilder_Dom_Util = (function($) {
               galleryInstance.createActionDataMoveBlocksGrid( resetLayout )
             ),
           });
-          
+
           break;
         case 'collapse_grid':
-          // @todo this reset, adds the action to the undo/redo stack
-          // @todo add to the other resets
-          
-          var collapse = ( Rexbuilder_Util.globalViewport.width < 768 ? true : defaultProps.collapse_grid );
-        
-          if( defaultProps.collapse_grid != $section.attr('data-rex-collapse-grid') && Rexbuilder_Util.globalViewport.width > 767 ) {
-            Rexbuilder_Section.toggleGridCollapse( $section );
-          } else if( 'false' == $section.attr('data-rex-collapse-grid') && Rexbuilder_Util.globalViewport.width < 768 ) {
-            Rexbuilder_Section.toggleGridCollapse( $section );
-          }
+					console.log('%c BULK SECTION TOGGLE COLLAPSE', 'color: gold;');
+					// @todo this reset, adds the action to the undo/redo stack
+					// @todo add to the other resets
+					var isCollapsed = 'true' === $section.attr('data-rex-collapse-grid');
+
+					if (defaultProps.collapse_grid !== isCollapsed && Rexbuilder_Util.globalViewport.width > 767) {
+						Rexbuilder_Section.toggleGridCollapse($section);
+					} else if (!isCollapsed && Rexbuilder_Util.globalViewport.width < 768) {
+						Rexbuilder_Section.toggleGridCollapse($section);
+					}
           break;
         default: break;
       }
@@ -2211,8 +2211,6 @@ var Rexbuilder_Dom_Util = (function($) {
 
 					try {
 						console.log('%c BULK DIMENSIONS POSITIONS', 'color: red;');
-						console.log(defaultProps);
-						console.log(galleryEditorInstance);
 
 						var resetY = defaultProps.gs_y;
 						// var resetWidth =
@@ -2279,7 +2277,7 @@ var Rexbuilder_Dom_Util = (function($) {
 							gridstackInstance: galleryEditorInstance.properties.gridstackInstance
 						};
 
-						console.log(positionData);
+						console.log( positionData );
 
 						Rexbuilder_Util.updateElementDimensions(block, blockData, positionData);
 
