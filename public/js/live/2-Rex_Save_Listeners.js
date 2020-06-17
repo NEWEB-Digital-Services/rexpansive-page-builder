@@ -851,7 +851,7 @@ var Rex_Save_Listeners = (function($) {
     if (saveBlockDisposition) {
       section_props.props.gridEdited = true;
       section_props.props.full_height = gridGallery.getAttribute("data-full-height");
-      // section_props.props.layout = gridGallery.getAttribute("data-layout");
+      section_props.props.layout = gridGallery.getAttribute("data-layout");
     } else {
       section_props.props.gridEdited = false;
     }
