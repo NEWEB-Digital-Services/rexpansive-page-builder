@@ -61,7 +61,12 @@
 		'overlay_block_color_active',
 		'linkurl',						// links
 		'block_flex_position',			// content position
-		'block_flex_img_position'		// image position
+		'block_flex_img_position',		// image position
+		'gs_start_h',					// block dimensions
+		'gs_width',
+		'gs_height',
+		'gs_x',
+		'gs_y',
 	];
 
 	function RexEditedData() {

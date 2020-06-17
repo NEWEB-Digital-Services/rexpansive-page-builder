@@ -417,6 +417,10 @@
 
     this.updateAllElementsProperties();
     Rexbuilder_Util_Editor.elementIsDragging = false;
+
+    Rexbuilder_Util.editedDataInfo.setBlockData( this.$section.attr('data-rexlive-section-id'), ui.helper.attr('data-rexbuilder-block-id'), 'gs_x' );
+    Rexbuilder_Util.editedDataInfo.setBlockData( this.$section.attr('data-rexlive-section-id'), ui.helper.attr('data-rexbuilder-block-id'), 'gs_y' );
+
     clearTimeout(this.doubleDownTimer);
   }
 
@@ -2829,6 +2833,12 @@
           blockContentWrap = null;
           size_viewer = null;
           size_viewer_mobile = null;
+
+          Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), elem.getAttribute('data-rexbuilder-block-id'), 'gs_start_h' );
+          Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), elem.getAttribute('data-rexbuilder-block-id'), 'gs_width' );
+          Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), elem.getAttribute('data-rexbuilder-block-id'), 'gs_height' );
+          Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), elem.getAttribute('data-rexbuilder-block-id'), 'gs_x' );
+          Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), elem.getAttribute('data-rexbuilder-block-id'), 'gs_y' );
 
           //waiting for transition end
           rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
