@@ -814,8 +814,10 @@
      * @param  {String} forcedLayout layout to force
      * @return {Object}              action data
      */
-    createActionDataMoveBlocksGrid: function( forcedLayout ) {
+    createActionDataMoveBlocksGrid: function( forcedLayout, forcedCollapse ) {
       forcedLayout = 'undefined' !== typeof forcedLayout ? forcedLayout : null;
+      forcedCollapse = 'undefined' !== typeof forcedCollapse ? forcedCollapse : false;
+
       var blocksDimensions = [];
       var rexID;
       var items = [].slice.call( this.element.querySelectorAll( '.grid-stack-item:not(.grid-stack-placeholder), .grid-stack-item:not(.removing_block)' ) );
@@ -850,6 +852,11 @@
           case null:
           default:
             break;
+        }
+
+        if ( forcedCollapse ) {
+          blockObj.w = 12;
+          blockObj.x = 0;
         }
 
         blocksDimensions.push(blockObj);

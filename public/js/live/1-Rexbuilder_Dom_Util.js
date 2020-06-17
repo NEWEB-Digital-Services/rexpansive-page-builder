@@ -1824,6 +1824,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var classChanged = false;
 
     var galleryInstance = $section.find('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
+    var resetLayout = ( Rexbuilder_Util.globalViewport.width < 768 ? 'masonry' : defaultProps.layout );
 
     for( var prop in changedData ) {
       if ( ! changedData[prop] ) continue;
@@ -1962,7 +1963,6 @@ var Rexbuilder_Dom_Util = (function($) {
           break;
         case 'layout':
           var $galleryElement = $section.find('.perfect-grid-gallery');
-          var resetLayout = ( Rexbuilder_Util.globalViewport.width < 768 ? 'masonry' : defaultProps.layout );
 
           _updateSectionLayout( $galleryElement, {
             collapse_grid: "true",
@@ -1977,6 +1977,18 @@ var Rexbuilder_Dom_Util = (function($) {
             ),
           });
           
+          break;
+        case 'collapse_grid':
+          // @todo this reset, adds the action to the undo/redo stack
+          // @todo add to the other resets
+          
+          var collapse = ( Rexbuilder_Util.globalViewport.width < 768 ? true : defaultProps.collapse_grid );
+        
+          if( defaultProps.collapse_grid != $section.attr('data-rex-collapse-grid') && Rexbuilder_Util.globalViewport.width > 767 ) {
+            Rexbuilder_Section.toggleGridCollapse( $section );
+          } else if( 'false' == $section.attr('data-rex-collapse-grid') && Rexbuilder_Util.globalViewport.width < 768 ) {
+            Rexbuilder_Section.toggleGridCollapse( $section );
+          }
           break;
         default: break;
       }
@@ -2196,8 +2208,6 @@ var Rexbuilder_Dom_Util = (function($) {
 				case 'gs_width':
 				case 'gs_height':
 					if (dimPosChanged) break;
-
-          console.log('dim blocks')
 
 					try {
 						console.log('%c BULK DIMENSIONS POSITIONS', 'color: red;');

@@ -202,7 +202,7 @@ var Rexbuilder_Section = (function($) {
     };
 
     // if the section is NOT collapsed
-    if (!gridCollapsed) {
+    if ( !gridCollapsed ) {
       // here: remove hold grid from everywhere
       // remove the hold grid option
       $section.removeClass('rex-block-grid');
@@ -377,6 +377,8 @@ var Rexbuilder_Section = (function($) {
         }
       }
     }
+
+    Rexbuilder_Util.editedDataInfo.setSectionData( $section.attr('data-rexlive-section-id'), 'collapse_grid' );
 
     var data = {
       eventName: "rexlive:edited",
@@ -1864,6 +1866,7 @@ var Rexbuilder_Section = (function($) {
     showSectionToolBox: _showSectionToolBox,
     updateModelsHtmlLive: _updateModelsHtmlLive,
     fixSectionToolbox : _fixSectionToolbox,
-    fixBlockToolsAccordingToSeparator: _fixBlockToolsAccordingToSeparator
+    fixBlockToolsAccordingToSeparator: _fixBlockToolsAccordingToSeparator,
+    toggleGridCollapse: _toggleGridCollapse
   };
 })(jQuery);
