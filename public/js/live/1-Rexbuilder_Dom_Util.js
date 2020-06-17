@@ -1962,15 +1962,12 @@ var Rexbuilder_Dom_Util = (function($) {
           break;
         case 'layout':
           var $galleryElement = $section.find('.perfect-grid-gallery');
-          // var resetLayout = ( Rexbuilder_Util.globalViewport.width < 768 ? 'masonry' : defaultProps.layout );
-          var resetLayout = defaultProps.layout;
+          var resetLayout = ( Rexbuilder_Util.globalViewport.width < 768 ? 'masonry' : defaultProps.layout );
 
           _updateSectionLayout( $galleryElement, {
             collapse_grid: "true",
             gridLayout: resetLayout,
             galleryInstance: galleryInstance,
-            // singleWidth: defaultProps.grid_cell_width,
-            // singleHeight: ( 'masonry' === resetLayout ? 5 : defaultProps.grid_cell_width ),
             singleWidth: galleryInstance.properties.singleWidth,
             singleHeight: ( 'masonry' === resetLayout ? 5 : galleryInstance.properties.singleWidth ),
             blocksDisposition: $.extend(

@@ -211,6 +211,8 @@ var Rexbuilder_Section = (function($) {
       
       galleryEditorInstance.collapseElementsProperties();
       galleryEditorInstance.collapseElements(reverseData);
+
+      Rexbuilder_Section_Editor.updateSectionLayoutTool( $section );
     } else {
       Rexbuilder_Util_Editor.updatingCollapsedGrid = true;
 
@@ -245,6 +247,8 @@ var Rexbuilder_Section = (function($) {
 
       galleryEditorInstance.batchGridstack();
 
+      Rexbuilder_Section_Editor.updateSectionLayoutTool( $section );
+
       var section = $section[0];
       var elem,
         elemData,
@@ -273,6 +277,7 @@ var Rexbuilder_Section = (function($) {
       galleryEditorInstance.removeCollapseElementsProperties();
 
       if (galleryLayout.layout == "masonry") {
+        // masonry
         setTimeout(
           function() {
             galleryEditorInstance.updateBlocksHeight();
@@ -308,15 +313,12 @@ var Rexbuilder_Section = (function($) {
         );
       } else {
         if (fullHeight) {
+          // fixed and fullheight
           setTimeout(
             function() {
               galleryEditorInstance.properties.gridBlocksHeight = galleryEditorInstance._calculateGridHeight();
-              galleryLayout.singleHeight =
-                Rexbuilder_Util.globalViewport.height /
-                galleryEditorInstance.properties.gridBlocksHeight;
-              galleryEditorInstance.updateGridstackStyles(
-                galleryLayout.singleHeight
-              );
+              galleryLayout.singleHeight = Rexbuilder_Util.globalViewport.height / galleryEditorInstance.properties.gridBlocksHeight;
+              galleryEditorInstance.updateGridstackStyles( galleryLayout.singleHeight );
               setTimeout(
                 function() {
                   var actionData = {
@@ -348,6 +350,7 @@ var Rexbuilder_Section = (function($) {
             galleryLayout
           );
         } else {
+          // fixed
           setTimeout(
             function() {
               var actionData = {

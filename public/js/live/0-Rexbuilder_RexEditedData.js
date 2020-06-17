@@ -34,6 +34,7 @@
 		'row_overlay_color',			// overlay color
 		'row_overlay_active',
 		'layout',						// layout
+		'collapse_grid'					// collapse
 	];
 
 	// synch block props

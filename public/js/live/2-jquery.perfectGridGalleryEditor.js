@@ -838,19 +838,18 @@
           h: h
         };
 
-        if ( forcedLayout ) {
-          switch( forcedLayout ) {
-            case 'masonry':
-              blockObj.h = Math.floor( blockObj.h * this.properties.singleWidth / 5 );
-              blockObj.y = Math.floor( blockObj.y * this.properties.singleWidth / 5 );
-              break;
-            case 'fixed':
-              blockObj.h = Math.floor( ( blockObj.h * 5 ) / this.properties.singleWidth );
-              blockObj.y = Math.floor( ( blockObj.y * 5 ) / this.properties.singleWidth );
-              break;
-            default:
-              break;
-          }
+        switch( forcedLayout ) {
+          case 'masonry':
+            blockObj.h = Math.floor( blockObj.h * this.properties.singleWidth / 5 );
+            blockObj.y = Math.floor( blockObj.y * this.properties.singleWidth / 5 );
+            break;
+          case 'fixed':
+            blockObj.h = Math.floor( ( blockObj.h * 5 ) / this.properties.singleWidth );
+            blockObj.y = Math.floor( ( blockObj.y * 5 ) / this.properties.singleWidth );
+            break;
+          case null:
+          default:
+            break;
         }
 
         blocksDimensions.push(blockObj);
@@ -3604,6 +3603,8 @@
       this.properties.singleHeight = layoutData.singleHeight;
       this.element.setAttribute("data-full-height", layoutData.fullHeight);
       this.element.setAttribute("data-layout", layoutData.layout);
+      this.$section.children('.section-data').attr('data-full_height', layoutData.fullHeight);
+      this.$section.children('.section-data').attr('data-layout', layoutData.layout);
       this.batchGridstack();
       this.updateGridstackStyles();
       this.updateFloatingElementsGridstack();
@@ -3620,6 +3621,8 @@
       this.commitGridstack();
       this.element.setAttribute('data-layout', 'masonry');
       this.element.setAttribute('data-full-height', 'false');
+      this.$section.children('.section-data').attr('data-layout', 'masonry');
+      this.$section.children('.section-data').attr('data-full_height', 'false');
     },
 
     /**
