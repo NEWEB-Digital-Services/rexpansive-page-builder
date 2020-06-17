@@ -809,7 +809,13 @@
       this.triggerGalleryReady();
     },
 
-    createActionDataMoveBlocksGrid: function() {
+    /**
+     * Create blocks data, optionally forcing the type of the layout
+     * @param  {String} forcedLayout layout to force
+     * @return {Object}              action data
+     */
+    createActionDataMoveBlocksGrid: function( forcedLayout ) {
+      forcedLayout = 'undefined' !== typeof forcedLayout ? forcedLayout : null;
       var blocksDimensions = [];
       var rexID;
       var items = [].slice.call( this.element.querySelectorAll( '.grid-stack-item:not(.grid-stack-placeholder), .grid-stack-item:not(.removing_block)' ) );
@@ -831,6 +837,22 @@
           w: w,
           h: h
         };
+
+        if ( forcedLayout ) {
+          switch( forcedLayout ) {
+            case 'masonry':
+              blockObj.h = Math.floor( blockObj.h * this.properties.singleWidth / 5 );
+              blockObj.y = Math.floor( blockObj.y * this.properties.singleWidth / 5 );
+              break;
+            case 'fixed':
+              blockObj.h = Math.floor( ( blockObj.h * 5 ) / this.properties.singleWidth );
+              blockObj.y = Math.floor( ( blockObj.y * 5 ) / this.properties.singleWidth );
+              break;
+            default:
+              break;
+          }
+        }
+
         blocksDimensions.push(blockObj);
       }
 
@@ -2583,6 +2605,11 @@
       }
     },
 
+    /**
+     * Update (change) the sizes of the blocks inside the grid, searching them and passing their sizes
+     * @param  {Array} data list of blocks and their size props
+     * @return {void}
+     */
     updateBlocksSizes: function( data ) {
       if ( 'undefined' === typeof data ) return;
       this.properties.gridstackInstance.batchUpdate();
@@ -2594,6 +2621,11 @@
       this.properties.gridstackInstance.commit();
     },
 
+    /**
+     * Update (change) the size of a block inside the grid, searching it and passing its size
+     * @param  {Object} block size props
+     * @return {void}
+     */
     updateBlockSize: function( data ) {
       this.properties.gridstackInstance.batchUpdate();
       var elem = this.element.querySelector( this.settings.itemSelector + '[data-rexbuilder-block-id="' + data.rexID + '"]' );

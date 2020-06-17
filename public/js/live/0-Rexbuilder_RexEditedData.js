@@ -127,8 +127,13 @@
 						}
 					}
 				} else {	// block
-					for (var prop in data[i].targets[j].props) {
-						targetState.props[prop] = 'undefined' !== typeof prop;
+					for ( z=0; z < tracePropsBlock.length; z++ ) {
+						// if ( 'undefined' === typeof data[i].targets[j].props[tracePropsBlock[z]] || '' === data[i].targets[j].props[tracePropsBlock[z]] ) {
+						if ( 'undefined' === typeof data[i].targets[j].props[tracePropsBlock[z]] ) {
+							targetState.props[tracePropsBlock[z]] = false;
+						} else {
+							targetState.props[tracePropsBlock[z]] = true;
+						}
 					}
 				}
 				state.targets.push( targetState );

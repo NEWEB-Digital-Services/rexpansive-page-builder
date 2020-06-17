@@ -133,6 +133,8 @@
       Rexbuilder_Util_Editor.updatingSectionLayout = true;
       $section.attr("data-rexlive-section-edited", true);
 
+      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'layout' );
+
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Section_Editor.updateSectionLayoutTool($section,data);
 
@@ -161,6 +163,9 @@
           galleryInstance.createActionDataMoveBlocksGrid()
         )
       };
+
+      // Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'layout' );
+
       Rexbuilder_Util_Editor.updatingSectionLayout = false;
       Rexbuilder_Util_Editor.pushAction(
         $section,

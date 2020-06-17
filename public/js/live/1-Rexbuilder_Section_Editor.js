@@ -1056,8 +1056,7 @@ var Rexbuilder_Section_Editor = (function($) {
    */
   var _updateSectionLayoutTool = function( $target, data ) {
     data = 'undefined' !== typeof data ? data : null;
-    if ( null === data )
-    {
+    if ( null === data ) {
       data = {};
       data.layout = $target.find('.section-data').attr('data-layout');
     }

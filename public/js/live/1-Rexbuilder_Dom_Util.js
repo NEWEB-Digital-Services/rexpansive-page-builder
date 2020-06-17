@@ -1760,20 +1760,22 @@ var Rexbuilder_Dom_Util = (function($) {
     $sectionData.attr("data-full_height", false);
   };
 
-  var _updateSectionLayout = function($gallery, data) {
-    _updateGridLayoutDomProperties($gallery, data.layout);
+  var _updateSectionLayout = function( $gallery, data ) {
+    _updateGridLayoutDomProperties($gallery, data.gridLayout);
 
     var galleryInstance = data.galleryInstance;
     Rexbuilder_Util_Editor.updatingGridstack = true;
-    galleryInstance.settings.galleryLayout = data.layout;
+    galleryInstance.settings.galleryLayout = data.gridLayout;
     galleryInstance.batchGridstack();
     galleryInstance.updateFloatingElementsGridstack();
-    galleryInstance.updateGridstackGridSizes(
-      data.singleWidth,
-      data.singleHeight
-    );
+    galleryInstance.updateGridstackGridSizes( data.singleWidth, data.singleHeight );
     _updateBlocksLayout(data.blocksDisposition);
     galleryInstance.commitGridstack();
+
+    // update indicators
+    galleryInstance._updateElementsSizeViewers();
+    Rexbuilder_Section_Editor.updateSectionLayoutTool( galleryInstance.$section, { layout: data.gridLayout } );
+
     Rexbuilder_Util_Editor.updatingGridstack = false;
   };
 
@@ -1960,16 +1962,21 @@ var Rexbuilder_Dom_Util = (function($) {
           break;
         case 'layout':
           var $galleryElement = $section.find('.perfect-grid-gallery');
+          // var resetLayout = ( Rexbuilder_Util.globalViewport.width < 768 ? 'masonry' : defaultProps.layout );
+          var resetLayout = defaultProps.layout;
 
-          _updateSectionLayout($galleryElement, {
-            layout: defaultProps.layout,
+          _updateSectionLayout( $galleryElement, {
+            collapse_grid: "true",
+            gridLayout: resetLayout,
             galleryInstance: galleryInstance,
-            singleWidth: defaultProps.grid_cell_width,
-            singleHeight: ( 'masonry' === defaultProps.layout ? 5 : defaultProps.grid_cell_width ),
+            // singleWidth: defaultProps.grid_cell_width,
+            // singleHeight: ( 'masonry' === resetLayout ? 5 : defaultProps.grid_cell_width ),
+            singleWidth: galleryInstance.properties.singleWidth,
+            singleHeight: ( 'masonry' === resetLayout ? 5 : galleryInstance.properties.singleWidth ),
             blocksDisposition: $.extend(
               true,
               {},
-              galleryInstance.createActionDataMoveBlocksGrid()
+              galleryInstance.createActionDataMoveBlocksGrid( resetLayout )
             ),
           });
           
@@ -2035,8 +2042,6 @@ var Rexbuilder_Dom_Util = (function($) {
 		var videoMp4Changed = false;
 		var overlayChanged = false;
 		var dimPosChanged = false;
-
-    console.log(changedData);
 
 		for (var prop in changedData) {
 			if (!changedData[prop]) continue;
@@ -2158,6 +2163,7 @@ var Rexbuilder_Dom_Util = (function($) {
 					var flexCoords = defaultProps.block_flex_img_position.split(' ');
 					_updateImageFlexPostition($block, { x: flexCoords[0], y: flexCoords[1] });
 					break;
+          /*
 				case 'block_animation':
 					blockData.setAttribute('data-block_animation', defaultProps[prop] || 'fadeInUpBig');
 					break;
@@ -2181,7 +2187,8 @@ var Rexbuilder_Dom_Util = (function($) {
 						_updateRemovingBlock($block, defaultProps.hide, galleryEditorInstance);
 					}
 					break;
-				case 'element_real_fluid':
+          */
+				// case 'element_real_fluid':
 				case 'col':
 				case 'row':
 				case 'size_x':
@@ -2192,6 +2199,8 @@ var Rexbuilder_Dom_Util = (function($) {
 				case 'gs_width':
 				case 'gs_height':
 					if (dimPosChanged) break;
+
+          console.log('dim blocks')
 
 					try {
 						console.log('%c BULK DIMENSIONS POSITIONS', 'color: red;');
