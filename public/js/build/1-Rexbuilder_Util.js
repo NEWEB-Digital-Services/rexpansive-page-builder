@@ -914,7 +914,7 @@ var Rexbuilder_Util = (function($) {
     var i, tot = layoutSavedInfo.length;
     var guess = '';
 
-    // it's a mobile layout
+		// it's a mobile layout
     if ( parseInt( layoutInfo.min ) < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
       for( i=0; i<tot; i++ ) {
         if ( parseInt( layoutSavedInfo[i].min ) < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
@@ -936,7 +936,7 @@ var Rexbuilder_Util = (function($) {
           }
         }
       }
-    }
+		}
 
     if ( '' === guess ) {
       guess = 'default';
@@ -1408,8 +1408,6 @@ var Rexbuilder_Util = (function($) {
           tempTarget.props.custom_classes = sData.getAttribute('data-custom_classes');
           tempTarget.props.row_overlay_color = sData.getAttribute('data-row_overlay_color');
           tempTarget.props.row_overlay_active = sData.getAttribute('data-row_overlay_active');
-          tempTarget.props.layout = sData.getAttribute('data-layout');
-          tempTarget.props.collapse_grid = oldSections[k].getAttribute('data-rex-collapse-grid');
 
           tempData.targets.push(tempTarget);
 
@@ -1532,33 +1530,61 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
-    Rexbuilder_Util.clearSectionsEdited();
+		Rexbuilder_Util.clearSectionsEdited();
+
+		var noCustomLayoutSaved = false;
 
     // guess a different layout
     // happens when the user selects a custom layout, so we must guess
     // which setting to assing to contents
     if ( 'default' !== chosenLayoutName && 'tablet' !== chosenLayoutName && 'mobile' !== chosenLayoutName && null === document.querySelector('.customization-wrap[data-customization-name="' + chosenLayoutName + '"]') ) {
       var probableLayout = guessLayout(chosenLayoutName);
-      var probableLayoutSelectedSections;
+			var probableLayoutSelectedSections;
 
       if ( chosenLayoutName !== probableLayout ) {
-        probableLayoutSelectedSections = layoutDataPage.filter( function(layout) {
-          return ( probableLayout === layout.name );
+				probableLayoutSelectedSections = layoutDataPage.filter( function(layout) {
+					return ( probableLayout === layout.name );
         });
 
-        probableLayoutSelectedSections = probableLayoutSelectedSections[0].sections;
+				probableLayoutSelectedSections = probableLayoutSelectedSections[0].sections;
+
+				noCustomLayoutSaved = true;
       } else {
         probableLayoutSelectedSections = layoutSelectedSections;
       }
 		}
 
+		var emptyLayoutData = null;
+
+		if (noCustomLayoutSaved) {
+			emptyLayoutData = layoutSelectedSections.map(function (layout) {
+				var tempTargets = layout.targets.map(function (target) {
+					return {
+						name: target.name,
+						props: {}
+					};
+				});
+
+				return {
+					sectionCleared: layout.sectionCleared,
+					section_hide: layout.section_hide,
+					section_is_model: layout.section_is_model,
+					section_model_id: layout.section_model_id,
+					section_model_number: layout.section_model_number,
+					section_rex_id: layout.section_rex_id,
+					targets: tempTargets
+				};
+			});
+		}
+
     // tracing page data
-    Rexbuilder_Util.editedDataInfo = new RexEditedData( ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ) );
+    // Rexbuilder_Util.editedDataInfo = new RexEditedData( ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ) );
+    Rexbuilder_Util.editedDataInfo = new RexEditedData( ( emptyLayoutData ? emptyLayoutData : layoutSelectedSections ) );
 
     var mergedEdits = _mergeSections(
       ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ),
       defaultLayoutSections
-    );
+		);
 
     // removing collapsed from grid
     Rexbuilder_Util.removeCollapsedGrids();

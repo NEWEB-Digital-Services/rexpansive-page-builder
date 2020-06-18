@@ -13,11 +13,11 @@ var Rexbuilder_Section_Editor = (function($) {
   var _attachEvents = function() {
     /**
      * Event attached on change row dimension radio buttons
-     * 
+     *
      * At the width selection, create a rexlive:set_section_width event with all the needed data
      * @since 2.0.0
      */
-    Rexbuilder_Util.$document.on('change', '.edit-row-width', function(e) {			
+    Rexbuilder_Util.$document.on('change', '.edit-row-width', function(e) {
       // var rexID = e.target.name.split('-')[2];
       // var $section_data = $(e.target).parents('.rexpansive_section').children('.section-data');
       var $section = $(e.target).parents(".rexpansive_section");
@@ -30,10 +30,10 @@ var Rexbuilder_Section_Editor = (function($) {
       var width = '';
       var type = '';
 			var vals = e.target.value.trim().split(/(\d+)/);
-			
+
       width = vals[1];
       type = vals[2];
-      
+
       var settings = {
         data_to_send: {
           sectionTarget: {
@@ -114,7 +114,7 @@ var Rexbuilder_Section_Editor = (function($) {
 
     /**
      * Event attached on background image button
-     * 
+     *
      * Create a rexlive:openLiveImageUploader message to send to iframe parent
      * @since 2.0.0
      */
@@ -495,7 +495,7 @@ var Rexbuilder_Section_Editor = (function($) {
         settings.data_to_send.color = bgColorActive
           ? color.toRgbString()
           : "";
-        
+
         var event = jQuery.Event("rexlive:change_section_bg_color");
         event.settings = settings;
         Rexbuilder_Util.$document.trigger(event);
@@ -509,7 +509,7 @@ var Rexbuilder_Section_Editor = (function($) {
         Rexbuilder_Color_Palette.hide();
         if (flagPickerUsed) {
           colorActive = color.toRgbString();
-          
+
           var data_color = {
             data_to_send: {
               color: bgColorActive ? colorActive : "",
@@ -517,9 +517,9 @@ var Rexbuilder_Section_Editor = (function($) {
               sectionTarget: settings.data_to_send.sectionTarget
             }
           };
-  
+
           settings.data_to_send = data_color.data_to_send;
-  
+
           var event = jQuery.Event("rexlive:apply_background_color_section");
           event.settings = settings;
           Rexbuilder_Util.$document.trigger(event);
@@ -545,7 +545,7 @@ var Rexbuilder_Section_Editor = (function($) {
 
 		// var close = tmpl('tmpl-tool-close', {});
     var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
-		
+
     var $close = $(close);
     $picker.spectrum('container').append($close);
 
@@ -575,7 +575,7 @@ var Rexbuilder_Section_Editor = (function($) {
       typeof $section.attr("data-rexlive-model-number") != "undefined"
         ? $section.attr("data-rexlive-model-number")
         : "";
-    
+
     var flagPickerUsed = false;
 
     var overlayColorActive = JSON.parse( ( 'undefined' !== typeof $section_data.attr('data-row_overlay_active') ? $section_data.attr('data-row_overlay_active') : false ) );
@@ -590,7 +590,7 @@ var Rexbuilder_Section_Editor = (function($) {
         }
       }
     };
-    
+
     $picker.spectrum({
       replacerClassName: row_picker_classes,
       preferredFormat: "hex",
@@ -879,7 +879,7 @@ var Rexbuilder_Section_Editor = (function($) {
     backgroundPickerUsed = true;
 
     backgroundColorEventSettings.data_to_send.color = bgColorActive ? ( color ? color.toRgbString() : '' ) : "";
-    
+
     var event = jQuery.Event("rexlive:change_section_bg_color");
     event.settings = backgroundColorEventSettings;
     Rexbuilder_Util.$document.trigger(event);
@@ -1055,7 +1055,7 @@ var Rexbuilder_Section_Editor = (function($) {
    * @param {JS Object} data Section layout data
    */
   var _updateSectionLayoutTool = function( $target, data ) {
-    data = 'undefined' !== typeof data ? data : null;
+		data = 'undefined' !== typeof data ? data : null;
     if ( null === data ) {
       data = {};
       data.layout = $target.find('.section-data').attr('data-layout');
@@ -1202,9 +1202,9 @@ var Rexbuilder_Section_Editor = (function($) {
   };
 
   /**
-   * 
-   * @param {*} $target 
-   * @param {*} color 
+   *
+   * @param {*} $target
+   * @param {*} color
    */
   var _updateRowBackgroundColorToolLive = function( $target, color ) {
     var $picker = $target
@@ -1311,7 +1311,7 @@ var Rexbuilder_Section_Editor = (function($) {
     // $picker
     //   .val(color)
     //   .spectrum("set",color)
-    
+
     $picker
       .parent()
       .addClass('tool-button--picker-preview')
@@ -1385,7 +1385,7 @@ var Rexbuilder_Section_Editor = (function($) {
     var data = {
       eventName: "rexlive:editRowOverlayGradient",
       activeRowData: {
-        gradient: $section_data.attr('data-row_overlay_color'),        
+        gradient: $section_data.attr('data-row_overlay_color'),
         sectionTarget: {
           sectionID: sectionID,
           modelNumber: modelNumber
@@ -1481,11 +1481,11 @@ var Rexbuilder_Section_Editor = (function($) {
     this.dataObserver = null;
     this.dataNodes = null;
     // Config the observer
-    this.config = { 
-      attributes: true, 
-      childList: false, 
-      subtree: false, 
-      attributeFilter: ["data-load", "data-color_bg_section_active", "data-color_bg_section", 'data-image_bg_section_active', "data-id_image_bg_section", "data-row_overlay_active", "data-row_overlay_color", "data-video_bg_url_section", "data-video_bg_id_section", "data-video_bg_url_vimeo_section"] 
+    this.config = {
+      attributes: true,
+      childList: false,
+      subtree: false,
+      attributeFilter: ["data-load", "data-color_bg_section_active", "data-color_bg_section", 'data-image_bg_section_active', "data-id_image_bg_section", "data-row_overlay_active", "data-row_overlay_color", "data-video_bg_url_section", "data-video_bg_id_section", "data-video_bg_url_vimeo_section"]
     };
 
     row_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum';

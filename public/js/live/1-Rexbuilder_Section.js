@@ -178,6 +178,8 @@ var Rexbuilder_Section = (function($) {
    * @since 2.0.0
    */
   var _toggleGridCollapse = function( $section ) {
+		var $sectionData = $section.children('.section-data');
+
     // actual section collapsing state
     var gridCollapsed;
     if ( typeof $section.attr("data-rex-collapse-grid") != "undefined" && $section.attr("data-rex-collapse-grid").toString() == "true" ) {
@@ -241,7 +243,9 @@ var Rexbuilder_Section = (function($) {
       };
 
       galleryEditorInstance.element.setAttribute( "data-layout", galleryLayout.layout );
-      galleryEditorInstance.element.setAttribute( "data-full-height", galleryLayout.fullHeight );
+			galleryEditorInstance.element.setAttribute( "data-full-height", galleryLayout.fullHeight );
+
+			$sectionData.attr('data-layout', galleryLayout.layout);
 
       galleryEditorInstance.updateGridLayoutCollapse(galleryLayout);
 

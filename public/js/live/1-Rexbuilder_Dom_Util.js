@@ -156,6 +156,7 @@ var Rexbuilder_Dom_Util = (function($) {
     $sectionData.attr("data-dimension", widthType);
     $sectionData.attr('data-no-mobile-layout', rowSettings.noMobileLayoutSaved);
     $sectionData.attr("data-responsive_collapse", collapseElements);
+    $sectionData.attr("data-layout", layout);
 
     $section.attr("data-rex-collapse-grid", collapseElements);
 
@@ -2002,8 +2003,9 @@ var Rexbuilder_Dom_Util = (function($) {
 		var blockData = block.querySelector('.rexbuilder-block-data');
 
 		var $section = $block.parents('.rexpansive_section');
-    var $sectionData = $section.children('.section-data');
-		var galleryEditorInstance = $section.find('.grid-stack-row').data('plugin_perfectGridGalleryEditor');
+		var $sectionData = $section.children('.section-data');
+		var $galleryElement = $section.find('.grid-stack-row');
+		var galleryEditorInstance = $galleryElement.data('plugin_perfectGridGalleryEditor');
 
 		var defaultProps;
 		var i,
@@ -2030,12 +2032,27 @@ var Rexbuilder_Dom_Util = (function($) {
     var newH = parseInt( defaultProps.gs_height );
 
     var newX = parseInt( defaultProps.gs_x );
-    var newY = parseInt( defaultProps.gs_y );
+		var newY = parseInt( defaultProps.gs_y );
 
-    if ( Rexbuilder_Util.isMobile() ) {
-      newH = Math.floor( defaultProps.gs_height * galleryEditorInstance.properties.singleWidth / 5 );
-      newY = Math.floor( defaultProps.gs_y * galleryEditorInstance.properties.singleWidth / 5 );
-    }
+    if (Rexbuilder_Util.isMobile() && 'fixed' === defaultLayout.layout) {
+			// Converting to Masonry values. When resetting on mobile, layout must always be Masonry
+			newH = Math.floor((defaultProps.gs_height * galleryEditorInstance.properties.singleWidth) / 5);
+			newY = Math.floor((defaultProps.gs_y * galleryEditorInstance.properties.singleWidth) / 5);
+		} else if (defaultLayout.layout !== $sectionData.attr('data-layout')) {
+			// Case in which the default layout differs from current layout, so dimensions' transformations are necessary
+			switch ($sectionData.attr('data-layout')) {
+				case 'fixed':
+					newH = Math.floor((defaultProps.gs_height * 5) / galleryEditorInstance.properties.singleWidth);
+					newY = Math.floor((defaultProps.gs_y * 5) / galleryEditorInstance.properties.singleWidth);
+					break;
+				case 'masonry':
+					newH = Math.floor((defaultProps.gs_height * galleryEditorInstance.properties.singleWidth) / 5);
+					newY = Math.floor((defaultProps.gs_y * galleryEditorInstance.properties.singleWidth) / 5);
+					break;
+				default:
+					break;
+			}
+		}
 
     blockData.setAttribute('data-gs_width', newW );
     blockData.setAttribute('data-gs_height', newH );
@@ -2051,7 +2068,6 @@ var Rexbuilder_Dom_Util = (function($) {
 		var imageChanged = false;
 		var videoMp4Changed = false;
 		var overlayChanged = false;
-		var dimPosChanged = false;
 
 		for (var prop in changedData) {
 			if (!changedData[prop]) continue;
