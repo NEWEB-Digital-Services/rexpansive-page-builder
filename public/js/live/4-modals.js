@@ -2485,6 +2485,36 @@
 
 				// reset: no property customized on this layout
 				Rexbuilder_Util.editedDataInfo.setBulkBlockData(targetInfo.sectionID, targetInfo.rexID, false);
+
+        // update size viewer
+        var $block;
+        if (targetInfo.modelNumber != '') {
+          $block = Rexbuilder_Util.$rexContainer
+            .find(
+              'section[data-rexlive-section-id="' +
+                targetInfo.sectionID +
+                '"][data-rexlive-model-number="' +
+                targetInfo.modelNumber +
+                '"]'
+            )
+            .find('div [data-rexbuilder-block-id="' + targetInfo.rexID + '"]');
+        } else {
+          $block = Rexbuilder_Util.$rexContainer
+            .find('section[data-rexlive-section-id="' + targetInfo.sectionID + '"]')
+            .find('div [data-rexbuilder-block-id="' + targetInfo.rexID + '"]');
+        }
+
+        var $section = $block.parents('.rexpansive_section');
+        var $sectionData = $section.children('.section-data');
+        var galleryEditorInstance = $section.find('.grid-stack-row').data('plugin_perfectGridGalleryEditor');
+
+        var block = $block.get(0);
+
+        if ( 'masonry' === $sectionData.attr('data-layout') && 'false' == $section.attr( 'data-rex-collapse-grid' ) ) {
+          galleryEditorInstance.updateElementHeight( block );
+        }
+
+        galleryEditorInstance.updateSizeViewerText( block );
 			}
 
 			Rexbuilder_Util_Editor.builderEdited('' !== targetInfo.modelNumber);

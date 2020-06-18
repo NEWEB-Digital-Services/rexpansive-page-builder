@@ -1961,39 +1961,6 @@ var Rexbuilder_Dom_Util = (function($) {
           overlayChanged = true;
 
           break;
-        case 'layout':
-          break;
-
-          var $galleryElement = $section.find('.perfect-grid-gallery');
-
-          _updateSectionLayout( $galleryElement, {
-            collapse_grid: "true",
-            gridLayout: resetLayout,
-            galleryInstance: galleryInstance,
-            singleWidth: galleryInstance.properties.singleWidth,
-            singleHeight: ( 'masonry' === resetLayout ? 5 : galleryInstance.properties.singleWidth ),
-            blocksDisposition: $.extend(
-              true,
-              {},
-              galleryInstance.createActionDataMoveBlocksGrid( resetLayout )
-            ),
-          });
-
-          break;
-        case 'collapse_grid':
-          break;
-          
-					console.log('%c BULK SECTION TOGGLE COLLAPSE', 'color: gold;');
-					// @todo this reset, adds the action to the undo/redo stack
-					// @todo add to the other resets
-					var isCollapsed = 'true' === $section.attr('data-rex-collapse-grid');
-
-					if (defaultProps.collapse_grid !== isCollapsed && Rexbuilder_Util.globalViewport.width > 767) {
-						Rexbuilder_Section.toggleGridCollapse($section);
-					} else if (!isCollapsed && Rexbuilder_Util.globalViewport.width < 768) {
-						Rexbuilder_Section.toggleGridCollapse($section);
-					}
-          break;
         default: break;
       }
     }
@@ -2066,20 +2033,8 @@ var Rexbuilder_Dom_Util = (function($) {
     var newY = parseInt( defaultProps.gs_y );
 
     if ( Rexbuilder_Util.isMobile() ) {
-      // switch ( $sectionData.attr('data-layout') ) {
-      //   case 'fixed':
-      //     newH = Math.floor( ( defaultProps.gs_height * 5 ) / galleryEditorInstance.properties.singleWidth );
-      //     newY = Math.floor( ( defaultProps.gs_y * 5 ) / galleryEditorInstance.properties.singleWidth );
-      //     break;
-      //   case 'masonry':
-          newH = Math.floor( defaultProps.gs_height * galleryEditorInstance.properties.singleWidth / 5 );
-          newY = Math.floor( defaultProps.gs_y * galleryEditorInstance.properties.singleWidth / 5 );
-          // newW = 12;
-          // newX = 0;
-        //   break;
-        // default:
-        //   break;
-      // }
+      newH = Math.floor( defaultProps.gs_height * galleryEditorInstance.properties.singleWidth / 5 );
+      newY = Math.floor( defaultProps.gs_y * galleryEditorInstance.properties.singleWidth / 5 );
     }
 
     blockData.setAttribute('data-gs_width', newW );
@@ -2218,126 +2173,6 @@ var Rexbuilder_Dom_Util = (function($) {
 					var flexCoords = defaultProps.block_flex_img_position.split(' ');
 					_updateImageFlexPostition($block, { x: flexCoords[0], y: flexCoords[1] });
 					break;
-          /*
-				case 'block_animation':
-					blockData.setAttribute('data-block_animation', defaultProps[prop] || 'fadeInUpBig');
-					break;
-				case 'block_has_scrollbar':
-					blockData.setAttribute('data-block_has_scrollbar', defaultProps[prop] || 'false');
-					break;
-				case 'block_ratio':
-					blockData.setAttribute('data-block_ratio', defaultProps[prop] || '');
-					break;
-				case 'element_edited':
-					block.setAttribute('data-rexlive-element-edited', defaultProps[prop] || false);
-					break;
-				case 'slider_dimension_ratio':
-					blockData.setAttribute('data-slider_ratio', defaultProps[prop] || '');
-					break;
-				case 'type':
-					blockData.setAttribute('data-type', defaultProps[prop]);
-					break;
-				case 'hide':
-					if (defaultProps.hide || Rexbuilder_Util.hasClass(block, 'removing_block')) {
-						_updateRemovingBlock($block, defaultProps.hide, galleryEditorInstance);
-					}
-					break;
-          */
-				// case 'element_real_fluid':
-				case 'col':
-				case 'row':
-				case 'size_x':
-				case 'size_y':
-				case 'gs_x':
-				case 'gs_y':
-				case 'gs_start_h':
-				case 'gs_width':
-				case 'gs_height':
-					if (dimPosChanged) break;
-          break;
-
-					try {
-						console.log('%c BULK DIMENSIONS POSITIONS', 'color: red;');
-
-						var resetY = defaultProps.gs_y;
-						// var resetWidth =
-						// 	window.innerWidth < 768 || galleryEditorInstance.properties.oneColumModeActive
-						// 		? 12
-						// 		: defaultProps.gs_width;
-						var resetWidth = defaultProps.gs_width;
-						var resetHeight = defaultProps.gs_height;
-
-						if (defaultData[0].props.layout !== galleryEditorInstance.settings.galleryLayout) {
-							// The default layout and the current are DIFFERENT
-							// Even if there are Strings, all the multiplications take place correctly thanks to type coercion
-							if ('masonry' === galleryEditorInstance.settings.galleryLayout) {
-								/* === Default is Fixed, the current layout is Masonry === */
-								/**
-								 * MASONRY HEIGHT
-								 * (FixedWidth * SingleWidth * BlockRatio) / 5
-								 * FixedWidth = value in 12ths units, coming from Fixed layout
-								 * The parenthesis calculates the block height in pixels, the division by 5 is made because the current
-								 * layout is Masonry
-								 * (The parenthesis calculation is needed because it's not possible to get the default layout Single
-								 * Height to calculate the block height)
-								 */
-								resetHeight = Math.round(
-									(resetWidth * galleryEditorInstance.properties.singleWidth * defaultProps['block_ratio']) / 5
-								);
-
-								/**
-								 * MASONRY Y
-								 * (FixedY * SingleWidth) / 5
-								 * FixedY = value in 12ths units, coming from Fixed layout
-								 * The parenthesis calculates the block Y value in pixels, the division by 5 is made because the current
-								 * layout is Masonry
-								 */
-								resetY = Math.round((resetY * galleryEditorInstance.properties.singleWidth) / 5);
-							} else {
-								/* === Default is Masonry, the current layout is Fixed === */
-								/**
-								 * FIXED HEIGHT
-								 * MasonryWidth * BlockRatio
-								 * Multiplying directly the width value because it's always Fixed-like (in 12ths units).
-								 */
-								resetHeight = Math.round(resetWidth * defaultProps['block_ratio']);
-
-								/**
-								 * FIXED Y
-								 * (MasonryY * 5) / SingleWidth
-								 * The parenthesis calculation is made because the Y is a "Masonry Y". The flow is:
-								 * 1. Get the Y value in pixels
-								 * 2. Transform it in Fixed-like by dividing by the Single Width
-								 * (Practically, we are doing the exact opposite of Masonry Y calculation)
-								 */
-								resetY = Math.round((resetY * 5) / galleryEditorInstance.properties.singleWidth);
-							}
-						}
-
-						var positionData = {
-							x: defaultProps.gs_x,
-							y: resetY,
-							w: resetWidth,
-							h: resetHeight,
-							startH: defaultProps.gs_start_h,
-							realFluid: defaultProps.element_real_fluid,
-							gridstackInstance: galleryEditorInstance.properties.gridstackInstance
-						};
-
-						console.log( positionData );
-
-						Rexbuilder_Util.updateElementDimensions(block, blockData, positionData);
-
-						galleryEditorInstance.checkBlockDimension(block);
-						galleryEditorInstance.updateSizeViewerText(block);
-
-						dimPosChanged = true;
-					} catch (err) {
-						Rexbuilder_Util.displayError('Something went wrong while resetting dimensions and positions');
-						console.error(err);
-					}
-					break;
-
 				default:
 					break;
 			}
