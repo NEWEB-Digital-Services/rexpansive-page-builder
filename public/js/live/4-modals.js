@@ -2426,7 +2426,7 @@
           }
         }
 
-        var galleryInstance = $galleryElement.data().plugin_perfectGridGalleryEditor;
+        var galleryEditorInstance = $galleryElement.data().plugin_perfectGridGalleryEditor;
         var resetLayout = ( Rexbuilder_Util.isMobile() ? 'masonry' : dp.layout );
 
         var data = {
@@ -2439,7 +2439,7 @@
 
         Rexbuilder_Section_Editor.updateSectionLayoutTool( $section, data );
         Rexbuilder_Dom_Util.updateGridLayoutDomProperties( $galleryElement, data.layout );
-        galleryInstance.updateGridLayout( data.layout );
+        galleryEditorInstance.updateGridLayout( data.layout );
 
 				// Applying default props to all sections' blocks
 				defaultProps.forEach(function (prop) {
@@ -2461,14 +2461,19 @@
 					Rexbuilder_Util.editedDataInfo.setBulkBlockData(blockTargetInfo.sectionID, blockTargetInfo.rexID, false);
 				});
 
+        // fix elements heights
+        if ( resetLayout == "masonry" && ! dp.collapse_grid ) {
+          galleryEditorInstance.updateBlocksHeight();
+        }
+
         // set collapse elements
         if ( Rexbuilder_Util.isMobile() || dp.collapse_grid ) {
-          galleryInstance.collapseElementsProperties();
-          galleryInstance.collapseElements( );
+          galleryEditorInstance.collapseElementsProperties();
+          galleryEditorInstance.collapseElements( );
         }
 
         // update size viewers
-        galleryInstance._updateElementsSizeViewers();
+        galleryEditorInstance._updateElementsSizeViewers();
 
 			} else {
 				// live synch of options

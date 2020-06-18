@@ -2083,9 +2083,11 @@ var Rexbuilder_Dom_Util = (function($) {
     }
 
     blockData.setAttribute('data-gs_width', newW );
-    blockData.setAttribute('data-gs_height', newH );  
+    blockData.setAttribute('data-gs_height', newH );
+    blockData.setAttribute('data-gs_start_h', newH );
     blockData.setAttribute('data-gs_x', newX );
     blockData.setAttribute('data-gs_y', newY );
+    blockData.setAttribute('data-element_real_fluid', defaultProps.element_real_fluid );
 
     galleryEditorInstance.properties.gridstackInstance.update( block, newX, newY, newW, newH );
 
