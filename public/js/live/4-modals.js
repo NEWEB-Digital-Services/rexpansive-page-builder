@@ -2469,7 +2469,7 @@
         // set collapse elements
         if ( Rexbuilder_Util.isMobile() || dp.collapse_grid ) {
           galleryEditorInstance.collapseElementsProperties();
-          galleryEditorInstance.collapseElements( );
+          galleryEditorInstance.collapseElements();
         }
 
         // update size viewers
@@ -2511,8 +2511,20 @@
         var block = $block.get(0);
 
         if ( 'masonry' === $sectionData.attr('data-layout') && 'false' == $section.attr( 'data-rex-collapse-grid' ) ) {
-          galleryEditorInstance.updateElementHeight( block );
-        }
+					galleryEditorInstance.updateElementHeight( block );
+				} else if (Rexbuilder_Util.isMobile() || 'true' === $section.attr( 'data-rex-collapse-grid' )) {
+					block.setAttribute('data-gs-width', 12);
+					block.setAttribute('data-gs-x', 0);
+					var newDims = galleryEditorInstance.getBlockSizeOnCollapse(block);
+
+					galleryEditorInstance.properties.gridstackInstance.update(
+						block,
+						parseInt(block.getAttribute('data-gs-x')),
+						parseInt(block.getAttribute('data-gs-y')),
+						newDims.width,
+						newDims.height
+					);
+				}
 
         galleryEditorInstance.updateSizeViewerText( block );
 			}

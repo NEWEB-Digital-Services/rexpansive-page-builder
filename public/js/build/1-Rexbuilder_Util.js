@@ -1557,29 +1557,24 @@ var Rexbuilder_Util = (function($) {
 		var emptyLayoutData = null;
 
 		if (noCustomLayoutSaved) {
+			// Need to create a new Array with empty data, but keeping the IDs
 			emptyLayoutData = layoutSelectedSections.map(function (layout) {
-				var tempTargets = layout.targets.map(function (target) {
+				var newTargets = layout.targets.map(function (target) {
 					return {
 						name: target.name,
 						props: {}
 					};
 				});
 
-				return {
-					sectionCleared: layout.sectionCleared,
-					section_hide: layout.section_hide,
-					section_is_model: layout.section_is_model,
-					section_model_id: layout.section_model_id,
-					section_model_number: layout.section_model_number,
-					section_rex_id: layout.section_rex_id,
-					targets: tempTargets
-				};
+				// Creating a new object with all the old properties except the 'targets' one,
+				// merged with the new created targets (that has empty props)
+				return _.merge(_.omit(layout, 'targets'), { targets: newTargets });
 			});
 		}
 
-    // tracing page data
-    // Rexbuilder_Util.editedDataInfo = new RexEditedData( ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ) );
-    Rexbuilder_Util.editedDataInfo = new RexEditedData( ( emptyLayoutData ? emptyLayoutData : layoutSelectedSections ) );
+		// tracing page data
+		// Rexbuilder_Util.editedDataInfo = new RexEditedData( ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ) );
+		Rexbuilder_Util.editedDataInfo = new RexEditedData(emptyLayoutData ? emptyLayoutData : layoutSelectedSections);
 
     var mergedEdits = _mergeSections(
       ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ),

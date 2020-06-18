@@ -1825,7 +1825,6 @@ var Rexbuilder_Dom_Util = (function($) {
     var classChanged = false;
 
     var galleryInstance = $section.find('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
-    var resetLayout = ( Rexbuilder_Util.globalViewport.width < 768 ? 'masonry' : defaultProps.layout );
 
     for( var prop in changedData ) {
       if ( ! changedData[prop] ) continue;
@@ -2038,6 +2037,8 @@ var Rexbuilder_Dom_Util = (function($) {
 			// Converting to Masonry values. When resetting on mobile, layout must always be Masonry
 			newH = Math.floor((defaultProps.gs_height * galleryEditorInstance.properties.singleWidth) / 5);
 			newY = Math.floor((defaultProps.gs_y * galleryEditorInstance.properties.singleWidth) / 5);
+
+			console.log( defaultProps.gs_y,  galleryEditorInstance.properties.singleWidth);
 		} else if (defaultLayout.layout !== $sectionData.attr('data-layout')) {
 			// Case in which the default layout differs from current layout, so dimensions' transformations are necessary
 			switch ($sectionData.attr('data-layout')) {
@@ -2053,6 +2054,8 @@ var Rexbuilder_Dom_Util = (function($) {
 					break;
 			}
 		}
+
+		console.log( {newY} );
 
     blockData.setAttribute('data-gs_width', newW );
     blockData.setAttribute('data-gs_height', newH );
