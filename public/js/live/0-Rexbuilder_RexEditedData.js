@@ -32,9 +32,7 @@
 		'row_margin_left',
 		'custom_classes',				// custom classes
 		'row_overlay_color',			// overlay color
-		'row_overlay_active',
-		// 'layout',						// layout
-		// 'collapse_grid'					// collapse
+		'row_overlay_active'
 	];
 
 	// synch block props
@@ -61,12 +59,7 @@
 		'overlay_block_color_active',
 		'linkurl',						// links
 		'block_flex_position',			// content position
-		'block_flex_img_position',		// image position
-		// 'gs_start_h',					// block dimensions
-		// 'gs_width',
-		// 'gs_height',
-		// 'gs_x',
-		// 'gs_y',
+		'block_flex_img_position'		// image position
 	];
 
 	function RexEditedData() {

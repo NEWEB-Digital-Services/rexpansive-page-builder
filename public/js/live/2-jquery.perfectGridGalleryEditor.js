@@ -270,7 +270,7 @@
 
       $span.appendTo($div);
       $div.appendTo($elem);
-    }
+		}
   }
 
   /**
@@ -1624,7 +1624,9 @@
 
       $elem.children(".ui-resizable-handle").remove();
 
-      addHandles($elem, "e, s, w, se, sw");
+			addHandles($elem, "e, s, w, se, sw");
+			this._updateHandlersPosition($elem);
+
       this.properties.gridstackInstance.addWidget( $elem[0], x, y, w, h, false, 1, 500, 1 );
     },
 

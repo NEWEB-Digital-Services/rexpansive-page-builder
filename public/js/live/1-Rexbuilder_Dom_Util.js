@@ -830,7 +830,7 @@ var Rexbuilder_Dom_Util = (function($) {
     }, 200);
   };
 
-  var _updateRemovingBlock = function(
+  var updateRemovingBlock = function(
     $elem,
     hasToBeRemoved,
     galleryEditorInstance
@@ -2037,8 +2037,6 @@ var Rexbuilder_Dom_Util = (function($) {
 			// Converting to Masonry values. When resetting on mobile, layout must always be Masonry
 			newH = Math.floor((defaultProps.gs_height * galleryEditorInstance.properties.singleWidth) / 5);
 			newY = Math.floor((defaultProps.gs_y * galleryEditorInstance.properties.singleWidth) / 5);
-
-			console.log( defaultProps.gs_y,  galleryEditorInstance.properties.singleWidth);
 		} else if (defaultLayout.layout !== $sectionData.attr('data-layout')) {
 			// Case in which the default layout differs from current layout, so dimensions' transformations are necessary
 			switch ($sectionData.attr('data-layout')) {
@@ -2054,8 +2052,6 @@ var Rexbuilder_Dom_Util = (function($) {
 					break;
 			}
 		}
-
-		console.log( {newY} );
 
     blockData.setAttribute('data-gs_width', newW );
     blockData.setAttribute('data-gs_height', newH );
@@ -2192,6 +2188,7 @@ var Rexbuilder_Dom_Util = (function($) {
 					var flexCoords = defaultProps.block_flex_img_position.split(' ');
 					_updateImageFlexPostition($block, { x: flexCoords[0], y: flexCoords[1] });
 					break;
+
 				default:
 					break;
 			}
@@ -2266,7 +2263,7 @@ var Rexbuilder_Dom_Util = (function($) {
       //Used to delete or recreate block
       case "updateBlockVisibility":
         if (galleryEditorInstance !== undefined) {
-          _updateRemovingBlock(
+          updateRemovingBlock(
             dataToUse.targetElement,
             dataToUse.hasToBeRemoved,
             dataToUse.galleryInstance
@@ -2462,6 +2459,7 @@ var Rexbuilder_Dom_Util = (function($) {
     updateGridLayoutDomProperties: _updateGridLayoutDomProperties,
     htmlToElement: htmlToElement,
     updateBulkSection: _updateBulkSection,
-    updateBulkBlock: updateBulkBlock
+		updateBulkBlock: updateBulkBlock,
+		updateRemovingBlock: updateRemovingBlock
   };
 })(jQuery);

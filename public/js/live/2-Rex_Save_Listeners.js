@@ -1220,7 +1220,8 @@ var Rex_Save_Listeners = (function($) {
 
       var props = {};
 
-      props["hide"] = hide_block;
+			props['hide'] = hide_block;
+
       if (Rexbuilder_Util.activeLayout == "default") {
         props["element_edited"] = false;
       } else {

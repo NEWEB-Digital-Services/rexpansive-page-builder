@@ -9,7 +9,9 @@ var Rexbuilder_Block = (function ($) {
 		var gridGalleryInstance = $elem.parent().data().plugin_perfectGridGalleryEditor;
 		var $section = gridGalleryInstance.$section;
 		gridGalleryInstance.deleteBlock($elem);
+
 		$elem.attr("data-rexlive-element-edited", true);
+
 		Rexbuilder_Util_Editor.removingBlocks = false;
 
 		// WPCF7 operations
@@ -43,11 +45,11 @@ var Rexbuilder_Block = (function ($) {
 		e.stopPropagation();
 		var $elem = $(e.target).parents(".grid-stack-item");
 		var $section = $elem.parents(".rexpansive_section");
-		
+
 		var rex_block_id = $elem.attr('data-rexbuilder-block-id');
 		var sectionID = $section.attr("data-rexlive-section-id");
 		var modelNumber = typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
-		
+
 		var targetToEdit= {
 			sectionID: sectionID,
 			modelNumber: modelNumber,
@@ -58,7 +60,7 @@ var Rexbuilder_Block = (function ($) {
 		var $sliderWrap = $elem.find(".rex-slider-wrap[data-rex-slider-active=\"true\"]");
 		if ($sliderWrap.length > 0) {
 			targetToEdit.sliderNumber = $sliderWrap.attr("data-rex-slider-number");
-			
+
 			var sliderID = $sliderWrap.attr("data-slider-id");
 			var blockID = $elem.attr("id");
 			var shortCodeSlider = '[RexSlider slider_id="' + sliderID + '"]';

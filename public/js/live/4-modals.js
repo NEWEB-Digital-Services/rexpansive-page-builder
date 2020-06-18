@@ -2451,6 +2451,12 @@
 						rexID: prop.name
 					};
 
+					var $block = $section.find('.rex-hide-element[data-rexbuilder-block-id="' + blockTargetInfo.rexID + '"]');
+					console.log( $block.length );
+					if (0 !== $block.length) {
+						Rexbuilder_Dom_Util.updateRemovingBlock($block, false, galleryEditorInstance);
+					}
+
 					Rexbuilder_Dom_Util.updateBulkBlock(
 						blockTargetInfo,
 						Rexbuilder_Util.editedDataInfo.getBlockData(blockTargetInfo.sectionID, blockTargetInfo.rexID),
