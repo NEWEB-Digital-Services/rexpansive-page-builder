@@ -962,6 +962,7 @@
       this.removeCollapseElementsProperties();
     },
 
+    // @todo compact blocks correctly
     updateGridLayout: function(layout, reverseData) {
       if ( this.settings.galleryLayout === layout ) return;
 
@@ -3332,7 +3333,7 @@
       // if the block has a full image background, without text
       // maintain the old height
       if ( !blockHasSlider && !blockHasYoutube && !blockHasVimeo && !blockHasVideo && ( ( ( 'full' === backImgType && 0 === textHeight ) || ( '' === backImgType && 0 === textHeight ) ) && ! this.properties.oneColumModeActive ) ) {
-        newH = startH * this.properties.singleHeight;
+        newH = ( startH * this.properties.singleHeight ) - gutter;
       } else {
         if ( editingBlock ) {
           startH *= this.properties.singleHeight;

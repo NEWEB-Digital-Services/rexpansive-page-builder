@@ -133,7 +133,7 @@
       Rexbuilder_Util_Editor.updatingSectionLayout = true;
 			$section.attr("data-rexlive-section-edited", true);
 
-      Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'layout' );
+      // Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'layout' );
 
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Section_Editor.updateSectionLayoutTool($section,data);
@@ -2400,7 +2400,46 @@
 				Rexbuilder_Dom_Util.updateBulkSection(targetInfo, traceSectionData, defaultProps);
 
 				// reset: no property customized on this layout
-				Rexbuilder_Util.editedDataInfo.setBulkSectionData(targetInfo.sectionID, false);
+				Rexbuilder_Util.editedDataInfo.setBulkSectionData( targetInfo.sectionID, false );
+
+        // set layout according to default anyhow
+        var $section;
+        if ( targetInfo.modelNumber != "" ) {
+          $section = Rexbuilder_Util.$rexContainer.find(
+            'section[data-rexlive-section-id="' +
+              targetInfo.sectionID +
+              '"][data-rexlive-model-number="' +
+              targetInfo.modelNumber +
+              '"]'
+          );
+        } else {
+          $section = Rexbuilder_Util.$rexContainer.find( 'section[data-rexlive-section-id="' + targetInfo.sectionID + '"]' );
+        }
+        var $galleryElement = $section.find('.perfect-grid-gallery');
+
+        var dp;
+        var i, tot = defaultProps.length;
+        for( i=0; i<tot; i++ ) {
+          if ( 'self' === defaultProps[i].name ) {
+            dp = defaultProps[i].props;
+            break;
+          }
+        }
+
+        var galleryInstance = $galleryElement.data().plugin_perfectGridGalleryEditor;
+        var resetLayout = ( Rexbuilder_Util.isMobile() ? 'masonry' : dp.layout );
+
+        var data = {
+          layout: resetLayout,
+          sectionTarget: {
+            modelNumber: targetInfo.modelNumber,
+            sectionID: targetInfo.sectionID
+          }
+        };
+
+        Rexbuilder_Section_Editor.updateSectionLayoutTool( $section, data );
+        Rexbuilder_Dom_Util.updateGridLayoutDomProperties( $galleryElement, data.layout );
+        galleryInstance.updateGridLayout( data.layout );
 
 				// Applying default props to all sections' blocks
 				defaultProps.forEach(function (prop) {
@@ -2421,6 +2460,16 @@
 					// reset: no property customized on this layout
 					Rexbuilder_Util.editedDataInfo.setBulkBlockData(blockTargetInfo.sectionID, blockTargetInfo.rexID, false);
 				});
+
+        // set collapse elements
+        if ( Rexbuilder_Util.isMobile() || dp.collapse_grid ) {
+          galleryInstance.collapseElementsProperties();
+          galleryInstance.collapseElements( );
+        }
+
+        // update size viewers
+        galleryInstance._updateElementsSizeViewers();
+
 			} else {
 				// live synch of options
 				Rexbuilder_Dom_Util.updateBulkBlock(

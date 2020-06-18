@@ -1962,6 +1962,8 @@ var Rexbuilder_Dom_Util = (function($) {
 
           break;
         case 'layout':
+          break;
+
           var $galleryElement = $section.find('.perfect-grid-gallery');
 
           _updateSectionLayout( $galleryElement, {
@@ -1979,6 +1981,8 @@ var Rexbuilder_Dom_Util = (function($) {
 
           break;
         case 'collapse_grid':
+          break;
+          
 					console.log('%c BULK SECTION TOGGLE COLLAPSE', 'color: gold;');
 					// @todo this reset, adds the action to the undo/redo stack
 					// @todo add to the other resets
@@ -2031,11 +2035,13 @@ var Rexbuilder_Dom_Util = (function($) {
 		var blockData = block.querySelector('.rexbuilder-block-data');
 
 		var $section = $block.parents('.rexpansive_section');
+    var $sectionData = $section.children('.section-data');
 		var galleryEditorInstance = $section.find('.grid-stack-row').data('plugin_perfectGridGalleryEditor');
 
 		var defaultProps;
 		var i,
 			tot = defaultData.length;
+    // retrieve block data
 		for (i = 0; i < tot; i++) {
 			if (targetInfo.rexID === defaultData[i].name) {
 				defaultProps = defaultData[i].props;
@@ -2043,7 +2049,45 @@ var Rexbuilder_Dom_Util = (function($) {
 			}
 		}
 
-		// var defaultLayout = defaultData[0].props.layout
+    var defaultLayout;
+    // retrieve section data
+    for (i = 0; i < tot; i++) {
+      if ( 'self' === defaultData[i].name ) {
+        defaultLayout = defaultData[i].props;
+        break;
+      }
+    }
+
+    // set blocks positions and dimensions
+    var newW = parseInt( defaultProps.gs_width );
+    var newH = parseInt( defaultProps.gs_height );
+
+    var newX = parseInt( defaultProps.gs_x );
+    var newY = parseInt( defaultProps.gs_y );
+
+    if ( Rexbuilder_Util.isMobile() ) {
+      // switch ( $sectionData.attr('data-layout') ) {
+      //   case 'fixed':
+      //     newH = Math.floor( ( defaultProps.gs_height * 5 ) / galleryEditorInstance.properties.singleWidth );
+      //     newY = Math.floor( ( defaultProps.gs_y * 5 ) / galleryEditorInstance.properties.singleWidth );
+      //     break;
+      //   case 'masonry':
+          newH = Math.floor( defaultProps.gs_height * galleryEditorInstance.properties.singleWidth / 5 );
+          newY = Math.floor( defaultProps.gs_y * galleryEditorInstance.properties.singleWidth / 5 );
+          // newW = 12;
+          // newX = 0;
+        //   break;
+        // default:
+        //   break;
+      // }
+    }
+
+    blockData.setAttribute('data-gs_width', newW );
+    blockData.setAttribute('data-gs_height', newH );  
+    blockData.setAttribute('data-gs_x', newX );
+    blockData.setAttribute('data-gs_y', newY );
+
+    galleryEditorInstance.properties.gridstackInstance.update( block, newX, newY, newW, newH );
 
 		// handle multiple value props, to prevent duplicate reset
 		var colorChanged = false;
@@ -2208,6 +2252,7 @@ var Rexbuilder_Dom_Util = (function($) {
 				case 'gs_width':
 				case 'gs_height':
 					if (dimPosChanged) break;
+          break;
 
 					try {
 						console.log('%c BULK DIMENSIONS POSITIONS', 'color: red;');

@@ -1769,18 +1769,10 @@ var Rexbuilder_Util = (function($) {
 
 		// Collapsing blocks if needed
     if ( targets[0].props.collapse_grid ) {
-			// Tracking collapse grid data and layout data if the collapse is happening in mobile layout with no data saved
-			// (automatically)
-			if (targets[0].props.noMobileLayoutSaved) {
-				Rexbuilder_Util.editedDataInfo.setSectionData(
-					galleryEditorInstance.$section.attr('data-rexlive-section-id'),
-					'collapse_grid'
-				);
-				Rexbuilder_Util.editedDataInfo.setSectionData(
-					galleryEditorInstance.$section.attr('data-rexlive-section-id'),
-					'layout'
-				);
-			}
+      // if ( targets[0].props.noMobileLayoutSaved ) {
+      //   Rexbuilder_Util.editedDataInfo.setSectionData( galleryEditorInstance.$section.attr('data-rexlive-section-id'), 'layout' );
+      //   Rexbuilder_Util.editedDataInfo.setSectionData( galleryEditorInstance.$section.attr('data-rexlive-section-id'), 'collapse_grid' );
+      // }
 
       galleryEditorInstance.collapseElements();
       galleryEditorInstance.collapseElementsProperties();
