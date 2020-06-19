@@ -1354,7 +1354,7 @@
       this.properties.gridBlocksHeight = ( 0 === this.properties.gridBlocksHeight ? 1 : this.properties.gridBlocksHeight );
 
       var cellHeight;
-      if (active) {
+      if ( active ) {
         if( this.settings.galleryLayout == "fixed" ) {
           cellHeight = Rexbuilder_Util.globalViewport.height / this.properties.gridBlocksHeight;
         }
@@ -1366,8 +1366,11 @@
         }
 			}
 
-      this.updateGridstackStyles(cellHeight);
-      this.$element.attr("data-full-height", active);
+      // force full height to happen only on fixed grid
+      if ( 'masonry' !== this.settings.galleryLayout ) {
+        this.updateGridstackStyles( cellHeight );
+        this.$element.attr( "data-full-height", active );
+      }
     },
 
     /**
@@ -1377,7 +1380,7 @@
      * @return {null}
      */
     updateGridstackStyles: function(newH) {
-      if (newH !== undefined) {
+      if ( typeof newH !== 'undefined' ) {
         this.properties.singleHeight = newH;
       }
 

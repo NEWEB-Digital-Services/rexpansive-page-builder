@@ -151,7 +151,7 @@ defined('ABSPATH') or exit;
                     <div>
                         <div id="bg-set-full-section" class="rex-check-icon bl_modal__single-option--vertical tippy" data-tippy-content="<?php _e( 'Full Height', 'rexpansive-builder' ); ?>">
                             <label>
-                                <input type="checkbox" id="section-is-full" name="section-is-full" value="full-height">
+                                <input type="checkbox" id="section-is-full" class="bl_checkbox" name="section-is-full" value="full-height">
                                 <span>
                                     <?php Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?>
                                     <span class="bl_input-indicator">100%</span>
