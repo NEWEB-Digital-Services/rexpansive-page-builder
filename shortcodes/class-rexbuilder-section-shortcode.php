@@ -184,7 +184,7 @@ class Rexbuilder_Section {
 			$videoMp4Width = $videoMP4Data["width"];
 			$videoMp4Height = $videoMP4Data["height"];
 
-			$bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
+			$bg_video_markup .= '<div class="rex-video-wrap intrinsic-ignore" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
 			$bg_video_markup .= '<video class="rex-video-container"' . ( ! $editor ? ' preload="none"' : ' preload autoplay' ) . ' loop muted playsinline width="' . $videoMp4Width  . '" height="' . $videoMp4Height . '">';
 			if ( !$editor ) {
 				$bg_video_markup .= '<source type="video/mp4" data-res-lazy-loading="false" data-src="' . $video_mp4_url . '" />';
@@ -200,15 +200,15 @@ class Rexbuilder_Section {
 				$bg_video_markup .= '<div class="rex-video__controls"><div class="loader video-tool video-tool--view"></div><div class="pause video-tool"><div class="indicator"></div></div><div class="play video-tool"><div class="indicator"></div></div></div>';
 			}
 		}
-		
+
 		$bg_youtube_video_markup = '';
-		
+
 		if ('' != $video_bg_url_section && 'undefined' != $video_bg_url_section) {
 			$videoTypeActive = 'youtube-player';
 			$mute = ($bg_video_toggle_audio_markup != "" ? "false" : "true");
 			$bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:' . $mute . ',autoPlay:true,loop:true,opacity:1,showControls:false,showYTLogo:false}"></div>';
 		}
-					
+
 		$bg_video_vimeo_markup = '';
 		if ('' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section) {
 			$videoTypeActive = 'vimeo-player';
@@ -260,7 +260,7 @@ class Rexbuilder_Section {
 
 		// photoswipe gallery check
 		echo (($content_has_photoswipe > 0) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '');
-		
+
 		// section style
 		echo (strlen($section_style) > 7 ? ' ' . $section_style . '"' : '');
 
@@ -276,7 +276,7 @@ class Rexbuilder_Section {
 		if ($rexlive_section_id != '') {
 			echo ' data-rexlive-section-id="' . $rexlive_section_id . '"';
 		}
-		
+
 		if (isset($rexlive_collapse_grid)) {
 			echo ' data-rex-collapse-grid="false"';
 		}
@@ -290,7 +290,7 @@ class Rexbuilder_Section {
 		}
 
 		echo ' data-rexlive-model-editing="false"';
-		
+
 		echo '>';
 
 		echo '<div class="section-data" style="display: none;" ';
@@ -310,7 +310,7 @@ class Rexbuilder_Section {
 			echo 'data-video_mp4_url="' . $video_mp4_url . '"';
 		}
 		echo '></div>';
-		
+
 		// if ( $editor ) {
 			// include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-section-tools.php";
 		// }
@@ -319,7 +319,7 @@ class Rexbuilder_Section {
 		echo $bg_youtube_video_markup;
 		echo $bg_video_vimeo_markup;
 		echo $bg_video_toggle_audio_markup;
-		
+
 		echo '<div class="responsive-overlay"';
 		echo $section_responsive_style;
 		echo '>';

@@ -2,9 +2,9 @@
 /**
  * Class that wraps the hooks to define slider shortcode
  *
- * @since  1.0.21 
+ * @since  1.0.21
  * @package rexpansive-builder
- * 
+ *
  * @deprecated 2.0.0
  */
 class Rexbuilder_Slider_Shortcode {
@@ -85,7 +85,7 @@ class Rexbuilder_Slider_Shortcode {
     if( $slide['_rex_banner_gallery_video_mp4'] ) {
     ?>
     <div class="mp4-player">
-        <div class="rex-video-wrap">
+        <div class="rex-video-wrap intrinsic-ignore">
             <video class="rex-video-container" preload <?php echo ( is_array( $slide['_rex_banner_gallery_video_audio'] ) ? '' : 'muted' ); ?> autoplay loop>
                 <source type="video/mp4" src="<?php echo $slide['_rex_banner_gallery_video_mp4']['url']; ?>" />
             </video>
@@ -187,7 +187,7 @@ class Rexbuilder_Slider_Shortcode {
         // check if is a valid URL
         $re = '/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
         preg_match($re, $slide_video, $matches, PREG_OFFSET_CAPTURE, 0);
-        
+
         if( count($matches) > 0 ) {
             switch( $slide_video_type ) {
                 case 'youtube':

@@ -1036,7 +1036,7 @@ var Rexbuilder_App = (function($) {
 		Rexbuilder_Rexwpcf7.init();
 
     if ( Rexbuilder_Util.editorMode ) {
-      Rex_Save_Listeners.init();
+			Rex_Save_Listeners.init();
       Rexbuilder_Rexelement_Editor.init();
       Rexbuilder_Rexwpcf7_Editor.init();
       Rexbuilder_CreateBlocks.init();
@@ -1051,7 +1051,7 @@ var Rexbuilder_App = (function($) {
 			TextEditor.init();
       Rexbuilder_Section_Editor.triggerRowDataChange();
     } else {
-      // fixes for front end only
+			// fixes for front end only
       fixRexButtons();
 		}
 
@@ -1061,12 +1061,12 @@ var Rexbuilder_App = (function($) {
 		if ( Rexbuilder_Util.editorMode ) {
 			// Fix needed because grids are launched before TextEditor
 			$grids.each(function (index, grid) {
-        TextEditor.launchTextEditors( grid );
+				TextEditor.launchTextEditors( grid );
 			});
 		}
 
     if ( Rexbuilder_Util.editorMode ) {
-		  Rexbuilder_Util.launchEditDomLayout();
+			Rexbuilder_Util.launchEditDomLayout();
     }
 
     /* ===== Launching plugins only on public side ===== */
@@ -1159,18 +1159,16 @@ var Rexbuilder_App = (function($) {
       // Starting slider
 			Rexbuilder_Util.$document.on( 'rexlive:editDomLayoutEnd', RexSlider.init );
 			// RexSlider.init();
-
-      Rexbuilder_Util.launchVideoPlugins();
+			Rexbuilder_Util.launchVideoPlugins();
 
       Rexbuilder_Util.playAllVideos();
 
-      launchAccordions();
+			launchAccordions();
 		}
   }
 
   function load() {
     // @bugfix on other layouts than desktop with mixed customization definitions
-    // @deprecated i don't like this solution, too much expensive
 
     if ( Rexbuilder_Util.editorMode ) {
       TextEditor.load();

@@ -19,7 +19,7 @@ defined('ABSPATH') or exit;
 </script>
 
 <script type="text/x-tmpl" id="tmpl-video-mp4">
-	<div class="rex-video-wrap" data-rex-video-width="{%=video.width%}" data-rex-video-height="{%=video.height%}">
+	<div class="rex-video-wrap intrinsic-ignore" data-rex-video-width="{%=video.width%}" data-rex-video-height="{%=video.height%}">
 		<video class="rex-video-container" preload autoplay loop muted>
 			<source type="video/mp4" {% if ( true == video.fast_load ) { %}data-src="{%=video.url%}"{% } else { %}src="{%=video.url%}"{% } %}>
 		</video>

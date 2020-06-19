@@ -490,7 +490,7 @@ var Rexbuilder_Dom_Util = (function($) {
       $target.addClass("mp4-player");
 			tmpl.arg = "video";
 
-      var mp4Tmpl = '<div class="rex-video-wrap" data-rex-video-width="' + mp4Data.width + '" data-rex-video-height="' + mp4Data.height + '"><video width="' + mp4Data.width + '" height="' + mp4Data.height + '" class="rex-video-container" preload autoplay loop muted><source type="video/mp4" src="' + mp4Data.linkMp4 + '"></video></div>';
+      var mp4Tmpl = '<div class="rex-video-wrap intrinsic-ignore" data-rex-video-width="' + mp4Data.width + '" data-rex-video-height="' + mp4Data.height + '"><video width="' + mp4Data.width + '" height="' + mp4Data.height + '" class="rex-video-container" preload autoplay loop muted><source type="video/mp4" src="' + mp4Data.linkMp4 + '"></video></div>';
 
       if ($target.is("section")) {
         var insert_after = "";
@@ -536,11 +536,13 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var fixVideoProportion = function(el) {
-    var video = Array.prototype.slice.call( el.getElementsByClassName('rex-video-wrap') );
-    var i, tot_video = video.length;
-    for ( i=0; i<tot_video; i++ ) {
-      video[i].children[0].style.maxWidth = _findVideoMaxWidth(video[i]);
-    }
+		// var video = Array.prototype.slice.call( el.querySelector('.rex-video-wrap') );
+
+    // var i, tot_video = video.length;
+    // for ( i=0; i<tot_video; i++ ) {
+		// 	console.log( video[i].matches('.rexpansive_section  > .rex-video-wrap') );
+    //   video[i].children[0].style.maxWidth = _findVideoMaxWidth(video[i]);
+    // }
   }
 
   var _findVideoMaxWidth = function(el) {

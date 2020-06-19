@@ -112,10 +112,10 @@ class Rexbuilder_RexSlider {
 					<?php
 				}
 
-				if( 1 == $nav_previewed && 'true' != $photoswipe && isset( $slide['_rex_banner_gallery_image']['url'] ) ) { 
+				if( 1 == $nav_previewed && 'true' != $photoswipe && isset( $slide['_rex_banner_gallery_image']['url'] ) ) {
 					?>
 					<img src="<?php echo esc_url( $slide['_rex_banner_gallery_image']['url'] ); ?>">
-					<?php 
+					<?php
 				}
 
 				if( $active_video && ( $slide['_rex_banner_gallery_video'] || $slide['_rex_banner_gallery_video_mp4'] ) ) {
@@ -126,7 +126,7 @@ class Rexbuilder_RexSlider {
 						?>
 						<div class="rex-slider-video-wrapper youtube-player">
 							<div class="rex-youtube-wrap" data-property="{videoURL:'<?php echo $slide['_rex_banner_gallery_video']; ?>',containment:'self',startAt:0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}" data-ytvideo-stop-on-click="false">
-							</div>							
+							</div>
 					<?php
 					//vimeo
 					} else if( false !== strpos( $slide['_rex_banner_gallery_video'], "vimeo" ) ) {
@@ -142,7 +142,7 @@ class Rexbuilder_RexSlider {
 
 						?>
 						<div class="rex-slider-video-wrapper mp4-player">
-							<div class="rex-video-wrap" <?php echo $mp4IDattr;?>>
+							<div class="rex-video-wrap intrinsic-ignore" <?php echo $mp4IDattr;?>>
 								<video class="rex-video-container" preload muted autoplay loop playsinline>
 									<source type="video/mp4" src="<?php echo $slide['_rex_banner_gallery_video_mp4']['url']; ?>" />
 								</video>
@@ -209,7 +209,7 @@ class Rexbuilder_RexSlider {
 				echo $overlay_el;
 				?>
 					</div>
-				<?php	
+				<?php
 				if( 1 == $nav_previewed ) {
 					$nav_previewed_html .= '<li class="dot"><span' . $slider_el_style . '></span></li>';
 				}
@@ -239,11 +239,11 @@ class Rexbuilder_RexSlider {
 						if( isset( $hide_slide[0] ) && 'hide' === $hide_slide[0] ) {
 							continue;
 						}
-						
+
 						if( isset($slide['_rex_slider_nav_label'] ) && "" != $slide['_rex_slider_nav_label'] ) {
 							?>
 							<li class="rex-slider__b-label-image--item" data-nav-index="<?php echo esc_attr( $slide_index ); ?>">
-							<?php 
+							<?php
 							if( $slide['_rex_banner_gallery_url'] ) {
 								?>
 								<a href="<?php echo esc_url( $slide['_rex_banner_gallery_url'] ); ?>">

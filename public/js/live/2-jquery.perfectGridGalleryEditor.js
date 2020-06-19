@@ -157,7 +157,7 @@
    * @since  2.0.2
    */
   function findVideoMaxWidth(el) {
-    var c_w, c_h, v_w, v_h;
+		var c_w, c_h, v_w, v_h;
     v_w = el.getAttribute('data-rex-video-width');
     v_h = el.getAttribute('data-rex-video-height');
     var maxWidth = '100%';
@@ -181,10 +181,15 @@
    * @since  2.0.2
    */
   function fixVideoProportionSingleElement(el) {
-    var video = el.getElementsByClassName('rex-video-wrap');
-    if( video.length > 0 ) {
-      video[0].children[0].style.maxWidth = findVideoMaxWidth(video[0]);
-    }
+		// var video = el.getElementsByClassName('rex-video-wrap');
+
+		// if (video.matches('.rexpansive_section > .rex-video-wrap')) return
+
+    // if( video.length > 0 ) {
+		// 	console.log( video[0].children[0].matches('.rexpansive_section  > .rex-video-wrap') );
+
+    //   video[0].children[0].style.maxWidth = findVideoMaxWidth(video[0]);
+    // }
   }
 
   /**
@@ -3700,20 +3705,22 @@
      * @since  2.0.2
      */
     fixVideoProportion: function() {
-      var videos = [].slice.call( this.section.getElementsByClassName('rex-video-wrap') );
-      var tot_videos = videos.length, i = 0;
-      var rules = [];
+      // var videos = [].slice.call( this.section.getElementsByClassName('rex-video-wrap') );
+      // var tot_videos = videos.length, i = 0;
+      // var rules = [];
 
-      // first, find max width rules, based on video and container dimension
-      for( i=0; i < tot_videos; i++ ) {
-        rules.push( findVideoMaxWidth(videos[i]) );
-      }
+      // // first, find max width rules, based on video and container dimension
+      // for( i=0; i < tot_videos; i++ ) {
+			// 	console.log( videos[i].matches('.rexpansive_section  > .rex-video-wrap') );
 
-      // apply the founded rules
-      // much fast this way
-      for( i=0; i < tot_videos; i++ ) {
-        videos[i].children[0].style.maxWidth = rules[i];
-      }
+      //   rules.push( findVideoMaxWidth(videos[i]) );
+      // }
+
+      // // apply the founded rules
+      // // much fast this way
+      // for( i=0; i < tot_videos; i++ ) {
+      //   videos[i].children[0].style.maxWidth = rules[i];
+      // }
     },
 
     fixBlockDomOrder: function() {

@@ -322,7 +322,7 @@ class Rexbuilder_Block {
 
 		// adding class for text editor
 		echo ( $block_has_slider ? ' block-has-slider' : ( $editor ? ' rex-text-editable' : '' ) );
-		
+
 		if($flex_positioned_active && !$block_has_slider){
 			echo " rex-flex-".$flex_position[0]." rex-flex-".$flex_position[1];
 		}
@@ -412,7 +412,7 @@ class Rexbuilder_Block {
 			$videoMP4Data = wp_get_attachment_metadata($video_bg_id);
 			$videoMp4Width = $videoMP4Data["width"];
 			$videoMp4Height = $videoMP4Data["height"];
-			$bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
+			$bg_video_markup .= '<div class="rex-video-wrap intrinsic-ignore" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
 			$bg_video_markup .= '<video class="rex-video-container"' . ( ! $editor ? ' preload="none"' : ' preload autoplay' ) . ' loop playsinline'. ($bg_video_toggle_audio_markup != "" ? "": " muted").'>';
 			if ( ! $editor && $fast_load ) {
 				$bg_video_markup .= '<source type="video/mp4" data-res-lazy-loading="false" data-src="' . $video_mp4_url . '" />';
@@ -431,7 +431,7 @@ class Rexbuilder_Block {
 			$bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url . '\',containment:\'self\',startAt:0,mute:' . $mute . ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
 		}
 
-		
+
 		$bg_video_vimeo_markup = '';
 
 		if ('' != $video_bg_url_vimeo && 'undefined' != $video_bg_url_vimeo) {
@@ -579,7 +579,7 @@ class Rexbuilder_Block {
 
 		echo '</div>';
 		echo '</div>';
-		
+
 		// if ( $editor ) {
 		// 	$not_has_image = ( ! isset( $image_bg_elem_active ) || 'true' != $image_bg_elem_active || "" == $id_image_bg_block );
 		// 	$not_has_overlay = ( 'true' != $overlay_block_color_active || "" == $overlay_block_color );

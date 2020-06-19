@@ -39,16 +39,16 @@ $tool_button_classes = 'tool-button';
         </div>
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__config-tools">
-            
+
             <div class="tool-button tool-button--inline btn-flat builder-copy-block tippy" data-tippy-content="<?php _e('Copy block', 'rexpansive-builder'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
             </div>
 
             <div class="tool-button-floating block-toolBox__config-list">
 				<div class="tool-button" data-tippy-content="<?php _e('Block settings', 'rexpansive-builder');?>">
-					<?php Rexbuilder_Utilities::get_icon('#Z009-More'); ?>					
+					<?php Rexbuilder_Utilities::get_icon('#Z009-More'); ?>
                 </div>
-                
+
 				<div class="tool-button_list">
                     <div class="tool-button tool-button--inline tool-button_list--item builder-edit-block tippy" data-tippy-content="<?php _e('Block settings','rexpansive-builder'); ?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
@@ -161,7 +161,7 @@ $tool_button_classes = 'tool-button';
 </script>
 
 <script type="text/x-tmpl" id="tmpl-video-mp4">
-    <div class="rex-video-wrap" data-rex-video-width="{%=video.width%}" data-rex-video-height="{%=video.height%}">
+    <div class="rex-video-wrap intrinsic-ignore" data-rex-video-width="{%=video.width%}" data-rex-video-height="{%=video.height%}">
         <video width="{%=video.width%}" height="{%=video.height%}" class="rex-video-container" preload autoplay loop muted>
             <source type="video/mp4" src="{%=video.url%}">
         </video>
@@ -292,10 +292,10 @@ $tool_button_classes = 'tool-button';
 <script type="text/x-tmpl" id="tmpl-tool-save">
 <div class="rex-modal__outside-footer">
     <div id="rex-model__add-new-model" class="tool-button tool-button--inline tool-button--save">
-        <span class="btn-save--edited"> 
+        <span class="btn-save--edited">
         <?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?>
         </span>
-        <span class="btn-save--saved"> 
+        <span class="btn-save--saved">
         <?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?>
         </span>
     </div>
@@ -457,7 +457,7 @@ $tool_button_classes = 'tool-button';
 </script>
 
 <script type="text/x-tmpl" id="tmpl-rexbutton-tools">
-    <div class="rex-button-tools-container">        
+    <div class="rex-button-tools-container">
         <div class="tool-button tool-button_list--item tippy rex-edit-button" data-tippy-content="<?php _e('Config', 'rexpansive-builder'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
         </div>
