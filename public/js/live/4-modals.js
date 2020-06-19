@@ -2504,10 +2504,14 @@
           galleryEditorInstance.collapseElements();
 				}
 
-				Rexbuilder_Dom_Util.updateSectionFullHeight({
-					galleryInstance: galleryEditorInstance,
-					fullHeight: sectionProps.full_height
-				});
+				// Full height
+				// if (sectionProps.full_height !== $galleryElement.attr('data-full-height')) {
+				// if ('masonry' !== sectionProps.resetLayout) {
+					Rexbuilder_Dom_Util.updateSectionFullHeight({
+						galleryInstance: galleryEditorInstance,
+						fullHeight: sectionProps.full_height
+					});
+				// }
 
 				// Necessary to keep the top fixed toolbar synchronized
 				Rexbuilder_Util_Editor.sendParentIframeMessage({
