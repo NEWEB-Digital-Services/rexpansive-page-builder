@@ -4,11 +4,11 @@ var Section_NavLabel_Modal = (function ($) {
     var section_nav_label_modal_properties;
     var defaultNavLabel;
     var sectionTarget;
-    
+
     var _resetSectionNavLabel = function () {
         section_nav_label_modal_properties.$section_label.val(defaultNavLabel);
     };
-    
+
     var _updateSectionNavLabel = function(data) {
         sectionTarget = data.sectionTarget;
         section_nav_label_modal_properties.$section_label.val(data.sectionNavLabel);
@@ -42,7 +42,7 @@ var Section_NavLabel_Modal = (function ($) {
 
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_sectionNavLabel);
     };
-    
+
     var _linkDocumentListeners = function () {
         section_nav_label_modal_properties.$section_label.keyup(function (e) {
             _applySectionNavLabel();

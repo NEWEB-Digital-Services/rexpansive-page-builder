@@ -3502,8 +3502,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	/** @todo Change name to a more fitting one, because this function not only guesses
 	 * but also sets the % value */
 	function guessWidthToSet(inputType, formID, rowNumber, columnNumber, widthValue) {
-		// console.trace('guessing')
-
 		var setValueToParent =
 			-1 !== ['text', 'email', 'number', 'textarea', 'select'].indexOf(inputType) && /\%/.test(widthValue);
 

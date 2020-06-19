@@ -116,8 +116,6 @@
 				targetState.props = {};
 				var z;
 
-				// console.log( data[i].targets[j].props );
-
 				if ( 'self' === targetState.name ) { // row
 					for ( z=0; z < tracePropsSection.length; z++ ) {
 						// if (  'undefined' === typeof data[i].targets[j].props[tracePropsSection[z]] || '' === data[i].targets[j].props[tracePropsSection[z]] ) {

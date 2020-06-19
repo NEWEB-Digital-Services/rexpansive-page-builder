@@ -50,7 +50,7 @@ var Section_Modal = (function($) {
     SectionMargins_Modal.resetMargins();
     PhotoSwipe_Modal.resetPhotoswipe();
     Hold_Grid_Modal.reset();
-    FullHeight_Modal.resetFullHeight();
+    FullHeight_Modal.reset();
     SectionName_Modal.resetSectionName();
     Section_NavLabel_Modal.resetSectionNavLabel();
     Section_CustomClasses_Modal.reset();
@@ -62,8 +62,8 @@ var Section_Modal = (function($) {
     GridSeparators_Modal.updateDistances(data);
     SectionMargins_Modal.updateMargins(data);
     PhotoSwipe_Modal.updatePhotoswipe(data);
-    Hold_Grid_Modal.update(data);
-    FullHeight_Modal.updateFullHeight(data);
+		Hold_Grid_Modal.update(data);
+    FullHeight_Modal.update(data);
     SectionName_Modal.updateSectionName(data);
     Section_NavLabel_Modal.updateSectionNavLabel(data);
     Section_CustomClasses_Modal.update(data);
@@ -76,7 +76,7 @@ var Section_Modal = (function($) {
     SectionMargins_Modal.applySectionMargins();
     PhotoSwipe_Modal.applyPhotoswipeSetting();
     Hold_Grid_Modal.apply();
-    FullHeight_Modal.applyFullHeight();
+    FullHeight_Modal.apply();
     SectionName_Modal.applySectionName();
     Section_NavLabel_Modal.applySectionNavLabel();
     Section_CustomClasses_Modal.apply();

@@ -1755,7 +1755,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var $sectionData = $gallery
       .parents(".rexpansive_section")
       .children(".section-data");
-    $gallery.attr("data-layout", layout);
+		$gallery.attr("data-layout", layout);
     $gallery.attr("data-full-height", false);
     $sectionData.attr("data-layout", layout);
     $sectionData.attr("data-full_height", false);
@@ -1780,9 +1780,9 @@ var Rexbuilder_Dom_Util = (function($) {
     Rexbuilder_Util_Editor.updatingGridstack = false;
   };
 
-  var _updateSectionFullHeight = function(data) {
-    data.galleryInstance.updateFullHeight(data.fullHeight.toString() == "true");
-  };
+	function updateSectionFullHeight(data) {
+		data.galleryInstance.updateFullHeight(data.fullHeight.toString() == 'true');
+	}
 
   /**
    * Update the props of a section in a "bulky" way
@@ -1830,7 +1830,10 @@ var Rexbuilder_Dom_Util = (function($) {
       if ( ! changedData[prop] ) continue;
       switch( prop ) {
         case 'section_name':
-          _updateSectionName($section, defaultProps.sectionName);
+          _updateSectionName($section, defaultProps.section_name);
+					break;
+				case 'section_nav_label':
+          _updateSectionNavLabel( $section, defaultProps.section_nav_label );
           break;
         case 'color_bg_section':
         case 'color_bg_section_active':
@@ -1951,7 +1954,7 @@ var Rexbuilder_Dom_Util = (function($) {
           classChanged = true;
           break;
         case 'row_overlay_color':
-        case 'row_overlay_active':         // they go togheter, find a way to prevent double call
+        case 'row_overlay_active':
           if ( overlayChanged ) break;
 
           _updateSectionOverlay( $section, {
@@ -1961,6 +1964,7 @@ var Rexbuilder_Dom_Util = (function($) {
           overlayChanged = true;
 
           break;
+
         default: break;
       }
     }
@@ -2252,7 +2256,7 @@ var Rexbuilder_Dom_Util = (function($) {
         _updateSectionLayout($galleryElement, dataToUse);
         break;
       case "updateSectionFullHeight":
-        _updateSectionFullHeight(dataToUse);
+        updateSectionFullHeight(dataToUse);
         break;
       case "updateSectionBlocksDisposition":
         if (galleryEditorInstance !== undefined) {
@@ -2460,6 +2464,7 @@ var Rexbuilder_Dom_Util = (function($) {
     htmlToElement: htmlToElement,
     updateBulkSection: _updateBulkSection,
 		updateBulkBlock: updateBulkBlock,
-		updateRemovingBlock: updateRemovingBlock
+		updateRemovingBlock: updateRemovingBlock,
+		updateSectionFullHeight: updateSectionFullHeight
   };
 })(jQuery);

@@ -76,7 +76,7 @@
         galleryInstance: galleryInstance
       };
 
-      galleryInstance.updateFullHeight(data.fullHeight.toString() == "true");
+			galleryInstance.updateFullHeight(data.fullHeight.toString() == "true");
 
       var actionData = {
         fullHeight: data.fullHeight.toString(),
@@ -2395,9 +2395,12 @@
 			var defaultProps = '' !== defaultContent ? JSON.parse(defaultContent) : {};
 
 			if ('self' === targetInfo.rexID) {
-				// live synch of options
-				var traceSectionData = Rexbuilder_Util.editedDataInfo.getSectionData(targetInfo.sectionID);
-				Rexbuilder_Dom_Util.updateBulkSection(targetInfo, traceSectionData, defaultProps);
+				/* === Updating section and its blocks === */
+				Rexbuilder_Dom_Util.updateBulkSection(
+					targetInfo,
+					Rexbuilder_Util.editedDataInfo.getSectionData(targetInfo.sectionID),
+					defaultProps
+				);
 
 				// reset: no property customized on this layout
 				Rexbuilder_Util.editedDataInfo.setBulkSectionData( targetInfo.sectionID, false );
@@ -2417,17 +2420,17 @@
         }
         var $galleryElement = $section.find('.perfect-grid-gallery');
 
-        var dp;
+        var sectionProps;
         var i, tot = defaultProps.length;
         for( i=0; i<tot; i++ ) {
           if ( 'self' === defaultProps[i].name ) {
-            dp = defaultProps[i].props;
+            sectionProps = defaultProps[i].props;
             break;
           }
         }
 
         var galleryEditorInstance = $galleryElement.data().plugin_perfectGridGalleryEditor;
-        var resetLayout = ( Rexbuilder_Util.isMobile() ? 'masonry' : dp.layout );
+        var resetLayout = ( Rexbuilder_Util.isMobile() ? 'masonry' : sectionProps.layout );
 
         var data = {
           layout: resetLayout,
@@ -2437,9 +2440,10 @@
           }
         };
 
-        Rexbuilder_Section_Editor.updateSectionLayoutTool( $section, data );
-        Rexbuilder_Dom_Util.updateGridLayoutDomProperties( $galleryElement, data.layout );
-        galleryEditorInstance.updateGridLayout( data.layout );
+				// Resetting grid layout
+        Rexbuilder_Section_Editor.updateSectionLayoutTool($section, data);
+				Rexbuilder_Dom_Util.updateGridLayoutDomProperties($galleryElement, data.layout);
+				galleryEditorInstance.updateGridLayout(data.layout);
 
 				// Applying default props to all sections' blocks
 				defaultProps.forEach(function (prop) {
@@ -2451,10 +2455,15 @@
 						rexID: prop.name
 					};
 
-					var $block = $section.find('.rex-hide-element[data-rexbuilder-block-id="' + blockTargetInfo.rexID + '"]');
-					console.log( $block.length );
-					if (0 !== $block.length) {
-						Rexbuilder_Dom_Util.updateRemovingBlock($block, false, galleryEditorInstance);
+					// Restoring visibility of a block by passing false as second argument of the
+					// Rexbuilder_Dom_Util.updateRemovingBlock function. This is forced because it's sure that no block
+					// can be added in a layout that isn't the default one, therefore a non default layout can have
+					// a number of blocks <= the default number of blocks
+					var $hiddenBlock = $section.find(
+						'.rex-hide-element[data-rexbuilder-block-id="' + blockTargetInfo.rexID + '"]'
+					);
+					if (0 !== $hiddenBlock.length) {
+						Rexbuilder_Dom_Util.updateRemovingBlock($hiddenBlock, false, galleryEditorInstance);
 					}
 
 					Rexbuilder_Dom_Util.updateBulkBlock(
@@ -2467,22 +2476,32 @@
 					Rexbuilder_Util.editedDataInfo.setBulkBlockData(blockTargetInfo.sectionID, blockTargetInfo.rexID, false);
 				});
 
-        // fix elements heights
-        if ( resetLayout == "masonry" && ! dp.collapse_grid ) {
+        // fix blocks heights, i.e. with natural images that must shrink
+        if ( resetLayout == "masonry" && ! sectionProps.collapse_grid ) {
           galleryEditorInstance.updateBlocksHeight();
         }
 
         // set collapse elements
-        if ( Rexbuilder_Util.isMobile() || dp.collapse_grid ) {
+        if ( Rexbuilder_Util.isMobile() || sectionProps.collapse_grid ) {
           galleryEditorInstance.collapseElementsProperties();
           galleryEditorInstance.collapseElements();
-        }
+				}
+
+				Rexbuilder_Dom_Util.updateSectionFullHeight({
+					galleryInstance: galleryEditorInstance,
+					fullHeight: sectionProps.full_height
+				});
+
+				// Necessary to keep the top fixed toolbar synchronized
+				Rexbuilder_Util_Editor.sendParentIframeMessage({
+					eventName: 'rexlive:highlightRowSetData',
+					editedData: sectionProps
+				});
 
         // update size viewers
         galleryEditorInstance._updateElementsSizeViewers();
-
 			} else {
-				// live synch of options
+				/* === Updating a single block === */
 				Rexbuilder_Dom_Util.updateBulkBlock(
 					targetInfo,
 					Rexbuilder_Util.editedDataInfo.getBlockData(targetInfo.sectionID, targetInfo.rexID),
@@ -2503,7 +2522,7 @@
                 targetInfo.modelNumber +
                 '"]'
             )
-            .find('div [data-rexbuilder-block-id="' + targetInfo.rexID + '"]');
+						.find('div [data-rexbuilder-block-id="' + targetInfo.rexID + '"]');
         } else {
           $block = Rexbuilder_Util.$rexContainer
             .find('section[data-rexlive-section-id="' + targetInfo.sectionID + '"]')

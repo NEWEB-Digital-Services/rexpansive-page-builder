@@ -1396,7 +1396,7 @@
     },
 
     updateFullHeight: function(active) {
-      active = typeof active == "undefined" ? true : active.toString() == "true";
+			active = typeof active == "undefined" ? true : active.toString() == "true";
 
       this.properties.gridBlocksHeight = parseInt( this.element.getAttribute( "data-gs-current-height" ) );
       this.properties.gridBlocksHeight = ( 0 === this.properties.gridBlocksHeight ? 1 : this.properties.gridBlocksHeight );
@@ -1412,7 +1412,7 @@
         } else {
           cellHeight = this.properties.singleHeight;
         }
-      }
+			}
 
       this.updateGridstackStyles(cellHeight);
       this.$element.attr("data-full-height", active);

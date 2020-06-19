@@ -124,7 +124,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       if(event.data.eventName == "rexlive:traceVisibleRow" ) {
         $highlightSectionId.val(event.data.sectionTarget.sectionID);
         $highlightModelId.val(event.data.sectionTarget.modelNumber);
-        $highlightModelEditing.val(event.data.sectionTarget.modelEditing);
+				$highlightModelEditing.val(event.data.sectionTarget.modelEditing);
         hightlightRowInfo = event.data.rowInfo;
         _updateTopToolbar();
       }
@@ -406,7 +406,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
       if( event.data.eventName == "rexlive:deletePaletteOverlayColor" ) {
         Rexlive_Ajax_Calls.deletePaletteOverlayColor(event.data.overlay_data);
-      }
+			}
+
+      if (event.data.eventName == 'rexlive:highlightRowSetData') {
+				Rexbuilder_Util_Admin_Editor.highlightRowSetData(event.data.editedData);
+			}
     }
   };
 
@@ -1670,7 +1674,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var _highlightRowSetData = function( data ) {
     if( "undefined" !== typeof hightlightRowInfo && "" !== data && "undefined" !== typeof data ) {
       for( var attr in data ) {
-        hightlightRowInfo[attr] = data[attr];
+				hightlightRowInfo[attr] = data[attr];
       }
     }
   };
@@ -1695,7 +1699,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
     };
     Rexlive_Section_Overlay_Gradient.openModal(rowData);
-  };
+	};
 
   /**
    * Return the valid linear gradient CSS rule for the actual browser
