@@ -929,23 +929,6 @@ var Rexbuilder_App = (function($) {
     }
   }
 
-  /**
-   * Fixing both section and blocks videos proportions.
-   * The function called is based on DOM attributes
-   * dimensions of the video.
-   * @return  {void}
-   * @since   2.0.4
-   */
-  function _fixVideos() {
-    var tot_grids = gridInstances.length;
-  	var i = 0;
-
-  	for ( i = 0; i < tot_grids; i++ ) {
-  		// We call this function cause its already present on Rexbuilder_Dom_Util
-  		Rexbuilder_Dom_Util.fixVideoProportion( gridInstances[ i ].section );
-  	}
-	}
-
 	/**
 	 * Prevents <video> tag bug that auto scrolls window.
 	 * Controls if the page is the same.
@@ -1182,7 +1165,6 @@ var Rexbuilder_App = (function($) {
         gridInstances[i].fixAfterLoad();
       }
 
-      _fixVideos();       // Fixing video proportions
 			RexSlider.init();   // Starting slider
 
       Rexbuilder_Util.launchVideoPlugins();
@@ -1201,9 +1183,6 @@ var Rexbuilder_App = (function($) {
     }
 
 		launchFrontEndEffects();
-
-		// Fixing video proportions
-		_fixVideos();
 
 		Rexbuilder_Util.galleryPluginActive = true;
 
@@ -1350,10 +1329,6 @@ var Rexbuilder_App = (function($) {
 			}
 		}
 
-
-		// Fixing video proportions, needed because videos
-		// must keep proportions between resizes
-		_fixVideos();
 
     if ( Rexbuilder_Util.changedFrontLayout ) {
 			// Resetting fast load (that contains IntersectionObserver)

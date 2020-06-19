@@ -3023,10 +3023,6 @@ var Rexbuilder_Util = (function($) {
       Rexbuilder_Dom_Util.updateSectionVideoBackground($section, videoOptions);
     // }
 
-    if ( Rexbuilder_Util.editorMode ) {
-    	$gallery.perfectGridGalleryEditor( 'fixVideoProportion' );
-    }
-
     var imageOptions = {
       active:
         typeof targetProps["image_bg_section_active"] == "undefined"
@@ -3446,7 +3442,6 @@ var Rexbuilder_Util = (function($) {
         galleryEditorInstance.setFullWidthNaturalBackground();
         galleryEditorInstance.setNaturalBackground();
         galleryEditorInstance.updateBlocksHeight();
-        galleryEditorInstance.fixVideoProportion();
         galleryEditorInstance.commitGridstack();
       }
 

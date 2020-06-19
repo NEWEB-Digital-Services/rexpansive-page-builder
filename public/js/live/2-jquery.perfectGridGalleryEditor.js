@@ -151,48 +151,6 @@
   }
 
   /**
-   * Find max width video proprtion
-   * @param  {Node} el video element
-   * @return {String}    max width value in percentage
-   * @since  2.0.2
-   */
-  function findVideoMaxWidth(el) {
-		var c_w, c_h, v_w, v_h;
-    v_w = el.getAttribute('data-rex-video-width');
-    v_h = el.getAttribute('data-rex-video-height');
-    var maxWidth = '100%';
-
-    c_w = el.offsetWidth;
-    c_h = el.offsetHeight;
-
-    if ( ( v_w / v_h ) > ( c_w / c_h ) ) {
-      maxWidth =  ( ( ( c_h * v_w ) / v_h ) * 100 ) / c_w;
-      maxWidth = maxWidth + '%';
-    }
-
-    return maxWidth;
-  }
-
-  /**
-   * Fix video proprtion of a single element
-   * Used on live editor
-   * @param  {Node} el block element
-   * @return {void}
-   * @since  2.0.2
-   */
-  function fixVideoProportionSingleElement(el) {
-		// var video = el.getElementsByClassName('rex-video-wrap');
-
-		// if (video.matches('.rexpansive_section > .rex-video-wrap')) return
-
-    // if( video.length > 0 ) {
-		// 	console.log( video[0].children[0].matches('.rexpansive_section  > .rex-video-wrap') );
-
-    //   video[0].children[0].style.maxWidth = findVideoMaxWidth(video[0]);
-    // }
-  }
-
-  /**
    * Calculate the height of the text content of the block
    * Add the padding of the parent blocks
    * @param {jQuery Object} $textWrap object that contains the text content of the block
@@ -377,15 +335,6 @@
         $.extend(true, {}, this.properties.reverseDataGridDisposition)
       );
       this.properties.reverseDataGridDisposition = actionData;
-    }
-
-    if (
-      Rexbuilder_Util_Editor.addingNewBlocks ||
-      Rexbuilder_Util_Editor.updatingSectionLayout ||
-      this.properties.collapsingElements ||
-      Rexbuilder_Util_Editor.blockCopying
-    ) {
-      this.fixVideoProportion();
     }
   }
 
@@ -753,8 +702,6 @@
         var blockData = items[i].querySelector('.rexbuilder-block-data');
         this.updateElementDataHeightProperties( blockData, parseInt( items[i].getAttribute('data-gs-height') ) );
       }
-
-      this.fixVideoProportion();
     },
 
     makeWidgets: function() {
@@ -2816,8 +2763,6 @@
 
           gallery.updateAllElementsProperties();
 
-          fixVideoProportionSingleElement(elem);
-
           gallery.updateSizeViewerText(elem, undefined, undefined, size_viewer, size_viewer_mobile);
           gallery.checkBlockDimension(elem);
 
@@ -3696,31 +3641,6 @@
         var sizes = this.getBlockSizeOnCollapse( reverse_items[i] );
         this.properties.gridstackInstance.resize(reverse_items[i], sizes.width, sizes.height);
       }
-    },
-
-    /**
-     * Fix the mp4 video proportion, set them at maximum width,
-     * to avoid zooms or cuts
-     * @return {void}
-     * @since  2.0.2
-     */
-    fixVideoProportion: function() {
-      // var videos = [].slice.call( this.section.getElementsByClassName('rex-video-wrap') );
-      // var tot_videos = videos.length, i = 0;
-      // var rules = [];
-
-      // // first, find max width rules, based on video and container dimension
-      // for( i=0; i < tot_videos; i++ ) {
-			// 	console.log( videos[i].matches('.rexpansive_section  > .rex-video-wrap') );
-
-      //   rules.push( findVideoMaxWidth(videos[i]) );
-      // }
-
-      // // apply the founded rules
-      // // much fast this way
-      // for( i=0; i < tot_videos; i++ ) {
-      //   videos[i].children[0].style.maxWidth = rules[i];
-      // }
     },
 
     fixBlockDomOrder: function() {

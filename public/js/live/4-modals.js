@@ -1154,7 +1154,6 @@
       };
 
       Rexbuilder_Dom_Util.updateVideos($section, videoOptions);
-      Rexbuilder_Dom_Util.fixVideoProportion($section[0]);
 
       var actionData = {
         mp4Data: {
@@ -1736,10 +1735,6 @@
       };
 
       Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
-      Rexbuilder_Dom_Util.fixVideoProportion($itemContent.get(0));
-      // if (galleryEditorInstance.settings.galleryLayout == "masonry") {
-        //galleryEditorInstance.updateElementHeight($elem[0]);
-      // }
 
       var actionData = {
         $itemContent: $itemContent,
