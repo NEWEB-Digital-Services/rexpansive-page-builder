@@ -424,7 +424,10 @@
         .parent()
         .hasClass("full-disposition")
         ? "full"
-        : "boxed";
+				: "boxed";
+
+			Rexbuilder_Util.editedDataInfo.setSectionData($section.attr('data-rexlive-section-id'), 'dimension');
+			Rexbuilder_Util.editedDataInfo.setSectionData($section.attr('data-rexlive-section-id'), 'section_width');
 
       var actionData = {
         section_width: sectionWidth,
@@ -2476,10 +2479,24 @@
 					Rexbuilder_Util.editedDataInfo.setBulkBlockData(blockTargetInfo.sectionID, blockTargetInfo.rexID, false);
 				});
 
+				// Fix section width type
+				Rexbuilder_Section_Editor.updateSectionDimensionTool($section, {
+					dimension: '100%' === sectionProps.section_width ? 'full' : 'boxed'
+				});
+
+				galleryEditorInstance.updateSectionWidthWrap(sectionProps.section_width);
+				galleryEditorInstance.updateGridstackWidth();
+
+				Rexbuilder_Dom_Util.updateSectionWidthData($section, {
+					sectionWidth: sectionProps.section_width,
+					widthType: '100%' === sectionProps.section_width ? 'full' : 'boxed'
+				});
+
+
         // fix blocks heights, i.e. with natural images that must shrink
         if ( resetLayout == "masonry" && ! sectionProps.collapse_grid ) {
           galleryEditorInstance.updateBlocksHeight();
-        }
+				}
 
         // set collapse elements
         if ( Rexbuilder_Util.isMobile() || sectionProps.collapse_grid ) {

@@ -1822,7 +1822,8 @@ var Rexbuilder_Dom_Util = (function($) {
     var gutterChanged = false;
     var marginChanged = false;
     var overlayChanged = false;
-    var classChanged = false;
+		var classChanged = false;
+		var sectionWidthChanged = false;
 
     var galleryInstance = $section.find('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
 
@@ -1963,7 +1964,7 @@ var Rexbuilder_Dom_Util = (function($) {
           });
           overlayChanged = true;
 
-          break;
+					break;
 
         default: break;
       }

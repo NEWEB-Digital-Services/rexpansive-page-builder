@@ -1575,8 +1575,15 @@ var Rex_Save_Listeners = (function($) {
       // default always save, otherwise check
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.color_bg_section_active ) ) {
         props["color_bg_section_active"] = color_bg_section_active;
-      }
-      props["dimension"] = dimension;
+			}
+
+      if (
+				'default' === Rexbuilder_Util.activeLayout ||
+				('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.dimension)
+			) {
+				props['dimension'] = dimension;
+			}
+
       // default always save, otherwise check
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.margin ) ) {
         props["margin"] = margin;
@@ -1634,8 +1641,15 @@ var Rex_Save_Listeners = (function($) {
 
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.custom_classes ) ) {
         props["custom_classes"] = custom_classes;
-      }
-      props["section_width"] = section_width;
+			}
+
+			if (
+				'default' === Rexbuilder_Util.activeLayout ||
+				('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.section_width)
+			) {
+				props['section_width'] = section_width;
+			}
+
       if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_separator_top ) ) {
         props["row_separator_top"] = row_separator_top;
       }
