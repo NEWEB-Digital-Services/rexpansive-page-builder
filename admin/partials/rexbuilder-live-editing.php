@@ -19,7 +19,7 @@ if( isset($_GET['post']) && "" !== $_GET['post'] ) {
 	$post_id = $_GET['post'];
 }
 
-$source = apply_filters( 'rexbuilder_iframe_src', get_permalink( $post_id ) );
+$source = apply_filters( 'rexbuilder_iframe_src', get_permalink( $post_id ), $post_id );
 if( get_post_status( $post_id ) == "auto-draft" ) {
 	$source = add_query_arg( array(
 		'preview' => 'true',

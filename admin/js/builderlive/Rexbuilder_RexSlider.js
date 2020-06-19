@@ -314,7 +314,7 @@ var Rexbuilder_RexSlider = (function($) {
       rexslider_modal_properties.$slider_autostart.prop("checked", true);
       rexslider_modal_properties.$slider_prev_next.prop("checked", true);
       rexslider_modal_properties.$slider_dots.prop("checked", true);
-      rexslider_modal_properties.$slider_natural_blur.prop('checked', true);
+      rexslider_modal_properties.$slider_natural_blur.prop('checked', false);
 
       rexslider_modal_properties.$save_button.attr("data-block-to-edit", "");
       rexslider_modal_properties.$save_button.attr("data-slider-to-edit", "");

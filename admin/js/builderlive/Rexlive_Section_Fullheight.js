@@ -12,6 +12,11 @@ var FullHeight_Modal = (function ($) {
 	function updateFullHeight(data) {
 		sectionTarget = data.sectionTarget;
 		section_layout_modal_properties.$is_full.prop('checked', data.fullHeight == 'true');
+		if ( 'masonry' === data.activeLayout ) {
+			section_layout_modal_properties.$is_full.prop('disabled', true);
+		} else {
+			section_layout_modal_properties.$is_full.prop('disabled', false);
+		}
 	}
 
 	function _getData() {

@@ -72,6 +72,14 @@
           color: $palette-color-12;
         }
       }
+      + span {
+        cursor: default;
+        color: $palette-color-12;
+
+        @include style-icon {
+          fill: $palette-color-12;
+        }
+      }
     }
   }
 }
