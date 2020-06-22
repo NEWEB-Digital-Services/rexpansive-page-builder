@@ -219,7 +219,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var section = $section[0];
 
     if ( ! Rexbuilder_Util.editorMode ) {
-      section.setAttribute('data-src', data.urlImage)
+      section.setAttribute('data-src', data.urlImage);
     } else {
       section.style.backgroundImage = "url(" + data.urlImage + ")";
     }
@@ -369,10 +369,7 @@ var Rexbuilder_Dom_Util = (function($) {
 		var deleteImageBackgroundButton = block.querySelector('.deactivate-block-image-background');
 
 		$(deleteImageBackgroundButton).parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
-		Rexbuilder_Util.addClass(
-			block.querySelector('.rexlive-block-toolbox.bottom-tools .edit-block-image-position'),
-			'tool-button--hide'
-		);
+		Rexbuilder_Util.addClass( block.querySelector('.rexlive-block-toolbox.bottom-tools .edit-block-image-position'), 'tool-button--hide' );
 
 		$(block)
 			.find('.rexlive-block-toolbox.top-tools .edit-block-image')
@@ -468,9 +465,8 @@ var Rexbuilder_Dom_Util = (function($) {
   var _removeMp4Video = function($target, removeFromDom) {
 		var $videoWrap = $target.children(".rex-video-wrap");
     var $toggleAudio = $target.children(".rex-video-toggle-audio");
-    if ($videoWrap.length != 0) {
-      removeFromDom =
-        typeof removeFromDom == "undefined" ? true : removeFromDom;
+    if ( $videoWrap.length != 0 ) {
+      removeFromDom = typeof removeFromDom == "undefined" ? true : removeFromDom;
       var videoEl = $videoWrap.find("video")[0];
       videoEl.pause();
       videoEl.currentTime = 0;
@@ -629,7 +625,6 @@ var Rexbuilder_Dom_Util = (function($) {
       // $target.prepend(
       //   tmpl("tmpl-video-youtube", { url: urlYoutube, audio: !hasAudio })
       // );
-      console.log(urlYoutube)
       $target.prepend('<div class="rex-youtube-wrap" data-property="{videoURL:\'' + urlYoutube + '\',containment:\'self\',startAt:0,mute:' + !hasAudio + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>');
       $target.children(".rex-youtube-wrap").YTPlayer();
     }
@@ -697,18 +692,38 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
+  /**
+   * Update block video tools
+   * @param  {jQuery} $target block target
+   * @param  {Boolean} hide    video active or not
+   * @return {void}
+   * @since  2.0.6
+   */
+  var _updateBlockVideoTools = function( $target, hide ) {
+    var $editVideoTopTools = $target.find('.rexlive-block-toolbox.top-tools .edit-block-video-background');
+    var $editVideoBottomTools = $target.find('.rexlive-block-toolbox.bottom-tools .edit-block-video-background');
+
+    if( hide ) {
+      $editVideoTopTools.parent().removeClass('tool-button--hide');
+      $editVideoBottomTools.parent().addClass('tool-button--hide');
+    } else {
+      $editVideoTopTools.parent().addClass('tool-button--hide');
+      $editVideoBottomTools.parent().removeClass('tool-button--hide');
+    }
+  };
+
   var _updateVideos = function($target, videoOptions) {
     var targetType = "";
     var $sectionData, $elemData;
     var $el;
-    if ($target.hasClass("rexpansive_section")) {
+    if ( $target.hasClass("rexpansive_section") ) {
       $sectionData = $target.children(".section-data");
       targetType = "section";
-    } else if ($target.hasClass("grid-item-content")) {
-      $el = $target.parents(".grid-stack-item")
+    } else if ( $target.hasClass("grid-item-content") ) {
+      $el = $target.parents(".grid-stack-item");
       $elemData = $el.children(".rexbuilder-block-data");
       targetType = "block";
-    } else if ($target.hasClass("rex-slider-video-wrapper")) {
+    } else if ( $target.hasClass("rex-slider-video-wrapper") ) {
       targetType = "slide";
     } else {
       return;
@@ -761,6 +776,9 @@ var Rexbuilder_Dom_Util = (function($) {
         $el.addClass('block-w-html-video');
       } else {
         $el.removeClass('block-w-html-video');
+      }
+      if ( Rexbuilder_Util.editorMode) {
+        _updateBlockVideoTools( $el, ( '' === type ) );
       }
     } else if (targetType == "slide") {
     }

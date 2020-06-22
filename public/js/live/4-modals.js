@@ -1182,6 +1182,12 @@
           Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_url_vimeo_section' );
           break;
         default:
+          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_id_section' );
+          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_mp4_url' );
+          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_width_section' );
+          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_height_section' );
+          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_url_section' );
+          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_url_vimeo_section' );
           break;
       }
 
