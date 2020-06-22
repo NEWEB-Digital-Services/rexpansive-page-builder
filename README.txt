@@ -200,8 +200,23 @@ For the more experienced among us: you can insert CSS anywhere.
 
 == Changelog ==
 
-= 2.0.6 –  =
+= 2.0.6 – June 23, 2020 =
+ * Update: Prevent the possibility to set Full Height on Masonry rows
+ * Update: When replacing an image the block maintain its dimensions
+ * Update: Videos on blocks and rows fits the entire element
+ * Update: Confirm/Reset buttons on color pickers
+ * Update: Reset on row resets all the blocks properties and dimensions with the "Desktop" default
+ * Update: Reset on block reset the block properties and dimensions with the "Desktop" default
+ * Update: On new RexSlider removed blur option by default
+ * Fixed: Handling correctly the remove of images or videos from blocks on layouts different from "Destkop"
  * Fixed: Generation of pages saved with old builder (versions prior to 2.0)
+ * Fixed: On builder, RexButton with page anchor scrolls down when clicked
+ * Fixed: Editor HTML not closing when click "Save"
+ * Fixed: Removed outline from inputs when focused on CF7 forms
+ * Fixed: Synchrony changes of CF7 forms
+ * Fixed: When editing RexButton the "Save Page" button now becomes grey
+ * Fixed: On small blocks there was not possibile to use all the settings buttons
+ * Fixed: Correctly add a min height on empty rows
 
 = 2.0.5 – May 29, 2020 =
  * Added: Confirm/Reset buttons to confirm or reset changes made inside a modal or with a color picker

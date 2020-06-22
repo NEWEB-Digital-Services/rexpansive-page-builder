@@ -3,7 +3,7 @@
 	<latest>2.0.6</latest>
 	<changelog>
 		<![CDATA[
-			<h4><strong>v2.0.6</strong> – June 22, 2020</h4>
+			<h4><strong>v2.0.6</strong> – June 23, 2020</h4>
 			<p><strong>Update</strong>: Prevent the possibility to set Full Height on Masonry rows</p>
 			<p><strong>Update</strong>: When replacing an image the block maintain its dimensions</p>
 			<p><strong>Update</strong>: Videos on blocks and rows fits the entire element</p>
