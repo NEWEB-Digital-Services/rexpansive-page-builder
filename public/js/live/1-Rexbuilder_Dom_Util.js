@@ -626,6 +626,7 @@ var Rexbuilder_Dom_Util = (function($) {
       // $target.prepend(
       //   tmpl("tmpl-video-youtube", { url: urlYoutube, audio: !hasAudio })
       // );
+      console.log(urlYoutube)
       $target.prepend('<div class="rex-youtube-wrap" data-property="{videoURL:\'' + urlYoutube + '\',containment:\'self\',startAt:0,mute:' + !hasAudio + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>');
       $target.children(".rex-youtube-wrap").YTPlayer();
     }
@@ -695,12 +696,14 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _updateVideos = function($target, videoOptions) {
     var targetType = "";
+    var $sectionData, $elemData;
+    var $el;
     if ($target.hasClass("rexpansive_section")) {
-      var $sectionData = $target.children(".section-data");
+      $sectionData = $target.children(".section-data");
       targetType = "section";
     } else if ($target.hasClass("grid-item-content")) {
-      var $el = $target.parents(".grid-stack-item")
-      var $elemData = $el.children(".rexbuilder-block-data");
+      $el = $target.parents(".grid-stack-item")
+      $elemData = $el.children(".rexbuilder-block-data");
       targetType = "block";
     } else if ($target.hasClass("rex-slider-video-wrapper")) {
       targetType = "slide";

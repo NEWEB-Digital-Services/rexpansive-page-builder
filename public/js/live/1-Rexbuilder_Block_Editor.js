@@ -373,7 +373,7 @@ var Rexbuilder_Block_Editor = (function($) {
           audio: "",
           typeVideo: ""
         }
-      }
+      };
 
       var event = jQuery.Event("rexlive:update_block_background_video");
       event.settings = settings;
