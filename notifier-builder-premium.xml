@@ -3,8 +3,23 @@
 	<latest>2.0.6</latest>
 	<changelog>
 		<![CDATA[
-			<h4><strong>v2.0.6</strong> – </h4>
+			<h4><strong>v2.0.6</strong> – June 22, 2020</h4>
+			<p><strong>Update</strong>: Prevent the possibility to set Full Height on Masonry rows</p>
+			<p><strong>Update</strong>: When replacing an image the block maintain its dimensions</p>
+			<p><strong>Update</strong>: Videos on blocks and rows fits the entire element</p>
+			<p><strong>Update</strong>: Confirm/Reset buttons on color pickers</p>
+			<p><strong>Update</strong>: Reset on row resets all the blocks properties and dimensions with the "Desktop" default</p>
+			<p><strong>Update</strong>: Reset on block reset the block properties and dimensions with the "Desktop" default</p>
+			<p><strong>Update</strong>: On new RexSlider removed blur option by default</p>
+			<p><strong>Fixed</strong>: Handling correctly the remove of images or videos from blocks on layouts different from "Destkop"</p>
 			<p><strong>Fixed</strong>: Generation of pages saved with old builder (versions prior to 2.0)</p>
+			<p><strong>Fixed</strong>: On builder, RexButton with page anchor scrolls down when clicked</p>
+			<p><strong>Fixed</strong>: Editor HTML not closing when click "Save"</p>
+			<p><strong>Fixed</strong>: Removed outline from inputs when focused on CF7 forms</p>
+			<p><strong>Fixed</strong>: Synchrony changes of CF7 forms</p>
+			<p><strong>Fixed</strong>: When editing RexButton the "Save Page" button now becomes grey</p>
+			<p><strong>Fixed</strong>: On small blocks there was not possibile to use all the settings buttons</p>
+			<p><strong>Fixed</strong>: Correctly add a min height on empty rows</p>
 			<h4><strong>v2.0.5</strong> – May 29, 2020</h4>
 			<p><strong>Added</strong>: Confirm/Reset buttons to confirm or reset changes made inside a modal or with a color picker</p>
 			<p><strong>Added</strong>: Row label, to customize the navigator labels</p>
