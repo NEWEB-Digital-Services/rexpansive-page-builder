@@ -268,34 +268,34 @@
 	function _init() {
 		// get RexGrid options
 		_getGridAttributes.call( this );
-		
+
 		// Getting gutters from DOM attributes
 		_getDOMGutterOptions.call( this );
-		
+
 		// Setting instance properties
 		_setGridGutterProperties.call( this );
 		_setBlocksGutterProperties.call( this );
-		
+
 		// Applying grid separators
 		_applyGridSeparators.call( this );
-		
+
 		// Calculations of grid width. In this way it's possible to access to this
 		// value without causing a layout reflow
 		_calcGridBaseAttrs.call( this );
-		
+
 		// Finding the blocks in the DOM
 		_getGridBlocks.call( this );
-		
+
 		// check full height
 		_checkFullHeight.call( this );
-		
+
 		// Applying blocks separators
 		_applyBlocksSeparators.call( this );
-		
+
 		// Calculations
 		this.calcAllBlocksHeights();
 		this.calcAllBlocksTops();
-		
+
 		_setGridHeight.call( this );
 
 		instances.push( this );
@@ -322,8 +322,12 @@
 			var topSeparator = this.properties.gridTopSeparator - this.properties.halfSeparatorTop;
 			var bottomSeparator = this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom;
 
+			console.log( this.properties.fullHeightOffset );
+
 			if ( 0 !== heightInUnits ) {
-				this.properties.singleHeight = ( globalViewportSize.height - ( topSeparator + bottomSeparator ) ) / heightInUnits;
+				this.properties.singleHeight =
+					(globalViewportSize.height - this.properties.fullHeightOffset - (topSeparator + bottomSeparator)) /
+					heightInUnits;
 			}
 		}
 	}
@@ -428,7 +432,7 @@
 	 */
 	function _getGridAttributes() {
 		if ( this.sectionData.getAttribute( 'data-row_edited_live' ) != 'true' ) {
-			/** @todo set to false on change layout */
+			/** @todo set to false on change layout ? */
 			this.properties.editedFromBackend = true;
 		}
 
@@ -436,6 +440,10 @@
 		this.properties.noMobileLayoutSaved = 'true' === this.sectionData.getAttribute('data-no-mobile-layout');
 		this.properties.oneColumnModeActive = 'true' === this.sectionData.getAttribute('data-collapse-grid');
 		this.properties.fullHeight = 'true' === this.element.getAttribute('data-full-height');
+
+		// Defaults silently to 0 if the data attribute is not a number
+		var fullHeightOffset = parseInt(this.element.dataset.fullHeightOffset);
+		this.properties.fullHeightOffset = isNaN(fullHeightOffset) ? 0 : fullHeightOffset;
 	}
 
 	function _getDOMGutterOptions() {
@@ -633,7 +641,7 @@
 	}
 
 	/**
-	 * Fix natural image with a proper class to style correctly 
+	 * Fix natural image with a proper class to style correctly
 	 * the image in background as a natural image with IMG tag
 	 * @param		{RexBlock}	gridBlockObj	RexBlock instance of the block
 	 * 																		with the image to fix
@@ -792,7 +800,7 @@
 				sliderHeight
 			);
 		}
-		
+
 		var resizeNeeded = true;
 		var goToStartH = false;
 
@@ -924,7 +932,7 @@
 	}
 
 	/**
-	 * 
+	 *
 	 * @param  {[type]} toMaintainCoords [description]
 	 * @return {[type]}                  [description]
 	 */
@@ -990,7 +998,7 @@
 	 */
 	RexGrid.prototype.fixBlockHeight = function( gridBlockObj ) {
 		var newH;
-		
+
 		if ( this.properties.oneColumnModeActive ) {
 			newH = _getBlockHeightOnCollapse.call( this, gridBlockObj );
 		} else {
@@ -1102,7 +1110,7 @@
 	RexGrid.prototype.sortBlocks = function() {
 		this.gridBlocks.sort( function( blockA, blockB ) {
 			return ( blockA.domIndex - blockB.domIndex );
-		} );		
+		} );
 	};
 
 	/**
@@ -1150,10 +1158,10 @@
 
 			this.gridBlocks = temp;
 		}
-		
+
 		// Fix blocks properties
 		this.updateGridBlocks();
-		
+
 		// Sorting blocks based on real order
 		// Needed because there could be blocks in different
 		// orders when changing layout
@@ -1194,7 +1202,7 @@
 
 			this.fixAllBlocksHeights();
 			this.fixAllBlockPositions();
-			
+
 			for( var i=0; i < this.gridBlocksTotal; i++ ) {
 				for( var j=0; j < this.properties.filterCoords.length; j++ ) {
 					if ( this.properties.filterCoords[j].el === this.gridBlocks[i].el ) {
@@ -1475,6 +1483,30 @@
 		}
 
 		instances = instances.filter(removeInstance.bind(this));
+	};
+
+	/**
+	 * Set both the data-full-height-offset attribute in the grid and the RexGrid instance property.
+	 * @param	{Number}	newOffset		(can be a String, it will be cast)
+	 * @since	1.0.1
+	 */
+	RexGrid.prototype.setFullHeightOffset = function (newOffset) {
+		if (!newOffset) {
+			console.error('An offset must be passed!');
+			return;
+		}
+
+		if ('string' === typeof newOffset) {
+			newOffset = parseInt(newOffset);
+		}
+
+		if ('number' !== typeof newOffset || isNaN(newOffset)) {
+			console.error('The offset passed must be either a String or a Number');
+			return;
+		}
+
+		this.element.dataset.fullHeightOffset = newOffset;
+		this.properties.fullHeightOffset = newOffset;
 	};
 
 	/**

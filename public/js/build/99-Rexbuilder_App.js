@@ -1282,6 +1282,8 @@ var Rexbuilder_App = (function($) {
 
   	// Find and set new layout information
   	if ( Rexbuilder_Util.changedFrontLayout ) {
+			doAction( 'builder_before_layout_change' );
+
       var choosedLayout = Rexbuilder_Util.chooseLayout();
   		Rexbuilder_Util.handleLayoutChange( choosedLayout );
 		}
