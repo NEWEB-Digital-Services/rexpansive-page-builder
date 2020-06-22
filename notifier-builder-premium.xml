@@ -4,15 +4,15 @@
 	<changelog>
 		<![CDATA[
 			<h4><strong>v2.0.6</strong> – June 23, 2020</h4>
-			<p><strong>Update</strong>: Prevent the possibility to set Full Height on Masonry rows</p>
-			<p><strong>Update</strong>: When replacing an image the block maintain its dimensions</p>
-			<p><strong>Update</strong>: Videos on blocks and rows fits the entire element</p>
-			<p><strong>Update</strong>: Confirm/Reset buttons on color pickers</p>
-			<p><strong>Update</strong>: Reset on row resets all the blocks properties and dimensions with the "Desktop" default</p>
-			<p><strong>Update</strong>: Reset on block reset the block properties and dimensions with the "Desktop" default</p>
-			<p><strong>Update</strong>: On new RexSlider removed blur option by default</p>
+			<p><strong>Updated</strong>: Prevent the possibility to set Full Height on Masonry rows</p>
+			<p><strong>Updated</strong>: When replacing an image the block maintain its dimensions</p>
+			<p><strong>Updated</strong>: Videos on blocks and rows fits the entire element</p>
+			<p><strong>Updated</strong>: Confirm/Reset buttons on color pickers</p>
+			<p><strong>Updated</strong>: Reset on row resets all the blocks properties and dimensions with the "Desktop" default</p>
+			<p><strong>Updated</strong>: Reset on block reset the block properties and dimensions with the "Desktop" default</p>
+			<p><strong>Updated</strong>: On new RexSlider removed blur option by default</p>
 			<p><strong>Fixed</strong>: Handling correctly the remove of images or videos from blocks on layouts different from "Destkop"</p>
-			<p><strong>Fixed</strong>: Generation of pages saved with old builder (versions prior to 2.0)</p>
+			<p><strong>Fixed</strong>: Generation of pages saved with old builder (versions prior to 2.0.0)</p>
 			<p><strong>Fixed</strong>: On builder, RexButton with page anchor scrolls down when clicked</p>
 			<p><strong>Fixed</strong>: Editor HTML not closing when click "Save"</p>
 			<p><strong>Fixed</strong>: Removed outline from inputs when focused on CF7 forms</p>
@@ -25,12 +25,12 @@
 			<p><strong>Added</strong>: Row label, to customize the navigator labels</p>
 			<p><strong>Added</strong>: Reset button on rows and blocks to reset their properties with the "Desktop" default</p>
 			<p><strong>Added</strong>: CF7 forms on lateral panel. Now it's possible to customize CF7 forms directly from the builder. Old forms will not be affected</p>
-			<p><strong>Update</strong>: Block dimensions indicator is now at bottom left of the block</p>
-			<p><strong>Update</strong>: On image size change, if user set natural, the block auto resizes to fit image</p>
-			<p><strong>Update</strong>: When dragging a RexButton the lateral menu disappears / appears acording to the mouse position</p>
-			<p><strong>Update</strong>: When dragging a RexButton the placeholder is more visible</p>
-			<p><strong>Update</strong>: Photoswipe on a RexSlider opens only the images in the slider</p>
-			<p><strong>Update</strong>: Change a row or a block property on layouts different from default, saves only that property, leaving the other properties synchronized with the "Desktop" default ones</p>
+			<p><strong>Updated</strong>: Block dimensions indicator is now at bottom left of the block</p>
+			<p><strong>Updated</strong>: On image size change, if user set natural, the block auto resizes to fit image</p>
+			<p><strong>Updated</strong>: When dragging a RexButton the lateral menu disappears / appears acording to the mouse position</p>
+			<p><strong>Updated</strong>: When dragging a RexButton the placeholder is more visible</p>
+			<p><strong>Updated</strong>: Photoswipe on a RexSlider opens only the images in the slider</p>
+			<p><strong>Updated</strong>: Change a row or a block property on layouts different from default, saves only that property, leaving the other properties synchronized with the "Desktop" default ones</p>
 			<p><strong>Fixed</strong>: On a copied row, text editor doesn't work</p>
 			<p><strong>Fixed</strong>: On an imported template, at the first moment the tools are not correctly visible</p>
 			<p><strong>Fixed</strong>: On an imported template, text editor doesn't work</p>
@@ -38,8 +38,8 @@
  			<p><strong>Fixed</strong>: Images url on installed contents</p>
 			<h4><strong>v2.0.4</strong> – April 29, 2020</h4>
 			<p><strong>Added</strong>: Lazy load content by default on every page</p>
-			<p><strong>Update</strong>: Improved performances on frontend</p>
-			<p><strong>Update</strong>: Navigator style</p>
+			<p><strong>Updated</strong>: Improved performances on frontend</p>
+			<p><strong>Updated</strong>: Navigator style</p>
 			<p><strong>Fixed</strong>: Block heights calculation</p>
 			<p><strong>Fixed</strong>: When a lot of text was copied within a block, the top bar disappeared</p>
 			<p><strong>Fixed</strong>: Builder tools style problems with TwentyTwenty Theme</p>
@@ -48,7 +48,7 @@
 			<p><strong>Added</strong>: Fast Load (loads images and videos on page scroll)</p>
 			<p><strong>Added</strong>: Custom class for the RexButton</p>
 			<p><strong>Added</strong>: Inline icon option</p>
-			<p><strong>Update</strong>: Mp4 videos are not cut</p>
+			<p><strong>Updated</strong>: Mp4 videos are not cut</p>
 			<p><strong>Fixed</strong>: Block heights on other layouts than default</p>
 			<p><strong>Fixed</strong>: Pasting text inside other text</p>
 			<p><strong>Fixed</strong>: Page cloning with a RexSlider</p>
@@ -59,7 +59,7 @@
 			<p><strong>Fixed</strong>: Block with RexSlider height</p>
 			<h4><strong>v2.0.2</strong> – November 15, 2019</h4>
 			<p><strong>Added</strong>: Hold grid button (prevents collapse on mobile)</p>
-			<p><strong>Update</strong>: Background image on block with text remains full when added</p>
+			<p><strong>Updated</strong>: Background image on block with text remains full when added</p>
 			<p><strong>Fixed</strong>: Mp4 video size</p>
 			<p><strong>Fixed</strong>: YouTube video position</p>
 			<h4><strong>v2.0.1</strong> – October 28, 2019</h4>
@@ -73,9 +73,9 @@
 			<p><strong>Fixed</strong>: Video inside slider on iOS</p>
 			<p><strong>Fixed</strong>: Inline YouTube video</p>
 			<h4><strong>v2.0.0</strong> – August 22, 2019</h4>
-			<p><strong>Update</strong>: LIVE Page Builder available!!</p>
+			<p><strong>Updated</strong>: LIVE Page Builder available!!</p>
 			<h4><strong>v1.1.4</strong> – December 28, 2018</h4>
-			<p><strong>Update</strong>: WordPress 5.0 and Gutenberg integration</p>
+			<p><strong>Updated</strong>: WordPress 5.0 and Gutenberg integration</p>
 			<p><strong>Fixed</strong>: Mobile row and background YouTube video</p>
 			<p><strong>Fixed</strong>: Slider with multiple videos</p>
 			<p><strong>Fixed</strong>: WPML content import</p>
