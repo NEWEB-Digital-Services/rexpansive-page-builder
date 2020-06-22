@@ -119,7 +119,7 @@ defined( 'ABSPATH' ) or exit;
                         </div>
                     </div>
                     <div class="clearfix">
-                        <div class="block-padding-wrap">				
+                        <div class="block-padding-wrap">
                             <input type="text" id="block-padding-left" class="block-padding-values" name="block-padding-left" value="5" />
                             <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Left">a</i>
                         </div>
@@ -130,7 +130,7 @@ defined( 'ABSPATH' ) or exit;
                         </div>
                     </div>
                     <div class="clearfix">
-                        <div class="block-padding-wrap">				
+                        <div class="block-padding-wrap">
                             <input type="text" id="block-padding-bottom" class="block-padding-values" name="block-padding-bottom" value="5" />
                             <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Bottom">b</i>
                         </div>
@@ -315,11 +315,11 @@ defined( 'ABSPATH' ) or exit;
                         <div id="palette-orange" class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(255,152,0,1)" />
                             <span class="bg-palette-button"></span>
-                        </div>						
+                        </div>
                         <div id="palette-purple" class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(156,39,176,1)" />
                             <span class="bg-palette-button"></span>
-                        </div>						
+                        </div>
                         <div id="palette-transparent" class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(255,255,255,0)" />
                             <span class="bg-palette-button">
@@ -327,7 +327,7 @@ defined( 'ABSPATH' ) or exit;
                             </span>
                         </div>
                     </div>
-                </div>				
+                </div>
             </div><!-- /COLOR BACKGROUND -->
 
             <div id="block-set-video-wrap" class="row valign-wrapper">
@@ -431,7 +431,7 @@ defined( 'ABSPATH' ) or exit;
                         </div>
                     </div>
                     <div class="clearfix">
-                        <div class="block-padding-wrap">				
+                        <div class="block-padding-wrap">
                             <input type="text" id="bm-block-padding-left" class="block-padding-values" name="block-padding-left" value="5" />
                             <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Left">a</i>
                         </div>
@@ -442,7 +442,7 @@ defined( 'ABSPATH' ) or exit;
                         </div>
                     </div>
                     <div class="clearfix">
-                        <div class="block-padding-wrap">				
+                        <div class="block-padding-wrap">
                             <input type="text" id="bm-block-padding-bottom" class="block-padding-values" name="block-padding-bottom" value="5" />
                             <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Bottom">b</i>
                         </div>
@@ -518,7 +518,7 @@ defined( 'ABSPATH' ) or exit;
                         <div id="overlay-block-palette-orange" class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(255,152,0,0.6)" />
                             <span class="bg-palette-button"></span>
-                        </div>	
+                        </div>
                         <div id="overlay-block-palette-transparent" class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(255,255,255,0)" />
                             <span class="bg-palette-button">
@@ -642,7 +642,7 @@ defined( 'ABSPATH' ) or exit;
                             <span class="block-padding-label">PX</span>
                         </div>
                         <div class="b-row justify-content-space-between">
-                            <div class="block-padding-wrap">				
+                            <div class="block-padding-wrap">
                                 <input type="text" id="row-separator-left" class="block-padding-values" name="row-separator-left" value="" placeholder="" />
                                 <!-- <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Row Margin Left">Q</i> -->
                                 <i class="b-svg-icons tooltipped" data-position="bottom" data-tooltip="Row Margin Left"><svg><use xlink:href="#ico-distance-left"></use></svg></i>
@@ -661,7 +661,7 @@ defined( 'ABSPATH' ) or exit;
                                 <span class="block-padding-label">PX</span>
                             </div>
                         </div>
-                        <div class="block-padding-wrap">				
+                        <div class="block-padding-wrap">
                             <input type="text" id="row-separator-bottom" class="block-padding-values" name="row-separator-bottom" value="" placeholder="" />
                             <!-- <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Row Margin Bottom">N</i> -->
                             <i class="b-svg-icons tooltipped" data-position="bottom" data-tooltip="Row Margin Bottom"><svg><use xlink:href="#ico-distance-bottom"></use></svg></i>
@@ -677,7 +677,7 @@ defined( 'ABSPATH' ) or exit;
                             <span class="block-padding-label">PX</span>
                         </div>
                         <div class="b-row justify-content-space-between align-items-center" style="padding: 15px 0;">
-                            <div class="block-padding-wrap">				
+                            <div class="block-padding-wrap">
                                 <input type="text" id="row-margin-left" class="block-padding-values" name="row-margin-left" value="" placeholder="0" />
                                 <span class="block-padding-label">PX</span>
                             </div>
@@ -689,13 +689,13 @@ defined( 'ABSPATH' ) or exit;
                                 <span class="block-padding-label">PX</span>
                             </div>
                         </div>
-                        <div class="block-padding-wrap">				
+                        <div class="block-padding-wrap">
                             <input type="text" id="row-margin-bottom" class="block-padding-values" name="row-margin-bottom" value="" placeholder="0" />
                             <span class="block-padding-label">PX</span>
                         </div>
                     </div>
                 </div>
-                
+
             </div><!-- custom classes -->
 
             <div class="b-row align-items-center b--border-bottom">
@@ -832,11 +832,11 @@ defined( 'ABSPATH' ) or exit;
                     <div id="palette-orange" class="bg-palette-selector">
                         <input class="bg-palette-value" type="hidden" value="rgba(255,152,0,1)" />
                         <span class="bg-palette-button"></span>
-                    </div>						
+                    </div>
                     <div id="palette-purple" class="bg-palette-selector">
                         <input class="bg-palette-value" type="hidden" value="rgba(156,39,176,1)" />
                         <span class="bg-palette-button"></span>
-                    </div>						
+                    </div>
                     <div id="palette-transparent" class="bg-palette-selector">
                         <input class="bg-palette-value" type="hidden" value="rgba(255,255,255,0)" />
                         <span class="bg-palette-button">
@@ -844,7 +844,7 @@ defined( 'ABSPATH' ) or exit;
                         </span>
                     </div>
                 </div>
-            </div>				
+            </div>
         </div>
 
         <div id="textfill-set-align-wrap" class="row valign-wrapper">
@@ -878,7 +878,7 @@ defined( 'ABSPATH' ) or exit;
                     </div>
                 </div>
                 <div class="clearfix">
-                    <div class="block-padding-wrap">				
+                    <div class="block-padding-wrap">
                         <input type="text" id="textfill-padding-left" class="block-padding-values" name="textfill-padding-left" value="0" />
                         <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Left">a</i>
                     </div>
@@ -889,7 +889,7 @@ defined( 'ABSPATH' ) or exit;
                     </div>
                 </div>
                 <div class="clearfix">
-                    <div class="block-padding-wrap">				
+                    <div class="block-padding-wrap">
                         <input type="text" id="textfill-padding-bottom" class="block-padding-values" name="textfill-padding-bottom" value="0" />
                         <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Bottom">b</i>
                     </div>
@@ -914,7 +914,7 @@ defined( 'ABSPATH' ) or exit;
             </div>
         </div>
     </div>
-        
+
     <div class="rex-modal-footer">
         <button id="textfill-set-cancel" class="waves-effect waves-light btn-flat grey rex-cancel-button">
             <i class="rex-icon">n</i>
@@ -957,7 +957,7 @@ defined( 'ABSPATH' ) or exit;
                         <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2" value="url" data-position="bottom" data-tooltip="<?php _e( 'Link', 'rexpansive-builder' ); ?>">
                             <i class="material-icons rex-icon">l</i>
                         </button>
-                        
+
                         <div>
                             <button class="rex-slider__slide-edit btn-flat tooltipped" data-position="bottom" value="copy" data-tooltip="<?php _e('Copy slide', 'rexpansive-builder'); ?>">
                                 <i class="material-icons grey-text text-darken-2">&#xE14D;</i>
@@ -1004,7 +1004,7 @@ defined( 'ABSPATH' ) or exit;
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
-                        
+
                         <div class="rex-check-icon">
                             <input type="checkbox" id="rex-slider__prev-next" name="rex-slider__prev-next" title="<?php _e('Prev Next','rexpansive-builder'); ?>">
                             <label for="rex-slider__prev-next" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Prev Next','rexpansive-builder'); ?>">
@@ -1012,7 +1012,7 @@ defined( 'ABSPATH' ) or exit;
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
-                        
+
                         <div class="rex-check-icon">
                             <input type="checkbox" id="rex-slider__dots" name="rex-slider__dots" title="<?php _e('Dots','rexpansive-builder'); ?>">
                             <label for="rex-slider__dots" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Dots','rexpansive-builder'); ?>">
