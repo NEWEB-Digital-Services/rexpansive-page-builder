@@ -363,6 +363,9 @@ var Rexbuilder_Dom_Util = (function($) {
 
 		// Removing the bottom toolbox background image button and resetting the top tools one
 		var block = $itemContent.parents('.grid-stack-item').get(0);
+
+		if (!(block && Rexbuilder_Util.editorMode)) return;
+
 		var deleteImageBackgroundButton = block.querySelector('.deactivate-block-image-background');
 
 		$(deleteImageBackgroundButton).parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
@@ -709,7 +712,7 @@ var Rexbuilder_Dom_Util = (function($) {
       targetType = "slide";
     } else {
       return;
-    }
+		}
 
     var type = videoOptions.typeVideo;
     if (type == "") {
