@@ -177,22 +177,23 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var _updateImageBG = function($target, data) {
-    if ($target.hasClass("rexpansive_section")) {
-      var $sectionData = $target.children(".section-data");
+		if ($target.hasClass("rexpansive_section")) {
+			var $sectionData = $target.children(".section-data");
       if (data.idImage == "" || data.active.toString() != "true") {
-        _resetImageSection($target, $sectionData);
+				_resetImageSection($target, $sectionData);
         if ( ! Rexbuilder_Util.editorMode ) {
-          $target.removeClass('section-w-image');
+					$target.removeClass('section-w-image');
         }
       } else {
-        _updateImageSection($target, $sectionData, data);
+				_updateImageSection($target, $sectionData, data);
         if ( ! Rexbuilder_Util.editorMode ) {
-          $target.addClass('section-w-image');
+					$target.addClass('section-w-image');
         }
       }
     } else if ($target.hasClass("grid-item-content")) {
-      var $elem = $target.parents(".grid-stack-item");
+			var $elem = $target.parents(".grid-stack-item");
       var $elemData = $elem.children(".rexbuilder-block-data");
+
       if (data.idImage == "" || data.active.toString() != "true") {
         _resetImageBlock($target, $elemData, data);
         if ( ! Rexbuilder_Util.editorMode ) {
@@ -342,22 +343,39 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
-  var _resetImageBlock = function($itemContent, $elemData, data) {
-    $elemData.attr("data-id_image_bg_block", "");
-    $elemData.attr("data-type_bg_block", "");
-    $elemData.attr("data-image_bg_block", "");
-    $elemData.attr("data-image_size", "");
-    if ( $itemContent.parents('.grid-stack-item').hasClass('block-has-slider') )
-    {
-      $elemData.attr("data-photoswipe", data.photoswipe);
-    } else {
-      $elemData.attr("data-photoswipe", "");
-    }
-    $elemData.attr("data-image_bg_elem_active", "");
-    _removeImageBlock($itemContent);
-    $itemContent.attr("data-background_image_width", "");
-    $itemContent.attr("data-background_image_height", "");
-  };
+	function _resetImageBlock($itemContent, $elemData, data) {
+		$elemData.attr('data-id_image_bg_block', '');
+		$elemData.attr('data-type_bg_block', '');
+		$elemData.attr('data-image_bg_block', '');
+		$elemData.attr('data-image_size', '');
+
+		if ($itemContent.parents('.grid-stack-item').hasClass('block-has-slider')) {
+			$elemData.attr('data-photoswipe', data.photoswipe);
+		} else {
+			$elemData.attr('data-photoswipe', '');
+		}
+		$elemData.attr('data-image_bg_elem_active', '');
+
+		_removeImageBlock($itemContent);
+
+		$itemContent.attr('data-background_image_width', '');
+		$itemContent.attr('data-background_image_height', '');
+
+		// Removing the bottom toolbox background image button and resetting the top tools one
+		var block = $itemContent.parents('.grid-stack-item').get(0);
+		var deleteImageBackgroundButton = block.querySelector('.deactivate-block-image-background');
+
+		$(deleteImageBackgroundButton).parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+		Rexbuilder_Util.addClass(
+			block.querySelector('.rexlive-block-toolbox.bottom-tools .edit-block-image-position'),
+			'tool-button--hide'
+		);
+
+		$(block)
+			.find('.rexlive-block-toolbox.top-tools .edit-block-image')
+			.parents('.tool-button--double-icon--wrap')
+			.removeClass('tool-button--hide');
+	}
 
   var _removeYoutubeVideo = function($target, removeFromDom) {
     var $ytpWrapper = $target.children(".rex-youtube-wrap");
