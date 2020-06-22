@@ -758,6 +758,12 @@ var Rexbuilder_Util_Editor = (function($) {
     return mousePosition;
   };
 
+  /**
+   * Check if display or not the add new row button
+   * If there is only an empty row, do not show the button,
+   * otherwise yes
+   * @return {void}
+   */
   var _checkNewEmptyPage = function() {
     var $rows = Rexbuilder_Util.$rexContainer.find(".rexpansive_section:not(removing_section)");
     if( "1" == $rows.length && $rows.hasClass('empty-section') ) {

@@ -1652,6 +1652,9 @@ var Rexbuilder_Util = (function($) {
       gallery.setAttribute('data-rexlive-layout-changed', true);
     }
 
+    $section.removeClass('empty-section');
+    var noBlocks = true;
+
     // galleryEditorInstance.batchGridstack();
 
     if ( 'undefined' !== typeof galleryData ) {
@@ -1661,6 +1664,7 @@ var Rexbuilder_Util = (function($) {
           if ( null === elem ) continue;
 
           var hideElement = typeof targets[i].props.hide == "undefined" ? false : targets[i].props.hide.toString() == "true";
+          noBlocks *= hideElement;
           if ( hideElement ) {
             if ( ! Rexbuilder_Util.hasClass( elem, 'rex-hide-element' ) ) {
               Rexbuilder_Util.addClass( elem, 'rex-hide-element' );
@@ -1699,6 +1703,9 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
+    if ( noBlocks ) {
+      $section.addClass('empty-section');
+    }
 
     var i, tot_targets = targets.length;
     var targetName, targetProps;

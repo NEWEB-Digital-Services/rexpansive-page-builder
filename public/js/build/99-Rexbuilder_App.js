@@ -884,6 +884,27 @@ var Rexbuilder_App = (function($) {
   }
 
   /**
+   * Check empty rows to add correctly a "spacer" class
+   * @return {void}
+   */
+  function checkEmptyRows() {
+    for( var z=0; z < gridInstances.length; z++) {
+      Rexbuilder_Util.removeClass( gridInstances[z].section, 'empty-section' );
+      if ( 0 === gridInstances[z].gridBlocksTotal ) {
+        Rexbuilder_Util.addClass( gridInstances[z].section, 'empty-section' );
+      } else {
+        for( var k=0; k<gridInstances[z].gridBlocksTotal; k++ ) {
+          if ( ! Rexbuilder_Util.hasClass( gridInstances[z].gridBlocks[k].el, 'rex-hide-element' ) ) break;
+        }
+
+        if ( k !== gridInstances[z].gridBlocksTotal - 1 ) {
+          Rexbuilder_Util.addClass( gridInstances[z].section, 'empty-section' );
+        }
+      }
+    }
+  }
+
+  /**
    * All front end effects in one function
    * @return {vodi}
    */
@@ -1182,6 +1203,7 @@ var Rexbuilder_App = (function($) {
       launchIndicators( $grids );
     }
 
+    checkEmptyRows();
 		launchFrontEndEffects();
 
 		Rexbuilder_Util.galleryPluginActive = true;
@@ -1334,6 +1356,8 @@ var Rexbuilder_App = (function($) {
 			// Resetting fast load (that contains IntersectionObserver)
 			window.FastLoad.destroy();
 			window.FastLoad.init();
+
+      checkEmptyRows();
 
       // Re-launch effects
       launchFrontEndEffects();

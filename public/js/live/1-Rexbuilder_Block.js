@@ -24,19 +24,16 @@ var Rexbuilder_Block = (function ($) {
 		Rexbuilder_Rexbutton.refreshNumbers();
 		Rexbuilder_Rexbutton.updateButtonListInPage();
 
-		if ( 0 === $section.find('.perfect-grid-item').not('.rex-hide-element').length )
-		{
+		if ( 0 === $section.find('.perfect-grid-item').not('.rex-hide-element').length ) {
 			$section.addClass('empty-section');
-		}
-		else
-		{
+		} else {
 			$section.removeClass('empty-section');
 		}
 
 		var data = {
 			eventName: "rexlive:edited",
 			modelEdited: $section.hasClass("rex-model-section"),
-		}
+		};
 		Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 	}
 
