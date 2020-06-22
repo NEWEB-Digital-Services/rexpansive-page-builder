@@ -322,11 +322,9 @@
 			var topSeparator = this.properties.gridTopSeparator - this.properties.halfSeparatorTop;
 			var bottomSeparator = this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom;
 
-			console.log( this.properties.fullHeightOffset );
-
 			if ( 0 !== heightInUnits ) {
 				this.properties.singleHeight =
-					(globalViewportSize.height - this.properties.fullHeightOffset - (topSeparator + bottomSeparator)) /
+					(globalViewportSize.height + this.properties.fullHeightOffset - (topSeparator + bottomSeparator)) /
 					heightInUnits;
 			}
 		}
