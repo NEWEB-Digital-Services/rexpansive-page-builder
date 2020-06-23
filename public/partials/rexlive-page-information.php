@@ -106,14 +106,14 @@ if (!empty($customizations_names)) {
 }
 
 ?>
-<div id="rex-buttons-ids-used" style="display: none;"><?php
+<script id="rex-buttons-ids-used" data-nosnippet><?php
 if ( $buttonsIDsUsed == null ) {
     echo "[]";
 } else {
     echo json_encode( $buttonsIDsUsed );
 }
-?></div>
-<div id="sections-ids-used" style="display: none;">
+?></script>
+<script id="sections-ids-used" data-nosnippet>
 <?php
 if ($sectionsIDsUsed == null) {
     echo "[]";
@@ -121,18 +121,18 @@ if ($sectionsIDsUsed == null) {
     echo json_encode($sectionsIDsUsed);
 }
 ?>
-</div>
-<div id="blocks-ids-used" style="display: none;"><?php echo $blocksIDsJSON; ?></div>
-<div id="layout-avaiable-dimensions" style="display:none;"><?php echo json_encode($layoutsAvaiable); ?></div>
-<div id="rexbuilder-model-data" style="display:none;">
-    <div class="models-customizations" <?php
+</script>
+<script id="blocks-ids-used" data-nosnippet><?php echo $blocksIDsJSON; ?></script>
+<script id="layout-avaiable-dimensions" data-nosnippet><?php echo json_encode($layoutsAvaiable); ?></script>
+<div id="rexbuilder-model-data" data-nosnippet style="display:none;">
+    <div class="models-customizations" data-nosnippet <?php
     if (!$flag_models) {
         echo 'data-empty-models-customizations="true">';
     } else {
         ?>><?php
         foreach ($models_customizations as $model) {
             $idModel = $model['id'];
-            echo '<div class="model-customizations-container" data-model-id="'. $idModel .'">';
+            echo '<div class="model-customizations-container" data-nosnippet data-model-id="'. $idModel .'">';
             $customizations = $model['customizations'];
             foreach($customizations as $custom){
                 $customName = $custom['name'];
@@ -144,7 +144,7 @@ if ($sectionsIDsUsed == null) {
                     $customTargets = "";
                 }
 
-                echo '<div class="model-customization-data" data-model-layout-name="' . $customName . '">';
+                echo '<div class="model-customization-data" data-nosnippet data-model-layout-name="' . $customName . '">';
 
                 if($customTargets != ""){
                     echo json_encode($customTargets);
@@ -157,17 +157,17 @@ if ($sectionsIDsUsed == null) {
         }
     }
     ?></div>
-    <div class="available-models-customizations-names"><?php echo json_encode($models_customizations_avaiable);?></div>
+    <div class="available-models-customizations-names" data-nosnippet><?php echo json_encode($models_customizations_avaiable);?></div>
 </div>
-<div id="rexbuilder-layout-data" style="display: none;">
-    <div class="layouts-customizations"<?php
+<div id="rexbuilder-layout-data" data-nosnippet style="display: none;">
+    <div data-nosnippet class="layouts-customizations"<?php
     if (!$flag_page_customization) {
         echo ' data-empty-customizations="true">';
     } else {?>>
 		<?php
         foreach ( $customizations_array as $customization ) {
             $customization_name = $customization['name'];
-            echo '<div class="customization-wrap" data-customization-name="' . $customization_name . '">';
+            echo '<div data-nosnippet class="customization-wrap" data-customization-name="' . $customization_name . '">';
             $sections = $customization['sections'];
 
             if ( $sections ) {
@@ -194,7 +194,7 @@ if ($sectionsIDsUsed == null) {
                         $targets = "";
                     }
 
-                    echo '<div class="section-targets"';
+                    echo '<div data-nosnippet class="section-targets"';
                     echo ' data-section-rex-id="' . $sectionRexID . '"';
                     echo ' data-model-id="'.$sectionModelID.'"';
                     echo ' data-model-number="'.$sectionModelNumber.'"';
@@ -214,7 +214,7 @@ if ($sectionsIDsUsed == null) {
         }
     }
     ?></div>
-    <div id="available-layouts-names"><?php
+    <div data-nosnippet id="available-layouts-names"><?php
     if($customizations_names != ""){
         echo json_encode($customizations_names);
     }else{
@@ -222,8 +222,8 @@ if ($sectionsIDsUsed == null) {
     }
     ?></div>
 </div>
-<div id="rexbuilder-layout-data-live" style="display: none;"></div><!-- // Current data of the builder -->
-<div id="rexbuilder-layouts-sections-order" style="display: none;"></div><!-- // Current order of the sections -->
-<div id="rexbuilder-default-layout-state" style="display: none;" data-empty-default-customization="true"></div>
+<div data-nosnippet id="rexbuilder-layout-data-live" style="display: none;"></div><!-- // Current data of the builder -->
+<div data-nosnippet id="rexbuilder-layouts-sections-order" style="display: none;"></div><!-- // Current order of the sections -->
+<div data-nosnippet id="rexbuilder-default-layout-state" style="display: none;" data-empty-default-customization="true"></div>
 <?php
 do_action('rexpansive_builder_live_after_page_information', Rexbuilder_Utilities::isBuilderLive() );
