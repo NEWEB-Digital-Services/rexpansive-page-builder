@@ -11,7 +11,7 @@
 			<p><strong>Updated</strong>: Reset on row resets all the blocks properties and dimensions with the "Desktop" default</p>
 			<p><strong>Updated</strong>: Reset on block reset the block properties and dimensions with the "Desktop" default</p>
 			<p><strong>Updated</strong>: On new RexSlider removed blur option by default</p>
-			<p><strong>Fixed</strong>: Handling correctly the remove of images or videos from blocks on layouts different from "Destkop"</p>
+			<p><strong>Fixed</strong>: Handling correctly the remove of images or videos from blocks</p>
 			<p><strong>Fixed</strong>: Generation of pages saved with old builder (versions prior to 2.0.0)</p>
 			<p><strong>Fixed</strong>: On builder, RexButton with page anchor scrolls down when clicked</p>
 			<p><strong>Fixed</strong>: Editor HTML not closing when click "Save"</p>
