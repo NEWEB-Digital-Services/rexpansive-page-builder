@@ -4,7 +4,7 @@ Donate link: http://www.neweb.info/
 Tags: builder, composer, content builder, custom, drag and drop, editor, page builder, page composer, responsive, theme
 Requires at least: 4.2
 Tested up to: 5.4
-Stable tag: 2.0.6
+Stable tag: 2.0.7
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,7 +30,7 @@ You can choose your models, update them, create them, delete them and even synch
 
 You can finally decide to make a synchronised section on all the other pages, or you can decide to insert it and make it independent.
 
-### An advanced responsive. 
+### An advanced responsive.
 
 In this way, each device will have photos, videos, texts and the layout it deserves.
 On certain devices, such as the mobile phone, photos or layouts, they have much more impact if set vertically rather than in landscape mode, definitely making them better suited to the desktop.
@@ -39,7 +39,7 @@ On certain devices, such as the mobile phone, photos or layouts, they have much 
 
 You can edit and draft your text, apply a colour, set the type of font, align it, modify the html, insert images and much more!
 
-### Flexible or ordered, layouts made just for you. 
+### Flexible or ordered, layouts made just for you.
 
 The idea is to allow two modes of display, ordered or flexible: you can create an ordered display grid, known as “grid”, in which it is the system itself that keeps the elements organized and aligned, or a flexible display, known as “masonry”, with which your photos will maintain their original proportions, so they will always be totally accurate in every respect and Rexpansive will manage the rest.
 
