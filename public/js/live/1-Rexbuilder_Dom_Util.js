@@ -804,29 +804,30 @@ var Rexbuilder_Dom_Util = (function($) {
     var x, y, w, h;
     var elem;
     var gridstack = dataToUse.gridstackInstance;
-    if (blocksDimensions.length > 0) {
-      var $section = $(dataToUse.blocks[0].elem).parents(".rexpansive_section");
-      if (!Rexbuilder_Util_Editor.updatingGridstack) {
-        if ( gridstack.grid ) {
-          gridstack.batchUpdate();
-        }
-      }
-      for (i = 0; i < blocksDimensions.length; i++) {
-        x = blocksDimensions[i].x;
-        y = blocksDimensions[i].y;
-        w = blocksDimensions[i].w;
-        h = blocksDimensions[i].h;
-        elem = blocksDimensions[i].elem;
-        gridstack.update(elem, x, y, w, h);
-      }
-      if (!Rexbuilder_Util_Editor.updatingGridstack) {
-        if ( gridstack.grid ) {
-          gridstack.commit();
-        }
-      }
 
-      setTimeout( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
+    if ( blocksDimensions.length <= 0 ) return;
+
+    var $section = $(dataToUse.blocks[0].elem).parents(".rexpansive_section");
+    if (!Rexbuilder_Util_Editor.updatingGridstack) {
+      if ( gridstack.grid ) {
+        gridstack.batchUpdate();
+      }
     }
+    for (i = 0; i < blocksDimensions.length; i++) {
+      x = blocksDimensions[i].x;
+      y = blocksDimensions[i].y;
+      w = blocksDimensions[i].w;
+      h = blocksDimensions[i].h;
+      elem = blocksDimensions[i].elem;
+      gridstack.update(elem, x, y, w, h);
+    }
+    if (!Rexbuilder_Util_Editor.updatingGridstack) {
+      if ( gridstack.grid ) {
+        gridstack.commit();
+      }
+    }
+
+    setTimeout( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
   };
 
   var _collapseGrid = function( gridInstance, collapse, blockDisposition, layout ) {

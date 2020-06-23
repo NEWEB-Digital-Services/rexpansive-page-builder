@@ -266,8 +266,7 @@
     this._createFirstReverseStack();
     this._fixImagesDimension();
     var $section = this.$section;
-    // this.updateSrollbars();
-    // rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
+    
     setTimeout( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
 
     if ( !Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdating ) {

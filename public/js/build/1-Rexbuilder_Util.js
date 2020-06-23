@@ -114,6 +114,7 @@ var Rexbuilder_Util = (function($) {
     edlTimeouts[idx] = null;
     if ( '' === edlTimeouts.join('') ) {
       // Triggering event after edit dom layout end
+      Rexbuilder_Util.playAllVideos();
 
       var ev = jQuery.Event("rexlive:editDomLayoutEnd");
       Rexbuilder_Util.$document.trigger(ev);
@@ -1803,18 +1804,18 @@ var Rexbuilder_Util = (function($) {
 
     // must use this launcher
     if ( galleryEditorInstance.properties.gridstackInstance ) {
-        galleryEditorInstance.properties.gridstackInstance.commit();
+      galleryEditorInstance.properties.gridstackInstance.commit();
     }
 
     // row ready
-    var handlingRowReadyTi = setTimeout( handlingRowReady.bind( null, galleryEditorInstance, meIndex ), 200 );
+    var handlingRowReadyTi = setTimeout( handlingRowReady.bind( null, galleryEditorInstance, meIndex, targets[0].props.collapse_grid ), 200 );
     // var handlingRowReadyTi = setTimeout( handlingRowReady.bind( null, galleryEditorInstance, meIndex ), 0 );
     edlTimeouts.push( handlingRowReadyTi );
 
     // galleryEditorInstance.commitGridstack();
   }
 
-  function handlingRowReady( galleryEditorInstance, meIndex ) {
+  function handlingRowReady( galleryEditorInstance, meIndex, isCollapse ) {
     Rexbuilder_Util.domUpdating = false;        // handlingRowReady
     galleryEditorInstance.properties.dispositionBeforeCollapsing = galleryEditorInstance.createActionDataMoveBlocksGrid();
     galleryEditorInstance._createFirstReverseStack();
@@ -1822,12 +1823,13 @@ var Rexbuilder_Util = (function($) {
     if ( Rexbuilder_Util.editorMode ) {
       galleryEditorInstance._updateElementsSizeViewers();
     }
-    Rexbuilder_Util.playAllVideos();
 
     // callback after fixing a row
     handlingRowReadyEnd( meIndex );
 
-    setTimeout( Rexbuilder_Util.fixYoutube.bind( null, galleryEditorInstance.section ), 1500 );
+    if ( ! isCollapse ) {
+      setTimeout( Rexbuilder_Util.fixYoutube.bind( null, galleryEditorInstance.section ), 1500 );
+    }
   }
 
   /**
@@ -3512,9 +3514,7 @@ var Rexbuilder_Util = (function($) {
       mp4video.currentTime = 0;
       mp4video.pause();
     } else if ($target.hasClass("vimeo-player")) {
-      var maybePlayer = VimeoVideo.findVideo(
-        $target.children(".rex-video-vimeo-wrap").find("iframe")[0]
-      );
+      var maybePlayer = VimeoVideo.findVideo( $target.children(".rex-video-vimeo-wrap").find("iframe")[0] );
       if ( maybePlayer ) {
         maybePlayer.unload();
       }
@@ -3858,8 +3858,7 @@ var Rexbuilder_Util = (function($) {
 
     if ( Rexbuilder_Util.hasClass( target, 'mp4-player' ) ) {
       var videoEl = target.querySelector('video');
-      if ( videoEl )
-      {
+      if ( videoEl ) {
         videoEl.play();
       }
     } else if ( Rexbuilder_Util.hasClass( target, 'vimeo-player' ) ) {
