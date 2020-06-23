@@ -749,10 +749,6 @@ var Rexbuilder_Dom_Util = (function($) {
       _addYoutubeVideo($target, videoOptions.youtubeUrl, videoOptions.audio);
 		}
 
-		console.log( JSON.parse(JSON.stringify(videoOptions)) );
-		console.trace()
-
-
     if (targetType == "section") {
       $sectionData.attr("data-video_mp4_url", videoOptions.mp4Data.linkMp4);
       $sectionData.attr("data-video_bg_id_section", videoOptions.mp4Data.idMp4);
@@ -2108,11 +2104,8 @@ var Rexbuilder_Dom_Util = (function($) {
 		// handle multiple value props, to prevent duplicate reset
 		var colorChanged = false;
 		var imageChanged = false;
-		var videoMp4Changed = false;
 		var overlayChanged = false;
 		var videoHasChanged = false;
-
-		console.log( JSON.parse(JSON.stringify(defaultProps)) );
 
 		for (var prop in changedData) {
 			if (!changedData[prop]) continue;
