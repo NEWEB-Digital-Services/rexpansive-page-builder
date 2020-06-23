@@ -1002,9 +1002,10 @@
         this.properties.gridstackInstance.grid.float = false;
       }
 
-      this.updateGridstackStyles();
+			this.updateGridstackStyles();
+
       if ( !Rexbuilder_Util.domUpdating ) {
-        // update the heights, forcing the text blocks to cut empty space
+				// update the heights, forcing the text blocks to cut empty space
         this.updateBlocksHeight( true );
       }
 

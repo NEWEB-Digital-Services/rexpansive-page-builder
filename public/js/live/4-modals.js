@@ -2487,18 +2487,19 @@
 				});
 
 				// Fix section width type
-				Rexbuilder_Section_Editor.updateSectionDimensionTool($section, {
-					dimension: '100%' === sectionProps.section_width ? 'full' : 'boxed'
-				});
+				if ($section.children('.section-data').attr('data-dimension') !== sectionProps.dimension) {
+					Rexbuilder_Section_Editor.updateSectionDimensionTool($section, {
+						dimension: '100%' === sectionProps.section_width ? 'full' : 'boxed'
+					});
 
-				galleryEditorInstance.updateSectionWidthWrap(sectionProps.section_width);
-				galleryEditorInstance.updateGridstackWidth();
+					galleryEditorInstance.updateSectionWidthWrap(sectionProps.section_width);
+					galleryEditorInstance.updateGridstackWidth();
 
-				Rexbuilder_Dom_Util.updateSectionWidthData($section, {
-					sectionWidth: sectionProps.section_width,
-					widthType: '100%' === sectionProps.section_width ? 'full' : 'boxed'
-				});
-
+					Rexbuilder_Dom_Util.updateSectionWidthData($section, {
+						sectionWidth: sectionProps.section_width,
+						widthType: '100%' === sectionProps.section_width ? 'full' : 'boxed'
+					});
+				}
 
         // fix blocks heights, i.e. with natural images that must shrink
         if ( resetLayout == "masonry" && ! sectionProps.collapse_grid ) {
