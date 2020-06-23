@@ -149,34 +149,38 @@ var Rexbuilder_CreateBlocks = (function ($) {
       Rexbuilder_Util.updateDefaultLayoutStateSection($section);
 		}
 
-		var ev;
+    if ( 'undefined' !== typeof data.mousePosition ) {
+  		var gridstackInstance = galleryInstance.properties.gridstackInstance;
+  		var mouseCell = gridstackInstance.getCellFromPixel({ left: data.mousePosition.x, top: data.mousePosition.y }, true);
 
+  		// Infinity fix
+  		var moveX = Math.max(0, mouseCell.x - Math.round(blockWidth / 2));
+  		var moveY = Math.max(0, mouseCell.y - Math.round(blockHeight / 2));
+  		moveX = Infinity !== moveX ? moveX : 0;
+  		moveY = Infinity !== moveY ? moveY : 0;
+
+  		gridstackInstance.move(el, moveX, moveY);
+    }
+
+    var ev = null;
     if (addBlockButton) {
-			ev = jQuery.Event('rexlive:completeImportButton');
-			ev.settings = {
-				$buttonWrapper: data.$buttonWrapper,
-				$blockAdded: $el
-			};
-		} else if (addBlockElement) {
-			ev = jQuery.Event('rexlive:completeImportElement');
-			ev.settings = {
-				$elementWrapper: data.$elementWrapper,
-				$elementAdded: $el,
-				formFieldsString: data.formFieldsString
-			};
-		}
+      ev = jQuery.Event('rexlive:completeImportButton');
+      ev.settings = {
+        $buttonWrapper: data.$buttonWrapper,
+        $blockAdded: $el
+      };
+    } else if (addBlockElement) {
+      ev = jQuery.Event('rexlive:completeImportElement');
+      ev.settings = {
+        $elementWrapper: data.$elementWrapper,
+        $elementAdded: $el,
+        formFieldsString: data.formFieldsString
+      };
+    }
 
-		var gridstackInstance = galleryInstance.properties.gridstackInstance;
-		var mouseCell = gridstackInstance.getCellFromPixel({ left: data.mousePosition.x, top: data.mousePosition.y }, true);
-
-		// Infinity fix
-		var moveX = Math.max(0, mouseCell.x - Math.round(blockWidth / 2));
-		var moveY = Math.max(0, mouseCell.y - Math.round(blockHeight / 2));
-		moveX = Infinity !== moveX ? moveX : 0;
-		moveY = Infinity !== moveY ? moveY : 0;
-
-		gridstackInstance.move(el, moveX, moveY);
-		Rexbuilder_Util.$document.trigger(ev);
+    if ( ev ) {
+		  Rexbuilder_Util.$document.trigger(ev);
+    }
 
 		var data = {
 			eventName: 'rexlive:edited',
