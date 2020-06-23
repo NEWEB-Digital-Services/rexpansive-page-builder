@@ -715,7 +715,8 @@ var Rexbuilder_Dom_Util = (function($) {
   var _updateVideos = function($target, videoOptions) {
     var targetType = "";
     var $sectionData, $elemData;
-    var $el;
+		var $el;
+
     if ( $target.hasClass("rexpansive_section") ) {
       $sectionData = $target.children(".section-data");
       targetType = "section";
@@ -746,7 +747,11 @@ var Rexbuilder_Dom_Util = (function($) {
       _removeVimeoVideo($target, true);
       _removeMp4Video($target, true);
       _addYoutubeVideo($target, videoOptions.youtubeUrl, videoOptions.audio);
-    }
+		}
+
+		console.log( JSON.parse(JSON.stringify(videoOptions)) );
+		console.trace()
+
 
     if (targetType == "section") {
       $sectionData.attr("data-video_mp4_url", videoOptions.mp4Data.linkMp4);
@@ -1896,20 +1901,36 @@ var Rexbuilder_Dom_Util = (function($) {
               idMp4: defaultProps.video_bg_id_section,
               width: defaultProps.video_bg_width_section,
               height: defaultProps.video_bg_height_section,
-            }
+						},
+						youtubeUrl: '',
+						vimeoUrl: ''
           });
           videoMp4Changed = true;
 
           break;
         case 'video_bg_url_section':
           _updateSectionVideoBackground( $section, {
-            typeVideo: 'youtube',
-            youtubeUrl: defaultProps.video_bg_url_section
+						typeVideo: 'youtube',
+						mp4Data: {
+              linkMp4: '',
+              idMp4: '',
+              width: '',
+              height: '',
+						},
+						youtubeUrl: defaultProps.video_bg_url_section,
+						vimeoUrl: ''
           });
           break;
         case 'video_bg_url_vimeo_section':
           _updateSectionVideoBackground( $section, {
-            typeVideo: 'vimeo',
+						typeVideo: 'vimeo',
+						mp4Data: {
+              linkMp4: '',
+              idMp4: '',
+              width: '',
+              height: '',
+						},
+						youtubeUrl: '',
             vimeoUrl: defaultProps.video_bg_url_vimeo_section
           });
           break;
@@ -2089,6 +2110,9 @@ var Rexbuilder_Dom_Util = (function($) {
 		var imageChanged = false;
 		var videoMp4Changed = false;
 		var overlayChanged = false;
+		var videoHasChanged = false;
+
+		console.log( JSON.parse(JSON.stringify(defaultProps)) );
 
 		for (var prop in changedData) {
 			if (!changedData[prop]) continue;
@@ -2128,35 +2152,71 @@ var Rexbuilder_Dom_Util = (function($) {
 					imageChanged = true;
 
 					break;
-				case 'video_has_audio':
 				case 'video_bg_id':
 				case 'video_bg_width':
 				case 'video_bg_height':
 				case 'video_mp4_url':
-					if (videoMp4Changed) break;
-
-					_updateVideos($block, {
-						typeVideo: 'mp4',
-						mp4Data: {
-							linkMp4: defaultProps.video_mp4_url,
-							idMp4: defaultProps.video_bg_id,
-							width: defaultProps.video_bg_width,
-							height: defaultProps.video_bg_height
-						}
-					});
-
-					videoMp4Changed = true;
 				case 'video_bg_url_youtube':
-					_updateVideos($block, {
-						typeVideo: 'youtube',
-						vimeoUrl: defaultProps.video_bg_url_youtube
-					});
-					break;
 				case 'video_bg_url_vimeo':
-					_updateVideos($block, {
-						typeVideo: 'vimeo',
-						vimeoUrl: defaultProps.video_bg_url_vimeo
-					});
+				case 'video_has_audio':
+					if (videoHasChanged) break;
+
+					var videoType = null;
+
+					if ('' !== defaultProps.video_mp4_url) {
+						videoType = 'mp4';
+					} else if ('' !== defaultProps.video_bg_url_youtube) {
+						videoType = 'youtube';
+					} else if ('' !== defaultProps.video_bg_url_vimeo) {
+						videoType = 'vimeo';
+					}
+
+					if (!videoType) break;
+
+					var videoProps = {
+						typeVideo: videoType,
+						mp4Data: {
+							linkMp4: '',
+							idMp4: '',
+							width: '',
+							height: ''
+						},
+						youtubeUrl: '',
+						vimeoUrl: '',
+						audio: 'true' === defaultProps.video_has_audio
+					};
+
+					// Setting some properties according to the video type
+					// because different data is needed for different video types
+					switch (videoType) {
+						case 'mp4':
+							videoProps = _.assign(videoProps, {
+								mp4Data: {
+									linkMp4: defaultProps.video_mp4_url,
+									idMp4: defaultProps.video_bg_id,
+									width: defaultProps.video_bg_width,
+									height: defaultProps.video_bg_height
+								}
+							});
+							break;
+						case 'youtube':
+							videoProps = _.assign(videoProps, {
+								youtubeUrl: defaultProps.video_bg_url_youtube
+							});
+							break;
+						case 'vimeo':
+							videoProps = _.assign(videoProps, {
+								vimeoUrl: defaultProps.video_bg_url_vimeo
+							});
+							break;
+
+						default:
+							break;
+					}
+
+					_updateVideos($block.find('.grid-item-content'), videoProps);
+
+					videoHasChanged = true;
 					break;
 				case 'photoswipe':
 					_updateBlockPhotoswipe({

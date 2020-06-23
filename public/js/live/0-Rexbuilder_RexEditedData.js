@@ -54,6 +54,7 @@
 		'video_mp4_url',
 		'video_bg_url_youtube',			// youtube video background
 		'video_bg_url_vimeo',			// vimeo video background
+		'video_has_audio',
 		'photoswipe',					// photoswipe
 		'block_custom_class',			// custom class
 		'block_padding',				// block padding

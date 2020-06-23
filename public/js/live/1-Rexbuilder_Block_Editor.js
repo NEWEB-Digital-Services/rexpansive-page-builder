@@ -369,7 +369,12 @@ var Rexbuilder_Block_Editor = (function($) {
           },
           urlYoutube: "",
           urlVimeo: "",
-          videoMp4: "",
+          videoMp4: {
+						idMp4: '',
+						linkMp4: '',
+						width: '',
+						height: ''
+					},
           audio: "",
           typeVideo: ""
         }

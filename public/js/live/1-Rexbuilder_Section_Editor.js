@@ -352,10 +352,12 @@ var Rexbuilder_Section_Editor = (function($) {
           typeVideo: "",
           urlVimeo: "",
           urlYoutube: "",
-          videoMp4: {
-            idMp4: "",
-            linkMp4: "",
-          },
+					videoMp4: {
+						idMp4: '',
+						linkMp4: '',
+						width: '',
+						height: ''
+					}
         }
       };
 

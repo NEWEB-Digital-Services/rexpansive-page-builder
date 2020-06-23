@@ -1182,12 +1182,22 @@
           Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_url_vimeo_section' );
           break;
         default:
-          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_id_section' );
-          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_mp4_url' );
-          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_width_section' );
-          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_height_section' );
-          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_url_section' );
-          Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_bg_url_vimeo_section' );
+					switch (type) {
+						case 'mp4':
+							Rexbuilder_Util.editedDataInfo.setSectionData(data.sectionTarget.sectionID, 'video_bg_id_section');
+							Rexbuilder_Util.editedDataInfo.setSectionData(data.sectionTarget.sectionID, 'video_mp4_url');
+							Rexbuilder_Util.editedDataInfo.setSectionData(data.sectionTarget.sectionID, 'video_bg_width_section');
+							Rexbuilder_Util.editedDataInfo.setSectionData(data.sectionTarget.sectionID, 'video_bg_height_section');
+							break;
+						case 'youtube':
+							Rexbuilder_Util.editedDataInfo.setSectionData(data.sectionTarget.sectionID, 'video_bg_url_section');
+							break;
+						case 'vimeo':
+							Rexbuilder_Util.editedDataInfo.setSectionData(data.sectionTarget.sectionID, 'video_bg_url_vimeo_section');
+							break;
+						default:
+							break;
+					}
           break;
       }
 
@@ -1746,7 +1756,11 @@
         $itemContent: $itemContent,
         videoOpt: videoOptions
       };
-      $elem.attr("data-rexlive-element-edited", true);
+			$elem.attr("data-rexlive-element-edited", true);
+
+			if (oldAudio !== videoOptions.audio) {
+				Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_has_audio' );
+			}
 
       switch( data.typeVideo ) {
         case 'mp4':
@@ -1762,12 +1776,22 @@
           Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_url_vimeo' );
           break;
         default:
-          Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_id' );
-          Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_width' );
-          Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_height' );
-          Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_mp4_url' );
-          Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_url_youtube' );
-          Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_url_vimeo' );
+					switch (type) {
+						case 'mp4':
+							Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_id' );
+							Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_width' );
+							Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_height' );
+							Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_mp4_url' );
+							break;
+						case 'youtube':
+							Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_url_youtube' );
+							break;
+						case 'vimeo':
+							Rexbuilder_Util.editedDataInfo.setBlockData( target.sectionID, target.rexID, 'video_bg_url_vimeo' );
+							break;
+						default:
+							break;
+					}
           break;
       }
 
