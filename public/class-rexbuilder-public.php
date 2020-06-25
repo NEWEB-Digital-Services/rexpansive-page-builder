@@ -1603,10 +1603,10 @@ class Rexbuilder_Public {
 					<?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
 				</div>
 			</div>
-			<?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-loader.php"; ?>
-			<?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-color-pickers.php"; ?>
-			<?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-color-palette.php"; ?>
-			<?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-overlay-palette.php"; ?>
+			<?php require REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-loader.php"; ?>
+			<?php require REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-color-pickers.php"; ?>
+			<?php require REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-color-palette.php"; ?>
+			<?php require REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-overlay-palette.php"; ?>
 		<?php
 		}
 		?>

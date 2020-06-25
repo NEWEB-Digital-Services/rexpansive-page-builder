@@ -414,17 +414,31 @@ var Rexbuilder_App = (function($) {
       });
 
       // activate reveal text on scroll effect
+      // and remove animated blocks, sticky is enough
+      // using RexGrid instance to avoid selectors
       if ( 'undefined' !== typeof RevealOpacityOnScroll && _plugin_frontend_settings.stickySection.revealContentOnScroll ) {
-        var bs = Array.prototype.slice.call( stickySection.getElementsByClassName('perfect-grid-item') );
-        var z, tot = bs.length;
-        for( z=0; z<tot; z++ ) {
-          bs[z].setAttribute('data-rs-animation-force-launch', true);
-          var j, textWrap = bs[z].querySelector('.text-wrap');
+        var rexgrid = RexGrid.data(stickySection.querySelector('.perfect-grid-gallery'));
+        for ( var j=0; j < rexgrid.gridBlocksTotal; j++ ) {
+          Rexbuilder_Util.removeClass( rexgrid.gridBlocks[j].el, 'has-rs-animation' );
+          Rexbuilder_Util.removeClass( rexgrid.gridBlocks[j].el, 'rs-animation' );
+
+          var textWrap = rexgrid.gridBlocks[j].el.querySelector('.text-wrap');
           new RevealOpacityOnScroll( textWrap, {
             offset: 1,
             transition: false
           } );
         }
+
+        // var bs = Array.prototype.slice.call( stickySection.getElementsByClassName('perfect-grid-item') );
+        // var z, tot = bs.length;
+        // for( z=0; z<tot; z++ ) {
+        //   bs[z].setAttribute('data-rs-animation-force-launch', true);
+        //   var j, textWrap = bs[z].querySelector('.text-wrap');
+        //   new RevealOpacityOnScroll( textWrap, {
+        //     offset: 1,
+        //     transition: false
+        //   } );
+        // }
       }
     }
   }
@@ -925,8 +939,6 @@ var Rexbuilder_App = (function($) {
 
       // sticky sections
       launchStickySections();
-      // launch scrollCSSAnimations
-      // launchScrollCSSAnimations();
 
       // launch rexScrolled
       launchRexScrolled( $sections );

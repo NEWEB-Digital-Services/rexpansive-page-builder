@@ -294,13 +294,13 @@
         }
       } else {
         if ( beforeViewport ) {
-          if (this.options.borderAnimation) {
+          // if (this.options.borderAnimation) {
             scaleBorder.call(this, 1);
-          }
+          // }
         } else if ( afterViewport ) {
-          if (this.options.borderAnimation) {
+          // if (this.options.borderAnimation) {
             scaleBorder.call(this, 0);
-          }
+          // }
         }
       }
     }
@@ -466,6 +466,23 @@
   StickySection.prototype.hideBorder = function() {
     scaleBorder.call(this, 0);
 	};
+
+  /**
+   * Complete the sticky animation
+   * @return {void}
+   * @since 2.0.7
+   */
+  StickySection.prototype.completeAnimation = function() {
+    addClass(this.element, 'visibile');
+
+    if ( this.options.borderAnimation ) {
+      scaleBorder.call(this, 0);
+    }
+
+    if ( this.options.overlayAnimation ) {
+      this.overlayAnimationEl.style.opacity = 1;
+    }
+  };
 	
 	/**
 	 * Destroys the instance on which is called the function.

@@ -144,7 +144,6 @@
       }
 
       if (((blockPosition - win_height_padded_bottom < scrolled) && ((blockPosition + blockHeight) - win_height_padded_top > scrolled)) || this.settings.force_launch) {
-
         // Fix to prevent loop animation on delay
         if (this.settings.delay) {
           this.properties.launched = true;
