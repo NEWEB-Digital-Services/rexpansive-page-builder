@@ -140,8 +140,9 @@ class Rexbuilder_Utilities {
 
 		switch ( $resource ) {
 			case 'flickity':
-				wp_enqueue_style( 'flickity-style', REXPANSIVE_BUILDER_URL . '/public/css/flickity.min.css', $style_depths, REXCLASSIC_VERSION );
+				wp_enqueue_style( 'flickity-style', REXPANSIVE_BUILDER_URL . 'public/css/flickity.min.css', $style_depths, REXCLASSIC_VERSION );
 				wp_enqueue_script( 'flickity-script', REXPANSIVE_BUILDER_URL . 'public/js/vendor/flickity.pkgd.min.js', $script_depths, REXCLASSIC_VERSION, true );
+				wp_enqueue_script( 'flickity-bg-lazyload', REXPANSIVE_BUILDER_URL . 'public/js/vendor/bg-lazyload.js', $script_depths, REXCLASSIC_VERSION, true );
 				break;
 			case 'rex-accordion':
 				wp_enqueue_script( 'rex-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexAccordion.min.js', $script_depths, REXCLASSIC_VERSION, true );
