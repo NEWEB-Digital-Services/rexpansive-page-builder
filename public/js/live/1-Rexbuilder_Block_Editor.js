@@ -622,7 +622,7 @@ var Rexbuilder_Block_Editor = (function($) {
           .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
       }
 
-      $elem.find(".text-wrap.medium-editor-element").html(data.accordion.complete);
+      $elem.find(".text-wrap.medium-editor-element").find('.rex-accordion').replaceWith(data.accordion.complete);
       // $elem.find(".rex-accordion").rexAccordion();
     });
 
