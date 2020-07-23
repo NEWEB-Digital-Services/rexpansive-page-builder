@@ -622,7 +622,12 @@ var Rexbuilder_Block_Editor = (function($) {
           .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
       }
 
-      $elem.find(".text-wrap.medium-editor-element").find('.rex-accordion').replaceWith(data.accordion.complete);
+      var $accordion_toReplace = $elem.find(".text-wrap.medium-editor-element").find('.rex-accordion');
+      if ( $accordion_toReplace.length > 0 ) {
+        $accordion_toReplace.replaceWith(data.accordion.complete);
+      } else {
+        $elem.find(".text-wrap.medium-editor-element").html(data.accordion.complete);
+      }
       // $elem.find(".rex-accordion").rexAccordion();
     });
 
