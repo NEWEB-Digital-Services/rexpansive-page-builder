@@ -93,6 +93,10 @@
       // call them like the example bellow
       var that = this;
 
+      if (typeof this.settings.onSetup == 'function') {
+        this.settings.onSetup.call( this );
+      }
+
       this.updateState();
       
       this.properties.$toggle.each(function(i,el) {
@@ -128,7 +132,7 @@
               }
             },
             progress: function(animation,step,remain) {
-              if (typeof that.settings.close.progressClbk == 'function') { 
+              if (typeof that.settings.close.progressClbk == 'function') {
                 that.settings.close.progressClbk.call(this, that, step, item); // brings the scope to the callback
               }
             },

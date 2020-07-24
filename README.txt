@@ -200,6 +200,8 @@ For the more experienced among us: you can insert CSS anywhere.
 
 == Changelog ==
 
+= 2.0.7 - =
+
 = 2.0.6 – June 23, 2020 =
  * Update: Prevent the possibility to set Full Height on Masonry rows
  * Update: When replacing an image the block maintain its dimensions

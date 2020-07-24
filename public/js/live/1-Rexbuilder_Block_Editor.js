@@ -467,11 +467,12 @@ var Rexbuilder_Block_Editor = (function($) {
       var a_header = "";
       var a_content = "";
       var a_state = ( $accordion.hasClass("open") ? 'open' : 'close' );
+      var a_t_state = ( $accordion.hasClass('no-toggle') ? 'hide' : 'visible' );
       var a_icon = "";
       var a_gallery = false;
       var $temp_h = $accordion.find(".rex-accordion--toggle").clone();
       $temp_h.find(".rex-accordion--toggle-icon").remove();
-      if($accordion.length > 0) {
+      if( $accordion.length > 0 ) {
         a_header = $temp_h.html().trim(),
         a_content = $accordion.find(".rex-accordion--content").html().trim();
         a_icon = $accordion.find(".rex-accordion--toggle-icon").html().trim();
@@ -492,10 +493,13 @@ var Rexbuilder_Block_Editor = (function($) {
             icon: a_icon,
             content: a_content,
             state: a_state,
+            toggle_state: a_t_state,
             is_gallery: a_gallery
           },
         }
       };
+
+      console.log(settings)
 
       Rexbuilder_Util_Editor.manageElement = true;
       // var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
@@ -628,6 +632,8 @@ var Rexbuilder_Block_Editor = (function($) {
       } else {
         $elem.find(".text-wrap.medium-editor-element").html(data.accordion.complete);
       }
+
+      Rexbuilder_Util_Editor.builderEdited(false);
       // $elem.find(".rex-accordion").rexAccordion();
     });
 

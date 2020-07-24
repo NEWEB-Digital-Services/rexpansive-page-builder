@@ -95,6 +95,16 @@ var Rexlive_Block_Accordion = (function($) {
         break;
     };
 
+    switch(data.blockData.accordion.toggle_state) {
+      case 'visible':
+        block_accordion_properties.$accordion_toggle_state.prop('checked',true);
+        break;
+      case 'hide':
+      default:
+        block_accordion_properties.$accordion_toggle_state.prop('checked',false);
+        break;
+    };
+
     // trace accordion icon
     block_accordion_properties.$accordion_icon.val(data.blockData.accordion.icon);
 
@@ -151,6 +161,7 @@ var Rexlive_Block_Accordion = (function($) {
     var tinyMCE_headerEditor = tinyMCE.get('rex-accordion-header-val');
     var tinyMCE_contentEditor = tinyMCE.get('rex-accordion-content-val');
     var state = block_accordion_properties.$accordion_state.prop('checked');
+    var toggle_state = block_accordion_properties.$accordion_toggle_state.prop('checked');
     
     var gallery_content = "";
     var gallery_info = _getImagesList();
@@ -180,7 +191,7 @@ var Rexlive_Block_Accordion = (function($) {
       header: block_accordion_properties.$accordion_header.val(),
       content: block_accordion_properties.$accordion_content.val(),
       icon: "",
-      complete: '<div class="rex-accordion' + ( true === state ? ' open' : ' close' ) + '"><div class="rex-accordion--toggle">' + block_accordion_properties.$accordion_header.val() + '<span class="rex-accordion--toggle-icon">' + temp_icon + '</span></div><div class="rex-accordion--content' + ( "" !== gallery_content ? " rex-accordion--gallery" : "" ) + '"' + ( true !== state ? ' style="display:none;"' : '' ) + '>' + ( "" !== gallery_content ? gallery_content : block_accordion_properties.$accordion_content.val() ) + '</div></div>',
+      complete: '<div class="rex-accordion' + ( true === state ? ' open' : ' close' ) + ( false === toggle_state ? ' no-toggle' : '' ) + '"><div class="rex-accordion--toggle">' + block_accordion_properties.$accordion_header.val() + '<span class="rex-accordion--toggle-icon">' + temp_icon + '</span></div><div class="rex-accordion--content' + ( "" !== gallery_content ? " rex-accordion--gallery" : "" ) + '"' + ( true !== state ? ' style="display:none;"' : '' ) + '>' + ( "" !== gallery_content ? gallery_content : block_accordion_properties.$accordion_content.val() ) + '</div></div>',
     };
     
     var data_updateAccordion = {
@@ -202,6 +213,7 @@ var Rexlive_Block_Accordion = (function($) {
       $accordion_icon: $accordionModal.find('[name=rex-accordion-toggle-icon-val]'),
       $accordion_content: $accordionModal.find('[name=rex-accordion-content-val]'),
       $accordion_state: $accordionModal.find('[name=rex-accordion-open-close-val]'),
+      $accordion_toggle_state: $accordionModal.find('[name=rex-accordion-hide-toggle]'),
       $accordion_insert_gallery: $accordionModal.find('.rex-accordion-content-gallery'),
       $accordion_preview_gallery: $accordionModal.find('.rex-accordion-content-gallery__preview'),
 

@@ -830,7 +830,26 @@ var Rexbuilder_App = (function($) {
     $builderAccordions = Rexbuilder_Util.$rexContainer.find('.rex-accordion');
     $otherAccordions = Rexbuilder_Util.$document.find('.rex-accordion').not( $builderAccordions );
 
-    accordionSettings = {};
+    accordionSettings = {
+      onSetup: function() {
+        if( ! Rexbuilder_Util.editorMode ) {
+          var $grid = this.$element.parents( '.perfect-grid-gallery' );
+          var $blocks = $grid.find( '.perfect-grid-item' );
+          var grid = $grid.get(0);
+          var block = this.$element.parents( '.perfect-grid-item' ).get( 0 );
+          var rexGridInstance = getRexGridInstance( grid );
+
+          this.caching = {
+            $grid: $grid,
+            grid: grid,
+            $blocks: $blocks,
+            block: block,
+            $block: $(block),
+            rexGridInstance: rexGridInstance
+          };
+        }
+      }
+    };
 
     if( Rexbuilder_Util.editorMode ) {
       accordionSettings.open = {
@@ -853,39 +872,52 @@ var Rexbuilder_App = (function($) {
     } else {
       accordionSettings.open = {
         startClbk: function( data ) {
-        	var $grid = data.$element.parents( '.perfect-grid-gallery' );
-        	var $blocks = $grid.find( '.perfect-grid-item' );
+        	// var $grid = data.$element.parents( '.perfect-grid-gallery' );
+        	// var $blocks = $grid.find( '.perfect-grid-item' );
 
-        	$blocks.addClass( 'accordion-animate-block' );
+         //  $blocks.addClass( 'accordion-animate-block' );
+
+        	data.caching.$blocks.addClass( 'accordion-animate-block' );
         },
         progressClbk: function( data ) {
-        	var grid = data.$element.parents( '.perfect-grid-gallery' ).get( 0 );
-        	var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
-        	var rexGridInstance = getRexGridInstance( grid );
+        	// var grid = data.$element.parents( '.perfect-grid-gallery' ).get( 0 );
+        	// var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
+        	// var rexGridInstance = getRexGridInstance( grid );
 
-          if ( rexGridInstance ) {
-            rexGridInstance.instance.reCalcBlockHeight( block );
+         //  if ( rexGridInstance ) {
+         //    rexGridInstance.instance.reCalcBlockHeight( block );
+         //  }
+
+         if ( data.caching.rexGridInstance ) {
+            data.caching.rexGridInstance.instance.reCalcBlockHeight( data.caching.block );
           }
         }
       };
       accordionSettings.close = {
         progressClbk: function( data ) {
-        	var grid = data.$element.parents( '.perfect-grid-gallery' ).get( 0 );
-        	var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
-        	var rexGridInstance = getRexGridInstance( grid );
+        	// var grid = data.$element.parents( '.perfect-grid-gallery' ).get( 0 );
+        	// var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
+        	// var rexGridInstance = getRexGridInstance( grid );
 
-          if ( rexGridInstance ) {
-            rexGridInstance.instance.reCalcBlockHeight( block );
+         //  if ( rexGridInstance ) {
+         //    rexGridInstance.instance.reCalcBlockHeight( block );
+         //  }
+          if ( data.caching.rexGridInstance ) {
+            data.caching.rexGridInstance.instance.reCalcBlockHeight( data.caching.block );
           }
         },
         completeClbk: function( data ) {
-        	var $grid = data.$element.parents( '.perfect-grid-gallery' );
-        	var $blocks = $grid.find( '.perfect-grid-item' );
-        	var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
+        	// var $grid = data.$element.parents( '.perfect-grid-gallery' );
+        	// var $blocks = $grid.find( '.perfect-grid-item' );
+        	// var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
 
-        	$( block ).one( Rexbuilder_Util._transitionEvent, function() {
-        		$blocks.removeClass( 'accordion-animate-block' );
-        	} );
+        	// $( block ).one( Rexbuilder_Util._transitionEvent, function() {
+        	// 	$blocks.removeClass( 'accordion-animate-block' );
+        	// } );
+
+          data.caching.$block.one( Rexbuilder_Util._transitionEvent, function() {
+            data.caching.$blocks.removeClass( 'accordion-animate-block' );
+          } );
         }
       };
     }

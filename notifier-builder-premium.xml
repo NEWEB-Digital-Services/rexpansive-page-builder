@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <notifier>
-	<latest>2.0.6</latest>
+	<latest>2.0.7</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.0.7</strong> – </h4>
+			<p><strong>Bugfix</strong>: Sticky Section animation</p>
 			<h4><strong>v2.0.6</strong> – June 23, 2020</h4>
 			<p><strong>Updated</strong>: Prevent the possibility to set Full Height on Masonry rows</p>
 			<p><strong>Updated</strong>: When replacing an image the block maintain its dimensions</p>

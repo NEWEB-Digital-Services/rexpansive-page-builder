@@ -26,6 +26,16 @@ defined('ABSPATH') or exit;
                             </span>
                         </label>
                     </div><!-- // Accordion open/closed -->
+                    <div class="bl_switch tippy" data-tippy-content="<?php _e('hide toggle','rexpansive-builder'); ?>">
+                        <label>
+                            <input class="rex-accordion-hide-toggle" name="rex-accordion-hide-toggle" type="checkbox">
+                            <span class="lever"></span>
+                            <span class="bl_switch__icon">
+                                <span class="bl_switch__icon--checked"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
+                                <span class="bl_switch__icon--unchecked"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
+                            </span>
+                        </label>
+                    </div><!-- // Accordion open/closed -->
                 </div>
                 <div class="bl_modal__option-wrap" style="display:none;">
                     <input type="hidden" name="rex-accordion-toggle-icon-val">

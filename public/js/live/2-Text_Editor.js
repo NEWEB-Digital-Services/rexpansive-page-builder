@@ -2592,7 +2592,7 @@ var TextEditor = (function ($) {
       var icon_html = '<i class="' + event.svg_class + '"><svg><use xlink:href="#' + event.svg_ID + '"></use></svg></i>';
 
       // If cursor is valid
-      if( this.traceSelection ) {
+      if( this.traceSelection.length > 0 ) {
         rangy.getSelection().restoreCharacterRanges(this.traceEditor, this.traceSelection);
         var range = this.getFirstRange();
         range.refresh();
@@ -2649,6 +2649,8 @@ var TextEditor = (function ($) {
 
       this.hideAllToolbars();
       this.mediaBtn.style.display = "none";
+
+      Rexbuilder_Util_Editor.builderEdited(false);
     }
   });
 
