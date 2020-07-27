@@ -1159,7 +1159,8 @@ var Rexbuilder_App = (function($) {
         ".no-smoothing",
         ".vertical-nav-link",
         ".rex-vertical-nav-link",
-        ".woocommerce-review-link"
+        ".woocommerce-review-link",
+        ".distance-accordion-toggle"
       ];
 
       // Smooth scroll on all internal links

@@ -103,12 +103,14 @@
         } else {
           this.element.addEventListener('click', handleClick.bind(this));
         }
+
+        this.$targets.on('click', '.da-target__button', handleClick.bind(this));
       }
 
       // attach the plugin instance to the dom element
       this.element.DistanceAccordionInstance = this;
     }
-  }
+  };
 
   // declaring plugin prototypes
   DistanceAccordion.prototype.openAccordion = function() {
@@ -141,7 +143,9 @@
   }
 
   function closeAccordion() {
-    this.$targets.slideUp();
+    this.$targets.slideUp({
+      duration: 150
+    });
     this.$element.addClass('close').removeClass('open');
     if ( this.$wrapToggler.length > 0 ) {
       this.$wrapToggler.addClass('close').removeClass('open');
@@ -153,12 +157,12 @@
         if( child.DistanceAccordionInstance.open ) {
           child.DistanceAccordionInstance.closeAccordion();
         }
-      })
+      });
     }
 
     this.open = false;
     this.close = true;
-  };
+  }
 
   function openAccordion() {
     if ( this.options.scrollTo ) {
@@ -169,11 +173,14 @@
           scrollTop: scrollVal
         },
         function() {
-          that.$targets.slideDown();    
+          that.$targets.slideDown({
+            duration: 150
+          });
         } 
       );
     } else {
       this.$targets.slideDown({
+        duration: 150,
         complete:function() {
           $(this).trigger('da:open_complete');
         }
