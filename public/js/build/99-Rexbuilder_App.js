@@ -365,7 +365,8 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   function launchRexScrollify() {
-    var $animationBlocks = $(document.getElementsByClassName('rs-animation'));
+    // var $animationBlocks = $(document.getElementsByClassName( 'rs-animation' ));
+    var $animationBlocks = $(document.querySelectorAll( '.rs-animation:not(.deactivate-rexpansive-animation)' ) );
     $animationBlocks.rexScrollify({
       mobile: false
     });

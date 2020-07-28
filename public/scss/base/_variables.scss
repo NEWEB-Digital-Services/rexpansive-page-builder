@@ -137,6 +137,11 @@ $link-label-dim: 21px;
 	opacity: 0;
 	animation-duration: 0.5s;
 	animation-timing-function: $easeOutSine;
+
+	&.deactivate-rexpansive-animation {
+		opacity: 1;
+		animation: none;
+	}
 }
 
 @mixin card {
