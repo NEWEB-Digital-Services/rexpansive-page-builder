@@ -104,6 +104,7 @@
           this.element.addEventListener('click', handleClick.bind(this));
         }
 
+        // listen to click on eventually close buttons on the target
         this.$targets.on('click', '.da-target__button', handleClick.bind(this));
       }
 
@@ -147,6 +148,7 @@
       duration: 150
     });
     this.$element.addClass('close').removeClass('open');
+    this.$targets.addClass('target-close').removeClass('target-open');
     if ( this.$wrapToggler.length > 0 ) {
       this.$wrapToggler.addClass('close').removeClass('open');
     }
@@ -187,6 +189,7 @@
       });
     }
     this.$element.addClass('open').removeClass('close');
+    this.$targets.addClass('target-open').removeClass('target-close');
     if ( this.$wrapToggler.length > 0 ) {
       this.$wrapToggler.addClass('open').removeClass('close');
     }

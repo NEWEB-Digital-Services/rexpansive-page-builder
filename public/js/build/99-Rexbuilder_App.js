@@ -939,11 +939,15 @@ var Rexbuilder_App = (function($) {
       if ( 0 === gridInstances[z].gridBlocksTotal ) {
         Rexbuilder_Util.addClass( gridInstances[z].section, 'empty-section' );
       } else {
-        for( var k=0; k<gridInstances[z].gridBlocksTotal; k++ ) {
-          if ( ! Rexbuilder_Util.hasClass( gridInstances[z].gridBlocks[k].el, 'rex-hide-element' ) ) break;
-        }
+        // for( var k=0; k<gridInstances[z].gridBlocksTotal; k++ ) {
+        //   if ( ! Rexbuilder_Util.hasClass( gridInstances[z].gridBlocks[k].el, 'rex-hide-element' ) ) break;
+        // }
+        // if ( k !== gridInstances[z].gridBlocksTotal - 1 ) {
+        //   Rexbuilder_Util.addClass( gridInstances[z].section, 'empty-section' );
+        // }
 
-        if ( k !== gridInstances[z].gridBlocksTotal - 1 ) {
+        // if hide elements corresponde to all the grid elements, the section is empty
+        if ( gridInstances[z].section.getElementsByClassName('rex-hide-element').length === gridInstances[z].gridBlocksTotal ) {
           Rexbuilder_Util.addClass( gridInstances[z].section, 'empty-section' );
         }
       }
