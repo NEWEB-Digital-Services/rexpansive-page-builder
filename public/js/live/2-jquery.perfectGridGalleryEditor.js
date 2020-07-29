@@ -266,7 +266,7 @@
     this._createFirstReverseStack();
     this._fixImagesDimension();
     var $section = this.$section;
-    
+
     setTimeout( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
 
     if ( !Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdating ) {
@@ -2690,7 +2690,7 @@
 
           blockHasSlider = hasClass( event.target, 'block-has-slider' );
 
-          imageWidth = isNaN( parseInt( blockContent.getAttribute("data-background_image_width")) ) ? 0 : parseInt( blockContent.getAttribute("data-background_image_width"));
+					imageWidth = isNaN( parseInt( blockContent.getAttribute("data-background_image_width")) ) ? 0 : parseInt( blockContent.getAttribute("data-background_image_width"));
 
           imageHeight = isNaN( parseInt( blockContent.getAttribute("data-background_image_height")) ) ? 0 : parseInt( blockContent.getAttribute("data-background_image_height"));
 
@@ -2711,7 +2711,9 @@
       }
 
       function resizeHandler(event, ui) {
-        if (!ui.element.is("span")) {
+				var $block = ui.element;
+
+        if (!$block.is("span")) {
           if (naturalImage) {
             if (ui.size.width < imageWidth) {
               addClass( imageWrapper, "small-width" );
@@ -2724,22 +2726,25 @@
           // removed due to slowing paint/repaint on safari
           if ( ui.originalSize.width !== ui.size.width ) {
             gallery.checkBlockDimension(event.target, ui.size.width);
-          }
+					}
 
-          // In masonry all images have not to be cut
-          if ( gallery.settings.galleryLayout == "masonry" ) {
-            if( naturalImage ){
-              currentWidth = event.target.offsetWidth;
-              if (currentWidth < imageWidth) {
-                imageHeightNeed = (imageHeight * ( currentWidth - gallery.properties.gutter ) ) / imageWidth;
-              } else {
-                // imageHeightNeed = imageHeight + gallery.properties.gutter;
-                imageHeightNeed = imageHeight;
-              }
+					// TODO Complete this funcionality. It is used to make a natural image fit all the way possible its block
+					// Actual problem: on mobile the collapsing calculation is not correct when a block is set to fluid while this
+					// feature is active
+					// var needToFit = $block.hasClass('fit-natural-bg-image');
 
-              imageHeightNeed = isNaN(imageHeightNeed) ? 0 : imageHeightNeed;
-            }
-          }
+          // In masonry all image have not to be cut
+					if (gallery.settings.galleryLayout == 'masonry' && naturalImage) {
+						currentWidth = event.target.offsetWidth;
+
+						if (currentWidth < imageWidth /* || needToFit */) {
+							imageHeightNeed = (imageHeight * (currentWidth - gallery.properties.gutter)) / imageWidth;
+						} else {
+							imageHeightNeed = imageHeight;
+						}
+
+						imageHeightNeed = isNaN(imageHeightNeed) ? 0 : imageHeightNeed;
+					}
 
           textWrapHeightNeed = calculateTextWrapHeightNew( $textWrap );
 
@@ -3246,7 +3251,7 @@
         // calculating background image height
         if ( null !== imageWrapper ) {
           var imageWidth = parseInt( itemContent.getAttribute("data-background_image_width") );
-          var imageHeight = parseInt( itemContent.getAttribute("data-background_image_height") );
+					var imageHeight = parseInt( itemContent.getAttribute("data-background_image_height") );
 
           if ( ( this.properties.singleWidth * elem.getAttribute('data-gs-width') ) < imageWidth ) {
             backgroundHeight = ( imageHeight * ( ( w * sw ) - gutter ) ) / imageWidth;
