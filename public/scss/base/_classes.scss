@@ -56,3 +56,9 @@
 .natural-blur-effect {
 	filter: blur(6px);
 }
+
+.fit-natural-bg-image {
+	.rex-image-wrapper {
+		background-size: contain;
+	}
+}

@@ -74,6 +74,12 @@
   visibility: visible;
 }
 
+.fit-natural-bg-image {
+	.rex-image-wrapper {
+		background-size: contain;
+	}
+}
+
 /** SEEMS USEFULL **/
 .el-size-settingButton.focused {
   visibility: visible;
