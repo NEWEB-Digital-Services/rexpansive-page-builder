@@ -3201,10 +3201,10 @@ var Rexbuilder_Util = (function($) {
     var h = parseInt(posData.h);
     var startH = parseInt(posData.startH);
     var increaseHeight = parseInt(posData.increaseHeight);
-    var realFluid = parseInt(posData.realFluid);
+		var realFluid = parseInt(posData.realFluid);
 
     if ( "undefined" !== typeof posData.gridstackInstance && posData.gridstackInstance ) {
-      posData.gridstackInstance.update(elem, x, y, w, h);
+			posData.gridstackInstance.update(elem, x, y, w, h);
     } else {
       elem.setAttribute("data-gs-height", h);
       elem.setAttribute("data-gs-width", w);
@@ -3354,7 +3354,7 @@ var Rexbuilder_Util = (function($) {
     if ( Rexbuilder_Util.editorMode ) {
       // If layout changed
       if ( Rexbuilder_Util_Editor.changedLayout ) {
-        Rexbuilder_Util_Editor.changedLayout = false;
+				Rexbuilder_Util_Editor.changedLayout = false;
 				var resize_info = _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
 
         if( 0 === resize_info.collapse_needed ) {
