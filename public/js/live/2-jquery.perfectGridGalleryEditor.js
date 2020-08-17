@@ -2742,7 +2742,6 @@
 					imageHeightNeed = isNaN(imageHeightNeed) ? 0 : imageHeightNeed;
 				}
 
-
         textWrapHeightNeed = calculateTextWrapHeightNew( $textWrap );
 
 				needH = Math.max(textWrapHeightNeed, imageHeightNeed);
@@ -2761,12 +2760,27 @@
         if ( ! Rexbuilder_Util_Editor.elementIsResizing) return;
 
         if (gallery.settings.galleryLayout == "masonry") {
-
           elem.setAttribute( "data-height", Math.round( elem.getAttribute("data-gs-height") / gallery.properties.singleWidth ) );
           // @date 12-05-2019
           // Remove this proprerty set.
           // TODO Deeply check: is this correct?
-          elem.querySelector('.rexbuilder-block-data').setAttribute("data-element_real_fluid", ( elem.getAttribute('data-gs-min-height') == elem.getAttribute('data-gs-height') ? 1 : 0 ));
+					elem.querySelector('.rexbuilder-block-data').setAttribute("data-element_real_fluid", ( elem.getAttribute('data-gs-min-height') == elem.getAttribute('data-gs-height') ? 1 : 0 ));
+
+					var needToFit = $(elem).hasClass('fit-natural-bg-image');
+
+					if (needToFit) {
+						var blockContent = event.target.querySelector('.grid-item-content');
+						var currentWidth = event.target.offsetWidth;
+						var imageWidth = isNaN( parseInt( blockContent.getAttribute("data-background_image_width")) ) ? 0 : parseInt( blockContent.getAttribute("data-background_image_width"));
+						var imageHeight = isNaN( parseInt( blockContent.getAttribute("data-background_image_height")) ) ? 0 : parseInt( blockContent.getAttribute("data-background_image_height"));
+						var imageHeightNeed = (imageHeight * (currentWidth - gallery.properties.gutter)) / imageWidth;
+
+						console.log( 'hei', Math.round((imageHeightNeed + gallery.properties.gutter) / gallery.properties.singleHeight) );
+
+						gallery.properties.gridstackInstance.batchUpdate();
+						gallery.properties.gridstackInstance.minHeight( event.target, Math.round((imageHeightNeed + gallery.properties.gutter) / gallery.properties.singleHeight) );
+						gallery.properties.gridstackInstance.commit();
+					}
         }
 
         gallery.updateAllElementsProperties();
@@ -3109,7 +3123,7 @@
 			// The block background images needs to occupy the maximum space available
 			// in the block, even if its dimensions become bigger than the original
 			// size. The block can still be made fluid
-			var blockImageNeedsToFit = -1 !== elem.className.indexOf('fit-natural-bg-image');
+			// var blockImageNeedsToFit = -1 !== elem.className.indexOf('fit-natural-bg-image');
 
       var elRealFluid = parseInt( elemData.getAttribute('data-element_real_fluid') );
       var backImgType = elemData.getAttribute('data-type_bg_block');
