@@ -3542,12 +3542,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 							.each(function (i, element) {
 								$(element).removeClass('selected');
 
-								$(el).find('input').attr('checked', false);
+								$(el).find('input').prop('checked', false);
 							});
 
 						$listItem.addClass('selected');
 
-						$listItem.find('input').attr('checked', true);
+						$listItem.find('input').prop('checked', true);
 					}
 				});
 		});

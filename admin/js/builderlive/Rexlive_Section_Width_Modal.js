@@ -1,6 +1,6 @@
 /**
  * Row Full/Boxed logic
- * 
+ *
  * @since 2.0.0
  */
 var Section_Width_Modal = (function($) {
@@ -44,13 +44,13 @@ var Section_Width_Modal = (function($) {
       '[data-rex-section-width="' + dimension + '"]'
     );
     $sectionWidthWrap.addClass("selected");
-    $sectionWidthWrap.find("input").attr("checked", true);
+    $sectionWidthWrap.find("input").prop("checked", true);
 
     var $sectionBoxedWidthTypeWrap = sectionWidthProperties.$section_boxed_width_wrap.children(
       '[data-rex-section-width-type="' + widthType + '"]'
     );
     $sectionBoxedWidthTypeWrap.addClass("selected");
-    $sectionBoxedWidthTypeWrap.find("input").attr("checked", true);
+    $sectionBoxedWidthTypeWrap.find("input").prop("checked", true);
   };
 
   var _clearSectionWidth = function() {
@@ -58,7 +58,7 @@ var Section_Width_Modal = (function($) {
       $(el).removeClass("selected");
       $(el)
         .find("input")
-        .attr("checked", false);
+        .prop("checked", false);
     });
     sectionWidthProperties.$section_boxed_width_input.val("");
   };
@@ -70,7 +70,7 @@ var Section_Width_Modal = (function($) {
         $(el).removeClass("selected");
         $(el)
           .find("input")
-          .attr("checked", false);
+          .prop("checked", false);
       });
   };
 
@@ -81,7 +81,7 @@ var Section_Width_Modal = (function($) {
       '[data-rex-section-width-type="' + data.dimension + '"]'
     );
     $sectionBoxedWidthTypeWrap.addClass("selected");
-    $sectionBoxedWidthTypeWrap.find("input").attr("checked", true);
+    $sectionBoxedWidthTypeWrap.find("input").prop("checked", true);
   };
 
   var _getData = function() {
@@ -200,7 +200,7 @@ var Section_Width_Modal = (function($) {
           ".boxed-width-type-wrap"
         );
         $sectionBoxedWidthTypeWrap.addClass("selected");
-        $sectionBoxedWidthTypeWrap.find("input").attr("checked", true);
+        $sectionBoxedWidthTypeWrap.find("input").prop("checked", true);
 
         if (
           wasFull &&
@@ -211,7 +211,7 @@ var Section_Width_Modal = (function($) {
             '[data-rex-section-width="boxed"]'
           );
           $sectionWidthWrap.addClass("selected");
-          $sectionWidthWrap.find("input").attr("checked", true);
+          $sectionWidthWrap.find("input").prop("checked", true);
           sectionWidthProperties.$section_boxed_width_input.val(
             defaultSectionWidthData.boxed.sectionWidth
           );
@@ -231,7 +231,7 @@ var Section_Width_Modal = (function($) {
           ".rexlive-section-width"
         );
         $sectionWidthTypeWrap.addClass("selected");
-        $sectionWidthTypeWrap.find("input").attr("checked", true);
+        $sectionWidthTypeWrap.find("input").prop("checked", true);
         var selectedType = $sectionWidthTypeWrap.attr("data-rex-section-width");
         if (selectedType != oldSectionWidthData.type) {
           if (selectedType == "boxed") {

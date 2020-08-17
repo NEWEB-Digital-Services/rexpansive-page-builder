@@ -27,9 +27,9 @@ var Insert_Video_Modal = (function($) {
     insert_video_properties.$youTubeWrap.removeClass("selected");
     insert_video_properties.$vimeoWrap.removeClass("selected");
     insert_video_properties.$mp4Wrap.removeClass("selected");
-    insert_video_properties.$radioChooseYoutube.attr("checked", false);
-    insert_video_properties.$radioChooseVimeo.attr("checked", false);
-    insert_video_properties.$radioChooseMp4.attr("checked", false);
+    insert_video_properties.$radioChooseYoutube.prop("checked", false);
+    insert_video_properties.$radioChooseVimeo.prop("checked", false);
+    insert_video_properties.$radioChooseMp4.prop("checked", false);
   };
 
   var _clearVideoModal = function() {
@@ -41,19 +41,19 @@ var Insert_Video_Modal = (function($) {
 
   var _focusYoutube = function() {
     insert_video_properties.$youTubeWrap.addClass("selected");
-    insert_video_properties.$radioChooseYoutube.attr("checked", true);
+    insert_video_properties.$radioChooseYoutube.prop("checked", true);
     insert_video_properties.$linkYoutube.trigger("focus");
   };
 
   var _focusVimeo = function() {
     insert_video_properties.$vimeoWrap.addClass("selected");
-    insert_video_properties.$radioChooseVimeo.attr("checked", true);
+    insert_video_properties.$radioChooseVimeo.prop("checked", true);
     insert_video_properties.$linkVimeo.trigger("focus");
   };
 
   var _focusMp4 = function() {
     insert_video_properties.$mp4Wrap.addClass("selected");
-    insert_video_properties.$radioChooseMp4.attr("checked", true);
+    insert_video_properties.$radioChooseMp4.prop("checked", true);
     //insert_video_properties.$linkMp4.trigger("focus");
   };
 
@@ -103,7 +103,7 @@ var Insert_Video_Modal = (function($) {
         var $checkBox = $audioBtnWrapper.find(".video-audio-checkbox");
         var check = $checkBox.attr("checked");
         check = !check;
-        $checkBox.attr("checked", check);
+        $checkBox.prop("checked", check);
       });
 
     insert_video_properties.$self

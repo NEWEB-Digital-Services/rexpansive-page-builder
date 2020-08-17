@@ -762,11 +762,11 @@ var Rexbuilder_RexSlider = (function($) {
         if ($(this).val() != "") {
           rexslider_modal_links_editor.$video_type
             .filter("[value=youtube]")
-            .attr("checked", true);
+            .prop("checked", true);
         } else {
           rexslider_modal_links_editor.$video_type
             .filter("[value=youtube]")
-            .attr("checked", false);
+            .prop("checked", false);
         }
       }
     );
@@ -777,11 +777,11 @@ var Rexbuilder_RexSlider = (function($) {
         if ($(this).val() != "") {
           rexslider_modal_links_editor.$video_type
             .filter("[value=vimeo]")
-            .attr("checked", true);
+            .prop("checked", true);
         } else {
           rexslider_modal_links_editor.$video_type
             .filter("[value=vimeo]")
-            .attr("checked", false);
+            .prop("checked", false);
         }
       }
     );

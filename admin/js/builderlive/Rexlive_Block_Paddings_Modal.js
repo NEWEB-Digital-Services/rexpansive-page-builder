@@ -31,16 +31,16 @@ var BlockPaddings_Modal = (function ($) {
     var _focusPaddingType = function (paddingType) {
         var $wrapPaddingType = block_paddings_modal_properties.$padding_type_types_wrap.children("[data-rex-type-padding=\"" + paddingType + "\"]");
         $wrapPaddingType.addClass("selected");
-        $wrapPaddingType.find("input").attr("checked", true);
+        $wrapPaddingType.find("input").prop("checked", true);
     };
 
     var _clearPaddingTypeSelection = function () {
         block_paddings_modal_properties.$padding_type_typeWrap.each(function (i, el) {
             $(el).removeClass("selected");
-            $(el).find("input").attr("checked", false);
+            $(el).find("input").prop("checked", false);
         });
     };
-    
+
     var _applyBlocksPaddings = function () {
         var top = parseInt(block_paddings_modal_properties.$block_padding_top.val());
         var right = parseInt(block_paddings_modal_properties.$block_padding_right.val());
@@ -126,7 +126,7 @@ var BlockPaddings_Modal = (function ($) {
             if (!$wrapPaddingType.hasClass("selected")) {
                 _clearPaddingTypeSelection();
                 $wrapPaddingType.addClass("selected");
-                $wrapPaddingType.find("input").attr("checked", true);
+                $wrapPaddingType.find("input").prop("checked", true);
                 _applyBlocksPaddings();
             }
         });
