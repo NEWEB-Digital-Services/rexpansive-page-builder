@@ -202,7 +202,7 @@ var Rexbuilder_Dom_Util = (function($) {
       } else {
 				if ( ! Rexbuilder_Util.editorMode ) {
 					$elem.addClass('block-w-image');
-        }
+				}
         _updateImageBlock($target, $elemData, data);
       }
     }

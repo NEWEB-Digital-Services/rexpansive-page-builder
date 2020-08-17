@@ -2727,9 +2727,6 @@
           gallery.checkBlockDimension(event.target, ui.size.width);
 				}
 
-				// TODO Complete this funcionality. It is used to make a natural image fit all the way possible its block
-				// Actual problem: on mobile the collapsing calculation is not correct when a block is set to fluid while this
-				// feature is active
 				var needToFit = $block.hasClass('fit-natural-bg-image');
 
         // In masonry all image have not to be cut
@@ -2751,7 +2748,7 @@
 				needH = Math.max(textWrapHeightNeed, imageHeightNeed);
 
 				// TODO Check calculations. Test: img natural masonry with 890px height when saved, at reload becomes 895px
-				// console.log( needH, Math.round((needH + gallery.properties.gutter) / gallery.properties.singleHeight) );
+				console.log( needH/* , Math.round((needH + gallery.properties.gutter) / gallery.properties.singleHeight)  */);
 
         if ( gallery.settings.galleryLayout == "masonry" ) {
           gallery.properties.gridstackInstance.minHeight(event.target, Math.round((needH + gallery.properties.gutter) / gallery.properties.singleHeight));
