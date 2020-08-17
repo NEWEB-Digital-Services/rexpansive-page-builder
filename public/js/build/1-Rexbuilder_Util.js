@@ -2001,7 +2001,7 @@ var Rexbuilder_Util = (function($) {
         : "",
       typeBGimage: activeImage ? targetProps["type_bg_image"] : "",
       photoswipe: activeImage ? targetProps["photoswipe"] : ""
-    };
+		};
 
     Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
 

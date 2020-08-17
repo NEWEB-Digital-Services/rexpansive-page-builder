@@ -3218,12 +3218,18 @@
       var blockIsEmpty = false;
       var blockHasYoutube = false;
       var blockHasVideo = false;
-      var blockHasVimeo = false;
+			var blockHasVimeo = false;
+
+			// The block background images needs to occupy the maximum space available
+			// in the block, even if its dimensions become bigger than the original
+			// size. The block can still be made fluid
+			var blockImageNeedsToFit = false;
 
       if ( itemContent ) {
-        imageWrapper = itemContent.querySelector('.rex-image-wrapper');
+				imageWrapper = itemContent.querySelector('.rex-image-wrapper');
 
         blockHasSlider = -1 !== elem.className.indexOf('block-has-slider');
+				blockImageNeedsToFit = -1 !== elem.className.indexOf('fit-natural-bg-image');
 
         blockIsEmpty = -1 !== itemContent.className.indexOf('empty-content');
 
@@ -3245,18 +3251,17 @@
       }
 
       if ( textHeight == 0 ) {
-
         // calculating background image height
-        if ( null !== imageWrapper ) {
-          var imageWidth = parseInt( itemContent.getAttribute("data-background_image_width") );
-					var imageHeight = parseInt( itemContent.getAttribute("data-background_image_height") );
+				if (null !== imageWrapper) {
+					var imageWidth = parseInt(itemContent.getAttribute('data-background_image_width'));
+					var imageHeight = parseInt(itemContent.getAttribute('data-background_image_height'));
 
-          if ( ( this.properties.singleWidth * elem.getAttribute('data-gs-width') ) < imageWidth ) {
-            backgroundHeight = ( imageHeight * ( ( w * sw ) - gutter ) ) / imageWidth;
-          } else {
-            backgroundHeight = imageHeight;
-          }
-        }
+					if (this.properties.singleWidth * elem.getAttribute('data-gs-width') < imageWidth || blockImageNeedsToFit) {
+						backgroundHeight = (imageHeight * (w * sw - gutter)) / imageWidth;
+					} else {
+						backgroundHeight = imageHeight;
+					}
+				}
 
         var defaultRatio = 3 / 4;
 
@@ -3286,7 +3291,8 @@
 
       if ( !blockHasSlider && backgroundHeight == 0 && videoHeight == 0 && textHeight == 0 ) {
         emptyBlockFlag = true;
-      }
+			}
+
 
       // if the block has a full image background, without text
       // maintain the old height
@@ -3379,7 +3385,7 @@
         }
       } else {
         newHeightUnits = Math.ceil((newH+gutter) / this.properties.singleHeight);
-      }
+			}
 
 			this.updateElementDataHeightProperties( blockData, newHeightUnits );
 
