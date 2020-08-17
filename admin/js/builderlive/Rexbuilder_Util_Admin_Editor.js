@@ -1255,11 +1255,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   };
 
   var _updateWidthTool = function() {
-    $highlightRowSetWidth.filter('[data-section_width=' + hightlightRowInfo.dimension + ']').attr('checked',true);
+    $highlightRowSetWidth.filter('[data-section_width=' + hightlightRowInfo.dimension + ']').prop('checked',true);
   };
 
   var _updateLayoutTool = function() {
-    $highlightRowSetLayout.filter('[value=' + hightlightRowInfo.layout + ']').attr('checked',true);
+    $highlightRowSetLayout.filter('[value=' + hightlightRowInfo.layout + ']').prop('checked',true);
   };
 
   var _updateLayoutCheckboxTool = function() {
