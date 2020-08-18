@@ -5,3 +5,5 @@
 	- Applied to elements with .rs-animation, .has-rs-animation, .rexSlideUpBig
 - .hide-navigator
   - Hides the row from being present in the Navigator (currently working only on RexClassic)
+- .intrinsic-ignore
+  - Used to prevent some themes to perform unwanted actions on video elements
