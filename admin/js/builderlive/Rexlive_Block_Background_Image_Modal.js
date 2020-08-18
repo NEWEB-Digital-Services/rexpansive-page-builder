@@ -196,7 +196,6 @@ var Background_Block_Image_Modal = (function($) {
 
     background_block_image_properties.$image_type_typeWrap.click(function(e) {
 			e.preventDefault();
-			console.log( 'click' );
       var $imageTypeWrap = $(e.target).parents(
         ".rex-background-image-type-wrap"
       );

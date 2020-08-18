@@ -499,8 +499,6 @@ var Rexbuilder_Block_Editor = (function($) {
         }
       };
 
-      console.log(settings)
-
       Rexbuilder_Util_Editor.manageElement = true;
       // var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
 

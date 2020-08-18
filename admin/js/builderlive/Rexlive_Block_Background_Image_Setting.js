@@ -76,7 +76,6 @@ var Background_Block_Image_Setting = (function($) {
     imageStatus.imageActive = background_block_image_properties.$image_active.prop('checked');
     imageStatus.imageId = background_block_image_properties.$image_url.val();
 		imageStatus.imageType = background_block_image_properties.$image_type_types_wrap.children(".selected").attr("data-rex-type-image");
-		console.log( imageStatus );
     // imageStatus.imagePswpActive = true === background_block_image_properties.$checkboxPhotoswipe.prop("checked") ? "true" : "false";
   }
 
