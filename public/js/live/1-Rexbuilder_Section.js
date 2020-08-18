@@ -1787,7 +1787,7 @@ var Rexbuilder_Section = (function($) {
       },
       handle: ".builder-move-row",
       stop: function(event, ui) {
-        var $section = $(event.srcElement).parents(".rexpansive_section");
+				var $section = $(event.target).parents(".rexpansive_section");
         var sectionMovedObj = {
           rexID: $section.attr("data-rexlive-section-id"),
           modelID: -1,
@@ -1799,7 +1799,7 @@ var Rexbuilder_Section = (function($) {
           sectionMovedObj.modelNumber = $section.attr(
             "data-rexlive-model-number"
           );
-        }
+				}
 
         endSectionsOrder = [];
         Rexbuilder_Util.$rexContainer

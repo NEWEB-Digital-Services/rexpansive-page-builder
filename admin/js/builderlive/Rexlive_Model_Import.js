@@ -14,7 +14,7 @@ var Model_Import_Modal = (function($) {
   * @param model_selected
   * @param selected_image_id Wordpress id of the new thumbnail image
   * @param selected_image_size
-  * @return {null} 
+  * @return {null}
   * @since  2.0.0
   */
   var _saveModelThumbnail = function(model_selected, selected_image_id, selected_image_size) {
@@ -41,7 +41,7 @@ var Model_Import_Modal = (function($) {
   /**
   * Deletes the model thumbnail from the db using an AJAX call.
   * @param model_to_delete
-  * @return {null} 
+  * @return {null}
   * @since  2.0.0
   */
   var _deleteModelThumbnail = function(model_to_delete) {
@@ -66,7 +66,7 @@ var Model_Import_Modal = (function($) {
   /**
    * Editing a model name
    * @param  {Object} modelData model to edit info
-   * @return {null} 
+   * @return {null}
    * @since  2.0.0
    */
   var _editModelName = function( modelData ) {
@@ -168,7 +168,7 @@ var Model_Import_Modal = (function($) {
           if ( listChanged ) {
             _sortModelList();
           }
-          
+
           var event = jQuery.Event("rexlive:lateralMenuReady");
           $(document).trigger(event);
         }
@@ -429,7 +429,7 @@ var Model_Import_Modal = (function($) {
 
   /**
   * Updates the model list using an AJAX call.
-  * @return {null} 
+  * @return {null}
   * @since  x.x.x
   */
   var _updateModelList = function() {
@@ -501,7 +501,7 @@ var Model_Import_Modal = (function($) {
               .remove();
             }
           }
-          
+
           var event = jQuery.Event("rexlive:lateralMenuReady");
           $(document).trigger(event);
         }
@@ -664,7 +664,7 @@ var Model_Import_Modal = (function($) {
         }
       });
     });
-    
+
     var mousePercents;
     var voidelements = ['i', 'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'video', 'iframe', 'source', 'track', 'wbr'];
     var selectorVoidElements = voidelements.join(",");
@@ -1249,9 +1249,9 @@ var Model_Import_Modal = (function($) {
     // triggers when user clicks on thumbnail
     var onThumbnailsClick = function(e) {
       e = e || window.event;
-      e.preventDefault ? e.preventDefault() : (e.returnValue = false);
+			e.preventDefault ? e.preventDefault() : (e.returnValue = false);
 
-      var eTarget = e.target || e.srcElement;
+      var eTarget = e.target;
 
       // find root element of slide
       var clickedListItem = closest(eTarget, function(el) {

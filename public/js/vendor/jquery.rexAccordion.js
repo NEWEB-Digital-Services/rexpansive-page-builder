@@ -49,7 +49,7 @@
     if( null == this.settings.durationOpen ) {
       this.settings.durationOpen = this.settings.duration;
     }
-    
+
     if( null == this.settings.durationClose ) {
       this.settings.durationClose = this.settings.duration;
     }
@@ -98,10 +98,10 @@
       }
 
       this.updateState();
-      
+
       this.properties.$toggle.each(function(i,el) {
         $(el).on('click', function(ev) {
-          if ( ! $( ev.srcElement ).hasClass( that.settings.noToggleClass ) && 0 === $( ev.srcElement ).parents( '.' + that.settings.noToggleClass ).length ) {
+          if ( ! $( ev.target ).hasClass( that.settings.noToggleClass ) && 0 === $( ev.target ).parents( '.' + that.settings.noToggleClass ).length ) {
             that._handle_click(i);
           }
         });
@@ -117,7 +117,7 @@
         this.open_all();
       }
     },
-    
+
     _handle_click: function(item) {
       var that = this;
       // If there is only a toggle and a content
@@ -127,7 +127,7 @@
           this.properties.$content.slideUp({
             duration:this.settings.durationClose,
             start: function(animation) {
-              if (typeof that.settings.close.startClbk == 'function') { 
+              if (typeof that.settings.close.startClbk == 'function') {
                 that.settings.close.startClbk.call(this, that, item); // brings the scope to the callback
               }
             },
@@ -137,7 +137,7 @@
               }
             },
             complete: function() {
-              if (typeof that.settings.close.completeClbk == 'function') { 
+              if (typeof that.settings.close.completeClbk == 'function') {
                 that.settings.close.completeClbk.call(this, that, item); // brings the scope to the callback
               }
               that.$element.trigger('rex_accordion:close');
@@ -148,17 +148,17 @@
           this.properties.$content.slideDown({
             duration:this.settings.durationOpen,
             start: function(animation) {
-              if (typeof that.settings.open.startClbk == 'function') { 
+              if (typeof that.settings.open.startClbk == 'function') {
                 that.settings.open.startClbk.call(this, that, item); // brings the scope to the callback
               }
             },
             progress: function(animation,step,remain) {
-              if (typeof that.settings.open.progressClbk == 'function') { 
+              if (typeof that.settings.open.progressClbk == 'function') {
                 that.settings.open.progressClbk.call(this, that, step, item); // brings the scope to the callback
               }
             },
             complete:function(){
-              if (typeof that.settings.open.completeClbk == 'function') { 
+              if (typeof that.settings.open.completeClbk == 'function') {
                 that.settings.open.completeClbk.call(this, that, item); // brings the scope to the callback
               }
               that.$element.trigger('rex_accordion:open');
@@ -174,21 +174,21 @@
             this.properties.$content.eq(item).slideUp({
               duration:this.settings.durationClose,
               start: function(animation) {
-              if (typeof that.settings.close.startClbk == 'function') { 
+              if (typeof that.settings.close.startClbk == 'function') {
                   that.settings.close.startClbk.call(this, that, item); // brings the scope to the callback
                 }
               },
               progress: function(animation,step,remain) {
-                if (typeof that.settings.close.progressClbk == 'function') { 
+                if (typeof that.settings.close.progressClbk == 'function') {
                   that.settings.close.progressClbk.call(this, that, step, item); // brings the scope to the callback
                 }
               },
               complete: function() {
-                if (typeof that.settings.close.completeClbk == 'function') { 
+                if (typeof that.settings.close.completeClbk == 'function') {
                   that.settings.close.completeClbk.call(this, that, item); // brings the scope to the callback
                 }
                 that.$element.trigger('rex_accordion:close');
-              }  
+              }
             }).attr('data-item-status','close');
 
           } else {
@@ -196,17 +196,17 @@
             this.properties.$content.not(item).slideUp({
               duration:this.settings.durationClose,
               start: function(animation) {
-                if (typeof that.settings.close.startClbk == 'function') { 
+                if (typeof that.settings.close.startClbk == 'function') {
                   that.settings.close.startClbk.call(this, that, item); // brings the scope to the callback
                 }
               },
               progress: function(animation,step,remain) {
-                if (typeof that.settings.close.progressClbk == 'function') { 
+                if (typeof that.settings.close.progressClbk == 'function') {
                   that.settings.close.progressClbk.call(this, that, step, item); // brings the scope to the callback
                 }
               },
               complete: function() {
-                if (typeof that.settings.close.completeClbk == 'function') { 
+                if (typeof that.settings.close.completeClbk == 'function') {
                   that.settings.close.completeClbk.call(this, that, item); // brings the scope to the callback
                 }
                 that.$element.trigger('rex_accordion:close');
@@ -215,17 +215,17 @@
             this.properties.$content.eq(item).slideDown({
               duration:this.settings.durationOpen,
               start: function(animation) {
-                if (typeof that.settings.open.startClbk == 'function') { 
+                if (typeof that.settings.open.startClbk == 'function') {
                   that.settings.open.startClbk.call(this, that, item); // brings the scope to the callback
                 }
               },
               progress: function(animation,step,remain) {
-                if (typeof that.settings.open.progressClbk == 'function') { 
+                if (typeof that.settings.open.progressClbk == 'function') {
                   that.settings.open.progressClbk.call(this, that, step, item); // brings the scope to the callback
                 }
               },
               complete:function(){
-                if (typeof that.settings.open.completeClbk == 'function') { 
+                if (typeof that.settings.open.completeClbk == 'function') {
                   that.settings.open.completeClbk.call(this, that, item); // brings the scope to the callback
                 }
                 that.$element.trigger('rex_accordion:open');
@@ -239,17 +239,17 @@
             this.properties.$content.eq(item).slideDown({
               duration:this.settings.durationOpen,
               start: function(animation) {
-                if (typeof that.settings.open.startClbk == 'function') { 
+                if (typeof that.settings.open.startClbk == 'function') {
                   that.settings.open.startClbk.call(this, that, item); // brings the scope to the callback
                 }
               },
               progress: function(animation,step,remain) {
-                if (typeof that.settings.open.progressClbk == 'function') { 
+                if (typeof that.settings.open.progressClbk == 'function') {
                   that.settings.open.progressClbk.call(this, that, step, item); // brings the scope to the callback
                 }
               },
               complete:function(){
-                if (typeof that.settings.open.completeClbk == 'function') { 
+                if (typeof that.settings.open.completeClbk == 'function') {
                   that.settings.open.completeClbk.call(this, that, item); // brings the scope to the callback
                 }
                 that.$element.trigger('rex_accordion:open');
@@ -260,17 +260,17 @@
             this.properties.$content.eq(item).slideUp({
               duration:this.settings.duration,
               start: function(animation) {
-                if (typeof that.settings.close.startClbk == 'function') { 
+                if (typeof that.settings.close.startClbk == 'function') {
                   that.settings.close.startClbk.call(this, that, item); // brings the scope to the callback
                 }
               },
               progress: function(animation,step,remain) {
-                if (typeof that.settings.close.progressClbk == 'function') { 
+                if (typeof that.settings.close.progressClbk == 'function') {
                   that.settings.close.progressClbk.call(this, that, step, item); // brings the scope to the callback
                 }
               },
               complete: function() {
-                if (typeof that.settings.close.completeClbk == 'function') { 
+                if (typeof that.settings.close.completeClbk == 'function') {
                   that.settings.close.completeClbk.call(this, that, item); // brings the scope to the callback
                 }
                 that.$element.trigger('rex_accordion:close');
@@ -279,17 +279,17 @@
             this.properties.$content.not(item).slideDown({
               duration:this.settings.durationOpen,
               start: function(animation) {
-                if (typeof that.settings.open.startClbk == 'function') { 
+                if (typeof that.settings.open.startClbk == 'function') {
                   that.settings.open.startClbk.call(this, that, item); // brings the scope to the callback
                 }
               },
               progress: function(animation,step,remain) {
-                if (typeof that.settings.open.progressClbk == 'function') { 
+                if (typeof that.settings.open.progressClbk == 'function') {
                   that.settings.open.progressClbk.call(this, that, step, item); // brings the scope to the callback
                 }
               },
               complete:function(){
-                if (typeof that.settings.open.completeClbk == 'function') { 
+                if (typeof that.settings.open.completeClbk == 'function') {
                   that.settings.open.completeClbk.call(this, that, item); // brings the scope to the callback
                 }
                 that.$element.trigger('rex_accordion:open');

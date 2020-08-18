@@ -379,7 +379,7 @@ var Block_Video_Background_Modal = (function($) {
         var $target = $(e.target);
         var $audioBtnWrapper = $target.parents(".set-video-audio-btn");
         var $checkBox = $audioBtnWrapper.find(".video-audio-checkbox");
-        var check = $checkBox.attr("checked");
+        var check = $checkBox.prop("checked");
         check = !check;
         $checkBox.prop("checked", check);
         _updateVideoBackground();

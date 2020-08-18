@@ -3,13 +3,13 @@
  */
 var Rexbuilder_FormFixes = (function($) {
   'use strict';
-  
+
   var $forms;
 
   var _cache_variables = function() {
     $forms = $('.wpcf7-form');
   };
-  
+
   var _fix_checkboxes = function() {
     $forms.each(function(i,e) {
       var $this = $(e);
@@ -33,7 +33,7 @@ var Rexbuilder_FormFixes = (function($) {
 
   var _listen_events = function() {
     document.addEventListener( 'wpcf7submit', function( event ) {
-      var $g = $(event.srcElement).parents('.perfect-grid-gallery');
+      var $g = $(event.target).parents('.perfect-grid-gallery');
       if($g.length>0) {
         setTimeout(function() {
           $g.perfectGridGallery("refreshGrid");

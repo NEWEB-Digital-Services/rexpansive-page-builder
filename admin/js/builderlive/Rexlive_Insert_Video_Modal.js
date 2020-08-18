@@ -101,7 +101,7 @@ var Insert_Video_Modal = (function($) {
         var $target = $(e.target);
         var $audioBtnWrapper = $target.parents(".set-video-audio-btn");
         var $checkBox = $audioBtnWrapper.find(".video-audio-checkbox");
-        var check = $checkBox.attr("checked");
+        var check = $checkBox.prop("checked");
         check = !check;
         $checkBox.prop("checked", check);
       });
@@ -142,15 +142,15 @@ var Insert_Video_Modal = (function($) {
         if ($selected.hasClass("youtube-insert-wrap")) {
           type = "youtube";
           urlYoutube = insert_video_properties.$linkYoutube.val();
-          audio = insert_video_properties.$audioYoutube.attr("checked");
+          audio = insert_video_properties.$audioYoutube.prop("checked");
         } else if ($selected.hasClass("vimeo-insert-wrap")) {
           type = "vimeo";
           urlVimeo = insert_video_properties.$linkVimeo.val();
-          audio = insert_video_properties.$audioVimeo.attr("checked");
+          audio = insert_video_properties.$audioVimeo.prop("checked");
         } else if ($selected.hasClass("mp4-insert-wrap")) {
           type = "mp4";
           videoMp4Data = videoMp4SelectedData;
-          audio = insert_video_properties.$audioMp4.attr("checked");
+          audio = insert_video_properties.$audioMp4.prop("checked");
         }
 
         audio = typeof audio != "undefined" && audio == "checked";

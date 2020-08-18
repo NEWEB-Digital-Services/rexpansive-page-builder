@@ -2359,7 +2359,7 @@
           $dragHandle.addClass("drag-up");
           $elem.addClass("ui-draggable--drag-up");
           e.target = dragHandle;
-          e.srcElement = dragHandle;
+          // e.srcElement = dragHandle;
           e.toElement = dragHandle;
         } else {
           if ($target.parents(".tool-button").length == 0) {
@@ -2383,7 +2383,7 @@
 
                   if ( Rexbuilder_Util_Editor.mouseDownEvent ) {
                     Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
-                    Rexbuilder_Util_Editor.mouseDownEvent.srcElement = dragHandle;
+                    // Rexbuilder_Util_Editor.mouseDownEvent.srcElement = dragHandle;
                     Rexbuilder_Util_Editor.mouseDownEvent.toElement = dragHandle;
                     Rexbuilder_Util_Editor.elementDraggingTriggered = true;
 
