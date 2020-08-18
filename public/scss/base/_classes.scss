@@ -42,10 +42,10 @@
 
 /* Accordion animations */
 
-.accordion-animate-block {
+// .accordion-animate-block {
 	// transition: height 150ms, top 150ms;
 	// transition: top 150ms;
-}
+// }
 
 .hide-video-controls {
 	.rex-video__controls {
@@ -55,4 +55,10 @@
 
 .natural-blur-effect {
 	filter: blur(6px);
+}
+
+.fit-natural-bg-image {
+	.rex-image-wrapper.natural-image-background {
+		background-size: contain;
+	}
 }

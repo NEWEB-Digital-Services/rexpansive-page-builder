@@ -7,3 +7,5 @@
   - Hides the row from being present in the Navigator (currently working only on RexClassic)
 - .intrinsic-ignore
   - Used to prevent some themes to perform unwanted actions on video elements
+- .fit-natural-bg-image
+  - Makes the background image **fit the block** all the way possible, keeping the possibility to make it fluid

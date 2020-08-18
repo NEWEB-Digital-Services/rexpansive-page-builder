@@ -191,18 +191,18 @@ var Rexbuilder_Dom_Util = (function($) {
         }
       }
     } else if ($target.hasClass("grid-item-content")) {
-			var $elem = $target.parents(".grid-stack-item");
-      var $elemData = $elem.children(".rexbuilder-block-data");
+			var $elem = $target.parents('.grid-stack-item');
+			var $elemData = $elem.children(".rexbuilder-block-data");
 
       if (data.idImage == "" || data.active.toString() != "true") {
-        _resetImageBlock($target, $elemData, data);
+				_resetImageBlock($target, $elemData, data);
         if ( ! Rexbuilder_Util.editorMode ) {
-          $elem.removeClass('block-w-image');
+					$elem.removeClass('block-w-image');
         }
       } else {
-        if ( ! Rexbuilder_Util.editorMode ) {
-          $elem.addClass('block-w-image');
-        }
+				if ( ! Rexbuilder_Util.editorMode ) {
+					$elem.addClass('block-w-image');
+				}
         _updateImageBlock($target, $elemData, data);
       }
     }
@@ -222,7 +222,7 @@ var Rexbuilder_Dom_Util = (function($) {
       section.setAttribute('data-src', data.urlImage);
     } else {
       section.style.backgroundImage = "url(" + data.urlImage + ")";
-    }
+		}
 
     // $section.css("background-image", "url(" + data.urlImage + ")");
     section.setAttribute("data-background_image_width", data.width);

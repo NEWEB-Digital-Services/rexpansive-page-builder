@@ -710,6 +710,7 @@
 		var sliderHeight = 0;
 		var emptyBlockFlag = false;
 		var backImgType = blockData.getAttribute( 'data-type_bg_block' );
+		var fitNaturalImg = Utils.hasClass( currentBlock, 'fit-natural-bg-image' );
 
 		var itemContent = currentBlock.querySelector( '.grid-item-content' );
 		var imageWrapper = null;
@@ -749,11 +750,18 @@
 				var imageWidth = parseInt( itemContent.getAttribute( "data-background_image_width" ) );
 				var imageHeight = parseInt( itemContent.getAttribute( "data-background_image_height" ) );
 
-				if ( ( this.properties.singleWidth * gridBlockObj.w ) < imageWidth ) {
-					backgroundHeight = ( imageHeight * ( ( originalWidth * singleWidth ) - gutter ) ) / imageWidth;
+				var blockWidth = this.properties.singleWidth * gridBlockObj.w;
+				
+				if ( fitNaturalImg ) {
+					backgroundHeight = ( imageHeight * blockWidth / imageWidth ) - gutter;
 				} else {
-					backgroundHeight = imageHeight;
+					if ( blockWidth < imageWidth ) {
+						backgroundHeight = ( imageHeight * ( ( originalWidth * singleWidth ) - gutter ) ) / imageWidth;
+					} else {
+						backgroundHeight = imageHeight;
+					}
 				}
+
 			}
 
 			// Calculate video height
