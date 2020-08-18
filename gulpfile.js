@@ -18,6 +18,24 @@ const mode = require('gulp-mode')();
 // If mode.production() returns the passed string, we are in production mode
 const production = 'test' === mode.production('test');
 
+const fs = require('fs');
+
+// To use with cross-env
+// if ('undefined' === typeof process.env.NODE_ENV) throw new Error();
+// const production = 'production' === process.env.NODE_ENV;
+const filePath = 'rexpansive-builder.php'
+
+fs.readFile(filePath, 'utf8', (err, data) => {
+	if (err) throw err;
+
+	const newString = `define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', ${production} );`;
+	const result = data.replace(/define\( \'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS\'\, \w+ \)\;/, newString);
+
+	fs.writeFile(filePath, result, 'utf8', function (err) {
+		if (err) return console.log(err);
+	});
+});
+
 const sassConfig = {
 	// Default: nested
 	// Values: nested, expanded, compact, compressed
@@ -449,7 +467,7 @@ exports.build = series(
 );
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
-var live_zip_name = 'Premium-206-Rexpansive-Builder.zip';
+var live_zip_name = 'Premium-207-Rexpansive-Builder.zip';
 var live_folder_name = 'rexpansive-page-builder';
 
 var live_file_map = [
