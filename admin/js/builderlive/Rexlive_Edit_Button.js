@@ -5,8 +5,8 @@
 var Button_Edit_Modal = (function ($) {
 	'use strict';
 
-	var templateCloseButton = Rexbuilder_Admin_Templates.getTemplate('tmpl-tool-close');
-	var templateSaveAndResetButtons = Rexbuilder_Admin_Templates.getTemplate('tmpl-tool-save');
+	var $templateCloseButton = $(Rexbuilder_Admin_Templates.getParsedTemplate('tmpl-tool-close'));
+	var $templateSaveAndResetButtons = $(Rexbuilder_Admin_Templates.getParsedTemplate('tmpl-tool-save'));
 
 	var needToSave = false;
 
@@ -738,8 +738,8 @@ var Button_Edit_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -803,8 +803,8 @@ var Button_Edit_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -868,8 +868,8 @@ var Button_Edit_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -933,8 +933,8 @@ var Button_Edit_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -996,8 +996,8 @@ var Button_Edit_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1061,8 +1061,8 @@ var Button_Edit_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);

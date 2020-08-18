@@ -799,11 +799,8 @@ var Rexbuilder_Section = (function($) {
       rowSeparatorLeft: 20
     };
 
-    // var newSection = tmpl("tmpl-new-section", new_row_defaults);
-    var newSection = Rexbuilder_Live_Templates.getTemplate('tmpl-new-section', new_row_defaults);
-
-    var $newSection = $(newSection);
-    var $newSectionData = $newSection.children(".section-data");
+    var $newSection = $(Rexbuilder_Live_Templates.getParsedTemplate('tmpl-new-section', new_row_defaults));
+		var $newSectionData = $newSection.children(".section-data");
 
 		// $newSectionData.after( tmpl("tmpl-toolbox-section", new_row_defaults) );
     $newSectionData.after(Rexbuilder_Live_Templates.getTemplate('tmpl-toolbox-section', new_row_defaults));
@@ -927,10 +924,7 @@ var Rexbuilder_Section = (function($) {
       rowSeparatorLeft: 20
     };
 
-    // var newSection = tmpl("tmpl-new-section", new_row_defaults);
-    var newSection = Rexbuilder_Live_Templates.getTemplate('tmpl-new-section', new_row_defaults);
-
-    var $newSection = $(newSection);
+    var $newSection = Rexbuilder_Live_Templates.getParsedTemplate('tmpl-new-section', new_row_defaults);
     var $newSectionData = $newSection.children(".section-data");
 
     // $newSectionData.after(tmpl("tmpl-toolbox-section", new_row_defaults));

@@ -2,7 +2,7 @@
  * HTML templates in string, much faster on Safari
  * @since  2.0.6
  */
-var Rexbuilder_Admin_Templates = (function () {
+var Rexbuilder_Admin_Templates = (function ($, window, document) {
 	'use strict';
 
 	function getTemplate(tmpl, data) {
@@ -18,7 +18,12 @@ var Rexbuilder_Admin_Templates = (function () {
 		}
 	}
 
+	function getParsedTemplate(tmpl, data) {
+		return $.parseHTML(getTemplate(tmpl, data));
+	}
+
 	return {
-		getTemplate: getTemplate
+		getTemplate: getTemplate,
+		getParsedTemplate: getParsedTemplate
 	};
-})();
+})(jQuery, window, document);

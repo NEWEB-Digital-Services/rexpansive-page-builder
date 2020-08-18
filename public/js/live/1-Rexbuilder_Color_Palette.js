@@ -1,7 +1,7 @@
 /**
  * Gradient palette color to append to Spectrum Picker.
  * With a button to open the gradient picker
- * 
+ *
  * @since 2.0.0
  */
 var Rexbuilder_Color_Palette = (function($) {
@@ -46,8 +46,7 @@ var Rexbuilder_Color_Palette = (function($) {
 
         // var item = tmpl("tmpl-palette-item",{});
         // var item = '<div class="palette-item"><div class="tool-button tool-button--deactivate palette-item__delete"><i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i></div></div>';
-        var item = Rexbuilder_Live_Templates.getTemplate('tmpl-palette-item');
-        var $item = $(item);
+				var $item = $(Rexbuilder_Live_Templates.getParsedTemplate('tmpl-palette-item'));
 
         props.$add_color.before( $item );
         $item.css("background", color_to_save);

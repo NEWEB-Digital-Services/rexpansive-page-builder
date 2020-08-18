@@ -12,8 +12,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 	var formMailSettings;
 	var formMessages;
 
-	var templateCloseButton = Rexbuilder_Admin_Templates.getTemplate('tmpl-tool-close');
-	var templateSaveAndResetButtons = Rexbuilder_Admin_Templates.getTemplate('tmpl-tool-save');
+	var $templateCloseButton = $(Rexbuilder_Admin_Templates.getParsedTemplate('tmpl-tool-close'));
+	var $templateSaveAndResetButtons = $(Rexbuilder_Admin_Templates.getParsedTemplate('tmpl-tool-save'));
 
 	// AJAX Calls
 	var _getFormSettings = function (formID) {
@@ -1225,8 +1225,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1290,8 +1290,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1360,8 +1360,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1434,8 +1434,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1502,8 +1502,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1581,8 +1581,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1647,8 +1647,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1721,8 +1721,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1786,8 +1786,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1851,8 +1851,8 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);

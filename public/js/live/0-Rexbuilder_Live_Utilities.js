@@ -24,8 +24,7 @@ var Rexbuilder_Live_Utilities = (function($) {
 	var _addSpectrumCustomSaveButton = function( $picker ) {
 		// var choose = tmpl('tmpl-tool-save', {});
 		// var choose = '<div class="rex-modal__outside-footer"><div id="rex-model__add-new-model" class="tool-button tool-button--inline tool-button--save"><span class="btn-save--edited"><i class="l-svg-icons"><svg><use xlink:href="#A006-Save"></use></svg></i></span><span class="btn-save--saved"><i class="l-svg-icons"><svg><use xlink:href="#A006-Save"></use></svg></i></span></div></div>';
-		var options = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-save');
-		var $options = $(options);
+		var $options = $(Rexbuilder_Live_Templates.getParsedTemplate('tmpl-tool-save'));
 		$picker.spectrum('container').append($options);
 		var $choose = $options.find('.rex-modal-option');
 
@@ -48,8 +47,7 @@ var Rexbuilder_Live_Utilities = (function($) {
 	var _addSpectrumCustomCloseButton = function( $picker ) {
 		// var close = tmpl('tmpl-tool-close', {});
 		// var close = '<div class="tool-button tool-button--black tool-button--close rex-modal__close-button"><i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i></div>';
-		var choose = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
-		var $close = $(choose);
+		var $close = $(Rexbuilder_Live_Templates.getParsedTemplate('tmpl-tool-close'));
 		$picker.spectrum('container').append($close);
 
 		$close.on('click', function(e) {
@@ -298,7 +296,7 @@ var Rexbuilder_Live_Utilities = (function($) {
 
 	/**
 	* Add class on live container to hide some tools on layouts different from default
-	* 
+	*
 	* @param {string} activeLayout layout
 	* @since 2.0.0
 	*/
@@ -628,7 +626,7 @@ var Rexbuilder_Live_Utilities = (function($) {
 			var eventData = e.settings.data_to_send;
 			$('.rexpansive_section[data-rexlive-section-id=' + eventData.sectionTarget.sectionID + ']').find('.open-model').trigger('click');
 		});
-    
+
 		// BUTTONS
 		Rexbuilder_Util.$document.on("rexlive:importButton", function (e) {
 			Rexbuilder_Rexbutton.fixImportedButton(e.settings.data_to_send);

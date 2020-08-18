@@ -79,12 +79,12 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		font_size: '15px'
 	};
 
-	var templateCloseButton = Rexbuilder_Admin_Templates.getTemplate('tmpl-tool-close');
-	var templateSaveAndResetButtons = Rexbuilder_Admin_Templates.getTemplate('tmpl-tool-save');
+	var $templateCloseButton = $(Rexbuilder_Admin_Templates.getParsedTemplate('tmpl-tool-close'));
+	var $templateSaveAndResetButtons = $(Rexbuilder_Admin_Templates.getParsedTemplate('tmpl-tool-save'));
 
 	/**
-	 * @param {jQuery} $target input field
-	 * @param {Boolean} negativeNumbers true if allow negative numbers
+	 * @param {jQuery} $target 						input field
+	 * @param {Boolean} negativeNumbers 	true if allow negative numbers
 	 */
 	var _linkKeyDownListenerInputNumber = function ($target, negativeNumbers) {
 		negativeNumbers = typeof negativeNumbers === 'undefined' ? false : negativeNumbers.toString() == 'true';
@@ -1469,8 +1469,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1534,8 +1534,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1599,8 +1599,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1664,8 +1664,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1729,8 +1729,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1794,8 +1794,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1862,8 +1862,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1937,8 +1937,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -2006,8 +2006,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -2081,8 +2081,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -2150,8 +2150,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -2225,8 +2225,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);

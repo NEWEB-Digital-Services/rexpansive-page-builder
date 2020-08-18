@@ -8,7 +8,10 @@ var Rexbuilder_Section_Editor = (function($) {
 
   // var $row_backgrond_color_pickers = null;
   // var $row_overlay_color_pickers = null;
-  var row_picker_classes;
+	var row_picker_classes;
+
+	var $closeButtonTemplate = $(Rexbuilder_Live_Templates.getParsedTemplate('tmpl-tool-close'));
+	var $optionsButtonTemplate = $(Rexbuilder_Live_Templates.getParsedTemplate('tmpl-tool-save'));
 
   var _attachEvents = function() {
     /**
@@ -755,11 +758,6 @@ var Rexbuilder_Section_Editor = (function($) {
       }
     };
 
-    // close button HTML
-    var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
-    // confirm/reset buttons HTML
-    var options = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-save');
-
     // launch spectrum for row background
     $spGlRowBackground.spectrum({
       color: '',
@@ -805,7 +803,7 @@ var Rexbuilder_Section_Editor = (function($) {
     });
 
     // create close button for background color
-    var $spRowBkgrClose = $(close);
+    var $spRowBkgrClose = $closeButtonTemplate.clone();
     $spGlRowBackground.spectrum('container').append($spRowBkgrClose);
 
     $spRowBkgrClose.on('click', function(e) {
@@ -818,13 +816,13 @@ var Rexbuilder_Section_Editor = (function($) {
     });
 
     // create confirm/reset buttons for background color
-    var $spRowBkgrOptions = $(options);
+    var $spRowBkgrOptions = $optionsButtonTemplate.clone();
     var $spRowBkgrOption = $spRowBkgrOptions.find('.rex-modal-option');
     $spGlRowBackground.spectrum('container').append($spRowBkgrOptions);
 
     $spRowBkgrOption.on('click', function(event) {
       event.preventDefault();
-      switch( this.getAttribute('data-rex-option' ) ) {
+      switch( this.getAttribute('data-rex-option') ) {
         case 'save':
           $spGlRowBackground.spectrum('hide');
           break;
@@ -839,7 +837,7 @@ var Rexbuilder_Section_Editor = (function($) {
     });
 
     // create close button for overlay color
-    var $spRowOverlayClose = $(close);
+    var $spRowOverlayClose = $closeButtonTemplate.clone();
     $spGlRowOverlay.spectrum('container').append($spRowOverlayClose);
 
     $spRowOverlayClose.on('click', function(e) {
@@ -852,7 +850,7 @@ var Rexbuilder_Section_Editor = (function($) {
     });
 
     // create confirm/reset buttons for overlay color
-    var $spRowOverlayOptions = $(options);
+    var $spRowOverlayOptions = $optionsButtonTemplate.clone();
     var $spRowOverlayOption = $spRowOverlayOptions.find('.rex-modal-option');
     $spGlRowOverlay.spectrum('container').append($spRowOverlayOptions);
 

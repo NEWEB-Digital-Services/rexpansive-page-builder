@@ -15,7 +15,12 @@ var Rexbuilder_Public_Templates = (function () {
 		}
 	}
 
+	function getParsedTemplate(tmpl, data) {
+		return $.parseHTML(getTemplate(tmpl, data));
+	}
+
 	return {
-		getTemplate: getTemplate
+		getTemplate: getTemplate,
+		getParsedTemplate: getParsedTemplate
 	};
 })();
