@@ -2680,7 +2680,7 @@
         //   Rexbuilder_Util_Editor.endEditingElement();
         // }
         gallery.properties.resizeHandle = $(event.toElement).attr( "data-axis" );
-        block = event.target;
+				block = event.target;
         blockContent = event.target.querySelector('.grid-item-content');
         blockContentWrap = event.target.querySelector('.grid-item-content-wrap');
         textWrap = event.target.querySelector('.text-wrap');
@@ -2746,9 +2746,6 @@
 
 				needH = Math.max(textWrapHeightNeed, imageHeightNeed);
 
-				// TODO Check calculations. Test: img natural masonry with 890px height when saved, at reload becomes 895px
-				console.log( needH/* , Math.round((needH + gallery.properties.gutter) / gallery.properties.singleHeight)  */);
-
         if ( gallery.settings.galleryLayout == "masonry" ) {
           gallery.properties.gridstackInstance.minHeight(event.target, Math.round((needH + gallery.properties.gutter) / gallery.properties.singleHeight));
         } else {
@@ -2756,39 +2753,25 @@
         }
       }
 
-      function resizeStopHandler(event, elem) {
-        if ( ! Rexbuilder_Util_Editor.elementIsResizing) return;
+      function resizeStopHandler(event, block) {
+				if ( ! Rexbuilder_Util_Editor.elementIsResizing) return;
+
+				// var perfectGrid = event.target;
 
         if (gallery.settings.galleryLayout == "masonry") {
-          elem.setAttribute( "data-height", Math.round( elem.getAttribute("data-gs-height") / gallery.properties.singleWidth ) );
+          block.setAttribute( "data-height", Math.round( block.getAttribute("data-gs-height") / gallery.properties.singleWidth ) );
           // @date 12-05-2019
           // Remove this proprerty set.
           // TODO Deeply check: is this correct?
-					elem.querySelector('.rexbuilder-block-data').setAttribute("data-element_real_fluid", ( elem.getAttribute('data-gs-min-height') == elem.getAttribute('data-gs-height') ? 1 : 0 ));
-
-					var needToFit = $(elem).hasClass('fit-natural-bg-image');
-
-					if (needToFit) {
-						var blockContent = event.target.querySelector('.grid-item-content');
-						var currentWidth = event.target.offsetWidth;
-						var imageWidth = isNaN( parseInt( blockContent.getAttribute("data-background_image_width")) ) ? 0 : parseInt( blockContent.getAttribute("data-background_image_width"));
-						var imageHeight = isNaN( parseInt( blockContent.getAttribute("data-background_image_height")) ) ? 0 : parseInt( blockContent.getAttribute("data-background_image_height"));
-						var imageHeightNeed = (imageHeight * (currentWidth - gallery.properties.gutter)) / imageWidth;
-
-						console.log( 'hei', Math.round((imageHeightNeed + gallery.properties.gutter) / gallery.properties.singleHeight) );
-
-						gallery.properties.gridstackInstance.batchUpdate();
-						gallery.properties.gridstackInstance.minHeight( event.target, Math.round((imageHeightNeed + gallery.properties.gutter) / gallery.properties.singleHeight) );
-						gallery.properties.gridstackInstance.commit();
-					}
-        }
+					block.querySelector('.rexbuilder-block-data').setAttribute("data-element_real_fluid", ( block.getAttribute('data-gs-min-height') == block.getAttribute('data-gs-height') ? 1 : 0 ));
+				}
 
         gallery.updateAllElementsProperties();
 
-        gallery.updateSizeViewerText(elem, undefined, undefined, size_viewer, size_viewer_mobile);
-        gallery.checkBlockDimension(elem);
+        gallery.updateSizeViewerText(block, undefined, undefined, size_viewer, size_viewer_mobile);
+        gallery.checkBlockDimension(block);
 
-        elem.setAttribute("data-gs-max-width", 500);
+        block.setAttribute("data-gs-max-width", 500);
         clearTimeout(gallery.doubleDownTimer);
         Rexbuilder_Util_Editor.elementIsDragging = false;
         Rexbuilder_Util_Editor.elementIsResizing = false;
@@ -2797,23 +2780,23 @@
         gallery.removeCollapseElementsProperties();
         var $section = gallery.$section;
 
-        gallery.properties.gridstackInstance.minHeight( elem, 1 );
+        gallery.properties.gridstackInstance.minHeight( block, 1 );
 
         gallery.properties.gridstackInstance.batchUpdate();
-        gallery.properties.gridstackInstance.commit();
+				gallery.properties.gridstackInstance.commit();
 
         // release resources
         textWrap = null;
         blockContent = null;
         blockContentWrap = null;
         size_viewer = null;
-        size_viewer_mobile = null;
+				size_viewer_mobile = null;
 
-        Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), elem.getAttribute('data-rexbuilder-block-id'), 'gs_start_h' );
-        Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), elem.getAttribute('data-rexbuilder-block-id'), 'gs_width' );
-        Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), elem.getAttribute('data-rexbuilder-block-id'), 'gs_height' );
-        Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), elem.getAttribute('data-rexbuilder-block-id'), 'gs_x' );
-        Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), elem.getAttribute('data-rexbuilder-block-id'), 'gs_y' );
+        Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), block.getAttribute('data-rexbuilder-block-id'), 'gs_start_h' );
+        Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), block.getAttribute('data-rexbuilder-block-id'), 'gs_width' );
+        Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), block.getAttribute('data-rexbuilder-block-id'), 'gs_height' );
+        Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), block.getAttribute('data-rexbuilder-block-id'), 'gs_x' );
+        Rexbuilder_Util.editedDataInfo.setBlockData( gallery.$section.attr('data-rexlive-section-id'), block.getAttribute('data-rexbuilder-block-id'), 'gs_y' );
 
         //waiting for transition end
         rtimeOut( Rexbuilder_Util.fixYoutube.bind( null, $section[0] ), 1500 );
