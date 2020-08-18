@@ -3542,23 +3542,23 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 							.each(function (i, element) {
 								$(element).removeClass('selected');
 
-								$(el).find('input').attr('checked', false);
+								$(el).find('input').prop('checked', false);
 							});
 
 						$listItem.addClass('selected');
 
-						$listItem.find('input').attr('checked', true);
+						$listItem.find('input').prop('checked', true);
 					}
 				});
 		});
 
-		if ( !Rexbuilder_Util.editorMode ) {
-			document.addEventListener( 'wpcf7submit', function( event ) {
-				var form = event.srcElement;
+		if (!Rexbuilder_Util.editorMode) {
+			document.addEventListener('wpcf7submit', function (event) {
+				var form = event.target;
 				var $parentGrid = $(form).parents('.perfect-grid-gallery');
-				if ( 0 === $parentGrid.length ) return;
-				var rexgrid = RexGrid.data( $parentGrid.get(0) );
-				setTimeout(function() {
+				if (0 === $parentGrid.length) return;
+				var rexgrid = RexGrid.data($parentGrid.get(0));
+				setTimeout(function () {
 					rexgrid.endResize();
 				}, 200);
 			});

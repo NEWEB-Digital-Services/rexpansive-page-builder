@@ -6,7 +6,7 @@ var Hold_Grid_Modal = (function ($) {
 	var sectionTarget;
 
 	var _reset = function () {
-		props.$element.attr("checked", defaultValue);
+		props.$element.prop("checked", defaultValue);
 	};
 
 	var _update = function (data) {
@@ -15,7 +15,7 @@ var Hold_Grid_Modal = (function ($) {
 		if ( -1 !== data.customClasses.indexOf('rex-block-grid') ) {
 			checked = true;
 		}
-		props.$element.attr("checked", checked);
+		props.$element.prop("checked", checked);
 	};
 
 	var _getData = function () {

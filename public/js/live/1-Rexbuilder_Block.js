@@ -125,7 +125,7 @@ var Rexbuilder_Block = (function ($) {
 
 	    	blockTools = Rexbuilder_Live_Templates.getTemplate( 'tmpl-toolbox-block-wrap-clean', data );
 
-	    	blockData.nextElementSibling.insertAdjacentHTML('afterend',blockTools);
+	    	blockData.nextElementSibling.insertAdjacentHTML('afterend', blockTools);
 	    }
 	}
 

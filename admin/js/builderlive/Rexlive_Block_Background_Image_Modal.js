@@ -156,7 +156,7 @@ var Background_Block_Image_Modal = (function($) {
       '[data-rex-type-image="' + imageType + '"]'
     );
     $imageTypeWrap.addClass("selected");
-    $imageTypeWrap.find("input").attr("checked", true);
+    $imageTypeWrap.find("input").prop("checked", true);
   };
 
   var _clearImageTypeSelection = function() {
@@ -167,7 +167,7 @@ var Background_Block_Image_Modal = (function($) {
       $(el).removeClass("selected");
       $(el)
         .find("input")
-        .attr("checked", false);
+        .prop("checked", false);
     });
   };
 
@@ -202,7 +202,7 @@ var Background_Block_Image_Modal = (function($) {
       if (!$imageTypeWrap.hasClass("selected")) {
         _clearImageTypeSelection();
         $imageTypeWrap.addClass("selected");
-        $imageTypeWrap.find("input").attr("checked", true);
+        $imageTypeWrap.find("input").prop("checked", true);
         _updateImageBackground();
       }
     });

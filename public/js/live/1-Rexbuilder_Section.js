@@ -799,11 +799,8 @@ var Rexbuilder_Section = (function($) {
       rowSeparatorLeft: 20
     };
 
-    // var newSection = tmpl("tmpl-new-section", new_row_defaults);
-    var newSection = Rexbuilder_Live_Templates.getTemplate('tmpl-new-section', new_row_defaults);
-
-    var $newSection = $(newSection);
-    var $newSectionData = $newSection.children(".section-data");
+    var $newSection = $(Rexbuilder_Live_Templates.getParsedTemplate('tmpl-new-section', new_row_defaults));
+		var $newSectionData = $newSection.children(".section-data");
 
 		// $newSectionData.after( tmpl("tmpl-toolbox-section", new_row_defaults) );
     $newSectionData.after(Rexbuilder_Live_Templates.getTemplate('tmpl-toolbox-section', new_row_defaults));
@@ -927,10 +924,7 @@ var Rexbuilder_Section = (function($) {
       rowSeparatorLeft: 20
     };
 
-    // var newSection = tmpl("tmpl-new-section", new_row_defaults);
-    var newSection = Rexbuilder_Live_Templates.getTemplate('tmpl-new-section', new_row_defaults);
-
-    var $newSection = $(newSection);
+    var $newSection = Rexbuilder_Live_Templates.getParsedTemplate('tmpl-new-section', new_row_defaults);
     var $newSectionData = $newSection.children(".section-data");
 
     // $newSectionData.after(tmpl("tmpl-toolbox-section", new_row_defaults));
@@ -1787,7 +1781,7 @@ var Rexbuilder_Section = (function($) {
       },
       handle: ".builder-move-row",
       stop: function(event, ui) {
-        var $section = $(event.srcElement).parents(".rexpansive_section");
+				var $section = $(event.target).parents(".rexpansive_section");
         var sectionMovedObj = {
           rexID: $section.attr("data-rexlive-section-id"),
           modelID: -1,
@@ -1799,7 +1793,7 @@ var Rexbuilder_Section = (function($) {
           sectionMovedObj.modelNumber = $section.attr(
             "data-rexlive-model-number"
           );
-        }
+				}
 
         endSectionsOrder = [];
         Rexbuilder_Util.$rexContainer

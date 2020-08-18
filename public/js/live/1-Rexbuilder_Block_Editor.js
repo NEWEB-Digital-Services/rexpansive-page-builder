@@ -6,7 +6,9 @@
 var Rexbuilder_Block_Editor = (function($) {
   "use strict";
 
-  var block_picker_classes;
+	var block_picker_classes;
+	var $closeButtonTemplate = $(Rexbuilder_Live_Templates.getParsedTemplate('tmpl-tool-close'));
+	var $optionsButtonTemplate = $(Rexbuilder_Live_Templates.getParsedTemplate('tmpl-tool-save'));
 
   /**
    * Attaching events for block editing buttons
@@ -933,9 +935,7 @@ var Rexbuilder_Block_Editor = (function($) {
       },
     });
 
-    // var close = tmpl('tmpl-tool-close', {});
-    var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
-    var $close = $(close);
+		var $close = $closeButtonTemplate.clone();
     $picker.spectrum('container').append($close);
 
     $close.on('click', function(e) {
@@ -948,6 +948,7 @@ var Rexbuilder_Block_Editor = (function($) {
    * Launching spcetrum color picker on an input element, for the block overlay color
    * @param {DOM Element} el input element on which launch spectrum
    * @since 2.0.0
+	 * @deprecated 2.0.4
    */
   var _launchSpectrumPickerOverlayColorBlock = function( el ) {
     var $picker = $(el);
@@ -1086,8 +1087,8 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     // var close = tmpl('tmpl-tool-close', {});
-    var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
-    var $close = $(close);
+    // var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
+		var $close = $closeButtonTemplate.clone();
     $picker.spectrum('container').append($close);
 
     $close.on('click', function(e) {
@@ -1341,11 +1342,6 @@ var Rexbuilder_Block_Editor = (function($) {
       }
     };
 
-    // close button HTML
-    var close = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-close');
-    // confirm/reset buttons HTML
-    var options = Rexbuilder_Live_Templates.getTemplate('tmpl-tool-save');
-
     $spGlBlockBackground.spectrum({
       color: '',
       showAlpha: true,
@@ -1389,7 +1385,7 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     // create close button for background color
-    var $spBlockBkgrClose = $(close);
+		var $spBlockBkgrClose = $closeButtonTemplate.clone();
     $spGlBlockBackground.spectrum('container').append($spBlockBkgrClose);
 
     $spBlockBkgrClose.on('click', function(event) {
@@ -1402,7 +1398,7 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     // create confirm/reset buttons for background color
-    var $spBlockBkgrOptions = $(options);
+    var $spBlockBkgrOptions = $optionsButtonTemplate.clone();
     var $spBlockBkgrOption = $spBlockBkgrOptions.find('.rex-modal-option');
     $spGlBlockBackground.spectrum('container').append($spBlockBkgrOptions);
 
@@ -1423,7 +1419,7 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     // create close button for overlay color
-    var $spBlockOverlayClose = $(close);
+    var $spBlockOverlayClose = $closeButtonTemplate.clone();
     $spGlBlockOverlay.spectrum('container').append($spBlockOverlayClose);
 
     $spBlockOverlayClose.on('click', function(e) {
@@ -1436,7 +1432,7 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     // create confirm/reset buttons for overlay color
-    var $spBlockOverlayOptions = $(options);
+    var $spBlockOverlayOptions = $optionsButtonTemplate.clone();
     var $spBlockOverlayOption = $spBlockOverlayOptions.find('.rex-modal-option');
     $spGlBlockOverlay.spectrum('container').append($spBlockOverlayOptions);
 

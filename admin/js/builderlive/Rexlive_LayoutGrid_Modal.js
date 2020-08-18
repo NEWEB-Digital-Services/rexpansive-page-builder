@@ -1,6 +1,6 @@
 /**
  * Row Fixed/Masonry Logic
- * 
+ *
  * @since 2.0.0
  */
 var LayoutGrid_Modal = (function($) {
@@ -23,7 +23,7 @@ var LayoutGrid_Modal = (function($) {
       $(el).removeClass("selected");
       $(el)
         .find("input")
-        .attr("checked", false);
+        .prop("checked", false);
     });
   };
 
@@ -32,7 +32,7 @@ var LayoutGrid_Modal = (function($) {
       '[data-rex-layout="' + layoutName + '"]'
     );
     $layoutWrap.addClass("selected");
-    $layoutWrap.find("input").attr("checked", true);
+    $layoutWrap.find("input").prop("checked", true);
   };
 
   var _setLayout = function(layoutName) {
@@ -64,7 +64,7 @@ var LayoutGrid_Modal = (function($) {
 
   var _applySectionLayout = function() {
     var layoutData = _getData();
-    
+
     // Synch top toolbar tools
     Rexbuilder_Util_Admin_Editor.highlightRowSetData({
       'layout': layoutData.layout,
@@ -92,7 +92,7 @@ var LayoutGrid_Modal = (function($) {
         _clearLayoutTypeSelection();
         var $layoutWrap = $(e.target).parents(".rexlive-layout-type");
         $layoutWrap.addClass("selected");
-        $layoutWrap.find("input").attr("checked", true);
+        $layoutWrap.find("input").prop("checked", true);
         _applySectionLayout();
       }
     );

@@ -1,7 +1,7 @@
 /**
  * Gradient palette color to append to Spectrum Picker for an overlay.
  * With a button to open the gradient picker
- * 
+ *
  * @since 2.0.0
  */
 var Rexbuilder_Overlay_Palette = (function($) {
@@ -43,8 +43,7 @@ var Rexbuilder_Overlay_Palette = (function($) {
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
         // var item = tmpl("tmpl-palette-item",{});
-        var item = Rexbuilder_Live_Templates.getTemplate('tmpl-palette-item');
-        var $item = $(item);
+				var $item = $(Rexbuilder_Live_Templates.getParsedTemplate('tmpl-palette-item'));
 
         props.$add_color.before( $item );
         $item.css("background", overlay_to_save);

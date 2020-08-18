@@ -1563,7 +1563,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 					var i = 0;
 
 					for (; i < idsInPage.length; i++) {
-						$formsInPage[idsInPage[i]] = $(response.data.html_forms[i].toString().trim());
+						$formsInPage[idsInPage[i]] = $($.parseHTML(response.data.html_forms[i][0]));
 
 						if (needToAddElementStyle && idsInPage[i] == formID) {
 							Rexbuilder_Rexelement.addElementStyle($elementWrappers.filter('[data-rex-element-id="' + formID + '"]'));
@@ -1742,7 +1742,7 @@ var Rexbuilder_Rexwpcf7_Editor = (function ($) {
 				if (!response.success) return;
 
 				for (var i = 0; i < idsInPage.length; i++) {
-					$formsInPage[idsInPage[i]] = $(response.data.html_forms[i].toString().trim());
+					$formsInPage[idsInPage[i]] = $($.parseHTML(response.data.html_forms[i][0]));
 				}
 
 				setRowsSortable();

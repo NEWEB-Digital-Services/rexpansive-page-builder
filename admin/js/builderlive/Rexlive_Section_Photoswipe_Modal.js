@@ -6,12 +6,12 @@ var PhotoSwipe_Modal = (function ($) {
     var sectionTarget;
 
     var _resetPhotoswipe = function () {
-        section_photoswipe.$section_active_photoswipe.attr("checked", defaultPhotoswipe);
+        section_photoswipe.$section_active_photoswipe.prop("checked", defaultPhotoswipe);
     }
 
     var _updatePhotoswipe = function (data) {
         sectionTarget = data.sectionTarget;
-        section_photoswipe.$section_active_photoswipe.attr("checked", data.photoswipe)
+        section_photoswipe.$section_active_photoswipe.prop("checked", data.photoswipe)
     }
 
     var _getData = function () {

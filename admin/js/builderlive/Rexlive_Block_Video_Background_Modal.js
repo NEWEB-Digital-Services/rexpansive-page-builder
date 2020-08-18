@@ -13,7 +13,7 @@ var Block_Video_Background_Modal = (function($) {
   var _openBlockVideoBackgroundModal = function(data, mousePosition) {
     resetData = data;
     _updateVideoModal(data.bgVideo);
-    video_background_properties.$self.attr('data-block_tools', data.bgVideo.tools);  
+    video_background_properties.$self.attr('data-block_tools', data.bgVideo.tools);
     Rexlive_Modals_Utils.positionModal( video_background_properties.$self, mousePosition );
     Rexlive_Modals_Utils.openModal( video_background_properties.$self.parent(".rex-modal-wrap") );
 
@@ -143,19 +143,19 @@ var Block_Video_Background_Modal = (function($) {
           .addClass("active");
     }
 
-    target = data.target;    
+    target = data.target;
   };
 
   var _clearFocusVideo = function() {
     video_background_properties.$youTubeWrap.removeClass("selected");
     video_background_properties.$vimeoWrap.removeClass("selected");
     video_background_properties.$mp4Wrap.removeClass("selected");
-    video_background_properties.$checkboxChooseYoutube.attr("checked", false);
-    video_background_properties.$checkboxChooseVimeo.attr("checked", false);
-    video_background_properties.$checkboxChooseMp4.attr("checked", false);
-    video_background_properties.$checkboxChooseYoutube.attr("disabled", false);
-    video_background_properties.$checkboxChooseVimeo.attr("disabled", false);
-    video_background_properties.$checkboxChooseMp4.attr("disabled", false);
+    video_background_properties.$checkboxChooseYoutube.prop("checked", false);
+    video_background_properties.$checkboxChooseVimeo.prop("checked", false);
+    video_background_properties.$checkboxChooseMp4.prop("checked", false);
+    video_background_properties.$checkboxChooseYoutube.prop("disabled", false);
+    video_background_properties.$checkboxChooseVimeo.prop("disabled", false);
+    video_background_properties.$checkboxChooseMp4.prop("disabled", false);
 
     //video_background_properties.$linkYoutube.next('label').removeClass('active');
     //video_background_properties.$linkVimeo.next('label').removeClass('active');
@@ -174,23 +174,23 @@ var Block_Video_Background_Modal = (function($) {
   var _focusYoutube = function() {
     if (video_background_properties.$youTubeWrap.hasClass("selected")) {
       video_background_properties.$youTubeWrap.removeClass("selected");
-      video_background_properties.$checkboxChooseYoutube.attr("checked", false);
-      video_background_properties.$checkboxChooseVimeo.attr("disabled", false);
-      video_background_properties.$checkboxChooseMp4.attr("disabled", false);
-      video_background_properties.$linkYoutube.attr("disabled", false);
-      video_background_properties.$linkVimeo.attr("disabled", false);
+      video_background_properties.$checkboxChooseYoutube.prop("checked", false);
+      video_background_properties.$checkboxChooseVimeo.prop("disabled", false);
+      video_background_properties.$checkboxChooseMp4.prop("disabled", false);
+      video_background_properties.$linkYoutube.prop("disabled", false);
+      video_background_properties.$linkVimeo.prop("disabled", false);
       if("" === video_background_properties.$linkYoutube.val()) {
         video_background_properties.$linkYoutube.next('label').removeClass('active');
       }
       video_background_properties.$linkYoutube.trigger("blur");
       videoChosen = "";
     } else {
-      video_background_properties.$checkboxChooseYoutube.attr("checked", true);
-      video_background_properties.$checkboxChooseVimeo.attr("disabled", true);
-      video_background_properties.$checkboxChooseMp4.attr("disabled", true);
+      video_background_properties.$checkboxChooseYoutube.prop("checked", true);
+      video_background_properties.$checkboxChooseVimeo.prop("disabled", true);
+      video_background_properties.$checkboxChooseMp4.prop("disabled", true);
       video_background_properties.$youTubeWrap.addClass("selected");
       // video_background_properties.$linkYoutube.next('label').addClass('active');
-      video_background_properties.$linkVimeo.attr("disabled", true);
+      video_background_properties.$linkVimeo.prop("disabled", true);
 
       video_background_properties.$linkYoutube.trigger("focus");
 
@@ -203,23 +203,23 @@ var Block_Video_Background_Modal = (function($) {
   var _focusVimeo = function() {
     if (video_background_properties.$vimeoWrap.hasClass("selected")) {
       video_background_properties.$vimeoWrap.removeClass("selected");
-      video_background_properties.$checkboxChooseVimeo.attr("checked", false);
-      video_background_properties.$checkboxChooseYoutube.attr("disabled", false);
-      video_background_properties.$checkboxChooseMp4.attr("disabled", false);
-      video_background_properties.$linkYoutube.attr("disabled", false);
-      video_background_properties.$linkVimeo.attr("disabled", false);
+      video_background_properties.$checkboxChooseVimeo.prop("checked", false);
+      video_background_properties.$checkboxChooseYoutube.prop("disabled", false);
+      video_background_properties.$checkboxChooseMp4.prop("disabled", false);
+      video_background_properties.$linkYoutube.prop("disabled", false);
+      video_background_properties.$linkVimeo.prop("disabled", false);
       if("" === video_background_properties.$linkVimeo.val()) {
         video_background_properties.$linkVimeo.next('label').removeClass('active');
       }
       video_background_properties.$linkVimeo.trigger("blur");
       videoChosen = "";
     } else {
-      video_background_properties.$checkboxChooseVimeo.attr("checked", true);
-      video_background_properties.$checkboxChooseYoutube.attr("disabled", true);
-      video_background_properties.$checkboxChooseMp4.attr("disabled", true);
+      video_background_properties.$checkboxChooseVimeo.prop("checked", true);
+      video_background_properties.$checkboxChooseYoutube.prop("disabled", true);
+      video_background_properties.$checkboxChooseMp4.prop("disabled", true);
       video_background_properties.$vimeoWrap.addClass("selected");
       // video_background_properties.$linkVimeo.next('label').addClass('active');
-      video_background_properties.$linkYoutube.attr("disabled", true);
+      video_background_properties.$linkYoutube.prop("disabled", true);
       video_background_properties.$linkVimeo.trigger("focus");
       videoChosen = "vimeo";
     }
@@ -230,23 +230,23 @@ var Block_Video_Background_Modal = (function($) {
   var _focusMp4 = function() {
     if (video_background_properties.$mp4Wrap.hasClass("selected")) {
       video_background_properties.$mp4Wrap.removeClass("selected");
-      video_background_properties.$checkboxChooseMp4.attr("checked", false);
-      video_background_properties.$checkboxChooseYoutube.attr("disabled", false);
-      video_background_properties.$checkboxChooseVimeo.attr("disabled", false);
-      video_background_properties.$linkYoutube.attr("disabled", false);
-      video_background_properties.$linkVimeo.attr("disabled", false);
+      video_background_properties.$checkboxChooseMp4.prop("checked", false);
+      video_background_properties.$checkboxChooseYoutube.prop("disabled", false);
+      video_background_properties.$checkboxChooseVimeo.prop("disabled", false);
+      video_background_properties.$linkYoutube.prop("disabled", false);
+      video_background_properties.$linkVimeo.prop("disabled", false);
       if("" === video_background_properties.$linkMp4Preview.val()) {
         video_background_properties.$linkMp4Preview.next('label').removeClass('active');
       }
       videoChosen = "";
     } else {
-      video_background_properties.$checkboxChooseMp4.attr("checked", true);
-      video_background_properties.$checkboxChooseYoutube.attr("disabled", true);
-      video_background_properties.$checkboxChooseVimeo.attr("disabled", true);
+      video_background_properties.$checkboxChooseMp4.prop("checked", true);
+      video_background_properties.$checkboxChooseYoutube.prop("disabled", true);
+      video_background_properties.$checkboxChooseVimeo.prop("disabled", true);
       video_background_properties.$mp4Wrap.addClass("selected");
       // video_background_properties.$linkMp4Preview.next('label').addClass('active');
-      video_background_properties.$linkYoutube.attr("disabled", true);
-      video_background_properties.$linkVimeo.attr("disabled", true);
+      video_background_properties.$linkYoutube.prop("disabled", true);
+      video_background_properties.$linkVimeo.prop("disabled", true);
       videoChosen = "mp4";
     }
     video_background_properties.$youTubeWrap.removeClass("selected");
@@ -360,7 +360,7 @@ var Block_Video_Background_Modal = (function($) {
         _focusMp4();
         _updateVideoBackground();
       }
-      
+
     });
 
     video_background_properties.$uploadMp4.click(function() {
@@ -379,9 +379,9 @@ var Block_Video_Background_Modal = (function($) {
         var $target = $(e.target);
         var $audioBtnWrapper = $target.parents(".set-video-audio-btn");
         var $checkBox = $audioBtnWrapper.find(".video-audio-checkbox");
-        var check = $checkBox.attr("checked");
+        var check = $checkBox.prop("checked");
         check = !check;
-        $checkBox.attr("checked", check);
+        $checkBox.prop("checked", check);
         _updateVideoBackground();
       });
 
@@ -422,7 +422,7 @@ var Block_Video_Background_Modal = (function($) {
       $linkYoutube: $self.find("#rex-youtube-video-block"),
       $linkYoutubeFocus: $self.find("#rex-youtube-video-block"),
       $linkYoutubeLabel: $self.find("#rex-youtube-video-block-label"),
-        
+
       $linkVimeo: $self.find("#rex-vimeo-video-block"),
       $linkVimeoLabel: $self.find("#rex-vimeo-video-block-label"),
 

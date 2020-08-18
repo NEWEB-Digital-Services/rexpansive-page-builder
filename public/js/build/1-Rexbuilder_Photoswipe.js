@@ -94,7 +94,7 @@ var Rexbuilder_Photoswipe = (function($){
 	// parse slide data (url, title, size ...) from DOM elements
 	// (children of gallerySelector)
 	var parseThumbnailElements = function(el) {
-		var thumbElements = $(el).find(".pswp-figure").get();	
+		var thumbElements = $(el).find(".pswp-figure").get();
 
 		var numNodes = thumbElements.length,
 			items = [],
@@ -179,7 +179,7 @@ var Rexbuilder_Photoswipe = (function($){
 			return;
 		}
 
-		var eTarget = e.target || e.srcElement;
+		var eTarget = e.target;
 
 		// find root element of slide
 		var clickedListItem = closest(eTarget, function(el) {
@@ -442,7 +442,7 @@ var Rexbuilder_Photoswipe = (function($){
 
 	var _init = function(gallerySelector) {
 		gallerySelectorGlobal = gallerySelector;
-		
+
 		var galleryElements = document.querySelectorAll(gallerySelector);
 
 		var tot_galleryElements = galleryElements.length;

@@ -79,12 +79,12 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		font_size: '15px'
 	};
 
-	var templateCloseButton = Rexbuilder_Admin_Templates.getTemplate('tmpl-tool-close');
-	var templateSaveAndResetButtons = Rexbuilder_Admin_Templates.getTemplate('tmpl-tool-save');
+	var $templateCloseButton = $(Rexbuilder_Admin_Templates.getParsedTemplate('tmpl-tool-close'));
+	var $templateSaveAndResetButtons = $(Rexbuilder_Admin_Templates.getParsedTemplate('tmpl-tool-save'));
 
 	/**
-	 * @param {jQuery} $target input field
-	 * @param {Boolean} negativeNumbers true if allow negative numbers
+	 * @param {jQuery} $target 						input field
+	 * @param {Boolean} negativeNumbers 	true if allow negative numbers
 	 */
 	var _linkKeyDownListenerInputNumber = function ($target, negativeNumbers) {
 		negativeNumbers = typeof negativeNumbers === 'undefined' ? false : negativeNumbers.toString() == 'true';
@@ -920,30 +920,21 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
 	var _updateColumnContentDataFromPanel = function () {
 		// Requried field
-
-		columnContentData.wpcf7_required_field =
-			undefined !== wpcf7ContentEditorProperties.$content_required_field.attr('checked');
+		columnContentData.wpcf7_required_field = wpcf7ContentEditorProperties.$content_required_field.prop('checked');
 
 		// E-Mail
-
-		columnContentData.wpcf7_email = undefined !== wpcf7ContentEditorProperties.$content_set_email.attr('checked');
+		columnContentData.wpcf7_email = wpcf7ContentEditorProperties.$content_set_email.prop('checked');
 
 		// Only numbers
-
-		columnContentData.wpcf7_only_numbers =
-			undefined !== wpcf7ContentEditorProperties.$content_only_numbers.attr('checked');
+		columnContentData.wpcf7_only_numbers = wpcf7ContentEditorProperties.$content_only_numbers.prop('checked');
 
 		// Default check
-
-		columnContentData.wpcf7_default_check =
-			undefined !== wpcf7ContentEditorProperties.$content_input_default_check.attr('checked');
+		columnContentData.wpcf7_default_check = wpcf7ContentEditorProperties.$content_input_default_check.prop('checked');
 
 		// Placeholder
-
 		columnContentData.wpcf7_placeholder = wpcf7ContentEditorProperties.$content_placeholder.val();
 
 		// Width & height
-
 		columnContentData.input_width = wpcf7ContentEditorProperties.$content_input_width.val();
 
 		var widthType = wpcf7ContentEditorProperties.$content_input_width_type.filter(':checked').val();
@@ -951,12 +942,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		switch (widthType) {
 			case 'percentage':
 				columnContentData.input_width = columnContentData.input_width + '%';
-
 				break;
-
 			case 'pixel':
 				columnContentData.input_width = columnContentData.input_width + 'px';
-
 				break;
 		}
 
@@ -1481,8 +1469,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1546,8 +1534,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1611,8 +1599,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1676,8 +1664,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1741,8 +1729,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1806,8 +1794,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1874,8 +1862,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -1949,8 +1937,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -2018,8 +2006,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -2093,8 +2081,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -2162,8 +2150,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -2237,8 +2225,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			}
 		});
 
-		var $closeButton = $(templateCloseButton);
-		var $bottomTools = $(templateSaveAndResetButtons);
+		var $closeButton = $templateCloseButton.clone();
+		var $bottomTools = $templateSaveAndResetButtons.clone();
 
 		$valueInput.spectrum('container').append($closeButton);
 		$valueInput.spectrum('container').append($bottomTools);
@@ -2286,9 +2274,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			needToSave = false;
 			columnContentData = jQuery.extend(true, {}, resetData);
 
-			var wasSetRequiredField = undefined !== wpcf7ContentEditorProperties.$content_required_field.attr('checked');
-			var wasSetEmail = undefined !== wpcf7ContentEditorProperties.$content_set_email.attr('checked');
-			var wasSetOnlyNumbers = undefined !== wpcf7ContentEditorProperties.$content_only_numbers.attr('checked');
+			var wasSetRequiredField = wpcf7ContentEditorProperties.$content_required_field.prop('checked');
+			var wasSetEmail = wpcf7ContentEditorProperties.$content_set_email.prop('checked');
+			var wasSetOnlyNumbers = wpcf7ContentEditorProperties.$content_only_numbers.prop('checked');
 
 			_updatePanel();
 			_applyData();
@@ -2368,8 +2356,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage({ eventName: 'rexlive:clearFormOutlines' });
 			Rexbuilder_Util_Admin_Editor.searchFocusedElement();
 
-			var wasSetEmail = undefined !== wpcf7ContentEditorProperties.$content_set_email.attr('checked');
-			var wasSetOnlyNumbers = undefined !== wpcf7ContentEditorProperties.$content_only_numbers.attr('checked');
+			var wasSetEmail = wpcf7ContentEditorProperties.$content_set_email.prop('checked');
+			var wasSetOnlyNumbers = wpcf7ContentEditorProperties.$content_only_numbers.prop('checked');
 
 			if (!needToSave) {
 				columnContentData = jQuery.extend(true, {}, resetData);
@@ -2426,7 +2414,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		});
 
 		wpcf7ContentEditorProperties.$content_required_field.on('click', function () {
-			var isSetRequiredField = undefined !== wpcf7ContentEditorProperties.$content_required_field.attr('checked');
+			var isSetRequiredField = wpcf7ContentEditorProperties.$content_required_field.prop('checked');
 
 			_updateColumnContentLive({
 				type: 'wpcf7-required',
@@ -2435,7 +2423,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		});
 
 		wpcf7ContentEditorProperties.$content_set_email.on('click', function () {
-			var isSetEmail = undefined !== wpcf7ContentEditorProperties.$content_set_email.attr('checked');
+			var isSetEmail = wpcf7ContentEditorProperties.$content_set_email.prop('checked');
 
 			if (isSetEmail) {
 				wpcf7ContentEditorProperties.$content_only_numbers.prop('checked', false);
@@ -2448,7 +2436,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		});
 
 		wpcf7ContentEditorProperties.$content_only_numbers.on('click', function () {
-			var isSetOnlyNumbers = undefined !== wpcf7ContentEditorProperties.$content_only_numbers.attr('checked');
+			var isSetOnlyNumbers = wpcf7ContentEditorProperties.$content_only_numbers.prop('checked');
 
 			if (isSetOnlyNumbers) {
 				wpcf7ContentEditorProperties.$content_set_email.prop('checked', false);
@@ -2461,7 +2449,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		});
 
 		wpcf7ContentEditorProperties.$content_input_default_check.on('click', function () {
-			var isSetDefaultCheck = undefined !== wpcf7ContentEditorProperties.$content_input_default_check.attr('checked');
+			var isSetDefaultCheck = wpcf7ContentEditorProperties.$content_input_default_check.prop('checked');
 
 			_updateColumnContentLive({
 				type: 'wpcf7-default-check',

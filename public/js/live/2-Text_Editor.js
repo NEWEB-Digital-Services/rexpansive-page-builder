@@ -3208,7 +3208,7 @@ var TextEditor = (function ($) {
      */
     editorInstance.subscribe("blur", function (event, elem) {
       // if user click on a media btn, do not blur
-      if ( 'click' == event.type && 'undefined' !== typeof editorInstance.getExtensionByName('insert-media') && 0 !== $(event.srcElement).parents('.' + editorInstance.getExtensionByName('insert-media').toolbarWrapClass).length ) return false;
+      if ( 'click' == event.type && 'undefined' !== typeof editorInstance.getExtensionByName('insert-media') && 0 !== $(event.target).parents('.' + editorInstance.getExtensionByName('insert-media').toolbarWrapClass).length ) return false;
 
       // view or hide the little T icon
       Rexbuilder_Block_Editor.updateTextTool( elem );
