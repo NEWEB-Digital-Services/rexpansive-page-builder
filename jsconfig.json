@@ -1,6 +1,7 @@
 {
 	"typeAcquisition": {
-		"include": ["jquery"]
+		"include": ["jquery", "lodash"]
 	},
+	"include": ["public/js/**/*", "admin/js/**/*"],
 	"exclude": ["**/node_modules/*"]
 }
