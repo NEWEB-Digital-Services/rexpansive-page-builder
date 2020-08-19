@@ -200,7 +200,11 @@ For the more experienced among us: you can insert CSS anywhere.
 
 == Changelog ==
 
-= 2.0.7 - =
+= 2.0.7 - August 19, 2020 =
+ * Added: Class to deactivate default animation on blocks (.deactivate-rexpansive-animation)
+ * Added: Class to make a natural image fit all the space possible in the block (.fit-natural-bg-image)
+ * Updated: made several improvements to RexAccordions
+ * Fixed: Sticky Section animation
 
 = 2.0.6 – June 23, 2020 =
  * Update: Prevent the possibility to set Full Height on Masonry rows
