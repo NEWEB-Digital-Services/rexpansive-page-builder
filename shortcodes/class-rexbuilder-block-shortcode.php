@@ -499,22 +499,15 @@ class Rexbuilder_Block {
 				// 	echo '<div class="rexlive-block-drag-handle"></div>';
 				// }
 
-				if ( 'full' == $type_bg_block ) {
-					echo "<div class=\"rex-image-wrapper full-image-background\"".$background_img_style;
-					echo $alt_tag;
-					echo "></div>";
-				}
+				echo "<div class=\"rex-image-wrapper {$type_bg_block}-image-background\"".$background_img_style;
+				echo $alt_tag;
+				echo "></div>";
 
 				echo $bg_video_markup;
 				echo $bg_video_vimeo_markup;
 				echo $bg_youtube_video_markup;
 
 				echo '<div class="responsive-block-overlay"'.($overlay_block_color != "" ? ' style="background-color:' .  $overlay_block_color . ';"' : ''). '>';
-				if('natural' == $type_bg_block){
-					echo "<div class=\"rex-image-wrapper natural-image-background\"".$background_img_style;
-					echo $alt_tag;
-					echo "></div>";
-				}
 				echo '<div class="rex-custom-scrollbar' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '">';
 				echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
 				echo $floating_border;

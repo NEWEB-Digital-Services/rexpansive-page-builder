@@ -270,9 +270,11 @@ var Rexbuilder_Dom_Util = (function($) {
       var el = document.createElement("div");
       $imageDiv = $(el);
       $imageDiv.addClass("rex-image-wrapper");
-      $imageDiv.prependTo($overlayDiv[0]);
+      // $imageDiv.prependTo($overlayDiv[0]);
+      $imageDiv.insertBefore($overlayDiv[0]);
     } else if ($imageDiv.hasClass("full-image-background")) {
-      $imageDiv.detach().prependTo($overlayDiv[0]);
+      // $imageDiv.detach().prependTo($overlayDiv[0]);
+      $imageDiv.detach().insertBefore($overlayDiv[0]);
       $imageDiv.removeClass("full-image-background");
     }
 

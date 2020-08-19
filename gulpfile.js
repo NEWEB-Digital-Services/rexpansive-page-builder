@@ -15,20 +15,21 @@ const svgSprite = require('gulp-svg-sprite');
 const sourcemaps = require('gulp-sourcemaps');
 const mode = require('gulp-mode')();
 
+const fs = require('fs');
+
 // If mode.production() returns the passed string, we are in production mode
 const production = 'test' === mode.production('test');
-
-const fs = require('fs');
 
 // To use with cross-env
 // if ('undefined' === typeof process.env.NODE_ENV) throw new Error();
 // const production = 'production' === process.env.NODE_ENV;
-const filePath = 'rexpansive-builder.php'
+const filePath = 'rexpansive-builder.php';
 
 fs.readFile(filePath, 'utf8', (err, data) => {
 	if (err) throw err;
 
 	const newString = `define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', ${production} );`;
+	// Maybe add \s for the spaces
 	const result = data.replace(/define\( \'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS\'\, \w+ \)\;/, newString);
 
 	fs.writeFile(filePath, result, 'utf8', function (err) {

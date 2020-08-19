@@ -30,5 +30,6 @@
     "gulp-watch": "^5.0.1",
     "gulp-zip": "^3.2.0",
     "yargs": "^7.0.1"
-  }
+  },
+  "dependencies": {}
 }

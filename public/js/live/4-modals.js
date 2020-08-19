@@ -1512,7 +1512,7 @@
           $elem.parents(".grid-stack-row").attr("data-layout") == "fixed" ? "full" : "natural";
       } else {
         defaultTypeImage = "";
-      }
+			}
 
       var old_typeBGimage =
         typeof $elemData.attr("data-type_bg_block") == "undefined" ? defaultTypeImage : $elemData.attr("data-type_bg_block");
