@@ -13,3 +13,5 @@
   - Disables a grid on front end (destroy rex-grid instance, set block heights and launch lazy load)
 - .rex-block--no-flow
   - Removes a block from the grid on front-end, preventing its instantiation
+- .rex-element--animated
+  - Add the class to a block, to detect when the block itself is visible after user scrolls page
