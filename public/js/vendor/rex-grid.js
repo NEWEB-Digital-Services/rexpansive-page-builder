@@ -334,10 +334,11 @@
 		var blocksArray = Array.prototype.slice.call( this.element.getElementsByClassName( 'perfect-grid-item' ) );
 		var blockInstance;
 
-		this.gridBlocksTotal = blocksArray.length;
 		var i = 0;
 
-		for ( i = 0; i < this.gridBlocksTotal; i++ ) {
+		for ( i = 0; i < blocksArray.length; i++ ) {
+			if ( Utils.hasClass( blocksArray[i], 'rex-block--no-flow' ) ) continue;
+
 			blockInstance = new RexBlock( {
 				el: blocksArray[ i ],
 				id: blocksArray[ i ].getAttribute( 'data-rexbuilder-block-id' ),
@@ -353,6 +354,8 @@
 
 			this.gridBlocks.push( blockInstance );
 		}
+
+		this.gridBlocksTotal = this.gridBlocks.length;
 
 		// Sort blocks array by ascending DOM order
 		this.sortBlocks();

@@ -9,3 +9,7 @@
   - Used to prevent some themes to perform unwanted actions on video elements
 - .fit-natural-bg-image
   - Makes the background image **fit the block** all the way possible, keeping the possibility to make it fluid
+- .disable-grid
+  - Disables a grid on front end (destroy rex-grid instance, set block heights and launch lazy load)
+- .rex-block--no-flow
+  - Removes a block from the grid on front-end, preventing its instantiation
