@@ -15,3 +15,9 @@
   - Removes a block from the grid on front-end, preventing its instantiation
 - .rex-element--animated
   - Add the class to a block, to detect when the block itself is visible after user scrolls page
+- .rex-num-spin
+  - Add this class to a text span to animate numbers with a spinning rotation
+- .rex-num-spin__stopped
+  - Prevent a spinner to be launched automatically
+- .rex-num-spin__block-scrolled
+  - launch a spin when its block container is visible

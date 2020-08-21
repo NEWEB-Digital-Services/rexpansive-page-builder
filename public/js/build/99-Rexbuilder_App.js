@@ -760,6 +760,11 @@ var Rexbuilder_App = (function($) {
   	}
   }
 
+  function launchInlineGallery() {
+    var $inline_galleries = Rexbuilder_Util.$rexContainer.find('.inline-pswp-gallery');
+    $inline_galleries.on('click', Rexbuilder_Photoswipe.init_inline_pswp);
+  }
+
   /**
    * Launching odometer with some options
    * Store globally the odometer elements for future use
@@ -822,10 +827,33 @@ var Rexbuilder_App = (function($) {
     return oElement;
   };
 
-  function launchInlineGallery() {
-    var $inline_galleries = Rexbuilder_Util.$rexContainer.find('.inline-pswp-gallery');
-    $inline_galleries.on('click', Rexbuilder_Photoswipe.init_inline_pswp);
-	}
+  function launchOdometers() {
+    /** -- Launching Odomter -- */
+    var odometersEls = [].slice.call( document.getElementsByClassName('rex-num-spin') );
+    var oindex, tot_odometersEls = odometersEls.length;
+    for( oindex = 0; oindex < tot_odometersEls; oindex++ ) {
+      var oElement = launch_odometer( odometersEls[oindex] );
+      if ( oElement ) {
+        odometers.push(oElement);
+
+        // listen scroll from parent block
+        if ( Rexbuilder_Util.hasClass( odometersEls[oindex], 'rex-num-spin__block-scrolled' ) ) {
+          $(odometersEls[oindex]).parents('.perfect-grid-item').one('rs-scrolled-complete', { el: odometersEls[oindex] }, function(ev) {
+            ev.data.el.innerHTML = ev.data.el.getAttribute( 'data-final-value' );
+          });
+        } else {
+          if ( ! Rexbuilder_Util.hasClass( odometersEls[oindex], 'rex-num-spin__stopped' ) ) {
+            // otherwise listen to scroll directly on the element
+            $(odometersEls[oindex]).rexScrolled({
+              callback: function(el) {
+                el.innerHTML = el.getAttribute( 'data-final-value' );
+              }
+            });
+          }
+        }
+      }
+    }
+  }
 
 	function launchAccordions() {
     $builderAccordions = Rexbuilder_Util.$rexContainer.find('.rex-accordion');
@@ -964,6 +992,9 @@ var Rexbuilder_App = (function($) {
 			disableGrids();
 
       Rexbuilder_Photoswipe.init('.photoswipe-gallery');
+
+      // launch odometer
+      // launchOdometers();
 
       // inline photoswipe
       launchInlineGallery();
@@ -1135,20 +1166,24 @@ var Rexbuilder_App = (function($) {
       // Rexbuilder_Photoswipe.init(".photoswipe-gallery");
 
       /** -- Launching Odomter -- */
-      var odometersEls = [].slice.call( document.getElementsByClassName('rex-num-spin') );
-      var oindex, tot_odometersEls = odometersEls.length;
-      for( oindex = 0; oindex < tot_odometersEls; oindex++ ) {
-        var oElement = launch_odometer( odometersEls[oindex] );
-        if ( oElement ) {
-          odometers.push(oElement);
-          $(odometersEls[oindex]).rexScrolled({
-            callback: function(el)
-            {
-              el.innerHTML = el.getAttribute('data-final-value');
-            }
-          });
-        }
-      }
+      // var odometersEls = [].slice.call( document.getElementsByClassName('rex-num-spin') );
+      // var oindex, tot_odometersEls = odometersEls.length;
+      // for( oindex = 0; oindex < tot_odometersEls; oindex++ ) {
+      //   var oElement = launch_odometer( odometersEls[oindex] );
+      //   if ( oElement ) {
+      //     odometers.push(oElement);
+      //     $(odometersEls[oindex]).rexScrolled({
+      //       callback: function(el)
+      //       {
+      //         console.log('rexscrolled done')
+      //         console.log(el)
+      //         el.innerHTML = el.getAttribute('data-final-value');
+      //       }
+      //     });
+      //   }
+      // }
+      // odometer can change block height: better launch on dom load
+      launchOdometers();
 
       /** -- Launching slideshow -- **/
       var $slideshow = Rexbuilder_Util.$body.find('.rex-slideshow');
