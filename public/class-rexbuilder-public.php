@@ -172,7 +172,7 @@ class Rexbuilder_Public {
 		global $post;
 
 		if ( $this->builder_active_on_this_post_type() ) {
-			wp_enqueue_style('rexpansive-builder-rexbutton-style', REXPANSIVE_BUILDER_URL . 'public/css/rex_buttons.css', array(), REXPANSIVE_BUILDER_VERSION, 'all');
+			// wp_enqueue_style('rexpansive-builder-rexbutton-style', REXPANSIVE_BUILDER_URL . 'public/css/rex_buttons.css', array(), REXPANSIVE_BUILDER_VERSION, 'all');
 
 			if( Rexbuilder_Utilities::isBuilderLive() ) {
 				// iframe
