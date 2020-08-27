@@ -654,7 +654,7 @@ class Rexbuilder_Public {
 	 */
 	public function rex_wpcf7_save_changes(){
 		$nonce = $_POST['nonce_param'];
-		$elementID = $_POST['elementID'];
+		// $elementID = $_POST['elementID'];
 
 		$response = array(
 			'error' => false,
@@ -685,6 +685,7 @@ class Rexbuilder_Public {
 	 * Saves new form row in the DB
 	 * @return model with no image
 	 * @since  x.x.x
+	 * @deprecated ??? seems never used
 	 */
 	public function rex_wpcf7_save_new_row(){
 		$nonce = $_POST['nonce_param'];
@@ -1779,6 +1780,9 @@ class Rexbuilder_Public {
 		global $post;
 
 		if ( ! $this->builder_active_on_this_post_type() ) return;
+
+		$customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
+		if ( false === strpos( $customEffects, 'popup-content-button' ) ) return;
 
 		$template = Rexbuilder_Utilities::get_plugin_templates_path( 'rexbuilder-popupcontent-close-template.php' );
 		if ( ! empty( $template ) ) {

@@ -573,6 +573,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 	};
 
 	var _endFixingButtonImported = function ($buttonWrapper) {
+		console.log('_endFixingButtonImported')
 		var buttonID = $buttonWrapper.attr('data-rex-button-id');
 		var flagButtonFound = false;
 		var i = 0;
@@ -1210,6 +1211,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 
 	var _linkDocumentListeners = function () {
 		Rexbuilder_Util.$document.on('rexlive:completeImportButton', function (e) {
+			console.log('rexlive:completeImportButton')
 			var data = e.settings;
 			var $newElement = data.$blockAdded;
 			var $buttonWrapper = data.$buttonWrapper;

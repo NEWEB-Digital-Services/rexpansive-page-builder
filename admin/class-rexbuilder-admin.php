@@ -3111,7 +3111,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$response['error'] = false;
 		$response['new_layouts'] = 0;
 
-		$saved_layouts = get_option( '_rex_responsive_layouts' );
+		$saved_layouts = get_option( '_rex_responsive_layouts', array() );
 		$updated_layouts = $_POST['custom_layouts'];
 
 		// update layouts names
@@ -4057,6 +4057,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @since  2.0.0
 	 */
 	public function rex_delete_rexbutton() {
+		Rexbuilder_Utilities::write_log('rex_delete_rexbutton');
+
 		$nonce = $_POST['nonce_param'];
 
 		$response = array(
@@ -4126,6 +4128,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @since  2.0.5
 	 */
 	private static function separate_buttons_in_posts( $rexButtonID, &$button_ids ) {
+		Rexbuilder_Utilities::write_log('separate_buttons_in_posts');
 		global $wpdb;
 		$posts_with_buttons = $wpdb->get_results(
 			$wpdb->prepare(
