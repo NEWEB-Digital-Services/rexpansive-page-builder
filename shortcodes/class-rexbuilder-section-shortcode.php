@@ -256,7 +256,7 @@ class Rexbuilder_Section {
 		echo ( ! $editor && '' !== $id_image_bg_section ? ' section-w-image' : '' );
 		echo ( ! $editor && '' != $video_bg_id_section && 'undefined' != $video_bg_id_section ? ' section-w-html-video' : '' );
 		// custom classes filter
-		echo apply_filters('rexpansive_builder_section_class', '', $parsed_atts) . '"';
+		echo apply_filters('rexpansive_builder_section_class', '', array( &$parsed_atts ) ) . '"';
 
 		// photoswipe gallery check
 		echo (($content_has_photoswipe > 0) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '');

@@ -16,6 +16,7 @@ var TextEditor = (function ($) {
   var listExtensionInstance;
 	var insertMediaExtensionInstance;
 	var rexElementInstance;
+  var testDeleteExtensionInstance;
 
   var currentTextSelection;
 
@@ -2712,6 +2713,20 @@ var TextEditor = (function ($) {
     }
   });
 
+  var testDeleteExtension = MediumEditor.Extension.extend({
+    name: 'testDeleteExtension',
+    init: function() {
+      this.subscribe('editableKeydownDelete', this.handleEditableKeydownDelete.bind(this));
+    },
+    handleEditableKeydownDelete: function(keyDownEvent, editableElement) {
+      // var sps = Array.prototype.slice.call( editableElement.querySelectorAll('.data-test') );
+      // var i, tot = sps.length;
+      // for( i=0; i<tot; i++ ) {
+      //   sps[i].setAttribute('contenteditable', false);
+      // }
+    }
+  });
+
 	var RexElementExtension = MediumEditor.Extension.extend({
 		name: 'rexelement',
 		init: function () {
@@ -3288,6 +3303,7 @@ var TextEditor = (function ($) {
     listExtensionInstance = new ListExtension();
 		insertMediaExtensionInstance = new InsertMediaExtension();
 		rexElementInstance = new RexElementExtension();
+    testDeleteExtensionInstance = new testDeleteExtension();
 
     editorInstance = new MediumEditor(".editable", {
       toolbar: {
@@ -3332,6 +3348,7 @@ var TextEditor = (function ($) {
         'rexbutton-input': new RexButtonExtension(),
         'rexelement': rexElementInstance,
         'rexwpcf7' : new RexWpcf7Extension(),
+        'testDeleteExtension': testDeleteExtensionInstance,
         onlySVGFixExtension : new OnlySVGFixExtension()
       },
       paste: {
