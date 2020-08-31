@@ -583,6 +583,22 @@ class Rexbuilder_Public {
 				'add_row' => __( 'Add Row', 'rexpansive-builder' ),
 				'synch_content' => __( 'Reset', 'rexpansive-builder' )
 			);
+
+			$settings['defaults'] = array(
+				'section' => array(
+					'dimension' => 'full',
+					'dimensionClass' => "full-disposition",
+					'sectionWidth' => "100%",
+					'fullHeight' => "false",
+					'blockDistance' => 20,
+					'layout' => "fixed",
+					'rowSeparatorTop' => 20,
+					'rowSeparatorBottom' => 20,
+					'rowSeparatorRight' => 20,
+					'rowSeparatorLeft' => 20
+				),
+				'block' => array()
+			);
 		}
 
 		return apply_filters( 'rexbuilder_js_settings', $settings );

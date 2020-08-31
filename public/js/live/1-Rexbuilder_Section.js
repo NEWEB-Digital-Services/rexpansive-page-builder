@@ -787,16 +787,16 @@ var Rexbuilder_Section = (function($) {
     // New Row Defaults
     var new_row_defaults = {
       rexID: rexIdSection,
-      dimension: "full",
-      dimensionClass: "full-disposition",
-      sectionWidth: "100%",
-      fullHeight: "false",
-      blockDistance: 20,
-      layout: "fixed",
-      rowSeparatorTop: 20,
-      rowSeparatorBottom: 20,
-      rowSeparatorRight: 20,
-      rowSeparatorLeft: 20
+      dimension: _plugin_frontend_settings.defaults.section.dimension,
+      dimensionClass: _plugin_frontend_settings.defaults.section.dimensionClass,
+      sectionWidth: _plugin_frontend_settings.defaults.section.sectionWidth,
+      fullHeight: _plugin_frontend_settings.defaults.section.fullHeight,
+      blockDistance: _plugin_frontend_settings.defaults.section.blockDistance,
+      layout: _plugin_frontend_settings.defaults.section.layout,
+      rowSeparatorTop: _plugin_frontend_settings.defaults.section.rowSeparatorTop,
+      rowSeparatorBottom: _plugin_frontend_settings.defaults.section.rowSeparatorBottom,
+      rowSeparatorRight: _plugin_frontend_settings.defaults.section.rowSeparatorRight,
+      rowSeparatorLeft: _plugin_frontend_settings.defaults.section.rowSeparatorLeft,
     };
 
     var $newSection = $(Rexbuilder_Live_Templates.getParsedTemplate('tmpl-new-section', new_row_defaults));
@@ -912,16 +912,16 @@ var Rexbuilder_Section = (function($) {
     // New Row Defaults
     var new_row_defaults = {
       rexID: rexIdSection,
-      dimension: "full",
-      dimensionClass: "center-disposition",
-      sectionWidth: "100%",
-      fullHeight: "false",
-      blockDistance: 20,
-      layout: "fixed",
-      rowSeparatorTop: 20,
-      rowSeparatorBottom: 20,
-      rowSeparatorRight: 20,
-      rowSeparatorLeft: 20
+      dimension: _plugin_frontend_settings.defaults.section.dimension,
+      dimensionClass: _plugin_frontend_settings.defaults.section.dimensionClass,
+      sectionWidth: _plugin_frontend_settings.defaults.section.sectionWidth,
+      fullHeight: _plugin_frontend_settings.defaults.section.fullHeight,
+      blockDistance: _plugin_frontend_settings.defaults.section.blockDistance,
+      layout: _plugin_frontend_settings.defaults.section.layout,
+      rowSeparatorTop: _plugin_frontend_settings.defaults.section.rowSeparatorTop,
+      rowSeparatorBottom: _plugin_frontend_settings.defaults.section.rowSeparatorBottom,
+      rowSeparatorRight: _plugin_frontend_settings.defaults.section.rowSeparatorRight,
+      rowSeparatorLeft: _plugin_frontend_settings.defaults.section.rowSeparatorLeft,
     };
 
     var $newSection = Rexbuilder_Live_Templates.getParsedTemplate('tmpl-new-section', new_row_defaults);
