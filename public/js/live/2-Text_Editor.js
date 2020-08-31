@@ -16,7 +16,6 @@ var TextEditor = (function ($) {
   var listExtensionInstance;
 	var insertMediaExtensionInstance;
 	var rexElementInstance;
-  var testDeleteExtensionInstance;
 
   var currentTextSelection;
 
@@ -2713,20 +2712,6 @@ var TextEditor = (function ($) {
     }
   });
 
-  var testDeleteExtension = MediumEditor.Extension.extend({
-    name: 'testDeleteExtension',
-    init: function() {
-      this.subscribe('editableKeydownDelete', this.handleEditableKeydownDelete.bind(this));
-    },
-    handleEditableKeydownDelete: function(keyDownEvent, editableElement) {
-      // var sps = Array.prototype.slice.call( editableElement.querySelectorAll('.data-test') );
-      // var i, tot = sps.length;
-      // for( i=0; i<tot; i++ ) {
-      //   sps[i].setAttribute('contenteditable', false);
-      // }
-    }
-  });
-
 	var RexElementExtension = MediumEditor.Extension.extend({
 		name: 'rexelement',
 		init: function () {
@@ -3269,7 +3254,61 @@ var TextEditor = (function ($) {
 				setCurrentTextColor(lastChildNodeColor);
 			}
 		});
-  };
+	};
+
+	var mutationObserver = new MutationObserver(_doMutationOperations);
+	var mutationObserverOptions = {
+		subtree: true,
+		childList: true,
+		characterData: true
+	};
+
+	/**
+	 * Adds callbacks for the addElement and the removeElement MediumEdito events.
+	 * @since	2.0.8
+	 */
+	function _addElementsManipulationEventListeners() {
+		editorInstance.subscribe('addElement', function (NOT_USED, elementAdded) {
+			mutationObserver.observe(elementAdded, mutationObserverOptions);
+		});
+	}
+
+	/**
+	 * Callback function executed when the MutationObserver detects a mutation.
+	 * @type 	{MutationCallback}
+	 * @param	{MutationRecord[]}	mutationList
+	 * @since	2.0.8
+	 */
+	function _doMutationOperations(mutationList) {
+		mutationList.forEach(_searchThroughRemovedNodes);
+	}
+
+	/**
+	 * Loops over the removedNodes property of the MutationRecord object passed.
+	 * @param	{MutationRecord}	mutation
+	 * @since	2.0.8
+	 */
+	function _searchThroughRemovedNodes(mutation) {
+		var removedNodesArray = Array.prototype.slice.call(mutation.removedNodes);
+
+		removedNodesArray.forEach(_reInsertButtonData.bind(null, mutation));
+	}
+
+	/**
+	 * According to the MutationRecord object passed, re-adds the .rex-button-data
+	 * HTMLElement to its place before the deletion. This is done because this HTMLElement
+	 * is deleted without purpose in certain situations (e.g. when the DEL key is pressed
+	 * right before a RexButton).
+	 * @param	{MutationRecord}	mutation
+	 * @param	{HTMLElement}			removedElement
+	 * @since	2.0.8
+	 */
+	function _reInsertButtonData(mutation, removedElement) {
+		if (!(removedElement instanceof HTMLElement && removedElement.matches('.rex-button-data'))) return;
+
+		var parent = mutation.target;
+		$(parent).prepend(removedElement);
+	}
 
   var _createToolbarContainer = function () {
     var id = "textEditorToolbar";
@@ -3303,7 +3342,6 @@ var TextEditor = (function ($) {
     listExtensionInstance = new ListExtension();
 		insertMediaExtensionInstance = new InsertMediaExtension();
 		rexElementInstance = new RexElementExtension();
-    testDeleteExtensionInstance = new testDeleteExtension();
 
     editorInstance = new MediumEditor(".editable", {
       toolbar: {
@@ -3348,7 +3386,6 @@ var TextEditor = (function ($) {
         'rexbutton-input': new RexButtonExtension(),
         'rexelement': rexElementInstance,
         'rexwpcf7' : new RexWpcf7Extension(),
-        'testDeleteExtension': testDeleteExtensionInstance,
         onlySVGFixExtension : new OnlySVGFixExtension()
       },
       paste: {
@@ -3360,7 +3397,8 @@ var TextEditor = (function ($) {
       },
 		});
 
-    _addEditableInputEvents();
+		_addEditableInputEvents();
+		_addElementsManipulationEventListeners();
   };
 
   var _triggerMEEvent = function (event_info) {

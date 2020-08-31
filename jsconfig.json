@@ -1,6 +1,9 @@
 {
 	"typeAcquisition": {
-		"include": ["jquery", "lodash"]
+		"include": ["jquery", "lodash", "medium-editor"]
+	},
+	"compilerOptions": {
+		"checkJs": true,
 	},
 	"include": ["public/js/**/*", "admin/js/**/*"],
 	"exclude": ["**/node_modules/*"]
