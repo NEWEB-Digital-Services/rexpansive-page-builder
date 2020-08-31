@@ -2725,6 +2725,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	function fixWpcf7RadioButtons() {
 		// Has wpcf7-form-control class too
 
+		if ( !Rexbuilder_Util.rexContainer || 'undefined' === typeof Rexbuilder_Util.rexContainer ) return;
+
 		var radiosInPage = Rexbuilder_Util.rexContainer.querySelectorAll('.wpcf7-radio');
 
 		var tot_radiosInPage = radiosInPage.length;

@@ -1131,6 +1131,8 @@ var Rexbuilder_Rexbutton = (function ($) {
 
 		var rexButtonsIDsInPage = [];
 
+		if ( !Rexbuilder_Util.rexContainer || 'undefined' === typeof Rexbuilder_Util.rexContainer ) return rexButtonsIDsInPage;
+
 		var sections = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section'));
 		var section;
 		var tot_sections = sections.length;
@@ -1190,6 +1192,8 @@ var Rexbuilder_Rexbutton = (function ($) {
 			};
 		});
 
+		if ( !Rexbuilder_Util.rexContainer || 'undefined' === typeof Rexbuilder_Util.rexContainer ) return;
+
 		var rexButtons = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rex-button-wrapper'));
 		var currentButton;
 		var tot_rexButtons = rexButtons.length;
@@ -1230,6 +1234,8 @@ var Rexbuilder_Rexbutton = (function ($) {
 	 */
 	function updateButtonListInPage() {
 		buttonsInPage = [];
+
+		if ( !Rexbuilder_Util.rexContainer || 'undefined' === typeof Rexbuilder_Util.rexContainer ) return;
 
 		var rexButtons = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rex-button-wrapper'));
 		var currentButton;

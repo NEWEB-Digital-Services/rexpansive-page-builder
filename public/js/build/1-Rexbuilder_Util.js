@@ -3788,7 +3788,7 @@ var Rexbuilder_Util = (function($) {
    * @return {[type]} [description]
    */
   var _launchVideoPlugins = function() {
-
+    if ( !Rexbuilder_Util.rexContainer || 'undefined' === typeof Rexbuilder_Util.rexContainer ) return;
     var ytVideos = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName( 'rex-youtube-wrap' ) );
     var i, tot_ytVideos = ytVideos.length;
     var $ytVideo, data_yt, url, id;
@@ -3829,6 +3829,7 @@ var Rexbuilder_Util = (function($) {
    * todo to finish ( hide video did not start )
    */
   var _playAllVideos = function() {
+    if ( !Rexbuilder_Util.rexContainer || 'undefined' === typeof Rexbuilder_Util.rexContainer ) return;
     var mp4Videos = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('mp4-player') );
     var vimeoVideos = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('vimeo-player') );
     var ytbVideos = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('youtube-player') );
