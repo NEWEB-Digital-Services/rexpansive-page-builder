@@ -164,7 +164,12 @@
   height: auto;
   max-width: 100%;
   max-height: 100%;
-  // margin: 0 auto;
+	// margin: 0 auto;
+
+	~ .rex-slider-element-title {
+		position: absolute;
+		width: 100%;
+	}
 }
 
 .rex-box-slider-wrap {

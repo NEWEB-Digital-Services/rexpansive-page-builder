@@ -239,12 +239,12 @@ $tool_button_classes = 'tool-button';
     </div>
 </script>
 
-<script type="text/x-tmpl" id="tmpl-new-slider-element">
+<!-- <script type="text/x-tmpl" id="tmpl-new-slider-element">
     <div class="rex-slider-element">
         <div class="rex-slider-video-wrapper"></div>
         <div class="rex-slider-element-title"></div>
     </div>
-</script>
+</script> -->
 
 <script type="text/x-tmpl" id="tmpl-new-slider-element-link">
     <a class="rex-slider-element-link" href="{%=link.url%}">

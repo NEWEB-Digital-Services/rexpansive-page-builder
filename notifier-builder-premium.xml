@@ -6,6 +6,10 @@
 			<h4><strong>v2.0.8</strong> –  </h4>
 			<p><strong>Fixed</strong>: When hitting DEL in a text block before a RexButton, the RexButton loses its settings</p>
 			<p><strong>Fixed</strong>: Height of a block increasing when editing its internal lateral paddings</p>
+			<p><strong>Fixed</strong>: Slider/youtube video with text: the text was invisible</p>
+			<p><strong>Updated</strong>: Natural fit image position default is now left-top</p>
+			<p><strong>Added</strong>: Class to remove a block from a grid flow on public side</p>
+			<p><strong>Added</strong>: RexSlider prev/next icon customizable with hook</p>
 			<h4><strong>v2.0.7</strong> – August 19, 2020 </h4>
 			<p><strong>Added</strong>: Class to deactivate default animation on blocks (.deactivate-rexpansive-animation)</p>
 			<p><strong>Added</strong>: Class to make a natural image fit all the space possible in the block (.fit-natural-bg-image)</p>

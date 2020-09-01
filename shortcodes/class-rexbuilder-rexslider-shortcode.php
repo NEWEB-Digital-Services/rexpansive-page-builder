@@ -108,7 +108,7 @@ class Rexbuilder_RexSlider {
 				if ( $slideHasImage && $natural_blur && ! 'true' == $photoswipe && "" == $slide['_rex_banner_gallery_url']  ) {
 					?>
 					<div class="natural-blur-effect blur-slide"<?php echo $slider_el_style; ?>></div>
-					<img class="natural-slide" data-flickity-lazyload="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>">
+					<img class="natural-slide" <?php echo Rexbuilder_Utilities::isBuilderLive() ? 'src' : 'data-flickity-lazyload' ?>="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>">
 					<?php
 				}
 

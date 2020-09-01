@@ -244,14 +244,28 @@ var Rexbuilder_Live_Templates = (function($, window, document) {
 						'</svg>' +
 					'</i>' +
 				'</div>';
+			case 'tmpl-new-slider-element':
+				return '<div class="rex-slider-element"></div>';
+			case 'slider-overlay':
+				return '<div class="slider-overlay" style="background-color:' + data.overlayColor + '"></div>'
+			case 'slide-video':
+				return '<div class="rex-slider-video-wrapper"></div>'
+			case 'slide-text':
+				return '<div class="rex-slider-element-title"></div>'
 
 			default:
 				return '';
 		}
 	}
 
+	/**
+	 * @param {string} tmpl
+	 * @param {object} [data]
+	 */
 	function getParsedTemplate(tmpl, data) {
-		return $.parseHTML(getTemplate(tmpl, data));
+		// $.parseHTML returns an Array
+		// But in this situation it's always a 1-element Array
+		return $.parseHTML(getTemplate(tmpl, data))[0];
 	}
 
 	return {

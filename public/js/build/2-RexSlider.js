@@ -11,6 +11,9 @@ var RexSlider = (function ($) {
   var box_slider_class = '.rex-box-slider-wrap';
   var box_slider_element_class = '.rex-box-slider-element';
 
+	/**
+	 * @param {JQuery} $sliderWrap
+	 */
   var _initSlider = function ($sliderWrap) {
     var sliderWrap = $sliderWrap.get(0);
     var settings = {
@@ -26,7 +29,9 @@ var RexSlider = (function ($) {
       // setGallerySize: false,
       // arrowShape: 'M 71.080084,1.034481 C 71.763642,0.34482599 72.61809,-1.250001e-8 73.557983,-1.250001e-8 c 0.939893,0 1.794341,0.34482600250001 2.477899,1.03448101250001 1.367117,1.37931 1.367117,3.620689 0,5 L 32.459031,49.999998 76.035882,93.965515 c 1.367117,1.379311 1.367117,3.62069 0,5 -1.367117,1.379315 -3.588681,1.379315 -4.955798,0 L 25.025333,52.499998 c -1.367117,-1.37931 -1.367117,-3.62069 0,-5 l 46.054751,-46.465517 0,0 z',
       arrowShape: _plugin_frontend_settings.slider.arrowShape
-    };
+		};
+
+		console.log('init slider');
 
     var $parentBlock = $sliderWrap.parents('.block-has-slider');
 
@@ -50,7 +55,7 @@ var RexSlider = (function ($) {
       settings.pageDots = true;
     }
 
-    var originalLazyLoad = $sliderWrap.attr('data-rexlider-lazyload');
+		var originalLazyLoad = $sliderWrap.attr('data-rexlider-lazyload');
     if ('undefined' != typeof originalLazyLoad && '1' == originalLazyLoad.toString()) {
       settings.bgLazyLoad = 1;
       settings.lazyLoad = 1;
@@ -58,10 +63,10 @@ var RexSlider = (function ($) {
 
     if ($sliderWrap.hasClass('rex-slider--bottom-interface')) {
       $parentBlock.addClass('block-has-slider--navigator');
-    }
+		}
 
     $sliderWrap.find(".rex-slider-element").each(function (i, slide) {
-      var $video = $(slide).find(".rex-slider-video-wrapper");
+			var $video = $(slide).find(".rex-slider-video-wrapper");
       Rexbuilder_Util.startVideoPlugin($video);
     });
 
@@ -76,7 +81,7 @@ var RexSlider = (function ($) {
               galleryInstance.updateElementHeight(this.$element.parents(".grid-stack-item").get(0));
             }
           }
-        }        
+        }
       };
     }
 
@@ -160,7 +165,7 @@ var RexSlider = (function ($) {
         var index = parseInt(e.currentTarget.getAttribute('data-nav-index'));
         $sliderWrap.flickity( 'select', index );
       }
-    );
+		);
   };
 
   /**
@@ -273,7 +278,7 @@ var RexSlider = (function ($) {
         }
       });
     }
-  }
+	}
 
   var init = function () {
     _rexSliderInitAllSliders();
@@ -284,7 +289,7 @@ var RexSlider = (function ($) {
     initSlider: _initSlider,
     startAutoPlay: _startSliders,
     destroy: _rexSliderDestroyAllSlidersPlugins,
-    destroySliderPlugins: _destroySliderPlugins
+		destroySliderPlugins: _destroySliderPlugins
   };
 
 })(jQuery);

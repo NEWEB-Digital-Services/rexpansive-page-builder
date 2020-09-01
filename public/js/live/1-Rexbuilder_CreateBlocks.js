@@ -5,9 +5,14 @@
  * between rows
  * @since 2.0.0
  */
-var Rexbuilder_CreateBlocks = (function ($) {
+var Rexbuilder_CreateBlocks = (function ($, window, document) {
   'use strict';
 
+	/**
+	 * Not used at the moment
+	 * @param {event} e
+	 * @deprecated
+	 */
   function handleAddNewBlockEmpty(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -444,8 +449,13 @@ var Rexbuilder_CreateBlocks = (function ($) {
     return { w: w, h: h };
   };
 
-  var _createSlider = function (data, $elem, numberSlider) {
-    var sliderNumber;
+	/**
+	 * @param	{object} data
+	 * @param	{JQuery} $elem
+	 * @param	{number} numberSlider
+	 */
+  function _createSlider(data, $elem, numberSlider) {
+		var sliderNumber;
 
     if (typeof numberSlider == "undefined") {
       Rexbuilder_Dom_Util.lastSliderNumber = Rexbuilder_Dom_Util.lastSliderNumber + 1;
@@ -490,8 +500,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 		$el.find('.block-toolBox__editor-tools').find('.edit-block-content').addClass('tool-button--hide');
 		$elData.attr('data-type', 'rexslider');
 
-    // @todo, pass correct data to generate natural-blur effect if any
-
+		// @todo, pass correct data to generate natural-blur effect if any
 		var $sliderWrap = _createSliderWrap($textWrap, sliderData);
 
 		// var blockHasOverlay = 0 !== $textWrap.parents('.responsive-block-overlay').length;
@@ -500,85 +509,82 @@ var Rexbuilder_CreateBlocks = (function ($) {
 		if ( blockHasOverlay ) {
 			overlayColor = $textWrap.parents('.responsive-block-overlay').css('background-color');
 		}
+		var wantNaturalBlurEffect = data.settings.natural_blur;
+
+		var $slideHTML = $(Rexbuilder_Live_Templates.getParsedTemplate('tmpl-new-slider-element'));
+		var $slideVideoHTML = $(Rexbuilder_Live_Templates.getParsedTemplate('slide-video'));
+		var $slideTextHTML = $(Rexbuilder_Live_Templates.getParsedTemplate('slide-text'));
 
     for (var i = 0; i < slides.length; i++) {
-      tmpl.arg = "slide";
+			var $slide = $slideHTML.clone();
+			var currentSlideData = slides[i];
 
-			// var $slide = $(tmpl("tmpl-new-slider-element", {}));
-      var $slide = $('<div class="rex-slider-element"></div>');
+			var slideHasImageURL = 'none' !== currentSlideData.slide_image_url;
+			var slideHasText = 0 !== currentSlideData.slide_text.trim().length;
+			var slideHasVideo = '' !== currentSlideData.slide_video_type;
 
-			if ( blockHasOverlay ) {
-				$slide.append('<div class="slider-overlay" style="background-color:' + overlayColor + '"></div>');
+			if (blockHasOverlay) {
+				_addOverlayToSlide($slide, overlayColor);
 			}
 
-      if ( ! data.settings.natural_blur && 'none' !== slides[i].slide_image_url ) {
-        $slide.css("background-image", "url(" + slides[i].slide_image_url + ")");
-        $slide.attr("data-rex-slide-image-id", slides[i].slide_image_id);
-      }
+			if (slideHasImageURL) {
+				if (wantNaturalBlurEffect) {
+					_addBlurredImageToSlide($slide, currentSlideData);
+				} else {
+					_addBackgroundImageToSlide($slide, currentSlideData);
+				}
+			}
 
-      if ( data.settings.natural_blur && 'none' !== slides[i].slide_image_url ) {
-        var blurSlide = document.createElement('div');
-        blurSlide.className = 'natural-blur-effect blur-slide';
-        blurSlide.style.backgroundImage = 'url(' + slides[i].slide_image_url + ')';
-        var naturalSlide = document.createElement('img');
-        naturalSlide.className = 'natural-slide';
-        naturalSlide.src = slides[i].slide_image_url;
+			// if (!wantNaturalBlurEffect && hasImageURL) {
+			// 	_addBackgroundImageToSlide($slide, currentSlideData);
+			// }
 
-        $slide.append(blurSlide);
-        $slide.append(naturalSlide);
-      }
+			// if (wantNaturalBlurEffect && hasImageURL) {
+			// 	_addBlurredImageToSlide($slide, currentSlideData);
+			// }
 
-      if (slides[i].slide_text.trim().length != 0) {
-        $slide.append(".rex-slider-element-title").html(slides[i].slide_text);
-      }
+			if (slideHasText) {
+				_addTextToSlide($slide, currentSlideData, $slideTextHTML);
+			}
 
       $slide.appendTo($sliderWrap[0]);
-      //url over slide text
-      if (slides[i].slide_url != "") {
-        tmpl.arg = "link";
 
+			// url over slide text
+      if (currentSlideData.slide_url != "") {
+        tmpl.arg = "link";
         var $linkEl = $(tmpl("tmpl-new-slider-element-link", {
-          url: slides[i].slide_url
+					url: currentSlideData.slide_url
         }));
 
         $slide.children(".rex-slider-element-title").detach().appendTo($linkEl[0]);
         $slide.append($linkEl[0]);
       }
 
-      if (slides[i].slide_video_type != "") {
-        tmpl.arg = "video";
-        var $videoElement = $slide.append(".rex-slider-video-wrapper");
+      if (slideHasVideo) {
+				$slide.append($slideVideoHTML.clone());
 
-        switch (slides[i].slide_video_type) {
-          case "mp4":
-            $videoElement.prepend(tmpl("tmpl-video-mp4", {
-              url: slides[i].slide_videoMp4Url
-            }));
-            $videoElement.addClass("mp4-player");
-            $videoElement.children(".rex-video-wrap").attr("data-rex-video-mp4-id", slides[i].slide_video);
-            break;
+				var $videoElement = $slide.find('.rex-slider-video-wrapper');
+				var videoType = currentSlideData.slide_video_type;
+				var videoHasAudio = currentSlideData.slide_video_audio.toString() == 'true';
 
-          case "vimeo":
-            $videoElement.prepend(tmpl("tmpl-video-vimeo", {
-              url: slides[i].slide_video
-            }));
-            $videoElement.addClass("vimeo-player");
-            break;
-          case "youtube":
-            $videoElement.prepend(tmpl("tmpl-video-youtube", {
-              url: slides[i].slide_video,
-              audio: false
-            }));
-            $videoElement.addClass("youtube-player");
-            break;
-          default:
-            break;
-        }
+				switch (videoType) {
+					case 'mp4':
+						_addMp4ToSlide($videoElement, currentSlideData);
+						break;
+					case 'vimeo':
+						_addVimeoToSlide($videoElement, currentSlideData);
+						break;
+					case 'youtube':
+						_addYouTubeToSlide($videoElement, currentSlideData);
+						break;
+					default:
+						break;
+				}
 
-        if (slides[i].slide_video_audio.toString() == "true") {
-          $videoElement.append(tmpl("tmpl-video-toggle-audio"));
-        }
-      }
+				if (videoHasAudio) {
+					$videoElement.append(tmpl('tmpl-video-toggle-audio'));
+				}
+			}
     }
 
     $sliderWrap.attr("data-rex-slider-number", sliderNumber);
@@ -1049,6 +1055,142 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
   };
 
+	/**
+	 * @param	{JQuery}	$slide
+	 * @param	{string}	overlayColor
+	 * @since	2.0.8
+	 */
+	function _addOverlayToSlide($slide, overlayColor) {
+		var $overlayHTML = $(Rexbuilder_Live_Templates.getParsedTemplate('slider-overlay', {
+			overlayColor: overlayColor
+		}));
+		$slide.append($overlayHTML.clone());
+	}
+
+	/**
+	 * @param	{JQuery}	$slide
+	 * @param	{object}	slideData
+	 * @param	{string}	slideData.slide_image_url
+	 * @since	2.0.8
+	 */
+	function _addBlurredImageToSlide($slide, slideData) {
+		var imageURL = slideData.slide_image_url;
+		var blurSlide = _createBlurSlideElement(imageURL);
+		var naturalSlide = _createNaturalSlideElement(imageURL);
+
+		$slide.addClass('natural-slide__wrap');
+		$slide.append(blurSlide);
+		$slide.append(naturalSlide);
+	}
+
+	/**
+	 * @param	{JQuery}	$slide
+	 * @param	{object}	slideData
+	 * @param	{string}	slideData.slide_image_url
+	 * @param	{string}	slideData.slide_image_id
+	 * @since	2.0.8
+	 */
+	function _addBackgroundImageToSlide($slide, slideData) {
+		var imageURL = slideData.slide_image_url;
+		var imageID = slideData.slide_image_id;
+
+		$slide.css('background-image', 'url(' + imageURL + ')');
+		$slide.attr('data-rex-slide-image-id', imageID);
+	}
+
+	/**
+	 * @param	{JQuery}	$slide
+	 * @param	{object}	slideData
+	 * @param	{string}	slideData.slide_text
+	 * @since	2.0.8
+	 */
+	function _addTextToSlide($slide, slideData, $slideTextHTML) {
+		var slideText = slideData.slide_text;
+
+		$slide.append($slideTextHTML.clone());
+		$slide.find('.rex-slider-element-title').html(slideText);
+	}
+
+	/**
+	 * @param {string} imageURL
+	 * @since	2.0.8
+	 */
+	function _createNaturalSlideElement(imageURL) {
+		var naturalSlide = document.createElement('img');
+
+		naturalSlide.className = 'natural-slide';
+		naturalSlide.src = imageURL;
+
+		return naturalSlide;
+	}
+
+	/**
+	 * @param {string} imageURL
+	 * @since	2.0.8
+	 */
+	function _createBlurSlideElement(imageURL) {
+		var blurSlide = document.createElement('div');
+
+		blurSlide.className = 'natural-blur-effect blur-slide';
+		blurSlide.style.backgroundImage = 'url(' + imageURL + ')';
+
+		return blurSlide;
+	}
+
+	/**
+	 * @param {JQuery} $videoElement
+	 * @param {object} currentSlideData
+	 * @param {string} currentSlideData.slide_videoMp4Url
+	 * @param {string} currentSlideData.slide_video
+	 * @since	2.0.8
+	 */
+	function _addMp4ToSlide($videoElement, currentSlideData) {
+		tmpl.arg = 'video';
+
+		$videoElement.prepend(
+			tmpl('tmpl-video-mp4', {
+				url: currentSlideData.slide_videoMp4Url
+			})
+		);
+		$videoElement.addClass('mp4-player');
+		$videoElement.children('.rex-video-wrap').attr('data-rex-video-mp4-id', currentSlideData.slide_video);
+	}
+
+	/**
+	 * @param {JQuery} $videoElement
+	 * @param {object} currentSlideData
+	 * @param {string} currentSlideData.slide_video
+	 * @since	2.0.8
+	 */
+	function _addVimeoToSlide($videoElement, currentSlideData) {
+		tmpl.arg = 'video';
+
+		$videoElement.prepend(
+			tmpl('tmpl-video-vimeo', {
+				url: currentSlideData.slide_video
+			})
+		);
+		$videoElement.addClass('vimeo-player');
+	}
+
+	/**
+	 * @param {JQuery} $videoElement
+	 * @param {object} currentSlideData
+	 * @param {string} currentSlideData.slide_video
+	 * @since	2.0.8
+	 */
+	function _addYouTubeToSlide($videoElement, currentSlideData) {
+		tmpl.arg = 'video';
+
+		$videoElement.prepend(
+			tmpl('tmpl-video-youtube', {
+				url: currentSlideData.slide_video,
+				audio: false
+			})
+		);
+		$videoElement.addClass('youtube-player');
+	}
+
   /**
    * Object init function
    * @return {void}
@@ -1067,4 +1209,4 @@ var Rexbuilder_CreateBlocks = (function ($) {
 		sanitizeBlockContent: sanitizeBlockContent,
   };
 
-})(jQuery);
+})(jQuery, window, document);

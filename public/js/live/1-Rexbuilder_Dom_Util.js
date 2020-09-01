@@ -1,10 +1,19 @@
 var Rexbuilder_Dom_Util = (function($) {
   "use strict";
 
+	/**
+	 * @param {object} data
+	 * @param {JQuery} data.textWrap
+	 * @param {number} data.sliderNumberToActive
+	 * @param {object} data.newSliderData
+	 */
   var _updateSlider = function(data) {
+		console.log( data );
     var $textWrap = data.textWrap;
     var numberSliderToActive = data.sliderNumberToActive;
-    var $sliderToDestroy = $textWrap.children( '.rex-slider-wrap:not([data-rex-slider-number="' + data.sliderNumberToActive + '"])' );
+		var $sliderToDestroy = $textWrap.children( '.rex-slider-wrap:not([data-rex-slider-number="' + data.sliderNumberToActive + '"])' );
+
+		console.log( 'updateSlider' );
 
     $sliderToDestroy
       .each(function(i, slider) {
@@ -12,9 +21,9 @@ var Rexbuilder_Dom_Util = (function($) {
         slider.style.display = 'none';
         slider.setAttribute('data-rex-slider-active', false);
         RexSlider.destroySliderPlugins($slider);
-      });
+			});
 
-    var $sliderToActive = $textWrap.children( '.rex-slider-wrap[data-rex-slider-number="' + numberSliderToActive + '"]' );
+		var $sliderToActive = $textWrap.children( '.rex-slider-wrap[data-rex-slider-number="' + numberSliderToActive + '"]' );
     if ($sliderToActive.length == 0) {
       var newSliderData = data.newSliderData;
       if (typeof newSliderData != "undefined") {
@@ -29,7 +38,8 @@ var Rexbuilder_Dom_Util = (function($) {
       var sliderToActive = $sliderToActive[0];
       sliderToActive.style.display = '';
       RexSlider.initSlider($sliderToActive);
-    }
+		}
+
   };
 
   /**
