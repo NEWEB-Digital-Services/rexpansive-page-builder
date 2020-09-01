@@ -3189,7 +3189,7 @@
       var blockData = elem.querySelector('.rexbuilder-block-data');
       var startH;
       // this.properties.updatingSection seems always false !
-      startH = parseInt( blockData.getAttribute('data-gs_start_h') );
+			startH = parseInt( blockData.getAttribute('data-gs_start_h') );
       var originalStartH = parseInt( blockData.getAttribute('data-gs_start_h') );
 
       var newH;
@@ -3251,7 +3251,7 @@
       }
 
       // calculate text content height
-      textHeight = calculateTextWrapHeightNew( $textWrap );
+			textHeight = calculateTextWrapHeightNew( $textWrap );
 
       if (this.properties.oneColumModeActive) {
         w = 12;
@@ -3300,27 +3300,28 @@
         emptyBlockFlag = true;
 			}
 
+			var computedHeight = startH * this.properties.singleHeight - gutter;
 
       // if the block has a full image background, without text
       // maintain the old height
-      if ( !blockHasSlider && !blockHasYoutube && !blockHasVimeo && !blockHasVideo && ( ( ( 'full' === backImgType && 0 === textHeight ) || ( '' === backImgType && 0 === textHeight ) ) && ! this.properties.oneColumModeActive ) ) {
-        newH = ( startH * this.properties.singleHeight ) - gutter;
-      } else {
-        if ( editingBlock ) {
-          startH *= this.properties.singleHeight;
-        } else {
-          startH = 0;
-        }
+      if (
+				!blockHasSlider &&
+				!blockHasYoutube &&
+				!blockHasVimeo &&
+				!blockHasVideo &&
+				(('full' === backImgType && 0 === textHeight) || ('' === backImgType && 0 === textHeight)) &&
+				!this.properties.oneColumModeActive
+			) {
+				newH = computedHeight;
+			} else {
+				if (editingBlock) {
+					startH = computedHeight;
+				} else {
+					startH = 0;
+				}
 
-        newH = Math.max(
-          startH,
-          backgroundHeight,
-          videoHeight,
-          defaultHeight,
-          textHeight,
-          sliderHeight
-        );
-      }
+				newH = Math.max(startH, backgroundHeight, videoHeight, defaultHeight, textHeight, sliderHeight);
+			}
 
       // console.table({
       //   startH: startH,
@@ -3385,13 +3386,19 @@
       var newHeightUnits;
 
       if (this.settings.galleryLayout == "fixed") {
-        if ( emptyBlockFlag || blockHasYoutube || blockHasVideo || blockHasVimeo ) {
-          newHeightUnits = Math.round((newH+gutter) / this.properties.singleHeight);
+				if ( emptyBlockFlag || blockHasYoutube || blockHasVideo || blockHasVimeo ) {
+					newHeightUnits = Math.round((newH+gutter) / this.properties.singleHeight);
         } else {
-          newHeightUnits = Math.ceil((newH+gutter) / this.properties.singleHeight);
+					newHeightUnits = Math.ceil((newH+gutter) / this.properties.singleHeight);
         }
       } else {
-        newHeightUnits = Math.ceil((newH+gutter) / this.properties.singleHeight);
+				// console.log({
+				// 	newH,
+				// 	gutter,
+				// 	singleHeight: this.properties.singleHeight,
+					// newHeightUnits
+				// });
+				newHeightUnits = Math.ceil((newH+gutter) / this.properties.singleHeight);
 			}
 
 			this.updateElementDataHeightProperties( blockData, newHeightUnits );
@@ -3424,10 +3431,10 @@
         x = elDim.properties[0].x;
         y = Math.round( ( parseInt( elDim.properties[1].y ) * this.properties.oldCellHeight ) / this.properties.singleHeight );
         w = width;
-        h = height;
+				h = height;
         gridstack.update(el, x, y, w, h);
       } else {
-        gridstack.resize(el, width, height);
+				gridstack.resize(el, width, height);
       }
     },
 
