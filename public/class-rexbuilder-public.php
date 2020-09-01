@@ -597,7 +597,9 @@ class Rexbuilder_Public {
 					'rowSeparatorRight' => 20,
 					'rowSeparatorLeft' => 20
 				),
-				'block' => array()
+				'block' => array(
+					'padding' => '5px;5px;5px;5px'		// expected a list of four values (padding-top/right/bottom/left) separated by semicolon
+				)
 			);
 		}
 

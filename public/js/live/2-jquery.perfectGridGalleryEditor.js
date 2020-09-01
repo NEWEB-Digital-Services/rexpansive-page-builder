@@ -1743,7 +1743,11 @@
         backendWidth: w,
         backendX: x + 1,
         backendY: y + 1,
-        block_type: block_type
+        block_type: block_type,
+        defaultPadding: {
+          data: _plugin_frontend_settings.defaults.block.padding,
+          style: _plugin_frontend_settings.defaults.block.padding.replace(';', ' ').trim()
+        }
       });
 
       var $newEl = $(newElement);
