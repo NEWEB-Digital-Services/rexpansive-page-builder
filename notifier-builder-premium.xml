@@ -4,6 +4,8 @@
 	<changelog>
 		<![CDATA[
 			<h4><strong>v2.0.8</strong> –  </h4>
+			<p><strong>Fixed</strong>: RexSlider natural blurred images with text displaying badly</p>
+			<p><strong>Fixed</strong>: RexSlider videos not working correctly on backend side</p>
 			<p><strong>Fixed</strong>: When hitting DEL in a text block before a RexButton, the RexButton loses its settings</p>
 			<p><strong>Fixed</strong>: Height of a block increasing when editing its internal lateral paddings</p>
 			<p><strong>Fixed</strong>: Slider/youtube video with text: the text was invisible</p>
