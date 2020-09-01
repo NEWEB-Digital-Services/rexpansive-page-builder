@@ -4,6 +4,7 @@
 	<changelog>
 		<![CDATA[
 			<h4><strong>v2.0.8</strong> –  </h4>
+			<p><strong>Fixed</strong>: When hitting DEL in a text block before a RexButton, the RexButton loses its settings</p>
 			<p><strong>Fixed</strong>: Height of a block increasing when editing its internal lateral paddings</p>
 			<h4><strong>v2.0.7</strong> – August 19, 2020 </h4>
 			<p><strong>Added</strong>: Class to deactivate default animation on blocks (.deactivate-rexpansive-animation)</p>
