@@ -31,8 +31,6 @@ var RexSlider = (function ($) {
       arrowShape: _plugin_frontend_settings.slider.arrowShape
 		};
 
-		console.log('init slider');
-
     var $parentBlock = $sliderWrap.parents('.block-has-slider');
 
     settings.setGallerySize = ('undefined' != typeof $sliderWrap.attr('data-set-gallery-size') ? JSON.parse($sliderWrap.attr('data-set-gallery-size')) : false);

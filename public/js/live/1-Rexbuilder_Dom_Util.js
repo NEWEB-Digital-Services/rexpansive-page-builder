@@ -8,12 +8,9 @@ var Rexbuilder_Dom_Util = (function($) {
 	 * @param {object} data.newSliderData
 	 */
   var _updateSlider = function(data) {
-		console.log( data );
     var $textWrap = data.textWrap;
     var numberSliderToActive = data.sliderNumberToActive;
 		var $sliderToDestroy = $textWrap.children( '.rex-slider-wrap:not([data-rex-slider-number="' + data.sliderNumberToActive + '"])' );
-
-		console.log( 'updateSlider' );
 
     $sliderToDestroy
       .each(function(i, slider) {
@@ -1439,7 +1436,7 @@ var Rexbuilder_Dom_Util = (function($) {
 
     if( -1 !== getComputedStyle(elemOverlay)['background'].indexOf('linear-gradient') ) {
       elemOverlay.style.background = '';
-    }
+		}
 		elemOverlay.style.backgroundColor = color;
 
 		if (0 === $sliderOverlays.length) {

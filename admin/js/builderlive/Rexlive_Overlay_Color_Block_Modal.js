@@ -9,32 +9,39 @@ var Overlay_Color_block_Modal = (function($) {
   var colorActive;
   var target;
   var changeColorEvent;
-  var resetData;
+	var resetData;
+	var defaultColor = 'rgba(0, 0, 0, 0)';
 
-  var _updateOverlayModal = function(data) {
-    target = data.target;
-    changeColorEvent.data_to_send.target = data.target;
+	/**
+	 * @param	{object}	data
+	 * @param	{object}	data.target
+	 * @param	{string}	data.color
+	 * @param	{boolean}	data.active
+	 */
+  function _updateOverlayModal(data) {
+		target = data.target;
+		changeColorEvent.data_to_send.target = data.target;
 
-    if (data.color != "") {
-      overlay_block_properties.$overlay_color_value.val(data.color);
-      overlay_block_properties.$overlay_color_preview_icon.hide();
-      overlay_block_properties.$overlay_color_value.spectrum("set", data.color);
-      colorActive = data.color;
-    } else {
-      overlay_block_properties.$overlay_color_value.val("");
-      overlay_block_properties.$overlay_color_preview_icon.show();
-    }
-    if (data.active.toString() == "true") {
-      overlay_block_properties.$overlay_active.prop("checked", true);
-    } else {
-      overlay_block_properties.$overlay_active.prop("checked", false);
-    }
-    resetData = data;
-  };
+		if (data.color !== '') {
+			_setPickerColor(data.color);
+			colorActive = data.color;
+		} else {
+			_setPickerColor(defaultColor);
+			colorActive = '';
+		}
+
+		// if (data.active.toString() == "true") {
+		overlay_block_properties.$overlay_active.prop('checked', data.active.toString() == 'true');
+		// } else {
+		// overlay_block_properties.$overlay_active.prop("checked", false);
+		// }
+
+		resetData = data;
+	};
 
   var _applyOverlay = function() {
     var status =
-      true === overlay_block_properties.$overlay_active.prop("checked");
+			true === overlay_block_properties.$overlay_active.prop("checked");
     var overlayData = {
       eventName: "rexlive:change_block_overlay",
       data_to_send: {
@@ -65,7 +72,7 @@ var Overlay_Color_block_Modal = (function($) {
       showButtons: false,
       containerClassName:
         "rexbuilder-materialize-wrap block-overlay-color-picker",
-      move: function(color) {				
+      move: function(color) {
         overlay_block_properties.$overlay_color_preview_icon.hide();
         changeColorEvent.data_to_send.color = color.toRgbString();
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(changeColorEvent);
@@ -141,7 +148,17 @@ var Overlay_Color_block_Modal = (function($) {
         return false;
       }
     );
-  };
+	};
+
+	/**
+	 * @param	{string}	color
+	 * @since	2.0.8
+	 */
+	function _setPickerColor(color) {
+		overlay_block_properties.$overlay_color_value.val(color);
+		overlay_block_properties.$overlay_color_preview_icon.hide();
+		overlay_block_properties.$overlay_color_value.spectrum('set', color);
+	}
 
   var _init = function($container) {
     var $self = $container.find("#bg-overlay-block-set-color");
@@ -174,3 +191,5 @@ var Overlay_Color_block_Modal = (function($) {
     applyOverlay: _applyOverlay
   };
 })(jQuery);
+
+

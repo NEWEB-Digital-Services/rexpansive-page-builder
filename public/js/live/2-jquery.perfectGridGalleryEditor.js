@@ -3396,12 +3396,6 @@
 					newHeightUnits = Math.ceil((newH+gutter) / this.properties.singleHeight);
         }
       } else {
-				// console.log({
-				// 	newH,
-				// 	gutter,
-				// 	singleHeight: this.properties.singleHeight,
-					// newHeightUnits
-				// });
 				newHeightUnits = Math.ceil((newH+gutter) / this.properties.singleHeight);
 			}
 

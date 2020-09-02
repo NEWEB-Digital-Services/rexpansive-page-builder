@@ -1430,7 +1430,7 @@
         $elem: $elem,
         color: oldOverlayColor,
         active: oldOverlayActive
-      };
+			};
 
       var actionData = {
         $elem: $elem,
@@ -2993,10 +2993,9 @@
       };
 
       var overlayColor =
-        typeof $elemData.attr("data-overlay_block_color") != "undefined" ? $elemData.attr("data-overlay_block_color") : "";
-      if (overlayColor == "") {
-        overlayColor = "rgba(0,0,0,0)";
-      }
+				typeof $elemData.attr('data-overlay_block_color') != 'undefined'
+					? $elemData.attr('data-overlay_block_color')
+					: '';
 
       var overlayActive;
       if (
@@ -3062,7 +3061,9 @@
           modelNumber: modelNumber,
           rexID: rex_block_id
         }
-      };
+			};
+
+			// console.log( overlayData );
 
       var idImage =
         typeof $elemData.attr("data-id_image_bg_block") == "undefined"
