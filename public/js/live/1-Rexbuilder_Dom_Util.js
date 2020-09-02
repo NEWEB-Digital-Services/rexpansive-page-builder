@@ -509,7 +509,6 @@ var Rexbuilder_Dom_Util = (function($) {
     var tempSrc = $videoWrap.find("source");
 		var tempSrcUrl = ( ! Rexbuilder_Util.editorMode ? tempSrc.attr('data-src') : tempSrc.attr('src') );
 
-
     if ( ($videoWrap.length != 0 && tempSrcUrl != mp4Data.linkMp4) || $videoWrap.length == 0 ) {
 			_removeMp4Video($target, true);
 
@@ -532,13 +531,8 @@ var Rexbuilder_Dom_Util = (function($) {
           .children(insert_after)
           .after(mp4Tmpl);
       } else {
-        var $dragHandle = $target.find(".rexlive-block-drag-handle");
-
-        if ($dragHandle.length == 0) {
-          $target.prepend(mp4Tmpl);
-        } else {
-          $dragHandle.after(mp4Tmpl);
-        }
+				/* === Working on a block === */
+				_insertBlockVideoToDOM($target, mp4Tmpl);
       }
     } else if ($videoWrap.length != 0) {
       $videoWrap.removeClass("removing-video-mp4");
@@ -600,7 +594,12 @@ var Rexbuilder_Dom_Util = (function($) {
               //     audio: !hasAudio
               //   })
               // );
-              $target.prepend('<div class="rex-youtube-wrap" data-property="{videoURL:\'' + urlYoutube + '\',containment:\'self\',startAt:0,mute:' + !hasAudio + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>');
+							var youTubeTemplate = '<div class="rex-youtube-wrap" data-property="{videoURL:\'' + urlYoutube + '\',containment:\'self\',startAt:0,mute:' + !hasAudio + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
+
+							// ! To test
+							// $target.prepend(youTubeTemplate);
+
+							_insertBlockVideoToDOM($target, youTubeTemplate);
 
               $target.children(".rex-youtube-wrap").YTPlayer();
               var $toggleAudio = $target.children(".rex-video-toggle-audio");
@@ -633,8 +632,13 @@ var Rexbuilder_Dom_Util = (function($) {
       tmpl.arg = "video";
       // $target.prepend(
       //   tmpl("tmpl-video-youtube", { url: urlYoutube, audio: !hasAudio })
-      // );
-      $target.prepend('<div class="rex-youtube-wrap" data-property="{videoURL:\'' + urlYoutube + '\',containment:\'self\',startAt:0,mute:' + !hasAudio + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>');
+			// );
+			var youTubeTemplate = '<div class="rex-youtube-wrap" data-property="{videoURL:\'' + urlYoutube + '\',containment:\'self\',startAt:0,mute:' + !hasAudio + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
+
+			// $target.prepend(youTubeTemplate);
+			console.log( $target );
+			_insertBlockVideoToDOM($target, youTubeTemplate);
+
       $target.children(".rex-youtube-wrap").YTPlayer();
     }
 
@@ -739,7 +743,7 @@ var Rexbuilder_Dom_Util = (function($) {
       return;
 		}
 
-    var type = videoOptions.typeVideo;
+		var type = videoOptions.typeVideo;
     if (type == "") {
       _removeMp4Video($target, true);
       _removeYoutubeVideo($target, true);
@@ -2482,6 +2486,7 @@ var Rexbuilder_Dom_Util = (function($) {
 	/**
 	 * @param	{JQuery}	$target
 	 * @param	{string}	color
+	 * @since	2.0.8
 	 */
 	function _setBackgroundColor($target, color) {
 		var hasLinearGradientBackground = -1 !== $target.css('background').indexOf('linear-gradient');
@@ -2495,7 +2500,29 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var init = function() {
     this.lastSliderNumber = 0;
-  };
+	};
+
+	/**
+	 * @param	{JQuery} 							$target
+	 * @param	{string|HTMLElement} mp4Tmpl
+	 */
+	function _insertBlockVideoToDOM($target, mp4Tmpl) {
+		var $imageWrapper = $target.find('.rex-image-wrapper');
+		var $dragHandle = $target.find('.rexlive-block-drag-handle');
+
+		var thereIsImage = 0 !== $imageWrapper.length;
+		var thereIsDragHandle = 0 !== $dragHandle.length;
+
+		if (thereIsImage) {
+			$imageWrapper.after(mp4Tmpl);
+		}
+		else if (thereIsDragHandle) {
+			$dragHandle.after(mp4Tmpl);
+		}
+		else {
+			$target.prepend(mp4Tmpl);
+		}
+	}
 
   return {
     init: init,
@@ -2555,5 +2582,3 @@ var Rexbuilder_Dom_Util = (function($) {
 		updateSectionFullHeight: updateSectionFullHeight
   };
 })(jQuery);
-
-
