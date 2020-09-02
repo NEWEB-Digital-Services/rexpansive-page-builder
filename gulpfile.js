@@ -402,7 +402,7 @@ function builderliveStyle(cb, dev) {
 
 // Watching public styles
 function watchBuilderliveStyle(cb) {
-	watch(['./public/scss/**/*.scss'], { ignoreInitial: false }, builderliveStyle.bind(null, cb, true));
+	watch(['./public/scss/**/*.scss', './public/builderlive-public.scss'], { ignoreInitial: false }, builderliveStyle.bind(null, cb, true));
 	cb();
 }
 

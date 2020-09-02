@@ -12,7 +12,8 @@ var Overlay_Color_Section_Modal = (function($) {
 
   var _updateOverlayModal = function(data) {
     sectionTarget = data.sectionTarget;
-    changeColorEvent.data_to_send.sectionTarget = data.sectionTarget;
+		changeColorEvent.data_to_send.sectionTarget = data.sectionTarget;
+
     if (data.color != "") {
       background_overlay_properties.$overlay_color_value.val(data.color);
       background_overlay_properties.$overlay_color_preview_icon.hide();

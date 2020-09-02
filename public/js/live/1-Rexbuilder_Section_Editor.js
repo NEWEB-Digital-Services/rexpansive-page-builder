@@ -192,46 +192,22 @@ var Rexbuilder_Section_Editor = (function($) {
       }
     });
 
+		Rexbuilder_Util.$rexContainer.on('click', '.deactivate-row-color-background', deactivateSectionBackgroundColor);
+
     /**
      * De-selecting the color on a background row
-     * @since 2.0.0
+		 * @param		{event}	clickEvent
+     * @since 	2.0.0
+		 * @version	2.0.8		Refactored in smaller functions
      */
-    Rexbuilder_Util.$rexContainer.on('click', '.deactivate-row-color-background', function(e) {
-      e.stopPropagation()
-			var $btn = $(e.target);
-      var $section = $(e.target).parents(".rexpansive_section");
-      // var $section_data = $section.children('.section-data');
-      var sectionID = $section.attr("data-rexlive-section-id");
-      var modelNumber =
-        typeof $section.attr("data-rexlive-model-number") != "undefined"
-          ? $section.attr("data-rexlive-model-number")
-          : "";
+		function deactivateSectionBackgroundColor(clickEvent) {
+			clickEvent.stopPropagation();
 
-      var settings = {
-        data_to_send: {
-          color: "",
-          active: false,
-          sectionTarget: {
-            sectionID: sectionID,
-            modelNumber: modelNumber
-          }
-        },
-      };
+			var $section = $(clickEvent.target).parents('.rexpansive_section');
+			var sectionInfo = _getSectionInfo($section);
 
-      var event = jQuery.Event("rexlive:apply_background_color_section");
-      event.settings = settings;
-      Rexbuilder_Util.$document.trigger(event);
-
-      // Synch Top Toolbar
-      var data = {
-        eventName: "rexlive:updateTopToolbar",
-        updateInfo: {
-          color_bg_section: "",
-          color_bg_section_active: false
-        }
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-    });
+			_resetBackgroundPickers(sectionInfo);
+		}
 
     /**
      * De-selecting the overlay color on a background row
@@ -418,7 +394,7 @@ var Rexbuilder_Section_Editor = (function($) {
    */
   var _setRowColorBackgroundPicker = function() {
     $('input[name=edit-row-color-background]').each(function(i, el) {
-      _launchSpectrumPickerBackgorundColorRow( el );
+      // _launchSpectrumPickerBackgorundColorRow( el );
     });
   };
 
@@ -701,7 +677,7 @@ var Rexbuilder_Section_Editor = (function($) {
    */
   var _updateRowTools = function( $row ) {
     $row.find('input[name=edit-row-color-background]').each(function(i,el) {
-      _launchSpectrumPickerBackgorundColorRow(el);
+      // _launchSpectrumPickerBackgorundColorRow(el);
     });
     $row.find('input[name=edit-row-overlay-color]').each(function(i,el) {
       _launchSpectrumPickerOverlayColorRow(el);
@@ -717,9 +693,11 @@ var Rexbuilder_Section_Editor = (function($) {
   var overlayPickerUsed;      // global flags to check if the overlay picker is used
 
   var $actualSection;             // actual edited section
-  var $actualSectionData;         // actual edited section data
+	var $actualSectionData;         // actual edited section data
+
+	// * Seems like there is no way to deactivate the bg color at the moment
   var bgColorActive;              // is background color active on the actual edited section?
-  var bgColorActiveValue;
+  var bgColorActiveValue = null;
   var overlayColorActive;         // is overlay color active on the actual edited section?
   var overlayColorActiveValue;
 
@@ -807,11 +785,11 @@ var Rexbuilder_Section_Editor = (function($) {
     $spGlRowBackground.spectrum('container').append($spRowBkgrClose);
 
     $spRowBkgrClose.on('click', function(e) {
-      e.preventDefault();
-      if ( null !== bgColorActiveValue ) {
-        $spGlRowBackground.spectrum('set', bgColorActiveValue);
-        $spGlRowBackground.spectrum('container').find('.sp-input').trigger('change');
-      }
+			e.preventDefault();
+
+			$spGlRowBackground.spectrum('set', bgColorActiveValue || '');
+			$spGlRowBackground.spectrum('container').find('.sp-input').trigger('change');
+
       $spGlRowBackground.spectrum('hide');
     });
 
@@ -827,10 +805,8 @@ var Rexbuilder_Section_Editor = (function($) {
           $spGlRowBackground.spectrum('hide');
           break;
         case 'reset':
-          if ( null !== bgColorActiveValue ) {
-            $spGlRowBackground.spectrum('set', bgColorActiveValue);
-            $spGlRowBackground.spectrum('container').find('.sp-input').trigger('change');
-          }
+					$spGlRowBackground.spectrum('set', bgColorActiveValue || '');
+					$spGlRowBackground.spectrum('container').find('.sp-input').trigger('change');
           break;
         default: break;
       }
@@ -878,50 +854,59 @@ var Rexbuilder_Section_Editor = (function($) {
   function spRowBackgroundOnMove(color) {
     backgroundPickerUsed = true;
 
-    backgroundColorEventSettings.data_to_send.color = bgColorActive ? ( color ? color.toRgbString() : '' ) : "";
+    // backgroundColorEventSettings.data_to_send.color = bgColorActive ? ( color ? color.toRgbString() : '' ) : "";
+    backgroundColorEventSettings.data_to_send.color = color ? color.toRgbString() : '';
 
-    var event = jQuery.Event("rexlive:change_section_bg_color");
-    event.settings = backgroundColorEventSettings;
-    Rexbuilder_Util.$document.trigger(event);
+    _updateSectionBackgroundColorLive(backgroundColorEventSettings);
   }
 
+	/**
+	 * @param		{tinycolor}	color
+	 * @since		2.0.4
+	 * @version	2.0.8		Refactored in smaller functions
+	 */
   function spRowBackgroundOnHide(color) {
-    if ( backgroundPickerUsed && color ) {
-      // send data to row
-      var colorActive = color.toRgbString();
+		var needToUpdateSection = backgroundPickerUsed && color;
 
-      backgroundColorEventSettings.data_to_send.color = ( bgColorActive ? colorActive : "" );
-      backgroundColorEventSettings.data_to_send.active = bgColorActive;
+		if (needToUpdateSection) {
+			var newColor = color.toRgbString();
 
-      var event = jQuery.Event("rexlive:apply_background_color_section");
-      event.settings = backgroundColorEventSettings;
-      Rexbuilder_Util.$document.trigger(event);
+			// backgroundColorEventSettings.data_to_send.color = bgColorActive ? colorActive : '';
+			backgroundColorEventSettings.data_to_send.color = newColor;
 
-      // Synch Top Toolbar
-      var data = {
-        eventName: "rexlive:updateTopToolbar",
-        updateInfo: {
-          color_bg_section: colorActive,
-          color_bg_section_active: bgColorActive
-        }
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-    }
+			// backgroundColorEventSettings.data_to_send.active = bgColorActive.toString(); // .toString() used for retrocompatibility
+			// * Seems legit to put this true because the user just edited the section color
+			backgroundColorEventSettings.data_to_send.active = true;
 
-    // hide section tools
-    // Rexbuilder_Color_Palette.hide();
-    Rexbuilder_Live_Utilities.hideAllTools();
+			// Send data to row
+			_applyBackgroundColor(backgroundColorEventSettings);
 
-    $spGlRowOverlay.spectrum('set','');
-    // clear global vars
+			/* === Synchronize Top Toolbar === */
+			var topToolbarBackgroundInfo = {
+				color_bg_section: newColor,
+				color_bg_section_active: true
+			};
 
-    $actualSection = null;
-    $actualSectionData = null;
-    bgColorActive = false;
-    bgColorActiveValue = null;
+			_updateTopToolbar(topToolbarBackgroundInfo);
+		}
 
-    backgroundPickerUsed = false;
-  }
+		// hide section tools
+		// Rexbuilder_Color_Palette.hide();
+		Rexbuilder_Live_Utilities.hideAllTools();
+
+		$spGlRowOverlay.spectrum('set', '');
+
+		/* === Clear global vars === */
+		$actualSection = null;
+		$actualSectionData = null;
+
+		// ? Why set it false?
+		// bgColorActive = false;
+
+		bgColorActiveValue = null;
+
+		backgroundPickerUsed = false;
+	}
 
   function spRowOverlayOnMove(color) {
     overlayPickerUsed = true;
@@ -973,18 +958,22 @@ var Rexbuilder_Section_Editor = (function($) {
 
   // section tools color handlers
   function handleSectionBackgroundColorTool(ev) {
-    ev.preventDefault();
+		ev.preventDefault();
 
     // set some globals to prevent useless element search
     $actualSection = $(ev.currentTarget).parents(".rexpansive_section");
     $actualSectionData = $actualSection.children('.section-data');
     backgroundColorEventSettings.data_to_send.sectionTarget.sectionID = $actualSection.attr("data-rexlive-section-id");
     backgroundColorEventSettings.data_to_send.sectionTarget.modelNumber =
-      typeof $actualSection.attr("data-rexlive-model-number") != "undefined" ? $actualSection.attr("data-rexlive-model-number") : "";
+		typeof $actualSection.attr("data-rexlive-model-number") != "undefined" ? $actualSection.attr("data-rexlive-model-number") : "";
 
     // retrieving actual color background, if any
-    bgColorActive = ( 'undefined' !== typeof $actualSectionData.attr('data-color_bg_section_active') ? $actualSectionData.attr('data-color_bg_section_active') : 'true' );
-    bgColorActiveValue = $actualSectionData.attr('data-color_bg_section');
+		bgColorActive =
+			'undefined' !== typeof $actualSectionData.attr('data-color_bg_section_active')
+				? $actualSectionData.attr('data-color_bg_section_active')
+				: 'true';
+		bgColorActive = 'true' === bgColorActive;
+		bgColorActiveValue = $actualSectionData.attr('data-color_bg_section') || null;
 
     // maintain tools visible
     $actualSection.addClass('activeRowTools');
@@ -997,7 +986,7 @@ var Rexbuilder_Section_Editor = (function($) {
     $spGlRowBackground.spectrum('show');
     $spGlRowBackground.spectrum('container').css('top', ev.pageY + 'px');
     $spGlRowBackground.spectrum('container').css('left', ev.pageX + 'px');
-    _fixPickerContainerPosition( $spGlRowBackground, ev.currentTarget );
+		_fixPickerContainerPosition( $spGlRowBackground, ev.currentTarget );
 
     return false;
   }
@@ -1123,43 +1112,46 @@ var Rexbuilder_Section_Editor = (function($) {
 
   /**
    * Setting the tool for the row color background preview
-   * @param {jQuery Object} $target edited row
-   * @param {string} color color to set
+   * @param	{JQuery}	$targetSection	edited row
+   * @param	{string}	color						color to set
    */
-  var _updateRowBackgroundColorTool = function( $target, color ) {
-    var $picker_fast = $target
-      .find('.row-toolBox__fast-configuration')
-      .find('.edit-row-color-background');
-    var $picker_standard = $target
-      .find('.row-toolBox__standard-configuration')
-      .find('.edit-row-color-background');
+  function updateRowBackgroundColorTool($targetSection, color) {
+		// ! Check admin picker too
+		var isColorEmpty = '' === color;
 
-    if( "" != color ) {
-      // $picker_fast
-      //   .val(color)
-      //   .spectrum('set',color);
-      $picker_fast
-        .parent()
-        .addClass('tool-button--picker-preview')
-        .removeClass('tool-button--hide')
-      $picker_fast
-        .siblings('.tool-button--color-preview')
-        .css('background-color',color);
+		var $pickerFast = $targetSection.find('.row-toolBox__fast-configuration .edit-row-color-background');
+		var $pickerFastParent = $pickerFast.parent();
 
-      $picker_standard
-        // .val(color)
-        // .spectrum('set',color)
-        .parent()
-        .addClass('tool-button--hide');
-    } else {
-      $picker_standard
-        .parent()
-        .removeClass('tool-button--hide');
-      $picker_fast
-        .parent()
-        .addClass('tool-button--hide');
-    }
-  };
+		var $pickerStandard = $targetSection.find('.row-toolBox__standard-configuration .edit-row-color-background');
+		var $pickerStandardParent = $pickerStandard.parent();
+
+		if (isColorEmpty) {
+			$pickerStandardParent.removeClass('tool-button--hide');
+			$pickerFastParent.addClass('tool-button--hide');
+		} else {
+			$pickerFastParent.addClass('tool-button--picker-preview').removeClass('tool-button--hide');
+			$pickerFast.siblings('.tool-button--color-preview').css('background-color', color);
+
+			$pickerStandardParent.addClass('tool-button--hide');
+		}
+
+		// if ('' != color) {
+		// 	// $pickerFast
+		// 	//   .val(color)
+		// 	//   .spectrum('set',color);
+		// 	$pickerFast.parent().addClass('tool-button--picker-preview').removeClass('tool-button--hide');
+		// 	$pickerFast.siblings('.tool-button--color-preview').css('background-color', color);
+
+		// 	$pickerStandard
+		// 		// .val(color)
+		// 		// .spectrum('set',color)
+		// 		.parent()
+		// 		.addClass('tool-button--hide');
+		// } else {
+		// 	$pickerStandard.parent().removeClass('tool-button--hide');
+		// 	$pickerFast.parent().addClass('tool-button--hide');
+		// }
+	}
 
   /**
    * Setting the tool for the row color background preview
@@ -1202,25 +1194,23 @@ var Rexbuilder_Section_Editor = (function($) {
   };
 
   /**
-   *
-   * @param {*} $target
-   * @param {*} color
+   * @param	{JQuery}	$targetSection
+   * @param	{string}	color
+	 * @deprecated
    */
-  var _updateRowBackgroundColorToolLive = function( $target, color ) {
-    var $picker = $target
-      .find('.edit-row-color-background');
-    // Set live picker
-    // $picker
-    //   .val(color)
-    //   .spectrum('set',color);
-    $picker
-      .parent()
-      .addClass('tool-button--picker-preview')
-      .removeClass('tool-button--hide')
-    $picker
-      .siblings('.tool-button--color-preview')
-      .css('background-color',color);
-  };
+  function updateRowBackgroundColorToolLive($targetSection, color) {
+		var isColorEmpty = '' === color;
+
+		// Selecting both fast and standard pickers
+		var $pickers = $targetSection.find('.edit-row-color-background');
+		var $pickersParent = $pickers.parent();
+		var $colorPreviews = $pickers.siblings('.tool-button--color-preview');
+
+		if (!isColorEmpty) {
+			$pickersParent.addClass('tool-button--picker-preview').removeClass('tool-button--hide');
+			$colorPreviews.css('background-color', color);
+		}
+	}
 
   /**
    * Update the overlay tools
@@ -1472,7 +1462,88 @@ var Rexbuilder_Section_Editor = (function($) {
         container.style.left = ( leftPosition - container.offsetWidth ) + 'px';
       }
     }
-  }
+	}
+
+	/**
+	 * @param {object}	sectionInfo
+	 * @param {string}	sectionInfo.sectionID
+	 * @param {string}	sectionInfo.modelNumber
+	 * @since	2.0.8
+	 */
+	function _resetBackgroundPickers(sectionInfo) {
+		var settings = {
+			data_to_send: {
+				color: '',
+				active: false,
+				sectionTarget: {
+					sectionID: sectionInfo.sectionID,
+					modelNumber: sectionInfo.modelNumber
+				}
+			}
+		};
+
+		_applyBackgroundColor(settings);
+
+		var topToolbarResetInfo = {
+			color_bg_section: '',
+			color_bg_section_active: false
+		};
+
+		_updateTopToolbar(topToolbarResetInfo);
+	}
+
+	/**
+	 * @param	{JQuery}	$section
+	 * @since	2.0.8
+	 */
+	function _getSectionInfo($section) {
+		// var $section_data = $section.children('.section-data');
+		var sectionID = $section.attr('data-rexlive-section-id');
+		var modelNumber =
+			typeof $section.attr('data-rexlive-model-number') != 'undefined'
+				? $section.attr('data-rexlive-model-number')
+				: '';
+
+		return {
+			sectionID: sectionID,
+			modelNumber: modelNumber
+		};
+	}
+
+	/**
+	 * @param {object}	eventSettings
+	 * @since	2.0.8
+	 */
+	function _applyBackgroundColor(eventSettings) {
+		var event = jQuery.Event('rexlive:apply_background_color_section');
+		event.settings = eventSettings;
+
+		Rexbuilder_Util.$document.trigger(event);
+	}
+
+	/**
+	 * @param {object}	eventSettings
+	 * @since	2.0.8
+	 */
+	function _updateSectionBackgroundColorLive(eventSettings) {
+		var event = jQuery.Event('rexlive:change_section_bg_color');
+		event.settings = eventSettings;
+
+		Rexbuilder_Util.$document.trigger(event);
+	}
+
+	/**
+	 * @param {object}	updateInfo
+	 * @since	2.0.8
+	 */
+	function _updateTopToolbar(updateInfo) {
+		var data = {
+			eventName: 'rexlive:updateTopToolbar',
+			updateInfo: updateInfo
+		};
+
+		Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+	}
 
   /**
    * Initing the row toolbar
@@ -1504,8 +1575,8 @@ var Rexbuilder_Section_Editor = (function($) {
     updateSectionLayoutTool: _updateSectionLayoutTool,
     updateRowBackgroundImageTool: _updateRowBackgroundImageTool,
     resetRowBackgroundImageTool: _resetRowBackgroundImageTool,
-    updateRowBackgroundColorTool: _updateRowBackgroundColorTool,
-    updateRowBackgroundColorToolLive: _updateRowBackgroundColorToolLive,
+    updateRowBackgroundColorTool: updateRowBackgroundColorTool,
+    // updateRowBackgroundColorToolLive: updateRowBackgroundColorToolLive,
     updateRowBackgroundGradientTool: _updateRowBackgroundGradientTool,
     updateRowOverlayColorTool: _updateRowOverlayColorTool,
     updateRowOverlayColorToolLive: _updateRowOverlayColorToolLive,
@@ -1517,3 +1588,5 @@ var Rexbuilder_Section_Editor = (function($) {
     openRowOverlayGradient: _openRowOverlayGradient
   }
 })(jQuery);
+
+

@@ -1125,37 +1125,30 @@ var Rexbuilder_Dom_Util = (function($) {
     _updateVideos($section, videoOpt);
   };
 
-  var _updateSectionBackgroundColorLive = function(data, color) {
-    var $target;
+	/**
+	 * @param {object} data
+	 * @param {string} data.sectionID
+	 * @param {string} data.modelNumber
+	 * @param {string} color
+	 */
+  function _updateSectionBackgroundColorLive(data, color) {
+		var isModel = data.modelNumber != '';
+		var $target = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionID + '"]');
 
-    if (data.modelNumber != "") {
-      $target = Rexbuilder_Util.$rexContainer
-        .find(
-          'section[data-rexlive-section-id="' +
-            data.sectionID +
-            '"][data-rexlive-model-number="' +
-            data.modelNumber +
-            '"]'
-        );
-      if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
-        $target.css("background","");
-      }
-      $target
-        .css("background-color", color);
-    } else {
-      $target = Rexbuilder_Util.$rexContainer
-        .find('section[data-rexlive-section-id="' + data.sectionID + '"]');
-      if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
-        $target.css("background","");
-      }
-      $target
-        .css("background-color", color);
-    }
+		if (isModel) {
+			$target = Rexbuilder_Util.$rexContainer.find(
+				'section[data-rexlive-section-id="' +
+					data.sectionID +
+					'"][data-rexlive-model-number="' +
+					data.modelNumber +
+					'"]'
+			);
+		}
 
-    if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
-      Rexbuilder_Section_Editor.updateRowBackgroundColorToolLive( $target, color );
-    }
-  };
+		_setBackgroundColor($target, color);
+
+		Rexbuilder_Section_Editor.updateRowBackgroundColorTool($target, color);
+	}
 
   /**
    * Updating the background color of a row
@@ -2484,7 +2477,21 @@ var Rexbuilder_Dom_Util = (function($) {
 
     Rexbuilder_Util_Editor.undoActive = false;
     Rexbuilder_Util_Editor.redoActive = false;
-  };
+	};
+
+	/**
+	 * @param	{JQuery}	$target
+	 * @param	{string}	color
+	 */
+	function _setBackgroundColor($target, color) {
+		var hasLinearGradientBackground = -1 !== $target.css('background').indexOf('linear-gradient');
+
+		if (hasLinearGradientBackground) {
+			$target.css('background', '');
+		}
+
+		$target.css('background-color', color);
+	}
 
   var init = function() {
     this.lastSliderNumber = 0;
@@ -2548,3 +2555,5 @@ var Rexbuilder_Dom_Util = (function($) {
 		updateSectionFullHeight: updateSectionFullHeight
   };
 })(jQuery);
+
+
