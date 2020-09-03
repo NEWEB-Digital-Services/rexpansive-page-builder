@@ -625,7 +625,7 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
 
   var _createCopyBlock = function ($elem) {
     var $gallery = $elem.parents('.grid-stack-row');
-    var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
+		var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
     var gridstack = $gallery.data("gridstack");
     var $section = $elem.parents(".rexpansive_section");
     var $newBlock;
@@ -649,12 +649,10 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
 
     sanitizeBlockContent( $newBlock[0] );
 
-		$newBlock.appendTo($gallery.eq(0));
-
     var w = parseInt($newBlock.attr("data-gs-width"));
     var h = parseInt($newBlock.attr("data-gs-height"));
     var $itemContent = $newBlock.find(".grid-item-content");
-    var videoTypeActive = Rexbuilder_Util.destroyVideo($itemContent, false);
+		var videoTypeActive = Rexbuilder_Util.destroyVideo($itemContent, false);
 
     // Rexbuilder_Util_Editor.removeScrollBar($newBlock);
 		Rexbuilder_Live_Utilities.removeTextEditor($newBlock);
@@ -669,7 +667,7 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
       blocksDisposition: $.extend(true, {}, galleryEditorInstance.properties.reverseDataGridDisposition)
     };
 
-    gridstack.addWidget($newBlock[0], 0, 0, w, h, true, 1, 500, 1);
+		gridstack.addWidget($newBlock[0], 0, 0, w, h, true, 1, 500, 1);
 
     var x = parseInt($newBlock.attr("data-gs-x"));
     var y = parseInt($newBlock.attr("data-gs-y"));

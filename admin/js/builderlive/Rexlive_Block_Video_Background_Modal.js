@@ -11,7 +11,6 @@ var Block_Video_Background_Modal = (function($) {
   var resetData;
 
   var _openBlockVideoBackgroundModal = function(data, mousePosition) {
-		console.log( 'open modal' );
     resetData = data;
     _updateVideoModal(data.bgVideo);
     video_background_properties.$self.attr('data-block_tools', data.bgVideo.tools);
