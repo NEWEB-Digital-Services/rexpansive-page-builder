@@ -1777,7 +1777,7 @@ var Rexbuilder_Section = (function($) {
             }
 
             startingSectionsOrder.push(sectionObj);
-          });
+					});
       },
       handle: ".builder-move-row",
       stop: function(event, ui) {
@@ -1814,8 +1814,8 @@ var Rexbuilder_Section = (function($) {
               sectionObj.modelNumber = $sec.attr("data-rexlive-model-number");
             }
 
-            endSectionsOrder.push(sectionObj);
-          });
+						endSectionsOrder.push(sectionObj);
+					});
 
         if (Rexbuilder_Util.activeLayout == "default") {
           Rexbuilder_Util.updateDefaultLayoutStateDOMOrder(endSectionsOrder);
@@ -1848,7 +1848,12 @@ var Rexbuilder_Section = (function($) {
         };
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
-        Rex_Navigator.fixNavigatorItemOrder($section);
+				Rex_Navigator.fixNavigatorItemOrder($section);
+
+				// Resetting z-index because the moved row has an unwanted z-index: 10; style
+				Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (index, el) {
+					el.style.zIndex = '';
+				})
       }
 		});
 
