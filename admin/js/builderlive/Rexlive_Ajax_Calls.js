@@ -5,6 +5,24 @@
 var Rexlive_Ajax_Calls = (function($) {
   "use strict";
 
+  var _save_process_ended = function() {
+    $.ajax({
+      type: "POST",
+      url: live_editor_obj.ajaxurl,
+      data: {
+        action: "rex_save_process_ended",
+        nonce_param: live_editor_obj.rexnonce,
+        post_ID: document.getElementById("post_ID").value
+      },
+      success: function(response) {
+        if (response.success) {
+        }
+      },
+      error: function(response) {
+      }
+    });
+  };
+
   /**
    * Saving a color in the color palette
    * @param {Object} data object with ID and value for a color to save
@@ -226,6 +244,7 @@ var Rexlive_Ajax_Calls = (function($) {
   };
 
   return {
+    save_process_ended: _save_process_ended,
     savePaletteColor: _savePaletteColor,
     deletePaletteColor: _deletePaletteColor,
     savePaletteOverlayColor: _savePaletteOverlayColor,

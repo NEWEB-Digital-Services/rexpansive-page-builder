@@ -9,6 +9,8 @@ BUILDER
 	- filter the global JS object with the settings used on client side
 - `apply_filters( rexpansive_builder_remove_shortcodes_live, array $shortcode = ( 'RexTimelinePro', 'RexTimelineProEvent', 'RexliveIcon' ) )`
 	- add shortcodes to the blacklist that prevents a shortcode to be renderd inside the builder
+- `do_action( rexpansive_builder_live_save_process_ended, int post_ID, WP_Post $wp_post )`
+	- action triggered when the saving process on builderlive is complete
 
 SECTION
 ---

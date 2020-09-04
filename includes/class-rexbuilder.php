@@ -308,12 +308,15 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rexpansive_remove_sprite_icons', $plugin_admin, 'rexpansive_remove_sprite_icons' );
 
 		// Live builder
+		// builder + gutenberg
 		$this->loader->add_action( 'wp_ajax_rex_change_builder_activation_status', $plugin_admin, 'rex_change_builder_activation_status' );
 
 		$this->loader->add_action( 'wp_ajax_rex_edit_slider_from_builder', $plugin_admin, 'rex_edit_slider_from_builder' );
 		$this->loader->add_action( 'wp_ajax_rex_create_slider_from_builder', $plugin_admin, 'rex_create_slider_from_builder' );
 		$this->loader->add_action( 'wp_ajax_rex_create_rexslider_admin_markup', $plugin_admin, 'rex_create_rexslider_admin_markup' );
+		// old builder refresh
 		$this->loader->add_action( 'wp_ajax_live_refresh_builder', $plugin_admin, 'live_refresh_builder' );
+		$this->loader->add_action( 'wp_ajax_rex_save_process_ended', $plugin_admin, 'rex_save_process_ended' );
 
 		// models ajax actions
 		$this->loader->add_action( 'wp_ajax_rex_create_model_from_builder', $plugin_admin, 'rex_create_model_from_builder' );

@@ -4057,7 +4057,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @since  2.0.0
 	 */
 	public function rex_delete_rexbutton() {
-		Rexbuilder_Utilities::write_log('rex_delete_rexbutton');
+		// Rexbuilder_Utilities::write_log('rex_delete_rexbutton');
 
 		$nonce = $_POST['nonce_param'];
 
@@ -4459,6 +4459,42 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				wp_update_post( $template_update );
 			}
 		}
+	}
+
+	/**
+	 * Launch action hook when the savint process of a post is completed
+	 * @return JSON response of the ajax
+	 * @since  1.0.0
+	 */
+	public function rex_save_process_ended() {
+		$nonce = $_REQUEST['nonce_param'];
+
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce') ) {
+			$response['error'] = true;
+			$response['msg'] = 'Nonce Error!';
+			wp_send_json_error($response);
+		}
+
+		if ( ! isset( $_REQUEST['post_ID'] ) ) {
+			$response['msg'] = 'ID Error!';
+			wp_send_json_error($response);
+		}
+
+		$wp_post = get_post( $_REQUEST['post_ID'] );
+
+		if ( null === $wp_post ) {
+			$response['msg'] = 'Post Error!';
+			wp_send_json_error($response);
+		}
+
+		do_action( 'rexpansive_builder_live_save_process_ended', $_REQUEST['post_ID'], $wp_post );
+
+		wp_send_json_success( $response );
 	}
 
 	/**

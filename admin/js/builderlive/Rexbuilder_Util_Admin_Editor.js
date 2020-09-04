@@ -350,6 +350,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
           // add saved layout indicator
           Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-builder-layout.active-layout").parent().addClass('layout-saved');
 
+          // tell wp that saving process has ended
+          Rexlive_Ajax_Calls.save_process_ended();
+
           $saveBtn.removeClass("rex-saving");
           if ( typeof event.data.buttonData !== "undefined" && event.data.buttonData != "" ) {
             _updateLayoutPage(event.data.buttonData);
@@ -360,10 +363,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       if (event.data.eventName == "rexlive:restoreStateEnded") {
         modelSaved = true;
         Rexbuilder_Util_Admin_Editor.pageSaved = true;
-        if (
-          typeof event.data.buttonData !== "undefined" &&
-          typeof event.data.buttonData != ""
-        ) {
+        if ( typeof event.data.buttonData !== "undefined" && event.data.buttonData != "" ) {
           _updateLayoutPage(event.data.buttonData);
         }
       }
