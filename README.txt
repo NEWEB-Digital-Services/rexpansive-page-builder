@@ -4,7 +4,7 @@ Donate link: http://www.neweb.info/
 Tags: builder, composer, content builder, custom, drag and drop, editor, page builder, page composer, responsive, theme
 Requires at least: 4.2
 Tested up to: 5.5
-Stable tag: 2.0.7
+Stable tag: 2.0.8
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -199,6 +199,22 @@ For the more experienced among us: you can insert CSS anywhere.
 11. Clean interface
 
 == Changelog ==
+
+= 2.0.8 - September 4, 2020 =
+ * Added: Class to remove a block from a grid flow on public side
+ * Added: RexSlider prev/next icon customizable with hook
+ * Updated: Natural fit image position default is now left-top
+ * Fixed: Overlay and background colors' toolboxes showing over blocks even if they weren't set
+ * Fixed: When cloning a block with a mp4 video, the cloned block did not display the video (a refresh was needed)
+ * Fixed: Block size indicator displaying wrong size when resetting the block settings
+ * Fixed: Sections' toolboxes going below other sections in certain situations
+ * Fixed: Different behaviour of block videos when adding them compared to when the page loads
+ * Fixed: RexSlider natural blurred images with text displaying badly
+ * Fixed: RexSlider videos not working correctly on backend side
+ * Fixed: When hitting DEL in a text block before a RexButton, the RexButton loses its settings
+ * Fixed: Height of a block increasing when editing its internal lateral paddings
+ * Fixed: Slider/youtube video with text: the text was invisible
+
 
 = 2.0.7 - August 19, 2020 =
  * Added: Class to deactivate default animation on blocks (.deactivate-rexpansive-animation)
