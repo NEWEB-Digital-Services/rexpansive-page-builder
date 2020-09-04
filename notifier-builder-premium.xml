@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <notifier>
-	<latest>2.0.8</latest>
+	<latest>2.0.9</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.0.9</strong> -  </h4>
 			<h4><strong>v2.0.8</strong> – September 4, 2020 </h4>
 			<p><strong>Added</strong>: Class to remove a block from a grid flow on public side</p>
 			<p><strong>Added</strong>: RexSlider prev/next icon customizable with hook</p>
