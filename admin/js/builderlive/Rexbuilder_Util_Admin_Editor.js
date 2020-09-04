@@ -359,13 +359,14 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
       if (event.data.eventName == "rexlive:restoreStateEnded") {
         modelSaved = true;
-        Rexbuilder_Util_Admin_Editor.pageSaved = true;
-        if (
-          typeof event.data.buttonData !== "undefined" &&
-          typeof event.data.buttonData != ""
-        ) {
-          _updateLayoutPage(event.data.buttonData);
-        }
+				Rexbuilder_Util_Admin_Editor.pageSaved = true;
+
+				var needToUpdateLayout = typeof event.data.buttonData !== 'undefined' && typeof event.data.buttonData != '';
+				console.log( 'update layout page', {needToUpdateLayout} )
+
+				if (needToUpdateLayout) {
+					_updateLayoutPage(event.data.buttonData);
+				}
       }
 
       if (event.data.eventName == "rexlive:animateContentsFadeOutEnd") {

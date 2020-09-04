@@ -1284,50 +1284,46 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
-  var _updateSectionOverlayColorLive = function(data, color) {
-    var $target;
-    if (data.modelNumber != "") {
-      $target = Rexbuilder_Util.$rexContainer
-        .find(
-          'section[data-rexlive-section-id="' +
-            data.sectionID +
-            '"][data-rexlive-model-number="' +
-            data.modelNumber +
-            '"]'
-        );
-      if( -1 !== $target.children(".responsive-overlay").css("background").indexOf("linear-gradient") ) {
-        $target.children(".responsive-overlay").css("background","");
-      }
-      $target
-        .children(".responsive-overlay")
-        .css("background-color", color);
-    } else {
-      $target = Rexbuilder_Util.$rexContainer
-        .find('section[data-rexlive-section-id="' + data.sectionID + '"]');
-      if( -1 !== $target.children(".responsive-overlay").css("background").indexOf("linear-gradient") ) {
-        $target.children(".responsive-overlay").css("background","");
-      }
-      $target
-        .children(".responsive-overlay")
-        .css("background-color", color);
-    }
+	/**
+	 * @typedef		{object} SectionInfo
+	 * @property	{string} sectionID			Section's universal identifier
+	 * @property	{string} modelNumber		Section's template (model) progressive number
+	 */
+	/**
+	 * @param		{SectionInfo}	sectionInfo
+	 * @param		{string}			color
+	 * @version	2.0.8					Optimized behaviour
+	 */
+  function updateSectionOverlayColorLive(sectionInfo, color) {
+		var $sectionTarget;
+		var sectionIsModel = sectionInfo.modelNumber !== '';
 
-    // Set live picker
-    if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
-      Rexbuilder_Section_Editor.updateRowOverlayColorToolLive( $target, color );
-    }
-    // Rexbuilder_Util_Editor.activeAddSection( $target );
-  };
+		if (sectionIsModel) {
+			$sectionTarget = Rexbuilder_Util.$rexContainer.find(
+				'.rexpansive_section[data-rexlive-section-id="' +
+					sectionInfo.sectionID +
+					'"][data-rexlive-model-number="' +
+					sectionInfo.modelNumber +
+					'"]'
+			);
+		} else {
+			$sectionTarget = Rexbuilder_Util.$rexContainer.find(
+				'.rexpansive_section[data-rexlive-section-id="' + sectionInfo.sectionID + '"]'
+			);
+		}
 
-  var _updateSectionOverlay = function($section, overlay) {
+		var $sectionOverlay = $sectionTarget.children('.responsive-overlay');
+		_setBackgroundColor($sectionOverlay, color);
+
+		// Set live picker
+		Rexbuilder_Section_Editor.updateRowOverlayColorToolLive($sectionTarget, color);
+	}
+
+  var updateSectionOverlay = function($section, overlay) {
     var $overlayElem = $section.children(".responsive-overlay");
-    var overlayElem = $overlayElem[0];
     var $sectionData = $section.children(".section-data");
 
-    if( -1 !== getComputedStyle(overlayElem)['background'].indexOf('linear-gradient') ) {
-      overlayElem.style.background = '';
-    }
-    overlayElem.style.backgroundColor = overlay.color;
+		_setBackgroundColor($overlayElem, overlay.color);
 
     $sectionData.attr("data-row_overlay_color", overlay.color);
     $sectionData.attr("data-row_overlay_active", overlay.active);
@@ -1342,7 +1338,6 @@ var Rexbuilder_Dom_Util = (function($) {
     if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
       Rexbuilder_Section_Editor.updateRowOverlayColorTool( $section, overlay );
     }
-    // Rexbuilder_Util_Editor.activeAddSection( $section );
   };
 
   var _updateSectionOverlayGradient = function($section, overlay) {
@@ -2009,7 +2004,7 @@ var Rexbuilder_Dom_Util = (function($) {
         case 'row_overlay_active':
           if ( overlayChanged ) break;
 
-          _updateSectionOverlay( $section, {
+          updateSectionOverlay( $section, {
             color: defaultProps.row_overlay_color,
             active: defaultProps.row_overlay_active
           });
@@ -2389,7 +2384,7 @@ var Rexbuilder_Dom_Util = (function($) {
         _updateSectionBackgroundColor($section, dataToUse);
         break;
       case "updateSectionOverlay":
-        _updateSectionOverlay($section, dataToUse);
+        updateSectionOverlay($section, dataToUse);
         break;
       case "updateSectionImageBG":
         _updateImageBG($section, dataToUse);
@@ -2573,8 +2568,8 @@ var Rexbuilder_Dom_Util = (function($) {
     updateSectionBackgroundColor: _updateSectionBackgroundColor,
     updateSectionBackgroundColorLive: _updateSectionBackgroundColorLive,
     updateSectionBackgroundGradient: _updateSectionBackgroundGradient,
-    updateSectionOverlay: _updateSectionOverlay,
-    updateSectionOverlayColorLive: _updateSectionOverlayColorLive,
+    updateSectionOverlay: updateSectionOverlay,
+    updateSectionOverlayColorLive: updateSectionOverlayColorLive,
     updateSectionOverlayGradient: _updateSectionOverlayGradient,
     updateBlockBackgroundColor: _updateBlockBackgroundColor,
     updateBlockBackgroundColorLive: _updateBlockBackgroundColorLive,

@@ -851,11 +851,8 @@ var Rexbuilder_Section_Editor = (function($) {
           $spGlRowOverlay.spectrum('hide');
           break;
         case 'reset':
-          // if ( null !== overlayColorActiveValue ) {
-						console.log( overlayColorActiveValue );
-            $spGlRowOverlay.spectrum('set', overlayColorActiveValue || '');
-            $spGlRowOverlay.spectrum('container').find('.sp-input').trigger('change');
-          // }
+					$spGlRowOverlay.spectrum('set', overlayColorActiveValue || '');
+					$spGlRowOverlay.spectrum('container').find('.sp-input').trigger('change');
           break;
         default: break;
       }
@@ -924,20 +921,28 @@ var Rexbuilder_Section_Editor = (function($) {
 	}
 
   function spRowOverlayOnMove(color) {
-    overlayPickerUsed = true;
+		overlayPickerUsed = true;
 
-    overlayColorEventSettings.data_to_send.active = true;
-		overlayColorEventSettings.data_to_send.color = ( color ? color.toRgbString() : '' );
+		overlayColorEventSettings.data_to_send.active = true;
+		overlayColorEventSettings.data_to_send.color = color ? color.toRgbString() : '';
 
-		console.log( overlayColorActive, !!overlayColorActive );
-    if( overlayColorActive ) {
-      var event = jQuery.Event("rexlive:change_section_overlay_color");
-    } else {
-      var event = jQuery.Event("rexlive:change_section_overlay");
-    }
-    event.settings = overlayColorEventSettings;
-    Rexbuilder_Util.$document.trigger(event);
-  }
+		_updateSectionOverlayColorLive(overlayColorEventSettings)
+	}
+
+	/**
+	 * @param {object}	eventSettings
+	 * @since	2.0.8
+	 */
+	function _updateSectionOverlayColorLive(eventSettings) {
+		// if (overlayColorActive) {
+		// 	var event = jQuery.Event('rexlive:change_section_overlay_color');
+		// } else {
+		var event = jQuery.Event('rexlive:change_section_overlay');
+		// }
+
+		event.settings = eventSettings;
+		Rexbuilder_Util.$document.trigger(event);
+	}
 
   function spRowOverlayOnHide(color) {
 		var needToUpdateSection = overlayPickerUsed && color;
@@ -1150,23 +1155,6 @@ var Rexbuilder_Section_Editor = (function($) {
 
 			$pickerStandardParent.addClass('tool-button--hide');
 		}
-
-		// if ('' != color) {
-		// 	// $pickerFast
-		// 	//   .val(color)
-		// 	//   .spectrum('set',color);
-		// 	$pickerFast.parent().addClass('tool-button--picker-preview').removeClass('tool-button--hide');
-		// 	$pickerFast.siblings('.tool-button--color-preview').css('background-color', color);
-
-		// 	$pickerStandard
-		// 		// .val(color)
-		// 		// .spectrum('set',color)
-		// 		.parent()
-		// 		.addClass('tool-button--hide');
-		// } else {
-		// 	$pickerStandard.parent().removeClass('tool-button--hide');
-		// 	$pickerFast.parent().addClass('tool-button--hide');
-		// }
 	}
 
   /**
@@ -1229,45 +1217,36 @@ var Rexbuilder_Section_Editor = (function($) {
 	}
 
   /**
-   * Update the overlay tools
-   * @param {jQuery Object} $target row edited
-   * @param {JS Object} overlay_data object with the overlay data
+   * Update the overlay tools' status.
+	 *
+   * @param	{JQuery}	$sectionTarget
+   * @param	{object}	overlayData
+   * @param	{string}	overlayData.color
+   * @param	{boolean}	overlayData.active
+	 * @since	2.0.8
    */
-  var _updateRowOverlayColorTool = function( $target, overlay_data ) {
-    var $picker_fast = $target
-      .find('.row-toolBox__fast-configuration')
-      .find('.edit-row-overlay-color');
-    var $picker_standard = $target
-      .find('.row-toolBox__standard-configuration')
-      .find('.edit-row-overlay-color');
+  function updateRowOverlayColorTool($sectionTarget, overlayData) {
+		var $pickerFast = $sectionTarget.find('.row-toolBox__fast-configuration .edit-row-overlay-color');
+		var $pickerFastParent = $pickerFast.parent();
 
-    if( overlay_data.active.toString() == "true" ) {
-      // $picker_fast
-      //   .val(overlay_data.color)
-      //   .spectrum("set",overlay_data.color)
+		var $pickerStandard = $sectionTarget.find('.row-toolBox__standard-configuration .edit-row-overlay-color');
+		var $pickerStandardParent = $pickerStandard.parent();
 
-      $picker_fast
-        .parent()
-        .addClass('tool-button--picker-preview')
-        .removeClass('tool-button--hide')
-      $picker_fast
-        .siblings('.tool-button--color-preview')
-        .css('background-color',overlay_data.color);
+		var isOverlayActive = 'true' === overlayData.active.toString();
+		var isColorEmpty = '' === overlayData.color;
 
-      $picker_standard
-        // .val(overlay_data.color)
-        // .spectrum('set',overlay_data.color)
-        .parent()
-        .addClass('tool-button--hide');
-    } else {
-      $picker_standard
-        .parent()
-        .removeClass('tool-button--hide');
-      $picker_fast
-        .parent()
-        .addClass('tool-button--hide');
-    }
-  }
+		var needToHideTools = isColorEmpty || !isOverlayActive;
+
+		if (needToHideTools) {
+			$pickerStandardParent.removeClass('tool-button--hide');
+			$pickerFastParent.addClass('tool-button--hide');
+		} else {
+			$pickerFastParent.addClass('tool-button--picker-preview').removeClass('tool-button--hide');
+			$pickerFast.siblings('.tool-button--color-preview').css('background-color', overlayData.color);
+
+			$pickerStandardParent.addClass('tool-button--hide');
+		}
+	}
 
   /**
    * Update the overlay tools
@@ -1537,8 +1516,14 @@ var Rexbuilder_Section_Editor = (function($) {
 	}
 
 	/**
-	 * @param	{JQuery}	$section
-	 * @since	2.0.8
+	 * @typedef		{object} SectionInfo
+	 * @property	{string} sectionID			Section's universal identifier
+	 * @property	{string} modelNumber		Section's template (model) progressive number
+	 */
+	/**
+	 * @param		{JQuery}				$section
+	 * @returns	{SectionInfo}
+	 * @since		2.0.8
 	 */
 	function _getSectionInfo($section) {
 		// var $section_data = $section.children('.section-data');
@@ -1633,7 +1618,7 @@ var Rexbuilder_Section_Editor = (function($) {
     updateRowBackgroundColorTool: updateRowBackgroundColorTool,
     // updateRowBackgroundColorToolLive: updateRowBackgroundColorToolLive,
     updateRowBackgroundGradientTool: _updateRowBackgroundGradientTool,
-    updateRowOverlayColorTool: _updateRowOverlayColorTool,
+    updateRowOverlayColorTool: updateRowOverlayColorTool,
     updateRowOverlayColorToolLive: _updateRowOverlayColorToolLive,
     updateRowOverlayGradientTool: _updateRowOverlayGradientTool,
     updateRowBackgroundVideo: _updateRowBackgroundVideo,
