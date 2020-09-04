@@ -4,6 +4,7 @@
 	<changelog>
 		<![CDATA[
 			<h4><strong>v2.0.8</strong> –  </h4>
+			<p><strong>Fixed</strong>: When cloning a block with a mp4 video, the cloned block did not display the video (a refresh was needed)</p>
 			<p><strong>Fixed</strong>: Block size indicator displaying wrong size when resetting the block settings</p>
 			<p><strong>Fixed</strong>: Sections' toolboxes going below other sections in certain situations</p>
 			<p><strong>Fixed</strong>: Different behaviour of block videos when adding them compared to when the page loads</p>
