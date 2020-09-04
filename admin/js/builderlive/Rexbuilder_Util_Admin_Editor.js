@@ -362,10 +362,14 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
       if (event.data.eventName == "rexlive:restoreStateEnded") {
         modelSaved = true;
-        Rexbuilder_Util_Admin_Editor.pageSaved = true;
-        if ( typeof event.data.buttonData !== "undefined" && event.data.buttonData != "" ) {
-          _updateLayoutPage(event.data.buttonData);
-        }
+				Rexbuilder_Util_Admin_Editor.pageSaved = true;
+
+				var layoutData = event.data.buttonData;
+				var needToUpdateLayout = typeof layoutData !== 'undefined' && layoutData != '';
+
+				if (needToUpdateLayout) {
+					_updateLayoutPage(layoutData);
+				}
       }
 
       if (event.data.eventName == "rexlive:animateContentsFadeOutEnd") {
@@ -1025,17 +1029,12 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
   var _updateLayoutPage = function(buttonData) {
     modelSaved = true;
-    Rexbuilder_Util_Admin_Editor.pageSaved = true;
+
+		Rexbuilder_Util_Admin_Editor.pageSaved = true;
     activeLayoutPage = buttonData.id;
-    activeLayoutPageLabel = buttonData.label;
+		activeLayoutPageLabel = buttonData.label;
+
     Rexbuilder_Util_Admin_Editor.setActiveLayout( activeLayoutPage );
-    /*
-    var $activeLayoutBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.btn-builder-layout[data-name="' + activeLayoutPage + '"]');
-    Rexbuilder_Util_Admin_Editor.$responsiveToolbar
-      .find(".btn-builder-layout.active-layout")
-      .removeClass("active-layout");
-    $activeLayoutBtn
-      .addClass("active-layout");*/
 
     Rexbuilder_Util_Admin_Editor.$responsiveToolbar
       .find('.tool-option__choose-layout')
@@ -1181,7 +1180,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     return activeLayoutPage;
   };
 
-  var _setActiveLayout = function(layout) {
+  var setActiveLayout = function(layout) {
     activeLayoutPage = layout;
     this.$responsiveToolbar
       .find(".btn-builder-layout.active-layout")
@@ -1983,7 +1982,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     sendIframeBuilderMessage: _sendIframeBuilderMessage,
     updateLayoutPage: _updateLayoutPage,
     getActiveLayout: _getActiveLayout,
-    setActiveLayout: _setActiveLayout,
+    setActiveLayout: setActiveLayout,
     updateIframeWidth: _updateIframeWidth,
     updateLayoutActiveData: _updateLayoutActiveData,
     releaseIframeRows: _releaseIframeRows,

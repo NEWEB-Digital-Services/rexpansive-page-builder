@@ -261,6 +261,12 @@ var Rexbuilder_Dom_Util = (function($) {
 			_addImageNaturalBgBlock($itemContent, data);
 		}
 
+		var blockContainsVideo = /(youtube|vimeo|mp4)-player/.test($itemContent.get(0).className);
+
+		if (blockContainsVideo) {
+			_moveImageBeforeVideo($itemContent);
+		}
+
     $itemContent.attr("data-background_image_width", data.width);
     $itemContent.attr("data-background_image_height", data.height);
 
@@ -326,7 +332,7 @@ var Rexbuilder_Dom_Util = (function($) {
       $imageDiv.detach().insertBefore($overlayBlock[0]);
       $imageDiv.removeClass("natural-image-background");
       $imageDiv.removeClass("small-width");
-    }
+		}
 
     var imageDiv = $imageDiv[0];
 
@@ -429,8 +435,10 @@ var Rexbuilder_Dom_Util = (function($) {
         tmpl.arg = "video";
         // $target.prepend(
         //   tmpl("tmpl-video-youtube", { url: videoID, audio: false })
-        // );
-        $target.prepend('<div class="rex-youtube-wrap" data-property="{videoURL:\'' + videoID + '\',containment:\'self\',startAt:0,mute:' + false + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>');
+				// );
+				var youTubeTemplate = '<div class="rex-youtube-wrap" data-property="{videoURL:\'' + videoID + '\',containment:\'self\',startAt:0,mute:' + false + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
+
+				_insertBlockVideoToDOM($target, youTubeTemplate);
 
         if (hadAudio && wasSlide) {
           // var $toggle = $(tmpl("tmpl-video-toggle-audio"));
@@ -509,7 +517,6 @@ var Rexbuilder_Dom_Util = (function($) {
     var tempSrc = $videoWrap.find("source");
 		var tempSrcUrl = ( ! Rexbuilder_Util.editorMode ? tempSrc.attr('data-src') : tempSrc.attr('src') );
 
-
     if ( ($videoWrap.length != 0 && tempSrcUrl != mp4Data.linkMp4) || $videoWrap.length == 0 ) {
 			_removeMp4Video($target, true);
 
@@ -532,13 +539,8 @@ var Rexbuilder_Dom_Util = (function($) {
           .children(insert_after)
           .after(mp4Tmpl);
       } else {
-        var $dragHandle = $target.find(".rexlive-block-drag-handle");
-
-        if ($dragHandle.length == 0) {
-          $target.prepend(mp4Tmpl);
-        } else {
-          $dragHandle.after(mp4Tmpl);
-        }
+				/* === Working on a block === */
+				_insertBlockVideoToDOM($target, mp4Tmpl);
       }
     } else if ($videoWrap.length != 0) {
       $videoWrap.removeClass("removing-video-mp4");
@@ -563,7 +565,8 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _addYoutubeVideo = function($target, urlYoutube, hasAudio) {
     var $ytpWrapper = $target.children(".rex-youtube-wrap");
-    var $toggleAudio = $target.children(".rex-video-toggle-audio");
+		var $toggleAudio = $target.children(".rex-video-toggle-audio");
+
     if ($ytpWrapper.length != 0) {
       var elemData = jQuery.extend(
         true,
@@ -573,7 +576,7 @@ var Rexbuilder_Dom_Util = (function($) {
       var activeUrl = elemData.videoURL;
 
       var videoID = Rexbuilder_Util.getYoutubeID(activeUrl);
-      var urlID = Rexbuilder_Util.getYoutubeID(urlYoutube);
+			var urlID = Rexbuilder_Util.getYoutubeID(urlYoutube);
 
       if (videoID != urlID) {
         if ($ytpWrapper.YTPGetPlayer() === undefined) {
@@ -600,7 +603,9 @@ var Rexbuilder_Dom_Util = (function($) {
               //     audio: !hasAudio
               //   })
               // );
-              $target.prepend('<div class="rex-youtube-wrap" data-property="{videoURL:\'' + urlYoutube + '\',containment:\'self\',startAt:0,mute:' + !hasAudio + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>');
+							var youTubeTemplate = '<div class="rex-youtube-wrap" data-property="{videoURL:\'' + urlYoutube + '\',containment:\'self\',startAt:0,mute:' + !hasAudio + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
+
+							_insertBlockVideoToDOM($target, youTubeTemplate);
 
               $target.children(".rex-youtube-wrap").YTPlayer();
               var $toggleAudio = $target.children(".rex-video-toggle-audio");
@@ -633,8 +638,11 @@ var Rexbuilder_Dom_Util = (function($) {
       tmpl.arg = "video";
       // $target.prepend(
       //   tmpl("tmpl-video-youtube", { url: urlYoutube, audio: !hasAudio })
-      // );
-      $target.prepend('<div class="rex-youtube-wrap" data-property="{videoURL:\'' + urlYoutube + '\',containment:\'self\',startAt:0,mute:' + !hasAudio + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>');
+			// );
+			var youTubeTemplate = '<div class="rex-youtube-wrap" data-property="{videoURL:\'' + urlYoutube + '\',containment:\'self\',startAt:0,mute:' + !hasAudio + ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
+
+			_insertBlockVideoToDOM($target, youTubeTemplate);
+
       $target.children(".rex-youtube-wrap").YTPlayer();
     }
 
@@ -674,8 +682,14 @@ var Rexbuilder_Dom_Util = (function($) {
           "?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=" +
           (hasAudio.toString() == "true" ? "0" : "1") +
           "&background=1";
-        // $target.prepend(tmpl("tmpl-video-vimeo", { url: urlVimeo }));
-        $target.prepend('<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block"><iframe src="' + urlVimeo + '" width="640" height="360" frameborder="0" allow="autoplay"  webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>');
+				// $target.prepend(tmpl("tmpl-video-vimeo", { url: urlVimeo }));
+
+				var vimeoTemplate = '<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block"><iframe src="' + urlVimeo + '" width="640" height="360" frameborder="0" allow="autoplay"  webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div>'
+
+				// $target.prepend(vimeoTemplate);
+
+				_insertBlockVideoToDOM($target, vimeoTemplate);
+
         var vimeoFrame = $target
           .children(".rex-video-vimeo-wrap")
           .find("iframe")[0];
@@ -739,7 +753,7 @@ var Rexbuilder_Dom_Util = (function($) {
       return;
 		}
 
-    var type = videoOptions.typeVideo;
+		var type = videoOptions.typeVideo;
     if (type == "") {
       _removeMp4Video($target, true);
       _removeYoutubeVideo($target, true);
@@ -1125,37 +1139,30 @@ var Rexbuilder_Dom_Util = (function($) {
     _updateVideos($section, videoOpt);
   };
 
-  var _updateSectionBackgroundColorLive = function(data, color) {
-    var $target;
+	/**
+	 * @param {object} data
+	 * @param {string} data.sectionID
+	 * @param {string} data.modelNumber
+	 * @param {string} color
+	 */
+  function _updateSectionBackgroundColorLive(data, color) {
+		var isModel = data.modelNumber != '';
+		var $target = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionID + '"]');
 
-    if (data.modelNumber != "") {
-      $target = Rexbuilder_Util.$rexContainer
-        .find(
-          'section[data-rexlive-section-id="' +
-            data.sectionID +
-            '"][data-rexlive-model-number="' +
-            data.modelNumber +
-            '"]'
-        );
-      if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
-        $target.css("background","");
-      }
-      $target
-        .css("background-color", color);
-    } else {
-      $target = Rexbuilder_Util.$rexContainer
-        .find('section[data-rexlive-section-id="' + data.sectionID + '"]');
-      if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
-        $target.css("background","");
-      }
-      $target
-        .css("background-color", color);
-    }
+		if (isModel) {
+			$target = Rexbuilder_Util.$rexContainer.find(
+				'section[data-rexlive-section-id="' +
+					data.sectionID +
+					'"][data-rexlive-model-number="' +
+					data.modelNumber +
+					'"]'
+			);
+		}
 
-    if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
-      Rexbuilder_Section_Editor.updateRowBackgroundColorToolLive( $target, color );
-    }
-  };
+		_setBackgroundColor($target, color);
+
+		Rexbuilder_Section_Editor.updateRowBackgroundColorTool($target, color);
+	}
 
   /**
    * Updating the background color of a row
@@ -1277,50 +1284,46 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
-  var _updateSectionOverlayColorLive = function(data, color) {
-    var $target;
-    if (data.modelNumber != "") {
-      $target = Rexbuilder_Util.$rexContainer
-        .find(
-          'section[data-rexlive-section-id="' +
-            data.sectionID +
-            '"][data-rexlive-model-number="' +
-            data.modelNumber +
-            '"]'
-        );
-      if( -1 !== $target.children(".responsive-overlay").css("background").indexOf("linear-gradient") ) {
-        $target.children(".responsive-overlay").css("background","");
-      }
-      $target
-        .children(".responsive-overlay")
-        .css("background-color", color);
-    } else {
-      $target = Rexbuilder_Util.$rexContainer
-        .find('section[data-rexlive-section-id="' + data.sectionID + '"]');
-      if( -1 !== $target.children(".responsive-overlay").css("background").indexOf("linear-gradient") ) {
-        $target.children(".responsive-overlay").css("background","");
-      }
-      $target
-        .children(".responsive-overlay")
-        .css("background-color", color);
-    }
+	/**
+	 * @typedef		{object} SectionInfo
+	 * @property	{string} sectionID			Section's universal identifier
+	 * @property	{string} modelNumber		Section's template (model) progressive number
+	 */
+	/**
+	 * @param		{SectionInfo}	sectionInfo
+	 * @param		{string}			color
+	 * @version	2.0.8					Optimized behaviour
+	 */
+  function updateSectionOverlayColorLive(sectionInfo, color) {
+		var $sectionTarget;
+		var sectionIsModel = sectionInfo.modelNumber !== '';
 
-    // Set live picker
-    if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
-      Rexbuilder_Section_Editor.updateRowOverlayColorToolLive( $target, color );
-    }
-    // Rexbuilder_Util_Editor.activeAddSection( $target );
-  };
+		if (sectionIsModel) {
+			$sectionTarget = Rexbuilder_Util.$rexContainer.find(
+				'.rexpansive_section[data-rexlive-section-id="' +
+					sectionInfo.sectionID +
+					'"][data-rexlive-model-number="' +
+					sectionInfo.modelNumber +
+					'"]'
+			);
+		} else {
+			$sectionTarget = Rexbuilder_Util.$rexContainer.find(
+				'.rexpansive_section[data-rexlive-section-id="' + sectionInfo.sectionID + '"]'
+			);
+		}
 
-  var _updateSectionOverlay = function($section, overlay) {
+		var $sectionOverlay = $sectionTarget.children('.responsive-overlay');
+		_setBackgroundColor($sectionOverlay, color);
+
+		// Set live picker
+		Rexbuilder_Section_Editor.updateRowOverlayColorToolLive($sectionTarget, color);
+	}
+
+  var updateSectionOverlay = function($section, overlay) {
     var $overlayElem = $section.children(".responsive-overlay");
-    var overlayElem = $overlayElem[0];
     var $sectionData = $section.children(".section-data");
 
-    if( -1 !== getComputedStyle(overlayElem)['background'].indexOf('linear-gradient') ) {
-      overlayElem.style.background = '';
-    }
-    overlayElem.style.backgroundColor = overlay.color;
+		_setBackgroundColor($overlayElem, overlay.color);
 
     $sectionData.attr("data-row_overlay_color", overlay.color);
     $sectionData.attr("data-row_overlay_active", overlay.active);
@@ -1335,7 +1338,6 @@ var Rexbuilder_Dom_Util = (function($) {
     if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
       Rexbuilder_Section_Editor.updateRowOverlayColorTool( $section, overlay );
     }
-    // Rexbuilder_Util_Editor.activeAddSection( $section );
   };
 
   var _updateSectionOverlayGradient = function($section, overlay) {
@@ -2002,7 +2004,7 @@ var Rexbuilder_Dom_Util = (function($) {
         case 'row_overlay_active':
           if ( overlayChanged ) break;
 
-          _updateSectionOverlay( $section, {
+          updateSectionOverlay( $section, {
             color: defaultProps.row_overlay_color,
             active: defaultProps.row_overlay_active
           });
@@ -2382,7 +2384,7 @@ var Rexbuilder_Dom_Util = (function($) {
         _updateSectionBackgroundColor($section, dataToUse);
         break;
       case "updateSectionOverlay":
-        _updateSectionOverlay($section, dataToUse);
+        updateSectionOverlay($section, dataToUse);
         break;
       case "updateSectionImageBG":
         _updateImageBG($section, dataToUse);
@@ -2484,11 +2486,59 @@ var Rexbuilder_Dom_Util = (function($) {
 
     Rexbuilder_Util_Editor.undoActive = false;
     Rexbuilder_Util_Editor.redoActive = false;
-  };
+	};
+
+	/**
+	 * @param	{JQuery}	$target
+	 * @param	{string}	color
+	 * @since	2.0.8
+	 */
+	function _setBackgroundColor($target, color) {
+		var hasLinearGradientBackground = -1 !== $target.css('background').indexOf('linear-gradient');
+
+		if (hasLinearGradientBackground) {
+			$target.css('background', '');
+		}
+
+		$target.css('background-color', color);
+	}
+
+	/**
+	 * @param	{JQuery} 							$target
+	 * @param	{string|HTMLElement} mp4Tmpl
+	 */
+	function _insertBlockVideoToDOM($target, mp4Tmpl) {
+		var $imageWrapper = $target.find('.rex-image-wrapper');
+		var $dragHandle = $target.find('.rexlive-block-drag-handle');
+
+		var thereIsImage = 0 !== $imageWrapper.length;
+		var thereIsDragHandle = 0 !== $dragHandle.length;
+
+		if (thereIsImage) {
+			$imageWrapper.after(mp4Tmpl);
+		}
+		else if (thereIsDragHandle) {
+			$dragHandle.after(mp4Tmpl);
+		}
+		else {
+			$target.prepend(mp4Tmpl);
+		}
+	}
+
+	/**
+	 * @param	{JQuery}	$itemContent
+	 */
+	function _moveImageBeforeVideo($itemContent) {
+		var $imageDiv = $itemContent.find('.rex-image-wrapper');
+		var $videoDiv = $itemContent.find('.rex-youtube-wrap, .rex-video-vimeo-wrap, .rex-video-wrap');
+
+		$imageDiv.insertBefore($videoDiv);
+	}
 
   var init = function() {
     this.lastSliderNumber = 0;
-  };
+	};
+
 
   return {
     init: init,
@@ -2518,8 +2568,8 @@ var Rexbuilder_Dom_Util = (function($) {
     updateSectionBackgroundColor: _updateSectionBackgroundColor,
     updateSectionBackgroundColorLive: _updateSectionBackgroundColorLive,
     updateSectionBackgroundGradient: _updateSectionBackgroundGradient,
-    updateSectionOverlay: _updateSectionOverlay,
-    updateSectionOverlayColorLive: _updateSectionOverlayColorLive,
+    updateSectionOverlay: updateSectionOverlay,
+    updateSectionOverlayColorLive: updateSectionOverlayColorLive,
     updateSectionOverlayGradient: _updateSectionOverlayGradient,
     updateBlockBackgroundColor: _updateBlockBackgroundColor,
     updateBlockBackgroundColorLive: _updateBlockBackgroundColorLive,
@@ -2548,3 +2598,5 @@ var Rexbuilder_Dom_Util = (function($) {
 		updateSectionFullHeight: updateSectionFullHeight
   };
 })(jQuery);
+
+

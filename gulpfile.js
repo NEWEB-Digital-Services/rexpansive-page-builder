@@ -402,7 +402,7 @@ function builderliveStyle(cb, dev) {
 
 // Watching public styles
 function watchBuilderliveStyle(cb) {
-	watch(['./public/scss/**/*.scss'], { ignoreInitial: false }, builderliveStyle.bind(null, cb, true));
+	watch(['./public/scss/**/*.scss', './public/builderlive-public.scss'], { ignoreInitial: false }, builderliveStyle.bind(null, cb, true));
 	cb();
 }
 
@@ -468,7 +468,7 @@ exports.build = series(
 );
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
-var live_zip_name = 'Premium-207-Rexpansive-Builder.zip';
+var live_zip_name = 'Premium-208-Rexpansive-Builder.zip';
 var live_folder_name = 'rexpansive-page-builder';
 
 var live_file_map = [

@@ -247,11 +247,11 @@ var Rexbuilder_Live_Templates = (function($, window, document) {
 			case 'tmpl-new-slider-element':
 				return '<div class="rex-slider-element"></div>';
 			case 'slider-overlay':
-				return '<div class="slider-overlay" style="background-color:' + data.overlayColor + '"></div>'
+				return '<div class="slider-overlay" style="background-color:' + data.overlayColor + '"></div>';
 			case 'slide-video':
-				return '<div class="rex-slider-video-wrapper"></div>'
+				return '<div class="rex-slider-video-wrapper"></div>';
 			case 'slide-text':
-				return '<div class="rex-slider-element-title"></div>'
+				return '<div class="rex-slider-element-title"></div>';
 
 			default:
 				return '';

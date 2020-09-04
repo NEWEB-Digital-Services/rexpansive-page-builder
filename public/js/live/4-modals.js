@@ -2783,6 +2783,9 @@
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
 
+		/**
+		 * @deprecated ?
+		 */
     $document.on("click", ".edit-background-section", function(e) {
       e.preventDefault();
       var $section = $(e.target).parents(".rexpansive_section");
@@ -2958,7 +2961,7 @@
       var data = {
         eventName: "rexlive:editBackgroundSection",
         activeBG: currentBackgroundData
-      };
+			};
 
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
@@ -3063,9 +3066,7 @@
         }
 			};
 
-			// console.log( overlayData );
-
-      var idImage =
+	      var idImage =
         typeof $elemData.attr("data-id_image_bg_block") == "undefined"
           ? ""
           : $elemData.attr("data-id_image_bg_block");

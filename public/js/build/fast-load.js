@@ -353,7 +353,7 @@
 	 *
 	 */
 	var handleIntersectionObserverSmart = function () {
-		if (!'IntersectionObserver' in window) {
+		if (!('IntersectionObserver' in window)) {
 			return;
 		}
 

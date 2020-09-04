@@ -4,6 +4,9 @@
 	<changelog>
 		<![CDATA[
 			<h4><strong>v2.0.8</strong> –  </h4>
+			<p><strong>Fixed</strong>: Block size indicator displaying wrong size when resetting the block settings</p>
+			<p><strong>Fixed</strong>: Sections' toolboxes going below other sections in certain situations</p>
+			<p><strong>Fixed</strong>: Different behaviour of block videos when adding them compared to when the page loads</p>
 			<p><strong>Fixed</strong>: RexSlider natural blurred images with text displaying badly</p>
 			<p><strong>Fixed</strong>: RexSlider videos not working correctly on backend side</p>
 			<p><strong>Fixed</strong>: When hitting DEL in a text block before a RexButton, the RexButton loses its settings</p>

@@ -2601,8 +2601,8 @@
     updateBlockSize: function( data ) {
       this.properties.gridstackInstance.batchUpdate();
       var elem = this.element.querySelector( this.settings.itemSelector + '[data-rexbuilder-block-id="' + data.rexID + '"]' );
-      this.properties.gridstackInstance.update(elem, data.x, data.y, data.w, data.h);
-      this.updateSizeViewerText( elem, data.w, data.h );
+			this.properties.gridstackInstance.update(elem, data.x, data.y, data.w, data.h);
+			this.updateSizeViewerSizes(elem)
       this.properties.gridstackInstance.commit();
     },
 
