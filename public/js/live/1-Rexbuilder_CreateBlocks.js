@@ -702,7 +702,8 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
     $newBlock.removeAttr("data-gs-auto-position");
     if (videoTypeActive != "") {
       $itemContent.addClass(videoTypeActive + "-player");
-    }
+		}
+
     Rexbuilder_Util.startVideoPlugin($itemContent);
 
 		var $textWrap = $newBlock.find(".text-wrap");

@@ -3730,24 +3730,36 @@ var Rexbuilder_Util = (function($) {
     }
   };
 
-  var _startVideoPlugin = function($target) {
-    if ($target.hasClass("mp4-player")) {
-    } else if ($target.hasClass("vimeo-player")) {
-      var vimeoFrame = $target
-        .children(".rex-video-vimeo-wrap")
-        .find("iframe")[0];
-      var opt = {
-        autoplay: true,
-        background: true,
-        loop: true
-      };
-      VimeoVideo.addPlayer("1", vimeoFrame, opt);
-    } else if ($target.hasClass("youtube-player")) {
-      if ($target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined) {
-        $target.children(".rex-youtube-wrap").YTPlayer();
-      }
-    }
-  };
+	/**
+	 * @param		{JQuery}	$target
+	 * @version	2.0.8			Added functionality for mp4 videos
+	 */
+  function startVideoPlugin($target) {
+		if ($target.hasClass('mp4-player')) {
+			var $videoContainer = $target.find('.rex-video-wrap');
+			/** @type {HTMLMediaElement} */
+			var videoWrapper = $videoContainer.children('.rex-video-container').get(0);
+
+			$videoContainer.removeClass('removing-video-mp4');
+
+			videoWrapper.play().catch(function catchError(err) {
+				Rexbuilder_Util.displayError('An error occurred while trying to play the video.');
+				console.error(err)
+			});
+		} else if ($target.hasClass('vimeo-player')) {
+			var vimeoFrame = $target.children('.rex-video-vimeo-wrap').find('iframe')[0];
+			var opt = {
+				autoplay: true,
+				background: true,
+				loop: true
+			};
+			VimeoVideo.addPlayer('1', vimeoFrame, opt);
+		} else if ($target.hasClass('youtube-player')) {
+			if ($target.children('.rex-youtube-wrap').YTPGetPlayer() === undefined) {
+				$target.children('.rex-youtube-wrap').YTPlayer();
+			}
+		}
+	}
 
   var _destroyVideo = function($target, detachDom) {
     var type = "";
@@ -4250,9 +4262,10 @@ var Rexbuilder_Util = (function($) {
 	}
 
 	/**
-	 * Displays errros in the console and optionally in an alert. Used to standardize error displaying
-	 * @param	{String}	consoleMessage	Will be displayed in the console, together with error info, as an error
-	 * @param	{String}	alertMessage		[OPTIONAL] Will be displayed in an alert
+	 * Displays errros in the console and optionally in an alert. Used to standardize error displaying.
+	 *
+	 * @param	{string}	consoleMessage	Will be displayed in the console, together with error info, as an error
+	 * @param	{string}	[alertMessage]	Will be displayed in an alert
 	 * @since	2.0.6
 	 */
 	function displayError(consoleMessage, alertMessage) {
@@ -4431,7 +4444,7 @@ var Rexbuilder_Util = (function($) {
     pauseVideo: _pauseVideo,
     playVideo: _playVideo,
     destroyVideo: _destroyVideo,
-    startVideoPlugin: _startVideoPlugin,
+    startVideoPlugin: startVideoPlugin,
     getPaddingsDataString: _getPaddingsDataString,
     paddingsToString: _paddingsToString,
     playAllVideos: _playAllVideos,
