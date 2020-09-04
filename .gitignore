@@ -7,3 +7,5 @@ package-lock.json
 /**/*.mov
 /test-assets/
 /notes/
+
+diff.txt

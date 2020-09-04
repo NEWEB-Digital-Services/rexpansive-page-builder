@@ -207,7 +207,7 @@ For the more experienced among us: you can insert CSS anywhere.
  * Fixed: Overlay and background colors' toolboxes showing over blocks even if they weren't set
  * Fixed: When cloning a block with a mp4 video, the cloned block did not display the video (a refresh was needed)
  * Fixed: Block size indicator displaying wrong size when resetting the block settings
- * Fixed: Sections' toolboxes going below other sections in certain situations
+ * Fixed: Section's toolboxes going below other sections in certain situations
  * Fixed: Different behaviour of block videos when adding them compared to when the page loads
  * Fixed: RexSlider natural blurred images with text displaying badly
  * Fixed: RexSlider videos not working correctly on backend side

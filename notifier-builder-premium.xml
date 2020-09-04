@@ -10,7 +10,7 @@
 			<p><strong>Fixed</strong>: Overlay and background colors' toolboxes showing over blocks even if they weren't set</p>
 			<p><strong>Fixed</strong>: When cloning a block with a mp4 video, the cloned block did not display the video (a refresh was needed)</p>
 			<p><strong>Fixed</strong>: Block size indicator displaying wrong size when resetting the block settings</p>
-			<p><strong>Fixed</strong>: Sections' toolboxes going below other sections in certain situations</p>
+			<p><strong>Fixed</strong>: Section's toolboxes going below other sections in certain situations</p>
 			<p><strong>Fixed</strong>: Different behaviour of block videos when adding them compared to when the page loads</p>
 			<p><strong>Fixed</strong>: RexSlider natural blurred images with text displaying badly</p>
 			<p><strong>Fixed</strong>: RexSlider videos not working correctly on backend side</p>
