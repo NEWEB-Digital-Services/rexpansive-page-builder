@@ -1609,7 +1609,7 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
-  var _updateLockEditModel = function($button, lock) {
+  var updateLockEditModel = function($button, lock) {
     var $section = $button.parents(".rexpansive_section");
     if (lock) {
       $section.addClass("rexlive-block-grid-editing");
@@ -2466,7 +2466,7 @@ var Rexbuilder_Dom_Util = (function($) {
         );
         break;
       case "updateLockButton":
-        _updateLockEditModel(dataToUse.$button, dataToUse.lock);
+        updateLockEditModel(dataToUse.$button, dataToUse.lock);
         break;
       case "updateSectionWidth":
         _updateSectionWidth($section, dataToUse);
@@ -2585,7 +2585,7 @@ var Rexbuilder_Dom_Util = (function($) {
     updateSectionVisibility: _updateSectionVisibility,
     fixSectionDomOrder: _fixSectionDomOrder,
     updateSectionBecameModel: _updateSectionBecameModel,
-    updateLockEditModel: _updateLockEditModel,
+    updateLockEditModel: updateLockEditModel,
     fixModelNumbers: _fixModelNumbers,
     updateSectionWidthData: _updateSectionWidthData,
     updateSectionWidth: _updateSectionWidth,

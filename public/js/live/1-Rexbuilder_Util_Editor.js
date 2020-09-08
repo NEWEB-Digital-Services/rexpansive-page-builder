@@ -334,18 +334,52 @@ var Rexbuilder_Util_Editor = (function ($) {
 		}
 	};
 
-	var _restorePageStartingState = function (eventData) {
-		if (Rexbuilder_Util.$rexContainer.hasClass('editing-model')) {
-			var $button = Rexbuilder_Util.$rexContainer.find('.rex-model-section .update-model-button.unlocked').eq(0);
-			Rexbuilder_Dom_Util.updateLockEditModel($button, true);
-			Rexbuilder_Util.$rexContainer.removeClass('editing-model');
+	/**
+	 * @param 	{object}	eventData
+	 * @param 	{object}	eventData.buttonData
+	 * @param 	{string}	eventData.eventName
+	 * @param		{string}	eventData.selected
+	 * @version	2.0.9			Improved readability
+	 */
+	function restorePageStartingState(eventData) {
+		var previousLayout = eventData.selected;
+		var isEditingModel = Rexbuilder_Util.$rexContainer.hasClass('editing-model');
+		var comingFromDefaultLayout = 'default' === previousLayout;
+
+		if (isEditingModel) {
+			_lockUnlockedModels();
 		}
+
+		if (comingFromDefaultLayout) {
+			_resetLayoutData(previousLayout);
+
+			var sectionsIDs = _getResetSectionIDs(previousLayout);
+			_resetNotSavedRemovingSections(sectionsIDs);
+
+			var blockIDs = _getResetBlockIDs(previousLayout);
+			_resetNotSavedRemovingBlocks(blockIDs);
+		}
+
 		var data = {
 			eventName: 'rexlive:restoreStateEnded',
 			buttonData: eventData.buttonData
 		};
 		Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-	};
+	}
+
+	/**
+	 * Not sure about the correctness of the name of this function
+	 *
+	 * @since	2.0.9
+	 */
+	function _lockUnlockedModels() {
+		// ? Why gettinng only the first?
+		var $updateModelButton = Rexbuilder_Util.$rexContainer
+			.find('.rex-model-section .update-model-button.unlocked')
+			.eq(0);
+		Rexbuilder_Dom_Util.updateLockEditModel($updateModelButton, true);
+		Rexbuilder_Util.$rexContainer.removeClass('editing-model');
+	}
 
 	var _lockRows = function () {
 		Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (i, sec) {
@@ -772,6 +806,127 @@ var Rexbuilder_Util_Editor = (function ($) {
 		_updateTopToolbar();
 	}
 
+	/**
+	 * Resets the passed layout sections' settings with the default layout ones.
+	 *
+	 * @param	{string}	layoutName
+	 * @since	2.0.9
+	 */
+	function _resetLayoutData(layoutName) {
+		var $layoutData = $('#rexbuilder-layout-data');
+		var $defaultLayoutState = $('#rexbuilder-default-layout-state');
+
+		// This one is changed only when saving, so we want to restore the data to the last save
+		var layoutElements = $layoutData
+			.find('.customization-wrap[data-customization-name="' + layoutName + '"] .section-targets')
+			.get();
+
+		var resetData = layoutElements.map(function (layoutEl) {
+			return {
+				sectionID: layoutEl.getAttribute('data-section-rex-id'),
+				data: layoutEl.innerText
+			};
+		});
+
+		resetData.forEach(function(resetItem) {
+			var $sectionLayoutEl = $defaultLayoutState.find('[data-section-rex-id="' + resetItem.sectionID + '"]');
+
+			$sectionLayoutEl.text(resetItem.data);
+		});
+	}
+
+	/**
+	 * @param		{string}		layoutName
+	 * @returns	{string[]}
+	 * @since	2.0.9
+	 */
+	function _getResetSectionIDs(layoutName) {
+		var $layoutData = $('#rexbuilder-layout-data');
+
+		// This one is changed only when saving, so we want to restore the data to the last save
+		var layoutElements = $layoutData
+			.find('.customization-wrap[data-customization-name="' + layoutName + '"] .section-targets')
+			.get();
+
+		var resetIDs = layoutElements.map(function (layoutEl) {
+			return layoutEl.getAttribute('data-section-rex-id');
+		});
+
+		return resetIDs;
+	}
+
+	/**
+	 * @param		{string}		layoutName
+	 * @returns	{string[]}
+	 * @since	2.0.9
+	 */
+	function _getResetBlockIDs(layoutName) {
+		var $layoutData = $('#rexbuilder-layout-data');
+
+		// This one is changed only when saving, so we want to restore the data to the last save
+		var layoutElements = $layoutData
+			.find('.customization-wrap[data-customization-name="' + layoutName + '"] .section-targets')
+			.get();
+
+		var resetIDs = layoutElements.map(function (layoutEl) {
+			var targets = JSON.parse(layoutEl.innerText);
+			var ids = [];
+
+			targets.forEach(function(target) {
+				if ('self' === target.name) return;
+
+				ids.push(target.props.rexbuilder_block_id);
+			});
+
+			return ids;
+		});
+
+		resetIDs = flatArray(resetIDs);
+
+		return resetIDs;
+	}
+
+	/**
+	 * @param	{string[]}	sectionIDS
+	 * @since	2.0.9
+	 */
+	function _resetNotSavedRemovingSections(sectionIDS) {
+		sectionIDS.forEach(function(sectionID) {
+			var section = Rexbuilder_Util.rexContainer.querySelector('[data-rexlive-section-id="' + sectionID + '"]');
+			var isRemovingSection = Rexbuilder_Util.hasClass(section, 'removing_section');
+			// console.log( isRemovingSection );
+
+			if (!isRemovingSection) return;
+
+			Rexbuilder_Util.removeClass(section, 'removing_section');
+		});
+	}
+
+	/**
+	 * @param	{string[]}	blockIDs
+	 * @since	2.0.9
+	 */
+	function _resetNotSavedRemovingBlocks(blockIDs) {
+		blockIDs.forEach(function(blockID)  {
+			var block = Rexbuilder_Util.rexContainer.querySelector('[data-rexbuilder-block-id="' + blockID + '"]');
+			var isRemovingBlock = Rexbuilder_Util.hasClass(block, 'removing_block');
+
+			if (!isRemovingBlock) return;
+
+			Rexbuilder_Util.removeClass(block, 'removing_block');
+		});
+	}
+
+	/**
+	 * @param		{any[][]}	arr
+	 * @returns	{any[]}		Flattened array
+	 */
+	function flatArray(arr) {
+		return arr.reduce(function (flat, toFlatten) {
+			return flat.concat(Array.isArray(toFlatten) ? flatArray(toFlatten) : toFlatten);
+		}, []);
+	}
+
 	var init = function () {
 		this.elementIsResizing = false;
 		this.elementIsDragging = false;
@@ -885,6 +1040,6 @@ var Rexbuilder_Util_Editor = (function ($) {
 		updateBlockContainerHeight: _updateBlockContainerHeight,
 		updateContainerMargins: _updateContainerMargins,
 		sendUndoRedoInformation: _sendUndoRedoInformation,
-		restorePageStartingState: _restorePageStartingState
+		restorePageStartingState: restorePageStartingState
 	};
 })(jQuery);

@@ -85,6 +85,7 @@ var Rexbuilder_Util = (function($) {
   var $pageCustomizationsDataDiv;
   var $liveDataContainer;
   var $layoutsDomOrder;
+	/** @type {JQuery} */
 	var $defaultLayoutState;
   var frontAvailableLayouts;
   var startFrontLayout;
@@ -102,6 +103,7 @@ var Rexbuilder_Util = (function($) {
   var $usedBlocksIDsContainer;
 	var blocksIDsUsed;
 
+	/** @type {JQuery} */
   var $rexbuilderLayoutData;
   var $rexbuilderModelData;
   var $availableLayoutNames;
@@ -515,8 +517,8 @@ var Rexbuilder_Util = (function($) {
           section_is_model: modelID != -1,
           section_hide: hideSection,
           targets: targets
-        });
-      });
+				});
+			});
 
     data.push(defaultLayout);
 
@@ -579,7 +581,8 @@ var Rexbuilder_Util = (function($) {
             });
           });
         data.push(layoutCustomization);
-      });
+			});
+
 
     return data;
   };
@@ -951,7 +954,7 @@ var Rexbuilder_Util = (function($) {
    * @param  {[type]} layoutDataPage        [description]
    * @param  {[type]} layoutDataModels      [description]
    * @param  {[type]} defaultLayoutSections [description]
-   * @param  {[type]} layoutName            [description]
+   * @param  {string} layoutName            [description]
    * @return {[type]}                       [description]
    */
   var _getCustomLayoutSections = function(
@@ -962,7 +965,7 @@ var Rexbuilder_Util = (function($) {
   ) {
     if (layoutName == "default") {
       return defaultLayoutSections;
-    }
+		}
 
     var layoutSelectedSections = [];
     var i, j, p, q;
@@ -1320,7 +1323,7 @@ var Rexbuilder_Util = (function($) {
 		Rexbuilder_Util.edit_dom_layout(layout);
 	};
 
-  var _edit_dom_layout = function( chosenLayoutName ) {
+  var edit_dom_layout = function( chosenLayoutName ) {
     var response = {
       collapse_needed: false,
     };
@@ -1477,14 +1480,14 @@ var Rexbuilder_Util = (function($) {
 
     var i, j;
 
-    var layoutDataPage = _getPageCustomizations();
+		var layoutDataPage = _getPageCustomizations();
 
     if ( Rexbuilder_Util.activeLayout == "default" ) {
-      _saveCustomizationDomOrder(jQuery.extend(true, [], layoutDataPage));
+			_saveCustomizationDomOrder(jQuery.extend(true, [], layoutDataPage));
     }
 
     var layoutDataModels = _getModelsCustomizations();
-    var defaultLayoutSections;
+		var defaultLayoutSections;
 
     // first load default layout state generation
     if ( $defaultLayoutState.attr("data-empty-default-customization") == "true" ) {
@@ -1495,14 +1498,15 @@ var Rexbuilder_Util = (function($) {
         modelsData: layoutDataModels
       });
       defaultLayoutSections = _getDefaultLayoutState();
-    }
+		}
+
 
     var layoutSelectedSections = Rexbuilder_Util.getCustomLayoutSections(
-      layoutDataPage,
+			layoutDataPage,
       layoutDataModels,
       defaultLayoutSections,
       chosenLayoutName
-    );
+		);
 
     //fixing models numbers
     var modelsNumbers = [];
@@ -1533,6 +1537,7 @@ var Rexbuilder_Util = (function($) {
 
 		Rexbuilder_Util.clearSectionsEdited();
 
+		// Not sure about the meaning of this variable
 		var noCustomLayoutSaved = false;
 
     // guess a different layout
@@ -1578,8 +1583,8 @@ var Rexbuilder_Util = (function($) {
 		Rexbuilder_Util.editedDataInfo = new RexEditedData(emptyLayoutData ? emptyLayoutData : layoutSelectedSections);
 
     var mergedEdits = _mergeSections(
-      ( 'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections ),
-      defaultLayoutSections
+			'undefined' === typeof probableLayout ? layoutSelectedSections : probableLayoutSelectedSections,
+			defaultLayoutSections
 		);
 
     // removing collapsed from grid
@@ -1589,42 +1594,57 @@ var Rexbuilder_Util = (function($) {
     var forceCollapseElementsGrid = false;
     var sectionDomOrder = [];
 
-    var meIndex, section, $section;
+		var meIndex, section, $section;
 
-    for( meIndex in mergedEdits ) {
-      if (!mergedEdits[meIndex].notInSection || chosenLayoutName == "default") {
-        var sectionObj = {
-          rexID: mergedEdits[meIndex].section_rex_id,
-          modelID: -1,
-          modelNumber: -1
-        };
+    for (meIndex in mergedEdits) {
+			var currentEdit = mergedEdits[meIndex];
+			var currentID = currentEdit.section_rex_id;
 
-        if ( mergedEdits[meIndex].section_is_model.toString() == "true" ) {
-          sectionObj.modelID = mergedEdits[meIndex].section_model_id;
-          sectionObj.modelNumber = mergedEdits[meIndex].section_model_number;
-          section = Rexbuilder_Util.rexContainer.querySelector(
-            'section[data-rexlive-section-id="' +
-              mergedEdits[meIndex].section_rex_id +
-              '"][data-rexlive-model-number="' +
-              sectionObj.modelNumber +
-              '"]'
-            );
-        } else {
-          section = Rexbuilder_Util.rexContainer.querySelector( 'section[data-rexlive-section-id="' + mergedEdits[meIndex].section_rex_id + '"]' );
-        }
+			if (!currentEdit.notInSection || chosenLayoutName == 'default') {
+				var sectionObj = {
+					rexID: currentID,
+					modelID: -1,
+					modelNumber: -1
+				};
+				var sectionIsModel = currentEdit.section_is_model.toString() == 'true';
 
-        if ( section && ! Rexbuilder_Util.hasClass( section, 'removing_section' ) ) {
-          if ( 'undefined' !== typeof mergedEdits[meIndex].section_hide && 'true' == mergedEdits[meIndex].section_hide.toString() ) {
-            Rexbuilder_Util.addClass( section, 'rex-hide-section' );
-          } else {
-            Rexbuilder_Util.removeClass( section, 'rex-hide-section' );
+				if (sectionIsModel) {
+					var modelID = currentEdit.section_model_id;
+					var modelNumber = currentEdit.section_model_number;
+
+					sectionObj.modelID = modelID;
+					sectionObj.modelNumber = modelNumber;
+					section = Rexbuilder_Util.rexContainer.querySelector(
+						'section[data-rexlive-section-id="' +
+							currentID +
+							'"][data-rexlive-model-number="' +
+							sectionObj.modelNumber +
+							'"]'
+					);
+				} else {
+					section = Rexbuilder_Util.rexContainer.querySelector('section[data-rexlive-section-id="' + currentID + '"]');
+				}
+
+				var sectionIsNotRemoving = section && !Rexbuilder_Util.hasClass(section, 'removing_section');
+
+				if (sectionIsNotRemoving) {
+					var sectionNeedsToBeHidden =
+						'undefined' !== typeof currentEdit.section_hide && 'true' == currentEdit.section_hide.toString();
+
+					if (sectionNeedsToBeHidden) {
+						Rexbuilder_Util.addClass(section, 'rex-hide-section');
+					} else {
+						Rexbuilder_Util.removeClass(section, 'rex-hide-section');
 						$section = $(section);
 
-            response.collapse_needed += _updateDOMelements( $section, mergedEdits[meIndex].targets, forceCollapseElementsGrid, meIndex );
-          }
-          sectionDomOrder.push(sectionObj);
-        }
-      }
+						// ! Really ugly thing happening here
+						var result = _updateDOMelements($section, currentEdit.targets, forceCollapseElementsGrid, meIndex);
+						response.collapse_needed += result;
+					}
+
+					sectionDomOrder.push(sectionObj);
+				}
+			}
 		}
 
     Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
@@ -1635,19 +1655,18 @@ var Rexbuilder_Util = (function($) {
   };
 
   /**
-   * Updating DOM elements
-   * @param  {[type]} $section
-   * @param  {[type]} targets
-   * @param  {[type]} forceCollapseElementsGrid
-   * @param  {[type]} meIndex
-   * @return {[type]}
+   * @param		{JQuery}	$section
+   * @param		{object}	targets
+   * @param		{boolean}	forceCollapseElementsGrid
+   * @param		{number}	meIndex
+   * @returns	{[type]}
    */
   var _updateDOMelements = function( $section, targets, forceCollapseElementsGrid, meIndex ) {
     var $gallery = $section.find(".grid-stack-row");
     var gallery = $gallery.get(0);
     var galleryData = $gallery.data();
     var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
-    var gridstackInstance;
+		var gridstackInstance;
 
     if( targets[0].props.gridEdited ) {
       gallery.setAttribute('data-rexlive-layout-changed', true);
@@ -1665,7 +1684,8 @@ var Rexbuilder_Util = (function($) {
           if ( null === elem ) continue;
 
           var hideElement = typeof targets[i].props.hide == "undefined" ? false : targets[i].props.hide.toString() == "true";
-          noBlocks *= hideElement;
+					noBlocks *= hideElement;
+
           if ( hideElement ) {
             if ( ! Rexbuilder_Util.hasClass( elem, 'rex-hide-element' ) ) {
               Rexbuilder_Util.addClass( elem, 'rex-hide-element' );
@@ -1677,32 +1697,13 @@ var Rexbuilder_Util = (function($) {
               galleryEditorInstance.reAddBlock( $(elem) );
             }
           }
-
-          // var $elem = $gallery.children(
-          //   'div[data-rexbuilder-block-id="' + targets[i].name + '"]'
-          // );
-          // var hideElement =
-          //   typeof targets[i].props.hide == "undefined"
-          //     ? false
-          //     : targets[i].props.hide.toString() == "true";
-          // if (hideElement) {
-          //   if ( !$elem.hasClass("rex-hide-element") ) {
-          //     $elem.addClass("rex-hide-element");
-          //     galleryEditorInstance.removeBlock($elem);
-          //   }
-          // } else {
-          //   if ( $elem.hasClass("rex-hide-element") ) {
-          //     $elem.removeClass("rex-hide-element");
-          //     galleryEditorInstance.reAddBlock($elem);
-          //   }
-          // }
         }
 
         // batching grid before the heights of the blocks have changed
         // so (tecnically) we see the changes on commit
         galleryEditorInstance.properties.gridstackInstance.batchUpdate();
       }
-    }
+		}
 
     if ( noBlocks ) {
       $section.addClass('empty-section');
@@ -1753,7 +1754,7 @@ var Rexbuilder_Util = (function($) {
 
     updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
     if( Rexbuilder_Util.editorMode ) {
-      updateSectionTools( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
+			updateSectionTools( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
     }
 
     var collapse =
@@ -3355,7 +3356,7 @@ var Rexbuilder_Util = (function($) {
       // If layout changed
       if ( Rexbuilder_Util_Editor.changedLayout ) {
 				Rexbuilder_Util_Editor.changedLayout = false;
-				var resize_info = _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
+				var resize_info = edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
 
         if( 0 === resize_info.collapse_needed ) {
           Rexbuilder_Util_Editor.endLoading();
@@ -4317,6 +4318,8 @@ var Rexbuilder_Util = (function($) {
 		}
 	}
 
+
+
   // init the utilities
   var init = function() {
     this.globalViewport = Rexbuilder_Util.viewport();
@@ -4434,7 +4437,7 @@ var Rexbuilder_Util = (function($) {
     responsiveLayouts: responsiveLayouts,
     defaultLayoutSections: defaultLayoutSections,
     launchEditDomLayout: launchEditDomLayout,
-    edit_dom_layout: _edit_dom_layout,
+    edit_dom_layout: edit_dom_layout,
     smoothScroll: _smoothScroll,
     getGalleryInstance: _getGalleryInstance,
     removeCollapsedGrids: removeCollapsedGrids,
