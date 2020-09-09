@@ -3,8 +3,8 @@
 		"include": ["jquery", "lodash", "medium-editor", "blueimp-tmpl", "tinycolor", "gridstack"]
 	},
 	"compilerOptions": {
-		"checkJs": true,
+		"checkJs": true
 	},
-	"include": ["public/js/**/*", "admin/js/**/*"],
+	"include": ["public/js/**/*", "admin/js/**/*", "editor-js-test.html"],
 	"exclude": ["**/node_modules/*"]
 }
