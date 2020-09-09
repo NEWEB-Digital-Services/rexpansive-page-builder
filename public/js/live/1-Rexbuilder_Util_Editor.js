@@ -828,7 +828,7 @@ var Rexbuilder_Util_Editor = (function ($) {
 			};
 		});
 
-		resetData.forEach(function(resetItem) {
+		resetData.forEach(function (resetItem) {
 			var $sectionLayoutEl = $defaultLayoutState.find('[data-section-rex-id="' + resetItem.sectionID + '"]');
 
 			$sectionLayoutEl.text(resetItem.data);
@@ -872,7 +872,7 @@ var Rexbuilder_Util_Editor = (function ($) {
 			var targets = JSON.parse(layoutEl.innerText);
 			var ids = [];
 
-			targets.forEach(function(target) {
+			targets.forEach(function (target) {
 				if ('self' === target.name) return;
 
 				ids.push(target.props.rexbuilder_block_id);
@@ -891,10 +891,9 @@ var Rexbuilder_Util_Editor = (function ($) {
 	 * @since	2.0.9
 	 */
 	function _resetNotSavedRemovingSections(sectionIDS) {
-		sectionIDS.forEach(function(sectionID) {
+		sectionIDS.forEach(function (sectionID) {
 			var section = Rexbuilder_Util.rexContainer.querySelector('[data-rexlive-section-id="' + sectionID + '"]');
 			var isRemovingSection = Rexbuilder_Util.hasClass(section, 'removing_section');
-			// console.log( isRemovingSection );
 
 			if (!isRemovingSection) return;
 
@@ -907,7 +906,7 @@ var Rexbuilder_Util_Editor = (function ($) {
 	 * @since	2.0.9
 	 */
 	function _resetNotSavedRemovingBlocks(blockIDs) {
-		blockIDs.forEach(function(blockID)  {
+		blockIDs.forEach(function (blockID) {
 			var block = Rexbuilder_Util.rexContainer.querySelector('[data-rexbuilder-block-id="' + blockID + '"]');
 			var isRemovingBlock = Rexbuilder_Util.hasClass(block, 'removing_block');
 
