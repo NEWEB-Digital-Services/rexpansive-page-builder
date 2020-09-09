@@ -1132,32 +1132,32 @@ var Rexbuilder_Dom_Util = (function ($) {
 
 		_setBackgroundColor($target, color);
 
-		Rexbuilder_Section_Editor.updateRowBackgroundColorTool($target, color);
+		if ('undefined' !== typeof Rexbuilder_Section_Editor) {
+			Rexbuilder_Section_Editor.updateRowBackgroundColorTool($target, color);
+		}
 	}
 
 	/**
-	 * Updating the background color of a row
-	 * Called at loading of a layout
-	 * @param {jQuery Object} $section row in which update the background color
-	 * @param {Object} bgColor object with color background info
+	 * Updating the background color of a row.
+	 *
+	 * @param		{JQuery}	$section	row in which update the background color
+	 * @param		{object}	bgColor		object with color background info
+	 * @version	2.0.9			Improved readability
 	 */
-	var _updateSectionBackgroundColor = function ($section, bgColor) {
+	function updateSectionBackgroundColor($section, bgColor) {
 		var $sectionData = $section.children('.section-data');
-		var section = $section[0];
+		var wantedColor = bgColor.color;
+		var isColorActive = bgColor.active;
 
-		if (-1 !== getComputedStyle(section)['background'].indexOf('linear-gradient')) {
-			section.style.background = '';
-		}
+		_setBackgroundColor($section, wantedColor);
 
-		section.style.backgroundColor = bgColor.color;
-		$sectionData.attr('data-color_bg_section', bgColor.color);
-		$sectionData.attr('data-color_bg_section_active', bgColor.active);
+		$sectionData.attr('data-color_bg_section', wantedColor);
+		$sectionData.attr('data-color_bg_section_active', isColorActive);
 
 		if ('undefined' !== typeof Rexbuilder_Section_Editor) {
-			Rexbuilder_Section_Editor.updateRowBackgroundColorTool($section, bgColor.color);
+			Rexbuilder_Section_Editor.updateRowBackgroundColorTool($section, wantedColor);
 		}
-		// Rexbuilder_Util_Editor.activeAddSection( $section );
-	};
+	}
 
 	var _updateSectionBackgroundGradient = function ($section, bgColor) {
 		var $sectionData = $section.children('.section-data');
@@ -1212,7 +1212,7 @@ var Rexbuilder_Dom_Util = (function ($) {
 
 	/**
 	 * Updating the color of a block
-	 * @param {Ojbect} data object with the information on which block to update an how
+	 * @param {Object} data object with the information on which block to update an how
 	 */
 	var _updateBlockBackgroundColor = function (data) {
 		var $elem = data.$elem;
@@ -1286,7 +1286,9 @@ var Rexbuilder_Dom_Util = (function ($) {
 		_setBackgroundColor($sectionOverlay, color);
 
 		// Set live picker
-		Rexbuilder_Section_Editor.updateRowOverlayColorToolLive($sectionTarget, color);
+		if ('undefined' !== typeof Rexbuilder_Section_Editor) {
+			Rexbuilder_Section_Editor.updateRowOverlayColorToolLive($sectionTarget, color);
+		}
 	}
 
 	var updateSectionOverlay = function ($section, overlay) {
@@ -1788,7 +1790,7 @@ var Rexbuilder_Dom_Util = (function ($) {
 				case 'color_bg_section_active':
 					if (colorChanged) break;
 
-					_updateSectionBackgroundColor($section, {
+					updateSectionBackgroundColor($section, {
 						color: defaultProps.color_bg_section,
 						active: defaultProps.color_bg_section_active
 					});
@@ -2284,8 +2286,8 @@ var Rexbuilder_Dom_Util = (function ($) {
 			case 'updateCustomCSS':
 				_updateCustomCSS(dataToUse.css);
 				break;
-			case '_updateSectionBackgroundColor':
-				_updateSectionBackgroundColor($section, dataToUse);
+			case 'updateSectionBackgroundColor':
+				updateSectionBackgroundColor($section, dataToUse);
 				break;
 			case 'updateSectionOverlay':
 				updateSectionOverlay($section, dataToUse);
@@ -2452,7 +2454,7 @@ var Rexbuilder_Dom_Util = (function ($) {
 		updateCustomCSS: _updateCustomCSS,
 		updateSectionVideoBackground: _updateSectionVideoBackground,
 		updateSectionBackgroundImage: _updateSectionBackgroundImage,
-		updateSectionBackgroundColor: _updateSectionBackgroundColor,
+		updateSectionBackgroundColor: updateSectionBackgroundColor,
 		updateSectionBackgroundColorLive: _updateSectionBackgroundColorLive,
 		updateSectionBackgroundGradient: _updateSectionBackgroundGradient,
 		updateSectionOverlay: updateSectionOverlay,
