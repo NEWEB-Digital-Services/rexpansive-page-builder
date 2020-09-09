@@ -531,7 +531,7 @@ var Rexbuilder_Live_Utilities = (function($) {
 			}
 		});
 
-		Rexbuilder_Util.$document.on("rexlive:undo", function(e) {
+		Rexbuilder_Util.$document.on("rexlive:undo", function (e) {
 			if (Rexbuilder_Util_Editor.undoStackArray.length > 0) {
 				var data = {
 					eventName: "rexlive:edited",

@@ -3,7 +3,7 @@
  * @since 2.0.0
  */
 var Rexbuilder_Util_Editor = (function ($) {
-	'use strict';
+	('use strict');
 
 	var currentlyHoveredSection = null;
 
@@ -351,20 +351,30 @@ var Rexbuilder_Util_Editor = (function ($) {
 		}
 
 		if (comingFromDefaultLayout) {
-			_resetLayoutData(previousLayout);
-
-			var sectionsIDs = _getResetSectionIDs(previousLayout);
-			_resetNotSavedRemovingSections(sectionsIDs);
-
-			var blockIDs = _getResetBlockIDs(previousLayout);
-			_resetNotSavedRemovingBlocks(blockIDs);
+			_undoEverything();
+			_resetLayoutToLastSaved('default');
 		}
 
-		var data = {
+		var restoreStateEndedData = {
 			eventName: 'rexlive:restoreStateEnded',
 			buttonData: eventData.buttonData
 		};
-		Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+		Rexbuilder_Util_Editor.sendParentIframeMessage(restoreStateEndedData);
+	}
+
+	/**
+	 * Empties the undo stack, executing all its actions.
+	 *
+	 * @since	2.0.9
+	 */
+	function _undoEverything() {
+		// Storing the undoStackArray length guarantees that all the undos are executed
+		var undosNeeded = Rexbuilder_Util_Editor.undoStackArray.length;
+
+		// * May be slow if a lot of operations are done here
+		for (var i = 0; i < undosNeeded; i++) {
+			Rexbuilder_Util.$document.trigger('rexlive:undo');
+		}
 	}
 
 	/**
@@ -807,18 +817,18 @@ var Rexbuilder_Util_Editor = (function ($) {
 	}
 
 	/**
-	 * Resets the passed layout sections' settings with the default layout ones.
+	 * Resets the default layout sections' settings with the passed layout ones.
 	 *
-	 * @param	{string}	layoutName
+	 * @param	{string}	layoutToBeReset
 	 * @since	2.0.9
 	 */
-	function _resetLayoutData(layoutName) {
+	function _resetLayoutToLastSaved(layoutToBeReset) {
 		var $layoutData = $('#rexbuilder-layout-data');
 		var $defaultLayoutState = $('#rexbuilder-default-layout-state');
 
 		// This one is changed only when saving, so we want to restore the data to the last save
 		var layoutElements = $layoutData
-			.find('.customization-wrap[data-customization-name="' + layoutName + '"] .section-targets')
+			.find('.customization-wrap[data-customization-name="' + layoutToBeReset + '"] .section-targets')
 			.get();
 
 		var resetData = layoutElements.map(function (layoutEl) {
@@ -829,90 +839,9 @@ var Rexbuilder_Util_Editor = (function ($) {
 		});
 
 		resetData.forEach(function (resetItem) {
-			var $sectionLayoutEl = $defaultLayoutState.find('[data-section-rex-id="' + resetItem.sectionID + '"]');
+			var $defaultLayoutSectionEl = $defaultLayoutState.find('[data-section-rex-id="' + resetItem.sectionID + '"]');
 
-			$sectionLayoutEl.text(resetItem.data);
-		});
-	}
-
-	/**
-	 * @param		{string}		layoutName
-	 * @returns	{string[]}
-	 * @since	2.0.9
-	 */
-	function _getResetSectionIDs(layoutName) {
-		var $layoutData = $('#rexbuilder-layout-data');
-
-		// This one is changed only when saving, so we want to restore the data to the last save
-		var layoutElements = $layoutData
-			.find('.customization-wrap[data-customization-name="' + layoutName + '"] .section-targets')
-			.get();
-
-		var resetIDs = layoutElements.map(function (layoutEl) {
-			return layoutEl.getAttribute('data-section-rex-id');
-		});
-
-		return resetIDs;
-	}
-
-	/**
-	 * @param		{string}		layoutName
-	 * @returns	{string[]}
-	 * @since	2.0.9
-	 */
-	function _getResetBlockIDs(layoutName) {
-		var $layoutData = $('#rexbuilder-layout-data');
-
-		// This one is changed only when saving, so we want to restore the data to the last save
-		var layoutElements = $layoutData
-			.find('.customization-wrap[data-customization-name="' + layoutName + '"] .section-targets')
-			.get();
-
-		var resetIDs = layoutElements.map(function (layoutEl) {
-			var targets = JSON.parse(layoutEl.innerText);
-			var ids = [];
-
-			targets.forEach(function (target) {
-				if ('self' === target.name) return;
-
-				ids.push(target.props.rexbuilder_block_id);
-			});
-
-			return ids;
-		});
-
-		resetIDs = flatArray(resetIDs);
-
-		return resetIDs;
-	}
-
-	/**
-	 * @param	{string[]}	sectionIDS
-	 * @since	2.0.9
-	 */
-	function _resetNotSavedRemovingSections(sectionIDS) {
-		sectionIDS.forEach(function (sectionID) {
-			var section = Rexbuilder_Util.rexContainer.querySelector('[data-rexlive-section-id="' + sectionID + '"]');
-			var isRemovingSection = Rexbuilder_Util.hasClass(section, 'removing_section');
-
-			if (!isRemovingSection) return;
-
-			Rexbuilder_Util.removeClass(section, 'removing_section');
-		});
-	}
-
-	/**
-	 * @param	{string[]}	blockIDs
-	 * @since	2.0.9
-	 */
-	function _resetNotSavedRemovingBlocks(blockIDs) {
-		blockIDs.forEach(function (blockID) {
-			var block = Rexbuilder_Util.rexContainer.querySelector('[data-rexbuilder-block-id="' + blockID + '"]');
-			var isRemovingBlock = Rexbuilder_Util.hasClass(block, 'removing_block');
-
-			if (!isRemovingBlock) return;
-
-			Rexbuilder_Util.removeClass(block, 'removing_block');
+			$defaultLayoutSectionEl.text(resetItem.data);
 		});
 	}
 

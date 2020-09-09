@@ -214,39 +214,7 @@ var Rexbuilder_Section_Editor = (function($) {
     /**
      * De-selecting the overlay color on a background row
      */
-		Rexbuilder_Util.$rexContainer.on('click', '.deactivate-row-overlay-color',
-		//  function(e) {
-    //   e.stopPropagation()
-		// 	var $section = $(e.target).parents(".rexpansive_section");
-    //   var $section_data = $section.children('.section-data');
-    //   var sectionID = $section.attr("data-rexlive-section-id");
-    //   var modelNumber =
-    //     typeof $section.attr("data-rexlive-model-number") != "undefined"
-    //       ? $section.attr("data-rexlive-model-number")
-    //       : "";
-
-    //   var settings = {
-    //     data_to_send: {
-    //       // color: $section_data.attr('data-row_overlay_color'),
-    //       color: '',
-    //       active: false,
-    //       sectionTarget: {
-    //         sectionID: sectionID,
-    //         modelNumber: modelNumber
-    //       }
-    //     }
-    //   }
-
-		// 	_applyOverlayColor(settings);
-
-		// 	var updateInfo = {
-		// 		row_overlay_color: "",
-		// 		row_overlay_active: false
-		// 	}
-
-		// 	_updateTopToolbar(updateInfo);
-		// }
-		deactivateSectionOverlayColor);
+		Rexbuilder_Util.$rexContainer.on('click', '.deactivate-row-overlay-color', deactivateSectionOverlayColor);
 
 		/**
 		 * De-selecting the color on a background row
