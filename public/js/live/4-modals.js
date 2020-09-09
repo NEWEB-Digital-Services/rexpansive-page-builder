@@ -2373,36 +2373,24 @@
       );
     });
 
-    $document.on('rexlive:update_wcpf7_page', function(e) {
-      var data = e.settings.data_to_send;
-      var reverseData = {
-        elementData: jQuery.extend(true, {}, data.reverseFormData)
-      };
-      var actionData = {
-        elementData: jQuery.extend(true, {}, data.actionFormData)
-      }
+    $document.on('rexlive:update_wcpf7_page', function (e) {
+			var data = e.settings.data_to_send;
+			var reverseData = {
+				elementData: jQuery.extend(true, {}, data.reverseFormData)
+			};
+			var actionData = {
+				elementData: jQuery.extend(true, {}, data.actionFormData)
+			};
 
-      if ( data.needToSave ) {
-        Rexbuilder_Util_Editor.builderEdited(false);
-      }
+			if (data.needToSave) {
+				Rexbuilder_Util_Editor.builderEdited(false);
+			}
 
-      Rexbuilder_Rexwpcf7.updateForm(actionData);
+			Rexbuilder_Rexwpcf7.updateForm(actionData);
+			Rexbuilder_Util_Editor.pushAction('document', 'updateRexWpcf7', actionData, reverseData);
+		});
 
-      Rexbuilder_Util_Editor.pushAction(
-        "document",
-        "updateRexWpcf7",
-        actionData,
-        reverseData
-      );
-    });
-    ///////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////
-    ///////////////////////////////////////////////////////////////////////////////////////
-
-    // Launch to the iframe parent the event to open the CSS editor
+		// Launch to the iframe parent the event to open the CSS editor
     $document.on("rexlive:getCustomCss", function() {
       var currentStyle = $("#rexpansive-builder-style-inline-css")
         .text()

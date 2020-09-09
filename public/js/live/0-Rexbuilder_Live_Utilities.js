@@ -664,10 +664,6 @@ var Rexbuilder_Live_Utilities = (function ($) {
 			Rexbuilder_Rexwpcf7_Editor.updateColumnContentLive(e.settings.data_to_send);
 		});
 
-		Rexbuilder_Util.$document.on('rexlive:focusElement', function (e) {
-			Rexbuilder_Rexelement_Editor.focusRexElement(e.settings.data_to_send.$textWrap);
-		});
-
 		// DRAG & DROP
 		Rexbuilder_Util.$document.on('rexlive:drag_drop_started', function (e) {
 			Rexbuilder_Util_Editor.dragAndDropFromParent = true;

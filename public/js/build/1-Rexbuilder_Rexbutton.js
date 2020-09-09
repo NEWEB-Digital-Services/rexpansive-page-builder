@@ -476,7 +476,6 @@ var Rexbuilder_Rexbutton = (function ($) {
 			}
 		}
 	};
-	//////////////////////////////////////////////////////////////////////////////////////////////
 
 	var _fixImportedButton = function (data) {
 		var $buttonWrapper = Rexbuilder_Util.$rexContainer.find('.rex-loading-button .rex-button-wrapper');
@@ -565,6 +564,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 				Rexbuilder_Util.$document.trigger(ev);
 				break;
 			case 'inside-new-row':
+				// ? Necessary?
 				// @todo
 				break;
 			default:
@@ -602,6 +602,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 
 		Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
 		Rexbuilder_Util_Editor.builderEdited(false);
+		TextEditor.focusTextWrap($textWrap);
 	};
 
 	var _addButtonStyle = function ($buttonWrapper) {
@@ -882,14 +883,13 @@ var Rexbuilder_Rexbutton = (function ($) {
 		var newID = data.newID;
 		var buttonID = buttonData.buttonTarget.button_id;
 
-
 		var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(
 			'.rex-button-wrapper[data-rex-button-id="' +
-			buttonID +
-			'"][data-rex-button-number="' +
-			buttonData.buttonTarget.button_number +
-			'"]'
-			);
+				buttonID +
+				'"][data-rex-button-number="' +
+				buttonData.buttonTarget.button_number +
+				'"]'
+		);
 		$buttonWrapper.addClass('rex-separate-button');
 		$buttonWrapper.attr('data-rex-button-id', newID);
 		$buttonWrapper.attr('data-rex-button-number', 1);
@@ -1130,7 +1130,8 @@ var Rexbuilder_Rexbutton = (function ($) {
 
 		var rexButtonsIDsInPage = [];
 
-		if ( !Rexbuilder_Util.rexContainer || 'undefined' === typeof Rexbuilder_Util.rexContainer ) return rexButtonsIDsInPage;
+		if (!Rexbuilder_Util.rexContainer || 'undefined' === typeof Rexbuilder_Util.rexContainer)
+			return rexButtonsIDsInPage;
 
 		var sections = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section'));
 		var section;
@@ -1191,7 +1192,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 			};
 		});
 
-		if ( !Rexbuilder_Util.rexContainer || 'undefined' === typeof Rexbuilder_Util.rexContainer ) return;
+		if (!Rexbuilder_Util.rexContainer || 'undefined' === typeof Rexbuilder_Util.rexContainer) return;
 
 		var rexButtons = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rex-button-wrapper'));
 		var currentButton;
@@ -1233,7 +1234,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 	function updateButtonListInPage() {
 		buttonsInPage = [];
 
-		if ( !Rexbuilder_Util.rexContainer || 'undefined' === typeof Rexbuilder_Util.rexContainer ) return;
+		if (!Rexbuilder_Util.rexContainer || 'undefined' === typeof Rexbuilder_Util.rexContainer) return;
 
 		var rexButtons = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rex-button-wrapper'));
 		var currentButton;

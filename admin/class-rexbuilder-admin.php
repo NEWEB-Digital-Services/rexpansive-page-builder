@@ -3140,7 +3140,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			// search posts with this layout
 			$this_customization_posts = $wpdb->get_results(
 				"
-				SELECT DISTINCT post_id 
+				SELECT DISTINCT post_id
 				FROM {$wpdb->prefix}postmeta
 				WHERE meta_key LIKE '_rex_customization_{$layout['id']}'
 				",

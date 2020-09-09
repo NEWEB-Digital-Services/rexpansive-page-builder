@@ -628,7 +628,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 			Rexbuilder_Rexwpcf7_Editor.setRowsSortable();
 			Rexbuilder_Rexwpcf7_Editor.addMissingTools(formID);
 			_addElementToolsToDOM();
-			focusRexElement($textWrap);
+			TextEditor.focusTextWrap($textWrap);
 		}
 
 		Rexbuilder_Live_Utilities.launchTooltips();
@@ -680,25 +680,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		}
 	}
 
-	function focusRexElement($textWrap) {
-		var textWrap = $textWrap.get(0);
-		var $gallery = $textWrap.parents('.grid-stack-row');
-		var pgge = $gallery.data().plugin_perfectGridGalleryEditor;
-
-		// By passing no parameters only the section will be focused
-		pgge.focusElement();
-
-		// By setting this, it is possible to unfocus the block when clicking out of it
-		textWrap.setAttribute('data-medium-focused', true);
-
-		// Triggering focus event on current text wrap
-		TextEditor.triggerMEEvent({
-			name: 'focus',
-			data: {},
-			editable: textWrap
-		});
-	}
-
 	function init() {
 		_addElementToolsToDOM();
 
@@ -707,7 +688,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 	return {
 		init: init,
-		focusRexElement: focusRexElement,
 		fixImportedElement: fixImportedElement,
 		setupElement: setupElement,
 		handleCompleteImportElement: handleCompleteImportElement,

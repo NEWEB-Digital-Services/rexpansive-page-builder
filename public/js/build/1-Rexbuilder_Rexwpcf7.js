@@ -917,7 +917,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 			'.rex-element-wrapper[data-rex-element-id="' + formID + '"]'
 		);
 		_updateFormsData($elementWrappers, formData);
-
 		/** @TODO	Update block height */
 	}
 
