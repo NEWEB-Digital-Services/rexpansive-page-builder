@@ -30,7 +30,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 
 	const newString = `define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', ${production} );`;
 	// Maybe add \s for the spaces
-	const result = data.replace(/define\( \'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS\'\, \w+ \)\;/, newString);
+	const result = data.replace(/define\(\s*\'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS\'\,\s*\w+\s*\)\;/, newString);
 
 	fs.writeFile(filePath, result, 'utf8', function (err) {
 		if (err) return console.log(err);
@@ -402,7 +402,11 @@ function builderliveStyle(cb, dev) {
 
 // Watching public styles
 function watchBuilderliveStyle(cb) {
-	watch(['./public/scss/**/*.scss', './public/builderlive-public.scss'], { ignoreInitial: false }, builderliveStyle.bind(null, cb, true));
+	watch(
+		['./public/scss/**/*.scss', './public/builderlive-public.scss'],
+		{ ignoreInitial: false },
+		builderliveStyle.bind(null, cb, true)
+	);
 	cb();
 }
 
