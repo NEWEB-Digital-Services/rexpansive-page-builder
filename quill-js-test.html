@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Document</title>
+		<!-- Add the theme's stylesheet -->
+		<link rel="stylesheet" href="https://cdn.quilljs.com//1.3.6/quill.bubble.css">
+		<style>
+			body {
+				/* background: gray; */
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<!-- Create the editor container -->
+		<div id="editor">
+			<p>Hello World!</p>
+			<p>Some initial <strong>bold</strong> text</p>
+			<p class="rex-buttons-paragraph"><span class="rex-button-wrapper" data-rex-button-id="BJok"
+					data-rex-button-number="1"><span class="rex-button-data" style="display:none;" data-link-target="#"
+						data-link-type="_blank"></span><a href="#" class="rex-button-container" target="_blank"><span
+							class="rex-button-background"><span class="rex-button-text">Learn More</span></span></a></span></p>
+			<p><br></p>
+		</div>
+
+		<!-- Include the Quill library -->
+		<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
+		<!-- Initialize Quill editor -->
+		<script>
+			var quill = new Quill('#editor', {
+				theme: 'bubble'
+			});
+
+			quill.on('text-change', function () {
+				var delta = quill.getContents();
+				var text = quill.getText();
+				var justHtml = quill.root.innerHTML;
+
+				console.log(quill.root.innerHTML);
+			});
+
+			// quill.clipboard.dangerouslyPasteHTML(`<p class="rex-buttons-paragraph"><span class="rex-button-wrapper" data-rex-button-id="BJok"
+			// 		data-rex-button-number="1"><span class="rex-button-data" style="display:none;" data-link-target="#"
+			// 			data-link-type="_blank">f</span><a href="#" class="rex-button-container" target="_blank"><span
+			// 				class="rex-button-background"><span class="rex-button-text">Learn More</span></span></a></span></p>
+			// <p><br></p>`)
+
+			const value = `<button class="rex-buttons-paragraph"><span class="rex-button-wrapper" data-rex-button-id="BJok"
+					data-rex-button-number="1"><div class="rex-button-data" style="display:none;" data-link-target="#"
+						data-link-type="_blank"></div><a href="#" class="rex-button-container" target="_blank"><span
+							class="rex-button-background"><span class="rex-button-text">Learn More</span></span></a></span></p>
+			<p><br></button>`
+			const delta = quill.clipboard.convert(value)
+
+			quill.setContents(delta, 'silent')
+		</script>
+	</body>
+
+</html>

@@ -41,6 +41,12 @@
 				},
 				placeholder: 'Bundiiii'
 			});
+
+			setTimeout(() => {
+				editor.save().then((data) => {
+					console.log(data);
+				})
+			}, 5000);
 		</script>
 	</body>
 
