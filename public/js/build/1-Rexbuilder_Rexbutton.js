@@ -26,7 +26,7 @@ _rex_button_9UEc_html
 
  */
 var Rexbuilder_Rexbutton = (function ($) {
-	'use strict';
+	('use strict');
 	var styleSheet;
 	var buttonsInPage;
 	var defaultButtonValues;
@@ -535,10 +535,20 @@ var Rexbuilder_Rexbutton = (function ($) {
 		switch (dropType) {
 			case 'inside-block':
 				$buttonWrapper.wrap('<p class="rex-buttons-paragraph"></p>');
-				_endFixingButtonImported($buttonWrapper);
+				endFixingButtonImported($buttonWrapper);
 				break;
 			case 'inside-paragraph':
-				_endFixingButtonImported($buttonWrapper);
+				endFixingButtonImported($buttonWrapper);
+
+				var thereIsParagraphAfter = _checkIfThereIsParagraphAfter($buttonsParagraph);
+
+				if (!thereIsParagraphAfter) {
+					_createEmptyParagraphAfter($buttonsParagraph);
+				}
+
+				var $paragraphAfter = _getParagraphAfter($buttonsParagraph);
+
+				TextEditor.moveCursorToStart($paragraphAfter);
 				break;
 			case 'inside-row':
 				var ev = jQuery.Event('rexlive:insert_new_text_block');
@@ -572,7 +582,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 		}
 	};
 
-	var _endFixingButtonImported = function ($buttonWrapper) {
+	var endFixingButtonImported = function ($buttonWrapper) {
 		var buttonID = $buttonWrapper.attr('data-rex-button-id');
 		var flagButtonFound = false;
 		var i = 0;
@@ -1218,9 +1228,11 @@ var Rexbuilder_Rexbutton = (function ($) {
 			var data = e.settings;
 			var $newElement = data.$blockAdded;
 			var $buttonWrapper = data.$buttonWrapper;
+
 			$buttonWrapper.detach().prependTo($newElement.find('.text-wrap').eq(0));
 			$buttonWrapper.wrap('<p class="rex-buttons-paragraph"></p>');
-			_endFixingButtonImported($buttonWrapper);
+
+			endFixingButtonImported($buttonWrapper);
 		});
 	};
 
@@ -1268,6 +1280,49 @@ var Rexbuilder_Rexbutton = (function ($) {
 	var _getButtonsInPage = function () {
 		return buttonsInPage;
 	};
+
+	/**
+	 * @param 	{JQuery} $element
+	 * @returns	{boolean}
+	 * @since		2.0.9
+	 */
+	function _checkIfThereIsParagraphAfter($element) {
+		var elementIsJQuery = Rexbuilder_Util_Editor.isJQuery($element);
+
+		if (!elementIsJQuery) {
+			$element = $($element);
+		}
+
+		var $paragraphAfter = $element.next('p');
+		var thereIsParagraphAfter = $paragraphAfter.length !== 0;
+
+		return thereIsParagraphAfter;
+	}
+
+	/**
+	 * @param		{JQuery}	$element
+	 * @returns	{JQuery}
+	 * @since		2.0.9
+	 */
+	function _getParagraphAfter($element) {
+		return $element.next('p');
+	}
+
+	/**
+	 * @param {HTMLElement}	element
+	 * @since	2.0.9
+	 */
+	function _createEmptyParagraphAfter(element) {
+		var elementIsJQuery = Rexbuilder_Util_Editor.isJQuery(element);
+
+		if (elementIsJQuery) {
+			element = element.get(0);
+		}
+
+		var emptyParagraph = Rexbuilder_Live_Templates.getTemplate('empty-paragraph');
+
+		element.insertAdjacentHTML('afterend', emptyParagraph);
+	}
 
 	var init = function () {
 		styleSheet = null;
@@ -1317,7 +1372,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 		removeSeparateButton: _removeSeparateButton,
 		separateRexButton: _separateRexButton,
 		generateButtonData: _generateButtonData,
-		endFixingButtonImported: _endFixingButtonImported,
+		endFixingButtonImported: endFixingButtonImported,
 		updateButtonListInPage: updateButtonListInPage,
 		findIDsInPage: findIDsInPage,
 		refreshNumbers: refreshNumbers,
@@ -1328,3 +1383,5 @@ var Rexbuilder_Rexbutton = (function ($) {
 		updateContainerHoverRule: _updateContainerHoverRule
 	};
 })(jQuery);
+
+

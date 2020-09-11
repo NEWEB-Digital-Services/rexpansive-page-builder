@@ -1115,7 +1115,7 @@ var Button_Import_Modal = (function ($) {
 		 */
 		Rexlive_Base_Settings.$document.on('click', '.button__element--delete', function (e) {
 			var button = $(this).parents('.button-list__element').find('.rex-button-wrapper')[0];
-			if ( button ) {
+			if (button) {
 				Delete_Model_Modal.openModal({
 					type: 'button',
 					element: button
@@ -1140,12 +1140,12 @@ var Button_Import_Modal = (function ($) {
 	 * @return {void}
 	 * @since  2.0.5
 	 */
-	function deleteButton( button ) {
+	function deleteButton(button) {
 		button = 'undefined' !== typeof button ? button : null;
-		if ( ! button ) return;
+		if (!button) return;
 
 		var button_id = button.getAttribute('data-rex-button-id');
-		if ( '' === button_id ) return;
+		if ('' === button_id) return;
 
 		// prepare data to ajax request
 		var data = {

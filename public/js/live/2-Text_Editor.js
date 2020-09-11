@@ -3336,10 +3336,36 @@ var TextEditor = (function ($) {
 		$(elem).parents('.rexpansive_section').removeClass('block-editing');
 	}
 
-	function _isHeadingTag(element) {
-		var name = element.nodeName.toLowerCase();
+	/**
+	 * Moves the editor cursor to the passed element, with an optional offset.
+	 *
+	 * @param	{HTMLElement}	element
+	 * @since	2.0.9
+	 */
+	function moveCursorToStart(element) {
+		var isJQuery = Rexbuilder_Util_Editor.isJQuery(element);
 
-		return name === 'h1' || name === 'h2' || name === 'h3' || name === 'h4' || name === 'h5' || name === 'h6';
+		if (isJQuery) {
+			element = element.get(0);
+		}
+
+		MediumEditor.selection.moveCursor(editorInstance.options.ownerDocument, element, 0);
+	}
+
+	/**
+	 * Moves the editor cursor to the passed element, with an optional offset.
+	 *
+	 * @param	{HTMLElement}	element
+	 * @since	2.0.9
+	 */
+	function moveCursorToEnd(element) {
+		var isJQuery = Rexbuilder_Util_Editor.isJQuery(element);
+
+		if (isJQuery) {
+			element = element.get(0);
+		}
+
+		MediumEditor.selection.moveCursor(editorInstance.options.ownerDocument, element, 1);
 	}
 
 	var init = function () {
@@ -3364,6 +3390,8 @@ var TextEditor = (function ($) {
 		triggerMEEvent: triggerMEEvent,
 		openTextGradientColor: openTextGradientColor,
 		removePlaceholder: removePlaceholder,
-		focusTextWrap: focusTextWrap
+		focusTextWrap: focusTextWrap,
+		moveCursorToStart: moveCursorToStart,
+		moveCursorToEnd: moveCursorToEnd
 	};
 })(jQuery);

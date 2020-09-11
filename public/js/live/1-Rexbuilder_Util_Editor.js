@@ -847,14 +847,8 @@ var Rexbuilder_Util_Editor = (function ($) {
 		});
 	}
 
-	/**
-	 * @param		{any[][]}	arr
-	 * @returns	{any[]}		Flattened array
-	 */
-	function flatArray(arr) {
-		return arr.reduce(function (flat, toFlatten) {
-			return flat.concat(Array.isArray(toFlatten) ? flatArray(toFlatten) : toFlatten);
-		}, []);
+	function isJQuery(element) {
+		return element instanceof jQuery;
 	}
 
 	var init = function () {
@@ -970,6 +964,9 @@ var Rexbuilder_Util_Editor = (function ($) {
 		updateBlockContainerHeight: _updateBlockContainerHeight,
 		updateContainerMargins: _updateContainerMargins,
 		sendUndoRedoInformation: _sendUndoRedoInformation,
-		restorePageStartingState: restorePageStartingState
+		restorePageStartingState: restorePageStartingState,
+
+		// General utils
+		isJQuery: isJQuery
 	};
 })(jQuery);

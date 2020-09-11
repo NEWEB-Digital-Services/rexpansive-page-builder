@@ -138,7 +138,7 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
 		}
 
     var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, blockWidth, blockHeight, "text");
-    var el = $el[0];
+		var el = $el[0];
     TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
 
     Rexbuilder_Live_Utilities.launchTooltips();

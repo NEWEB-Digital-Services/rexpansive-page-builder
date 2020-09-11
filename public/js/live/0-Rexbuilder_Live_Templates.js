@@ -252,6 +252,8 @@ var Rexbuilder_Live_Templates = (function($, window, document) {
 				return '<div class="rex-slider-video-wrapper"></div>';
 			case 'slide-text':
 				return '<div class="rex-slider-element-title"></div>';
+			case 'empty-paragraph':
+				return '<p><br></p>';
 
 			default:
 				return '';
