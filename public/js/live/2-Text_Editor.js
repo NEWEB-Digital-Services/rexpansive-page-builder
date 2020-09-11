@@ -3006,11 +3006,11 @@ var TextEditor = (function ($) {
 	 * @version		2.0.9		Moved out callback functions
 	 */
 	function _addEditorInstanceEvents() {
-		editorInstance.subscribe('editableInput', _handleEditorInput);
-		editorInstance.subscribe('editableKeydown', _handleEditorKeydown);
+		editorInstance.subscribe('editableInput', _handleEditorEditableInput);
+		editorInstance.subscribe('editableKeydown', _handleEditorEditableKeydown);
+		editorInstance.subscribe('editablePaste', _handleEditorEditablePaste);
 		editorInstance.subscribe('focus', _handleEditorFocus);
 		editorInstance.subscribe('blur', _handleEditorBlur);
-		editorInstance.subscribe('editablePaste', _handleEditorPaste);
 	}
 
 	var mutationObserver = new MutationObserver(_doMutationOperations);
@@ -3024,7 +3024,7 @@ var TextEditor = (function ($) {
 	 * Adds callbacks for the addElement and the removeElement MediumEdito events.
 	 * @since	2.0.8
 	 */
-	function _addElementsManipulationEventListeners() {
+	function _addElementsManipulationListeners() {
 		editorInstance.subscribe('addElement', function (NOT_USED, elementAdded) {
 			mutationObserver.observe(elementAdded, mutationObserverOptions);
 		});
@@ -3152,7 +3152,7 @@ var TextEditor = (function ($) {
 		});
 
 		_addEditorInstanceEvents();
-		_addElementsManipulationEventListeners();
+		_addElementsManipulationListeners();
 	};
 
 	var triggerMEEvent = function (event_info) {
@@ -3171,70 +3171,22 @@ var TextEditor = (function ($) {
 		return editorInstance;
 	};
 
-	function _handleEditorInput(event, elem) {
-		var $elem = $(elem).parents('.grid-stack-item');
+	function _handleEditorEditableInput(event, elem) {
+		var sectionIsModel = $(elem).parents('.rexpansive_section').hasClass('rex-model-section');
 
-		var data = {
-			eventName: 'rexlive:edited',
-			modelEdited: $elem.parents('.rexpansive_section').hasClass('rex-model-section')
-		};
-		Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+		Rexbuilder_Util_Editor.builderEdited(sectionIsModel);
 	}
 
-	function _handleEditorKeydown(event, editable) {
-		// If the user hits escape, toggle the data-allow-context-menu attribute
-		if (!MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ESCAPE)) return false;
+	function _handleEditorEditableKeydown(event, editableElement) {
+		var isEscapeKey = MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ESCAPE);
 
-		unfocusTextWrap(editable /* , event */);
-	}
-
-	/**
-	 * On text editor blur, enable the drag of the blocks
-	 * @param	{Event}				event							blur event
-	 * @param	{HTMLElement}	editableElement		html element of the text editor
-	 * @since	2.0.4
-	 */
-	function _handleEditorBlur(event, editableElement) {
-		var hasBlurredBecausePasting = event.srcElement && event.srcElement.innerText === '%ME_PASTEBIN%';
-
-		if (hasBlurredBecausePasting) {
-			event.stopImmediatePropagation();
-			event.preventDefault();
-			return;
+		if (isEscapeKey) {
+			_unfocusTextWrap(editableElement /* , event */);
 		}
-
-		var userClickedOnMediaButton =
-			'click' == event.type &&
-			'undefined' !== typeof editorInstance.getExtensionByName('insert-media') &&
-			0 !== $(event.target).parents('.' + editorInstance.getExtensionByName('insert-media').toolbarWrapClass).length;
-
-		if (userClickedOnMediaButton) {
-			return false;
-		}
-
-		_unsetFocusedBlock(editableElement);
-
-		// View or hide the little T icon
-		Rexbuilder_Block_Editor.updateTextTool(editableElement);
-
-		var perfectGridGalleryInstance = $(editableElement)
-			.parents('.perfect-grid-gallery')
-			.data('plugin_perfectGridGalleryEditor');
-
-		if (!perfectGridGalleryInstance) return;
-
-		// Enable dragging on gristack
-		perfectGridGalleryInstance.properties.gridstackInstance.enableMove(true);
-
-		Rexbuilder_Util_Editor.activateElementFocus = false;
-		Rexbuilder_Util_Editor.endEditingElement();
-		Rexbuilder_Util_Editor.activateElementFocus = true;
 	}
 
-	function _handleEditorPaste(event, editableElement) {
+	function _handleEditorEditablePaste(event, editableElement) {
 		Rexbuilder_Util_Editor.updateBlockContainerHeight($(editableElement));
-
-		console.log(arguments);
 
 		var nodeToFix = MediumEditor.selection.getSelectionStart(editorInstance.options.ownerDocument);
 		var $node = $(nodeToFix);
@@ -3281,6 +3233,49 @@ var TextEditor = (function ($) {
 	}
 
 	/**
+	 * On text editor blur, enable the drag of the blocks
+	 * @param	{Event}				event							blur event
+	 * @param	{HTMLElement}	editableElement		html element of the text editor
+	 * @since	2.0.4
+	 */
+	function _handleEditorBlur(event, editableElement) {
+		var hasBlurredBecausePasting = event.srcElement && event.srcElement.innerText === '%ME_PASTEBIN%';
+
+		if (hasBlurredBecausePasting) {
+			event.stopImmediatePropagation();
+			event.preventDefault();
+			return;
+		}
+
+		var userClickedOnMediaButton =
+			'click' == event.type &&
+			'undefined' !== typeof editorInstance.getExtensionByName('insert-media') &&
+			0 !== $(event.target).parents('.' + editorInstance.getExtensionByName('insert-media').toolbarWrapClass).length;
+
+		if (userClickedOnMediaButton) {
+			return false;
+		}
+
+		_unsetFocusedBlock(editableElement);
+
+		// View or hide the little T icon
+		Rexbuilder_Block_Editor.updateTextTool(editableElement);
+
+		var perfectGridGalleryInstance = $(editableElement)
+			.parents('.perfect-grid-gallery')
+			.data('plugin_perfectGridGalleryEditor');
+
+		if (!perfectGridGalleryInstance) return;
+
+		// Enable dragging on gristack
+		perfectGridGalleryInstance.properties.gridstackInstance.enableMove(true);
+
+		Rexbuilder_Util_Editor.activateElementFocus = false;
+		Rexbuilder_Util_Editor.endEditingElement();
+		Rexbuilder_Util_Editor.activateElementFocus = true;
+	}
+
+	/**
 	 * Focusses the passed text wrap.
 	 *
 	 * @param	{JQuery}	$textWrap
@@ -3320,7 +3315,8 @@ var TextEditor = (function ($) {
 	 * @param {HTMLElement}	textWrap
 	 * @since	2.0.9
 	 */
-	function unfocusTextWrap(textWrap /* , event */) {
+	function _unfocusTextWrap(textWrap /* , event */) {
+		// If the user hits escape, toggle the data-allow-context-menu attribute (OLD COMMENT)
 		textWrap.removeAttribute('data-medium-focused');
 
 		triggerMEEvent({
@@ -3338,6 +3334,12 @@ var TextEditor = (function ($) {
 	function _unsetFocusedBlock(elem) {
 		$(elem).parents('.grid-stack-item').removeClass('item--me-focus');
 		$(elem).parents('.rexpansive_section').removeClass('block-editing');
+	}
+
+	function _isHeadingTag(element) {
+		var name = element.nodeName.toLowerCase();
+
+		return name === 'h1' || name === 'h2' || name === 'h3' || name === 'h4' || name === 'h5' || name === 'h6';
 	}
 
 	var init = function () {

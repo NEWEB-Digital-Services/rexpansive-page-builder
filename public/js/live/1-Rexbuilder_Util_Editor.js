@@ -649,17 +649,19 @@ var Rexbuilder_Util_Editor = (function ($) {
 	};
 
 	/**
-	 * Tell the parent that the user edited the builder
-	 * @param {bool} isModelEdited have we edited a model
+	 * Tell the parent that the user edited the builder.
+	 *
+	 * @param	{boolean}	[isModelEdited]		Have we edited a model?
 	 */
-	var _builderEdited = function (isModelEdited) {
+	function builderEdited(isModelEdited) {
 		isModelEdited = 'undefined' !== typeof isModelEdited ? isModelEdited : false;
+
 		var data = {
 			eventName: 'rexlive:edited',
 			modelEdited: isModelEdited
 		};
 		Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-	};
+	}
 
 	/**
 	 * Gets the mouse event click and returns the x,y coordinates of the pointer
@@ -956,7 +958,7 @@ var Rexbuilder_Util_Editor = (function ($) {
 		blockAttrsObj: _rowAttrsObj,
 		startLoading: _startLoading,
 		endLoading: _endLoading,
-		builderEdited: _builderEdited,
+		builderEdited: builderEdited,
 		getMousePosition: _getMousePosition,
 		lockRows: _lockRows,
 		lockRowsLight: _lockRowsLight,

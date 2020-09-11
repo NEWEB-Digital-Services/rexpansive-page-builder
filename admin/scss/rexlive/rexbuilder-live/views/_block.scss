@@ -12,13 +12,14 @@
 }
 
 .grid-stack-item {
-  &.insert-block-animation {
-    .ui-focused-element-highlight {
-      box-shadow: none;
-      visibility: visible;
-      animation: highlight-block 2500ms ease-in-out both;
-    }
-  }
+	&.insert-block-animation {
+		// .ui-focused-element-highlight {
+		.grid-item-content {
+			box-shadow: none;
+			visibility: visible;
+			animation: highlight-block 2500ms ease-in-out both;
+		}
+	}
 }
 
 .rexbuilder-live-content--editing {
@@ -33,15 +34,15 @@
 }
 
 .ui-focused-element-highlight {
+	@include rex-offset($palette-color-3);
+
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
   visibility: hidden;
-  outline: 2px solid $palette-color-3;
   box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
-  outline-offset: -1px;
   // transition: box-sh
 }
 

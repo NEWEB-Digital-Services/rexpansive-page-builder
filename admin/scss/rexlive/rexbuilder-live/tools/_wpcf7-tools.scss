@@ -6,8 +6,7 @@
 	position: relative;
 
 	&:hover {
-		outline: 2px solid $palette-color-1;
-		outline-offset: -1px;
+		@include rex-offset($palette-color-1);
 	}
 
 	.wpcf7-form:hover & {

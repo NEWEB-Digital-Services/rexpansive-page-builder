@@ -22,8 +22,7 @@ $input-min-width: 115px;
 		}
 
 		&:hover {
-			outline: 2px solid $palette-color-1;
-			outline-offset: -1px;
+			@include rex-offset($palette-color-1);
 		}
 
 		.wpcf7-rows {
@@ -36,8 +35,7 @@ $input-min-width: 115px;
 				position: relative;
 
 				&:hover {
-					outline: 2px solid $palette-color-1;
-					outline-offset: -1px;
+					@include rex-offset($palette-color-1);
 				}
 
 				.wpcf7-column {
@@ -63,8 +61,6 @@ $input-min-width: 115px;
 
 					.wpcf7-column-content {
 						width: 100%;
-						// display: flex;
-						// align-items: center;
 
 						.wpcf7-form-control-wrap {
 							display: inline-block;
@@ -73,8 +69,7 @@ $input-min-width: 115px;
 							max-height: 100%;
 
 							&:hover {
-								outline: 2px solid $palette-color-3;
-								outline-offset: -1px;
+								@include rex-offset($palette-color-3);
 							}
 
 							.wpcf7-text,

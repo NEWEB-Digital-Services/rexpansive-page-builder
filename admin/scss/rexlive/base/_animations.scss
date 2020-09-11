@@ -379,15 +379,17 @@
 }
 
 @keyframes highlight-block {
-  0% {
-    outline-color: transparent;
-  }
-  50% {
-    outline-color: #ff0055;
-  }
-  100% {
-    outline-color: transparent;
-  }
+	0% {
+		outline-color: $palette-color-3;
+	}
+
+	50% {
+		outline-color: transparent;
+	}
+
+	100% {
+		outline-color: $palette-color-3;
+	}
 }
 
 @keyframes doubleBounce {
