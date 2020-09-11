@@ -3574,12 +3574,20 @@ var Rexbuilder_Util = (function ($) {
 		);
 	}
 
-	var _getGalleryInstance = function ($section) {
-		var $gsr = $section.find('.grid-stack-row');
-		if ($gsr.length == 0) {
+	function getGalleryInstance($element) {
+		var elementIsSection = $element.is('.rexpansive_section');
+
+		if (!elementIsSection) {
+			$element = $element.parents('.rexpansive_section');
+		}
+
+		var $gridStackRow = $element.find('.grid-stack-row');
+
+		if ($gridStackRow.length == 0) {
 			return null;
 		}
-		return $gsr.data().plugin_perfectGridGalleryEditor;
+
+		return $gridStackRow.data('plugin_perfectGridGalleryEditor');
 	};
 
 	var removeCollapsedGrids = function () {
@@ -3595,7 +3603,7 @@ var Rexbuilder_Util = (function ($) {
 		var tot_rows = rows.length,
 			i;
 		for (i = 0; i < tot_rows; i++) {
-			var galleryInstance = _getGalleryInstance($(rows[i]));
+			var galleryInstance = getGalleryInstance($(rows[i]));
 			Rexbuilder_Dom_Util.collapseGrid(
 				galleryInstance,
 				false,
@@ -3618,7 +3626,7 @@ var Rexbuilder_Util = (function ($) {
 		var tot_rows = rows.length,
 			i;
 		for (i = 0; i < tot_rows; i++) {
-			var galleryInstance = _getGalleryInstance($(rows[i]));
+			var galleryInstance = getGalleryInstance($(rows[i]));
 			galleryInstance._defineDynamicPrivateProperties();
 			galleryInstance.collapseElements();
 		}
@@ -4329,7 +4337,7 @@ var Rexbuilder_Util = (function ($) {
 		launchEditDomLayout: launchEditDomLayout,
 		edit_dom_layout: edit_dom_layout,
 		smoothScroll: _smoothScroll,
-		getGalleryInstance: _getGalleryInstance,
+		getGalleryInstance: getGalleryInstance,
 		removeCollapsedGrids: removeCollapsedGrids,
 		collapseAllGrids: collapseAllGrids,
 		stopVideo: _stopVideo,

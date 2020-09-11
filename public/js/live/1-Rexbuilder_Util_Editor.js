@@ -21,24 +21,28 @@ var Rexbuilder_Util_Editor = (function ($) {
 	};
 
 	/**
-	 * @param {jQuery} $textWrap Text-wrap whose container block height has to be update
-	 * @param	{Boolean}		needToSave
+	 * @param	{JQuery}		$textWrap 			Text-wrap whose container block height has to be updated
+	 * @param	{boolean}		[needToSave]		Is set to false when a block height updated is needed
+	 * 																		but the save button change to gray is not
+	 * @param	{boolean}		[forceFixedText]
 	 */
-	var _updateBlockContainerHeight = function ($textWrap, needToSave, forceFixedText) {
-		needToSave = undefined === needToSave ? true : needToSave;
+	function updateBlockContainerHeight($textWrap, needToSave, forceFixedText) {
+		var galleryInstance = Rexbuilder_Util.getGalleryInstance($textWrap);
+		var block = $textWrap.parents('.grid-stack-item').get(0);
+		var insertMediaExtension = TextEditor.getEditorInstance().getExtensionByName('insert-media');
+		var $gridItemContentWrap = $textWrap.parents('.grid-item-content-wrap');
+
+		needToSave = needToSave || true;
 		this.needToSave = needToSave;
 
-		var galleryInstance = Rexbuilder_Util.getGalleryInstance($textWrap.parents('.rexpansive_section').eq(0));
-		galleryInstance.updateElementHeight($textWrap.parents('.grid-stack-item').get(0), undefined, forceFixedText);
+		galleryInstance.updateElementHeight(block, undefined, forceFixedText);
 
-		// updating insertButton position
-		var insertButton = TextEditor.getEditorInstance().getExtensionByName('insert-media');
-		if (insertButton) {
-			var $wrapper = $textWrap.parents('.grid-item-content-wrap');
-			insertButton.placeMediaBtn($wrapper);
+		if (insertMediaExtension) {
+			insertMediaExtension.placeMediaBtn($gridItemContentWrap);
 		}
+
 		this.needToSave = true;
-	};
+	}
 
 	/**
 	 * Remove scrollbars from element
@@ -860,11 +864,17 @@ var Rexbuilder_Util_Editor = (function ($) {
 		this.blockCopying = false;
 
 		this.editingGallery = false;
+
+		// Indicates when the user is editing a block
 		this.editingElement = false;
+		// Indicates which block is being edited by the user
+		this.editedElement = null;
+
 		this.manageElement = false;
 
 		this.editedGallery = null;
-		this.editedElement = null;
+
+		// Indicates which text wrap is being edited by the user
 		this.editedTextWrap = null;
 
 		this.activateElementFocus = false;
@@ -961,7 +971,7 @@ var Rexbuilder_Util_Editor = (function ($) {
 		getGradientSafeValue: _getGradientSafeValue,
 		getPrefixedValues: _getPrefixedValues,
 		synchGradient: _synchGradient,
-		updateBlockContainerHeight: _updateBlockContainerHeight,
+		updateBlockContainerHeight: updateBlockContainerHeight,
 		updateContainerMargins: _updateContainerMargins,
 		sendUndoRedoInformation: _sendUndoRedoInformation,
 		restorePageStartingState: restorePageStartingState,

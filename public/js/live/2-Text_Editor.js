@@ -3213,14 +3213,20 @@ var TextEditor = (function ($) {
 	}
 
 	/**
-	 * On text editor focus, disable the drag of the blocks
-	 * @param  {Event} event focus event
-	 * @param  {Node} elem    html element of the text editor
-	 * @return {void}
-	 * @since  2.0.4
+	 * On text editor focus, disable the drag of the blocks.
+	 *
+	 * @param  	{Event}				event	focus event
+	 * @param  	{HTMLElement}	elem	html element of the text editor
+	 * @return 	{void}
+	 * @since  	2.0.4
+	 * @version	2.0.9					Moved to outer function and added global flags
 	 */
 	function _handleEditorFocus(event, elem) {
 		_setFocusedBlock(elem);
+
+		Rexbuilder_Util_Editor.editingElement = true;
+		Rexbuilder_Util_Editor.editedTextWrap = $(elem);
+		Rexbuilder_Util_Editor.editedElement = $(elem).parents('.grid-stack-item');
 
 		if (!elem) return;
 

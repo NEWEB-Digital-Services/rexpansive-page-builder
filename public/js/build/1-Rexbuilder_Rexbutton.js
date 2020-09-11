@@ -599,7 +599,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 		}
 
 		// Refreshing RexButtons numbers and buttonsInPage Object
-		refreshNumbers();
+		refreshButtonNumbers();
 		updateButtonListInPage();
 
 		_removeModelData($buttonWrapper);
@@ -1192,7 +1192,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 		return rexButtonsIDsInPage;
 	}
 
-	function refreshNumbers() {
+	function refreshButtonNumbers() {
 		var idsInPageArray = findIDsInPage(true);
 		var idsInPageObj = {}; // It may be useful in the future for other uses
 
@@ -1355,7 +1355,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 		_fixCustomStyleElement();
 
 		// This refresh is put here to correct old pages that have wrong button numbers
-		refreshNumbers();
+		refreshButtonNumbers();
 		updateButtonListInPage();
 
 		_linkDocumentListeners();
@@ -1375,7 +1375,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 		endFixingButtonImported: endFixingButtonImported,
 		updateButtonListInPage: updateButtonListInPage,
 		findIDsInPage: findIDsInPage,
-		refreshNumbers: refreshNumbers,
+		refreshNumbers: refreshButtonNumbers,
 
 		updateButtonContainerRule: _updateButtonContainerRule,
 		updateButtonBackgroundRule: _updateButtonBackgroundRule,
