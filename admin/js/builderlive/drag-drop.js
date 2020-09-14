@@ -17,10 +17,27 @@
  * @property	{string}	position
  */
 
-(function (window, factory) {
-	'use strict';
-	window.DragDrop = factory(window);
-})('undefined' !== typeof window ? window : this, function () {
+var dragDropInstances = (function ($) {
+	/**
+	 * Represent a Drag & Drop helper.
+	 * @constructor
+	 */
+	function DragDrop(context) {
+		/**
+		 * TODO Make this private
+		 * @type		{(JQuery<HTMLElement> | DOMRect | MouseCoords)[][]}
+		 * @public
+		 */
+		this.dragoverqueue = [];
+
+		/**
+		 * TODO Make this private
+		 * @type		{document}
+		 * @public
+		 */
+		this.context = context;
+	}
+
 	/**
 	 * @type		{MousePercentage}
 	 * @private
@@ -76,21 +93,6 @@
 	var voidElementsSelector = voidElements.join(',');
 
 	/**
-	 * Represent a Drag & Drop helper.
-	 *
-	 * @interface
-	 */
-	function DragDrop() {
-		/**
-		 * TODO Make this private
-		 * @type		{[JQuery, DOMRect, MouseCoords][]}
-		 * @public
-		 */
-		this.dragoverqueue = [];
-	}
-
-	/**
-	 *
 	 * @param		{JQuery}			$element
 	 * @param		{DOMRect}			elementRect
 	 * @param		{MouseCoords}	mousePos
@@ -108,7 +110,8 @@
 	};
 
 	/**
-	 * @param {JQuery}	$element
+	 * @param		{JQuery}	$element
+	 * @returns	{boolean}
 	 */
 	DragDrop.checkVoidElement = function ($element) {
 		return $element.is(voidElementsSelector);
@@ -118,17 +121,16 @@
 	 * @param 	{ElementData}	elementData
 	 * @param 	{number} 			mouseX
 	 * @param 	{number} 			mouseY
-	 * @returns	{number}
+	 * @returns	{number}			Distance
 	 */
 	DragDrop.calculateDistance = function (elementData, mouseX, mouseY) {
 		return Math.sqrt(Math.pow(elementData.x - mouseX, 2) + Math.pow(elementData.y - mouseY, 2));
 	};
 
-	/**
-	 * @param {document}	context
-	 */
-	DragDrop.removeAllPlaceholders = function (context) {
-		var placeholders = Array.prototype.slice.call(context.querySelectorAll('.drop-marker'));
+	DragDrop.prototype.removeAllPlaceholders = function () {
+		var placeholders = Array.prototype.slice.call(this.context.querySelectorAll('.drop-marker'));
+
+		console.log(this.context);
 
 		placeholders.forEach(function (placeholder) {
 			placeholder.parentNode.removeChild(placeholder);
@@ -138,28 +140,28 @@
 	/**
 	 * @param {JQuery}		$element
 	 * @param {string}		position
-	 * @param {document}	context
 	 */
-	DragDrop.addContainerContextMarker = function ($element, position, context) {
-		var $contextMarker = this.getContextMarker();
+	DragDrop.prototype.addContainerContextMarker = function ($element, position) {
+		var $contextMarker = DragDrop.getContextMarker();
 
-		this.clearContainerContextMarker(context);
+		this.clearContainerContextMarker();
 
 		if ($element.is('html,body')) {
 			position = 'inside';
+			// ! May not work
 			// $element = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents();
-			$element = $(Rexbuilder_Util_Admin_Editor.frameBuilder.contentDocument);
+			$element = $(this.context.body);
 		}
 
 		switch (position) {
 			case 'inside':
-				this.positionContextMarker($contextMarker, $element, context);
+				this.positionContextMarker($contextMarker, $element);
 
 				if ($element.hasClass('stackhive-nodrop-zone')) {
 					$contextMarker.addClass('invalid');
 				}
 
-				var name = this.getElementName($element);
+				var name = DragDrop.getElementName($element);
 
 				Array.prototype.slice
 					.call($contextMarker.get(0).querySelectorAll('[data-dragcontext-marker-text]'))
@@ -167,7 +169,7 @@
 						text.innerHTML = name;
 					});
 
-				if (0 !== context.querySelectorAll('[data-sh-parent-marker]').length) {
+				if (0 !== this.context.querySelectorAll('[data-sh-parent-marker]').length) {
 					// TODO
 					Rexbuilder_Util_Admin_Editor.$frameBuilder
 						.contents()
@@ -177,12 +179,12 @@
 				}
 				break;
 			case 'sibling':
-				this.positionContextMarker($contextMarker, $element.parent(), context);
+				this.positionContextMarker($contextMarker, $element.parent());
 				if ($element.parent().hasClass('stackhive-nodrop-zone')) {
 					$contextMarker.addClass('invalid');
 				}
 
-				var name = this.getElementName($element.parent());
+				var name = DragDrop.getElementName($element.parent());
 
 				Array.prototype.slice
 					.call($contextMarker.get(0).querySelectorAll('[data-dragcontext-marker-text]'))
@@ -192,7 +194,7 @@
 
 				$contextMarker.get(0).setAttribute('data-dragcontext-marker', name.toLowerCase());
 
-				if (0 !== context.querySelectorAll('[data-sh-parent-marker]').length) {
+				if (0 !== this.context.querySelectorAll('[data-sh-parent-marker]').length) {
 					// TODO
 					Rexbuilder_Util_Admin_Editor.$frameBuilder
 						.contents()
@@ -216,31 +218,27 @@
 	/**
 	 * @param	{JQuery}		$contextMarker
 	 * @param	{JQuery}		$element
-	 * @param	{document}	context
 	 */
-	DragDrop.positionContextMarker = function ($contextMarker, $element, context) {
+	DragDrop.prototype.positionContextMarker = function ($contextMarker, $element) {
 		var rect = $element.get(0).getBoundingClientRect();
 		$contextMarker.css({
 			height: rect.height + 4 + 'px',
 			width: rect.width + 4 + 'px',
 			// ! Vedere come fare
 			// TODO Later
-			top: rect.top + $frameContentWindow.scrollTop() - 2 + 'px',
-			left: rect.left + $frameContentWindow.scrollLeft() - 2 + 'px'
+			top: rect.top + $(Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow).scrollTop() - 2 + 'px',
+			left: rect.left + $(Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow).scrollLeft() - 2 + 'px'
 		});
 
 		// if (rect.top + Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('body').scrollTop() < 24)
-		if (rect.top + context.body.scrollTop < 24) {
+		if (rect.top + this.context.body.scrollTop < 24) {
 			$contextMarker.find('[data-dragcontext-marker-text]').css('top', '0px');
 		}
 	};
 
-	/**
-	 * @param {document}	context
-	 */
-	DragDrop.clearContainerContextMarker = function (context) {
+	DragDrop.prototype.clearContainerContextMarker = function () {
 		// Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('[data-dragcontext-marker]').remove();
-		var contextMarkers = Array.prototype.slice.call(context.querySelectorAll('[data-dragcontext-marker]'));
+		var contextMarkers = Array.prototype.slice.call(this.context.querySelectorAll('[data-dragcontext-marker]'));
 
 		contextMarkers.forEach(function (contextMarker) {
 			contextMarker.parentNode.removeChild(contextMarker);
@@ -251,14 +249,13 @@
 	 * @param {JQuery}		$element
 	 * @param {string}		position
 	 * @param {JQuery}		$placeholder
-	 * @param {document}	context
 	 */
-	DragDrop.addPlaceHolder = function ($element, position, $placeholder, context) {
+	DragDrop.prototype.addPlaceHolder = function ($element, position, $placeholder) {
 		if (!$placeholder) {
 			$placeholder = this.getPlaceHolder();
 		}
 
-		this.removeAllPlaceholders(context);
+		this.removeAllPlaceholders();
 
 		var whereAddContainerText;
 
@@ -295,7 +292,7 @@
 				break;
 		}
 
-		this.addContainerContextMarker($element, whereAddContainerText, context);
+		this.addContainerContextMarker($element, whereAddContainerText);
 	};
 
 	/**
@@ -404,11 +401,10 @@
 	 * @param {JQuery}					$targetElement
 	 * @param {MousePercentage}	mousePercents
 	 * @param {MouseCoords}			mousePos
-	 * @param {document}				context
 	 */
-	DragDrop.decideBeforeAfter = function ($targetElement, mousePercents, mousePos, context) {
+	DragDrop.prototype.decideBeforeAfter = function ($targetElement, mousePercents, mousePos) {
 		if (mousePos) {
-			mousePercents = this.getMouseBearingsPercentage($targetElement, null, mousePos);
+			mousePercents = DragDrop.getMouseBearingsPercentage($targetElement, null, mousePos);
 		}
 
 		var targetElementDisplay = $targetElement.css('display');
@@ -424,35 +420,33 @@
 
 		if (isInline) {
 			if (mousePercents.xPercentage < 50) {
-				return this.placeBefore($targetElement, context);
+				return this.placeBefore($targetElement);
 			} else {
-				return this.placeAfter($targetElement, context);
+				return this.placeAfter($targetElement);
 			}
 		} else {
 			if (mousePercents.yPercentage < 50) {
-				return this.placeBefore($targetElement, context);
+				return this.placeBefore($targetElement);
 			} else {
-				return this.placeAfter($targetElement, context);
+				return this.placeAfter($targetElement);
 			}
 		}
 	};
 
 	/**
 	 * @param {JQuery}		$element
-	 * @param {document}	context
 	 */
-	DragDrop.placeInside = function ($element, context) {
+	DragDrop.prototype.placeInside = function ($element) {
 		var $placeholder = this.getPlaceHolder();
 
 		$placeholder.addClass('horizontal').css('width', $element.width() + 'px');
-		this.addPlaceHolder($element, 'inside-append', $placeholder, context);
+		this.addPlaceHolder($element, 'inside-append', $placeholder);
 	};
 
 	/**
 	 * @param {JQuery}		$element
-	 * @param {document}	context
 	 */
-	DragDrop.placeBefore = function ($element, context) {
+	DragDrop.prototype.placeBefore = function ($element) {
 		console.log('place before new', $element.get(0));
 		var $placeholder = this.getPlaceHolder();
 		var elementDisplay = $element.css('display');
@@ -463,7 +457,7 @@
 			inlinePlaceholder = false;
 		} else if ($element.is('td,th')) {
 			$placeholder.addClass('horizontal').css('width', $element.width() + 'px');
-			return this.addPlaceHolder($element, 'inside-prepend', $placeholder, context);
+			return this.addPlaceHolder($element, 'inside-prepend', $placeholder);
 		}
 
 		if (inlinePlaceholder) {
@@ -472,14 +466,13 @@
 			$placeholder.addClass('horizontal').css('width', $element.parent().width() + 'px');
 		}
 
-		this.addPlaceHolder($element, 'before', $placeholder, context);
+		this.addPlaceHolder($element, 'before', $placeholder);
 	};
 
 	/**
 	 * @param {JQuery}		$element
-	 * @param {document}	context
 	 */
-	DragDrop.placeAfter = function ($element, context) {
+	DragDrop.prototype.placeAfter = function ($element) {
 		console.log('place after', $element.get(0));
 		var $placeholder = this.getPlaceHolder();
 		var elementDisplay = $element.css('display');
@@ -490,14 +483,14 @@
 			inlinePlaceholder = false;
 		} else if ($element.is('td,th')) {
 			$placeholder.addClass('horizontal').css('width', $element.width() + 'px');
-			return this.addPlaceHolder($element, 'inside-append', $placeholder, context);
+			return this.addPlaceHolder($element, 'inside-append', $placeholder);
 		}
 		if (inlinePlaceholder) {
 			$placeholder.addClass('vertical').css('height', $element.innerHeight() + 'px');
 		} else {
 			$placeholder.addClass('horizontal').css('width', $element.parent().width() + 'px');
 		}
-		this.addPlaceHolder($element, 'after', $placeholder, context);
+		this.addPlaceHolder($element, 'after', $placeholder);
 	};
 
 	/**
@@ -632,29 +625,205 @@
 			var $el = processing[0];
 			var elRect = processing[1];
 			var mousePos = processing[2];
-			//  ! To implement
-			DragDrop.orchestrateDragDrop($el, elRect, mousePos);
+			this.orchestrateDragDrop($el, elRect, mousePos);
 		}
 	};
 
 	/**
 	 * @abstract
-	 * @returns		{JQuery<HTMLElement>}
+	 * @returns		{JQuery}
 	 */
-	DragDrop.getPlaceHolder = function () {
+	DragDrop.prototype.getPlaceHolder = function () {
 		throw new Error('Must be implemented by subclass!');
-		// return $('<div class="drop-marker drop-marker--rex-button"></div>');
 	};
 
 	/**
 	 * @abstract
+	 * @public
 	 * @param {JQuery}			$element
 	 * @param {DOMRect}			elementRect
 	 * @param {MouseCoords}	mousePos
 	 */
-	DragDrop.orchestrateDragDrop = function ($element, elementRect, mousePos) {
+	DragDrop.prototype.orchestrateDragDrop = function ($element, elementRect, mousePos) {
 		throw new Error('Must be implemented by subclass!');
 	};
 
-	return DragDrop;
-});
+	/* ===== REX BUTTON ===== */
+
+	/**
+	 * @param				{document}	context
+	 * @public
+	 * @implements	{DragDrop}
+	 * @constructor
+	 */
+	function RexButtonDragDrop(context) {
+		DragDrop.call(this, context);
+	}
+
+	RexButtonDragDrop.prototype = Object.create(DragDrop.prototype);
+	// Keeping the constructor the right one, needed after redefining the prototype
+	Object.defineProperty(RexButtonDragDrop.prototype, 'constructor', {
+		value: RexButtonDragDrop,
+		enumerable: false, // so that it does not appear in 'for in' loop
+		writable: true
+	});
+
+	RexButtonDragDrop.prototype.getPlaceHolder = function () {
+		return $('<div class="drop-marker drop-marker--rex-button"></div>');
+	};
+
+	RexButtonDragDrop.prototype.orchestrateDragDrop = function ($element, elementRect, mousePos) {
+		// If no element is hovered or element hovered is the placeholder -> not valid -> return false;
+		if (!$element || $element.length == 0 || !elementRect || !mousePos) return false;
+
+		// console.log($element.get(0));
+
+		if ($element.is('html')) {
+			$element = $element.find('body');
+		}
+
+		mousePercents = DragDrop.getMouseBearingsPercentage($element, elementRect, mousePos);
+
+		// If I need to get inside the element
+		if ($element.hasClass('rex-button-wrapper') || $element.parents('.rex-button-wrapper').length != 0) {
+			$element = $element.hasClass('rex-button-wrapper') ? $element : $element.parents('.rex-button-wrapper').eq(0);
+			customBreakPoints = $.extend(true, {}, breakPointNumber);
+			fixedBreakPoints = true;
+			breakPointNumber.x = 50;
+			breakPointNumber.y = 50;
+		}
+
+		if (
+			mousePercents.xPercentage > breakPointNumber.x &&
+			mousePercents.xPercentage < 100 - breakPointNumber.x &&
+			mousePercents.yPercentage > breakPointNumber.y &&
+			mousePercents.yPercentage < 100 - breakPointNumber.y
+		) {
+			// console.log('case 1');
+			// Case 1
+			/*
+				Decide whether to prepend or append the marker depending on the mouse position relative to the hovered element.
+			*/
+			var $tempElement = $element.clone();
+			var tempElement = $tempElement.get(0);
+
+			var dropMarker = tempElement.querySelector('.drop-marker');
+
+			if (dropMarker) {
+				dropMarker.parentNode.removeChild(dropMarker);
+			}
+
+			if ('' === tempElement.innerHTML && !DragDrop.checkVoidElement($tempElement)) {
+				if (mousePercents.yPercentage < 90) {
+					return this.placeInside($element);
+				}
+			} else if (0 === tempElement.children.length) {
+				// Text element detected
+				this.decideBeforeAfter($element, mousePercents);
+			} else if (1 === tempElement.children.length) {
+				// Only 1 child element detected
+				if ($tempElement.hasClass('rex-buttons-paragraph')) {
+					var positionAndElement = this.findNearestElement($element, mousePos.x, mousePos.y);
+					this.decideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
+				} else {
+					this.decideBeforeAfter(
+						$element.children(':not(.drop-marker,[data-dragcontext-marker])').first(),
+						mousePercents
+					);
+				}
+			} else {
+				// Mote than 1 child element detected
+				var positionAndElement = DragDrop.findNearestElement($element, mousePos.x, mousePos.y);
+				this.decideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
+			}
+		} else if (mousePercents.xPercentage <= breakPointNumber.x || mousePercents.yPercentage <= breakPointNumber.y) {
+			// console.log('case 2');
+			if (mousePercents.yPercentage <= mousePercents.xPercentage) {
+				validElement = DragDrop.findValidParent($element, 'top');
+			} else {
+				validElement = DragDrop.findValidParent($element, 'left');
+			}
+
+			if (validElement.is('body,html')) {
+				var frameBody = this.context.body;
+				validElement = $(frameBody).children(':not(.drop-marker,[data-dragcontext-marker])').first();
+			}
+
+			this.decideBeforeAfter(validElement, mousePercents, mousePos);
+		} else if (mousePercents.x >= 100 - breakPointNumber.x || mousePercents.y >= 100 - breakPointNumber.y) {
+			// console.log('case 3');
+			var validElement = null;
+
+			if (mousePercents.yPercentage >= mousePercents.xPercentage) {
+				validElement = DragDrop.findValidParent($element, 'bottom');
+			} else {
+				validElement = DragDrop.findValidParent($element, 'right');
+			}
+
+			if (validElement.is('body,html')) {
+				var frameBody = this.context.body;
+				validElement = $(frameBody).children(':not(.drop-marker,[data-dragcontext-marker])').last();
+			}
+
+			this.decideBeforeAfter(validElement, mousePercents, mousePos);
+		}
+
+		if (fixedBreakPoints) {
+			breakPointNumber.x = customBreakPoints.x;
+			breakPointNumber.y = customBreakPoints.y;
+			fixedBreakPoints = false;
+		}
+
+		/**
+		 * Checks if current element, where placeholder is, is a valid element. If not checks if has a grid-stack-item as parent. If has moves placeholder in right position
+		 */
+		if (
+			!$element.hasClass('rex-buttons-paragraph') &&
+			!$element.hasClass('text-wrap') &&
+			!$element.hasClass('rex-button-wrapper')
+		) {
+			var $gridItem = $element.parents('.grid-stack-item');
+			if ($gridItem.length != 0) {
+				this.removeAllPlaceholders();
+				$gridItem.find('.text-wrap').eq(0).append(this.getPlaceHolder());
+			}
+		}
+	};
+
+	/* ===== REX WPCF7 ===== */
+
+	/**
+	 * @public
+	 * @implements	{DragDrop}
+	 * @constructor
+	 */
+	function RexWpcf7DragDrop() {
+		DragDrop.call(this);
+	}
+
+	/**
+	 * @public
+	 * @returns		{JQuery}
+	 */
+	RexWpcf7DragDrop.prototype.getPlaceHolder = function () {
+		return $('<div class="drop-marker drop-marker--rex-button"></div>');
+	};
+
+	RexWpcf7DragDrop.prototype = Object.create(DragDrop.prototype);
+	// Keeping the constructor the right one, needed after redefining the prototype
+	Object.defineProperty(RexWpcf7DragDrop.prototype, 'constructor', {
+		value: RexWpcf7DragDrop,
+		enumerable: false, // so that it does not appear in 'for in' loop
+		writable: true
+	});
+
+	return {
+		RexButtonDragDrop: RexButtonDragDrop,
+		RexWpcf7DragDrop: RexWpcf7DragDrop
+	};
+})(jQuery);
+
+var RexButtonDragDrop = dragDropInstances.RexButtonDragDrop;
+var RexWpcf7DragDrop = dragDropInstances.RexWpcf7DragDrop;
+
+dragDropInstances = null;

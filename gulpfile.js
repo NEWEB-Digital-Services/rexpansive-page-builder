@@ -145,6 +145,7 @@ function watchAdminBuilderStyle(cb) {
 
 // ADMIN JS
 var builderlive_admin = [
+	'admin/js/builderlive/drag-drop.js',
 	'admin/js/builderlive/Rexbuilder_Admin_Templates.js',
 	'admin/js/builderlive/Rexlive_MediaUploader.js',
 	'admin/js/builderlive/Rexlive_RexSlider_TextEditor.js',
@@ -239,7 +240,6 @@ function adminScript(cb) {
 
 // LIVE JS
 var builderlive_public_editor = [
-	'public/js/vendor/drag-drop.js',
 	'public/js/vendor/tippy.all.min.js',
 	'public/js/vendor/rangy-1.3.0/rangy-core.js',
 	'public/js/vendor/rangy-1.3.0/rangy-classapplier.js',
