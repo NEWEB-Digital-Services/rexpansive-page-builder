@@ -5,6 +5,6 @@
 	"compilerOptions": {
 		"checkJs": true
 	},
-	"include": ["public/js/**/*", "admin/js/**/*", "editor-js-test.html"],
+	"include": ["public/js/**/*", "admin/js/**/*"],
 	"exclude": ["**/node_modules/*"]
 }

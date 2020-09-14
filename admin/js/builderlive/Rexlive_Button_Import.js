@@ -341,7 +341,7 @@ var Button_Import_Modal = (function ($) {
 	/////////////////////////////////////////////////////////////////////////////////////////
 
 	var _linkDraggable = function () {
-		var currentElement, currentElementChangeFlag, elementRectangle, countdown, dragoverqueue_processtimer;
+		var $currentElement, currentElementChangeFlag, elementRectangle, countdown, dragoverqueue_processtimer;
 
 		var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow;
 		var $frameContentWindow = $(clientFrameWindow);
@@ -350,6 +350,7 @@ var Button_Import_Modal = (function ($) {
 			width: 0,
 			height: 0
 		};
+		// Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
 		var breakPointNumber = { x: 10, y: 10 };
 		var fixedBreakPoints = false;
 		var customBreakPoints = { x: 50, y: 50 };
@@ -359,27 +360,34 @@ var Button_Import_Modal = (function ($) {
 		// to understand, need for button near the mouse during the drag
 		var $imgPreview;
 
-		var mouseClientX = 0,
-			mouseClientY = 0;
+		var mouseClientX = 0;
+		var mouseClientY = 0;
+
+		var previousMouseX = 0;
+		var previousMouseY = 0;
 
 		Rexlive_Base_Settings.$document.on('dragstart', '.button-list li', function (event) {
 			Rexbuilder_Util_Admin_Editor.dragImportType = 'rexbutton';
 			// Rexbuilder_Util_Admin_Editor.hideLateralMenu();
 
 			event.originalEvent.dataTransfer.effectAllowed = 'all';
+			// * Analyze
 			dragoverqueue_processtimer = setInterval(function () {
 				DragDropFunctions.ProcessDragOverQueue();
-			}, 250);
+			}, 100);
 
 			var insertingHTML = $(this).html();
 			var $buttonBackground = $(this).find('.rex-button-background').eq(0);
+
 			buttonDimensions.width = $buttonBackground.outerWidth();
 			buttonDimensions.height = $buttonBackground.outerHeight();
+
 			if (isIE) {
 				event.originalEvent.dataTransfer.setData('text', insertingHTML);
 			} else {
 				event.originalEvent.dataTransfer.setData('text/plain', insertingHTML);
 			}
+
 			Rexbuilder_Util_Admin_Editor.addClassToLiveFrameRexContainer('rex-dragging-button');
 
 			var dataDnDstart = {
@@ -389,32 +397,35 @@ var Button_Import_Modal = (function ($) {
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDstart);
 		});
 
-		function dragCb(event) {
-			Rexbuilder_Util_Admin_Editor.setScroll(true);
+		var scrollAmount = 15;
 
+		function onButtonListElementDrag() {
+			Rexbuilder_Util_Admin_Editor.setStopScroll(true);
+
+			// Scrolling up
 			if (mouseClientY < 150) {
-				Rexbuilder_Util_Admin_Editor.setScroll(false);
-				Rexbuilder_Util_Admin_Editor.scrollFrame(-1);
+				Rexbuilder_Util_Admin_Editor.scrollFrame(scrollAmount * -1);
 			}
 
+			// Scrolling down
 			if (mouseClientY > $frameContentWindow.height() - 150) {
-				Rexbuilder_Util_Admin_Editor.setScroll(false);
-				Rexbuilder_Util_Admin_Editor.scrollFrame(1);
+				Rexbuilder_Util_Admin_Editor.scrollFrame(scrollAmount);
 			}
 		}
 
 		// Defines when it's necessary to scroll up or down
-		Rexlive_Base_Settings.$document.on('drag', '.button-list li', dragCb);
+		Rexlive_Base_Settings.$document.on('drag', '.button-list li', onButtonListElementDrag);
 
 		Rexlive_Base_Settings.$document.on('dragend', '.button-list li', function (dropEndEvent) {
 			clearInterval(dragoverqueue_processtimer);
 
-			Rexbuilder_Util_Admin_Editor.setScroll(true);
+			Rexbuilder_Util_Admin_Editor.setStopScroll(true);
 
 			DragDropFunctions.removePlaceholder();
 			DragDropFunctions.ClearContainerContext();
 			Rexbuilder_Util_Admin_Editor.removeClassToLiveFrameRexContainer('rex-dragging-button');
 			Rexbuilder_Util_Admin_Editor.dragImportType = '';
+
 			var dataDnDend = {
 				eventName: 'rexlive:drag_drop_ended',
 				data_to_send: {}
@@ -430,29 +441,38 @@ var Button_Import_Modal = (function ($) {
 			var mousePosition = {};
 			var mousePositionToIFrame = {};
 
-			function dragOverWindowCb(event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexbutton') {
-					// mouse position for scrolling
-					event.preventDefault();
-					event.stopPropagation();
-					mouseClientX = event.originalEvent.clientX;
-					mouseClientY = event.originalEvent.clientY;
-					Rexbuilder_Util_Admin_Editor.checkLateralMenu(mouseClientX);
-				}
+			function onDragOverWindow(event) {
+				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexbutton') return;
+				event.preventDefault();
+				event.stopPropagation();
+
+				previousMouseX = mouseClientX;
+				previousMouseY = mouseClientY;
+
+				// Mouse position for scrolling
+				mouseClientX = event.originalEvent.clientX;
+				mouseClientY = event.originalEvent.clientY;
+
+				DragDropFunctions.cursorMoving = previousMouseX === mouseClientX && previousMouseY === mouseClientY;
+
+				Rexbuilder_Util_Admin_Editor.checkLateralMenu(mouseClientX);
 			}
 
-			$frameContentWindow.on('dragover', dragOverWindowCb);
+			$frameContentWindow.on('dragover', onDragOverWindow);
 
-			$rexContainer.on('dragenter', '.grid-stack-row', function (event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexbutton') {
-					currentElement = $(event.target);
-					currentElementChangeFlag = true;
-					elementRectangle = event.target.getBoundingClientRect();
-					countdown = 1;
-				}
-			});
+			function onDragEnterRow(event) {
+				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexbutton') return;
+				event.stopPropagation();
 
-			function dragOverRowCb(event) {
+				$currentElement = $(event.target);
+				currentElementChangeFlag = true;
+				elementRectangle = event.target.getBoundingClientRect();
+				countdown = 1;
+			}
+
+			$rexContainer.on('dragenter', '.grid-stack-row', onDragEnterRow);
+
+			function onDragOverRow(event) {
 				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexbutton') {
 					if (countdown % 15 != 0 && currentElementChangeFlag == false) {
 						countdown = countdown + 1;
@@ -468,50 +488,56 @@ var Button_Import_Modal = (function ($) {
 
 					mousePositionToIFrame.x = event.originalEvent.pageX;
 					mousePositionToIFrame.y = event.originalEvent.pageY;
-					DragDropFunctions.AddEntryToDragOverQueue(currentElement, elementRectangle, mousePosition);
+					DragDropFunctions.AddEntryToDragOverQueue($currentElement, elementRectangle, mousePosition);
 				}
 			}
 
-			$rexContainer.on('dragover', '.grid-stack-row', dragOverRowCb);
+			$rexContainer.on('dragover', '.grid-stack-row', onDragOverRow);
 
-			$rexContainer.on('drop', '.grid-stack-row', function (event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexbutton') {
-					event.preventDefault();
-					event.stopPropagation();
-					var e;
-					if (event.isTrigger) {
-						e = triggerEvent.originalEvent;
-					} else {
-						e = event.originalEvent;
-					}
-					try {
-						var textData = '';
-						if (isIE) {
-							textData = e.dataTransfer.getData('text');
-						} else {
-							textData = e.dataTransfer.getData('text/plain');
-						}
-						var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('.drop-marker');
+			function onDropRow(event) {
+				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexbutton') return;
 
-						textData = textData.trim();
+				event.preventDefault();
+				event.stopPropagation();
 
-						var $divInsert = $(jQuery.parseHTML(textData));
-						$divInsert.addClass('rex-loading-button');
-						$divInsert.insertAfter($insertionPoint[0]);
-						$insertionPoint.remove();
-						var dataEndDrop = {
-							eventName: 'rexlive:importButton',
-							data_to_send: {
-								buttonDimensions: buttonDimensions,
-								mousePosition: mousePositionToIFrame
-							}
-						};
-						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
-					} catch (e) {
-						console.error('Error when dropping the RexButton:', e);
-					}
+				var e;
+				if (event.isTrigger) {
+					// ? What's this?
+					e = triggerEvent.originalEvent;
+				} else {
+					e = event.originalEvent;
 				}
-			});
+
+				try {
+					var textData = '';
+					if (isIE) {
+						textData = e.dataTransfer.getData('text');
+					} else {
+						textData = e.dataTransfer.getData('text/plain');
+					}
+					var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('.drop-marker');
+
+					textData = textData.trim();
+
+					var $divInsert = $(jQuery.parseHTML(textData));
+					$divInsert.addClass('rex-loading-button');
+					$divInsert.insertAfter($insertionPoint[0]);
+					$insertionPoint.remove();
+
+					var dataEndDrop = {
+						eventName: 'rexlive:importButton',
+						data_to_send: {
+							buttonDimensions: buttonDimensions,
+							mousePosition: mousePositionToIFrame
+						}
+					};
+					Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
+				} catch (e) {
+					console.error('Error when dropping the RexButton:', e);
+				}
+			}
+
+			$rexContainer.on('drop', '.grid-stack-row', onDropRow);
 		});
 
 		var mousePercents;
@@ -540,10 +566,13 @@ var Button_Import_Modal = (function ($) {
 
 		var DragDropFunctions = {
 			dragoverqueue: [],
+			cursorMoving: null,
+			// * OK
 			GetMouseBearingsPercentage: function ($element, elementRect, mousePos) {
 				if (!elementRect) {
 					elementRect = $element.get(0).getBoundingClientRect();
 				}
+
 				return {
 					x: ((mousePos.x - elementRect.left) / (elementRect.right - elementRect.left)) * 100,
 					y: ((mousePos.y - elementRect.top) / (elementRect.bottom - elementRect.top)) * 100
@@ -553,10 +582,12 @@ var Button_Import_Modal = (function ($) {
 				// If no element is hovered or element hovered is the placeholder -> not valid -> return false;
 				if (!$element || $element.length == 0 || !elementRect || !mousePos) return false;
 
+				// console.log($element.get(0));
+
 				if ($element.is('html')) {
 					$element = $element.find('body');
 				}
-				// Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
+
 				mousePercents = this.GetMouseBearingsPercentage($element, elementRect, mousePos);
 
 				// If I need to get inside the element
@@ -574,27 +605,30 @@ var Button_Import_Modal = (function ($) {
 					mousePercents.y > breakPointNumber.y &&
 					mousePercents.y < 100 - breakPointNumber.y
 				) {
-					var perf1 = performance.now();
+					// console.log('case 1');
 					// Case 1
-					var $tempelement = $element.clone();
-					var tempelement = $tempelement.get(0);
+					/*
+						Decide whether to prepend or append the marker depending on the mouse position relative to the hovered element.
+					*/
+					var $tempElement = $element.clone();
+					var tempElement = $tempElement.get(0);
 
-					var dropMarker = tempelement.querySelector('.drop-marker');
+					var dropMarker = tempElement.querySelector('.drop-marker');
 
 					if (dropMarker) {
 						dropMarker.parentNode.removeChild(dropMarker);
 					}
 
-					if ('' === tempelement.innerHTML && !this.checkVoidElement($tempelement)) {
+					if ('' === tempElement.innerHTML && !this.checkVoidElement($tempElement)) {
 						if (mousePercents.y < 90) {
 							return this.PlaceInside($element);
 						}
-					} else if (0 === tempelement.children.length) {
+					} else if (0 === tempElement.children.length) {
 						// Text element detected
 						this.DecideBeforeAfter($element, mousePercents);
-					} else if (1 === tempelement.children.length) {
+					} else if (1 === tempElement.children.length) {
 						// Only 1 child element detected
-						if ($tempelement.hasClass('rex-buttons-paragraph')) {
+						if ($tempElement.hasClass('rex-buttons-paragraph')) {
 							var positionAndElement = this.findNearestElement($element, mousePos.x, mousePos.y);
 							this.DecideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
 						} else {
@@ -604,10 +638,12 @@ var Button_Import_Modal = (function ($) {
 							);
 						}
 					} else {
+						// Mote than 1 child element detected
 						var positionAndElement = this.findNearestElement($element, mousePos.x, mousePos.y);
 						this.DecideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
 					}
 				} else if (mousePercents.x <= breakPointNumber.x || mousePercents.y <= breakPointNumber.y) {
+					// console.log('case 2');
 					if (mousePercents.y <= mousePercents.x) {
 						validElement = this.FindValidParent($element, 'top');
 					} else {
@@ -621,6 +657,7 @@ var Button_Import_Modal = (function ($) {
 
 					this.DecideBeforeAfter(validElement, mousePercents, mousePos);
 				} else if (mousePercents.x >= 100 - breakPointNumber.x || mousePercents.y >= 100 - breakPointNumber.y) {
+					// console.log('case 3');
 					var validElement = null;
 
 					if (mousePercents.y >= mousePercents.x) {
@@ -658,21 +695,24 @@ var Button_Import_Modal = (function ($) {
 					}
 				}
 			},
+			// * OK
 			DecideBeforeAfter: function ($targetElement, mousePercents, mousePos) {
 				if (mousePos) {
 					mousePercents = this.GetMouseBearingsPercentage($targetElement, null, mousePos);
 				}
 
-				var orientation =
-					$targetElement.css('display') == 'inline' ||
-					$targetElement.css('display') == 'inline-block' ||
-					$targetElement.css('display') == 'inline-flex';
+				var targetElementDisplay = $targetElement.css('display');
+
+				var isInline =
+					targetElementDisplay === 'inline' ||
+					targetElementDisplay === 'inline-block' ||
+					targetElementDisplay === 'inline-flex';
 
 				if ($targetElement.is('br')) {
-					orientation = false;
+					isInline = false;
 				}
 
-				if (orientation) {
+				if (isInline) {
 					if (mousePercents.x < 50) {
 						return this.PlaceBefore($targetElement);
 					} else {
@@ -686,12 +726,15 @@ var Button_Import_Modal = (function ($) {
 					}
 				}
 			},
+			// * OK
 			checkVoidElement: function ($element) {
 				return $element.is(selectorVoidElements);
 			},
+			// * OK
 			calculateDistance: function (elementData, mouseX, mouseY) {
 				return Math.sqrt(Math.pow(elementData.x - mouseX, 2) + Math.pow(elementData.y - mouseY, 2));
 			},
+			// * OK
 			FindValidParent: function ($element, direction) {
 				switch (direction) {
 					case 'left':
@@ -787,6 +830,7 @@ var Button_Import_Modal = (function ($) {
 						break;
 				}
 			},
+			// * OK
 			addPlaceHolder: function ($element, position, $placeholder) {
 				if (!$placeholder) {
 					$placeholder = this.getPlaceHolder();
@@ -831,6 +875,7 @@ var Button_Import_Modal = (function ($) {
 
 				this.AddContainerContext($element, whereAddContainerText);
 			},
+			// * OK
 			removePlaceholder: function () {
 				var placeholders = Array.prototype.slice.call(
 					Rexbuilder_Util_Admin_Editor.frameBuilder.contentDocument.querySelectorAll('.drop-marker')
@@ -840,22 +885,24 @@ var Button_Import_Modal = (function ($) {
 					placeholder.parentNode.removeChild(placeholder);
 				});
 			},
+			// TODO Implementare metodo astratto
 			getPlaceHolder: function () {
 				return $('<div class="drop-marker drop-marker--rex-button"></div>');
 			},
+			// * OK
 			PlaceInside: function ($element) {
 				var $placeholder = this.getPlaceHolder();
 
 				$placeholder.addClass('horizontal').css('width', $element.width() + 'px');
 				this.addPlaceHolder($element, 'inside-append', $placeholder);
 			},
+			// * OK
 			PlaceBefore: function ($element) {
+				console.log('place before', $element.get(0));
 				var $placeholder = this.getPlaceHolder();
-
+				var elementDisplay = $element.css('display');
 				var inlinePlaceholder =
-					$element.css('display') == 'inline' ||
-					$element.css('display') == 'inline-block' ||
-					$element.css('display') == 'inline-flex';
+					elementDisplay == 'inline' || elementDisplay == 'inline-block' || elementDisplay == 'inline-flex';
 
 				if ($element.is('br')) {
 					inlinePlaceholder = false;
@@ -869,29 +916,34 @@ var Button_Import_Modal = (function ($) {
 				} else {
 					$placeholder.addClass('horizontal').css('width', $element.parent().width() + 'px');
 				}
+
 				this.addPlaceHolder($element, 'before', $placeholder);
 			},
-
+			/**
+			 * @param {JQuery} $element
+			 */
+			// * OK
 			PlaceAfter: function ($element) {
-				var placeholder = this.getPlaceHolder();
+				console.log('place after', $element.get(0));
+				var $placeholder = this.getPlaceHolder();
+				var elementDisplay = $element.css('display');
 				var inlinePlaceholder =
-					$element.css('display') == 'inline' ||
-					$element.css('display') == 'inline-block' ||
-					$element.css('display') == 'inline-flex';
+					elementDisplay === 'inline' || elementDisplay === 'inline-block' || elementDisplay === 'inline-flex';
+
 				if ($element.is('br')) {
 					inlinePlaceholder = false;
 				} else if ($element.is('td,th')) {
-					placeholder.addClass('horizontal').css('width', $element.width() + 'px');
-					return this.addPlaceHolder($element, 'inside-append', placeholder);
+					$placeholder.addClass('horizontal').css('width', $element.width() + 'px');
+					return this.addPlaceHolder($element, 'inside-append', $placeholder);
 				}
 				if (inlinePlaceholder) {
-					placeholder.addClass('vertical').css('height', $element.innerHeight() + 'px');
+					$placeholder.addClass('vertical').css('height', $element.innerHeight() + 'px');
 				} else {
-					placeholder.addClass('horizontal').css('width', $element.parent().width() + 'px');
+					$placeholder.addClass('horizontal').css('width', $element.parent().width() + 'px');
 				}
-				this.addPlaceHolder($element, 'after', placeholder);
+				this.addPlaceHolder($element, 'after', $placeholder);
 			},
-
+			// * OK
 			findNearestElement: function ($container, clientX, clientY) {
 				var that = this;
 				var previousElData = null;
@@ -987,13 +1039,20 @@ var Button_Import_Modal = (function ($) {
 					}
 				}
 			},
+			// * OK
 			AddEntryToDragOverQueue: function ($element, elementRect, mousePos) {
 				var newEvent = [$element, elementRect, mousePos];
 				this.dragoverqueue.push(newEvent);
 			},
+			// * OK
 			ProcessDragOverQueue: function () {
+				if (previousMouseX === mouseClientX && previousMouseY === mouseClientY) return;
+				// if (this.cursorMoving) return;
+
 				var processing = this.dragoverqueue.pop();
+
 				this.dragoverqueue = [];
+
 				if (processing && processing.length == 3) {
 					var $el = processing[0];
 					var elRect = processing[1];
@@ -1001,9 +1060,11 @@ var Button_Import_Modal = (function ($) {
 					this.OrchestrateDragDrop($el, elRect, mousePos);
 				}
 			},
+			// * OK
 			GetContextMarker: function () {
 				return $('<div data-dragcontext-marker><span data-dragcontext-marker-text></span></div>');
 			},
+			// TODO Finish
 			AddContainerContext: function ($element, position) {
 				var $contextMarker = this.GetContextMarker();
 
@@ -1075,6 +1136,7 @@ var Button_Import_Modal = (function ($) {
 						break;
 				}
 			},
+			// TODO Finish
 			PositionContextMarker: function ($contextMarker, $element) {
 				var rect = $element.get(0).getBoundingClientRect();
 				$contextMarker.css({
@@ -1089,6 +1151,7 @@ var Button_Import_Modal = (function ($) {
 					$contextMarker.find('[data-dragcontext-marker-text]').css('top', '0px');
 				}
 			},
+			// * OK
 			ClearContainerContext: function () {
 				// Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('[data-dragcontext-marker]').remove();
 
@@ -1100,6 +1163,7 @@ var Button_Import_Modal = (function ($) {
 					contextMarker.parentNode.removeChild(contextMarker);
 				});
 			},
+			// * OK
 			getElementName: function ($element) {
 				return $element.prop('tagName');
 			}

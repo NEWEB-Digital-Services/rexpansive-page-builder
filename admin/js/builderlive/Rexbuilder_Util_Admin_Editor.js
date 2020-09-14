@@ -65,21 +65,24 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	/**
 	 * Blocks iframe scrolling.
 	 * If true iframe will stop autoscrolling.
-	 * If false iframe will scroll alone
-	 * @param {Boolean} stop true if stop false if need scroll
+	 * If false iframe will scroll alone.
+	 *
+	 * @param		{boolean}	needToStop	true if stop, false if need scroll
+	 * @version	2.0.9			Changed confusing name
 	 */
-	var _setScroll = function (stop) {
-		this.stopScrolling = stop;
-	};
+	function setStopScroll(needToStop) {
+		this.stopScrolling = needToStop;
+	}
 
 	var scrollY;
 
-	var _scrollFrame = function (step) {
+	var scrollFrame = function (step) {
 		scrollY = $frameBuilderWindow.scrollTop();
 		$frameBuilderWindow.scrollTop(scrollY + step);
+
 		if (!Rexbuilder_Util_Admin_Editor.stopScrolling) {
 			setTimeout(function () {
-				_scrollFrame(step);
+				scrollFrame(step);
 			}, 20);
 		}
 	};
@@ -2019,8 +2022,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		openRowOverlayPaletteModal: _openRowOverlayPaletteModal,
 		addSpectrumCustomSaveButton: _addSpectrumCustomSaveButton,
 		addSpectrumCustomCloseButton: _addSpectrumCustomCloseButton,
-		scrollFrame: _scrollFrame,
-		setScroll: _setScroll,
+		scrollFrame: scrollFrame,
+		setStopScroll: setStopScroll,
 		addClassToLiveFrameRexContainer: _addClassToLiveFrameRexContainer,
 		removeClassToLiveFrameRexContainer: _removeClassToLiveFrameRexContainer,
 		forceTriggerLoad: _forceTriggerLoad,

@@ -14,6 +14,8 @@ const gulpUtil = require('gulp-util');
 const svgSprite = require('gulp-svg-sprite');
 const sourcemaps = require('gulp-sourcemaps');
 const mode = require('gulp-mode')();
+// const ts = require('gulp-typescript');
+// const tsProject = ts.createProject('tsconfig.json');
 
 const fs = require('fs');
 
@@ -29,7 +31,6 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 	if (err) throw err;
 
 	const newString = `define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', ${production} );`;
-	// Maybe add \s for the spaces
 	const result = data.replace(/define\(\s*\'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS\'\,\s*\w+\s*\)\;/, newString);
 
 	fs.writeFile(filePath, result, 'utf8', function (err) {
@@ -71,6 +72,17 @@ var config = {
 		xmlDeclaration: false
 	}
 };
+
+// function compileTs() {
+// 	return tsProject
+// 		.src()
+// 		.pipe(tsProject())
+// 		.js.pipe(
+// 			dest(function (params) {
+// 				console.log(arguments);
+// 			})
+// 		);
+// }
 
 // LIVE e ADMIN
 function liveSprites(cb) {
@@ -216,17 +228,18 @@ var builderlive_admin = [
 ];
 
 function adminScript(cb) {
+	cb();
 	return src(builderlive_admin)
 		.pipe(plumber())
 		.pipe(concat('builderlive-admin.js'))
 		.pipe(uglify({ mangle: true }))
 		.pipe(size({ title: 'ADMIN JS:' }))
 		.pipe(dest('./admin/js'));
-	cb();
 }
 
 // LIVE JS
 var builderlive_public_editor = [
+	'public/js/vendor/drag-drop.js',
 	'public/js/vendor/tippy.all.min.js',
 	'public/js/vendor/rangy-1.3.0/rangy-core.js',
 	'public/js/vendor/rangy-1.3.0/rangy-classapplier.js',
@@ -288,12 +301,12 @@ var builderlive_public_editor = [
 ];
 
 function builderliveEditor(cb) {
+	cb();
 	return src(builderlive_public_editor)
 		.pipe(uglify({ preserveComments: 'license' }).on('error', gulpUtil.log))
 		.pipe(concat('builderlive-editor.js'))
 		.pipe(size({ title: 'Builderlive Editor' }))
 		.pipe(dest('public/js'));
-	cb();
 }
 
 function watchBuilderliveEditor(cb) {

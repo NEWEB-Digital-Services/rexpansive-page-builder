@@ -592,16 +592,16 @@ var Form_Import_Modal = (function ($) {
 
 		// definisce quando bisogna scrollare in alto o in basso
 		Rexlive_Base_Settings.$document.on('drag', '.element-list li', function (event) {
-			Rexbuilder_Util_Admin_Editor.setScroll(true);
+			Rexbuilder_Util_Admin_Editor.setStopScroll(true);
 			Rexbuilder_Util_Admin_Editor.checkLateralMenu(mouseClientX);
 
 			if (mouseClientY < 150) {
-				Rexbuilder_Util_Admin_Editor.setScroll(false);
+				Rexbuilder_Util_Admin_Editor.setStopScroll(false);
 				Rexbuilder_Util_Admin_Editor.scrollFrame(-1);
 			}
 
 			if (mouseClientY > $frameContentWindow.height() - 150) {
-				Rexbuilder_Util_Admin_Editor.setScroll(false);
+				Rexbuilder_Util_Admin_Editor.setStopScroll(false);
 				Rexbuilder_Util_Admin_Editor.scrollFrame(1);
 			}
 		});
@@ -609,7 +609,7 @@ var Form_Import_Modal = (function ($) {
 		Rexlive_Base_Settings.$document.on('dragend', '.element-list li', function (event) {
 			clearInterval(dragoverqueue_processtimer);
 
-			Rexbuilder_Util_Admin_Editor.setScroll(true);
+			Rexbuilder_Util_Admin_Editor.setStopScroll(true);
 
 			DragDropFunctions.removePlaceholder();
 			DragDropFunctions.ClearContainerContext();
