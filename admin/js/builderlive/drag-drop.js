@@ -45,6 +45,12 @@ var dragDropInstances = (function ($) {
 		 * @public
 		 */
 		this.context = context;
+
+		/**
+		 * TODO Make this private
+		 * @type		{boolean}
+		 */
+		this.cursorMoving = null;
 	}
 
 	/**
@@ -136,6 +142,122 @@ var dragDropInstances = (function ($) {
 		return Math.sqrt(Math.pow(elementData.x - mouseX, 2) + Math.pow(elementData.y - mouseY, 2));
 	};
 
+	/**
+	 * @param {JQuery} $container
+	 * @param {number} clientX
+	 * @param {number} clientY
+	 */
+	DragDrop.findNearestElement = function ($container, clientX, clientY) {
+		var that = this;
+		var previousElData = null;
+		var $childrenElement = $container.children(':not(.drop-marker,[data-dragcontext-marker])');
+
+		if ($childrenElement.length <= 0) return;
+
+		$childrenElement.each(function (index, child) {
+			if ($(child).is('.drop-marker')) return;
+
+			var offset = child.getBoundingClientRect();
+			var distance = 0;
+			var distance1,
+				distance2 = null;
+			var position = '';
+			var xPosition1 = offset.left;
+			var xPosition2 = offset.right;
+			var yPosition1 = offset.top;
+			var yPosition2 = offset.bottom;
+			var corner1 = null;
+			var corner2 = null;
+
+			// Parellel to Yaxis and intersecting with x axis
+			if (clientY > yPosition1 && clientY < yPosition2) {
+				if (clientX < xPosition1 && clientY < xPosition2) {
+					corner1 = { x: xPosition1, y: clientY, position: 'before' };
+				} else {
+					corner1 = { x: xPosition2, y: clientY, position: 'after' };
+				}
+			}
+			// Parellel to xAxis and intersecting with Y axis
+			else if (clientX > xPosition1 && clientX < xPosition2) {
+				if (clientY < yPosition1 && clientY < yPosition2) {
+					corner1 = { x: clientX, y: yPosition1, position: 'before' };
+				} else {
+					corner1 = { x: clientX, y: yPosition2, position: 'after' };
+				}
+			} else {
+				// Runs if no element found!
+				if (clientX < xPosition1 && clientX < xPosition2) {
+					corner1 = { x: xPosition1, y: yPosition1, position: 'before' }; // Left top
+					corner2 = { x: xPosition1, y: yPosition2, position: 'after' }; // Left bottom
+				} else if (clientX > xPosition1 && clientX > xPosition2) {
+					// 'I m on the right of the element
+					corner1 = { x: xPosition2, y: yPosition1, position: 'before' }; // Right top
+					corner2 = { x: xPosition2, y: yPosition2, position: 'after' }; // Right Bottom
+				} else if (clientY < yPosition1 && clientY < yPosition2) {
+					// 'I m on the top of the element
+					corner1 = { x: xPosition1, y: yPosition1, position: 'before' }; // Top Left
+					corner2 = { x: xPosition2, y: yPosition1, position: 'after' }; // Top Right
+				} else if (clientY > yPosition1 && clientY > yPosition2) {
+					// 'I m on the bottom of the element
+					corner1 = { x: xPosition1, y: yPosition2, position: 'before' }; // Left bottom
+					corner2 = { x: xPosition2, y: yPosition2, position: 'after' }; // Right Bottom
+				}
+			}
+
+			distance1 = DragDrop.calculateDistance(corner1, clientX, clientY);
+
+			if (corner2 !== null) distance2 = DragDrop.calculateDistance(corner2, clientX, clientY);
+
+			if (distance1 < distance2 || distance2 === null) {
+				distance = distance1;
+				position = corner1.position;
+			} else {
+				distance = distance2;
+				position = corner2.position;
+			}
+
+			if (previousElData !== null) {
+				if (previousElData.distance < distance) {
+					return true; // Continue statement
+				}
+			}
+			previousElData = {
+				el: this,
+				distance: distance,
+				xPosition1: xPosition1,
+				xPosition2: xPosition2,
+				yPosition1: yPosition1,
+				yPosition2: yPosition2,
+				position: position
+			};
+		});
+
+		if (previousElData !== null) {
+			var position = previousElData.position;
+			return {
+				el: $(previousElData.el),
+				position: position
+			};
+		} else {
+			return false;
+		}
+	};
+
+	/**
+	 * @param		{JQuery}	$element
+	 * @returns {string}
+	 */
+	DragDrop.getElementName = function ($element) {
+		return $element.prop('tagName');
+	};
+
+	/**
+	 * @returns	{JQuery}
+	 */
+	DragDrop.getContextMarker = function () {
+		return $('<div data-dragcontext-marker><span data-dragcontext-marker-text></span></div>');
+	};
+
 	DragDrop.prototype.removeAllPlaceholders = function () {
 		var placeholders = Array.prototype.slice.call(this.context.querySelectorAll('.drop-marker'));
 
@@ -213,13 +335,6 @@ var dragDropInstances = (function ($) {
 			default:
 				break;
 		}
-	};
-
-	/**
-	 * @returns	{JQuery}
-	 */
-	DragDrop.getContextMarker = function () {
-		return $('<div data-dragcontext-marker><span data-dragcontext-marker-text></span></div>');
 	};
 
 	/**
@@ -349,115 +464,6 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
-	 * @param {JQuery} $container
-	 * @param {number} clientX
-	 * @param {number} clientY
-	 */
-	DragDrop.findNearestElement = function ($container, clientX, clientY) {
-		var that = this;
-		var previousElData = null;
-		var $childrenElement = $container.children(':not(.drop-marker,[data-dragcontext-marker])');
-
-		if ($childrenElement.length <= 0) return;
-
-		$childrenElement.each(function (index, child) {
-			if ($(child).is('.drop-marker')) return;
-
-			var offset = child.getBoundingClientRect();
-			var distance = 0;
-			var distance1,
-				distance2 = null;
-			var position = '';
-			var xPosition1 = offset.left;
-			var xPosition2 = offset.right;
-			var yPosition1 = offset.top;
-			var yPosition2 = offset.bottom;
-			var corner1 = null;
-			var corner2 = null;
-
-			// Parellel to Yaxis and intersecting with x axis
-			if (clientY > yPosition1 && clientY < yPosition2) {
-				if (clientX < xPosition1 && clientY < xPosition2) {
-					corner1 = { x: xPosition1, y: clientY, position: 'before' };
-				} else {
-					corner1 = { x: xPosition2, y: clientY, position: 'after' };
-				}
-			}
-			// Parellel to xAxis and intersecting with Y axis
-			else if (clientX > xPosition1 && clientX < xPosition2) {
-				if (clientY < yPosition1 && clientY < yPosition2) {
-					corner1 = { x: clientX, y: yPosition1, position: 'before' };
-				} else {
-					corner1 = { x: clientX, y: yPosition2, position: 'after' };
-				}
-			} else {
-				// Runs if no element found!
-				if (clientX < xPosition1 && clientX < xPosition2) {
-					corner1 = { x: xPosition1, y: yPosition1, position: 'before' }; // Left top
-					corner2 = { x: xPosition1, y: yPosition2, position: 'after' }; // Left bottom
-				} else if (clientX > xPosition1 && clientX > xPosition2) {
-					// 'I m on the right of the element
-					corner1 = { x: xPosition2, y: yPosition1, position: 'before' }; // Right top
-					corner2 = { x: xPosition2, y: yPosition2, position: 'after' }; // Right Bottom
-				} else if (clientY < yPosition1 && clientY < yPosition2) {
-					// 'I m on the top of the element
-					corner1 = { x: xPosition1, y: yPosition1, position: 'before' }; // Top Left
-					corner2 = { x: xPosition2, y: yPosition1, position: 'after' }; // Top Right
-				} else if (clientY > yPosition1 && clientY > yPosition2) {
-					// 'I m on the bottom of the element
-					corner1 = { x: xPosition1, y: yPosition2, position: 'before' }; // Left bottom
-					corner2 = { x: xPosition2, y: yPosition2, position: 'after' }; // Right Bottom
-				}
-			}
-
-			distance1 = DragDrop.calculateDistance(corner1, clientX, clientY);
-
-			if (corner2 !== null) distance2 = DragDrop.calculateDistance(corner2, clientX, clientY);
-
-			if (distance1 < distance2 || distance2 === null) {
-				distance = distance1;
-				position = corner1.position;
-			} else {
-				distance = distance2;
-				position = corner2.position;
-			}
-
-			if (previousElData !== null) {
-				if (previousElData.distance < distance) {
-					return true; // Continue statement
-				}
-			}
-			previousElData = {
-				el: this,
-				distance: distance,
-				xPosition1: xPosition1,
-				xPosition2: xPosition2,
-				yPosition1: yPosition1,
-				yPosition2: yPosition2,
-				position: position
-			};
-		});
-
-		if (previousElData !== null) {
-			var position = previousElData.position;
-			return {
-				el: $(previousElData.el),
-				position: position
-			};
-		} else {
-			return false;
-		}
-	};
-
-	/**
-	 * @param		{JQuery}	$element
-	 * @returns {string}
-	 */
-	DragDrop.getElementName = function ($element) {
-		return $element.prop('tagName');
-	};
-
-	/**
 	 * @param {JQuery}			$element
 	 * @param {DOMRect}			elementRect
 	 * @param {MouseCoords}	mousePos
@@ -469,8 +475,8 @@ var dragDropInstances = (function ($) {
 	};
 
 	DragDrop.prototype.processDragOverQueue = function () {
-		// if (previousMouseX === mouseClientX && previousMouseY === mouseClientY) return;
-		// if (this.cursorMoving) return;
+		// console.log('process', this.cursorMoving);
+		if (!this.cursorMoving) return;
 
 		var processing = this.dragoverqueue.pop();
 
@@ -482,6 +488,17 @@ var dragDropInstances = (function ($) {
 			var mousePos = processing[2];
 			this.orchestrateDragDrop($el, elRect, mousePos);
 		}
+	};
+
+	/**
+	 *
+	 * @param {number}	previousX
+	 * @param {number}	previousY
+	 * @param {number}	currentX
+	 * @param {number}	currentY
+	 */
+	DragDrop.prototype.checkIfCursorMoves = function (previousX, previousY, currentX, currentY) {
+		this.cursorMoving = !(previousX === currentX && previousY === currentY);
 	};
 
 	/**

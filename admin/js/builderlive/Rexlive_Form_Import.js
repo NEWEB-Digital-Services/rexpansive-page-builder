@@ -546,20 +546,21 @@ var Form_Import_Modal = (function ($) {
 
 	// Functions for drag & drop
 	function _linkDraggable() {
+		var isIE = /*@cc_on!@*/ false || !!document.documentMode;
 		var currentElement, currentElementChangeFlag, elementRectangle, countdown, dragoverqueue_processtimer;
 
 		var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow;
 		var $frameContentWindow = $(clientFrameWindow);
 
-		var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-
-		// to understand, need for button near the mouse during the drag
-		// var $imgPreview;
-
 		var mouseClientX = 0;
 		var mouseClientY = 0;
 
-		Rexlive_Base_Settings.$document.on('dragstart', '.element-list li', function (event) {
+		var previousMouseClientX = 0;
+		var previousMouseClientY = 0;
+
+		var scrollAmount = 15;
+
+		function onDragStartForm(event) {
 			Rexbuilder_Util_Admin_Editor.dragImportType = 'rexelement';
 			Rexbuilder_Util_Admin_Editor.hideLateralMenu();
 
@@ -583,12 +584,9 @@ var Form_Import_Modal = (function ($) {
 				data_to_send: {}
 			};
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDstart);
-		});
+		}
 
-		var scrollAmount = 15;
-
-		// definisce quando bisogna scrollare in alto o in basso
-		Rexlive_Base_Settings.$document.on('drag', '.element-list li', function (event) {
+		function onDragForm() {
 			Rexbuilder_Util_Admin_Editor.setStopScroll(true);
 			Rexbuilder_Util_Admin_Editor.checkLateralMenu(mouseClientX);
 
@@ -601,9 +599,9 @@ var Form_Import_Modal = (function ($) {
 				// Rexbuilder_Util_Admin_Editor.setStopScroll(false);
 				Rexbuilder_Util_Admin_Editor.scrollFrame(scrollAmount);
 			}
-		});
+		}
 
-		Rexlive_Base_Settings.$document.on('dragend', '.element-list li', function (event) {
+		function onDragEndForm() {
 			clearInterval(dragoverqueue_processtimer);
 
 			Rexbuilder_Util_Admin_Editor.setStopScroll(true);
@@ -619,7 +617,11 @@ var Form_Import_Modal = (function ($) {
 				data_to_send: {}
 			};
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
-		});
+		}
+
+		Rexlive_Base_Settings.$document.on('dragstart', '.element-list li', onDragStartForm);
+		Rexlive_Base_Settings.$document.on('drag', '.element-list li', onDragForm);
+		Rexlive_Base_Settings.$document.on('dragend', '.element-list li', onDragEndForm);
 
 		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
 			var $rexContainer = $(Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow.document)
@@ -629,94 +631,102 @@ var Form_Import_Modal = (function ($) {
 			var mousePosition = {};
 			var mousePositionToIFrame = {};
 
-			$frameContentWindow.on('dragover', function (event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexelement') {
-					// mouse position for scrolling
-					event.preventDefault();
-					event.stopPropagation();
+			function onDragOverWindow(event) {
+				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexelement') return;
+				event.preventDefault();
+				event.stopPropagation();
 
-					mouseClientX = event.originalEvent.clientX;
-					mouseClientY = event.originalEvent.clientY;
-				}
-			});
+				previousMouseClientX = mouseClientX;
+				previousMouseClientY = mouseClientY;
 
-			$rexContainer.on('dragenter', '.grid-stack-row', function (event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexelement') {
-					currentElement = $(event.target);
-					currentElementChangeFlag = true;
-					elementRectangle = event.target.getBoundingClientRect();
-					countdown = 1;
-				}
-			});
+				// Mouse position for scrolling
+				mouseClientX = event.originalEvent.clientX;
+				mouseClientY = event.originalEvent.clientY;
 
-			$rexContainer.on('dragover', '.grid-stack-row', function (event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexelement') {
-					// Updating mouseClinentX & mouseClientY variables to make possible
-					// dragging even on sections
-					mouseClientX = event.originalEvent.clientX;
-					mouseClientY = event.originalEvent.clientY;
+				dragDropHelper.checkIfCursorMoves(previousMouseClientX, previousMouseClientY, mouseClientX, mouseClientY);
+				Rexbuilder_Util_Admin_Editor.checkLateralMenu(mouseClientX);
+			}
 
-					if (countdown % 15 != 0 && currentElementChangeFlag == false) {
-						countdown = countdown + 1;
-						return;
-					}
-					event = event || window.event;
+			function onDragEnterRow(event) {
+				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexelement') return;
+
+				currentElement = $(event.target);
+				currentElementChangeFlag = true;
+				elementRectangle = event.target.getBoundingClientRect();
+				countdown = 1;
+			}
+
+			function onDragOverRow(event) {
+				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexelement') return;
+				// Updating mouseClinentX & mouseClientY variables to make possible
+				// dragging even on sections
+				mouseClientX = event.originalEvent.clientX;
+				mouseClientY = event.originalEvent.clientY;
+
+				if (countdown % 15 != 0 && currentElementChangeFlag == false) {
 					countdown = countdown + 1;
-					currentElementChangeFlag = false;
-
-					mousePosition.xCoord = event.originalEvent.clientX;
-					mousePosition.yCoord = event.originalEvent.clientY;
-
-					mousePositionToIFrame.x = event.originalEvent.pageX;
-					mousePositionToIFrame.y = event.originalEvent.pageY;
-
-					dragDropHelper.addEntryToDragOverQueue(currentElement, elementRectangle, mousePosition);
+					return;
 				}
-			});
+				event = event || window.event;
+				countdown = countdown + 1;
+				currentElementChangeFlag = false;
 
-			$rexContainer.on('drop', '.grid-stack-row', function (event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexelement') {
-					event.preventDefault();
-					event.stopPropagation();
+				mousePosition.xCoord = event.originalEvent.clientX;
+				mousePosition.yCoord = event.originalEvent.clientY;
 
-					var e;
-					if (event.isTrigger) {
-						e = triggerEvent.originalEvent;
+				mousePositionToIFrame.x = event.originalEvent.pageX;
+				mousePositionToIFrame.y = event.originalEvent.pageY;
+
+				dragDropHelper.addEntryToDragOverQueue(currentElement, elementRectangle, mousePosition);
+			}
+
+			function onDropRow(event) {
+				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexelement') return;
+				event.preventDefault();
+				event.stopPropagation();
+
+				var e;
+				if (event.isTrigger) {
+					e = triggerEvent.originalEvent;
+				} else {
+					e = event.originalEvent;
+				}
+
+				try {
+					var textData = '';
+
+					if (isIE) {
+						textData = e.dataTransfer.getData('text');
 					} else {
-						e = event.originalEvent;
+						textData = e.dataTransfer.getData('text/plain');
 					}
 
-					try {
-						var textData = '';
+					var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('.drop-marker');
 
-						if (isIE) {
-							textData = e.dataTransfer.getData('text');
-						} else {
-							textData = e.dataTransfer.getData('text/plain');
+					textData = textData.trim();
+
+					var $divInsert = $($.parseHTML(textData));
+					$divInsert.addClass('rex-loading-element');
+					$divInsert.insertAfter($insertionPoint[0]);
+					$divInsert.hide();
+					$insertionPoint.remove();
+
+					var dataEndDrop = {
+						eventName: 'rexlive:importElement',
+						data: {
+							mousePosition: mousePositionToIFrame
 						}
-
-						var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('.drop-marker');
-
-						textData = textData.trim();
-
-						var $divInsert = $($.parseHTML(textData));
-						$divInsert.addClass('rex-loading-element');
-						$divInsert.insertAfter($insertionPoint[0]);
-						$divInsert.hide();
-						$insertionPoint.remove();
-
-						var dataEndDrop = {
-							eventName: 'rexlive:importElement',
-							data: {
-								mousePosition: mousePositionToIFrame
-							}
-						};
-						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
-					} catch (e) {
-						console.error(e);
-					}
+					};
+					Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
+				} catch (e) {
+					console.error(e);
 				}
-			});
+			}
+
+			$frameContentWindow.on('dragover', onDragOverWindow);
+			$rexContainer.on('dragenter', '.grid-stack-row', onDragEnterRow);
+			$rexContainer.on('dragover', '.grid-stack-row', onDragOverRow);
+			$rexContainer.on('drop', '.grid-stack-row', onDropRow);
 		});
 	}
 

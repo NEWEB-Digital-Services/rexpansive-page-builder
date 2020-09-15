@@ -508,19 +508,26 @@ var Model_Import_Modal = (function ($) {
 	var _linkDocumentListeners = function () {};
 
 	var _linkDraggable = function () {
-		var currentElement, currentElementChangeFlag, elementRectangle, countdown, dragoverqueue_processtimer;
+		var isIE = /*@cc_on!@*/ false || !!document.documentMode;
+		var $currentElement, currentElementChangeFlag, elementRectangle, countdown, dragoverqueue_processtimer;
 
 		var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow;
 		var $frameContentWindow = $(clientFrameWindow);
-		var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-		var mouseClientX = 0,
-			mouseClientY = 0;
 
-		Rexlive_Base_Settings.$document.on('dragstart', '.model-list li', function (event) {
+		var mouseClientX = 0;
+		var mouseClientY = 0;
+
+		var previousMouseClientX = 0;
+		var previousMouseClientY = 0;
+
+		var scrollAmount = 15;
+
+		function onModelDragStart(event) {
 			Rexbuilder_Util_Admin_Editor.dragImportType = 'rexmodel';
-			Rexbuilder_Util_Admin_Editor.hideLateralMenu();
 
+			Rexbuilder_Util_Admin_Editor.hideLateralMenu();
 			Rexbuilder_Util_Admin_Editor.blockIframeRows();
+
 			event.originalEvent.dataTransfer.effectAllowed = 'all';
 
 			dragoverqueue_processtimer = setInterval(function () {
@@ -529,28 +536,26 @@ var Model_Import_Modal = (function ($) {
 
 			tmpl.arg = 'o';
 
-			var tmpl_obj = {
+			var insertingHTML = tmpl('rexlive-tmpl-insert-model-loader', {
 				model_id: $(this).attr('data-rex-model-id')
-			};
-			var insertingHTML = tmpl('rexlive-tmpl-insert-model-loader', tmpl_obj);
+			});
+
+			var dataType = 'text/plain';
 
 			if (isIE) {
-				event.originalEvent.dataTransfer.setData('text', insertingHTML);
-			} else {
-				event.originalEvent.dataTransfer.setData('text/plain', insertingHTML);
+				dataType = 'text';
 			}
+
+			event.originalEvent.dataTransfer.setData(dataType, insertingHTML);
 
 			var dataDnDstart = {
 				eventName: 'rexlive:drag_drop_started',
 				data_to_send: {}
 			};
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDstart);
-		});
+		}
 
-		var scrollAmount = 15;
-
-		// definisce quando bisogna scrollare in alto o in basso
-		Rexlive_Base_Settings.$document.on('drag', '.model-list li', function (event) {
+		function onModelDrag() {
 			Rexbuilder_Util_Admin_Editor.setStopScroll(true);
 			Rexbuilder_Util_Admin_Editor.checkLateralMenu(mouseClientX);
 
@@ -561,9 +566,9 @@ var Model_Import_Modal = (function ($) {
 			if (mouseClientY > $frameContentWindow.height() - 150) {
 				Rexbuilder_Util_Admin_Editor.scrollFrame(scrollAmount);
 			}
-		});
+		}
 
-		Rexlive_Base_Settings.$document.on('dragend', '.model-list li', function (event) {
+		function onModelDragEnd(event) {
 			Rexbuilder_Util_Admin_Editor.setStopScroll(true);
 			Rexbuilder_Util_Admin_Editor.releaseIframeRows();
 
@@ -573,88 +578,101 @@ var Model_Import_Modal = (function ($) {
 			dragDropHelper.clearContainerContextMarker();
 
 			Rexbuilder_Util_Admin_Editor.dragImportType = '';
+
 			var dataDnDend = {
 				eventName: 'rexlive:drag_drop_ended',
 				data_to_send: {}
 			};
 
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
-		});
+		}
+
+		Rexlive_Base_Settings.$document.on('dragstart', '.model-list li', onModelDragStart);
+		Rexlive_Base_Settings.$document.on('drag', '.model-list li', onModelDrag);
+		Rexlive_Base_Settings.$document.on('dragend', '.model-list li', onModelDragEnd);
 
 		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
 			var $rexContainer = $(clientFrameWindow.document).find('.rex-container').eq(0);
-
 			var mousePosition = {};
 
-			$frameContentWindow.on('dragover', function (event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexmodel') {
-					// mouse position for scrolling
-					event.preventDefault();
-					event.stopPropagation();
+			function onDragOverWindow(event) {
+				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexmodel') return;
+				event.preventDefault();
+				event.stopPropagation();
 
-					mouseClientX = event.originalEvent.clientX;
-					mouseClientY = event.originalEvent.clientY;
-				}
-			});
+				previousMouseClientX = mouseClientX;
+				previousMouseClientY = mouseClientY;
 
-			$rexContainer.on('dragenter', function (event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexmodel') {
-					event.stopPropagation();
+				// Mouse position for scrolling
+				mouseClientX = event.originalEvent.clientX;
+				mouseClientY = event.originalEvent.clientY;
 
-					currentElement = $(event.target);
-					currentElementChangeFlag = true;
-					elementRectangle = event.target.getBoundingClientRect();
-					countdown = 1;
-				}
-			});
+				dragDropHelper.checkIfCursorMoves(previousMouseClientX, previousMouseClientY, mouseClientX, mouseClientY);
+				Rexbuilder_Util_Admin_Editor.checkLateralMenu(mouseClientX);
+			}
 
-			$rexContainer.on('dragover', function (event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexmodel') {
-					if (countdown % 15 != 0 && currentElementChangeFlag == false) {
-						countdown = countdown + 1;
-						return;
-					}
-					event = event || window.event;
+			function onDragEnterRow(event) {
+				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexmodel') return;
+				event.stopPropagation();
+
+				$currentElement = $(event.target);
+				currentElementChangeFlag = true;
+				elementRectangle = event.target.getBoundingClientRect();
+				countdown = 1;
+			}
+
+			function onDragOverContainer(event) {
+				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexmodel') return;
+
+				if (countdown % 15 != 0 && currentElementChangeFlag == false) {
 					countdown = countdown + 1;
-					currentElementChangeFlag = false;
-
-					mousePosition.xCoord = event.originalEvent.clientX;
-					mousePosition.yCoord = event.originalEvent.clientY;
-
-					dragDropHelper.addEntryToDragOverQueue(currentElement, elementRectangle, mousePosition);
+					return;
 				}
-			});
 
-			$rexContainer.on('drop', function (event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType == 'rexmodel') {
-					event.preventDefault();
-					event.stopPropagation();
+				event = event || window.event;
+				countdown = countdown + 1;
+				currentElementChangeFlag = false;
 
-					var e;
+				mousePosition.xCoord = event.originalEvent.clientX;
+				mousePosition.yCoord = event.originalEvent.clientY;
 
-					if (event.isTrigger) {
-						e = triggerEvent.originalEvent;
-					} else {
-						e = event.originalEvent;
-					}
+				dragDropHelper.addEntryToDragOverQueue($currentElement, elementRectangle, mousePosition);
+			}
 
-					try {
-						var textData = e.dataTransfer.getData('text/plain');
-						var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('.drop-marker');
-						var $divInsert = $(jQuery.parseHTML(textData));
+			function onDropContainer(event) {
+				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexmodel') return;
+				event.preventDefault();
+				event.stopPropagation();
 
-						$divInsert.insertAfter($insertionPoint[0]);
-						$insertionPoint.remove();
+				var e;
 
-						var dataEndDrop = {
-							eventName: 'rexlive:importModels'
-						};
-						Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
-					} catch (e) {
-						console.error(e);
-					}
+				if (event.isTrigger) {
+					e = triggerEvent.originalEvent;
+				} else {
+					e = event.originalEvent;
 				}
-			});
+
+				try {
+					var textData = e.dataTransfer.getData('text/plain');
+					var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('.drop-marker');
+					var $divInsert = $(jQuery.parseHTML(textData));
+
+					$divInsert.insertAfter($insertionPoint[0]);
+					$insertionPoint.remove();
+
+					var dataEndDrop = {
+						eventName: 'rexlive:importModels'
+					};
+					Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
+				} catch (e) {
+					console.error(e);
+				}
+			}
+
+			$frameContentWindow.on('dragover', onDragOverWindow);
+			$rexContainer.on('dragenter', onDragEnterRow);
+			$rexContainer.on('dragover', onDragOverContainer);
+			$rexContainer.on('drop', onDropContainer);
 		});
 	};
 
