@@ -595,6 +595,8 @@ var Model_Import_Modal = (function ($) {
 			var $rexContainer = $(clientFrameWindow.document).find('.rex-container').eq(0);
 			var mousePosition = {};
 
+			Model_Import_Modal.onDragOverWindow = onDragOverWindow;
+
 			function onDragOverWindow(event) {
 				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexmodel') return;
 				event.preventDefault();
@@ -669,7 +671,7 @@ var Model_Import_Modal = (function ($) {
 				}
 			}
 
-			$frameContentWindow.on('dragover', onDragOverWindow);
+			// $frameContentWindow.on('dragover', onDragOverWindow);
 			$rexContainer.on('dragenter', onDragEnterRow);
 			$rexContainer.on('dragover', onDragOverContainer);
 			$rexContainer.on('drop', onDropContainer);

@@ -6,7 +6,7 @@ var Model_Lateral_Menu = (function ($) {
 	'use strict';
 	var rexmodel_lateral_menu;
 
-	function _openModal() {
+	function openModal() {
 		Model_Import_Modal.updateModelList();
 		Form_Import_Modal.updateList();
 	}
@@ -40,7 +40,7 @@ var Model_Lateral_Menu = (function ($) {
 			});
 	}
 
-	function _linkDocumentListeners() {
+	function _linkListeners() {
 		Rexlive_Base_Settings.$document.on('rexlive:lateralMenuReady', function () {
 			show();
 		});
@@ -65,6 +65,7 @@ var Model_Lateral_Menu = (function ($) {
 			});
 		});
 
+		// TODO Move all these model/form related cb to their file
 		/**
 		 * Opens modal to edit the RexModel name
 		 * @param  {MouseEvent} e) Click event
@@ -154,9 +155,41 @@ var Model_Lateral_Menu = (function ($) {
 
 			Form_Import_Modal.resetElementThumbnail($element.attr('data-rex-element-id'));
 		});
+
+		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(onIFrameLoad);
 	}
 
-	function _init() {
+	/**
+	 * @param	{string}	funcName
+	 * @param	{Event}		event
+	 * @since	2.0.9
+	 */
+	function _generateCallback(funcName, event) {
+		var handler = _getHandler();
+
+		// if (!handler) return;
+		if (!handler || !(funcName in handler)) return;
+
+		handler[funcName](event);
+	}
+
+	function _getHandler() {
+		var currentDraggingElementType = Rexbuilder_Util_Admin_Editor.dragImportType;
+
+		switch (currentDraggingElementType) {
+			case 'rexmodel':
+				return Model_Import_Modal;
+			case 'rexbutton':
+				return Button_Import_Modal;
+			case 'rexelement':
+				return Form_Import_Modal;
+
+			default:
+				return null;
+		}
+	}
+
+	function init() {
 		var $self = $('#rexbuilder-lateral-panel');
 		rexmodel_lateral_menu = {
 			$self: $self,
@@ -167,12 +200,23 @@ var Model_Lateral_Menu = (function ($) {
 
 		rexmodel_lateral_menu.$tabs.hide();
 
-		_linkDocumentListeners();
+		_linkListeners();
+	}
+
+	function onIFrameLoad(loadEvent) {
+		var clientFrameWindow = Rexbuilder_Util_Admin_Editor.frameBuilder.contentWindow;
+		var $frameContentWindow = $(clientFrameWindow);
+		var $rexContainer = $(clientFrameWindow.document).find('.rex-container').eq(0);
+
+		$frameContentWindow.on('dragover', _generateCallback.bind(null, 'onDragOverWindow'));
+		$rexContainer.on('dragenter', '.grid-stack-row', _generateCallback.bind(null, 'onDragEnterRow'));
+		$rexContainer.on('dragover', '.grid-stack-row', _generateCallback.bind(null, 'onDragOverRow'));
+		$rexContainer.on('drop', '.grid-stack-row', _generateCallback.bind(null, 'onDropRow'));
 	}
 
 	return {
-		init: _init,
-		openModal: _openModal,
+		init: init,
+		openModal: openModal,
 		hide: hide,
 		show: show
 	};

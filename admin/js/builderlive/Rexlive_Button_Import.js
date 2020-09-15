@@ -525,10 +525,14 @@ var Button_Import_Modal = (function ($) {
 				}
 			}
 
-			$frameContentWindow.on('dragover', onDragOverWindow);
-			$rexContainer.on('dragenter', '.grid-stack-row', onDragEnterRow);
-			$rexContainer.on('dragover', '.grid-stack-row', onDragOverRow);
-			$rexContainer.on('drop', '.grid-stack-row', onDropRow);
+			Button_Import_Modal.onDragOverWindow = onDragOverWindow;
+			Button_Import_Modal.onDragEnterRow = onDragEnterRow;
+			Button_Import_Modal.onDragOverRow = onDragOverRow;
+			Button_Import_Modal.onDropRow = onDropRow;
+			// $frameContentWindow.on('dragover', onDragOverWindow);
+			// $rexContainer.on('dragenter', '.grid-stack-row', onDragEnterRow);
+			// $rexContainer.on('dragover', '.grid-stack-row', onDragOverRow);
+			// $rexContainer.on('drop', '.grid-stack-row', onDropRow);
 		});
 	}
 

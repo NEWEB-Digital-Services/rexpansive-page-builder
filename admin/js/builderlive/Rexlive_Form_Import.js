@@ -624,10 +624,6 @@ var Form_Import_Modal = (function ($) {
 		Rexlive_Base_Settings.$document.on('dragend', '.element-list li', onDragEndForm);
 
 		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
-			var $rexContainer = $(Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow.document)
-				.find('.rex-container')
-				.eq(0);
-
 			var mousePosition = {};
 			var mousePositionToIFrame = {};
 
@@ -723,10 +719,10 @@ var Form_Import_Modal = (function ($) {
 				}
 			}
 
-			$frameContentWindow.on('dragover', onDragOverWindow);
-			$rexContainer.on('dragenter', '.grid-stack-row', onDragEnterRow);
-			$rexContainer.on('dragover', '.grid-stack-row', onDragOverRow);
-			$rexContainer.on('drop', '.grid-stack-row', onDropRow);
+			Form_Import_Modal.onDragOverWindow = onDragOverWindow;
+			Form_Import_Modal.onDragEnterRow = onDragEnterRow;
+			Form_Import_Modal.onDragOverRow = onDragOverRow;
+			Form_Import_Modal.onDropRow = onDropRow;
 		});
 	}
 
