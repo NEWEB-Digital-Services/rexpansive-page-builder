@@ -330,9 +330,7 @@ var Button_Import_Modal = (function ($) {
 		}
 	};
 
-	/////////////////////////////////////////////////////////////////////////////////////////
 	// Function for drag & drop
-	/////////////////////////////////////////////////////////////////////////////////////////
 
 	var dragDropHelper = null;
 
@@ -423,15 +421,7 @@ var Button_Import_Modal = (function ($) {
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
 		}
 
-		Rexlive_Base_Settings.$document.on('dragstart', '.button-list li', onDragStartButton);
-		Rexlive_Base_Settings.$document.on('drag', '.button-list li', onDragButton);
-		Rexlive_Base_Settings.$document.on('dragend', '.button-list li', onDragEndButton);
-
-		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
-			var $rexContainer = $(Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow.document)
-				.find('.rex-container')
-				.eq(0);
-
+		function onIFrameLoad() {
 			var mousePosition = {};
 			var mousePositionToIFrame = {};
 
@@ -529,11 +519,12 @@ var Button_Import_Modal = (function ($) {
 			Button_Import_Modal.onDragEnterRow = onDragEnterRow;
 			Button_Import_Modal.onDragOverRow = onDragOverRow;
 			Button_Import_Modal.onDropRow = onDropRow;
-			// $frameContentWindow.on('dragover', onDragOverWindow);
-			// $rexContainer.on('dragenter', '.grid-stack-row', onDragEnterRow);
-			// $rexContainer.on('dragover', '.grid-stack-row', onDragOverRow);
-			// $rexContainer.on('drop', '.grid-stack-row', onDropRow);
-		});
+		}
+
+		Rexlive_Base_Settings.$document.on('dragstart', '.button-list li', onDragStartButton);
+		Rexlive_Base_Settings.$document.on('drag', '.button-list li', onDragButton);
+		Rexlive_Base_Settings.$document.on('dragend', '.button-list li', onDragEndButton);
+		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(onIFrameLoad);
 	}
 
 	var _listenOtherEvents = function () {

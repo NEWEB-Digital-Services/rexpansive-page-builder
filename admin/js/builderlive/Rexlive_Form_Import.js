@@ -619,11 +619,7 @@ var Form_Import_Modal = (function ($) {
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
 		}
 
-		Rexlive_Base_Settings.$document.on('dragstart', '.element-list li', onDragStartForm);
-		Rexlive_Base_Settings.$document.on('drag', '.element-list li', onDragForm);
-		Rexlive_Base_Settings.$document.on('dragend', '.element-list li', onDragEndForm);
-
-		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
+		function onIFrameLoad() {
 			var mousePosition = {};
 			var mousePositionToIFrame = {};
 
@@ -723,7 +719,12 @@ var Form_Import_Modal = (function ($) {
 			Form_Import_Modal.onDragEnterRow = onDragEnterRow;
 			Form_Import_Modal.onDragOverRow = onDragOverRow;
 			Form_Import_Modal.onDropRow = onDropRow;
-		});
+		}
+
+		Rexlive_Base_Settings.$document.on('dragstart', '.element-list li', onDragStartForm);
+		Rexlive_Base_Settings.$document.on('drag', '.element-list li', onDragForm);
+		Rexlive_Base_Settings.$document.on('dragend', '.element-list li', onDragEndForm);
+		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(onIFrameLoad);
 	}
 
 	function init() {

@@ -587,15 +587,9 @@ var Model_Import_Modal = (function ($) {
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
 		}
 
-		Rexlive_Base_Settings.$document.on('dragstart', '.model-list li', onModelDragStart);
-		Rexlive_Base_Settings.$document.on('drag', '.model-list li', onModelDrag);
-		Rexlive_Base_Settings.$document.on('dragend', '.model-list li', onModelDragEnd);
-
-		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
+		function onIFrameLoad() {
 			var $rexContainer = $(clientFrameWindow.document).find('.rex-container').eq(0);
 			var mousePosition = {};
-
-			Model_Import_Modal.onDragOverWindow = onDragOverWindow;
 
 			function onDragOverWindow(event) {
 				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexmodel') return;
@@ -671,11 +665,16 @@ var Model_Import_Modal = (function ($) {
 				}
 			}
 
-			// $frameContentWindow.on('dragover', onDragOverWindow);
+			Model_Import_Modal.onDragOverWindow = onDragOverWindow;
 			$rexContainer.on('dragenter', onDragEnterRow);
 			$rexContainer.on('dragover', onDragOverContainer);
 			$rexContainer.on('drop', onDropContainer);
-		});
+		}
+
+		Rexlive_Base_Settings.$document.on('dragstart', '.model-list li', onModelDragStart);
+		Rexlive_Base_Settings.$document.on('drag', '.model-list li', onModelDrag);
+		Rexlive_Base_Settings.$document.on('dragend', '.model-list li', onModelDragEnd);
+		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(onIFrameLoad);
 	};
 
 	var initPhotoSwipeFromDOM = function (gallerySelector) {

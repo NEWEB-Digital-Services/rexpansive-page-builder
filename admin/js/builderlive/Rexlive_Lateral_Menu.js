@@ -3,7 +3,7 @@
  * @since  2.0.0
  */
 var Model_Lateral_Menu = (function ($) {
-	'use strict';
+	('use strict');
 	var rexmodel_lateral_menu;
 
 	function openModal() {
@@ -16,7 +16,7 @@ var Model_Lateral_Menu = (function ($) {
 	 * @returns	{void}
 	 * @since		2.0.5
 	 */
-	function show() {
+	function showModal() {
 		if (rexmodel_lateral_menu.$self.hasClass('rex-lateral-panel--open')) return;
 
 		rexmodel_lateral_menu.$self.addClass('rex-lateral-panel--open');
@@ -30,7 +30,7 @@ var Model_Lateral_Menu = (function ($) {
 	 * @returns	{void}
 	 * @since		2.0.5
 	 */
-	function hide() {
+	function hideModal() {
 		if (rexmodel_lateral_menu.$self.hasClass('rex-lateral-panel--close')) return;
 
 		rexmodel_lateral_menu.$self
@@ -42,12 +42,12 @@ var Model_Lateral_Menu = (function ($) {
 
 	function _linkListeners() {
 		Rexlive_Base_Settings.$document.on('rexlive:lateralMenuReady', function () {
-			show();
+			showModal();
 		});
 
 		rexmodel_lateral_menu.$close_button.click(function (e) {
 			e.preventDefault();
-			hide();
+			hideModal();
 		});
 
 		rexmodel_lateral_menu.$tabsButtons.click(function (e) {
@@ -164,15 +164,21 @@ var Model_Lateral_Menu = (function ($) {
 	 * @param	{Event}		event
 	 * @since	2.0.9
 	 */
-	function _generateCallback(funcName, event) {
+	function _templateCallback(funcName, event) {
 		var handler = _getHandler();
 
-		// if (!handler) return;
 		if (!handler || !(funcName in handler)) return;
 
 		handler[funcName](event);
 	}
 
+	/**
+	 * Retrieves the instance needed for handling the current
+	 * element that is being dragged.
+	 *
+	 * @returns	{object|null}
+	 * @since		2.0.9
+	 */
 	function _getHandler() {
 		var currentDraggingElementType = Rexbuilder_Util_Admin_Editor.dragImportType;
 
@@ -203,21 +209,24 @@ var Model_Lateral_Menu = (function ($) {
 		_linkListeners();
 	}
 
-	function onIFrameLoad(loadEvent) {
+	/**
+	 * @since		2.0.9
+	 */
+	function onIFrameLoad() {
 		var clientFrameWindow = Rexbuilder_Util_Admin_Editor.frameBuilder.contentWindow;
 		var $frameContentWindow = $(clientFrameWindow);
 		var $rexContainer = $(clientFrameWindow.document).find('.rex-container').eq(0);
 
-		$frameContentWindow.on('dragover', _generateCallback.bind(null, 'onDragOverWindow'));
-		$rexContainer.on('dragenter', '.grid-stack-row', _generateCallback.bind(null, 'onDragEnterRow'));
-		$rexContainer.on('dragover', '.grid-stack-row', _generateCallback.bind(null, 'onDragOverRow'));
-		$rexContainer.on('drop', '.grid-stack-row', _generateCallback.bind(null, 'onDropRow'));
+		$frameContentWindow.on('dragover', _templateCallback.bind(null, 'onDragOverWindow'));
+		$rexContainer.on('dragenter', '.grid-stack-row', _templateCallback.bind(null, 'onDragEnterRow'));
+		$rexContainer.on('dragover', '.grid-stack-row', _templateCallback.bind(null, 'onDragOverRow'));
+		$rexContainer.on('drop', '.grid-stack-row', _templateCallback.bind(null, 'onDropRow'));
 	}
 
 	return {
 		init: init,
 		openModal: openModal,
-		hide: hide,
-		show: show
+		hide: hideModal,
+		show: showModal
 	};
 })(jQuery);
