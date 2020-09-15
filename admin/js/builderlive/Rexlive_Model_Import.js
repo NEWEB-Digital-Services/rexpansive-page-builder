@@ -855,7 +855,7 @@ var Model_Import_Modal = (function ($) {
 	};
 
 	var _init = function () {
-		Rexbuilder_Util_Admin_Editor.frameBuilder.addEventListener('load', handleIFrameLoad);
+		Rexbuilder_Util_Admin_Editor.frameBuilder.addEventListener('load', _handleIFrameLoad);
 
 		var self = document.getElementById('rex-models-list');
 		var $self = $(self);
@@ -869,7 +869,7 @@ var Model_Import_Modal = (function ($) {
 		// initPhotoSwipeFromDOM(".model-list--pswp");
 	};
 
-	function handleIFrameLoad() {
+	function _handleIFrameLoad() {
 		var context = Rexbuilder_Util_Admin_Editor.frameBuilder.contentDocument;
 		dragDropHelper = new RexModelDragDrop(context);
 	}

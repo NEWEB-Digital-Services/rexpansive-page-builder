@@ -615,7 +615,7 @@ var Button_Import_Modal = (function ($) {
 	}
 
 	function init() {
-		Rexbuilder_Util_Admin_Editor.frameBuilder.addEventListener('load', handleIFrameLoad);
+		Rexbuilder_Util_Admin_Editor.frameBuilder.addEventListener('load', _handleIFrameLoad);
 
 		var $self = $('#rex-buttons-list');
 		rexbutton_import_props = {
@@ -630,7 +630,7 @@ var Button_Import_Modal = (function ($) {
 		_listenOtherEvents();
 	}
 
-	function handleIFrameLoad() {
+	function _handleIFrameLoad() {
 		var context = Rexbuilder_Util_Admin_Editor.frameBuilder.contentDocument;
 		dragDropHelper = new RexButtonDragDrop(context);
 	}

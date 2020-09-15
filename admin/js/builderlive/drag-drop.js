@@ -228,6 +228,7 @@ var dragDropInstances = (function ($) {
 	 */
 	DragDrop.prototype.positionContextMarker = function ($contextMarker, $element) {
 		var rect = $element.get(0).getBoundingClientRect();
+
 		$contextMarker.css({
 			height: rect.height + 4 + 'px',
 			width: rect.width + 4 + 'px',
@@ -988,7 +989,7 @@ var dragDropInstances = (function ($) {
 					mousePercents
 				);
 			} else {
-				var positionAndElement = this.findNearestElement($element, mousePos.xCoord, mousePos.yCoord);
+				var positionAndElement = DragDrop.findNearestElement($element, mousePos.xCoord, mousePos.yCoord);
 				this.decideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
 			}
 		} else if (mousePercents.xPercentage <= breakPointNumber.x || mousePercents.yPercentage <= breakPointNumber.y) {
@@ -1022,21 +1023,14 @@ var dragDropInstances = (function ($) {
 	/* ===== REX WPCF7 ===== */
 
 	/**
+	 * @param				{document}	context
 	 * @public
-	 * @implements	{DragDrop}
+	 * @extends			{DragDrop}
 	 * @constructor
 	 */
-	function RexWpcf7DragDrop() {
-		DragDrop.call(this);
+	function RexWpcf7DragDrop(context) {
+		DragDrop.call(this, context);
 	}
-
-	/**
-	 * @public
-	 * @returns		{JQuery}
-	 */
-	RexWpcf7DragDrop.prototype.getPlaceHolder = function () {
-		return $('<div class="drop-marker drop-marker--rex-button"></div>');
-	};
 
 	RexWpcf7DragDrop.prototype = Object.create(DragDrop.prototype);
 	// Keeping the constructor the right one, needed after redefining the prototype
@@ -1045,6 +1039,224 @@ var dragDropInstances = (function ($) {
 		enumerable: false, // so that it does not appear in 'for in' loop
 		writable: true
 	});
+
+	RexWpcf7DragDrop.prototype.addPlaceHolder = RexButtonDragDrop.prototype.addPlaceHolder;
+
+	/**
+	 * @public
+	 * @returns		{JQuery}
+	 */
+	RexWpcf7DragDrop.prototype.getPlaceHolder = function () {
+		return $('<div class="drop-marker drop-marker--rex-wpcf7"></div>');
+	};
+
+	/**
+	 * @param		{JQuery}	$element
+	 * @param		{string}	direction
+	 * @returns	{JQuery}
+	 */
+	RexWpcf7DragDrop.prototype.findValidParent = function ($element, direction) {
+		switch (direction) {
+			case 'left':
+				while (true) {
+					var elementRect = $element.get(0).getBoundingClientRect();
+					var $tempElement = $element.parent();
+					var tempelementRect = $tempElement.get(0).getBoundingClientRect();
+					if (
+						$element.is('body') ||
+						$element.hasClass('grid-stack-row') ||
+						$tempElement.hasClass('rex-elements-paragraph')
+					) {
+						return $element;
+					}
+					if (Math.abs(tempelementRect.left - elementRect.left) == 0) {
+						$element = $element.parent();
+					} else {
+						if ($element.parents('.rex-element-wrapper').length != 0) {
+							return $element.parents('.rex-element-wrapper').eq(0);
+						}
+						return $element;
+					}
+				}
+				break;
+			case 'right':
+				while (true) {
+					var elementRect = $element.get(0).getBoundingClientRect();
+					var $tempElement = $element.parent();
+					var tempelementRect = $tempElement.get(0).getBoundingClientRect();
+					if (
+						$element.is('body') ||
+						$element.hasClass('grid-stack-row') ||
+						$tempElement.hasClass('rex-elements-paragraph')
+					) {
+						return $element;
+					}
+					if (Math.abs(tempelementRect.right - elementRect.right) == 0) {
+						$element = $element.parent();
+					} else {
+						if ($element.parents('.rex-element-wrapper').length != 0) {
+							return $element.parents('.rex-element-wrapper').eq(0);
+						}
+						return $element;
+					}
+				}
+				break;
+			case 'top':
+				while (true) {
+					var elementRect = $element.get(0).getBoundingClientRect();
+					var $tempElement = $element.parent();
+					var tempelementRect = $tempElement.get(0).getBoundingClientRect();
+					if (
+						$element.is('body') ||
+						$element.hasClass('grid-stack-row') ||
+						$tempElement.hasClass('rex-elements-paragraph')
+					) {
+						return $element;
+					}
+					if (Math.abs(tempelementRect.top - elementRect.top) == 0) {
+						$element = $element.parent();
+					} else {
+						if ($element.parents('.rex-element-wrapper').length != 0) {
+							return $element.parents('.rex-element-wrapper').eq(0);
+						}
+						return $element;
+					}
+				}
+				break;
+			case 'bottom':
+				while (true) {
+					var elementRect = $element.get(0).getBoundingClientRect();
+					var $tempElement = $element.parent();
+					var tempelementRect = $tempElement.get(0).getBoundingClientRect();
+					if (
+						$element.is('body') ||
+						$element.hasClass('grid-stack-row') ||
+						$tempElement.hasClass('rex-elements-paragraph')
+					)
+						return $element;
+					if (Math.abs(tempelementRect.bottom - elementRect.bottom) == 0) {
+						$element = $element.parent();
+					} else {
+						if ($element.parents('.rex-element-wrapper').length != 0) {
+							return $element.parents('.rex-element-wrapper').eq(0);
+						}
+						return $element;
+					}
+				}
+				break;
+			default:
+				break;
+		}
+	};
+
+	RexWpcf7DragDrop.prototype.orchestrateDragDrop = function ($element, elementRect, mousePos) {
+		//If no element is hovered or element hovered is the placeholder -> not valid -> return false;
+		if (!$element || $element.length == 0 || !elementRect || !mousePos) {
+			return false;
+		}
+
+		if ($element.is('html')) {
+			$element = $element.find('body');
+		}
+		// Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
+
+		mousePercents = DragDrop.getMouseBearingsPercentage($element, elementRect, mousePos);
+
+		// If I have to go inside the element
+		if ($element.hasClass('rex-element-wrapper') || $element.parents('.rex-element-wrapper').length != 0) {
+			$element = $element.hasClass('rex-element-wrapper') ? $element : $element.parents('.rex-element-wrapper').eq(0);
+			customBreakPoints = jQuery.extend(true, {}, breakPointNumber);
+			fixedBreakPoints = true;
+			breakPointNumber.x = 50;
+			breakPointNumber.y = 50;
+		}
+		if (
+			mousePercents.xPercentage > breakPointNumber.x &&
+			mousePercents.xPercentage < 100 - breakPointNumber.x &&
+			mousePercents.yPercentage > breakPointNumber.y &&
+			mousePercents.yPercentage < 100 - breakPointNumber.y
+		) {
+			// Case 1 -
+			var $tempelement = $element.clone();
+			$tempelement.find('.drop-marker').remove();
+			if ($tempelement.html() == '' && !DragDrop.checkVoidElement($tempelement)) {
+				if (mousePercents.yPercentage < 90) {
+					return this.placeInside($element);
+				}
+			} else if ($tempelement.children().length == 0) {
+				// text element detected
+				this.decideBeforeAfter($element, mousePercents);
+			} else if ($tempelement.children().length == 1) {
+				// only 1 child element detected
+				if ($tempelement.hasClass('rex-elements-paragraph')) {
+					var positionAndElement = DragDrop.findNearestElement($element, mousePos.xCoord, mousePos.yCoord);
+					this.decideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
+				} else {
+					this.decideBeforeAfter(
+						$element.children(':not(.drop-marker,[data-dragcontext-marker])').first(),
+						mousePercents
+					);
+				}
+			} else {
+				var positionAndElement = DragDrop.findNearestElement($element, mousePos.xCoord, mousePos.yCoord);
+				this.decideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
+			}
+		} else if (mousePercents.xPercentage <= breakPointNumber.x || mousePercents.yPercentage <= breakPointNumber.y) {
+			if (mousePercents.yPercentage <= mousePercents.xPercentage) {
+				validElement = this.findValidParent($element, 'top');
+			} else {
+				validElement = this.findValidParent($element, 'left');
+			}
+
+			if (validElement.is('body,html')) {
+				validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder
+					.contents()
+					.find('body')
+					.children(':not(.drop-marker,[data-dragcontext-marker])')
+					.first();
+			}
+			this.decideBeforeAfter(validElement, mousePercents, mousePos);
+		} else if (
+			mousePercents.xPercentage >= 100 - breakPointNumber.x ||
+			mousePercents.yPercentage >= 100 - breakPointNumber.y
+		) {
+			var validElement = null;
+			if (mousePercents.yPercentage >= mousePercents.xPercentage) {
+				validElement = this.findValidParent($element, 'bottom');
+			} else {
+				validElement = this.findValidParent($element, 'right');
+			}
+
+			if (validElement.is('body,html')) {
+				validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder
+					.contents()
+					.find('body')
+					.children(':not(.drop-marker,[data-dragcontext-marker])')
+					.last();
+			}
+			this.decideBeforeAfter(validElement, mousePercents, mousePos);
+		}
+		if (fixedBreakPoints) {
+			breakPointNumber.x = customBreakPoints.x;
+			breakPointNumber.y = customBreakPoints.y;
+			fixedBreakPoints = false;
+		}
+
+		/**
+		 * Checks if current element, where placeholder is, is a valid element. If not checks if has a grid-stack-item as parent. If has moves placeholder in right position
+		 */
+		if (
+			!$element.hasClass('rex-elements-paragraph') &&
+			!$element.hasClass('text-wrap') &&
+			!$element.hasClass('.rex-element-wrapper')
+		) {
+			var $gridItem = $element.parents('.grid-stack-item');
+			if ($gridItem.length != 0) {
+				this.removeAllPlaceholders();
+				$gridItem.find('.text-wrap').eq(0).append(this.getPlaceHolder());
+			}
+		}
+	};
 
 	return {
 		RexButtonDragDrop: RexButtonDragDrop,
