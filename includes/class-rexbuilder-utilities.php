@@ -258,7 +258,7 @@ class Rexbuilder_Utilities {
 		{
 			$rnum = mt_rand() / (mt_getrandmax() + 1);
 			$temp = (int)(floor($rnum * $possibleLength));
-			$text .= $possible{$temp};
+			$text .= $possible[$temp];
 		}
 
 		return $text;
