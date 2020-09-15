@@ -29,26 +29,25 @@
 var dragDropInstances = (function ($) {
 	/**
 	 * Represent a Drag & Drop helper.
+	 * TODO Make properties private.
 	 * @constructor
 	 */
 	function DragDrop(context) {
 		/**
-		 * TODO Make this private
 		 * @type		{(JQuery<HTMLElement> | DOMRect | MouseCoords)[][]}
 		 * @public
 		 */
 		this.dragoverqueue = [];
 
 		/**
-		 * TODO Make this private
 		 * @type		{document}
 		 * @public
 		 */
 		this.context = context;
 
 		/**
-		 * TODO Make this private
 		 * @type		{boolean}
+		 * @public
 		 */
 		this.cursorMoving = null;
 	}
@@ -56,6 +55,7 @@ var dragDropInstances = (function ($) {
 	/**
 	 * @type		{MousePercentage}
 	 * @private
+	 * @static
 	 */
 	var mousePercents;
 
@@ -63,6 +63,7 @@ var dragDropInstances = (function ($) {
 	 * Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
 	 * @type		{{x: number, y: number}}
 	 * @private
+	 * @static
 	 */
 	var breakPointNumber = {
 		x: 10,
@@ -72,6 +73,7 @@ var dragDropInstances = (function ($) {
 	/**
 	 * @type		{{x: number, y: number}}
 	 * @private
+	 * @static
 	 */
 	var customBreakPoints = {
 		x: 50,
@@ -81,9 +83,15 @@ var dragDropInstances = (function ($) {
 	/**
 	 * @type		{boolean}
 	 * @private
+	 * @static
 	 */
 	var fixedBreakPoints = false;
 
+	/**
+	 * @type		{string[]}
+	 * @private
+	 * @static
+	 */
 	var voidElements = [
 		'i',
 		'area',
@@ -105,12 +113,21 @@ var dragDropInstances = (function ($) {
 		'track',
 		'wbr'
 	];
+
+	/**
+	 * CSS selector containing all the elements that are considered void.
+	 *
+	 * @type		{string}
+	 * @private
+	 * @static
+	 */
 	var voidElementsSelector = voidElements.join(',');
 
 	/**
-	 * @param		{JQuery}			$element
-	 * @param		{DOMRect}			elementRect
-	 * @param		{MouseCoords}	mousePos
+	 * @static
+	 * @param		{JQuery}					$element
+	 * @param		{DOMRect}					elementRect
+	 * @param		{MouseCoords}			mousePos
 	 * @returns	{MousePercentage}
 	 */
 	DragDrop.getMouseBearingsPercentage = function ($element, elementRect, mousePos) {
@@ -125,6 +142,7 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
+	 * @static
 	 * @param		{JQuery}	$element
 	 * @returns	{boolean}
 	 */
@@ -133,6 +151,7 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
+	 * @static
 	 * @param 	{ElementData}	elementData
 	 * @param 	{number} 			mouseX
 	 * @param 	{number} 			mouseY
@@ -143,6 +162,7 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
+	 * @static
 	 * @param		{JQuery} $container
 	 * @param		{number} clientX
 	 * @param		{number} clientY
@@ -245,6 +265,7 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
+	 * @static
 	 * @param		{JQuery}	$element
 	 * @returns {string}
 	 */
@@ -253,13 +274,32 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
+	 * @static
+	 * @param		{JQuery}	$targetElement
+	 * @returns {boolean}
+	 */
+	DragDrop.checkIfInline = function ($targetElement) {
+		var targetElementDisplay = $targetElement.css('display');
+
+		// A <br> element has display: inline; but we want to take it as not inline element
+		var isInline =
+			['inline', 'inline-block', 'inline-flex'].indexOf(targetElementDisplay) !== -1 && !$targetElement.is('br');
+
+		return isInline;
+	};
+
+	/**
 	 * @deprecated
+	 * @static
 	 * @returns	{JQuery}
 	 */
 	DragDrop.getContextMarker = function () {
 		return $('<div data-dragcontext-marker><span data-dragcontext-marker-text></span></div>');
 	};
 
+	/**
+	 * @public
+	 */
 	DragDrop.prototype.removeAllPlaceholders = function () {
 		var placeholders = Array.prototype.slice.call(this.context.querySelectorAll('.drop-marker'));
 
@@ -376,57 +416,44 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
-	 * @param {JQuery}					$targetElement
+	 * @param {JQuery}					$targetElement	Element where the placeholder will be placed
 	 * @param {MousePercentage}	mousePercents
 	 * @param {MouseCoords}			mousePos
 	 */
 	DragDrop.prototype.decideBeforeAfter = function ($targetElement, mousePercents, mousePos) {
+		var elementIsInline = DragDrop.checkIfInline($targetElement);
+		var elementIsTableCell = $targetElement.is('td,th');
+
 		if (mousePos) {
+			// ? Why retrieve again mouse percentages?
 			mousePercents = DragDrop.getMouseBearingsPercentage($targetElement, null, mousePos);
-		}
-
-		var targetElementDisplay = $targetElement.css('display');
-
-		var isInline =
-			targetElementDisplay === 'inline' ||
-			targetElementDisplay === 'inline-block' ||
-			targetElementDisplay === 'inline-flex';
-
-		if ($targetElement.is('br')) {
-			isInline = false;
 		}
 
 		var percentageToTest = mousePercents.yPercentage;
 
-		if (isInline) {
+		if (elementIsInline) {
 			percentageToTest = mousePercents.xPercentage;
 		}
 
 		if (percentageToTest < 50) {
-			return this.placeBefore($targetElement);
+			if (elementIsTableCell) {
+				this.prependPlaceholder($targetElement);
+			} else {
+				this.placeBefore($targetElement);
+			}
 		} else {
-			return this.placeAfter($targetElement);
+			if (elementIsTableCell) {
+				this.appendPlaceholder($targetElement);
+			} else {
+				this.placeAfter($targetElement);
+			}
 		}
-
-		// if (isInline) {
-		// 	if (mousePercents.xPercentage < 50) {
-		// 		return this.placeBefore($targetElement);
-		// 	} else {
-		// 		return this.placeAfter($targetElement);
-		// 	}
-		// } else {
-		// 	if (mousePercents.yPercentage < 50) {
-		// 		return this.placeBefore($targetElement);
-		// 	} else {
-		// 		return this.placeAfter($targetElement);
-		// 	}
-		// }
 	};
 
 	/**
 	 * @param {JQuery}		$element
 	 */
-	DragDrop.prototype.putPlaceholderInside = function ($element) {
+	DragDrop.prototype.appendPlaceholder = function ($element) {
 		var $placeholder = this.getPlaceHolder();
 
 		$placeholder.addClass('horizontal').css('width', $element.width() + 'px');
@@ -436,18 +463,19 @@ var dragDropInstances = (function ($) {
 	/**
 	 * @param {JQuery}		$element
 	 */
-	DragDrop.prototype.placeBefore = function ($element) {
+	DragDrop.prototype.prependPlaceholder = function ($element) {
 		var $placeholder = this.getPlaceHolder();
-		var elementDisplay = $element.css('display');
-		var inlinePlaceholder =
-			elementDisplay == 'inline' || elementDisplay == 'inline-block' || elementDisplay == 'inline-flex';
 
-		if ($element.is('br')) {
-			inlinePlaceholder = false;
-		} else if ($element.is('td,th')) {
-			$placeholder.addClass('horizontal').css('width', $element.width() + 'px');
-			return this.addPlaceHolder($element, 'inside-prepend', $placeholder);
-		}
+		$placeholder.addClass('horizontal').css('width', $element.width() + 'px');
+		this.addPlaceHolder($element, 'inside-prepend', $placeholder);
+	};
+
+	/**
+	 * @param {JQuery}		$element	Element where the placeholder will be placed
+	 */
+	DragDrop.prototype.placeBefore = function ($element) {
+		var inlinePlaceholder = DragDrop.checkIfInline($element);
+		var $placeholder = this.getPlaceHolder();
 
 		if (inlinePlaceholder) {
 			$placeholder.addClass('vertical').css('height', $element.innerHeight() + 'px');
@@ -459,20 +487,11 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
-	 * @param {JQuery}		$element
+	 * @param {JQuery}		$element	Element where the placeholder will be placed
 	 */
 	DragDrop.prototype.placeAfter = function ($element) {
 		var $placeholder = this.getPlaceHolder();
-		var elementDisplay = $element.css('display');
-		var inlinePlaceholder =
-			elementDisplay === 'inline' || elementDisplay === 'inline-block' || elementDisplay === 'inline-flex';
-
-		if ($element.is('br')) {
-			inlinePlaceholder = false;
-		} else if ($element.is('td,th')) {
-			$placeholder.addClass('horizontal').css('width', $element.width() + 'px');
-			return this.addPlaceHolder($element, 'inside-append', $placeholder);
-		}
+		var inlinePlaceholder = DragDrop.checkIfInline($element);
 
 		if (inlinePlaceholder) {
 			$placeholder.addClass('vertical').css('height', $element.innerHeight() + 'px');
@@ -571,6 +590,7 @@ var dragDropInstances = (function ($) {
 
 	RexButtonDragDrop.prototype = Object.create(DragDrop.prototype);
 	// Keeping the constructor the right one, needed after redefining the prototype
+	// https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Inheritance#Setting_Teachers_prototype_and_constructor_reference
 	Object.defineProperty(RexButtonDragDrop.prototype, 'constructor', {
 		value: RexButtonDragDrop,
 		enumerable: false, // so that it does not appear in 'for in' loop
@@ -589,7 +609,7 @@ var dragDropInstances = (function ($) {
 
 		this.removeAllPlaceholders();
 
-		var whereAddContainerText;
+		// var whereAddContainerText;
 
 		switch (position) {
 			case 'before':
@@ -600,7 +620,7 @@ var dragDropInstances = (function ($) {
 					$element.before($placeholder);
 				}
 
-				whereAddContainerText = 'sibling';
+				// whereAddContainerText = 'sibling';
 				break;
 			case 'after':
 				// Buttons have to be inside grid-stack-row
@@ -609,19 +629,18 @@ var dragDropInstances = (function ($) {
 				} else {
 					$element.after($placeholder);
 				}
-				// debugger;
 
-				whereAddContainerText = 'sibling';
+				// whereAddContainerText = 'sibling';
 				break;
 			case 'inside-prepend':
 				$element.prepend($placeholder);
 
-				whereAddContainerText = 'inside';
+				// whereAddContainerText = 'inside';
 				break;
 			case 'inside-append':
 				$element.append($placeholder);
 
-				whereAddContainerText = 'inside';
+				// whereAddContainerText = 'inside';
 				break;
 		}
 
@@ -773,7 +792,7 @@ var dragDropInstances = (function ($) {
 
 			if ('' === tempElement.innerHTML && !DragDrop.checkVoidElement($tempElement)) {
 				if (mousePercents.yPercentage < 90) {
-					this.putPlaceholderInside($element);
+					this.appendPlaceholder($element);
 					return;
 				}
 			} else if (0 === tempElement.children.length) {
@@ -867,6 +886,7 @@ var dragDropInstances = (function ($) {
 
 	RexModelDragDrop.prototype = Object.create(DragDrop.prototype);
 	// Keeping the constructor the right one, needed after redefining the prototype
+	// https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Inheritance#Setting_Teachers_prototype_and_constructor_reference
 	Object.defineProperty(RexModelDragDrop.prototype, 'constructor', {
 		value: RexModelDragDrop,
 		enumerable: false, // so that it does not appear in 'for in' loop
@@ -1024,7 +1044,7 @@ var dragDropInstances = (function ($) {
 
 			if ($tempElement.html() == '' && !DragDrop.checkVoidElement($tempElement)) {
 				if (mousePercents.yPercentage < 90) {
-					return this.putPlaceholderInside($element);
+					return this.appendPlaceholder($element);
 				}
 			} else if ($tempElement.children().length == 0) {
 				this.decideBeforeAfter($element, mousePercents);
@@ -1079,6 +1099,7 @@ var dragDropInstances = (function ($) {
 
 	RexWpcf7DragDrop.prototype = Object.create(DragDrop.prototype);
 	// Keeping the constructor the right one, needed after redefining the prototype
+	// https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Inheritance#Setting_Teachers_prototype_and_constructor_reference
 	Object.defineProperty(RexWpcf7DragDrop.prototype, 'constructor', {
 		value: RexWpcf7DragDrop,
 		enumerable: false, // so that it does not appear in 'for in' loop
@@ -1226,7 +1247,7 @@ var dragDropInstances = (function ($) {
 			$tempelement.find('.drop-marker').remove();
 			if ($tempelement.html() == '' && !DragDrop.checkVoidElement($tempelement)) {
 				if (mousePercents.yPercentage < 90) {
-					return this.putPlaceholderInside($element);
+					return this.appendPlaceholder($element);
 				}
 			} else if ($tempelement.children().length == 0) {
 				// text element detected
