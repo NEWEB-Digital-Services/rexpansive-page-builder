@@ -1,6 +1,6 @@
 {
 	"typeAcquisition": {
-		"include": ["jquery", "lodash", "medium-editor", "blueimp-tmpl", "tinycolor", "gridstack"]
+		"include": ["jquery@1.12.4", "lodash", "medium-editor", "blueimp-tmpl", "tinycolor", "gridstack"]
 	},
 	"compilerOptions": {
 		"checkJs": true
