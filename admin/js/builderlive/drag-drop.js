@@ -143,12 +143,12 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
-	 * @param {JQuery} $container
-	 * @param {number} clientX
-	 * @param {number} clientY
+	 * @param		{JQuery} $container
+	 * @param		{number} clientX
+	 * @param		{number} clientY
+	 * @returns	{{$el: JQuery, position: string}|boolean}
 	 */
 	DragDrop.findNearestElement = function ($container, clientX, clientY) {
-		var that = this;
 		var previousElData = null;
 		var $childrenElement = $container.children(':not(.drop-marker,[data-dragcontext-marker])');
 
@@ -234,8 +234,9 @@ var dragDropInstances = (function ($) {
 
 		if (previousElData !== null) {
 			var position = previousElData.position;
+
 			return {
-				el: $(previousElData.el),
+				$el: $(previousElData.el),
 				position: position
 			};
 		} else {
@@ -252,6 +253,7 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
+	 * @deprecated
 	 * @returns	{JQuery}
 	 */
 	DragDrop.getContextMarker = function () {
@@ -267,6 +269,7 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
+	 * @deprecated
 	 * @param {JQuery}		$element
 	 * @param {string}		position
 	 */
@@ -338,6 +341,7 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
+	 * @deprecated
 	 * @param	{JQuery}		$contextMarker
 	 * @param	{JQuery}		$element
 	 */
@@ -359,6 +363,9 @@ var dragDropInstances = (function ($) {
 		}
 	};
 
+	/**
+	 * @deprecated
+	 */
 	DragDrop.prototype.clearContainerContextMarker = function () {
 		// Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('[data-dragcontext-marker]').remove();
 		var contextMarkers = Array.prototype.slice.call(this.context.querySelectorAll('[data-dragcontext-marker]'));
@@ -369,7 +376,6 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
-	 *
 	 * @param {JQuery}					$targetElement
 	 * @param {MousePercentage}	mousePercents
 	 * @param {MouseCoords}			mousePos
@@ -390,25 +396,37 @@ var dragDropInstances = (function ($) {
 			isInline = false;
 		}
 
+		var percentageToTest = mousePercents.yPercentage;
+
 		if (isInline) {
-			if (mousePercents.xPercentage < 50) {
-				return this.placeBefore($targetElement);
-			} else {
-				return this.placeAfter($targetElement);
-			}
-		} else {
-			if (mousePercents.yPercentage < 50) {
-				return this.placeBefore($targetElement);
-			} else {
-				return this.placeAfter($targetElement);
-			}
+			percentageToTest = mousePercents.xPercentage;
 		}
+
+		if (percentageToTest < 50) {
+			return this.placeBefore($targetElement);
+		} else {
+			return this.placeAfter($targetElement);
+		}
+
+		// if (isInline) {
+		// 	if (mousePercents.xPercentage < 50) {
+		// 		return this.placeBefore($targetElement);
+		// 	} else {
+		// 		return this.placeAfter($targetElement);
+		// 	}
+		// } else {
+		// 	if (mousePercents.yPercentage < 50) {
+		// 		return this.placeBefore($targetElement);
+		// 	} else {
+		// 		return this.placeAfter($targetElement);
+		// 	}
+		// }
 	};
 
 	/**
 	 * @param {JQuery}		$element
 	 */
-	DragDrop.prototype.placeInside = function ($element) {
+	DragDrop.prototype.putPlaceholderInside = function ($element) {
 		var $placeholder = this.getPlaceHolder();
 
 		$placeholder.addClass('horizontal').css('width', $element.width() + 'px');
@@ -455,11 +473,13 @@ var dragDropInstances = (function ($) {
 			$placeholder.addClass('horizontal').css('width', $element.width() + 'px');
 			return this.addPlaceHolder($element, 'inside-append', $placeholder);
 		}
+
 		if (inlinePlaceholder) {
 			$placeholder.addClass('vertical').css('height', $element.innerHeight() + 'px');
 		} else {
 			$placeholder.addClass('horizontal').css('width', $element.parent().width() + 'px');
 		}
+
 		this.addPlaceHolder($element, 'after', $placeholder);
 	};
 
@@ -475,7 +495,6 @@ var dragDropInstances = (function ($) {
 	};
 
 	DragDrop.prototype.processDragOverQueue = function () {
-		// console.log('process', this.cursorMoving);
 		if (!this.cursorMoving) return;
 
 		var processing = this.dragoverqueue.pop();
@@ -543,7 +562,7 @@ var dragDropInstances = (function ($) {
 	/**
 	 * @param				{document}	context
 	 * @public
-	 * @augments		{DragDrop}
+	 * @extends			{DragDrop}
 	 * @constructor
 	 */
 	function RexButtonDragDrop(context) {
@@ -590,6 +609,7 @@ var dragDropInstances = (function ($) {
 				} else {
 					$element.after($placeholder);
 				}
+				// debugger;
 
 				whereAddContainerText = 'sibling';
 				break;
@@ -605,7 +625,7 @@ var dragDropInstances = (function ($) {
 				break;
 		}
 
-		this.addContainerContextMarker($element, whereAddContainerText);
+		// this.addContainerContextMarker($element, whereAddContainerText);
 	};
 
 	RexButtonDragDrop.prototype.getPlaceHolder = function () {
@@ -721,11 +741,13 @@ var dragDropInstances = (function ($) {
 			$element = $element.find('body');
 		}
 
+		var isButtonWrapper = $element.hasClass('rex-button-wrapper');
+
 		mousePercents = DragDrop.getMouseBearingsPercentage($element, elementRect, mousePos);
 
 		// If I need to get inside the element
-		if ($element.hasClass('rex-button-wrapper') || $element.parents('.rex-button-wrapper').length != 0) {
-			$element = $element.hasClass('rex-button-wrapper') ? $element : $element.parents('.rex-button-wrapper').eq(0);
+		if (isButtonWrapper || $element.parents('.rex-button-wrapper').length != 0) {
+			$element = isButtonWrapper ? $element : $element.parents('.rex-button-wrapper').eq(0);
 			customBreakPoints = $.extend(true, {}, breakPointNumber);
 			fixedBreakPoints = true;
 			breakPointNumber.x = 50;
@@ -739,9 +761,7 @@ var dragDropInstances = (function ($) {
 			mousePercents.yPercentage < 100 - breakPointNumber.y
 		) {
 			// Case 1
-			/*
-				Decide whether to prepend or append the marker depending on the mouse position relative to the hovered element.
-			*/
+			// Decide whether to prepend or append the marker depending on the mouse position relative to the hovered element.
 			var $tempElement = $element.clone();
 			var tempElement = $tempElement.get(0);
 
@@ -753,7 +773,8 @@ var dragDropInstances = (function ($) {
 
 			if ('' === tempElement.innerHTML && !DragDrop.checkVoidElement($tempElement)) {
 				if (mousePercents.yPercentage < 90) {
-					return this.placeInside($element);
+					this.putPlaceholderInside($element);
+					return;
 				}
 			} else if (0 === tempElement.children.length) {
 				// Text element detected
@@ -762,19 +783,22 @@ var dragDropInstances = (function ($) {
 				// Only 1 child element detected
 				if ($tempElement.hasClass('rex-buttons-paragraph')) {
 					var positionAndElement = DragDrop.findNearestElement($element, mousePos.xCoord, mousePos.yCoord);
-					this.decideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
+
+					this.decideBeforeAfter(positionAndElement.$el, mousePercents, mousePos);
 				} else {
-					this.decideBeforeAfter(
-						$element.children(':not(.drop-marker,[data-dragcontext-marker])').first(),
-						mousePercents
-					);
+					var $firstChild = $element.children(':not(.drop-marker,[data-dragcontext-marker])').first();
+
+					this.decideBeforeAfter($firstChild, mousePercents);
 				}
 			} else {
 				// Mote than 1 child element detected
 				var positionAndElement = DragDrop.findNearestElement($element, mousePos.xCoord, mousePos.yCoord);
-				this.decideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
+
+				this.decideBeforeAfter(positionAndElement.$el, mousePercents, mousePos);
 			}
 		} else if (mousePercents.xPercentage <= breakPointNumber.x || mousePercents.yPercentage <= breakPointNumber.y) {
+			var validElement = null;
+
 			if (mousePercents.yPercentage <= mousePercents.xPercentage) {
 				validElement = this.findValidParent($element, 'top');
 			} else {
@@ -816,17 +840,17 @@ var dragDropInstances = (function ($) {
 		/**
 		 * Checks if current element, where placeholder is, is a valid element. If not checks if has a grid-stack-item as parent. If has moves placeholder in right position
 		 */
-		if (
-			!$element.hasClass('rex-buttons-paragraph') &&
-			!$element.hasClass('text-wrap') &&
-			!$element.hasClass('rex-button-wrapper')
-		) {
-			var $gridItem = $element.parents('.grid-stack-item');
-			if ($gridItem.length != 0) {
-				this.removeAllPlaceholders();
-				$gridItem.find('.text-wrap').eq(0).append(this.getPlaceHolder());
-			}
-		}
+		// if (
+		// 	!$element.hasClass('rex-buttons-paragraph') &&
+		// 	!$element.hasClass('text-wrap') &&
+		// 	!$element.hasClass('rex-button-wrapper')
+		// ) {
+		// 	var $gridItem = $element.parents('.grid-stack-item');
+		// 	if ($gridItem.length != 0) {
+		// 		this.removeAllPlaceholders();
+		// 		$gridItem.find('.text-wrap').eq(0).append(this.getPlaceHolder());
+		// 	}
+		// }
 	};
 
 	/* ===== REX MODEL ===== */
@@ -866,25 +890,29 @@ var dragDropInstances = (function ($) {
 			$placeholder = this.getPlaceHolder();
 		}
 
+		var whereAddContainerText = null;
+
 		this.removeAllPlaceholders();
 		switch (position) {
 			case 'before':
 				$element.before($placeholder);
-				this.addContainerContextMarker($element, 'sibling');
+				whereAddContainerText = 'sibling';
 				break;
 			case 'after':
 				$element.after($placeholder);
-				this.addContainerContextMarker($element, 'sibling');
+				whereAddContainerText = 'sibling';
 				break;
 			case 'inside-prepend':
 				$element.prepend($placeholder);
-				this.addContainerContextMarker($element, 'inside');
+				whereAddContainerText = 'inside';
 				break;
 			case 'inside-append':
 				$element.append($placeholder);
-				this.addContainerContextMarker($element, 'inside');
+				whereAddContainerText = 'inside';
 				break;
 		}
+
+		// this.addContainerContextMarker($element, whereAddContainerText);
 	};
 
 	RexModelDragDrop.prototype.getPlaceHolder = function () {
@@ -996,7 +1024,7 @@ var dragDropInstances = (function ($) {
 
 			if ($tempElement.html() == '' && !DragDrop.checkVoidElement($tempElement)) {
 				if (mousePercents.yPercentage < 90) {
-					return this.placeInside($element);
+					return this.putPlaceholderInside($element);
 				}
 			} else if ($tempElement.children().length == 0) {
 				this.decideBeforeAfter($element, mousePercents);
@@ -1007,7 +1035,7 @@ var dragDropInstances = (function ($) {
 				);
 			} else {
 				var positionAndElement = DragDrop.findNearestElement($element, mousePos.xCoord, mousePos.yCoord);
-				this.decideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
+				this.decideBeforeAfter(positionAndElement.$el, mousePercents, mousePos);
 			}
 		} else if (mousePercents.xPercentage <= breakPointNumber.x || mousePercents.yPercentage <= breakPointNumber.y) {
 			var validElement = this.findValidParent($element, 'top');
@@ -1198,7 +1226,7 @@ var dragDropInstances = (function ($) {
 			$tempelement.find('.drop-marker').remove();
 			if ($tempelement.html() == '' && !DragDrop.checkVoidElement($tempelement)) {
 				if (mousePercents.yPercentage < 90) {
-					return this.placeInside($element);
+					return this.putPlaceholderInside($element);
 				}
 			} else if ($tempelement.children().length == 0) {
 				// text element detected
@@ -1207,7 +1235,7 @@ var dragDropInstances = (function ($) {
 				// only 1 child element detected
 				if ($tempelement.hasClass('rex-elements-paragraph')) {
 					var positionAndElement = DragDrop.findNearestElement($element, mousePos.xCoord, mousePos.yCoord);
-					this.decideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
+					this.decideBeforeAfter(positionAndElement.$el, mousePercents, mousePos);
 				} else {
 					this.decideBeforeAfter(
 						$element.children(':not(.drop-marker,[data-dragcontext-marker])').first(),
@@ -1216,7 +1244,7 @@ var dragDropInstances = (function ($) {
 				}
 			} else {
 				var positionAndElement = DragDrop.findNearestElement($element, mousePos.xCoord, mousePos.yCoord);
-				this.decideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
+				this.decideBeforeAfter(positionAndElement.$el, mousePercents, mousePos);
 			}
 		} else if (mousePercents.xPercentage <= breakPointNumber.x || mousePercents.yPercentage <= breakPointNumber.y) {
 			if (mousePercents.yPercentage <= mousePercents.xPercentage) {
@@ -1262,17 +1290,17 @@ var dragDropInstances = (function ($) {
 		/**
 		 * Checks if current element, where placeholder is, is a valid element. If not checks if has a grid-stack-item as parent. If has moves placeholder in right position
 		 */
-		if (
-			!$element.hasClass('rex-elements-paragraph') &&
-			!$element.hasClass('text-wrap') &&
-			!$element.hasClass('.rex-element-wrapper')
-		) {
-			var $gridItem = $element.parents('.grid-stack-item');
-			if ($gridItem.length != 0) {
-				this.removeAllPlaceholders();
-				$gridItem.find('.text-wrap').eq(0).append(this.getPlaceHolder());
-			}
-		}
+		// if (
+		// 	!$element.hasClass('rex-elements-paragraph') &&
+		// 	!$element.hasClass('text-wrap') &&
+		// 	!$element.hasClass('.rex-element-wrapper')
+		// ) {
+		// 	var $gridItem = $element.parents('.grid-stack-item');
+		// 	if ($gridItem.length != 0) {
+		// 		this.removeAllPlaceholders();
+		// 		$gridItem.find('.text-wrap').eq(0).append(this.getPlaceHolder());
+		// 	}
+		// }
 	};
 
 	return {
