@@ -1,5 +1,5 @@
 var Button_Import_Modal = (function ($) {
-	'use strict';
+	('use strict');
 	var rexbutton_import_props;
 	var styleSheet;
 
@@ -426,7 +426,6 @@ var Button_Import_Modal = (function ($) {
 			var mousePositionToIFrame = {};
 
 			function onDragOverWindow(event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexbutton') return;
 				event.preventDefault();
 				event.stopPropagation();
 
@@ -443,26 +442,24 @@ var Button_Import_Modal = (function ($) {
 			}
 
 			function onDragEnterRow(event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexbutton') return;
 				event.stopPropagation();
 
 				$currentElement = $(event.target);
-				currentElementChangeFlag = true;
+				// currentElementChangeFlag = true;
 				elementRectangle = event.target.getBoundingClientRect();
-				countdown = 1;
+				// countdown = 1;
 			}
 
 			function onDragOverRow(event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexbutton') return;
-
-				if (countdown % 15 != 0 && currentElementChangeFlag == false) {
-					countdown = countdown + 1;
-					return;
-				}
+				// if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexbutton') return;
+				// if (countdown % 15 != 0 && currentElementChangeFlag == false) {
+				// 	countdown = countdown + 1;
+				// 	return;
+				// }
 
 				event = event || window.event;
-				countdown = countdown + 1;
-				currentElementChangeFlag = false;
+				// countdown = countdown + 1;
+				// currentElementChangeFlag = false;
 
 				mousePosition.xCoord = event.originalEvent.clientX;
 				mousePosition.yCoord = event.originalEvent.clientY;
@@ -473,8 +470,6 @@ var Button_Import_Modal = (function ($) {
 			}
 
 			function onDropRow(event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexbutton') return;
-
 				event.preventDefault();
 				event.stopPropagation();
 
@@ -516,8 +511,10 @@ var Button_Import_Modal = (function ($) {
 			}
 
 			Button_Import_Modal.onDragOverWindow = onDragOverWindow;
+			// Button_Import_Modal.onDragOverWindow = _.throttle(onDragOverWindow, 100);
 			Button_Import_Modal.onDragEnterRow = onDragEnterRow;
 			Button_Import_Modal.onDragOverRow = onDragOverRow;
+			// Button_Import_Modal.onDragOverRow = _.throttle(onDragOverRow, 400);
 			Button_Import_Modal.onDropRow = onDropRow;
 		}
 

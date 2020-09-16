@@ -321,7 +321,6 @@ var dragDropInstances = (function ($) {
 		if ($element.is('html,body')) {
 			position = 'inside';
 			// ! May not work
-			// $element = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents();
 			$element = $(this.context.body);
 		}
 
@@ -343,11 +342,7 @@ var dragDropInstances = (function ($) {
 
 				if (0 !== this.context.querySelectorAll('[data-sh-parent-marker]').length) {
 					// TODO
-					Rexbuilder_Util_Admin_Editor.$frameBuilder
-						.contents()
-						.find('[data-sh-parent-marker]')
-						.first()
-						.before($contextMarker);
+					$(this.context.body).find('[data-sh-parent-marker]').first().before($contextMarker);
 				} // else break; ?
 				break;
 			case 'sibling':
@@ -368,11 +363,7 @@ var dragDropInstances = (function ($) {
 
 				if (0 !== this.context.querySelectorAll('[data-sh-parent-marker]').length) {
 					// TODO
-					Rexbuilder_Util_Admin_Editor.$frameBuilder
-						.contents()
-						.find('[data-sh-parent-marker]')
-						.first()
-						.before($contextMarker);
+					$(this.context.body).find('[data-sh-parent-marker]').first().before($contextMarker);
 				} // else break; ?
 				break;
 			default:
@@ -391,13 +382,11 @@ var dragDropInstances = (function ($) {
 		$contextMarker.css({
 			height: rect.height + 4 + 'px',
 			width: rect.width + 4 + 'px',
-			// ! Vedere come fare
-			// TODO Later
+			// * Maybe use this.context.defaultView, but need to test in different browsers
 			top: rect.top + $(Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow).scrollTop() - 2 + 'px',
 			left: rect.left + $(Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow).scrollLeft() - 2 + 'px'
 		});
 
-		// if (rect.top + Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('body').scrollTop() < 24)
 		if (rect.top + this.context.body.scrollTop < 24) {
 			$contextMarker.find('[data-dragcontext-marker-text]').css('top', '0px');
 		}
@@ -407,7 +396,6 @@ var dragDropInstances = (function ($) {
 	 * @deprecated
 	 */
 	DragDrop.prototype.clearContainerContextMarker = function () {
-		// Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('[data-dragcontext-marker]').remove();
 		var contextMarkers = Array.prototype.slice.call(this.context.querySelectorAll('[data-dragcontext-marker]'));
 
 		contextMarkers.forEach(function (contextMarker) {
@@ -574,6 +562,26 @@ var dragDropInstances = (function ($) {
 	 */
 	DragDrop.prototype.orchestrateDragDrop = function ($element, elementRect, mousePos) {
 		throw new Error('Must be implemented by subclass!');
+	};
+
+	/**
+	 * @abstract
+	 * @public
+	 * @param {JQuery}			$element
+	 * @param {DOMRect}			elementRect
+	 * @param {MouseCoords}	mousePos
+	 */
+	DragDrop.prototype.reOrchestrate = function ($element, elementRect, mousePos) {
+		// throw new Error('Must be implemented by subclass!');
+
+		var $gridItem = $element.parents('.grid-stack-item');
+		var $textWrap = $gridItem.find('.text-wrap');
+
+		if ($textWrap.length !== 0) {
+			this.removeAllPlaceholders();
+
+			this.orchestrateDragDrop($textWrap, elementRect, mousePos);
+		}
 	};
 
 	/* ===== REX BUTTON ===== */
@@ -761,7 +769,6 @@ var dragDropInstances = (function ($) {
 		}
 
 		var isButtonWrapper = $element.hasClass('rex-button-wrapper');
-
 		mousePercents = DragDrop.getMouseBearingsPercentage($element, elementRect, mousePos);
 
 		// If I need to get inside the element
@@ -816,38 +823,38 @@ var dragDropInstances = (function ($) {
 				this.decideBeforeAfter(positionAndElement.$el, mousePercents, mousePos);
 			}
 		} else if (mousePercents.xPercentage <= breakPointNumber.x || mousePercents.yPercentage <= breakPointNumber.y) {
-			var validElement = null;
+			var $validElement = null;
 
 			if (mousePercents.yPercentage <= mousePercents.xPercentage) {
-				validElement = this.findValidParent($element, 'top');
+				$validElement = this.findValidParent($element, 'top');
 			} else {
-				validElement = this.findValidParent($element, 'left');
+				$validElement = this.findValidParent($element, 'left');
 			}
 
-			if (validElement.is('body,html')) {
+			if ($validElement.is('body,html')) {
 				var frameBody = this.context.body;
-				validElement = $(frameBody).children(':not(.drop-marker,[data-dragcontext-marker])').first();
+				$validElement = $(frameBody).children(':not(.drop-marker,[data-dragcontext-marker])').first();
 			}
 
-			this.decideBeforeAfter(validElement, mousePercents, mousePos);
+			this.decideBeforeAfter($validElement, mousePercents, mousePos);
 		} else if (
 			mousePercents.xPercentage >= 100 - breakPointNumber.x ||
 			mousePercents.yPercentage >= 100 - breakPointNumber.y
 		) {
-			var validElement = null;
+			var $validElement = null;
 
 			if (mousePercents.yPercentage >= mousePercents.xPercentage) {
-				validElement = this.findValidParent($element, 'bottom');
+				$validElement = this.findValidParent($element, 'bottom');
 			} else {
-				validElement = this.findValidParent($element, 'right');
+				$validElement = this.findValidParent($element, 'right');
 			}
 
-			if (validElement.is('body,html')) {
+			if ($validElement.is('body,html')) {
 				var frameBody = this.context.body;
-				validElement = $(frameBody).children(':not(.drop-marker,[data-dragcontext-marker])').last();
+				$validElement = $(frameBody).children(':not(.drop-marker,[data-dragcontext-marker])').last();
 			}
 
-			this.decideBeforeAfter(validElement, mousePercents, mousePos);
+			this.decideBeforeAfter($validElement, mousePercents, mousePos);
 		}
 
 		if (fixedBreakPoints) {
@@ -856,20 +863,17 @@ var dragDropInstances = (function ($) {
 			fixedBreakPoints = false;
 		}
 
-		/**
-		 * Checks if current element, where placeholder is, is a valid element. If not checks if has a grid-stack-item as parent. If has moves placeholder in right position
-		 */
-		// if (
-		// 	!$element.hasClass('rex-buttons-paragraph') &&
-		// 	!$element.hasClass('text-wrap') &&
-		// 	!$element.hasClass('rex-button-wrapper')
-		// ) {
-		// 	var $gridItem = $element.parents('.grid-stack-item');
-		// 	if ($gridItem.length != 0) {
-		// 		this.removeAllPlaceholders();
-		// 		$gridItem.find('.text-wrap').eq(0).append(this.getPlaceHolder());
-		// 	}
-		// }
+		// Checks if current element, where placeholder is, is a valid element
+		var needToReOrchestrate =
+			!$element.hasClass('rex-buttons-paragraph') &&
+			!$element.hasClass('text-wrap') &&
+			!$element.hasClass('rex-button-wrapper') &&
+			// if it's not a text-wrap child
+			!$element.is($element.parents('.text-wrap').children());
+
+		if (needToReOrchestrate) {
+			this.reOrchestrate($element, elementRect, mousePos);
+		}
 	};
 
 	/* ===== REX MODEL ===== */
@@ -1061,11 +1065,7 @@ var dragDropInstances = (function ($) {
 			var validElement = this.findValidParent($element, 'top');
 
 			if (validElement.is('body,html')) {
-				validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder
-					.contents()
-					.find('body')
-					.children(':not(.drop-marker,[data-dragcontext-marker])')
-					.first();
+				validElement = $(this.context.body).children(':not(.drop-marker,[data-dragcontext-marker])').first();
 			}
 			this.decideBeforeAfter(validElement, mousePercents, mousePos);
 		} else if (
@@ -1075,11 +1075,7 @@ var dragDropInstances = (function ($) {
 			var validElement = this.findValidParent($element, 'bottom');
 
 			if (validElement.is('body,html')) {
-				validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder
-					.contents()
-					.find('body')
-					.children(':not(.drop-marker,[data-dragcontext-marker])')
-					.last();
+				validElement = $(this.context.body).children(':not(.drop-marker,[data-dragcontext-marker])').last();
 			}
 			this.decideBeforeAfter(validElement, mousePercents, mousePos);
 		}
@@ -1225,7 +1221,6 @@ var dragDropInstances = (function ($) {
 			$element = $element.find('body');
 		}
 		// Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
-
 		mousePercents = DragDrop.getMouseBearingsPercentage($element, elementRect, mousePos);
 
 		// If I have to go inside the element
@@ -1275,11 +1270,7 @@ var dragDropInstances = (function ($) {
 			}
 
 			if (validElement.is('body,html')) {
-				validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder
-					.contents()
-					.find('body')
-					.children(':not(.drop-marker,[data-dragcontext-marker])')
-					.first();
+				validElement = $(this.context.body).children(':not(.drop-marker,[data-dragcontext-marker])').first();
 			}
 			this.decideBeforeAfter(validElement, mousePercents, mousePos);
 		} else if (
@@ -1294,11 +1285,7 @@ var dragDropInstances = (function ($) {
 			}
 
 			if (validElement.is('body,html')) {
-				validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder
-					.contents()
-					.find('body')
-					.children(':not(.drop-marker,[data-dragcontext-marker])')
-					.last();
+				validElement = $(this.context.body).children(':not(.drop-marker,[data-dragcontext-marker])').last();
 			}
 			this.decideBeforeAfter(validElement, mousePercents, mousePos);
 		}
@@ -1322,6 +1309,16 @@ var dragDropInstances = (function ($) {
 		// 		$gridItem.find('.text-wrap').eq(0).append(this.getPlaceHolder());
 		// 	}
 		// }
+		// Checks if current element, where placeholder is, is a valid element
+		var needToReOrchestrate =
+			!$element.hasClass('rex-elements-paragraph') &&
+			!$element.hasClass('text-wrap') &&
+			!$element.hasClass('rex-element-wrapper') &&
+			!$element.is($element.parents('.text-wrap').children());
+
+		if (needToReOrchestrate) {
+			this.reOrchestrate($element, elementRect, mousePos);
+		}
 	};
 
 	return {

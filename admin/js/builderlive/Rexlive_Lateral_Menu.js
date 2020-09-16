@@ -164,7 +164,7 @@ var Model_Lateral_Menu = (function ($) {
 	 * @param	{Event}		event
 	 * @since	2.0.9
 	 */
-	function _templateCallback(funcName, event) {
+	function templateDragCallback(funcName, event) {
 		var handler = _getHandler();
 
 		if (!handler || !(funcName in handler)) return;
@@ -217,10 +217,10 @@ var Model_Lateral_Menu = (function ($) {
 		var $frameContentWindow = $(clientFrameWindow);
 		var $rexContainer = $(clientFrameWindow.document).find('.rex-container').eq(0);
 
-		$frameContentWindow.on('dragover', _templateCallback.bind(null, 'onDragOverWindow'));
-		$rexContainer.on('dragenter', '.grid-stack-row', _templateCallback.bind(null, 'onDragEnterRow'));
-		$rexContainer.on('dragover', '.grid-stack-row', _templateCallback.bind(null, 'onDragOverRow'));
-		$rexContainer.on('drop', '.grid-stack-row', _templateCallback.bind(null, 'onDropRow'));
+		$frameContentWindow.on('dragover', _.throttle(templateDragCallback.bind(null, 'onDragOverWindow'), 200));
+		$rexContainer.on('dragenter', '.grid-stack-row', templateDragCallback.bind(null, 'onDragEnterRow'));
+		$rexContainer.on('dragover', '.grid-stack-row', _.throttle(templateDragCallback.bind(null, 'onDragOverRow'), 400));
+		$rexContainer.on('drop', '.grid-stack-row', templateDragCallback.bind(null, 'onDropRow'));
 	}
 
 	return {
