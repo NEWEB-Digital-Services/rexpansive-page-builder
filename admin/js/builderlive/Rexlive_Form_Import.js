@@ -547,7 +547,7 @@ var Form_Import_Modal = (function ($) {
 	// Functions for drag & drop
 	function _linkDraggable() {
 		var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-		var currentElement, currentElementChangeFlag, elementRectangle, countdown, dragoverqueue_processtimer;
+		var currentElement, elementRectangle, dragOverQueueTimer;
 
 		var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow;
 		var $frameContentWindow = $(clientFrameWindow);
@@ -565,9 +565,7 @@ var Form_Import_Modal = (function ($) {
 			Rexbuilder_Util_Admin_Editor.hideLateralMenu();
 
 			event.originalEvent.dataTransfer.effectAllowed = 'all';
-			dragoverqueue_processtimer = setInterval(function () {
-				dragDropHelper.processDragOverQueue();
-			}, 100);
+			dragOverQueueTimer = setInterval(dragDropHelper.processDragOverQueue.bind(dragDropHelper), 100);
 
 			var insertingHTML = $(this).html();
 
@@ -580,7 +578,7 @@ var Form_Import_Modal = (function ($) {
 			Rexbuilder_Util_Admin_Editor.addClassToLiveFrameRexContainer('rex-dragging-element');
 
 			var dataDnDstart = {
-				eventName: 'rexlive:drag_drop_starded',
+				eventName: 'rexlive:drag_drop_started',
 				data_to_send: {}
 			};
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDstart);
@@ -588,30 +586,25 @@ var Form_Import_Modal = (function ($) {
 
 		function onDragForm() {
 			Rexbuilder_Util_Admin_Editor.setStopScroll(true);
-			Rexbuilder_Util_Admin_Editor.checkLateralMenu(mouseClientX);
 
 			if (mouseClientY < 150) {
-				// Rexbuilder_Util_Admin_Editor.setStopScroll(false);
 				Rexbuilder_Util_Admin_Editor.scrollFrame(scrollAmount * -1);
 			}
 
 			if (mouseClientY > $frameContentWindow.height() - 150) {
-				// Rexbuilder_Util_Admin_Editor.setStopScroll(false);
 				Rexbuilder_Util_Admin_Editor.scrollFrame(scrollAmount);
 			}
 		}
 
 		function onDragEndForm() {
-			clearInterval(dragoverqueue_processtimer);
+			clearInterval(dragOverQueueTimer);
 
 			Rexbuilder_Util_Admin_Editor.setStopScroll(true);
 
 			dragDropHelper.removeAllPlaceholders();
-			dragDropHelper.clearContainerContextMarker();
 
 			Rexbuilder_Util_Admin_Editor.removeClassToLiveFrameRexContainer('rex-dragging-element');
 
-			Rexbuilder_Util_Admin_Editor.dragImportType = '';
 			var dataDnDend = {
 				eventName: 'rexlive:drag_drop_ended',
 				data_to_send: {}
@@ -624,7 +617,6 @@ var Form_Import_Modal = (function ($) {
 			var mousePositionToIFrame = {};
 
 			function onDragOverWindow(event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexelement') return;
 				event.preventDefault();
 				event.stopPropagation();
 
@@ -640,28 +632,15 @@ var Form_Import_Modal = (function ($) {
 			}
 
 			function onDragEnterRow(event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexelement') return;
-
 				currentElement = $(event.target);
-				currentElementChangeFlag = true;
 				elementRectangle = event.target.getBoundingClientRect();
-				countdown = 1;
 			}
 
 			function onDragOverRow(event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexelement') return;
 				// Updating mouseClinentX & mouseClientY variables to make possible
 				// dragging even on sections
 				mouseClientX = event.originalEvent.clientX;
 				mouseClientY = event.originalEvent.clientY;
-
-				if (countdown % 15 != 0 && currentElementChangeFlag == false) {
-					countdown = countdown + 1;
-					return;
-				}
-				event = event || window.event;
-				countdown = countdown + 1;
-				currentElementChangeFlag = false;
 
 				mousePosition.xCoord = event.originalEvent.clientX;
 				mousePosition.yCoord = event.originalEvent.clientY;
@@ -673,7 +652,6 @@ var Form_Import_Modal = (function ($) {
 			}
 
 			function onDropRow(event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexelement') return;
 				event.preventDefault();
 				event.stopPropagation();
 

@@ -1220,6 +1220,7 @@ var dragDropInstances = (function ($) {
 		if ($element.is('html')) {
 			$element = $element.find('body');
 		}
+
 		// Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
 		mousePercents = DragDrop.getMouseBearingsPercentage($element, elementRect, mousePos);
 
@@ -1295,20 +1296,6 @@ var dragDropInstances = (function ($) {
 			fixedBreakPoints = false;
 		}
 
-		/**
-		 * Checks if current element, where placeholder is, is a valid element. If not checks if has a grid-stack-item as parent. If has moves placeholder in right position
-		 */
-		// if (
-		// 	!$element.hasClass('rex-elements-paragraph') &&
-		// 	!$element.hasClass('text-wrap') &&
-		// 	!$element.hasClass('.rex-element-wrapper')
-		// ) {
-		// 	var $gridItem = $element.parents('.grid-stack-item');
-		// 	if ($gridItem.length != 0) {
-		// 		this.removeAllPlaceholders();
-		// 		$gridItem.find('.text-wrap').eq(0).append(this.getPlaceHolder());
-		// 	}
-		// }
 		// Checks if current element, where placeholder is, is a valid element
 		var needToReOrchestrate =
 			!$element.hasClass('rex-elements-paragraph') &&

@@ -167,6 +167,10 @@ var Model_Lateral_Menu = (function ($) {
 	function templateDragCallback(funcName, event) {
 		var handler = _getHandler();
 
+		if (funcName === 'onDropRow') {
+			console.log(!handler || !(funcName in handler));
+		}
+
 		if (!handler || !(funcName in handler)) return;
 
 		handler[funcName](event);
@@ -215,11 +219,13 @@ var Model_Lateral_Menu = (function ($) {
 	function onIFrameLoad() {
 		var clientFrameWindow = Rexbuilder_Util_Admin_Editor.frameBuilder.contentWindow;
 		var $frameContentWindow = $(clientFrameWindow);
-		var $rexContainer = $(clientFrameWindow.document).find('.rex-container').eq(0);
+		var $rexContainer = $(clientFrameWindow.document.querySelector('.rex-container'));
 
-		$frameContentWindow.on('dragover', _.throttle(templateDragCallback.bind(null, 'onDragOverWindow'), 200));
+		// Can't be throttled because that would cause the event.preventDefault() function
+		// to be called a few times causing the impossibility to drop the element
+		$frameContentWindow.on('dragover', templateDragCallback.bind(null, 'onDragOverWindow'));
 		$rexContainer.on('dragenter', '.grid-stack-row', templateDragCallback.bind(null, 'onDragEnterRow'));
-		$rexContainer.on('dragover', '.grid-stack-row', _.throttle(templateDragCallback.bind(null, 'onDragOverRow'), 400));
+		$rexContainer.on('dragover', '.grid-stack-row', _.throttle(templateDragCallback.bind(null, 'onDragOverRow'), 50));
 		$rexContainer.on('drop', '.grid-stack-row', templateDragCallback.bind(null, 'onDropRow'));
 	}
 

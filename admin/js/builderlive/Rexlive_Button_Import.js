@@ -336,7 +336,7 @@ var Button_Import_Modal = (function ($) {
 
 	function _linkDraggable() {
 		var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-		var $currentElement, currentElementChangeFlag, elementRectangle, countdown, dragoverqueue_processtimer;
+		var $currentElement, elementRectangle, dragOverQueueTimer;
 
 		var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow;
 		var $frameContentWindow = $(clientFrameWindow);
@@ -362,9 +362,7 @@ var Button_Import_Modal = (function ($) {
 
 			event.originalEvent.dataTransfer.effectAllowed = 'all';
 
-			dragoverqueue_processtimer = setInterval(function () {
-				dragDropHelper.processDragOverQueue();
-			}, 100);
+			dragOverQueueTimer = setInterval(dragDropHelper.processDragOverQueue.bind(dragDropHelper), 100);
 
 			var insertingHTML = $button.html();
 			var $buttonBackground = $button.find('.rex-button-background').eq(0);
@@ -404,12 +402,11 @@ var Button_Import_Modal = (function ($) {
 		}
 
 		function onDragEndButton() {
-			clearInterval(dragoverqueue_processtimer);
+			clearInterval(dragOverQueueTimer);
 
 			Rexbuilder_Util_Admin_Editor.setStopScroll(true);
 
 			dragDropHelper.removeAllPlaceholders();
-			dragDropHelper.clearContainerContextMarker();
 
 			Rexbuilder_Util_Admin_Editor.removeClassToLiveFrameRexContainer('rex-dragging-button');
 			Rexbuilder_Util_Admin_Editor.dragImportType = '';
@@ -442,24 +439,12 @@ var Button_Import_Modal = (function ($) {
 			}
 
 			function onDragEnterRow(event) {
-				event.stopPropagation();
-
 				$currentElement = $(event.target);
-				// currentElementChangeFlag = true;
 				elementRectangle = event.target.getBoundingClientRect();
-				// countdown = 1;
 			}
 
 			function onDragOverRow(event) {
-				// if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexbutton') return;
-				// if (countdown % 15 != 0 && currentElementChangeFlag == false) {
-				// 	countdown = countdown + 1;
-				// 	return;
-				// }
-
 				event = event || window.event;
-				// countdown = countdown + 1;
-				// currentElementChangeFlag = false;
 
 				mousePosition.xCoord = event.originalEvent.clientX;
 				mousePosition.yCoord = event.originalEvent.clientY;
@@ -511,10 +496,8 @@ var Button_Import_Modal = (function ($) {
 			}
 
 			Button_Import_Modal.onDragOverWindow = onDragOverWindow;
-			// Button_Import_Modal.onDragOverWindow = _.throttle(onDragOverWindow, 100);
 			Button_Import_Modal.onDragEnterRow = onDragEnterRow;
 			Button_Import_Modal.onDragOverRow = onDragOverRow;
-			// Button_Import_Modal.onDragOverRow = _.throttle(onDragOverRow, 400);
 			Button_Import_Modal.onDropRow = onDropRow;
 		}
 

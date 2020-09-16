@@ -532,6 +532,8 @@ var Rexbuilder_Rexbutton = (function ($) {
 			dropType = 'inside-block';
 		}
 
+		console.log(dropType);
+
 		switch (dropType) {
 			case 'inside-block':
 				$buttonWrapper.wrap('<p class="rex-buttons-paragraph"></p>');
@@ -1383,5 +1385,3 @@ var Rexbuilder_Rexbutton = (function ($) {
 		updateContainerHoverRule: _updateContainerHoverRule
 	};
 })(jQuery);
-
-

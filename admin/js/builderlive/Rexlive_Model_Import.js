@@ -509,7 +509,7 @@ var Model_Import_Modal = (function ($) {
 
 	var _linkDraggable = function () {
 		var isIE = /*@cc_on!@*/ false || !!document.documentMode;
-		var $currentElement, currentElementChangeFlag, elementRectangle, countdown, dragoverqueue_processtimer;
+		var $currentElement, elementRectangle, dragOverQueueTimer;
 
 		var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow;
 		var $frameContentWindow = $(clientFrameWindow);
@@ -522,7 +522,7 @@ var Model_Import_Modal = (function ($) {
 
 		var scrollAmount = 15;
 
-		function onModelDragStart(event) {
+		function onDragStartModel(event) {
 			Rexbuilder_Util_Admin_Editor.dragImportType = 'rexmodel';
 
 			Rexbuilder_Util_Admin_Editor.hideLateralMenu();
@@ -530,9 +530,7 @@ var Model_Import_Modal = (function ($) {
 
 			event.originalEvent.dataTransfer.effectAllowed = 'all';
 
-			dragoverqueue_processtimer = setInterval(function () {
-				dragDropHelper.processDragOverQueue();
-			}, 100);
+			dragOverQueueTimer = setInterval(dragDropHelper.processDragOverQueue.bind(dragDropHelper), 100);
 
 			tmpl.arg = 'o';
 
@@ -555,9 +553,8 @@ var Model_Import_Modal = (function ($) {
 			Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDstart);
 		}
 
-		function onModelDrag() {
+		function onDragModel() {
 			Rexbuilder_Util_Admin_Editor.setStopScroll(true);
-			Rexbuilder_Util_Admin_Editor.checkLateralMenu(mouseClientX);
 
 			if (mouseClientY < 150) {
 				Rexbuilder_Util_Admin_Editor.scrollFrame(scrollAmount * -1);
@@ -568,16 +565,13 @@ var Model_Import_Modal = (function ($) {
 			}
 		}
 
-		function onModelDragEnd(event) {
+		function onDragEndModel() {
 			Rexbuilder_Util_Admin_Editor.setStopScroll(true);
 			Rexbuilder_Util_Admin_Editor.releaseIframeRows();
 
-			clearInterval(dragoverqueue_processtimer);
+			clearInterval(dragOverQueueTimer);
 
 			dragDropHelper.removeAllPlaceholders();
-			dragDropHelper.clearContainerContextMarker();
-
-			Rexbuilder_Util_Admin_Editor.dragImportType = '';
 
 			var dataDnDend = {
 				eventName: 'rexlive:drag_drop_ended',
@@ -592,7 +586,6 @@ var Model_Import_Modal = (function ($) {
 			var mousePosition = {};
 
 			function onDragOverWindow(event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexmodel') return;
 				event.preventDefault();
 				event.stopPropagation();
 
@@ -608,27 +601,11 @@ var Model_Import_Modal = (function ($) {
 			}
 
 			function onDragEnterRow(event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexmodel') return;
-				event.stopPropagation();
-
 				$currentElement = $(event.target);
-				currentElementChangeFlag = true;
 				elementRectangle = event.target.getBoundingClientRect();
-				countdown = 1;
 			}
 
 			function onDragOverContainer(event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexmodel') return;
-
-				if (countdown % 15 != 0 && currentElementChangeFlag == false) {
-					countdown = countdown + 1;
-					return;
-				}
-
-				event = event || window.event;
-				countdown = countdown + 1;
-				currentElementChangeFlag = false;
-
 				mousePosition.xCoord = event.originalEvent.clientX;
 				mousePosition.yCoord = event.originalEvent.clientY;
 
@@ -636,7 +613,6 @@ var Model_Import_Modal = (function ($) {
 			}
 
 			function onDropContainer(event) {
-				if (Rexbuilder_Util_Admin_Editor.dragImportType !== 'rexmodel') return;
 				event.preventDefault();
 				event.stopPropagation();
 
@@ -671,9 +647,9 @@ var Model_Import_Modal = (function ($) {
 			$rexContainer.on('drop', onDropContainer);
 		}
 
-		Rexlive_Base_Settings.$document.on('dragstart', '.model-list li', onModelDragStart);
-		Rexlive_Base_Settings.$document.on('drag', '.model-list li', onModelDrag);
-		Rexlive_Base_Settings.$document.on('dragend', '.model-list li', onModelDragEnd);
+		Rexlive_Base_Settings.$document.on('dragstart', '.model-list li', onDragStartModel);
+		Rexlive_Base_Settings.$document.on('drag', '.model-list li', onDragModel);
+		Rexlive_Base_Settings.$document.on('dragend', '.model-list li', onDragEndModel);
 		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(onIFrameLoad);
 	};
 
@@ -873,15 +849,17 @@ var Model_Import_Modal = (function ($) {
 		}
 	};
 
-	var _init = function () {
+	var init = function () {
 		Rexbuilder_Util_Admin_Editor.frameBuilder.addEventListener('load', _handleIFrameLoad);
 
 		var self = document.getElementById('rex-models-list');
 		var $self = $(self);
+
 		rexmodel_import_props = {
 			self: self,
 			$self: $self
 		};
+
 		_linkDocumentListeners();
 		_linkDraggable();
 		// execute above function
@@ -894,7 +872,7 @@ var Model_Import_Modal = (function ($) {
 	}
 
 	return {
-		init: _init,
+		init: init,
 		saveModelThumbnail: _saveModelThumbnail,
 		updateModelThumbnail: _updateModelThumbnail,
 		updateModelList: _updateModelList,
