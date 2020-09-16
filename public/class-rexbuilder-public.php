@@ -1651,6 +1651,21 @@ class Rexbuilder_Public {
 	}
 
 	/**
+	 * Wrap all the wp_footer functions on a single hook
+	 * @return void
+	 * @since  2.0.9
+	 */
+	public function rexbuilder_wp_footer() {
+		$this->print_photoswipe_template();
+		$this->print_vertical_dots();
+		$this->print_post_id();
+		$this->print_popup_content_template();
+		$this->include_js_template();
+		$this->include_sprites_live();
+		$this->include_custom_sprites();
+	}
+
+	/**
 	 * Prepare the html template for photoswipe gallery.
 	 *
 	 * @since    1.0.0
