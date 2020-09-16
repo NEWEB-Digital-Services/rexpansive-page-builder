@@ -394,14 +394,15 @@ class Rexbuilder {
 		$this->loader->add_action( 'shortcode_atts_wpcf7', $plugin_public, 'cf7_custom_style', 10, 4 );
 		$this->loader->add_filter( 'the_content', $plugin_public, "generate_builder_content");
 
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_vertical_dots' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_post_id' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_popup_content_template' );
-
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_js_template' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites_live' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_custom_sprites' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'rexbuilder_wp_footer' );
+		
+		// $this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );
+		// $this->loader->add_action( 'wp_footer', $plugin_public, 'print_vertical_dots' );
+		// $this->loader->add_action( 'wp_footer', $plugin_public, 'print_post_id' );
+		// $this->loader->add_action( 'wp_footer', $plugin_public, 'print_popup_content_template' );
+		// $this->loader->add_action( 'wp_footer', $plugin_public, 'include_js_template' );
+		// $this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites_live' );
+		// $this->loader->add_action( 'wp_footer', $plugin_public, 'include_custom_sprites' );
 
 		// ajax logic
 		// for live builder
