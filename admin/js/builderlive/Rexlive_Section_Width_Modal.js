@@ -163,7 +163,7 @@ var Section_Width_Modal = (function($) {
 			sectionWidthProperties.$section_width_type.children('.selected').attr('data-rex-section-width') == 'full';
 
 		var $sectionBoxedWidthTypeWrap = $(clickEvent.target).parents('.boxed-width-type-wrap');
-		var wasChecked = $sectionBoxedWidthTypeWrap.hasClass('selected');
+		var wasChecked = $sectionBoxedWidthTypeWrap.prop('checked');
 
 		_clearSectionBoxedWidthType();
 
