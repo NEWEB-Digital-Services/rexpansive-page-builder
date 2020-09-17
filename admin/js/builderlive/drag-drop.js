@@ -984,10 +984,9 @@ var dragDropInstances = (function ($) {
 				}
 				break;
 			case 'top':
-				console.countReset('while top');
 				var validParent = null;
+
 				for (var i = 0; i < $element.parents().length; i++) {
-					console.count('while top');
 					var elementRect = $element.get(0).getBoundingClientRect();
 					var $tempElement = $element.parent();
 					var tempelementRect = $tempElement.get(0).getBoundingClientRect();
@@ -1013,10 +1012,9 @@ var dragDropInstances = (function ($) {
 				return validParent;
 				break;
 			case 'bottom':
-				console.countReset('while bottom');
 				var validParent = null;
+
 				for (var i = 0; i < $element.parents().length; i++) {
-					console.count('while bottom');
 					var elementRect = $element.get(0).getBoundingClientRect();
 					var $tempElement = $element.parent();
 					var tempelementRect = $tempElement.get(0).getBoundingClientRect();
@@ -1048,31 +1046,21 @@ var dragDropInstances = (function ($) {
 	RexModelDragDrop.prototype.orchestrateDragDrop = function ($element, elementRect, mousePos) {
 		// If no element is hovered or element hovered is the placeholder -> not valid -> return false;
 		if (!$element || $element.length == 0 || !elementRect || !mousePos) {
-			console.log('esco da orchestrate senza far nulla');
 			return false;
 		}
+
+		var breakPointNumber = JSON.parse(JSON.stringify(customBreakPoints));
 
 		if ($element.is('html')) {
 			$element = $element.find('body');
 		}
 
-		// Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
-		var breakPointNumber = {
-			// x: 50,
-			y: 50
-		};
-		// var breakPointNumber = JSON.parse(JSON.stringify(customBreakPoints));
 		mousePercents = DragDrop.getMouseBearingsPercentage($element, elementRect, mousePos);
 
-		if (/* mousePercents.xPercentage <= breakPointNumber.x || */ mousePercents.yPercentage <= breakPointNumber.y) {
+		if (mousePercents.yPercentage <= breakPointNumber.y) {
 			var $validElement = this.findValidParent($element, 'top');
-			console.log('case 1: y più piccolo di %s', breakPointNumber.y);
 			if (!$validElement) {
 				return;
-			}
-
-			if ($validElement.hasClass('rex-container')) {
-				console.log('is container', $validElement);
 			}
 
 			if ($validElement.is('body,html')) {
@@ -1080,20 +1068,11 @@ var dragDropInstances = (function ($) {
 			}
 
 			this.decideBeforeAfter($validElement, mousePercents, mousePos);
-		} else if (
-			/* mousePercents.xPercentage >= 100 - breakPointNumber.x || */
-			mousePercents.yPercentage >=
-			100 - breakPointNumber.y
-		) {
-			console.log('case 2: y più grande di %s', breakPointNumber.y);
+		} else if (mousePercents.yPercentage >= 100 - breakPointNumber.y) {
 			var $validElement = this.findValidParent($element, 'bottom');
 
 			if (!$validElement) {
 				return;
-			}
-
-			if ($validElement.hasClass('rex-container')) {
-				console.log('is container');
 			}
 
 			if ($validElement.is('body,html')) {
@@ -1102,8 +1081,6 @@ var dragDropInstances = (function ($) {
 
 			this.decideBeforeAfter($validElement, mousePercents, mousePos);
 		}
-
-		console.log('==========');
 	};
 
 	/* ===== REX WPCF7 ===== */

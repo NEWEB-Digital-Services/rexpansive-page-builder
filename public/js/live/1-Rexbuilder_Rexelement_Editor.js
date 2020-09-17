@@ -7,7 +7,8 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 	/**
 	 * Fixes the dragged element in the DOM. Called right after
 	 * the drag & drop event in Rexlive_Form_Import.js
-	 * @param		{Object}	data	Contains mouse position of the drop.
+	 * @param		{object}			data
+	 * @param		{MouseCoords}	data.mousePosition	Contains mouse position of the drop.
 	 * @since 	2.0.4
 	 */
 	function fixImportedElement(data) {
@@ -17,18 +18,25 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		var $gridGallery = $elementWrapper.parents('.grid-stack-row').eq(0);
 		var $section = $elementWrapper.parents('.rexpansive_section').eq(0);
 
-		// Necessary to detect the element
-		$elementWrapper.addClass('importing-element');
-		$elementWrapper.detach();
-		$gridGallery.find('.element-list-preview').remove();
+		var dropType = 'inside-block';
+		var isInsideBlock = 'inside-block' === dropType;
 
-		var dropType;
 		if ($textWrap.length == 0) {
 			if ($gridGallery.length !== 0) {
 				dropType = 'inside-row';
 			}
+		}
+
+		// Necessary to detect the element
+		$elementWrapper.addClass('importing-element');
+		$elementWrapper.detach();
+
+		var $elementListPreview = $gridGallery.find('.element-list-preview');
+
+		if (isInsideBlock) {
+			$elementListPreview.replaceWith('<div class="form-replacer"></div>');
 		} else {
-			dropType = 'inside-block';
+			$elementListPreview.remove();
 		}
 
 		// Getting the html of the element
@@ -70,17 +78,10 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 						$elementDataFromDB.attr('data-synchronize', false);
 					}
 
-					console.log(dropType);
-
 					switch (dropType) {
 						case 'inside-block':
-							/*
 							$elementWrapper.wrap('<span class="rex-elements-paragraph"></span>');
-              _endFixingImportedElement($elementWrapper, formFieldsString);
-							Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
-							 */
-							$elementWrapper.wrap('<span class="rex-elements-paragraph"></span>');
-							$textWrap.prepend($elementWrapper);
+							$gridGallery.find('.form-replacer').replaceWith($elementWrapper);
 
 							setupElement($elementWrapper, formFieldsString);
 
