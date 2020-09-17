@@ -609,6 +609,8 @@ var Model_Import_Modal = (function ($) {
 				mousePosition.xCoord = event.originalEvent.clientX;
 				mousePosition.yCoord = event.originalEvent.clientY;
 
+				// console.log(mousePosition);
+
 				dragDropHelper.addEntryToDragOverQueue($currentElement, elementRectangle, mousePosition);
 			}
 

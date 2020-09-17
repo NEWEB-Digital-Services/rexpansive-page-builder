@@ -508,6 +508,8 @@ var dragDropInstances = (function ($) {
 
 		this.dragoverqueue = [];
 
+		console.log('processing...');
+
 		if (processing && processing.length === 3) {
 			var $el = processing[0];
 			var elRect = processing[1];
@@ -1034,21 +1036,27 @@ var dragDropInstances = (function ($) {
 		}
 
 		// Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
-		var breakPointNumber = { x: 50, y: 50 };
+		// var breakPointNumber = { x: 50, y: 50 };
+		var breakPointNumber = JSON.parse(JSON.stringify(customBreakPoints));
 		mousePercents = DragDrop.getMouseBearingsPercentage($element, elementRect, mousePos);
 
-		if (
+		console.log(mousePercents, breakPointNumber);
+
+		// This can never happen with the breakpoint at 50!
+		/* if (
 			mousePercents.xPercentage > breakPointNumber.x &&
 			mousePercents.xPercentage < 100 - breakPointNumber.x &&
 			mousePercents.yPercentage > breakPointNumber.y &&
 			mousePercents.yPercentage < 100 - breakPointNumber.y
 		) {
+			console.log('case 1');
 			var $tempElement = $element.clone();
 			$tempElement.find('.drop-marker').remove();
 
 			if ($tempElement.html() == '' && !DragDrop.checkVoidElement($tempElement)) {
 				if (mousePercents.yPercentage < 90) {
-					return this.appendPlaceholder($element);
+					this.appendPlaceholder($element);
+					return;
 				}
 			} else if ($tempElement.children().length == 0) {
 				this.decideBeforeAfter($element, mousePercents);
@@ -1061,24 +1069,31 @@ var dragDropInstances = (function ($) {
 				var positionAndElement = DragDrop.findNearestElement($element, mousePos.xCoord, mousePos.yCoord);
 				this.decideBeforeAfter(positionAndElement.$el, mousePercents, mousePos);
 			}
-		} else if (mousePercents.xPercentage <= breakPointNumber.x || mousePercents.yPercentage <= breakPointNumber.y) {
-			var validElement = this.findValidParent($element, 'top');
+		} else */ if (mousePercents.xPercentage <= breakPointNumber.x || mousePercents.yPercentage <= breakPointNumber.y) {
+			console.log('case 2');
+			var $validElement = this.findValidParent($element, 'top');
 
-			if (validElement.is('body,html')) {
-				validElement = $(this.context.body).children(':not(.drop-marker,[data-dragcontext-marker])').first();
+			if ($validElement.is('body,html')) {
+				$validElement = $(this.context.body).children(':not(.drop-marker,[data-dragcontext-marker])').first();
 			}
-			this.decideBeforeAfter(validElement, mousePercents, mousePos);
+
+			this.decideBeforeAfter($validElement, mousePercents, mousePos);
 		} else if (
 			mousePercents.xPercentage >= 100 - breakPointNumber.x ||
 			mousePercents.yPercentage >= 100 - breakPointNumber.y
 		) {
-			var validElement = this.findValidParent($element, 'bottom');
+			console.log('case 3');
 
-			if (validElement.is('body,html')) {
-				validElement = $(this.context.body).children(':not(.drop-marker,[data-dragcontext-marker])').last();
+			var $validElement = this.findValidParent($element, 'bottom');
+
+			if ($validElement.is('body,html')) {
+				$validElement = $(this.context.body).children(':not(.drop-marker,[data-dragcontext-marker])').last();
 			}
-			this.decideBeforeAfter(validElement, mousePercents, mousePos);
+
+			this.decideBeforeAfter($validElement, mousePercents, mousePos);
 		}
+
+		console.log('==========');
 	};
 
 	/* ===== REX WPCF7 ===== */
