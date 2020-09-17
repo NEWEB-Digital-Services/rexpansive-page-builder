@@ -49,11 +49,11 @@ defined('ABSPATH') or exit;
                             <input id="section-boxed-modal" type="radio" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="boxed" title="Boxed" />
                             <span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
                         </label>
-                        
+
                     </div>
                 </div><!-- Full section width or boxed -->
 
-                <div class="bl_modal__option-wrap bl_modal__col-4">
+                <div class="section-set-width bl_modal__option-wrap bl_modal__col-4">
                     <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Boxed Width', 'rexpansive-builder');?>">
                         <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
                         <input type="text" class="section-set-boxed-width" name="section-set-boxed-width" value="0000" placeholder="" size="23">
