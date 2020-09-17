@@ -19,10 +19,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 		// Necessary to detect the element
 		$elementWrapper.addClass('importing-element');
-		// Removing element unnecessary data
-
 		$elementWrapper.detach();
-
 		$gridGallery.find('.element-list-preview').remove();
 
 		var dropType;
@@ -73,8 +70,15 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 						$elementDataFromDB.attr('data-synchronize', false);
 					}
 
+					console.log(dropType);
+
 					switch (dropType) {
 						case 'inside-block':
+							/*
+							$elementWrapper.wrap('<span class="rex-elements-paragraph"></span>');
+              _endFixingImportedElement($elementWrapper, formFieldsString);
+							Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
+							 */
 							$elementWrapper.wrap('<span class="rex-elements-paragraph"></span>');
 							$textWrap.prepend($elementWrapper);
 
@@ -82,7 +86,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 
 							Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
 							break;
-
 						case 'inside-row':
 							var ev = jQuery.Event('rexlive:insert_new_text_block');
 

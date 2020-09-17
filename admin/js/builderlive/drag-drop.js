@@ -425,18 +425,14 @@ var dragDropInstances = (function ($) {
 
 		if (percentageToTest < 50) {
 			if (elementIsTableCell) {
-				console.log('prepend');
 				this.prependPlaceholder($targetElement);
 			} else {
-				console.log('before');
 				this.placeBefore($targetElement);
 			}
 		} else {
 			if (elementIsTableCell) {
-				console.log('append');
 				this.appendPlaceholder($targetElement);
 			} else {
-				console.log('after');
 				this.placeAfter($targetElement);
 			}
 		}
