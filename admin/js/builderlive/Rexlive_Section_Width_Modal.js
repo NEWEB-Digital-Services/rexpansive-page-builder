@@ -13,6 +13,8 @@ var Section_Width_Modal = (function($) {
 	var sectionTarget;
 
 	var isEditingWidthValue = false;
+	var minPercentage = 20;
+	var minPixels = 320;
 
   var _resetOldWidthData = function() {
     oldSectionWidthData.dimension = "";
@@ -133,35 +135,50 @@ var Section_Width_Modal = (function($) {
 		Rexlive_Base_Settings.$document.on(
 			'click',
 			'#modal-background-responsive-set .boxed-width-type-wrap',
-			onEditWidthType
+			_onClickWidthUnit
 		);
 
 		Rexlive_Base_Settings.$document.on(
 			'click',
 			'#modal-background-responsive-set .rexlive-section-width',
-			onSectionWidthType
+			_onClickSectionType
 		);
 
-		Rexlive_Base_Settings.$document.get(0).addEventListener('click', onInputBlur);
-		sectionWidthProperties.$section_boxed_width_input.keyup(onKeyUp);
-		sectionWidthProperties.$section_boxed_width_input.keydown(onKeyDown);
+		Rexlive_Base_Settings.$document.get(0).addEventListener('click', _onInputBlur);
+		sectionWidthProperties.$section_boxed_width_input.keyup(_onKeyUp);
+		sectionWidthProperties.$section_boxed_width_input.keydown(_onKeyDown);
 	}
 
 	/**
-	 * @param {MouseEvent}	clickEvent
+	 * Changes the width measure unit (which can be pixels or percentage)
+	 *
+	 * @param		{MouseEvent}	clickEvent
+	 * @version	2.0.9					Moved in named function
 	 */
-	function onEditWidthType(clickEvent) {
+	function _onClickWidthUnit(clickEvent) {
 		clickEvent.preventDefault();
 		isEditingWidthValue = true;
 
 		var wasFull =
 			sectionWidthProperties.$section_width_type.children('.selected').attr('data-rex-section-width') == 'full';
 
+		var $sectionBoxedWidthTypeWrap = $(clickEvent.target).parents('.boxed-width-type-wrap');
+		var wasChecked = $sectionBoxedWidthTypeWrap.hasClass('selected');
+
 		_clearSectionBoxedWidthType();
 
-		var $sectionBoxedWidthTypeWrap = $(clickEvent.target).parents('.boxed-width-type-wrap');
 		$sectionBoxedWidthTypeWrap.addClass('selected');
 		$sectionBoxedWidthTypeWrap.find('input').prop('checked', true);
+
+		var defaults =
+			$sectionBoxedWidthTypeWrap.attr('data-rex-section-width-type') === '%'
+				? defaultSectionWidthData.boxed
+				: defaultSectionWidthData.boxedPixels;
+
+		if (!wasChecked) {
+			// Reset input to default values
+			_updateSectionBoxedWidthData(defaults);
+		}
 
 		if (wasFull && $sectionBoxedWidthTypeWrap.attr('data-rex-section-width-type') == 'px') {
 			_clearSectionWidth();
@@ -172,29 +189,30 @@ var Section_Width_Modal = (function($) {
 			sectionWidthProperties.$section_boxed_width_input.val(defaultSectionWidthData.boxed.sectionWidth);
 		}
 
-		_castToMinValue()
-		// applySectionWidth();
+		_castWidthInputToMinValue();
 	}
 
 	/**
-	 * @param {MouseEvent}	clickEvent
+	 * Changes the section type (which can be full or boxed).
+	 *
+	 * @param 	{MouseEvent}	clickEvent
+	 * @version	2.0.9					Moved in named function
 	 */
-	function onSectionWidthType(clickEvent) {
+	function _onClickSectionType(clickEvent) {
 		clickEvent.preventDefault();
 		_clearSectionWidth();
 
 		isEditingWidthValue = true;
 
-		var $sectionWidthTypeWrap = $(clickEvent.target).parents(
-			".rexlive-section-width"
-		);
-		$sectionWidthTypeWrap.addClass("selected");
-		$sectionWidthTypeWrap.find("input").prop("checked", true);
+		var $sectionWidthTypeWrap = $(clickEvent.target).parents('.rexlive-section-width');
+		$sectionWidthTypeWrap.addClass('selected');
+		$sectionWidthTypeWrap.find('input').prop('checked', true);
 
-		var selectedType = $sectionWidthTypeWrap.attr("data-rex-section-width");
+		var selectedType = $sectionWidthTypeWrap.attr('data-rex-section-width');
+		var isDifferentFromOld = selectedType !== oldSectionWidthData.type;
 
-		if (selectedType != oldSectionWidthData.type) {
-			if (selectedType == "boxed") {
+		if (isDifferentFromOld) {
+			if (selectedType === 'boxed') {
 				_updateSectionBoxedWidthData(defaultSectionWidthData.boxed);
 			} else {
 				_updateSectionBoxedWidthData(defaultSectionWidthData.full);
@@ -203,7 +221,6 @@ var Section_Width_Modal = (function($) {
 			_updateSectionBoxedWidthData(oldSectionWidthData);
 		}
 
-		//Section_Modal.applySectionLayout();
 		applySectionWidth();
 	}
 
@@ -211,7 +228,7 @@ var Section_Width_Modal = (function($) {
 	 * @param {MouseEvent}	clickEvent
 	 * @since	2.0.9
 	 */
-	function onInputBlur(clickEvent) {
+	function _onInputBlur(clickEvent) {
 		clickEvent.stopPropagation();
 
 		var element = clickEvent.target;
@@ -219,16 +236,32 @@ var Section_Width_Modal = (function($) {
 
 		if (hasInputParent || !isEditingWidthValue) return;
 
-		_castToMinValue();
+		// Selecting the boxed radio button
+		sectionWidthProperties.$section_width_type_wrap.filter('[data-rex-section-width="full"]').removeClass('selected');
+		sectionWidthProperties.$section_width_type_wrap
+			.filter('[data-rex-section-width="boxed"]')
+			.addClass('selected')
+			.find('input')
+			.prop('checked', true);
+
+		_castWidthInputToMinValue();
 		applySectionWidth();
 	}
 
-	function onKeyUp(e) {
+	/**
+	 * @param 	{KeyboardEvent}	e
+	 * @version	2.0.9					Moved in named function
+	 */
+	function _onKeyUp(e) {
 		if (!((e.keyCode >= 48 && e.keyCode <= 57) || e.keyCode == 38 || e.keyCode == 40 || e.keyCode == 8)) return;
 		e.preventDefault();
 	}
 
-	function onKeyDown(e) {
+	/**
+	 * @param 	{KeyboardEvent}	e
+	 * @version	2.0.9					Moved in named function
+	 */
+	function _onKeyDown(e) {
 		var $input = $(e.target);
 		isEditingWidthValue = true;
 
@@ -255,7 +288,7 @@ var Section_Width_Modal = (function($) {
 			}
 
 			if ((e.keyCode >= 48 && e.keyCode <= 57) || e.keyCode == 38 || e.keyCode == 40 || e.keyCode == 8) {
-				_castToMinValue();
+				_castWidthInputToMinValue();
 			}
 
 			return;
@@ -272,10 +305,7 @@ var Section_Width_Modal = (function($) {
 		}
 	}
 
-	var minPercentage = 20;
-	var minPixels = 320;
-
-	function _castToMinValue() {
+	function _castWidthInputToMinValue() {
 		var widthData = getData();
 		var minToCheck = widthData.type === 'px' ? minPixels : minPercentage;
 
@@ -287,7 +317,8 @@ var Section_Width_Modal = (function($) {
   var _init = function($container) {
     var $self = $container.find(".section-width-wrapper");
     sectionWidthProperties = {
-      $self: $self,
+			$self: $self,
+			// 2 elements selected: full and box selectors
       $section_width_type_wrap: $self.find(".rexlive-section-width"),
       $section_width_type: $self.find(".rex-edit-row-width"),
       $section_full: $self.find("#section-full-modal"),
@@ -303,11 +334,16 @@ var Section_Width_Modal = (function($) {
         dimension: "%",
         sectionWidth: "80"
       },
+			boxedPixels: {
+				type: "boxed",
+				dimension: "px",
+				sectionWidth: "320"
+			},
       full: {
         type: "full",
         dimension: "%",
         sectionWidth: "100"
-      }
+			},
     };
 
     oldSectionWidthData = {
