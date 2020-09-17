@@ -609,8 +609,6 @@ var Model_Import_Modal = (function ($) {
 				mousePosition.xCoord = event.originalEvent.clientX;
 				mousePosition.yCoord = event.originalEvent.clientY;
 
-				// console.log(mousePosition);
-
 				dragDropHelper.addEntryToDragOverQueue($currentElement, elementRectangle, mousePosition);
 			}
 
@@ -644,7 +642,7 @@ var Model_Import_Modal = (function ($) {
 			}
 
 			Model_Import_Modal.onDragOverWindow = onDragOverWindow;
-			$rexContainer.on('dragenter', onDragEnterRow);
+			$rexContainer.on('dragenter', '.rexpansive-lock-section', onDragEnterRow);
 			$rexContainer.on('dragover', onDragOverContainer);
 			$rexContainer.on('drop', onDropContainer);
 		}

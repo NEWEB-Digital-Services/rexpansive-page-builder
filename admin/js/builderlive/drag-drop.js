@@ -425,14 +425,18 @@ var dragDropInstances = (function ($) {
 
 		if (percentageToTest < 50) {
 			if (elementIsTableCell) {
+				console.log('prepend');
 				this.prependPlaceholder($targetElement);
 			} else {
+				console.log('before');
 				this.placeBefore($targetElement);
 			}
 		} else {
 			if (elementIsTableCell) {
+				console.log('append');
 				this.appendPlaceholder($targetElement);
 			} else {
+				console.log('after');
 				this.placeAfter($targetElement);
 			}
 		}
@@ -508,8 +512,6 @@ var dragDropInstances = (function ($) {
 
 		this.dragoverqueue = [];
 
-		console.log('processing...');
-
 		if (processing && processing.length === 3) {
 			var $el = processing[0];
 			var elRect = processing[1];
@@ -567,15 +569,14 @@ var dragDropInstances = (function ($) {
 	};
 
 	/**
-	 * @abstract
+	 * Used for re-orchestrating elements inside blocks.
+	 *
 	 * @public
-	 * @param {JQuery}			$element
-	 * @param {DOMRect}			elementRect
-	 * @param {MouseCoords}	mousePos
+	 * @param 	{JQuery}			$element
+	 * @param 	{DOMRect}			elementRect
+	 * @param 	{MouseCoords}	mousePos
 	 */
 	DragDrop.prototype.reOrchestrate = function ($element, elementRect, mousePos) {
-		// throw new Error('Must be implemented by subclass!');
-
 		var $gridItem = $element.parents('.grid-stack-item');
 		var $textWrap = $gridItem.find('.text-wrap');
 
@@ -987,38 +988,61 @@ var dragDropInstances = (function ($) {
 				}
 				break;
 			case 'top':
-				while (true) {
+				console.countReset('while top');
+				var validParent = null;
+				for (var i = 0; i < $element.parents().length; i++) {
+					console.count('while top');
 					var elementRect = $element.get(0).getBoundingClientRect();
 					var $tempElement = $element.parent();
 					var tempelementRect = $tempElement.get(0).getBoundingClientRect();
 
-					if ($element.is('body') || $element.hasClass('rex-container')) {
-						return $element;
+					if ($element.is('body') /* || $element.hasClass('rex-container') */) {
+						// return $element;
+						// return null;
+						break;
+					}
+
+					if ($element.hasClass('rex-container')) {
+						validParent = $element;
+						break;
 					}
 
 					if (Math.abs(tempelementRect.top - elementRect.top) == 0) {
 						$element = $element.parent();
 					} else {
-						return $element;
+						validParent = $element;
+						break;
 					}
 				}
+				return validParent;
 				break;
 			case 'bottom':
-				while (true) {
+				console.countReset('while bottom');
+				var validParent = null;
+				for (var i = 0; i < $element.parents().length; i++) {
+					console.count('while bottom');
 					var elementRect = $element.get(0).getBoundingClientRect();
 					var $tempElement = $element.parent();
 					var tempelementRect = $tempElement.get(0).getBoundingClientRect();
 
-					if ($element.is('body') || $element.hasClass('rex-container')) {
-						return $element;
+					if ($element.is('body') /* || $element.hasClass('rex-container') */) {
+						break;
+					}
+
+					if ($element.hasClass('rex-container')) {
+						validParent = $element;
+						break;
 					}
 
 					if (Math.abs(tempelementRect.bottom - elementRect.bottom) == 0) {
 						$element = $element.parent();
 					} else {
-						return $element;
+						validParent = $element;
+						break;
 					}
 				}
+
+				return validParent;
 				break;
 			default:
 				break;
@@ -1026,8 +1050,9 @@ var dragDropInstances = (function ($) {
 	};
 
 	RexModelDragDrop.prototype.orchestrateDragDrop = function ($element, elementRect, mousePos) {
-		//If no element is hovered or element hovered is the placeholder -> not valid -> return false;
+		// If no element is hovered or element hovered is the placeholder -> not valid -> return false;
 		if (!$element || $element.length == 0 || !elementRect || !mousePos) {
+			console.log('esco da orchestrate senza far nulla');
 			return false;
 		}
 
@@ -1036,42 +1061,23 @@ var dragDropInstances = (function ($) {
 		}
 
 		// Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
-		// var breakPointNumber = { x: 50, y: 50 };
-		var breakPointNumber = JSON.parse(JSON.stringify(customBreakPoints));
+		var breakPointNumber = {
+			// x: 50,
+			y: 50
+		};
+		// var breakPointNumber = JSON.parse(JSON.stringify(customBreakPoints));
 		mousePercents = DragDrop.getMouseBearingsPercentage($element, elementRect, mousePos);
 
-		console.log(mousePercents, breakPointNumber);
-
-		// This can never happen with the breakpoint at 50!
-		/* if (
-			mousePercents.xPercentage > breakPointNumber.x &&
-			mousePercents.xPercentage < 100 - breakPointNumber.x &&
-			mousePercents.yPercentage > breakPointNumber.y &&
-			mousePercents.yPercentage < 100 - breakPointNumber.y
-		) {
-			console.log('case 1');
-			var $tempElement = $element.clone();
-			$tempElement.find('.drop-marker').remove();
-
-			if ($tempElement.html() == '' && !DragDrop.checkVoidElement($tempElement)) {
-				if (mousePercents.yPercentage < 90) {
-					this.appendPlaceholder($element);
-					return;
-				}
-			} else if ($tempElement.children().length == 0) {
-				this.decideBeforeAfter($element, mousePercents);
-			} else if ($tempElement.children().length == 1) {
-				this.decideBeforeAfter(
-					$element.children(':not(.drop-marker,[data-dragcontext-marker])').first(),
-					mousePercents
-				);
-			} else {
-				var positionAndElement = DragDrop.findNearestElement($element, mousePos.xCoord, mousePos.yCoord);
-				this.decideBeforeAfter(positionAndElement.$el, mousePercents, mousePos);
-			}
-		} else */ if (mousePercents.xPercentage <= breakPointNumber.x || mousePercents.yPercentage <= breakPointNumber.y) {
-			console.log('case 2');
+		if (/* mousePercents.xPercentage <= breakPointNumber.x || */ mousePercents.yPercentage <= breakPointNumber.y) {
 			var $validElement = this.findValidParent($element, 'top');
+			console.log('case 1: y più piccolo di %s', breakPointNumber.y);
+			if (!$validElement) {
+				return;
+			}
+
+			if ($validElement.hasClass('rex-container')) {
+				console.log('is container', $validElement);
+			}
 
 			if ($validElement.is('body,html')) {
 				$validElement = $(this.context.body).children(':not(.drop-marker,[data-dragcontext-marker])').first();
@@ -1079,12 +1085,20 @@ var dragDropInstances = (function ($) {
 
 			this.decideBeforeAfter($validElement, mousePercents, mousePos);
 		} else if (
-			mousePercents.xPercentage >= 100 - breakPointNumber.x ||
-			mousePercents.yPercentage >= 100 - breakPointNumber.y
+			/* mousePercents.xPercentage >= 100 - breakPointNumber.x || */
+			mousePercents.yPercentage >=
+			100 - breakPointNumber.y
 		) {
-			console.log('case 3');
-
+			console.log('case 2: y più grande di %s', breakPointNumber.y);
 			var $validElement = this.findValidParent($element, 'bottom');
+
+			if (!$validElement) {
+				return;
+			}
+
+			if ($validElement.hasClass('rex-container')) {
+				console.log('is container');
+			}
 
 			if ($validElement.is('body,html')) {
 				$validElement = $(this.context.body).children(':not(.drop-marker,[data-dragcontext-marker])').last();
