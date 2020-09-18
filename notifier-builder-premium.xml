@@ -5,6 +5,7 @@
 		<![CDATA[
 			<h4><strong>v2.0.9</strong> -  </h4>
 			<p><strong>Added</strong>: When editing a text block, now the block keeps the red outline that has when it's not being edited</p>
+			<p><strong>Updated</strong>: Highly improved drag & drop of RexButtons, RexModels & RexWpcf7</p>
 			<p><strong>Updated</strong>: When importing a RexButton, the cursor moves to the first paragraph after (if there is no one, it's created)</p>
 			<p><strong>Fixed</strong>: When importing RexButtons / RexWpcf7 forms, it was not possible to remove the focus with the ESC button or clicking out</p>
 			<p><strong>Fixed</strong>: When importing a RexButton on an already existent block, the block was not completely focused</p>
