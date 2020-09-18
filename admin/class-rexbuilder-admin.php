@@ -470,6 +470,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'Rexlive-LockedOption-Mask', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_LockedOption_Mask.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Model-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Import.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Button-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Button_Import.js', array( 'jquery' ), null, true );
+				wp_enqueue_script('drag-drop', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/drag-drop.js', array('jquery'), null, true);
 				wp_enqueue_script( 'Rexlive-Button-Edit', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Edit_Button.js', array( 'jquery' ), null, true );
 
 				wp_enqueue_script( 'rexlive-delete-model', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Delete_Model_Modal.js', array( 'jquery' ), null, true );

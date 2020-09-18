@@ -3,10 +3,10 @@
  * @since  2.0.0
  */
 var Model_Lateral_Menu = (function ($) {
-	'use strict';
+	('use strict');
 	var rexmodel_lateral_menu;
 
-	function _openModal() {
+	function openModal() {
 		Model_Import_Modal.updateModelList();
 		Form_Import_Modal.updateList();
 	}
@@ -16,7 +16,7 @@ var Model_Lateral_Menu = (function ($) {
 	 * @returns	{void}
 	 * @since		2.0.5
 	 */
-	function show() {
+	function showModal() {
 		if (rexmodel_lateral_menu.$self.hasClass('rex-lateral-panel--open')) return;
 
 		rexmodel_lateral_menu.$self.addClass('rex-lateral-panel--open');
@@ -30,7 +30,7 @@ var Model_Lateral_Menu = (function ($) {
 	 * @returns	{void}
 	 * @since		2.0.5
 	 */
-	function hide() {
+	function hideModal() {
 		if (rexmodel_lateral_menu.$self.hasClass('rex-lateral-panel--close')) return;
 
 		rexmodel_lateral_menu.$self
@@ -40,14 +40,14 @@ var Model_Lateral_Menu = (function ($) {
 			});
 	}
 
-	function _linkDocumentListeners() {
+	function _linkListeners() {
 		Rexlive_Base_Settings.$document.on('rexlive:lateralMenuReady', function () {
-			show();
+			showModal();
 		});
 
 		rexmodel_lateral_menu.$close_button.click(function (e) {
 			e.preventDefault();
-			hide();
+			hideModal();
 		});
 
 		rexmodel_lateral_menu.$tabsButtons.click(function (e) {
@@ -65,6 +65,7 @@ var Model_Lateral_Menu = (function ($) {
 			});
 		});
 
+		// TODO Move all these model/form related cb to their file
 		/**
 		 * Opens modal to edit the RexModel name
 		 * @param  {MouseEvent} e) Click event
@@ -154,9 +155,47 @@ var Model_Lateral_Menu = (function ($) {
 
 			Form_Import_Modal.resetElementThumbnail($element.attr('data-rex-element-id'));
 		});
+
+		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(onIFrameLoad);
 	}
 
-	function _init() {
+	/**
+	 * @param	{string}	funcName
+	 * @param	{Event}		event
+	 * @since	2.0.9
+	 */
+	function templateDragCallback(funcName, event) {
+		var handler = _getHandler();
+
+		if (!handler || !(funcName in handler)) return;
+
+		handler[funcName](event);
+	}
+
+	/**
+	 * Retrieves the instance needed for handling the current
+	 * element that is being dragged.
+	 *
+	 * @returns	{object|null}
+	 * @since		2.0.9
+	 */
+	function _getHandler() {
+		var currentDraggingElementType = Rexbuilder_Util_Admin_Editor.dragImportType;
+
+		switch (currentDraggingElementType) {
+			case 'rexmodel':
+				return Model_Import_Modal;
+			case 'rexbutton':
+				return Button_Import_Modal;
+			case 'rexelement':
+				return Form_Import_Modal;
+
+			default:
+				return null;
+		}
+	}
+
+	function init() {
 		var $self = $('#rexbuilder-lateral-panel');
 		rexmodel_lateral_menu = {
 			$self: $self,
@@ -167,13 +206,29 @@ var Model_Lateral_Menu = (function ($) {
 
 		rexmodel_lateral_menu.$tabs.hide();
 
-		_linkDocumentListeners();
+		_linkListeners();
+	}
+
+	/**
+	 * @since		2.0.9
+	 */
+	function onIFrameLoad() {
+		var clientFrameWindow = Rexbuilder_Util_Admin_Editor.frameBuilder.contentWindow;
+		var $frameContentWindow = $(clientFrameWindow);
+		var $rexContainer = $(clientFrameWindow.document.querySelector('.rex-container'));
+
+		// Can't be throttled because that would cause the event.preventDefault() function
+		// to be called a few times causing the impossibility to drop the element
+		$frameContentWindow.on('dragover', templateDragCallback.bind(null, 'onDragOverWindow'));
+		$rexContainer.on('dragenter', '.grid-stack-row', templateDragCallback.bind(null, 'onDragEnterRow'));
+		$rexContainer.on('dragover', '.grid-stack-row', _.throttle(templateDragCallback.bind(null, 'onDragOverRow'), 50));
+		$rexContainer.on('drop', '.grid-stack-row', templateDragCallback.bind(null, 'onDropRow'));
 	}
 
 	return {
-		init: _init,
-		openModal: _openModal,
-		hide: hide,
-		show: show
+		init: init,
+		openModal: openModal,
+		hide: hideModal,
+		show: showModal
 	};
 })(jQuery);

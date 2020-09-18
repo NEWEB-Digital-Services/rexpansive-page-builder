@@ -1383,5 +1383,3 @@ var Rexbuilder_Rexbutton = (function ($) {
 		updateContainerHoverRule: _updateContainerHoverRule
 	};
 })(jQuery);
-
-
