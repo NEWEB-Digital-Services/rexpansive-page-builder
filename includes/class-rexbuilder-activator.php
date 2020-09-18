@@ -70,7 +70,7 @@ class Rexbuilder_Activator {
 		}
 
 		// Reset check update option
-		update_option( 'rexpansive-builder-premium-notifier-last-updated', null );
+		update_option( 'rexpansive-builder-premium-notifier-last-updated', null, false );
 	}
 
 	/**

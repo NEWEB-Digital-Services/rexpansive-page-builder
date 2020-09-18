@@ -1749,8 +1749,8 @@ class Rexbuilder_Admin {
 
 			if ($cache) {
 				// we got good results
-				update_option( $db_cache_field, $cache );
-				update_option( $db_cache_field_last_updated, time() );
+				update_option( $db_cache_field, $cache, false );
+				update_option( $db_cache_field_last_updated, time(), false );
 			}
 			// read from the cache file
 			$notifier_data = get_option( $db_cache_field );
@@ -3302,7 +3302,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		{
 			case 'global':
 				$global_settings['container_distancer']['top'] = $container_margins['vals']['top'];
-				update_option( '_rex_global_page_settings' , json_encode( $global_settings ), true);
+				update_option( '_rex_global_page_settings' , json_encode( $global_settings ), false );
 
 				$custom_settings['container_distancer']['top'] = '';
 				update_post_meta( $pageID, '_rex_custom_page_settings', json_encode( $custom_settings ) );

@@ -374,14 +374,14 @@
 		var textWrap = block.querySelector( '.text-wrap' );
 		var textHeight = 0;
 
-		if ( textWrap ) {
-			var blockHasSlider = Utils.hasClass( block, 'block-has-slider' );
-			var textWrapHasContent = 0 !== textWrap.textContent.trim().length;
-			var textWrapHasChildren = 0 !== textWrap.childElementCount;
+		if ( ! textWrap ) return textHeight;
 
-			if ( !blockHasSlider && ( textWrapHasContent || textWrapHasChildren ) ) {
-				textHeight = textWrap.offsetHeight;
-			}
+		var blockHasSlider = Utils.hasClass( block, 'block-has-slider' );
+		var textWrapHasContent = 0 !== textWrap.textContent.trim().length;
+		var textWrapHasChildren = 0 !== textWrap.childElementCount;
+
+		if ( !blockHasSlider && ( textWrapHasContent || textWrapHasChildren ) ) {
+			textHeight = textWrap.offsetHeight;
 		}
 
 		return textHeight;

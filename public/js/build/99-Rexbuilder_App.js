@@ -861,22 +861,22 @@ var Rexbuilder_App = (function($) {
 
     accordionSettings = {
       onSetup: function() {
-        if( ! Rexbuilder_Util.editorMode ) {
-          var $grid = this.$element.parents( '.perfect-grid-gallery' );
-          var $blocks = $grid.find( '.perfect-grid-item' );
-          var grid = $grid.get(0);
-          var block = this.$element.parents( '.perfect-grid-item' ).get( 0 );
-          var rexGridInstance = getRexGridInstance( grid );
+        if( Rexbuilder_Util.editorMode ) return;
+        
+        var $grid = this.$element.parents( '.perfect-grid-gallery' );
+        var $blocks = $grid.find( '.perfect-grid-item' );
+        var grid = $grid.get(0);
+        var block = this.$element.parents( '.perfect-grid-item' ).get( 0 );
+        var rexGridInstance = getRexGridInstance( grid );
 
-          this.caching = {
-            $grid: $grid,
-            grid: grid,
-            $blocks: $blocks,
-            block: block,
-            $block: $(block),
-            rexGridInstance: rexGridInstance
-          };
-        }
+        this.caching = {
+          $grid: $grid,
+          grid: grid,
+          $blocks: $blocks,
+          block: block,
+          $block: $(block),
+          rexGridInstance: rexGridInstance
+        };
       }
     };
 

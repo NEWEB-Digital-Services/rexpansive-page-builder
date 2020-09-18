@@ -204,7 +204,7 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 					$index++;
 				}
 
-				update_option( REXPANSIVE_BUILDER_IMPORTED_CONTENT, $imported_content );
+				update_option( REXPANSIVE_BUILDER_IMPORTED_CONTENT, $imported_content, false );
 			}
 		}
 
