@@ -167,10 +167,6 @@ var Model_Lateral_Menu = (function ($) {
 	function templateDragCallback(funcName, event) {
 		var handler = _getHandler();
 
-		if (funcName === 'onDropRow') {
-			console.log(!handler || !(funcName in handler));
-		}
-
 		if (!handler || !(funcName in handler)) return;
 
 		handler[funcName](event);
