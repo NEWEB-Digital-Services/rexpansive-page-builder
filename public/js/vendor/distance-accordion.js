@@ -15,7 +15,9 @@
     this.$wrapToggler = [];
     // this.wrapContent = null;
     this.targetsChildAccordions = null;
-    this.context = document;
+		this.context = document;
+
+		this.lastWindowWidth = window.innerWidth;
 
     if (arguments[0]) {
       this.element = arguments[0];
@@ -166,7 +168,7 @@
     this.close = true;
 	}
 
-	var lastWindowWidth = window.innerWidth;
+	// var lastWindowWidth = window.innerWidth;
 
   function openAccordion() {
     if ( this.options.scrollTo ) {
@@ -198,10 +200,10 @@
       this.$wrapToggler.addClass('open').removeClass('close');
 		}
 
-		var windowWidthChanged = lastWindowWidth !== Rexbuilder_Util.globalViewport.width;
-		lastWindowWidth = Rexbuilder_Util.globalViewport.width;
+		this.windowWidthChanged = this.lastWindowWidth !== Rexbuilder_Util.globalViewport.width;
+		this.lastWindowWidth = Rexbuilder_Util.globalViewport.width;
 
-		if (windowWidthChanged) {
+		if (this.windowWidthChanged) {
 			_refreshGridInsideTargets.call(this)
 		}
 
