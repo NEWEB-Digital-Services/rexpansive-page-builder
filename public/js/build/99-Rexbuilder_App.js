@@ -466,6 +466,7 @@ var Rexbuilder_App = (function($) {
    */
   var launchDistanceAccordion = function() {
     if ( 'undefined' === typeof DistanceAccordion ) {
+			console.error('[Rexpansive] Distance Accordion class not defined!');
       return;
     }
     var togglers = document.getElementsByClassName('distance-accordion-toggle');
@@ -879,7 +880,7 @@ var Rexbuilder_App = (function($) {
     accordionSettings = {
       onSetup: function() {
         if( Rexbuilder_Util.editorMode ) return;
-        
+
         var $grid = this.$element.parents( '.perfect-grid-gallery' );
         var $blocks = $grid.find( '.perfect-grid-item' );
         var grid = $grid.get(0);
@@ -918,13 +919,13 @@ var Rexbuilder_App = (function($) {
     } else {
       accordionSettings.open = {
         startClbk: function( data ) {
-        	// var $grid = data.$element.parents( '.perfect-grid-gallery' );
-        	// var $blocks = $grid.find( '.perfect-grid-item' );
+					// var $grid = data.$element.parents( '.perfect-grid-gallery' );
+					// var $blocks = $grid.find( '.perfect-grid-item' );
 
-         //  $blocks.addClass( 'accordion-animate-block' );
+					//  $blocks.addClass( 'accordion-animate-block' );
 
-        	data.caching.$blocks.addClass( 'accordion-animate-block' );
-        },
+					data.caching.$blocks.addClass('accordion-animate-block');
+				},
         progressClbk: function( data ) {
         	// var grid = data.$element.parents( '.perfect-grid-gallery' ).get( 0 );
         	// var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
