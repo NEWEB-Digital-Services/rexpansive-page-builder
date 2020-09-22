@@ -458,22 +458,20 @@ var Rexbuilder_App = (function($) {
         offset: 0.75
       });
     }
-  }
+  };
 
   /**
    * Launch eventually distance accordion (accordion on rows)
    *
    */
   var launchDistanceAccordion = function() {
-    if ( 'undefined' === typeof DistanceAccordion ) {
-			console.error('[Rexpansive] Distance Accordion class not defined!');
-      return;
-    }
+    if ( 'undefined' === typeof DistanceAccordion ) return;
+    
     var togglers = document.getElementsByClassName('distance-accordion-toggle');
     for ( var j=0, tot = togglers.length; j < tot; j++ ) {
       var inst = new DistanceAccordion(togglers[j]);
     }
-  }
+  };
 
   /**
    * Callback after load the popup iframe
