@@ -4129,7 +4129,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @since  2.0.5
 	 */
 	private static function separate_buttons_in_posts( $rexButtonID, &$button_ids ) {
-		Rexbuilder_Utilities::write_log('separate_buttons_in_posts');
+		// Rexbuilder_Utilities::write_log('separate_buttons_in_posts');
 		global $wpdb;
 		$posts_with_buttons = $wpdb->get_results(
 			$wpdb->prepare(

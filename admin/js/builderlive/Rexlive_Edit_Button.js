@@ -143,6 +143,7 @@ var Button_Edit_Modal = (function ($) {
 
 	var button_editor_properties;
 	var buttonData;
+	var button_effects;
 	var rexButtonsJSON;
 	var buttonsIDsUsed;
 	var reverseData;
@@ -224,6 +225,13 @@ var Button_Edit_Modal = (function ($) {
 			button_editor_properties.$button_class.next().removeClass('active'); // label
 		}
 	};
+
+	function merge_classes() {
+		var c = button_editor_properties.$button_class.val();
+		var e = JSON.parse( button_editor_properties.$button_effect_classes.val() ).join(' ');
+		var result = c + ' ' + e;
+		return result.trim();
+	}
 
 	var _clearButtonData = function () {
 		buttonData = {
@@ -383,6 +391,24 @@ var Button_Edit_Modal = (function ($) {
 		button_editor_properties.$button_link_type.val(buttonData.link_type);
 		button_editor_properties.$button_name.val(buttonData.buttonTarget.button_name);
 
+		// handling button class effects/features
+		// handle popup video
+		button_editor_properties.$button_effect_classes.val('');
+		if ( -1 !== buttonData.classes.indexOf('popup-video-button') ) {
+			button_editor_properties.$button_popup_video.prop('checked', true);
+		} else {
+			button_editor_properties.$button_popup_video.prop('checked', false);
+		}
+
+		// remove effect classes from classes displayed
+		var active_effects = [];
+		for( var i=0; i<button_effects.length; i++) {
+			if ( -1 !== buttonData.classes.indexOf(button_effects[i]) ) {
+				buttonData.classes = buttonData.classes.replace( button_effects[i], '' ).trim();
+				active_effects.push( button_effects[i] );
+			}
+		}
+		button_editor_properties.$button_effect_classes.val( JSON.stringify( active_effects ) );
 		button_editor_properties.$button_class.val(buttonData.classes);
 
 		button_editor_properties.$button_preview_border.css('border-width', buttonData.border_width);
@@ -444,7 +470,7 @@ var Button_Edit_Modal = (function ($) {
 		buttonData.text = button_editor_properties.$button_label_text.val();
 		buttonData.link_target = button_editor_properties.$button_link_target.val();
 		buttonData.link_type = button_editor_properties.$button_link_type.val();
-		buttonData.classes = button_editor_properties.$button_class.val();
+		buttonData.classes = /*button_editor_properties.$button_class.val();*/merge_classes();
 		//colors data are already updated
 	};
 
@@ -518,7 +544,7 @@ var Button_Edit_Modal = (function ($) {
 			_updateButtonLive({
 				type: 'button',
 				name: 'button_class',
-				value: button_editor_properties.$button_class.val()
+				value: merge_classes() /*button_editor_properties.$button_class.val()*/ 
 			});
 		});
 
@@ -700,6 +726,28 @@ var Button_Edit_Modal = (function ($) {
 				name: 'link_type',
 				value: button_editor_properties.$button_link_type.val()
 			});
+		});
+	};
+
+	var _linkPopUpVideoCheckbox = function() {
+		button_editor_properties.$button_popup_video.on('change', function(ev) {
+			ev.preventDefault();
+			var activeEffects = JSON.parse( button_editor_properties.$button_effect_classes.val() );
+
+			var temp = '';
+			if ( ev.target.checked ) {
+				activeEffects.push( 'popup-video-button' );
+			} else {
+				for( var i = 0; i < activeEffects.length; i++){ 
+					if ( activeEffects[i] === 'popup-video-button') { 
+						activeEffects.splice(i, 1); 
+						break;
+					}
+				}
+			}
+
+			button_editor_properties.$button_effect_classes.val( JSON.stringify( activeEffects ) );
+			button_editor_properties.$button_class.trigger('focusout');
 		});
 	};
 
@@ -1646,6 +1694,10 @@ var Button_Edit_Modal = (function ($) {
 			$button_link_type: $container.find('#rex-button-link-type'),
 
 			$button_class: $container.find('#rex-button__class'),
+			$button_effect_classes: $container.find('#rex-button__effect-classes'),
+			$button_effect_fields: $container.find('.rex-button__effect-field'),
+
+			$button_popup_video: $container.find('#rex-button__popup-video'),
 
 			$button_name: $container.find('#rex-button__name')
 		};
@@ -1707,9 +1759,15 @@ var Button_Edit_Modal = (function ($) {
 			}
 		};
 
+		button_effects = [];
+		button_editor_properties.$button_effect_fields.each(function(i, el) {
+			button_effects.push(el.value);
+		});
+
 		_linkTextInputs();
 		_linkNumberInputs();
 		_linkDropDownMenus();
+		_linkPopUpVideoCheckbox();
 
 		_linkTextColorEditor();
 		_linkBackgroundColorEditor();

@@ -584,6 +584,23 @@ var Rexbuilder_App = (function($) {
   }
 
   /**
+   * Launching popUpVideo button
+   * @return {void}
+   * @since 2.0.9
+   */
+  function launchPopUpVideo() {
+    if ( 'undefined' === typeof PopUpVideo ) return;
+
+    var btns = [].slice.call( document.getElementsByClassName('popup-video-button') );
+      var tot_btns = btns.length, i = 0;
+
+    for( i=0; i < tot_btns; i++ ) {
+      if ( '' === btns[i].href ) continue;
+      new PopUpVideo(btns[i], {});
+    }
+  }
+
+  /**
    * Fixing a builder section that contains scrollable content
    * 1) set the blocks heights
    * 2) destroy the grid plugin
@@ -1020,6 +1037,8 @@ var Rexbuilder_App = (function($) {
       launchDistanceAccordion();
       // launch popUpContent
       launchPopUpContent();
+      // launch popUpVideo
+      launchPopUpVideo();
       // launch splitScrollable
       launchSplitScrollable();
 
