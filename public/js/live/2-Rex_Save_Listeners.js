@@ -1818,6 +1818,10 @@ var Rex_Save_Listeners = (function($) {
         active: false
       },
       {
+        condition: 'popup-video-button',
+        active: false
+      },
+      {
         condition: 'split-scrollable',
         active: false
       },

@@ -367,6 +367,10 @@ class Rexbuilder_Public {
 					wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.js', array(), $ver, true);
 				}
 
+				if ( false !== strpos( $customEffects, 'popup-video-button' ) ) {
+					wp_enqueue_script('popup-video', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-video.js', array(), $ver, true);
+				}
+
 				if ( false !== strpos( $customEffects, 'split-scrollable' ) ) {
 					wp_enqueue_script('split-scrollable', REXPANSIVE_BUILDER_URL . 'public/js/vendor/split-scrollable.js', array(), $ver, true);
 				}
@@ -474,6 +478,10 @@ class Rexbuilder_Public {
 
 				if ( false !== strpos( $customEffects, 'popup-content-button' ) ) {
 					wp_enqueue_script('popup-content', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-content.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
+				}
+
+				if ( false !== strpos( $customEffects, 'popup-video-button' ) ) {
+					wp_enqueue_script('popup-video', REXPANSIVE_BUILDER_URL . 'public/js/vendor/popup-video.min.js', array(), REXPANSIVE_BUILDER_VERSION, true);
 				}
 
 				if ( false !== strpos( $customEffects, 'split-scrollable' ) ) {

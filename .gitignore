@@ -6,6 +6,7 @@ package-lock.json
 *.zip
 /**/*.mov
 /test-assets/
+/test-*/
 /notes/
 
 diff.txt

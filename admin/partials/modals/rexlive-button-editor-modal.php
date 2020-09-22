@@ -372,16 +372,24 @@ defined('ABSPATH') or exit;
 					</div>
 				</div>
 			</div>
-			<div class="bl_modal-row">
-				<div class="rexbutton-cont_row77" style="margin-bottom:12px">
-					<div class="rexbutton-count-column_11">
-						<div id="rex-button-name-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
-							<span class="prefix"></span>
-							<input type="text" id="rex-button__class" name="rex-button__class" class="rexbutton-upd-actiontextbox">
-							<label for="rex-button__class" id="rex-button__class-label" class=""><?php _e('Custom classes', 'rexpansive-builder'); ?></label>
-							<span class="rex-material-bar"></span>
-						</div>
+			<div class="bl_modal-row rexbutton-cont_row45" style="height:66px">
+				<div class="bl_modal__option-wrap" style="padding-left:0">
+					<div id="rex-button-name-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
+						<span class="prefix"></span>
+						<input type="text" id="rex-button__class" name="rex-button__class" class="rexbutton-upd-actiontextbox">
+						<label for="rex-button__class" id="rex-button__class-label" class=""><?php _e('Custom classes', 'rexpansive-builder'); ?></label>
+						<span class="rex-material-bar"></span>
 					</div>
+				</div>
+				<div class="bl_modal__option-wrap bl_modal__option-wrap--fluid">
+					<div class="rex-check-icon tippy" data-tippy-content="<?php _e( 'PopUp Video', 'rexpansive-builder' ); ?>">
+                        <label>
+                            <input type="checkbox" id="rex-button__popup-video" class="rex-button__effect-field" name="rex-button__popup-video" value="popup-video-button" title="<?php _e( 'PopUp Video', 'rexpansive-builder' ); ?>">
+                            <span>
+                        		<i class="l-svg-icons"><svg><use xlink:href="#D002-PopUpVideo"></use></svg></i>
+                            </span>
+                        </label>
+                    </div>
 				</div>
 			</div>
 			<!-- ninth row -->
@@ -391,12 +399,12 @@ defined('ABSPATH') or exit;
 						<div id="rex-button-name-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
 							<span class="prefix"></span>
 							<input type="text" id="rex-button__name" name="rex-button__name" class="rexbutton-upd-actiontextbox">
-							<label for="rex-button__name" id="rex-button__name-label" class=""><?php _e('Button template name', 'rexpansive-builder'); ?></label>
+							<label for="rex-button__name" id="rex-button__name-label" class=""><?php _e( 'Button template name', 'rexpansive-builder' ); ?></label>
 							<span class="rex-material-bar"></span>
 						</div>
 					</div>
 					<div class="rexbutton-count-column_12 add-rex-button-model__wrap">
-						<div id="rex-button-add-model-wrap" class="add-rex-button-model tippy" data-tippy-content="<?php _e('Create new template', 'rexpansive-builder'); ?>">
+						<div id="rex-button-add-model-wrap" class="add-rex-button-model tippy" data-tippy-content="<?php _e( 'Create new template', 'rexpansive-builder' ); ?>">
 							<div class="add-label">+</div>
 						</div>
 					</div>
@@ -414,6 +422,8 @@ defined('ABSPATH') or exit;
 				<?php Rexbuilder_Utilities::get_icon('#Z014-Refresh'); ?>
 			</div>
 		</div>
+		<!-- HIDDEN CONTENT -->
+		<div><input type="hidden" id="rex-button__effect-classes" name="rex-button__effect-classes" value=""></div>
 	</div>
 </div>
 <!-- Edit Button -->
