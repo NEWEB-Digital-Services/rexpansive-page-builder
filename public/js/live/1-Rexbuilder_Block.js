@@ -30,6 +30,9 @@ var Rexbuilder_Block = (function ($) {
 			$section.removeClass('empty-section');
 		}
 
+		var blockID = $elem.attr('data-rexbuilder-block-id')
+		Rexbuilder_Util.$document.trigger('rexlive:deletedBlock', blockID);
+
 		var data = {
 			eventName: "rexlive:edited",
 			modelEdited: $section.hasClass("rex-model-section"),
