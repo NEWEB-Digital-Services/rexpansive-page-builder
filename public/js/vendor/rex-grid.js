@@ -754,7 +754,7 @@
 				var imageHeight = parseInt( itemContent.getAttribute( "data-background_image_height" ) );
 
 				var blockWidth = this.properties.singleWidth * gridBlockObj.w;
-				
+
 				if ( fitNaturalImg ) {
 					backgroundHeight = ( imageHeight * blockWidth / imageWidth ) - gutter;
 				} else {
@@ -860,6 +860,7 @@
 		} else {
 			newHUnits = Math.ceil( ( newH + gutter ) / this.properties.singleHeight );
 		}
+
 
 		return newHUnits;
 	}
@@ -1016,7 +1017,7 @@
 
 		gridBlockObj.toCheck = true;
 
-		if ( null === newH ) {
+		if ( null === newH || isNaN(newH) ) {
 			return;
 		}
 
@@ -1196,6 +1197,7 @@
 					this.gridBlocks[i].el.style.left = '';
 				}
 			}
+
 			// Calculations
 			// recalc height because on resize single height can change
 			this.calcAllBlocksHeights();

@@ -1,7 +1,7 @@
 /**
  * Accordion at distance plugin
  */
-;(function($) {
+;(function($, window, document) {
   this.DistanceAccordion = function() {
     this.element = null;
     this.$element = null;
@@ -67,7 +67,7 @@
         // set the wrap, if true
         if ( this.options.wrapObjects ) {
           // find toggler wrap
-          if ( -1 !== this.element.className.indexOf('da-toggle-wrap') ) 
+          if ( -1 !== this.element.className.indexOf('da-toggle-wrap') )
           {
             this.$wrapToggler = this.$element;
           } else {
@@ -120,7 +120,7 @@
 
   DistanceAccordion.prototype.closeAccordion = function() {
     closeAccordion.call(this);
-  };  
+  };
 
   function handleClick(event) {
     event.preventDefault();
@@ -164,21 +164,23 @@
 
     this.open = false;
     this.close = true;
-  }
+	}
+
+	var lastWindowWidth = window.innerWidth;
 
   function openAccordion() {
     if ( this.options.scrollTo ) {
       var scrollVal = this.$targets.eq(0).offset().top;
       var that = this;
 
-      $('html, body').animate({ 
+      $('html, body').animate({
           scrollTop: scrollVal
         },
         function() {
           that.$targets.slideDown({
             duration: 150
           });
-        } 
+        }
       );
     } else {
       this.$targets.slideDown({
@@ -187,15 +189,41 @@
           $(this).trigger('da:open_complete');
         }
       });
-    }
+		}
+
     this.$element.addClass('open').removeClass('close');
-    this.$targets.addClass('target-open').removeClass('target-close');
+		this.$targets.addClass('target-open').removeClass('target-close');
+
     if ( this.$wrapToggler.length > 0 ) {
       this.$wrapToggler.addClass('open').removeClass('close');
-    }
+		}
+
+		var windowWidthChanged = lastWindowWidth !== Rexbuilder_Util.globalViewport.width;
+		lastWindowWidth = Rexbuilder_Util.globalViewport.width;
+
+		if (windowWidthChanged) {
+			_refreshGridInsideTargets.call(this)
+		}
+
     this.open = true;
     this.close = false;
-  }
+	}
+
+	/**
+	 * @since		2.0.9
+	 */
+	function _refreshGridInsideTargets() {
+		this.targets.forEach(function (section) {
+			if (!section.matches('.rexpansive_section')) return;
+
+			var gridEl = section.querySelector('.perfect-grid-gallery');
+			var gridInstance = RexGrid.data(gridEl);
+
+			// If the accordion was hidden during a resize, the RexGrid calculations were wrong
+			// We need to call the resize cb when the grid and its blocks are visible
+			gridInstance.endResize();
+		});
+	}
 
   // Utility method to extend defaults with user options
   function extendDefaults(source, properties) {
@@ -207,4 +235,4 @@
     }
     return source;
   }
-}(jQuery));
+}(jQuery, window, document));
