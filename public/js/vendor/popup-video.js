@@ -36,10 +36,29 @@
 		this.close.addEventListener('click', handlePopUpVideoModalClose.bind(this));
 	}
 
-	function handlePopUpVideoModalClose(ev) {
-		ev.preventDefault();
+	PopUpVideoModal.prototype.open_modal = function( content ) {
+		this.content.appendChild( content );
+		this.element.style.display = 'block';
+		// document.addEventListener('keydown', handleEscapeKeyDown.bind(this));
+	};
+
+	PopUpVideoModal.prototype.close_modal = function() {
 		this.element.style.display = '';
 		this.content.innerHTML = '';
+	};
+
+	// function handleEscapeKeyDown(ev) {
+	// 	console.log(ev);
+	// 	ev = ev || window.event;
+	// 	if (27 === ev.keyCode) {
+	// 		this.close_modal();
+	// 		document.removeEventListener('keydown', handleEscapeKeyDown.bind(this));
+	// 	}
+	// }
+
+	function handlePopUpVideoModalClose(ev) {
+		ev.preventDefault();
+		this.close_modal();
 	}
 
 	// maintain a global modal
@@ -132,8 +151,9 @@
 				break;
 		}
 
-		popup_video_modal.content.appendChild(video_element);
-		popup_video_modal.element.style.display = 'block';
+		// popup_video_modal.content.appendChild(video_element);
+		// popup_video_modal.element.style.display = 'block';
+		popup_video_modal.open_modal( video_element );
 	}
 
 	// Utility method to extend defaults with user options
