@@ -89,47 +89,105 @@ var Rexbuilder_Block = (function ($) {
 	}
 
 	/**
-	 * Adding the block toolbar via js
+	 * Adding the blocks' toolbar
 	 */
-	function _addToolbox() {
-		var blocks = Array.prototype.slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.perfect-grid-item') );
-		var tot_blocks = blocks.length;
+	function _addAllBlocksToolboxes() {
+		var blocks = Array.prototype.slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.perfect-grid-item'));
+
+		for (var i = 0; i < blocks.length; i++) {
+			addToolboxClean(blocks[i]);
+		}
+	}
+
+	/**
+	 * @param	{HTMLElement}	block
+	 * @since	2.0.9
+	 */
+	function addToolboxClean(block) {
+		if (block.querySelector('.ui-focused-element-highlight')) return;
+
+		var data = generateToolboxData(block);
+		// console.log(block, data);
+		var blockTools = Rexbuilder_Live_Templates.getTemplate('tmpl-toolbox-block-wrap-clean', data);
+		var blockData = block.querySelector('.rexbuilder-block-data');
+
+		blockData.nextElementSibling.insertAdjacentHTML('afterend', blockTools);
+	}
+
+	/**
+	 * @param	{HTMLElement}	block
+	 * @since	2.0.9
+	 */
+	function addToolboxDirt(block) {
+		if (block.querySelector('.ui-focused-element-highlight')) return;
+
+		var blockTools = Rexbuilder_Live_Templates.getTemplate('tmpl-toolbox-block-wrap');
+		var blockData = block.querySelector('.rexbuilder-block-data');
+
+		blockData.nextElementSibling.insertAdjacentHTML('afterend', blockTools);
+	}
+
+	/**
+	 * @param	{HTMLElement}	block
+	 * @since	2.0.9
+	 */
+	function generateToolboxData(block) {
 		var blockData;
-	    var i;
+		var textWrap;
+		var data = {
+			not_has_image: false,
+			not_has_overlay: false,
+			not_has_video: false,
+			has_content: false,
+			overlay: ''
+		};
 
-	    var not_has_image, not_has_overlay, not_has_video;
-	    var data = {
-	    	not_has_image: false,
-	    	not_has_overlay: false,
-	    	not_has_video: false,
-	    	has_content: false,
-	    	overlay: ''
-	    };
+		blockData = block.querySelector('.rexbuilder-block-data');
 
-	    var textWrap;
-	    var blockTools;
+		console.log(block, {
+			imgActive: blockData.getAttribute('data-image_bg_elem_active'),
+			overlayActive: blockData.getAttribute('data-overlay_block_color_active'),
+			overlay: blockData.getAttribute('data-overlay_block_color'),
+			videoBgId: blockData.getAttribute('data-video_bg_id'),
+			videoBgUrl: blockData.getAttribute('data-video_bg_url'),
+			videoBgUrlVimeo: blockData.getAttribute('data-video_bg_url_vimeo')
+		});
 
-	    for (i=0; i < tot_blocks; i++) {
-	    	blockData = blocks[i].querySelector('.rexbuilder-block-data');
-	    	data.not_has_image = ( null === blockData.getAttribute('data-image_bg_elem_active') || 'true' != blockData.getAttribute('data-image_bg_elem_active') || '' == blockData.getAttribute('data-id_image_bg_block') );
+		data.not_has_image =
+			null === blockData.getAttribute('data-image_bg_elem_active') ||
+			'true' != blockData.getAttribute('data-image_bg_elem_active') ||
+			'' == blockData.getAttribute('data-id_image_bg_block');
 
-	    	data.not_has_overlay = ( 'true' != blockData.getAttribute('data-overlay_block_color_active') || '' == blockData.getAttribute('data-overlay_block_color'))
+		data.not_has_overlay =
+			'true' != blockData.getAttribute('data-overlay_block_color_active') ||
+			'' == blockData.getAttribute('data-overlay_block_color');
 
-	    	data.not_has_video = ( '' == blockData.getAttribute('data-video_bg_id') && '' == blockData.getAttribute('data-video_bg_url') && '' == blockData.getAttribute('data-video_bg_url_vimeo') );
+		// data.not_has_video =
+		// 	'' == blockData.getAttribute('data-video_bg_id') &&
+		// 	'' == blockData.getAttribute('data-video_bg_url') &&
+		// 	'' == blockData.getAttribute('data-video_bg_url_vimeo');
 
-	    	textWrap = blocks[i].querySelector('.text-wrap');
-	    	if ( 0 == textWrap.childElementCount || ( 1 == textWrap.childElementCount && Rexbuilder_Util.hasClass( textWrap.children[0], 'text-editor-span-fix' ) ) ) {
-	    		data.has_content = false;
-	    	} else {
-				data.has_content = true;
-	    	}
+		data.not_has_video =
+			!blockData.getAttribute('data-video_bg_id') &&
+			!blockData.getAttribute('data-video_bg_url') &&
+			!blockData.getAttribute('data-video_bg_url_vimeo');
 
-	    	data.overlay = ( null !== blockData.getAttribute('data-overlay_block_color') ? blockData.getAttribute('data-overlay_block_color') : '' );
+		textWrap = block.querySelector('.text-wrap');
+		if (
+			0 == textWrap.childElementCount ||
+			(1 == textWrap.childElementCount && Rexbuilder_Util.hasClass(textWrap.children[0], 'text-editor-span-fix'))
+		) {
+			data.has_content = false;
+		} else {
+			data.has_content = true;
+		}
 
-	    	blockTools = Rexbuilder_Live_Templates.getTemplate( 'tmpl-toolbox-block-wrap-clean', data );
+		data.overlay =
+			null !== blockData.getAttribute('data-overlay_block_color')
+				? blockData.getAttribute('data-overlay_block_color')
+				: '';
 
-	    	blockData.nextElementSibling.insertAdjacentHTML('afterend', blockTools);
-	    }
+		return data;
 	}
 
 	var _addBlockToolboxListeners = function () {
@@ -139,12 +197,14 @@ var Rexbuilder_Block = (function ($) {
 	}
 
 	var init = function () {
-		_addToolbox();
+		_addAllBlocksToolboxes();
 		_addBlockToolboxListeners();
 	}
 
 	return {
-		init: init
+		init: init,
+		addToolboxClean: addToolboxClean,
+		addToolboxDirt: addToolboxDirt
 	}
 
 })(jQuery);
