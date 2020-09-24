@@ -799,131 +799,138 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
 
   /**
    * Insert a new block in gridstack starting from an html element
-   * @param {jQuery Object} $elem element to insert
-   * @param {jQuery Object} $gallery gallery where insert
+   * @param	{JQuery}	$elem			Element to insert
+   * @param	{JQuery}	$gallery	Gallery where insert
    * @since 2.0.0
    */
-  var _insertHTMLBlock = function ($elem, $gallery, updatePosition, updateHeight) {
-    updatePosition = 'undefined' !== typeof updatePosition ? updatePosition : true;
-    updateHeight = 'undefined' !== typeof updateHeight ? updateHeight : true;
+  function insertHTMLBlock($elem, $gallery, updatePosition, updateHeight) {
+		updatePosition = 'undefined' !== typeof updatePosition ? updatePosition : true;
+		updateHeight = 'undefined' !== typeof updateHeight ? updateHeight : true;
 
-    if ($gallery.length > 0) {
-      var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
-      var gridstack = $gallery.data("gridstack");
-      var $section = $gallery.parents(".rexpansive_section");
-      var $newBlock;
+		if ($gallery.length <= 0) return;
 
-      $newBlock = $elem;
-      var $newBlockData = $newBlock.children(".rexbuilder-block-data");
+		var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
+		var gridstack = $gallery.data('gridstack');
+		var $section = $gallery.parents('.rexpansive_section');
+		var $newBlock = $elem;
+		var $newBlockData = $newBlock.children('.rexbuilder-block-data');
 
-      galleryEditorInstance._removeHandles($newBlock);
+		galleryEditorInstance._removeHandles($newBlock);
 
-      galleryEditorInstance.properties.lastIDBlock = galleryEditorInstance.properties.lastIDBlock + 1;
+		galleryEditorInstance.properties.lastIDBlock = galleryEditorInstance.properties.lastIDBlock + 1;
 
-      var newBlockID = "block_" + galleryEditorInstance.properties.sectionNumber + "_" + galleryEditorInstance.properties.lastIDBlock;
+		var newBlockID =
+			'block_' + galleryEditorInstance.properties.sectionNumber + '_' + galleryEditorInstance.properties.lastIDBlock;
 
-      var blockRexID = $newBlock.attr("data-rexbuilder-block-id");
-      if ("" === blockRexID) {
-        blockRexID = Rexbuilder_Util.createBlockID();
-        $newBlock.attr("data-rexbuilder-block-id", blockRexID);
-        $newBlockData.attr("data-rexbuilder_block_id", blockRexID);
-      }
+		var blockRexID = $newBlock.attr('data-rexbuilder-block-id');
+		if ('' === blockRexID) {
+			blockRexID = Rexbuilder_Util.createBlockID();
+			$newBlock.attr('data-rexbuilder-block-id', blockRexID);
+			$newBlockData.attr('data-rexbuilder_block_id', blockRexID);
+		}
 
-      if ("" === $newBlock.attr("id")) {
-        $newBlock.attr("id", newBlockID);
-        $newBlockData.attr("data-id", newBlockID);
-        $newBlockData.attr("id", newBlockID + "-builder-data");
-      }
+		if ('' === $newBlock.attr('id')) {
+			$newBlock.attr('id', newBlockID);
+			$newBlockData.attr('data-id', newBlockID);
+			$newBlockData.attr('id', newBlockID + '-builder-data');
+		}
 
-      $newBlock.appendTo($gallery.eq(0));
+		$newBlock.appendTo($gallery.eq(0));
 
-      var x = parseInt($newBlock.attr("data-gs-x"));
-      var y = parseInt($newBlock.attr("data-gs-y"));
-      var w = parseInt($newBlock.attr("data-gs-width"));
-      var h = parseInt($newBlock.attr("data-gs-height"));
-      var $itemContent = $newBlock.find(".grid-item-content");
-      var videoTypeActive = Rexbuilder_Util.destroyVideo($itemContent, false);
+		Rexbuilder_Block.addToolboxClean($newBlock.get(0));
 
-      // Rexbuilder_Util_Editor.removeScrollBar($newBlock);
-      Rexbuilder_Live_Utilities.removeTextEditor($newBlock);
-      Rexbuilder_Live_Utilities.removeColorPicker($newBlock);
-      galleryEditorInstance._prepareElement($newBlock[0]);
-      galleryEditorInstance.unFocusElementEditing($newBlock);
+		var x = parseInt($newBlock.attr('data-gs-x'));
+		var y = parseInt($newBlock.attr('data-gs-y'));
+		var w = parseInt($newBlock.attr('data-gs-width'));
+		var h = parseInt($newBlock.attr('data-gs-height'));
+		var $itemContent = $newBlock.find('.grid-item-content');
+		var videoTypeActive = Rexbuilder_Util.destroyVideo($itemContent, false);
 
-      var reverseData = {
-        targetElement: $newBlock,
-        hasToBeRemoved: true,
-        galleryInstance: galleryEditorInstance,
-        blocksDisposition: $.extend(true, {}, galleryEditorInstance.properties.reverseDataGridDisposition)
-      };
+		// Rexbuilder_Util_Editor.removeScrollBar($newBlock);
+		Rexbuilder_Live_Utilities.removeTextEditor($newBlock);
+		Rexbuilder_Live_Utilities.removeColorPicker($newBlock);
+		galleryEditorInstance._prepareElement($newBlock[0]);
+		galleryEditorInstance.unFocusElementEditing($newBlock);
 
-      if ( updateHeight ) {
-        if ('masonry' === galleryEditorInstance.settings.galleryLayout) {
-          h = Math.floor(h * galleryEditorInstance.properties.singleWidth / galleryEditorInstance.properties.singleHeight);
-        }
-      }
+		var reverseData = {
+			targetElement: $newBlock,
+			hasToBeRemoved: true,
+			galleryInstance: galleryEditorInstance,
+			blocksDisposition: $.extend(true, {}, galleryEditorInstance.properties.reverseDataGridDisposition)
+		};
 
-      gridstack.addWidget($newBlock[0], 0, 0, w, h, true, 1, 500, 1);
+		if (updateHeight) {
+			if ('masonry' === galleryEditorInstance.settings.galleryLayout) {
+				h = Math.floor(
+					(h * galleryEditorInstance.properties.singleWidth) / galleryEditorInstance.properties.singleHeight
+				);
+			}
+		}
 
-      if ( updatePosition ) {
-        gridstack.batchUpdate();
-        gridstack.update($newBlock[0], x, y, w, h);
-        gridstack.commit();
-      }
+		gridstack.addWidget($newBlock[0], 0, 0, w, h, true, 1, 500, 1);
 
-      galleryEditorInstance._updateElementsSizeViewers();
+		if (updatePosition) {
+			gridstack.batchUpdate();
+			gridstack.update($newBlock[0], x, y, w, h);
+			gridstack.commit();
+		}
 
-      galleryEditorInstance._createFirstReverseStack();
-      galleryEditorInstance.properties.numberBlocksVisibileOnGrid = galleryEditorInstance.properties.numberBlocksVisibileOnGrid + 1;
-      var actionData = {
-        targetElement: $newBlock,
-        hasToBeRemoved: false,
-        galleryInstance: galleryEditorInstance,
-        blocksDisposition: $.extend(true, {}, galleryEditorInstance.properties.reverseDataGridDisposition)
-      };
+		galleryEditorInstance._updateElementsSizeViewers();
 
-      Rexbuilder_Util_Editor.pushAction(galleryEditorInstance.$element, "updateBlockVisibility", actionData, reverseData);
-      $newBlock.removeAttr("data-gs-auto-position");
-      if (videoTypeActive != "") {
-        $itemContent.addClass(videoTypeActive + "-player");
-      }
-      Rexbuilder_Util.startVideoPlugin($itemContent);
+		galleryEditorInstance._createFirstReverseStack();
+		galleryEditorInstance.properties.numberBlocksVisibileOnGrid =
+			galleryEditorInstance.properties.numberBlocksVisibileOnGrid + 1;
+		var actionData = {
+			targetElement: $newBlock,
+			hasToBeRemoved: false,
+			galleryInstance: galleryEditorInstance,
+			blocksDisposition: $.extend(true, {}, galleryEditorInstance.properties.reverseDataGridDisposition)
+		};
 
-      var $textWrap = $newBlock.find(".text-wrap");
+		Rexbuilder_Util_Editor.pushAction(galleryEditorInstance.$element, 'updateBlockVisibility', actionData, reverseData);
+		$newBlock.removeAttr('data-gs-auto-position');
+		if (videoTypeActive != '') {
+			$itemContent.addClass(videoTypeActive + '-player');
+		}
+		Rexbuilder_Util.startVideoPlugin($itemContent);
 
-      if ($elem.hasClass("block-has-slider")) {
-        var $oldSlider = $elem.find(".text-wrap").children(".rex-slider-wrap[data-rex-slider-active=\"true\"]");
-        $textWrap.children().remove();
-        var sectionID = $section.attr("data-rexlive-section-id");
-        var modelNumber = typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
-        var rex_block_id = blockRexID;
+		var $textWrap = $newBlock.find('.text-wrap');
 
-        var target = {
-          sectionID: sectionID,
-          modelNumber: modelNumber,
-          rexID: rex_block_id
-        };
+		if ($elem.hasClass('block-has-slider')) {
+			var $oldSlider = $elem.find('.text-wrap').children('.rex-slider-wrap[data-rex-slider-active="true"]');
+			$textWrap.children().remove();
+			var sectionID = $section.attr('data-rexlive-section-id');
+			var modelNumber =
+				typeof $section.attr('data-rexlive-model-number') != 'undefined'
+					? $section.attr('data-rexlive-model-number')
+					: '';
+			var rex_block_id = blockRexID;
 
-        var sliderData = Rexbuilder_Live_Utilities.createSliderData($oldSlider);
-        Rexbuilder_Live_Utilities.saveSliderOnDB(sliderData, true, newBlockID, target);
-      } else {
-        // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
-        //     galleryEditorInstance.addScrollbar($newBlock);
-        // }
-        var newBlock = $newBlock[0];
-        TextEditor.addElementToTextEditor( newBlock.querySelector(".text-wrap") );
-      }
-      // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
-      // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($newBlock.find('input[name=edit-block-overlay-color]')[0]);
-      // Rexbuilder_Block_Editor.updateBlockTools($newBlock);
-      Rexbuilder_Live_Utilities.launchTooltips();
+			var target = {
+				sectionID: sectionID,
+				modelNumber: modelNumber,
+				rexID: rex_block_id
+			};
 
-      Rexbuilder_Util.updateSectionStateLive($section);
-      if (Rexbuilder_Util.activeLayout == "default") {
-        Rexbuilder_Util.updateDefaultLayoutStateSection($section);
-      }
-    }
-  };
+			var sliderData = Rexbuilder_Live_Utilities.createSliderData($oldSlider);
+			Rexbuilder_Live_Utilities.saveSliderOnDB(sliderData, true, newBlockID, target);
+		} else {
+			// if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+			//     galleryEditorInstance.addScrollbar($newBlock);
+			// }
+			var newBlock = $newBlock[0];
+			TextEditor.addElementToTextEditor(newBlock.querySelector('.text-wrap'));
+		}
+		// Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
+		// Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($newBlock.find('input[name=edit-block-overlay-color]')[0]);
+		// Rexbuilder_Block_Editor.updateBlockTools($newBlock);
+		Rexbuilder_Live_Utilities.launchTooltips();
+
+		Rexbuilder_Util.updateSectionStateLive($section);
+		if (Rexbuilder_Util.activeLayout == 'default') {
+			Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+		}
+	}
 
   /**
    * Move a block from a section to another
@@ -1203,7 +1210,7 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
     init: init,
     createSlider: _createSlider,
     createCopyBlock: _createCopyBlock,
-    insertHTMLBlock: _insertHTMLBlock,
+    insertHTMLBlock: insertHTMLBlock,
     moveBlockToOtherSection: _moveBlockToOtherSection,
 		sanitizeBlockContent: sanitizeBlockContent,
   };
