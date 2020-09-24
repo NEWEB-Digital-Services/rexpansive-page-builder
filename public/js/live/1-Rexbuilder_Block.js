@@ -107,7 +107,6 @@ var Rexbuilder_Block = (function ($) {
 		if (block.querySelector('.ui-focused-element-highlight')) return;
 
 		var data = generateToolboxData(block);
-		// console.log(block, data);
 		var blockTools = Rexbuilder_Live_Templates.getTemplate('tmpl-toolbox-block-wrap-clean', data);
 		var blockData = block.querySelector('.rexbuilder-block-data');
 
@@ -143,15 +142,6 @@ var Rexbuilder_Block = (function ($) {
 		};
 
 		blockData = block.querySelector('.rexbuilder-block-data');
-
-		console.log(block, {
-			imgActive: blockData.getAttribute('data-image_bg_elem_active'),
-			overlayActive: blockData.getAttribute('data-overlay_block_color_active'),
-			overlay: blockData.getAttribute('data-overlay_block_color'),
-			videoBgId: blockData.getAttribute('data-video_bg_id'),
-			videoBgUrl: blockData.getAttribute('data-video_bg_url'),
-			videoBgUrlVimeo: blockData.getAttribute('data-video_bg_url_vimeo')
-		});
 
 		data.not_has_image =
 			null === blockData.getAttribute('data-image_bg_elem_active') ||
