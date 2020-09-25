@@ -360,8 +360,8 @@ defined('ABSPATH') or exit;
 					<div class="rexbutton-count-column_10">
 						<div id="rex-button-link-type-wrap" class="rx__select-wrap">
 							<select id="rex-button-link-type" class="rx__form-input rexbutton-upd-combobox">
-								<option value="_blank">_blank</option>
 								<option value="_self">_self</option>
+								<option value="_blank">_blank</option>
 							</select>
 							<!--
                             <div class="rx__form-input__select-arrow">

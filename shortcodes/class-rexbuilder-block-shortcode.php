@@ -242,6 +242,10 @@ class Rexbuilder_Block {
 			$content = Rexbuilder_Utilities::remove_shortcode_wrap_paragraphs($content, 'RexIndicator');
 		}
 
+		if ( false !== strpos( $content, 'RexLoad_Carousel' ) ) {
+			$content = Rexbuilder_Utilities::remove_shortcode_wrap_paragraphs($content, 'RexLoad_Carousel');
+		}
+
 		if ($block_has_slider && 'true' == $photoswipe) {
 			// strpos($content,']')
 			$last = strpos($content, ']');
