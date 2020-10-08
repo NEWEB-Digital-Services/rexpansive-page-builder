@@ -11,14 +11,14 @@
 defined('ABSPATH') or exit;
 ?>
 
-<script type="text/x-tmpl" id="tmpl-video-vimeo">
+<noscript type="text/x-tmpl" id="tmpl-video-vimeo">
 	<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block">
 		<iframe src="{%=video.url%}" width="640" height="360" frameborder="0" allow="autoplay"  webkitallowfullscreen mozallowfullscreen allowfullscreen>
 		</iframe>
 	</div>
-</script>
+</noscript>
 
-<script type="text/x-tmpl" id="tmpl-video-mp4">
+<noscript type="text/x-tmpl" id="tmpl-video-mp4">
 	<div class="rex-video-wrap intrinsic-ignore" data-rex-video-width="{%=video.width%}" data-rex-video-height="{%=video.height%}">
 		<video class="rex-video-container" preload autoplay loop muted>
 			<source type="video/mp4" {% if ( true == video.fast_load ) { %}data-src="{%=video.url%}"{% } else { %}src="{%=video.url%}"{% } %}>
@@ -33,30 +33,30 @@ defined('ABSPATH') or exit;
 			<div class="indicator"></div>
 		</div>
 	</div>
-</script>
+</noscript>
 
-<script type="text/x-tmpl" id="tmpl-video-youtube">
+<noscript type="text/x-tmpl" id="tmpl-video-youtube">
 	<div class="rex-youtube-wrap" data-property="{videoURL:'{%=video.url%}',containment:'self',startAt:0,mute:'{%=video.audio%}',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}">
 	</div>
-</script>
+</noscript>
 
-<script type="text/x-tmpl" id="tmpl-video-toggle-audio">
+<noscript type="text/x-tmpl" id="tmpl-video-toggle-audio">
 	<div class="rex-video-toggle-audio">
 		<div class="rex-video-toggle-audio-shadow">
 		</div>
 	</div>
-</script>
+</noscript>
 
-<script type="text/x-tmpl" id="tmpl-photoswipe-block">
+<noscript type="text/x-tmpl" id="tmpl-photoswipe-block">
 <figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
 	<a class="pswp-item" href="{%=image.link%}" itemprop="contentUrl" data-size="{%=image.width%}x{%=image.height%}">
 		<div class="pswp-item-thumb" data-thumb-image-type="{%=image.type%}" data-thumburl="{%=image.link%}" itemprop="thumbnail"></div>
 	</a>
 	<figcaption class="pswp-item-caption" itemprop="caption description"><?php do_action( 'rexbuilder_block_pswp_item_caption' ); ?></figcaption>
 </figure>
-</script>
+</noscript>
 
-<script type="text/x-tmpl" id="tmpl-photoswipe-block-inline">
+<noscript type="text/x-tmpl" id="tmpl-photoswipe-block-inline">
 <figure class="pswp-figure {%=image.align%}" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" style="width: {%=image.width%}; height:{%=image.height%}">
 	<a class="pswp-item" href="{%=image.link%}" itemprop="contentUrl" data-size="{%=image.width%}x{%=image.height%}" style="width: {%=image.width%}; height:{%=image.height%}">
 		<div class="pswp-item-thumb" data-thumb-image-type="{%=image.type%}" data-thumburl="{%=image.link%}" itemprop="thumbnail"></div>
@@ -65,4 +65,4 @@ defined('ABSPATH') or exit;
 	</a>
 	<figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>
 </figure>
-</script>
+</noscript>

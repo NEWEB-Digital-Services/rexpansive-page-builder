@@ -106,14 +106,14 @@ if (!empty($customizations_names)) {
 }
 
 ?>
-<script id="rex-buttons-ids-used" data-nosnippet><?php
+<noscript id="rex-buttons-ids-used" data-nosnippet><?php
 if ( $buttonsIDsUsed == null ) {
     echo "[]";
 } else {
     echo json_encode( $buttonsIDsUsed );
 }
-?></script>
-<script id="sections-ids-used" data-nosnippet>
+?></noscript>
+<noscript id="sections-ids-used" data-nosnippet>
 <?php
 if ($sectionsIDsUsed == null) {
     echo "[]";
@@ -121,9 +121,9 @@ if ($sectionsIDsUsed == null) {
     echo json_encode($sectionsIDsUsed);
 }
 ?>
-</script>
-<script id="blocks-ids-used" data-nosnippet><?php echo $blocksIDsJSON; ?></script>
-<script id="layout-avaiable-dimensions" data-nosnippet><?php echo json_encode($layoutsAvaiable); ?></script>
+</noscript>
+<noscript id="blocks-ids-used" data-nosnippet><?php echo $blocksIDsJSON; ?></noscript>
+<noscript id="layout-avaiable-dimensions" data-nosnippet><?php echo json_encode($layoutsAvaiable); ?></noscript>
 <div id="rexbuilder-model-data" data-nosnippet style="display:none;">
     <div class="models-customizations" data-nosnippet <?php
     if (!$flag_models) {

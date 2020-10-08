@@ -41,11 +41,13 @@ a {
 	display: none;
 }
 
-.rexbuilder-live-front {
+// .rexbuilder-live-front {
+@if not $live_builder {
 	.pswp__button {
 		background-color: transparent;
 	}
 }
+// }
 
 .pswp__button--close:hover,
 .pswp__button--share:hover,
