@@ -1477,8 +1477,10 @@
 			blocks = Array.prototype.slice.call(blocks);
 		}
 
+		var removeGridBlock = this.removeGridBlock.bind(this);
+
 		blocks.forEach(function (block) {
-			this.removeGridBlock(block, options);
+			removeGridBlock(block, options);
 		});
 	};
 
