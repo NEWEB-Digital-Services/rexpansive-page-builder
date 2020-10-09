@@ -57,7 +57,7 @@ var Rexbuilder_Live_Templates = (function($, window, document) {
 							'</i>' +
 						'</div>' +
 						'<div class="wpcf7-select-columns wpcf7-select-columns--bottom">' +
-							'<ul>' +
+							'<ul class="wpcf7-select-columns__list">' +
 								'<li>' +
 									'<button type="button" class="wpcf7-form-button wpcf7-column-selector select-1-column" data-operation="addSelectedColumns">' +
 										'<i class="l-svg-icons">' +
@@ -166,7 +166,7 @@ var Rexbuilder_Live_Templates = (function($, window, document) {
 			case 'rexelement-tools':
 				return '<div contenteditable="false" class="rexelement-tools">' +
 					'<div class="wpcf7-select-columns wpcf7-select-columns--top">' +
-						'<ul>' +
+						'<ul class="wpcf7-select-columns__list">' +
 							'<li>' +
 								'<button type="button" class="wpcf7-form-button wpcf7-column-selector select-1-column" data-operation="addSelectedColumns">' +
 									'<i class="l-svg-icons">' +
