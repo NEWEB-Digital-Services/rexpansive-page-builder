@@ -1436,6 +1436,43 @@
 	};
 
 	/**
+	 * @param {Array<HTMLElement>}	blocks
+	 * @param {Array<object>}				layoutData
+	 */
+	RexGrid.prototype.addGridBlocksAccordingToLayoutData = function (blocks, layoutData) {
+		if (!Array.isArray(blocks)) {
+			// If passing a querySelectorAll or getElementsByClassName result
+			blocks = Array.prototype.slice.call(blocks);
+		}
+
+		if (!Array.isArray(layoutData)) {
+			throw new Error('Layout data passed is not an array!');
+		}
+
+		for (var i = 0; i < blocks.length; i++) {
+			var currentBlock = blocks[i];
+			var currentID = currentBlock.getAttribute('data-rexbuilder-block-id');
+
+			var currentBlockLayoutData = layoutData.filter(function (archiveLayoutEntry) {
+				return currentID === archiveLayoutEntry.name;
+			});
+			currentBlockLayoutData = currentBlockLayoutData[0];
+
+			if (currentBlockLayoutData) {
+				this.addGridBlock(
+					currentBlock,
+					currentBlockLayoutData.props.gs_width,
+					currentBlockLayoutData.props.gs_height,
+					currentBlockLayoutData.props.gs_x,
+					currentBlockLayoutData.props.gs_y
+				);
+			} else {
+				throw new Error('Block with ID ' + currentID + ' is not in the archive data!');
+			}
+		}
+	};
+
+	/**
 	 * Remove a block from the grid.
 	 *
 	 * @param	{HTMLElement}	block
