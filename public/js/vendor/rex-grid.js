@@ -1436,26 +1436,50 @@
 	};
 
 	/**
-	 * Remove an element from the grid
-	 * @param  {Element} el element to remove
-	 * @return {void}
-	 * @todo Remove element from DOM
+	 * Remove a block from the grid.
+	 *
+	 * @param	{HTMLElement}	block
+	 * @param	{object}			[options]
+	 * @param	{boolean}			[options.removeFromDOM]
 	 */
-	RexGrid.prototype.removeGridBlock = function(el) {
-		var i, found = null;
-		for( i=0; i<this.gridBlocksTotal; i++ ) {
-			if ( this.gridBlocks[i].el === el ) {
+	RexGrid.prototype.removeGridBlock = function (block, options) {
+		options = 'undefined' !== typeof options ? options : { removeFromDOM: true };
+
+		var found = null;
+
+		for (var i = 0; i < this.gridBlocksTotal; i++) {
+			if (this.gridBlocks[i].el === block) {
 				found = i;
 				break;
 			}
 		}
 
-		if ( null === found ) return;
+		if (null === found) return;
 
-		this.gridBlocks[found].el.parentNode.removeChild( this.gridBlocks[found].el );
+		if (options.removeFromDOM) {
+			this.gridBlocks[found].el.parentNode.removeChild(this.gridBlocks[found].el);
+		}
 
-		this.gridBlocks.splice( found, 1 );
+		this.gridBlocks.splice(found, 1);
 		this.gridBlocksTotal = this.gridBlocks.length;
+	};
+
+	/**
+	 * Remove an array of blocks from the grid.
+	 * RexGrid.prototype.removeGridBlock's simple wrapper for multiple blocks.
+	 *
+	 * @param	{Array<HTMLElement>}	blocks
+	 * @param	{object}							[options]
+	 * @param	{boolean}							[options.removeFromDOM]
+	 */
+	RexGrid.prototype.removeGridBlocks = function (blocks, options) {
+		if (!Array.isArray(blocks)) {
+			blocks = Array.prototype.slice.call(blocks);
+		}
+
+		blocks.forEach(function (block) {
+			this.removeGridBlock(block, options);
+		});
 	};
 
 	/**
