@@ -14,19 +14,30 @@ const postcss = require('gulp-postcss');
 
 const exec = require('child_process').exec;
 const fs = require('fs');
+const chalk = require('chalk');
 
-// To use with cross-env
-if ('undefined' === typeof process.env.NODE_ENV) throw new Error('You need to define a NODE_ENV!');
+const version = require('./package.json').version;
+const ZIP_VERSION = version.replace(/\./g, '').trim();
+
+console.log(
+	chalk.underline.red(`
+Rexpansive builder current version: ${version}
+
+`)
+);
+
+if ('undefined' === typeof process.env.NODE_ENV) throw new Error('You need to specify a NODE_ENV!');
+
 const isProduction = process.env.NODE_ENV === 'production';
-const filePath = 'rexpansive-builder.php';
+const targetFilePath = 'rexpansive-builder.php';
 
-fs.readFile(filePath, 'utf8', (err, data) => {
+fs.readFile(targetFilePath, 'utf8', (err, data) => {
 	if (err) throw err;
 
 	const newString = `define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', ${isProduction} );`;
 	const result = data.replace(/define\(\s*\'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS\'\,\s*\w+\s*\)\;/, newString);
 
-	fs.writeFile(filePath, result, 'utf8', function (err) {
+	fs.writeFile(targetFilePath, result, 'utf8', function (err) {
 		if (err) return console.log(err);
 	});
 });
@@ -458,7 +469,7 @@ exports.build = series(
 );
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
-var live_zip_name = 'Premium-209-Rexpansive-Builder.zip';
+var live_zip_name = `Premium-${ZIP_VERSION}-Rexpansive-Builder.zip`;
 var live_folder_name = 'rexpansive-page-builder';
 
 var live_file_map = [
