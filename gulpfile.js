@@ -1,6 +1,4 @@
-const { src, dest, watch } = require('gulp');
-const { series, parallel } = require('gulp');
-const exec = require('child_process').exec;
+const { src, dest, watch, series, parallel } = require('gulp');
 const clean = require('gulp-clean');
 const zip = require('gulp-zip');
 const sass = require('gulp-sass');
@@ -8,29 +6,24 @@ const plumber = require('gulp-plumber');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const size = require('gulp-size');
-const autoprefixer = require('gulp-autoprefixer');
 const rename = require('gulp-rename');
 const gulpUtil = require('gulp-util');
 const svgSprite = require('gulp-svg-sprite');
 const sourcemaps = require('gulp-sourcemaps');
-const mode = require('gulp-mode')();
-// const ts = require('gulp-typescript');
-// const tsProject = ts.createProject('tsconfig.json');
+const postcss = require('gulp-postcss');
 
+const exec = require('child_process').exec;
 const fs = require('fs');
 
-// If mode.production() returns the passed string, we are in production mode
-const production = 'test' === mode.production('test');
-
 // To use with cross-env
-// if ('undefined' === typeof process.env.NODE_ENV) throw new Error();
-// const production = 'production' === process.env.NODE_ENV;
+if ('undefined' === typeof process.env.NODE_ENV) throw new Error('You need to define a NODE_ENV!');
+const isProduction = process.env.NODE_ENV === 'production';
 const filePath = 'rexpansive-builder.php';
 
 fs.readFile(filePath, 'utf8', (err, data) => {
 	if (err) throw err;
 
-	const newString = `define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', ${production} );`;
+	const newString = `define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', ${isProduction} );`;
 	const result = data.replace(/define\(\s*\'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS\'\,\s*\w+\s*\)\;/, newString);
 
 	fs.writeFile(filePath, result, 'utf8', function (err) {
@@ -41,7 +34,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 const sassConfig = {
 	// Default: nested
 	// Values: nested, expanded, compact, compressed
-	outputStyle: production ? 'compressed' : 'nested'
+	outputStyle: isProduction ? 'compressed' : 'nested'
 };
 
 /** LIVE BUILDER */
@@ -73,17 +66,6 @@ var config = {
 	}
 };
 
-// function compileTs() {
-// 	return tsProject
-// 		.src()
-// 		.pipe(tsProject())
-// 		.js.pipe(
-// 			dest(function (params) {
-// 				console.log(arguments);
-// 			})
-// 		);
-// }
-
 // LIVE e ADMIN
 function liveSprites(cb) {
 	return src('./admin/ICO_Live-new/**/*.svg').pipe(svgSprite(config)).pipe(dest('./admin/sprites-live'));
@@ -96,50 +78,63 @@ exports.liveSprites = liveSprites;
 
 // LIVE
 // Not used in development or production tasks
-function liveBuilderStyle(cb) {
-	return src('admin/scss/rexlive/live-def.scss')
-		.pipe(
-			sass({
-				sourcemap: false,
-				outputStyle: 'compressed'
-			})
-		)
-		.pipe(plumber())
-		.pipe(
-			autoprefixer({
-				browsers: ['last 3 versions', 'ie >= 9', 'and_chr >= 2.3']
-			})
-		)
-		.pipe(plumber.stop())
-		.pipe(size({ title: 'LiveBuilder CSS' }))
-		.pipe(dest('admin/css'));
-	cb();
-}
+// function liveBuilderStyle(cb) {
+// 	return src('admin/scss/rexlive/live-def.scss')
+// 		.pipe(
+// 			sass({
+// 				sourcemap: false,
+// 				outputStyle: 'compressed'
+// 			})
+// 		)
+// 		.pipe(plumber())
+// 		.pipe(postcss())
+// 		.pipe(plumber.stop())
+// 		.pipe(size({ title: 'LiveBuilder CSS' }))
+// 		.pipe(dest('admin/css'));
+// }
 
-exports.liveBuilderStyle = liveBuilderStyle;
+// exports.liveBuilderStyle = liveBuilderStyle;
 
 // ADMIN
-function adminBuilderStyle(cb, dev) {
-	return src('admin/scss/rexlive/tools-def.scss')
-		.pipe(mode.development(sourcemaps.init()))
-		.pipe(mode.development(sourcemaps.identityMap()))
-		.pipe(sass(sassConfig))
-		.pipe(mode.development(sourcemaps.write()))
-		.pipe(plumber())
-		.pipe(
-			autoprefixer({
-				browsers: ['last 3 versions', 'ie >= 9', 'and_chr >= 2.3']
-			})
-		)
+// function adminBuilderStyle(cb) {
+// 	return src('admin/scss/rexlive/tools-def.scss')
+// 		.pipe(plumber({ errorHandler: cb }))
+// 		.pipe(sourcemaps.init({ largeFile: true }))
+// 		.pipe(sourcemaps.identityMap())
+// 		.pipe(sass(sassConfig).on('error', sass.logError))
+// 		.pipe(postcss())
+// 		.pipe(sourcemaps.write())
+// 		.pipe(plumber.stop())
+// 		.pipe(size({ title: 'LiveBuilder Admin CSS' }))
+// 		.pipe(dest('admin/css'));
+// }
+
+// exports.adminBuilderStyle = adminBuilderStyle;
+
+function adminBuilderStyle() {
+	let stream = src('admin/scss/rexlive/tools-def.scss').pipe(plumber());
+
+	if (!isProduction) {
+		stream = stream.pipe(sourcemaps.init({ largeFile: true })).pipe(sourcemaps.identityMap());
+	}
+
+	stream = stream.pipe(sass(sassConfig).on('error', sass.logError)).pipe(postcss());
+
+	if (!isProduction) {
+		stream = stream.pipe(sourcemaps.write());
+	}
+
+	stream = stream
 		.pipe(plumber.stop())
 		.pipe(size({ title: 'LiveBuilder Admin CSS' }))
 		.pipe(dest('admin/css'));
-	cb();
+
+	return stream;
 }
 
 // Watching admin styles
 function watchAdminBuilderStyle(cb) {
-	watch(['./admin/scss/rexlive/**/*.scss'], { ignoreInitial: false }, adminBuilderStyle.bind(null, cb, true));
+	watch(['./admin/scss/rexlive/**/*.scss'], { ignoreInitial: false }, adminBuilderStyle.bind(null, cb));
 	cb();
 }
 
@@ -368,16 +363,9 @@ function watchBuilderLive(cb) {
 // LIVE CSS
 function builderliveEditorStyle(cb, dev) {
 	return src('live/builderlive-editor.scss')
-		.pipe(mode.development(sourcemaps.init()))
-		.pipe(mode.development(sourcemaps.identityMap()))
 		.pipe(sass(sassConfig))
-		.pipe(mode.development(sourcemaps.write()))
 		.pipe(plumber())
-		.pipe(
-			autoprefixer({
-				browsers: ['last 3 versions', 'ie >= 9', 'and_chr >= 2.3']
-			})
-		)
+		.pipe(postcss())
 		.pipe(plumber.stop())
 		.pipe(size({ title: 'Live CSS' }))
 		.pipe(dest('live/css'));
@@ -395,22 +383,14 @@ function watchBuilderliveEditorStyle(cb) {
 }
 
 // PUBLIC CSS
-function builderliveStyle(cb, dev) {
+function builderliveStyle(cb) {
 	return src('public/builderlive-public.scss')
-		.pipe(mode.development(sourcemaps.init()))
-		.pipe(mode.development(sourcemaps.identityMap()))
 		.pipe(sass(sassConfig))
-		.pipe(mode.development(sourcemaps.write()))
 		.pipe(plumber())
-		.pipe(
-			autoprefixer({
-				browsers: ['last 3 versions', 'ie >= 9', 'and_chr >= 2.3']
-			})
-		)
+		.pipe(postcss())
 		.pipe(plumber.stop())
 		.pipe(size({ title: 'Public CSS' }))
 		.pipe(dest('public/css'));
-	cb();
 }
 
 // Watching public styles
@@ -461,11 +441,7 @@ function rxcf7(cb) {
 			})
 		)
 		.pipe(plumber())
-		.pipe(
-			autoprefixer({
-				browsers: ['last 3 versions', 'ie >= 9', 'and_chr >= 2.3']
-			})
-		)
+		.pipe(postcss())
 		.pipe(plumber.stop())
 		.pipe(size({ title: 'RXCF7 CSS' }))
 		.pipe(dest('public/css'));
@@ -478,11 +454,7 @@ exports.dev = parallel(watchAdminBuilderStyle, watchBuilderliveEditorStyle, watc
 exports.build = series(
 	minifyExternal,
 	parallel(adminScript, builderliveEditor, builderlive),
-	parallel(
-		adminBuilderStyle.bind(null, null, false),
-		builderliveEditorStyle.bind(null, null, false),
-		builderliveStyle.bind(null, null, false)
-	)
+	parallel(adminBuilderStyle, builderliveEditorStyle.bind(null, null, false), builderliveStyle.bind(null, null, false))
 );
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
