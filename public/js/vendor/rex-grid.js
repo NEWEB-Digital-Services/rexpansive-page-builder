@@ -1366,12 +1366,12 @@
 
 	/**
 	 * Add an element to the grid
-	 * @param {Node} block html node to add
-	 * @param {[type]} w     width
-	 * @param {[type]} h     height
-	 * @param {[type]} x     x-coord
-	 * @param {[type]} y     y-coord
-	 * @since  2.0.4
+	 * @param	{HTMLElement}	el
+	 * @param	{number}			w    
+	 * @param	{number}			h    
+	 * @param	{number}			x    
+	 * @param	{number}			y    
+	 * @since	2.0.4
 	 */
 	RexGrid.prototype.addGridBlock = function( el, w, h, x, y ) {
 		// get attributes for the new block
@@ -1404,6 +1404,7 @@
 			y = parseInt( el.getAttribute( 'data-gs-y' ) );
 		}
 
+
 		// fix block data
 		var blockData = el.querySelector('.rexbuilder-block-data');
 		blockData.setAttribute( 'data-gs_width', w );
@@ -1413,7 +1414,7 @@
 		blockData.setAttribute( 'data-gs_start_h', h );
 
 		// create the RexBlock instance
-		blockInstance = new RexBlock( {
+		var blockInstance = new RexBlock( {
 			el: el,
 			id: el.getAttribute( 'data-rexbuilder-block-id' ),
 			w: w,
@@ -1425,11 +1426,11 @@
 		} );
 
 		// setting the gutter
-		var temp = el.querySelector( '.grid-stack-item-content' );
-		temp.style.paddingTop = this.properties.halfSeparatorBlockTop + 'px';
-		temp.style.paddingRight = this.properties.halfSeparatorBlockRight + 'px';
-		temp.style.paddingBottom = this.properties.halfSeparatorBlockBottom + 'px';
-		temp.style.paddingLeft = this.properties.halfSeparatorBlockLeft + 'px';
+		var itemContent = el.querySelector( '.grid-stack-item-content' );
+		itemContent.style.paddingTop = this.properties.halfSeparatorBlockTop + 'px';
+		itemContent.style.paddingRight = this.properties.halfSeparatorBlockRight + 'px';
+		itemContent.style.paddingBottom = this.properties.halfSeparatorBlockBottom + 'px';
+		itemContent.style.paddingLeft = this.properties.halfSeparatorBlockLeft + 'px';
 
 		this.gridBlocks.push( blockInstance );
 		this.gridBlocksTotal = this.gridBlocks.length;
@@ -1456,7 +1457,12 @@
 			var currentBlockLayoutData = layoutData.filter(function (archiveLayoutEntry) {
 				return currentID === archiveLayoutEntry.name;
 			});
+
 			currentBlockLayoutData = currentBlockLayoutData[0];
+
+			var hasProps = currentBlockLayoutData.props.length !== 0;
+
+			// if(!hasProps) continue;
 
 			if (currentBlockLayoutData) {
 				this.addGridBlock(
