@@ -970,6 +970,14 @@
 
 	/* ===== Public Methods ===== */
 
+	RexGrid.prototype.isMasonry = function () {
+		return 'masonry' === this.properties.layout;
+	};
+
+	RexGrid.prototype.isFixed = function () {
+		return 'fixed' === this.properties.layout;
+	};
+
 	/**
 	 * Calculating height of the grid blocks.
 	 * @since	1.0.0
