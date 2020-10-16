@@ -67,12 +67,15 @@
 	function PopUpVideo() {
 		this.element = null;
 		this.typology = null;
+		this.video_element = null;
 
 		if (arguments[0]) {
 			this.element = arguments[0];
 		}
 
-		var defaults = {};
+		var defaults = {
+			closeOnEnd: false
+		};
 
 		// Create options by extending defaults with the passed in arugments
 		if (arguments[1] && typeof arguments[1] === "object") {
@@ -87,6 +90,10 @@
 		initialize.call( this );
 
 		if ( ! this.typology ) return;
+
+		if ( this.options.closeOnEnd ) {
+			prepareScripts.call(this);
+		}
 
 		attachEventHandlers.call( this );
 	}
@@ -127,7 +134,7 @@
 				video_element.setAttribute('allowfullscreen', true);
 				video_element.setAttribute('frameborder', '0');
 				video_element.setAttribute('allow', 'autoplay');
-				video_element.setAttribute('src', 'https://www.youtube.com/embed/' + this.resource_id + '?autoplay=1&rel=0&color=white&frameborder=0');
+				video_element.setAttribute('src', 'https://www.youtube.com/embed/' + this.resource_id + '?autoplay=1&rel=0&color=white&frameborder=0' + ( this.options.closeOnEnd ? '&enablejsapi=1&origin=' + window.location.origin : '' ) );
 				break;
 			case 'vimeo':
 				video_element = document.createElement('iframe');
@@ -151,9 +158,99 @@
 				break;
 		}
 
+		this.video_element = video_element;
+
+		if ( this.options.closeOnEnd ) {
+			switch( this.typology ) {
+				case 'youtube':
+					handleYTVideoCloseOnEnd.call(this)
+					break;
+				case 'vimeo':
+					handleVimeoCloseOnEnd.call(this)
+					break;
+				case 'mp4':
+					this.video_element.addEventListener('ended', handleMp4CloseOnEnd.bind(this) );
+					break;
+				default:
+					break;
+			}
+		}
+
 		// popup_video_modal.content.appendChild(video_element);
 		// popup_video_modal.element.style.display = 'block';
 		popup_video_modal.open_modal( video_element );
+	}
+
+	/**
+	 * Add YouTube or Vimeo API scripts if necessary
+	 * @since 1.0.0
+	 */
+	function prepareScripts() {
+		switch( this.typology ) {
+			case 'youtube':
+				// add api scripts if no present
+				if ( 'undefined' === typeof YT ) {
+					var tag = document.createElement('script');
+
+					tag.src = "https://www.youtube.com/iframe_api";
+					var firstScriptTag = document.getElementsByTagName('script')[0];
+					firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+				}
+				break;
+			case 'vimeo':
+				// add api scripts if no present
+				if ("undefined" === typeof Vimeo ) {
+					var tag = document.createElement('script');
+
+					tag.src = "https://player.vimeo.com/api/player.js";
+					var firstScriptTag = document.getElementsByTagName('script')[0];
+					firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+				}				
+				break;
+			case 'mp4':
+			default:
+				break;
+		}
+	}
+
+	/**
+	 * Handling YouTube video autoclosing on end
+	 * @since 1.0.0
+	 */
+	function handleYTVideoCloseOnEnd() {
+		var handleClose = function(event) {
+			if ( YT.PlayerState.ENDED == event.data) {
+				popup_video_modal.close_modal();
+			}
+		}
+
+		var player = new YT.Player(this.video_element, {
+			events: {
+				'onStateChange': handleClose
+			}
+		});
+	}
+
+	/**
+	 * Handle Vimeo video autoclosing on end
+	 * @since 1.0.0
+	 */
+	function handleVimeoCloseOnEnd() {
+		var player = new Vimeo.Player(this.video_element);
+		var handleClose = function() {
+			popup_video_modal.close_modal();
+			player.off('ended', handleClose)
+		}
+		player.on('ended', handleClose)
+	}
+
+	/**
+	 * Handle HTML5 video autoclosing on end
+	 * @since 1.0.0
+	 */
+	function handleMp4CloseOnEnd() {
+		this.video_element.removeEventListener('ended', handleMp4CloseOnEnd.bind(this) );
+		popup_video_modal.close_modal();
 	}
 
 	// Utility method to extend defaults with user options

@@ -591,11 +591,13 @@ var Rexbuilder_App = (function($) {
     if ( 'undefined' === typeof PopUpVideo ) return;
 
     var btns = [].slice.call( document.getElementsByClassName('popup-video-button') );
-      var tot_btns = btns.length, i = 0;
+    var tot_btns = btns.length, i = 0;
 
     for( i=0; i < tot_btns; i++ ) {
       if ( '' === btns[i].href ) continue;
-      new PopUpVideo(btns[i], {});
+      new PopUpVideo(btns[i], {
+        closeOnEnd: _plugin_frontend_settings.popUpVideo.closeOnEnd
+      });
     }
   }
 
