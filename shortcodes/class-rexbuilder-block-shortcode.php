@@ -301,6 +301,14 @@ class Rexbuilder_Block {
 			$block_offset = true;
 		}
 
+		$visible_element_percentage = null;
+		if( strpos($block_custom_class, 'scrolled-block--percentage-' ) ) {
+			preg_match( '/scrolled-block--percentage-(\d+)/', $block_custom_class, $match );
+			if ( ! empty( $match ) ) {
+				$visible_element_percentage = (int) $match[1];
+			}
+		}
+
 		$block_has_map = false;
 		if ( false !== strpos( $content, 'RexGoogleMap' ) ) {
 			$block_has_map = true;
@@ -381,8 +389,9 @@ class Rexbuilder_Block {
 				echo ' data-rs-animation-offset="-50"';
 			}
 		}
-		echo ($block_delayed ? ' data-rs-animation-delay="0.5s"' : '');
-		echo ($block_offset ? ' data-rs-animation-offset="10"' : '');
+		echo ( $block_delayed ? ' data-rs-animation-delay="0.5s"' : '');
+		echo ( $block_offset ? ' data-rs-animation-offset="10"' : '');
+		echo ( $visible_element_percentage ? ' data-rs-animation-visible-percentage="' . $visible_element_percentage . '"' : '' );
 		echo '>';
 
 		$block_style_padding = '';

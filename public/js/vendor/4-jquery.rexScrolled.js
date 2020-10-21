@@ -25,6 +25,7 @@
 			mobile: true,
 			force_launch: false,
 			callback: null,
+			visiblePercentage: 50	// percentage of element amount that triggers the animation
 		};
 
 	// maintain an array of rexScrolled callbacks
@@ -112,6 +113,7 @@
 
 		this.settings.offset = parseInt(this.element.getAttribute('data-rs-animation-offset') || this.settings.offset);
 		this.settings.force_launch = this.element.getAttribute('data-rs-animation-force-launch') || this.settings.force_launch;
+		this.settings.visiblePercentage = ( parseInt( this.element.getAttribute('data-rs-animation-visible-percentage') ) || this.settings.visiblePercentage ) / 100;
 
 		// this.bindedScrollHandler = null;
 
@@ -163,8 +165,8 @@
 				var offset = win_height * ( this.settings.offset / 100 );
 
 				if ( ( blockPositionTop > ( scrolled + offset ) && blockPositionBottom < ( scrolled + win_height - offset ) ) // full element in viewport
-					|| ( ( blockPositionTop + blockHeight * 0.5 ) < ( scrolled + win_height - offset ) && blockPositionBottom > ( scrolled + win_height - offset ) ) // element in viewport from bottom
-					|| ( ( blockPositionTop + blockHeight * 0.5 ) >= ( scrolled + offset ) && blockPositionTop < ( scrolled + offset ) ) ) /* element in viewport form top */ 
+					|| ( ( blockPositionTop + blockHeight * this.settings.visiblePercentage ) < ( scrolled + win_height - offset ) && blockPositionBottom > ( scrolled + win_height - offset ) ) // element in viewport from bottom
+					|| ( ( blockPositionTop + blockHeight * this.settings.visiblePercentage ) >= ( scrolled + offset ) && blockPositionTop < ( scrolled + offset ) ) ) /* element in viewport form top */ 
 				{
 					that.properties.launched = true;
 					that.$element.trigger('rs-scrolled-complete');
