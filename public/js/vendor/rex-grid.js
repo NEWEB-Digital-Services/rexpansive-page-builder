@@ -1,7 +1,7 @@
-(function (window, factory) {
+void (function (window, factory) {
 	'use strict';
 	window.RexGrid = factory(window);
-})('undefined' !== typeof window ? window : this, function () {
+})('undefined' !== typeof window ? window : this, function (window) {
 	var instances = [];
 
 	/* ===== Utilities ===== */
