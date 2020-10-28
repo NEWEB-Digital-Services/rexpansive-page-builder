@@ -22,6 +22,14 @@ class Rexbuilder_Indexed_Grid
 	protected $maxWidth;
 
 	/**
+	 * Boolean that represents the state of the log: active or inactive
+	 *
+	 * @var bool
+	 * @since 2.0.9
+	 */
+	protected $logActive;
+
+	/**
 	 * Indexed grid constructor: create an empty array, set a max width
 	 *
 	 * @param integer $maxWidth
@@ -30,6 +38,7 @@ class Rexbuilder_Indexed_Grid
 	public function __construct( $maxWidth = 12 )
 	{
 		$this->grid = array();
+		$this->logActive = false;
 		$this->maxWidth = $maxWidth;
 	}
 
@@ -84,19 +93,43 @@ class Rexbuilder_Indexed_Grid
 	 * @param int $place
 	 * @return void
 	 * @since 2.0.0
+	 * @version 2.0.9	Bugfix: fill correctly the empty spaces before the last available space
 	 */
 	public function checkGrid( $place )
 	{
 		$i = 0;
-		while ($this->grid[$i] < $place)
-		{
+		$tempFillElements = array();
+
+		Rexbuilder_Utilities::write_log( '16:15' );
+		Rexbuilder_Utilities::write_log( 'place ' . $place );
+		Rexbuilder_Utilities::write_log( 'tot grid ' . count( $this->grid ) );
+
+		while ( $this->grid[$i] < $place ) {
+			
+			if ( ! isset( $this->grid[$i] ) ) {
+				Rexbuilder_Utilities::write_log( 'i ' . $i );
+				Rexbuilder_Utilities::write_log( 'grid[i] ' . $this->grid[$i] );
+				return;
+			}
+
 			$last = $this->grid[$i];
-			if (($last+1) !== $this->grid[$i + 1])
+			if ( ($last+1) !== $this->grid[$i + 1] )
 			{
-				array_push( $this->grid, $last + 1 );
+				Rexbuilder_Utilities::write_log( 'start ' . ( $last + 1 ) );
+				Rexbuilder_Utilities::write_log( 'end ' . $this->grid[$i + 1] );
+				for( $j=$last+1; $j<$this->grid[$i + 1]; $j++) {
+					array_push( $tempFillElements, $j );
+				}
+				// array_push( $this->grid, $last + 1 );
 			}
 			$i++;
 		}
+		
+		// Rexbuilder_Utilities::write_log( array_merge( $this->grid, $tempFillElements ) );
+		// Rexbuilder_Utilities::write_log( $this->grid );
+
+		$this->grid = array_merge( $this->grid, $tempFillElements );
+		
   		$this->insertionSort();
 	}
 	
@@ -215,11 +248,34 @@ class Rexbuilder_Indexed_Grid
 	 * @return array
 	 * @since 2.0.0
 	 */
-	public static function getCoord( $val, $maxWidth )
-	{
+	public static function getCoord( $val, $maxWidth ) {
 		return array(
 			'x' => $val % $maxWidth,
 			'y' => (int)floor( $val / $maxWidth )
 		);
+	}
+
+	/**
+	 * Set a value for the log active state
+	 *
+	 * @param bool $value
+	 * @return void
+	 * @since 2.0.9
+	 */
+	public function setLog( $value ) {
+		$this->logActive = $value;
+	}
+
+	/**
+	 * Log a value, if the log is active
+	 *
+	 * @param any $value
+	 * @return void
+	 * @since 2.0.9
+	 */
+	protected function log( $value ) {
+		if ( $this->logActive ) {
+			var_dump( $value );
+		}
 	}
 }

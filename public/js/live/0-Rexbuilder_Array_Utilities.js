@@ -54,13 +54,17 @@ IndexedGrid.prototype.setGrid = function (x, y, w, h) {
  * @param int $place
  * @return void
  * @since 2.0.0
+ * @version 2.0.9	Bugfix: fill correctly the empty spaces before the last available space
  */
 IndexedGrid.prototype.checkGrid = function (place) {
   var i = 0;
   while (this.grid[i] < place) {
     var last = this.grid[i];
     if ((last+1) !== this.grid[i + 1]) {
-      this.grid.push(last + 1);
+      for( var j= last+1; j < this.grid[i + 1]; j++) {
+        this.grid.push( j );
+      }
+      // this.grid.push(last + 1);
     }
     i++;
   }
