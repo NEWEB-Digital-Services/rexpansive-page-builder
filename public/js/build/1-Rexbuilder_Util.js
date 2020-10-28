@@ -4278,6 +4278,10 @@ var Rexbuilder_Util = (function ($) {
 		this.$rexContainer = $('.rex-container');
 		this.rexContainer = this.$rexContainer[0];
 
+		if (this.$rexContainer.length === 0) {
+			console.warn('[Rexpansive] No rexContainer detected! This may cause problems.');
+		}
+
 		this.backendEdited = false;
 		if (
 			Rexbuilder_Util.$rexContainer.length > 0 &&
@@ -4304,9 +4308,6 @@ var Rexbuilder_Util = (function ($) {
 		_updateBlocksIDs();
 		Rexbuilder_Dom_Util.fixModelNumbers();
 		_updateSectionsNumber();
-
-		// var l = chooseLayout();
-		// _edit_dom_layout(l);
 
 		this.firstStart = false;
 	};

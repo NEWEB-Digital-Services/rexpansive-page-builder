@@ -1132,7 +1132,7 @@ var Rexbuilder_App = (function($) {
 		$grids = Rexbuilder_Util.$rexContainer.find('.grid-stack-row');
 
     doAction( 'builder_before_launch_grids' );
-
+		
 		_launchGrids();
 
     Rexbuilder_Rexbutton.init();
