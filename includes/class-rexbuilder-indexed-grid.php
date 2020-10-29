@@ -97,26 +97,23 @@ class Rexbuilder_Indexed_Grid
 	 */
 	public function checkGrid( $place )
 	{
+		// do not search outside the grid!
+		if ( $place > count( $this->grid ) ) return;
+
 		$i = 0;
 		$tempFillElements = array();
 
-		Rexbuilder_Utilities::write_log( '16:15' );
-		Rexbuilder_Utilities::write_log( 'place ' . $place );
-		Rexbuilder_Utilities::write_log( 'tot grid ' . count( $this->grid ) );
-
 		while ( $this->grid[$i] < $place ) {
 			
-			if ( ! isset( $this->grid[$i] ) ) {
-				Rexbuilder_Utilities::write_log( 'i ' . $i );
-				Rexbuilder_Utilities::write_log( 'grid[i] ' . $this->grid[$i] );
-				return;
-			}
+			// if ( ! isset( $this->grid[$i] ) ) {
+			// 	Rexbuilder_Utilities::write_log( 'i ' . $i );
+			// 	Rexbuilder_Utilities::write_log( 'grid[i] ' . $this->grid[$i] );
+			// 	Rexbuilder_Utilities::write_log( 'probable loop' );
+			// 	return;
+			// }
 
 			$last = $this->grid[$i];
-			if ( ($last+1) !== $this->grid[$i + 1] )
-			{
-				Rexbuilder_Utilities::write_log( 'start ' . ( $last + 1 ) );
-				Rexbuilder_Utilities::write_log( 'end ' . $this->grid[$i + 1] );
+			if ( ($last+1) !== $this->grid[$i + 1] ) {
 				for( $j=$last+1; $j<$this->grid[$i + 1]; $j++) {
 					array_push( $tempFillElements, $j );
 				}
@@ -124,13 +121,10 @@ class Rexbuilder_Indexed_Grid
 			}
 			$i++;
 		}
-		
-		// Rexbuilder_Utilities::write_log( array_merge( $this->grid, $tempFillElements ) );
-		// Rexbuilder_Utilities::write_log( $this->grid );
 
 		$this->grid = array_merge( $this->grid, $tempFillElements );
 		
-  		$this->insertionSort();
+		$this->insertionSort();
 	}
 	
 	/**
