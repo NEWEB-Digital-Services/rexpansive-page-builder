@@ -44,6 +44,22 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
 	var input_selector;
 
+	var hooks = [];
+
+	function addAdminAction(action, cb) {
+		if ('undefined' === typeof hooks[action]) hooks[action] = [];
+
+		hooks[action].push(cb);
+	}
+
+	function doAdminAction(action, args) {
+		if ('undefined' === typeof hooks[action]) return;
+
+		hooks[action].forEach(function (cb) {
+			cb.call(null, args);
+		});
+	}
+
 	/**
 	 * Adds a class to Rexcontainer in the iframe
 	 * @param {string} class_name class name to add to rexContainer in the iframe
@@ -130,6 +146,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				$highlightModelEditing.val(event.data.sectionTarget.modelEditing);
 				hightlightRowInfo = event.data.rowInfo;
 				_updateTopToolbar();
+
+				doAdminAction('admin_after_trace_visible_row', { sectionTarget: event.data.sectionTarget });
 			}
 
 			if (event.data.eventName == 'rexlive:viewTopFastTools') {
@@ -2030,6 +2048,10 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		searchFocusedElement: searchFocusedElement,
 		hideLateralMenu: hideLateralMenu,
 		checkLateralMenu: checkLateralMenu,
-		displayAjaxError: displayAjaxError
+		displayAjaxError: displayAjaxError,
+
+		/* Admin actions */
+		addAdminAction: addAdminAction,
+		doAdminAction: doAdminAction
 	};
 })(jQuery);
