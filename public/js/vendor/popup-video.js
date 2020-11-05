@@ -99,11 +99,11 @@
 	}
 
 	function initialize() {
-		if ( -1 !== this.element.href.search(/https?:\/\/youtu.be\/[a-zA-Z0-9]+$/g) ) {
+		if ( -1 !== this.element.href.search(/https?:\/\/youtu.be\/[a-zA-Z0-9\-\_]+$/g) ) {
 			this.typology = 'youtube';
 
 			// get video id
-			var t = /https+:\/\/youtu.be\/([a-zA-Z0-9]+)$/g;
+			var t = /https+:\/\/youtu.be\/([a-zA-Z0-9\-\_]+)$/g;
 			var m = t.exec(this.element.href);
 			this.resource_id = m[1];
 

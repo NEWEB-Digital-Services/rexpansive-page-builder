@@ -3,8 +3,8 @@ Contributors: neweb_agency
 Donate link: http://www.neweb.info/
 Tags: builder, composer, content builder, custom, drag and drop, editor, page builder, page composer, responsive, theme
 Requires at least: 4.2
-Tested up to: 5.5
-Stable tag: 2.0.8
+Tested up to: 5.5.3
+Stable tag: 2.0.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -200,6 +200,20 @@ For the more experienced among us: you can insert CSS anywhere.
 
 == Changelog ==
 
+= 2.0.9 - November 5, 2020 =
+ * Added: When editing a text block, now the block keeps the red outline
+ * Added: Popup video with YouTube, Vimeo or mp4
+ * Added: Popup video feature on RexButtons
+ * Updated: Now section modal width setting have a minimum width
+ * Updated: Highly improved drag & drop of RexButtons, RexModels & RexWpcf7
+ * Updated: When importing a RexButton, the cursor moves to the first paragraph after it (if there is no one, it's created)
+ * Fixed: When pasting text from Word the resultant HTML was not cleaned from Word formatting
+ * Fixed: Text editor loses focus when pasting text
+ * Fixed: When importing RexButtons / RexWpcf7 forms, it was not possible to remove the focus with the ESC button or clicking out
+ * Fixed: When importing a RexButton on an already existent block, the block was not completely focused
+ * Fixed: Section background color undo not working
+ * Fixed: Resetting of the layout when a user changes layout without saving did not reset everything
+
 = 2.0.8 - September 4, 2020 =
  * Added: Class to remove a block from a grid flow on public side
  * Added: RexSlider prev/next icon customizable with hook
@@ -214,7 +228,6 @@ For the more experienced among us: you can insert CSS anywhere.
  * Fixed: When hitting DEL in a text block before a RexButton, the RexButton loses its settings
  * Fixed: Height of a block increasing when editing its internal lateral paddings
  * Fixed: Slider/youtube video with text: the text was invisible
-
 
 = 2.0.7 - August 19, 2020 =
  * Added: Class to deactivate default animation on blocks (.deactivate-rexpansive-animation)
