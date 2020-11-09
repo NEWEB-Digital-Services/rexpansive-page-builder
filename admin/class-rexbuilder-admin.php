@@ -1760,7 +1760,18 @@ class Rexbuilder_Admin {
 			$notifier_data = get_option( $db_cache_field );
 		}
 
+		libxml_use_internal_errors(true);
+		
 		$xml = simplexml_load_string($notifier_data);
+
+		if ( ! $xml ) {
+			$errors = libxml_get_errors();
+			$badFormattedXmlLines = explode( "\n", $notifier_data );
+
+			Rexbuilder_Utilities::log_xml_errors( $errors, $badFormattedXmlLines );
+
+			libxml_clear_errors();
+		}
 
 		return $xml;
 	}

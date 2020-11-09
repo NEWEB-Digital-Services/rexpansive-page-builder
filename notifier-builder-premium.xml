@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <notifier>
-	<latest>2.0.9</latest>
+	<latest>2.0.10</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.0.10</strong> - </h4>
 			<h4><strong>v2.0.9</strong> - November 5, 2020</h4>
 			<p><strong>Added</strong>: When editing a text block, now the block keeps the red outline</p>
 			<p><strong>Added</strong>: Popup video with YouTube, Vimeo or mp4 </p>

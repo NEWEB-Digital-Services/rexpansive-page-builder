@@ -96,6 +96,55 @@ class Rexbuilder_Utilities {
 		}
 	}
 
+	/**
+	 * Write to log all xml errors
+	 *
+	 * @param Array $errors
+	 * @param Array $xml
+	 * @return void
+	 */
+	public static function log_xml_errors( $errors, $xml ) {
+		foreach ($errors as $error) {
+			self::write_log( self::display_xml_error( $error, $xml ) );
+		}
+	}
+
+	/**
+	 * Take an XML error and a bad-formatted xml array of lines
+	 * and display the reltive error in a beautified manner
+	 *
+	 * @param libXMLError $error
+	 * @param Array $xml
+	 * @return string
+	 * @since 2.0.10
+	 */
+	protected static function display_xml_error($error, $xml) {
+		$return  = $xml[$error->line - 1] . "\n";
+		$return .= str_repeat('-', $error->column) . "^\n";
+
+		switch ($error->level) {
+			case LIBXML_ERR_WARNING:
+				$return .= "Warning $error->code: ";
+				break;
+			case LIBXML_ERR_ERROR:
+				$return .= "Error $error->code: ";
+				break;
+			case LIBXML_ERR_FATAL:
+				$return .= "Fatal Error $error->code: ";
+				break;
+		}
+
+		$return .= trim($error->message) .
+				"\n  Line: $error->line" .
+				"\n  Column: $error->column";
+
+		if ($error->file) {
+			$return .= "\n  File: $error->file";
+		}
+
+		return "$return\n\n--------------------------------------------\n\n";
+	}
+
 	public static function get_icon( $id, $classes = "" ) {
 		?>
 		<i class="l-svg-icons<?php echo ( !empty( $classes ) ? ' ' . $classes : '' ); ?>"><svg><use xlink:href="<?php echo $id; ?>"></use></svg></i>
