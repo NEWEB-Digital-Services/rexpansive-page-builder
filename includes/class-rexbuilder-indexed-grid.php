@@ -3,7 +3,7 @@
  * Class to reorder a grid with a find-first-optimal-place algorithm
  * @since 2.0.0
  */
-class Rexbuilder_Indexed_Grid 
+class Rexbuilder_Indexed_Grid
 {
 	/**
 	 * Store a grid as an array
@@ -12,7 +12,7 @@ class Rexbuilder_Indexed_Grid
 	 * @since 2.0.0
 	 */
 	protected $grid;
-	
+
 	/**
 	 * Grid max width
 	 *
@@ -48,11 +48,11 @@ class Rexbuilder_Indexed_Grid
 	 * @return void
 	 * @since 2.0.0
 	 */
-	protected function insertionSort() 
+	protected function insertionSort()
 	{
 		$length = count( $this->grid );
 
-		for ($i = 1, $j; $i < $length; $i++) 
+		for ($i = 1, $j; $i < $length; $i++)
 		{
 			$temp = $this->grid[$i];
 			for ($j = $i - 1; $j >= 0 && $this->grid[$j] > $temp; $j--)
@@ -104,14 +104,6 @@ class Rexbuilder_Indexed_Grid
 		$tempFillElements = array();
 
 		while ( $this->grid[$i] < $place ) {
-			
-			// if ( ! isset( $this->grid[$i] ) ) {
-			// 	Rexbuilder_Utilities::write_log( 'i ' . $i );
-			// 	Rexbuilder_Utilities::write_log( 'grid[i] ' . $this->grid[$i] );
-			// 	Rexbuilder_Utilities::write_log( 'probable loop' );
-			// 	return;
-			// }
-
 			$last = $this->grid[$i];
 			if ( ($last+1) !== $this->grid[$i + 1] ) {
 				for( $j=$last+1; $j<$this->grid[$i + 1]; $j++) {
@@ -123,10 +115,10 @@ class Rexbuilder_Indexed_Grid
 		}
 
 		$this->grid = array_merge( $this->grid, $tempFillElements );
-		
+
 		$this->insertionSort();
 	}
-	
+
 	/**
 	 * Check in the array-grid the first available position for a block
 	 * with a certain widht and height
@@ -212,12 +204,12 @@ class Rexbuilder_Indexed_Grid
 		// Check if the element overflows the grid
 		$startRow = floor(($start) / $this->maxWidth);
 		$endRow = floor(($start + $width - 1) / $this->maxWidth);
-	  
+
 		if ($startRow !== $endRow)
 		{
 		  	return false;
 		}
-	  
+
 		// Check if the element fits or the spaces are already occupied
 		for ($i = 0; $i < $height; $i++)
 		{
@@ -230,7 +222,7 @@ class Rexbuilder_Indexed_Grid
 				}
 		  	}
 		}
-	  
+
 		return true;
 	}
 

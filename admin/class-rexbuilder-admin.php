@@ -1761,7 +1761,7 @@ class Rexbuilder_Admin {
 		}
 
 		libxml_use_internal_errors(true);
-		
+
 		$xml = simplexml_load_string($notifier_data);
 
 		if ( ! $xml ) {
@@ -4069,8 +4069,6 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @since  2.0.0
 	 */
 	public function rex_delete_rexbutton() {
-		// Rexbuilder_Utilities::write_log('rex_delete_rexbutton');
-
 		$nonce = $_POST['nonce_param'];
 
 		$response = array(
@@ -4140,7 +4138,6 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @since  2.0.5
 	 */
 	private static function separate_buttons_in_posts( $rexButtonID, &$button_ids ) {
-		// Rexbuilder_Utilities::write_log('separate_buttons_in_posts');
 		global $wpdb;
 		$posts_with_buttons = $wpdb->get_results(
 			$wpdb->prepare(
