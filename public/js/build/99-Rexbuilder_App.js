@@ -1003,7 +1003,7 @@ var Rexbuilder_App = (function($) {
 
   /**
    * All front end effects in one function
-   * @return {vodi}
+   * @return {void}
    */
   function launchFrontEndEffects() {
     if( !Rexbuilder_Util.editorMode ) {

@@ -1735,19 +1735,16 @@ class Rexbuilder_Admin {
 		// check the cache
 		if ( !$last || (( $now - $last ) > $interval) ) {
 			// cache doesn't exist, or is old, so refresh it
-			if( function_exists('curl_init') ) { // if cURL is available, use it...
-				$ch = curl_init($notifier_file_url);
-				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($ch, CURLOPT_HEADER, 0);
-				curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-				curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
-				$cache = curl_exec($ch);
-				curl_close($ch);
-			} else {
-				$cache = file_get_contents($notifier_file_url); // ...if not, use the common file_get_contents()
-			}
+			$ch = curl_init($notifier_file_url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_HEADER, 0);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+			curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+			$cache = curl_exec($ch);
+			$status = curl_getinfo($ch);
+			curl_close($ch);
 
-			if ($cache) {
+			if (200 === $status['http_code'] && $cache) {
 				// we got good results
 				update_option( $db_cache_field, $cache, false );
 				update_option( $db_cache_field_last_updated, time(), false );
