@@ -1735,14 +1735,16 @@ class Rexbuilder_Admin {
 		// check the cache
 		if ( !$last || (( $now - $last ) > $interval) ) {
 			// cache doesn't exist, or is old, so refresh it
-			$ch = curl_init($notifier_file_url);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_HEADER, 0);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-			curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
-			$cache = curl_exec($ch);
-			$status = curl_getinfo($ch);
-			curl_close($ch);
+			$curl = curl_init($notifier_file_url);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_ENCODING, "");
+			curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
+			curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+			curl_setopt($curl, CURLOPT_HTTP_VERSION, CURL_HTTP_VERSION_1_1);
+			curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
+			$cache = curl_exec($curl);
+			$status = curl_getinfo($curl);
+			curl_close($curl);
 
 			if (200 === $status['http_code'] && $cache) {
 				// we got good results
