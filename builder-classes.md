@@ -1,7 +1,6 @@
 # THIS IS A LIST OF CLASSES THAT CAN BE APPLIED AROUND THE BUILDER TO OBTAIN SOME COMMON DESIRED EFFECTS
 
-SECTIONS
----
+## SECTIONS
 
 - `.background--contain`
   - sets background contain on a section
@@ -28,10 +27,9 @@ SECTIONS
 - `.disable-grid`
   - Disables a grid on front end (destroy rex-grid instance, set block heights and launch lazy load)
 - `.sticky-section`
-  - makes a section ***sticky***, whose background remains attached to the viewport while scrolling the section content
+  - makes a section **_sticky_**, whose background remains attached to the viewport while scrolling the section content
 
-BLOCKS
----
+## BLOCKS
 
 - `.rex-element--animated`
   - Add the class to a block, to detect when the block itself is visible after user scrolls page
@@ -39,14 +37,13 @@ BLOCKS
   - Makes the background image **fit the block** all the way possible, keeping the possibility to make it fluid
 - `.deactivate-rexpansive-animation`
   - Cancels the default animation applied by the builder
-	- Applied to elements with `.rs-animation`, `.has-rs-animation`, `.rexSlideUpBig`
+  - Applied to elements with `.rs-animation`, `.has-rs-animation`, `.rexSlideUpBig`
 - `.rex-block--no-flow`
   - Removes a block from the grid on front-end, preventing its instantiation
 - `.rex-num-spin__block-scrolled`
   - launch a spin when its block container is visible (obviously must be a spin inside the block)
 
-OTHER
----
+## OTHER
 
 - `.intrinsic-ignore`
   - Used to prevent some themes to perform unwanted actions on video elements
