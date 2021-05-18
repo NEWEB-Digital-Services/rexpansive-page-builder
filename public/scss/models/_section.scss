@@ -1,15 +1,4 @@
 /* ---- Section style --------------- */
-.rexbuilder-live-content {
-	&:not(.rexbuilder-live-content--editing) {
-		.rexpansive_section {
-			&.empty-section {
-				.perfect-grid-gallery {
-					margin: 0!important;
-				}
-			}
-		}
-	}
-}
 .rexpansive_section {
 	background-size: cover;
 	background-position: center center;
