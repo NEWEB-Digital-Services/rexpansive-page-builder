@@ -1,6 +1,10 @@
 // LIVE
 .rexbuilder-live-content--editing {
 
+  .rex-container {
+    min-height: 100px;
+  }
+
   position: relative;
   .rexpansive_section {
     z-index: 0;
@@ -15,6 +19,13 @@
 
     .perfect-grid-gallery {
       overflow: visible;
+    }
+
+    &.empty-section {
+      min-height: 100px;
+      .perfect-grid-gallery {
+        min-height: 100px;
+      }
     }
   }
 
