@@ -984,6 +984,24 @@ void (function (window, factory) {
 		}
 	}
 
+	/**
+	 * Emit custom event on rex grid element
+	 * @param {String} name event name
+	 * @param {Object} data event data, optional
+	 * @since 2.0.10
+	 */
+	 function _emiEvent(name, data) {
+		data = 'undefined' === typeof data ? null : data
+		if (window.CustomEvent && typeof window.CustomEvent === 'function') {
+			var event = new CustomEvent(name, {detail: data});
+		} else {
+			var event = document.createEvent('CustomEvent');
+			event.initCustomEvent(name, true, true, data);
+		}
+
+		this.element.dispatchEvent(event);
+	}
+
 	/* ===== Public Methods ===== */
 
 	RexGrid.prototype.isMasonry = function () {
@@ -1361,6 +1379,7 @@ void (function (window, factory) {
 			complete: function (anim) {
 				// animation complete
 				_setGridHeight.call(that, toMaintainCoords);
+				_emiEvent.call(that, 'rex-grid-filter-end');
 			}
 		});
 
