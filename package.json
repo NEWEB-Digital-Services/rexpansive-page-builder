@@ -8,7 +8,9 @@
 	"scripts": {
 		"dev": "gulp dev --development",
 		"build": "gulp build --production",
+		"predeploy:win": "npm run build",
 		"deploy:win": "gulp deployWin --production",
+		"predeploy:mac": "npm run build",
 		"deploy:mac": "gulp deployMac --production"
 	},
 	"devDependencies": {

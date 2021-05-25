@@ -1,37 +1,34 @@
 # THIS IS A LIST OF HOOKS THAT CAN BE USED TO CUSTOMIZE THE BUILDER BEHAVIOUR
 
-BUILDER
----
+## BUILDER
 
 - `apply_filters( rexbuilder_animation_enabled, bool $activate )`
-	- activate or deactivate the animations on all the blocks; the default value comes from the admin area on the settings
+  - activate or deactivate the animations on all the blocks; the default value comes from the admin area on the settings
 - `apply_filters( rexbuilder_js_settings, array $settings = ( ... ) )`
-	- filter the global JS object with the settings used on client side
+  - filter the global JS object with the settings used on client side
 - `apply_filters( rexpansive_builder_remove_shortcodes_live, array $shortcode = ( 'RexTimelinePro', 'RexTimelineProEvent', 'RexliveIcon' ) )`
-	- add shortcodes to the blacklist that prevents a shortcode to be renderd inside the builder
+  - add shortcodes to the blacklist that prevents a shortcode to be renderd inside the builder
 - `do_action( rexpansive_builder_live_save_process_ended, int post_ID, WP_Post $wp_post )`
-	- action triggered when the saving process on builderlive is complete
+  - action triggered when the saving process on builderlive is complete
 
-SECTION
----
+## SECTION
 
 - `apply_filters( rexpansive_builder_section_class, string class = '', array $parsed_atts = ( ... ) )`
-	- add a custom class to the sections
+  - add a custom class to the sections
 
-BLOCK
----
+## BLOCK
+
 - `rexbuilder_animation_enabled`($options['animation'])
 - `rexpansive_block_element_link_custom_class`( string class = '' )
-	- add custom class to link tag of a block with link
+  - add custom class to link tag of a block with link
 - `rexpansive_block_grid_item_content_custom_class`('')
 - `rexpansive_block_text_wrap_custom_class`('')
 - `rexpansive_block_custom_class`(trim($block_custom_class), $id)
 
-SLIDER
----
+## SLIDER
 
 - `apply_filters( rexpansive_slider_filter_active_video, bool $active = true )`
-	- activate or deactivate videos on sliders
+  - activate or deactivate videos on sliders
 
 `apply_filters( 'rexpansive_builder_live_inline_icon_list', Rexbuilder_Utilities::get_icon_list() )`
 
@@ -116,4 +113,3 @@ SLIDER
 `apply_filters( 'the_title', $query->post->post_title, $query->post->ID )`
 
 `apply_filters( 'rexbuilder_admin_post_type_active', $active )`
-
