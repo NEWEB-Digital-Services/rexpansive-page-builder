@@ -238,6 +238,11 @@ function adminScript(cb) {
 		.pipe(dest('./admin/js'));
 }
 
+function watchAdminScript(cb) {
+	watch(builderlive_admin, adminScript);
+	cb();
+}
+
 // LIVE JS
 var builderlive_public_editor = [
 	'public/js/vendor/tippy.all.min.js',
@@ -474,7 +479,7 @@ function rxcf7(cb) {
 
 exports.rxcf7 = rxcf7;
 
-exports.dev = parallel(watchAdminBuilderStyle, watchBuilderliveEditorStyle, watchBuilderliveStyle);
+exports.dev = parallel(watchAdminBuilderStyle, watchBuilderliveEditorStyle, watchBuilderliveStyle, watchAdminScript, watchBuilderLive);
 exports.build = series(
 	minifyExternal,
 	parallel(adminScript, builderliveEditor, builderlive),
