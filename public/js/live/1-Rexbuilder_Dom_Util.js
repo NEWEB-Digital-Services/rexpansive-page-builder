@@ -888,11 +888,12 @@ var Rexbuilder_Dom_Util = (function ($) {
 	/**
 	 * Reordering the DOM
 	 * @param  {Array} newOrder     array of sections
-	 * @param  {bool} domUpdating  @deprecated ?
-	 * @param  {bool} sectionMoved the section was moved
-	 * @return {vodi}
+	 * @param  {Boolean} domUpdating ?
+	 * @param  {Boolean} sectionMoved the section was moved
+	 * @return {void}
 	 */
 	var _fixSectionDomOrder = function (newOrder, domUpdating, sectionMoved) {
+		console.trace()
 		var sections = [];
 		var $section, $sec;
 		var i, j;
