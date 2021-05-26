@@ -200,6 +200,12 @@ For the more experienced among us: you can insert CSS anywhere.
 
 == Changelog ==
 
+= 2.0.10 - May 26, 2021 =
+ * Updated: Hide empty section on frontend
+ * Fixed: Retrieving update information
+ * Fixed: PHP warnings when plugin fails to load information info
+ * Fixed: Order correctly a new section on other saved layouts
+
 = 2.0.9 - November 5, 2020 =
  * Added: When editing a text block, now the block keeps the red outline
  * Added: Popup video with YouTube, Vimeo or mp4
