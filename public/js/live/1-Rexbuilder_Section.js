@@ -638,6 +638,7 @@ var Rexbuilder_Section = (function($) {
         layoutsOrder != null ? jQuery.extend(true, [], layoutsOrder) : null
     };
 
+    // place the cloned row at correct position on other layouts
     Rexbuilder_Dom_Util.updateSectionVisibility($newSection, true);
     if (layoutsOrder != null) {
       var i, j;
@@ -805,6 +806,8 @@ var Rexbuilder_Section = (function($) {
 		// $newSectionData.after( tmpl("tmpl-toolbox-section", new_row_defaults) );
     $newSectionData.after(Rexbuilder_Live_Templates.getTemplate('tmpl-toolbox-section', new_row_defaults));
 
+    var newSectionNumber = -1
+
     // add after the last row
     switch( newRowPosition ) {
       case 'bottom':
@@ -818,7 +821,15 @@ var Rexbuilder_Section = (function($) {
     }
 
     if ($prevRow.length != 0) {
+      // find section index to insert the row also in other saved layouts at correct position
+      var $realSections = Rexbuilder_Util.$rexContainer.children("section:not(.removing_section)")
+      $realSections.each(function(i, section) {
+        if ($(section).is($prevRow)) {
+          newSectionNumber = i + 1
+        }
+      })
       $newSection.insertAfter($prevRow);
+      // console.log(parseInt($prevRow.attr('data-rexlive-section-number')) + 1)
     } else {
       $newSection.appendTo(Rexbuilder_Util.$rexContainer);
     }
@@ -855,7 +866,11 @@ var Rexbuilder_Section = (function($) {
       };
 
       for (i = 0; i < layoutsOrder.length; i++) {
-        layoutsOrder[i].sections.push(sectionObj);
+        if (-1 !== newSectionNumber) {
+          layoutsOrder[i].sections.splice(newSectionNumber, 0, sectionObj);
+        } else {
+          layoutsOrder[i].sections.push(sectionObj);
+        }
       }
 
       Rexbuilder_Util.updatePageCustomizationsDomOrder(layoutsOrder);

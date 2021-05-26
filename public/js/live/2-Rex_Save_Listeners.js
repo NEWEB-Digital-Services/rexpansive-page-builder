@@ -179,25 +179,11 @@ var Rex_Save_Listeners = (function($) {
           for (j = 0, tot_newCustomization_sections = newCustomization.sections.length; j < tot_newCustomization_sections; j++) {
             //flagSection = false;
             for (k = 0, tot_customizationsArray_sections = customizationsArray[i].sections.length; k < tot_customizationsArray_sections; k++) {
-              if (
-                newCustomization.sections[j].section_rex_id ==
-                customizationsArray[i].sections[k].section_rex_id
-              ) {
-                if (
-                  customizationsArray[i].sections[
-                    k
-                  ].section_is_model.toString() == "true"
-                ) {
+              if (newCustomization.sections[j].section_rex_id == customizationsArray[i].sections[k].section_rex_id) {
+                if (customizationsArray[i].sections[k].section_is_model.toString() == "true") {
                   for (m = 0; m < modelsNumbers.length; m++) {
-                    if (
-                      modelsNumbers[m].id ==
-                      customizationsArray[i].sections[k].section_model_id
-                    ) {
-                      if (
-                        parseInt(
-                          newCustomization.sections[j].section_model_number
-                        ) <= modelsNumbers[m].number
-                      ) {
+                    if (modelsNumbers[m].id == customizationsArray[i].sections[k].section_model_id) {
+                      if (parseInt(newCustomization.sections[j].section_model_number) <= modelsNumbers[m].number) {
                         //flagSection = true;
                       }
                     }

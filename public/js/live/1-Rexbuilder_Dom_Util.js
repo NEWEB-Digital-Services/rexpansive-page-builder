@@ -893,7 +893,6 @@ var Rexbuilder_Dom_Util = (function ($) {
 	 * @return {void}
 	 */
 	var _fixSectionDomOrder = function (newOrder, domUpdating, sectionMoved) {
-		console.trace()
 		var sections = [];
 		var $section, $sec;
 		var i, j;

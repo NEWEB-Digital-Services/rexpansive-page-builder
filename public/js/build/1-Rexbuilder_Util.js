@@ -958,7 +958,7 @@ var Rexbuilder_Util = (function ($) {
 	 * @param  {[type]} layoutDataPage        [description]
 	 * @param  {[type]} layoutDataModels      [description]
 	 * @param  {[type]} defaultLayoutSections [description]
-	 * @param  {string} layoutName            [description]
+	 * @param  {String} layoutName            [description]
 	 * @return {[type]}                       [description]
 	 */
 	var _getCustomLayoutSections = function (layoutDataPage, layoutDataModels, defaultLayoutSections, layoutName) {
