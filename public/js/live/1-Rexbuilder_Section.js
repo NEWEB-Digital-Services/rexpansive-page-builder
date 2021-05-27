@@ -1525,7 +1525,7 @@ var Rexbuilder_Section = (function($) {
    * Syncronize the section order on default on all the order customizations
    * @since 2.0.10
    */
-  function handleSyncSectionOrderThroughLevels() {
+  function handleSyncSectionOrderThroughLevels(data) {
     var layoutsOrder = null;
     if (Rexbuilder_Util.activeLayout == "default") {
       layoutsOrder = Rexbuilder_Util.getPageCustomizationsDom();
@@ -1533,21 +1533,55 @@ var Rexbuilder_Section = (function($) {
 
     if (null !== layoutsOrder) {
       var rows = [].slice.call(Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section'));
-      var tot_rows = 0;
+      // get section order on default
       var defaultOrderIDS = []
-      for (var j = 0; j < tot_rows; j++) {
+      for (var j = 0; j < rows.length; j++) {
         defaultOrderIDS.push(rows[j].getAttribute('data-rexlive-section-id'))
       }
 
+      // re-order sections on other layouts
       for (var i=0; i<layoutsOrder.length; i++) {
-        var newCustomizationSectionsOrder = defaultOrderIDS.map(id => layoutsOrder[i].sections.find(section => section.section_rex_id === id))
+        var newCustomizationSectionsOrder = defaultOrderIDS.map(function(id) {
+          return layoutsOrder[i].sections.find(function(section) { 
+            return section.section_rex_id === id 
+          })
+        })
+        newCustomizationSectionsOrder = newCustomizationSectionsOrder.filter(function(el) {
+          return 'undefined' !== typeof el
+        })
         layoutsOrder[i].sections = newCustomizationSectionsOrder
       }
   
+      // update customization section order
       Rexbuilder_Util.updatePageCustomizationsDomOrder(layoutsOrder);
     }
     
     isSectionOrderChanged = false
+    var evData
+
+    // go on save
+    // decide how continue the flow
+    switch (data.settings.data.initiator) {
+      case 'savingProcess': {
+        evData = {
+          eventName: 'rexlive:savePageWithButton'
+        }
+        Rexbuilder_Util_Editor.sendParentIframeMessage(evData)
+        break;
+      }
+      case 'changeLayout': {
+        evData = {
+          eventName: 'rexlive:openChangeLayoutModal',
+          dataObj: data.settings.data.dataObj
+        }
+        Rexbuilder_Util_Editor.sendParentIframeMessage(evData)
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+    
   }
 
 	/**
@@ -1896,7 +1930,7 @@ var Rexbuilder_Section = (function($) {
 
         var evData = {
           eventName: "rexlive:sectionOrderStatus",
-          isSectionOrderChanged
+          isSectionOrderChanged: isSectionOrderChanged
         }
         Rexbuilder_Util_Editor.sendParentIframeMessage(evData)
 

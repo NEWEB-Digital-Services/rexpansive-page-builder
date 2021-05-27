@@ -4,15 +4,15 @@
 var SectionOrderChanged_Modal = (function ($) {
 	'use strict';
 	var section_order_changed_props;
-	var activeLayoutPage;
-	var buttonData;
+	var openModalData = null;
 
 	var _openModal = function (data) {
-		// buttonData = data.buttonData;
+		openModalData = data
 		Rexlive_Modals_Utils.openModal(section_order_changed_props.$self.parent('.rex-modal-wrap'));
 	};
 
 	var _closeModal = function () {
+		openModalData = null;
 		Rexlive_Modals_Utils.closeModal(section_order_changed_props.$self.parent('.rex-modal-wrap'));
 	};
 
@@ -25,13 +25,18 @@ var SectionOrderChanged_Modal = (function ($) {
 				case 'save':
 					Rexbuilder_Util_Admin_Editor.isSectionOrderChanged = false
 					var dataSyncSectionOrder = {
-						eventName: 'rexlive:syncSectionOrderThroughLayouts'
+						eventName: 'rexlive:syncSectionOrderThroughLayouts',
+						data: openModalData
 					}
 					Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSyncSectionOrder)
 					break;
 				case 'continue':
-					Rexbuilder_Util_Admin_Editor.isSectionOrderChanged = false
-					Rexbuilder_Util_Admin_Editor.runSavingProcess()
+					if ('changeLayout' === openModalData.initiator) {
+						Change_Layout_Modal.openModal(openModalData.dataObj)
+					} else {
+						Rexbuilder_Util_Admin_Editor.isSectionOrderChanged = false
+						Rexbuilder_Util_Admin_Editor.runSavingProcess()
+					}
 					break;
 				case 'abort':
 					break;

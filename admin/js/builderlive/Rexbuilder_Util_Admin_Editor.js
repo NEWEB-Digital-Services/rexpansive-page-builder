@@ -229,6 +229,10 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				HtmlEditor_Modal.openModal(event.data.htmlContent);
 			}
 
+			if (event.data.eventName == 'rexlive:openChangeLayoutModal') {
+				Change_Layout_Modal.openModal(event.data.dataObj)
+			}
+
 			if (event.data.eventName == 'rexlive:openLiveImageUploader') {
 				Rexlive_MediaUploader.openImageLiveMediaUploader(event.data.live_uploader_data);
 			}
@@ -472,7 +476,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 					if (!(modelSaved && Rexbuilder_Util_Admin_Editor.pageSaved)) {
 						if ('default' === activeLayoutPage && Rexbuilder_Util_Admin_Editor.isSectionOrderChanged) {
 							// TODO: open section order changed modal, and await user response
-							SectionOrderChanged_Modal.openModal()
+							SectionOrderChanged_Modal.openModal({initiator: 'changeLayout', dataObj: dataObj})
 							return
 						}
 						Change_Layout_Modal.openModal(dataObj);
@@ -1138,7 +1142,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
 		if (0 === open_models.length) {
 			if ('default' === activeLayoutPage && Rexbuilder_Util_Admin_Editor.isSectionOrderChanged) {
-				SectionOrderChanged_Modal.openModal()
+				SectionOrderChanged_Modal.openModal({initiator: 'savingProcess'})
 				return
 			}
 			_savingProcess();
