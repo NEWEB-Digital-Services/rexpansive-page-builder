@@ -2241,6 +2241,19 @@ var Rexbuilder_Util = (function ($) {
 		}
 	};
 
+	/**
+	 * Get page default layout order
+	 * @returns {Object}
+	 * @since 2.0.10
+	 */
+	var _getPageDefaultDom = function() {
+		var $defaultLayout = $layoutsDomOrder.children('.layout-sections[data-rex-layout-name="default"]')
+		return {
+			name: 'default',
+			sections: JSON.parse($defaultLayout.text())
+		}
+	}
+
 	var _getPageCustomizationsDom = function () {
 		var customizations = [];
 		$layoutsDomOrder.children('.layout-sections:not([data-rex-layout-name="default"])').each(function (i, layout) {
@@ -4375,6 +4388,7 @@ var Rexbuilder_Util = (function ($) {
 		getCustomLayoutSections: _getCustomLayoutSections,
 		updateSectionStateLive: _updateSectionStateLive,
 		updatePageCustomizationsDomOrder: _updatePageCustomizationsDomOrder,
+		getPageDefaultDom: _getPageDefaultDom, 
 		getPageCustomizationsDom: _getPageCustomizationsDom,
 		updateDefaultLayoutState: _updateDefaultLayoutState,
 		updateDefaultLayoutStateSection: _updateDefaultLayoutStateSection,

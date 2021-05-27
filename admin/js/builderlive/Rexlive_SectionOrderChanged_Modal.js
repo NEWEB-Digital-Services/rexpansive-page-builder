@@ -23,38 +23,15 @@ var SectionOrderChanged_Modal = (function ($) {
 
 			switch (optionSelected) {
 				case 'save':
-					Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.btn-save').addClass('rex-saving');
-					var dataSavePage = {
-						eventName: 'rexlive:savePage',
-						data_to_send: {
-							buttonData: buttonData
-						}
-					};
-					var dataSaveModel = {
-						eventName: 'rexlive:saveModel',
-						data_to_send: {
-							buttonData: buttonData
-						}
-					};
-					Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSavePage);
-					Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSaveModel);
-					Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage({
-						eventName: 'rexlive:startChangeLayout'
-					});
-					Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.removeClass('btn-redo--active btn-undo--active');
+					Rexbuilder_Util_Admin_Editor.isSectionOrderChanged = false
+					var dataSyncSectionOrder = {
+						eventName: 'rexlive:syncSectionOrderThroughLayouts'
+					}
+					Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSyncSectionOrder)
 					break;
 				case 'continue':
-					var data = {
-						eventName: 'rexlive:dropChanges',
-						data_to_send: {
-							selected: activeLayoutPage,
-							eventName: '',
-							buttonData: buttonData
-						}
-					};
-					Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
-					Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.removeClass('btn-redo--active btn-undo--active');
-					Rexbuilder_Util_Admin_Editor.activeSavePageButton();
+					Rexbuilder_Util_Admin_Editor.isSectionOrderChanged = false
+					Rexbuilder_Util_Admin_Editor.runSavingProcess()
 					break;
 				case 'abort':
 					break;

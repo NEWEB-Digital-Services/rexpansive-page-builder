@@ -124,6 +124,10 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				$saveBtn.addClass('page-edited');
 			}
 
+			if (event.data.eventName == 'rexlive:sectionOrderStatus') {
+				Rexbuilder_Util_Admin_Editor.isSectionOrderChanged = event.data.isSectionOrderChanged
+			}
+
 			/**
 			 * Highlighting undo/redo buttons if there are performable actions
 			 */
@@ -466,6 +470,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 					LockedOptionMask.openModal(dataObj);
 				} else {
 					if (!(modelSaved && Rexbuilder_Util_Admin_Editor.pageSaved)) {
+						if ('default' === activeLayoutPage && Rexbuilder_Util_Admin_Editor.isSectionOrderChanged) {
+							// TODO: open section order changed modal, and await user response
+							SectionOrderChanged_Modal.openModal()
+							return
+						}
 						Change_Layout_Modal.openModal(dataObj);
 						return;
 					}
@@ -478,19 +487,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 			}
 		});
 
-		$saveBtn.on('click', function (e) {
-			var open_models = [];
-			for (var i = 0; i < open_models_list.length; i++) {
-				if ('open' == open_models_list[i].m_state) {
-					open_models.push(open_models_list[i]);
-				}
-			}
-
-			if (0 === open_models.length) {
-				_savingProcess();
-			} else {
-				Open_Models_Warning.openModal(open_models);
-			}
+		$saveBtn.on('click', function () {
+			_runSavingProcess()
 		});
 
 		// Save with keyboard
@@ -499,7 +497,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				e.preventDefault();
 				// Process the event here (such as click on submit button)
 				// SAVE PAGE
-				$saveBtn.trigger('click');
+				_runSavingProcess();
 			}
 		});
 
@@ -1129,6 +1127,25 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				break;
 		}
 	};
+
+	var _runSavingProcess = function() {
+		var open_models = [];
+		for (var i = 0; i < open_models_list.length; i++) {
+			if ('open' == open_models_list[i].m_state) {
+				open_models.push(open_models_list[i]);
+			}
+		}
+
+		if (0 === open_models.length) {
+			if ('default' === activeLayoutPage && Rexbuilder_Util_Admin_Editor.isSectionOrderChanged) {
+				SectionOrderChanged_Modal.openModal()
+				return
+			}
+			_savingProcess();
+		} else {
+			Open_Models_Warning.openModal(open_models);
+		}
+	}
 
 	var _savingProcess = function () {
 		NProgress.start();
@@ -1971,6 +1988,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		Rexbuilder_Util_Admin_Editor.pageSaved = true;
 		modelSaved = true;
 		open_models_list = [];
+		this.isSectionOrderChanged = false;
 		activeLayoutPage = 'default';
 		activeLayoutPageLabel = 'default';
 		this.$responsiveToolbar
@@ -2049,6 +2067,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		hideLateralMenu: hideLateralMenu,
 		checkLateralMenu: checkLateralMenu,
 		displayAjaxError: displayAjaxError,
+		runSavingProcess: _runSavingProcess,
 
 		/* Admin actions */
 		addAdminAction: addAdminAction,

@@ -1,6 +1,8 @@
 var Rexbuilder_Section = (function($) {
   "use strict";
 
+  var isSectionOrderChanged = false;
+
   var _showSectionToolBox = function($section) {
     $section.children(".section-toolBox").addClass("tool-box-active");
   };
@@ -1519,10 +1521,38 @@ var Rexbuilder_Section = (function($) {
     //$model_to_import.children().remove();
 	}
 
+  /**
+   * Syncronize the section order on default on all the order customizations
+   * @since 2.0.10
+   */
+  function handleSyncSectionOrderThroughLevels() {
+    var layoutsOrder = null;
+    if (Rexbuilder_Util.activeLayout == "default") {
+      layoutsOrder = Rexbuilder_Util.getPageCustomizationsDom();
+    }
+
+    if (null !== layoutsOrder) {
+      var rows = [].slice.call(Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section'));
+      var tot_rows = 0;
+      var defaultOrderIDS = []
+      for (var j = 0; j < tot_rows; j++) {
+        defaultOrderIDS.push(rows[j].getAttribute('data-rexlive-section-id'))
+      }
+
+      for (var i=0; i<layoutsOrder.length; i++) {
+        var newCustomizationSectionsOrder = defaultOrderIDS.map(id => layoutsOrder[i].sections.find(section => section.section_rex_id === id))
+        layoutsOrder[i].sections = newCustomizationSectionsOrder
+      }
+  
+      Rexbuilder_Util.updatePageCustomizationsDomOrder(layoutsOrder);
+    }
+    
+    isSectionOrderChanged = false
+  }
+
 	/**
 	 * Replaces model RexButtons with the DB-retrieved HTML
 	 * @param		{jQuery}	$row
-	 * @param		{jQuery}	$buttonsWrappers
 	 * @param		{Object}	response
 	 * @returns	{void}
 	 * @since		2.0.4
@@ -1575,6 +1605,7 @@ var Rexbuilder_Section = (function($) {
     Rexbuilder_Util.$document.on("rexlive:applyModelSection", handleApplyModelSection);
 
     Rexbuilder_Util.$document.on("rexlive:importModels", handleImportModels);
+    Rexbuilder_Util.$document.on("rexlive:syncSectionOrderThroughLayouts", handleSyncSectionOrderThroughLevels);
   };
 
   /**
@@ -1772,6 +1803,7 @@ var Rexbuilder_Section = (function($) {
     Rexbuilder_Util.$rexContainer.sortable({
       iframeFix: true,
       start: function(event, ui) {
+        isSectionOrderChanged = false
         Rexbuilder_Dom_Util.fixModelNumbers();
         startingSectionsOrder = [];
         Rexbuilder_Util.$rexContainer
@@ -1860,11 +1892,22 @@ var Rexbuilder_Section = (function($) {
           reverseData
         );
 
-        var data = {
-          eventName: "rexlive:edited",
-          modelEdited: false
-        };
-        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+        isSectionOrderChanged = _checkSectionOrderChange(startingSectionsOrder, endSectionsOrder)
+
+        var evData = {
+          eventName: "rexlive:sectionOrderStatus",
+          isSectionOrderChanged
+        }
+        Rexbuilder_Util_Editor.sendParentIframeMessage(evData)
+
+        // trigger section edited only on order changed
+        if (isSectionOrderChanged) {
+          var data = {
+            eventName: "rexlive:edited",
+            modelEdited: false
+          };
+          Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+        }
 
 				Rex_Navigator.fixNavigatorItemOrder($section);
 
@@ -1882,6 +1925,19 @@ var Rexbuilder_Section = (function($) {
     _addSectionToolboxListeners();
   };
 
+  function _checkSectionOrderChange(startOrder, endOrder) {
+    for (var i=0; i<startOrder.length; i++) {
+      if (startOrder[i].rexID !== endOrder[i].rexID) {
+        return true
+      }
+    }
+    return false
+  }
+
+  function _getIsSectionOrderChanged() {
+    return isSectionOrderChanged
+  }
+
   return {
     init: init,
     prepareSectionCopied: _prepareSectionCopied,
@@ -1889,6 +1945,7 @@ var Rexbuilder_Section = (function($) {
     updateModelsHtmlLive: _updateModelsHtmlLive,
     fixSectionToolbox : _fixSectionToolbox,
     fixBlockToolsAccordingToSeparator: _fixBlockToolsAccordingToSeparator,
-    toggleGridCollapse: _toggleGridCollapse
+    toggleGridCollapse: _toggleGridCollapse,
+    getIsSectionOrderChanged: _getIsSectionOrderChanged
   };
 })(jQuery);

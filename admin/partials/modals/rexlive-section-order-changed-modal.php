@@ -16,8 +16,8 @@ defined('ABSPATH') or exit;
         </div>
         <div class="modal-content modal-content--text">
             <div class="layout-page-changed-description">
-                <?php _e( 'The section order is changed.', 'rexpansive-builder' ); ?><br />
-                <?php _e( 'Synchronize order also on other layouts?', 'rexpansive-builder' ); ?>
+                <?php _e( 'The order of the sections has been changed.', 'rexpansive-builder' ); ?><br />
+                <?php _e( 'Do you want to synchronize this order also for the other devices?', 'rexpansive-builder' ); ?>
             </div>
         </div>
         <div class="rex-modal__outside-footer">
