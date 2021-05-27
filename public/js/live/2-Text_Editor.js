@@ -14,6 +14,7 @@ var TextEditor = (function ($) {
 	var justifyExtensionIntance;
 	var listExtensionInstance;
 	var insertMediaExtensionInstance;
+	var OpenHTMLEditorExtensionInstance;
 	var rexElementInstance;
 
 	var currentTextSelection;
@@ -861,6 +862,7 @@ var TextEditor = (function ($) {
 		init: function () {
 			this.button = this.document.createElement('button');
 			Rexbuilder_Util.addClass(this.button, 'medium-editor-action');
+			Rexbuilder_Util.addClass(this.button, 'text-html-editor-btn');
 			this.button.innerHTML = "<i class='l-svg-icons'><svg><use xlink:href='#A008-Code'></use></svg></i>";
 
 			// use our own handleClick instead of the default one
@@ -877,6 +879,7 @@ var TextEditor = (function ($) {
 			var index = this.base.exportSelection().editableElementIndex;
 
 			var meContents = this.base.serialize();
+			console.log(meContents)
 			var htmlSelected = meContents['element-' + index].value;
 			htmlSelected = htmlSelected
 				.replace('<span class="text-editor-span-fix" style="display: none;"></span>', '')
@@ -2498,6 +2501,77 @@ var TextEditor = (function ($) {
 	});
 
 	/**
+	 * Open HTML editor from another button
+	 * @since 2.0.10
+	 */
+	var OpenHTMLEditorExtension = MediumEditor.Extension.extend({
+		name: 'openHTMLEditorExtension',
+
+		init: function() {
+			this.toolbarWrapClass = 'me-insert-media-button';
+			this.editorIndex = -1
+
+			this.openHTMLEditorBtn = document.createElement('div')
+			this.openHTMLEditorBtn.contentEditable = "false";
+			this.openHTMLEditorBtn.classList.add(this.toolbarWrapClass)
+			this.openHTMLEditorBtn.style.display = 'none';
+			this.openHTMLEditorBtn.innerHTML = '<div class="tool-button"> <i class="l-svg-icons"><svg><use xlink:href="#A008-Code"></use></svg></i> </div>';
+			document.body.appendChild(this.openHTMLEditorBtn);
+
+			// View/Hide the edit html button
+			this.subscribe('blur', this.handleBlur.bind(this));
+			this.subscribe('focus', this.handleFocus.bind(this));
+
+			this.on(this.openHTMLEditorBtn, 'click', this.handleClickBtn.bind(this))
+		},
+
+		/**
+		 * @param {EVENT} event
+		 */
+		 handleBlur: function (event) {
+			if ($(event.target).parents('.me-insert-media-button').length == 0) {
+				this.openHTMLEditorBtn.style.display = 'none';
+				this.openHTMLEditorBtn.classList.remove('embed-value-visibile');
+				this.editorIndex = -1
+				this.traceEditor = null
+			}
+		},
+
+		handleFocus: function (event, editable) {
+			this.openHTMLEditorBtn.style.display = 'block';
+			this.traceEditor = this.base.getFocusedElement()
+			this.placeMediaBtn();
+		},
+
+		/**
+		 * Place the media button on top of the block
+		 */
+		 placeMediaBtn: function ($wrapper) {
+			var editor = this.base.getFocusedElement();
+			
+			if (!editor) return;
+			
+			var $content_wrap = typeof $wrapper == 'undefined' ? $(editor).parents('.grid-item-content-wrap') : $wrapper;
+			var targetCoords = $content_wrap[0].getBoundingClientRect();
+			this.openHTMLEditorBtn.style.left =
+				window.scrollX + targetCoords.left + targetCoords.width - this.openHTMLEditorBtn.offsetWidth - 15 + 'px';
+			this.openHTMLEditorBtn.style.top =
+				window.scrollY + targetCoords.top + 15 + 'px';
+		},
+
+		handleClickBtn: function() {
+			this.traceEditor.focus();
+			this.base.selectAllContents();
+
+			// this action shows the toolbar
+			// this.base.execAction('changeText')
+			var toolbar = this.base.getExtensionByName('toolbar').toolbar
+			var htmlBtn = toolbar.querySelector('.text-html-editor-btn')
+			htmlBtn.click()
+		}
+	})
+
+	/**
 	 * Extension to check blocks of text that have only a inline svg icon inside
 	 * In this case the blocks is no longer editable. Fix that with this extension
 	 *
@@ -3094,6 +3168,7 @@ var TextEditor = (function ($) {
 		justifyExtensionIntance = new JustifyExtension();
 		listExtensionInstance = new ListExtension();
 		insertMediaExtensionInstance = new InsertMediaExtension();
+		OpenHTMLEditorExtensionInstance = new OpenHTMLEditorExtension();
 		rexElementInstance = new RexElementExtension();
 
 		editorInstance = new MediumEditor('.editable', {
@@ -3135,6 +3210,7 @@ var TextEditor = (function ($) {
 				listDropdown: listExtensionInstance,
 				contentBlockPosition: new ContentBlockPositionExtension(),
 				'insert-media': insertMediaExtensionInstance,
+				'open-html-editor': OpenHTMLEditorExtensionInstance,
 				textGradient: new TextGradientExtension(),
 				'rexbutton-input': new RexButtonExtension(),
 				rexelement: rexElementInstance,

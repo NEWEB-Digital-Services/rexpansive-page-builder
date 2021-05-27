@@ -1700,6 +1700,9 @@ var Rexbuilder_Section = (function($) {
     }
   }
 
+  /**
+   * @deprecated
+   */
 	function _prependToolBox() {
 		tmpl.arg = 'section';
 
