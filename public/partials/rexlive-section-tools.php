@@ -7,6 +7,7 @@
  *
  * @package    Rexbuilder
  * @subpackage Rexbuilder/public/partials
+ * @deprecated	2.0.3
  */
 
 defined('ABSPATH') or exit;
