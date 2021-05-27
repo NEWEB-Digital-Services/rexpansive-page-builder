@@ -94,12 +94,7 @@ var CssEditor_Modal = (function ($) {
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/css");
         editor.on("change", function(e){
-            // if( e.start.row == 0 && e.start.column == 0 && e.action == 'remove' ) {
-            //     $modal.removeClass('setting-edited');
-            // } else {
-            //     $modal.addClass('setting-edited');
-            // }
-            Rexbuilder_Util_Admin_Editor.editPageProperties();
+            Rexbuilder_Util_Admin_Editor.deactiveSavePageButton();
         });
         defaultCss = "";
         _linkDocumentListeners();

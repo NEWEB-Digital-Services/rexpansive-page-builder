@@ -121,7 +121,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 					Rexbuilder_Util_Admin_Editor.pageSaved = false;
 				}
 
-				$saveBtn.addClass('page-edited');
+				Rexbuilder_Util_Admin_Editor.deactiveSavePageButton();
 			}
 
 			if (event.data.eventName == 'rexlive:sectionOrderStatus') {
@@ -1463,8 +1463,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		_sendIframeBuilderMessage(data);
 	};
 
-	var _editPageProperties = function () {
-		// Rexbuilder_Util_Admin_Editor.$body.addClass('page-edited');
+	var _deactiveSavePageButton = function () {
 		$saveBtn.addClass('page-edited');
 	};
 
@@ -2037,7 +2036,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		updateLayoutActiveData: _updateLayoutActiveData,
 		releaseIframeRows: _releaseIframeRows,
 		blockIframeRows: _blockIframeRows,
-		editPageProperties: _editPageProperties,
+		deactiveSavePageButton: _deactiveSavePageButton,
 		activeSavePageButton: _activeSavePageButton,
 		updateOpenModelsList: _updateOpenModelsList,
 		highlightRowSetData: _highlightRowSetData,
