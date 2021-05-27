@@ -474,7 +474,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 					LockedOptionMask.openModal(dataObj);
 				} else {
 					if (!(modelSaved && Rexbuilder_Util_Admin_Editor.pageSaved)) {
-						if ('default' === activeLayoutPage && Rexbuilder_Util_Admin_Editor.isSectionOrderChanged) {
+						if (mustOpenSaveOrderWarning()) {
 							// TODO: open section order changed modal, and await user response
 							SectionOrderChanged_Modal.openModal({initiator: 'changeLayout', dataObj: dataObj})
 							return
@@ -1141,7 +1141,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		}
 
 		if (0 === open_models.length) {
-			if ('default' === activeLayoutPage && Rexbuilder_Util_Admin_Editor.isSectionOrderChanged) {
+			if (mustOpenSaveOrderWarning()) {
 				SectionOrderChanged_Modal.openModal({initiator: 'savingProcess'})
 				return
 			}
@@ -1915,6 +1915,24 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 			message: errorsObj.textStatus,
 			errorThrown: errorsObj.errorThrown
 		});
+	}
+
+	/**
+	 * Find the number of saved layouts on a page
+	 * @returns Integer
+	 * @since 2.0.10
+	 */
+	function countSavedLayouts() {
+		return Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.layout-container.layout-saved').length
+	}
+
+	/**
+	 * Check if view the modal with the section order changed question
+	 * @returns Boolean
+	 * @since 2.0.10
+	 */
+	function mustOpenSaveOrderWarning() {
+		return ('default' === activeLayoutPage && Rexbuilder_Util_Admin_Editor.isSectionOrderChanged && countSavedLayouts() > 1)
 	}
 
 	// init the utilities
