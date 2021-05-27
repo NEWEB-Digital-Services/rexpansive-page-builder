@@ -203,6 +203,7 @@ var builderlive_admin = [
 	'admin/js/builderlive/Rexlive_Model_Edit_Modal.js',
 	'admin/js/builderlive/Rexbuilder_RexSlider.js',
 	'admin/js/builderlive/Rexlive_ChangeLayout_Modal.js',
+	'admin/js/builderlive/Rexlive_SectionOrderChanged_Modal.js',
 	'admin/js/builderlive/Rexlive_Inline_SVG.js',
 	'admin/js/builderlive/Rexlive_PostEdit.js',
 	'admin/js/builderlive/Rexlive_PostEdit_MediaList.js',

@@ -315,6 +315,7 @@ defined('ABSPATH') or exit;
 <?php include_once( 'modals/rexlive-model-save-modal.php' ); ?>
 
 <?php include_once( 'modals/rexlive-change-layout-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-section-order-changed-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-resynch-content-modal.php' ); ?>
 
 <?php include_once( 'modals/rexlive-delete-model-modal.php' ); ?>
