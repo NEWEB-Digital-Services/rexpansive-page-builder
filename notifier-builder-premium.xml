@@ -4,7 +4,7 @@
 	<changelog>
 		<![CDATA[
 			<h4><strong>v2.0.10</strong> - May 28, 2021</h4>
-			<p><strong>Added</strong>: Edit Text Button to open HTML editor on block, without the need to select text</p>
+			<p><strong>Added</strong>: HTML editor button on block, without the need to select text</p>
 			<p><strong>Added</strong>: When user change section order on default (desktop), he can decide to automatically synchronize the sorting on the other saved layouts</p>
 			<p><strong>Updated</strong>: Hide empty sections on frontend</p>
 			<p><strong>Fixed</strong>: Retrieving update information</p>

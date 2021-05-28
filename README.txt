@@ -201,7 +201,7 @@ For the more experienced among us: you can insert CSS anywhere.
 == Changelog ==
 
 = 2.0.10 - May 28, 2021 =
- * Added: Edit Text Button to open HTML editor on block, without the need to select text
+ * Added: HTML editor button on block, without the need to select text
  * Added: When user change section order on default (desktop), he can decide to automatically synchronize the sorting on the other saved layouts
  * Updated: Hide empty sections on frontend
  * Fixed: Retrieving update information
