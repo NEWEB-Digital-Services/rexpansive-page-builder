@@ -3,7 +3,13 @@
 	<latest>2.0.10</latest>
 	<changelog>
 		<![CDATA[
-			<h4><strong>v2.0.10</strong> - </h4>
+			<h4><strong>v2.0.10</strong> - May 28, 2021</h4>
+			<p><strong>Added</strong>: Edit Text Button to open HTML editor on block, without the need to select text</p>
+			<p><strong>Added</strong>: When user change section order on default (desktop), he can decide to automatically synchronize the sorting on the other saved layouts</p>
+			<p><strong>Updated</strong>: Hide empty sections on frontend</p>
+			<p><strong>Fixed</strong>: Retrieving update information</p>
+			<p><strong>Fixed</strong>: PHP warnings when plugin fails to load updates information</p>
+			<p><strong>Fixed</strong>: Bug on ordering new sections</p>
 			<h4><strong>v2.0.9</strong> - November 5, 2020</h4>
 			<p><strong>Added</strong>: When editing a text block, now the block keeps the red outline</p>
 			<p><strong>Added</strong>: Popup video with YouTube, Vimeo or mp4 </p>

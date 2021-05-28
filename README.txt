@@ -200,13 +200,13 @@ For the more experienced among us: you can insert CSS anywhere.
 
 == Changelog ==
 
-= 2.0.10 - May 26, 2021 =
+= 2.0.10 - May 28, 2021 =
  * Added: Edit Text Button to open HTML editor on block, without the need to select text
- * Added: When user change section order on default, he can decide if re-order also the other customization settings
- * Updated: Hide empty section on frontend
+ * Added: When user change section order on default (desktop), he can decide to automatically synchronize the sorting on the other saved layouts
+ * Updated: Hide empty sections on frontend
  * Fixed: Retrieving update information
- * Fixed: PHP warnings when plugin fails to load information info
- * Fixed: Order correctly a new section on other saved customization
+ * Fixed: PHP warnings when plugin fails to load updates information
+ * Fixed: Bug on ordering new sections
 
 = 2.0.9 - November 5, 2020 =
  * Added: When editing a text block, now the block keeps the red outline
