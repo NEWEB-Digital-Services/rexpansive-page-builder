@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <notifier>
-	<latest>2.0.10</latest>
+	<latest>2.0.11</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.0.11</strong> - July 21, 2021</h4>
+			<p><strong>Updated</strong>: Tested up to Wordpress 5.8</p>
 			<h4><strong>v2.0.10</strong> - May 28, 2021</h4>
 			<p><strong>Added</strong>: HTML editor button on block, without the need to select text</p>
 			<p><strong>Added</strong>: When user change section order on default (desktop), he can decide to automatically synchronize the sorting on the other saved layouts</p>
