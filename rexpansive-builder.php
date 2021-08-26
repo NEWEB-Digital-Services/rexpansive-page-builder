@@ -73,12 +73,12 @@ define( 'REXPANSIVE_BUILDER_TMPL_FOLDER', 'rexpansive-builder' );
 /**
  * Path for templates imports
  */
-define( 'REXPANSIVE_BUILDER_DEFAULT_TEMPLATES_IMPORT_LOCATION', 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/rex-models.xml' );
+define( 'REXPANSIVE_BUILDER_DEFAULT_TEMPLATES_IMPORT_LOCATION', 'https://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/rex-models.xml' );
 
 /**
  * Path for form imports
  */
-define( 'REXPANSIVE_BUILDER_DEFAULT_FORMS_IMPORT_LOCATION', 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/default-forms.xml' );
+define( 'REXPANSIVE_BUILDER_DEFAULT_FORMS_IMPORT_LOCATION', 'https://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/default-forms.xml' );
 
 /**
  * Name of the folder in which save the custom sprite icons

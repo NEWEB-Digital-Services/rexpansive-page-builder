@@ -5905,7 +5905,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-utilities.php';
 				require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-xml-content.php';
 
-				$forms_url = 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/contact-forms.xml';
+				$forms_url = REXPANSIVE_BUILDER_DEFAULT_FORMS_IMPORT_LOCATION;
 				$xml_file = Rexbuilder_Import_Utilities::upload_media_file( $forms_url, 'xml' );
 
 				if( file_exists( $xml_file['file'] ) ) {
