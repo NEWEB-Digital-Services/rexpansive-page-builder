@@ -200,6 +200,11 @@ For the more experienced among us: you can insert CSS anywhere.
 
 == Changelog ==
 
+= 2.0.12 - August 26, 2021 =
+ * Added: Minimun height to row with one element when dragging the element around
+ * Fixed: Compatibility with PHP 8.0.0 which interruped saving process
+ * Fixed: Import of CF7 form models
+
 = 2.0.11 - July 21, 2021 =
  * Updated: Tested up to Wordpress 5.8
 
