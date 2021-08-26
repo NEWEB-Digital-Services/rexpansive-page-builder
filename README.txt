@@ -201,7 +201,7 @@ For the more experienced among us: you can insert CSS anywhere.
 == Changelog ==
 
 = 2.0.12 - August 26, 2021 =
- * Added: Minimun height to row with one element when dragging the element around
+ * Added: Minimun height to sections with one element when dragging the element around
  * Fixed: Compatibility with PHP 8.0.0 which interruped saving process
  * Fixed: Import of CF7 form models
 

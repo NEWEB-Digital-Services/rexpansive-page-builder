@@ -3,6 +3,10 @@
 	<latest>2.0.11</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.0.12</strong> - August 26, 2021</h4>
+			<p><strong>Added</strong>: Minimun height to sections with one element when dragging the element around</p>
+			<p><strong>Fixed</strong>: Compatibility with PHP 8.0.0 which interruped saving process</p>
+			<p><strong>Fixed</strong>: Import of CF7 form models</p>
 			<h4><strong>v2.0.11</strong> - July 21, 2021</h4>
 			<p><strong>Updated</strong>: Tested up to Wordpress 5.8</p>
 			<h4><strong>v2.0.10</strong> - May 28, 2021</h4>
