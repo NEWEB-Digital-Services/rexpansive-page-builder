@@ -1073,7 +1073,7 @@ class Rexbuilder_Public {
 			}
 		}
 
-		update_post_meta( $post_id_to_update, '_rexbuilder_custom_effects', join( $custom_effects_active, ',' ) );
+		update_post_meta( $post_id_to_update, '_rexbuilder_custom_effects', implode( ',', $custom_effects_active ) );
 
 		wp_send_json_success($response);
 	}

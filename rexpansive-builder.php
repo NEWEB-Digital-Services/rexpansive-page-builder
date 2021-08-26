@@ -16,7 +16,7 @@
  * Plugin Name:       Rexpansive Builder
  * Plugin URI:        https://www.neweb.info/store/plugin/rexpansive-page-builder/
  * Description:       The new and awesome plugin to build a page in 1 minute! Expand your mind!
- * Version:           2.0.11
+ * Version:           2.0.12
  * Author:            NEWEB - Digital Agency
  * Author URI:        https://www.neweb.info/
  * Text Domain:       rexpansive-builder
@@ -35,7 +35,7 @@ define( 'REXPANSIVE_BUILDER_NAME', 'rexpansive-builder' );
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'REXPANSIVE_BUILDER_VERSION', '2.0.11' );
+define( 'REXPANSIVE_BUILDER_VERSION', '2.0.12' );
 
 /**
  * Constant for the plugin main PATH
@@ -73,12 +73,12 @@ define( 'REXPANSIVE_BUILDER_TMPL_FOLDER', 'rexpansive-builder' );
 /**
  * Path for templates imports
  */
-define( 'REXPANSIVE_BUILDER_DEFAULT_TEMPLATES_IMPORT_LOCATION', 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/rex-models.xml' );
+define( 'REXPANSIVE_BUILDER_DEFAULT_TEMPLATES_IMPORT_LOCATION', 'https://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/rex-models.xml' );
 
 /**
  * Path for form imports
  */
-define( 'REXPANSIVE_BUILDER_DEFAULT_FORMS_IMPORT_LOCATION', 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/default-forms.xml' );
+define( 'REXPANSIVE_BUILDER_DEFAULT_FORMS_IMPORT_LOCATION', 'https://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/default-forms.xml' );
 
 /**
  * Name of the folder in which save the custom sprite icons
