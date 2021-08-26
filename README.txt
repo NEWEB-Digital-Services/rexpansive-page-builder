@@ -4,7 +4,7 @@ Donate link: http://www.neweb.info/
 Tags: builder, composer, content builder, custom, drag and drop, editor, page builder, page composer, responsive, theme
 Requires at least: 4.2
 Tested up to: 5.8
-Stable tag: 2.0.11
+Stable tag: 2.0.12
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
