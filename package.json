@@ -11,7 +11,8 @@
 		"predeploy:win": "npm run build",
 		"deploy:win": "gulp deployWin --production",
 		"predeploy:mac": "npm run build",
-		"deploy:mac": "gulp deployMac --production"
+		"deploy:mac": "gulp deployMac --production",
+		"start-new-version": "node ./scripts/start-new-version.js"
 	},
 	"devDependencies": {
 		"eslint-config-google": "^0.9.1",
