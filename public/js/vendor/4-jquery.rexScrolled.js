@@ -164,9 +164,9 @@
 
 				var offset = win_height * ( this.settings.offset / 100 );
 
-				if ( ( blockPositionTop > ( scrolled + offset ) && blockPositionBottom < ( scrolled + win_height - offset ) ) // full element in viewport
-					|| ( ( blockPositionTop + blockHeight * this.settings.visiblePercentage ) < ( scrolled + win_height - offset ) && blockPositionBottom > ( scrolled + win_height - offset ) ) // element in viewport from bottom
-					|| ( ( blockPositionTop + blockHeight * this.settings.visiblePercentage ) >= ( scrolled + offset ) && blockPositionTop < ( scrolled + offset ) ) ) /* element in viewport form top */ 
+				if ( ( blockPositionTop >= ( scrolled + offset ) && blockPositionBottom <= ( scrolled + win_height - offset ) ) // full element in viewport
+					|| ( ( blockPositionTop + blockHeight * this.settings.visiblePercentage ) <= ( scrolled + win_height - offset ) && blockPositionBottom >= ( scrolled + win_height - offset ) ) // element in viewport from bottom
+					|| ( ( blockPositionTop + blockHeight * this.settings.visiblePercentage ) >= ( scrolled + offset ) && blockPositionTop <= ( scrolled + offset ) ) ) /* element in viewport form top */ 
 				{
 					that.properties.launched = true;
 					that.$element.trigger('rs-scrolled-complete');
