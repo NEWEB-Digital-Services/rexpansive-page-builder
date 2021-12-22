@@ -1117,6 +1117,8 @@
         "undefined"
           ? ""
           : $sectionData.attr("data-video_bg_url_vimeo_section");
+      var oldAudio =
+        $itemContent.children(".rex-video-toggle-audio").length != 0;
       var type = "";
 
       if (mp4VideoID != "") {
@@ -1136,7 +1138,7 @@
         },
         vimeoUrl: vimeoUrl,
         youtubeUrl: youtubeVideo,
-        audio: false,
+        audio: oldAudio,
         typeVideo: type
       };
 
@@ -1149,7 +1151,7 @@
         },
         vimeoUrl: data.urlVimeo,
         youtubeUrl: data.urlYoutube,
-        audio: false,
+        audio: data.audio.toString() == "true",
         typeVideo: data.typeVideo
       };
 
@@ -1167,6 +1169,10 @@
         audio: false,
         typeVideo: data.typeVideo
       };
+
+      if (oldAudio !== videoOptions.audio) {
+				Rexbuilder_Util.editedDataInfo.setSectionData( data.sectionTarget.sectionID, 'video_has_audio' );
+			}
 
       switch (actionData.typeVideo) {
         case 'mp4':
@@ -1665,7 +1671,6 @@
       var $itemContent = $elem.find(".grid-item-content");
       var $elemData = $elem.children(".rexbuilder-block-data");
       var $section = $elem.parents(".rexpansive_section");
-      var galleryEditorInstance = Rexbuilder_Util.getGalleryInstance($section);
 
       // If we have a video, make checks to synch tools
       if( ( 'youtube' == data.typeVideo && '' !== data.urlYoutube ) || ( 'vimeo' == data.typeVideo && '' !== data.urlVimeo ) || ( 'mp4' == data.typeVideo && '' !== data.videoMp4.idMp4 ) ) {

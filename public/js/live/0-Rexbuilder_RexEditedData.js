@@ -20,6 +20,7 @@
 		'video_bg_height_section',
 		'video_bg_url_section',			// youtube video background
 		'video_bg_url_vimeo_section',	// vimeo video background
+		'video_has_audio',
 		'block_distance',				// gutter & paddings
 		'row_separator_top',
 		'row_separator_bottom',

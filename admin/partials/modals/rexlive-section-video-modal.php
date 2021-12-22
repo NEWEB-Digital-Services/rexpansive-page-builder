@@ -32,6 +32,18 @@ defined('ABSPATH') or exit;
                         <span class="rex-material-bar"></span>
                     </div>
                 </div>
+                <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
+                    <div class="set-video-audio-btn tippy" data-tippy-content="<?php _e('Audio ON/OFF','rexpansive'); ?>">
+                        <input class="video-audio-checkbox bl_checkbox bl_checkbox-bottom-indicator" type="checkbox" id="rex-edit-section-video-youtube-audio" name="section-youtube-audio" title="Audio ON/OFF">
+                        <label for="rex-edit-section-video-youtube-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
+                            <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
+                            <i class="rex-icon">
+                                <span class="rex-icon-audio bl_checked-icon">L</span><span class="rex-icon-mute bl_unchecked-icon">M</span>
+                            </i>
+                            <!-- <span class="rex-ripple"></span> -->
+                        </label>
+                    </div>
+                </div>
             </div>
             <!-- youtube video background section -->
             <div id="edit-video-row-wrap-2" class="bl_modal-row vimeo-insert-wrap video-insert-wrap">
@@ -50,6 +62,18 @@ defined('ABSPATH') or exit;
                         <input id="rex-vimeo-video-section" class="vimeo-url" type="text" />
                         <label id="rex-vimeo-video-section-label" for="rex-vimeo-video-section">https://player.vimeo.com/video/...</label>
                         <span class="rex-material-bar"></span>
+                    </div>
+                </div>
+                <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
+                    <div class="set-video-audio-btn tippy" data-tippy-content="<?php _e('Audio ON/OFF','rexpansive'); ?>">
+                        <input class="video-audio-checkbox bl_checkbox bl_checkbox-bottom-indicator" type="checkbox" id="rex-edit-section-video-vimeo-audio" name="section-vimeo-audio" title="Audio ON/OFF">
+                        <label for="rex-edit-section-video-vimeo-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
+                            <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
+                            <i class="rex-icon">
+                                <span class="rex-icon-audio bl_checked-icon">L</span><span class="rex-icon-mute bl_unchecked-icon">M</span>
+                            </i>
+                            <!-- <span class="rex-ripple"></span> -->
+                        </label>
                     </div>
                 </div>
             </div>
@@ -71,6 +95,18 @@ defined('ABSPATH') or exit;
                         <input id="rex-mp4-video-section-preview" class="mp4-video-section small-input" type="text" disabled>
                         <label id="rex-mp4-video-section-preview-label" for="rex-mp4-video-section-preview">Video URL</label>
                         <span class="rex-material-bar"></span>
+                    </div>
+                </div>
+                <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
+                    <div class="set-video-audio-btn tippy" data-tippy-content="<?php _e('Audio ON/OFF','rexpansive'); ?>">
+                        <input class="video-audio-checkbox bl_checkbox bl_checkbox-bottom-indicator" type="checkbox" id="rex-edit-section-video-mp4-audio" name="section-mp4-audio" title="Audio ON/OFF">
+                        <label for="rex-edit-section-video-mp4-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
+                            <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
+                            <i class="rex-icon">
+                                <span class="rex-icon-audio bl_checked-icon">L</span><span class="rex-icon-mute bl_unchecked-icon">M</span>
+                            </i>
+                            <span class="rex-ripple"></span>
+                        </label>
                     </div>
                 </div>
             </div>
