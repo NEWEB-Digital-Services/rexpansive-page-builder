@@ -34,6 +34,8 @@ $first-block-top: 20vh;
 	.scroll-block {
 		opacity: 0.1 !important;
 		transition: opacity 500ms ease-out;
+		/** 2022-01-31 - Necessary fix, caused by something as yet unknown **/
+		overflow: visible;
 
 		// prevent rexScrollify uneccessary animation
 		&:not(:first-child) {
