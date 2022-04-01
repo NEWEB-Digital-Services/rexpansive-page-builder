@@ -517,12 +517,12 @@ class Rexbuilder_Utilities {
 <div id="layout-avaiable-dimensions" style="display:none;"><?php echo json_encode( $layoutsAvaiable ); ?></div>
 
 <div id="rexbuilder-model-data" style="display:none;">
-    <div class="models-customizations" data-empty-models-customizations="true"></div>
-    <div class="available-models-customizations-names">[]</div>
+    <script class="models-customizations" data-empty-models-customizations="true"></script>
+    <script class="available-models-customizations-names">[]</script>
 </div>
 <div id="rexbuilder-layout-data" style="display: none;">
-    <div class="layouts-customizations" data-empty-customizations="true"></div>
-    <div id="available-layouts-names">[]</div>
+    <script class="layouts-customizations" data-empty-customizations="true"></script>
+    <script id="available-layouts-names">[]</script>
 </div>
 
 <div id="rexbuilder-layout-data-live" style="display: none;"></div><!-- // Current data of the builder -->
