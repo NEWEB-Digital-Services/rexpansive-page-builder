@@ -1620,7 +1620,6 @@ class Rexbuilder_Public {
 		}
 
 		require REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-page-information.php";
-
 		?>
 		<div class="rex-container" data-rex-layout-selected="" data-backend-edited="<?php echo $backendEditing;?>">
 		<?php
