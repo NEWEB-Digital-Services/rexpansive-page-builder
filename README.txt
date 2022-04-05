@@ -200,6 +200,14 @@ For the more experienced among us: you can insert CSS anywhere.
 
 == Changelog ==
 
+= 2.0.13 - April 5, 2022 =
+ * Updated: Tested up to Wordpress 5.9.2
+ * Added: Allow use of numeric keypad to set measures, like padding or margin
+ * Fixed: Animation not triggered on blocks positioned attached to top of the page
+ * Fixed: Avoid noscript elements to prevent formatting problems
+ * Fixed: Prevent double click on blocks with slider
+ * Fixed: Tools buttons sizes
+
 = 2.0.12 - August 26, 2021 =
  * Added: Minimun height to sections with one element when dragging the element around
  * Fixed: Compatibility with PHP 8.0.0 which interruped saving process
