@@ -2988,7 +2988,6 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			'public'              => true,
 			'show_ui'             => true,
 			'show_in_menu'        => false,
-			'menu_position'       => 250,
 			'menu_icon'           => 'dashicons-format-gallery',
 			'show_in_admin_bar'   => true,
 			'show_in_nav_menus'   => false,
