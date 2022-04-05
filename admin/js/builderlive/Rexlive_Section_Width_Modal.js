@@ -253,7 +253,7 @@ var Section_Width_Modal = (function($) {
 	 * @version	2.0.9					Moved in named function
 	 */
 	function _onKeyUp(e) {
-		if (!((e.keyCode >= 48 && e.keyCode <= 57) || e.keyCode == 38 || e.keyCode == 40 || e.keyCode == 8)) return;
+		if (!((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode >= 96 && e.keyCode <= 105) || e.keyCode == 38 || e.keyCode == 40 || e.keyCode == 8)) return;
 		e.preventDefault();
 	}
 
