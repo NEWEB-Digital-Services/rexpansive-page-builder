@@ -171,6 +171,7 @@
 }
 
 .meditor-color-picker {
+  box-sizing: border-box;
   background-image: url(../img/colors-hd.png);
   background-size: contain;
   background-position: center;
@@ -186,6 +187,7 @@
 }
 
 .meditor-color-picker--preview {
+  box-sizing: border-box;
   width: 20px;
   height: 20px;
   display: block;

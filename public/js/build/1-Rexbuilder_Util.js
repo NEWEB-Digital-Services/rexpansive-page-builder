@@ -450,7 +450,7 @@ var Rexbuilder_Util = (function ($) {
 		if ($modelDataDiv.length != 0) {
 			$modelDataDiv.children('.model-customization-data').remove();
 		} else {
-			$modelDataDiv = $(document.createElement('div'));
+			$modelDataDiv = $(document.createElement('script'));
 			$modelDataDiv.addClass('model-customizations-container');
 			$modelDataDiv.attr('data-model-id', model_ID_to_update);
 			$modelDataDiv.appendTo($modelsCustomizationsDataDiv[0]);
@@ -461,7 +461,7 @@ var Rexbuilder_Util = (function ($) {
 			i < tot_updatedModelCustomizationsData;
 			i++
 		) {
-			var $div = $(document.createElement('div'));
+			var $div = $(document.createElement('script'));
 			$div.addClass('model-customization-data');
 			$div.attr('data-model-layout-name', updatedModelCustomizationsData.customizations[i].name);
 			$div.text(JSON.stringify(updatedModelCustomizationsData.customizations[i].targets));
@@ -582,7 +582,7 @@ var Rexbuilder_Util = (function ($) {
 		var i;
 		var tot_sectionsData;
 		for (i = 0, tot_sectionsData = sectionsData.length; i < tot_sectionsData; i++) {
-			var $div = $(document.createElement('div'));
+			var $div = $(document.createElement('script'));
 			$div.addClass('section-targets');
 			$div.attr('data-section-rex-id', sectionsData[i].section_rex_id);
 			$div.attr('data-model-id', sectionsData[i].section_model_id);
@@ -604,7 +604,7 @@ var Rexbuilder_Util = (function ($) {
 		if ($customizationWrapper.length != 0) {
 			$customizationWrapper.children('.section-targets').remove();
 		} else {
-			$customizationWrapper = $(document.createElement('div'));
+			$customizationWrapper = $(document.createElement('script'));
 			$customizationWrapper.addClass('customization-wrap');
 			$customizationWrapper.attr('data-customization-name', layoutNameToUpdate);
 			$customizationWrapper.appendTo($pageCustomizationsDataDiv[0]);
@@ -615,7 +615,7 @@ var Rexbuilder_Util = (function ($) {
 			i < tot_updatedPageCustomizationsData;
 			i++
 		) {
-			var $div = $(document.createElement('div'));
+			var $div = $(document.createElement('script'));
 			$div.addClass('section-targets');
 			$div.attr('data-section-rex-id', updatedPageCustomizationsData.sections[i].section_rex_id);
 			$div.attr('data-model-id', updatedPageCustomizationsData.sections[i].section_model_id);
@@ -2223,7 +2223,7 @@ var Rexbuilder_Util = (function ($) {
 		$layoutsDomOrder.children().remove();
 		var sections = [];
 		for (i = 0, tot_pageCustomizations = pageCustomizations.length; i < tot_pageCustomizations; i++) {
-			var divLayout = document.createElement('div');
+			var divLayout = document.createElement('script');
 			Rexbuilder_Util.addClass(divLayout, 'layout-sections');
 			divLayout.setAttribute('data-rex-layout-name', pageCustomizations[i].name);
 
@@ -2344,7 +2344,7 @@ var Rexbuilder_Util = (function ($) {
 		var i;
 		var tot_sectionsData;
 		for (i = 0, tot_sectionsData = sectionsData.length; i < tot_sectionsData; i++) {
-			var $div = $(document.createElement('div'));
+			var $div = $(document.createElement('script'));
 			$div.addClass('section-targets');
 			$div.attr('data-section-rex-id', sectionsData[i].section_rex_id);
 			$div.attr('data-model-id', sectionsData[i].section_model_id);
@@ -2388,7 +2388,7 @@ var Rexbuilder_Util = (function ($) {
 		} else {
 			$defaultLayoutState.children('.section-targets').remove();
 			for (p = 0, tot_updatedSectionsData = updatedSectionsData.length; p < tot_updatedSectionsData; p++) {
-				var $div = $(document.createElement('div'));
+				var $div = $(document.createElement('script'));
 				$div.addClass('section-targets');
 				$div.attr('data-section-rex-id', updatedSectionsData[p].section_rex_id);
 				$div.attr('data-model-id', updatedSectionsData[p].section_model_id);
@@ -2544,7 +2544,7 @@ var Rexbuilder_Util = (function ($) {
 				section_props.section_model_number = section.getAttribute('data-rexlive-model-number');
 			}
 
-			var div = document.createElement('div');
+			var div = document.createElement('script');
 			addClass(div, 'section-targets');
 			div.setAttribute('data-section-rex-id', section_props.section_rex_id);
 			div.setAttribute('data-model-id', section_props.section_model_id);
@@ -2553,7 +2553,7 @@ var Rexbuilder_Util = (function ($) {
 			div.textContent = JSON.stringify(layoutData);
 			var $div = $(div);
 
-			// var $div = $(document.createElement("div"));
+			// var $div = $(document.createElement("script"));
 			// $div.addClass("section-targets");
 			// $div.attr("data-section-rex-id", section_props.section_rex_id);
 			// $div.attr("data-model-id", section_props.section_model_id);
@@ -2703,7 +2703,7 @@ var Rexbuilder_Util = (function ($) {
 				section_props.section_model_number = $section.attr('data-rexlive-model-number');
 			}
 
-			var $div = $(document.createElement('div'));
+			var $div = $(document.createElement('script'));
 			$div.addClass('section-targets');
 			$div.attr('data-section-rex-id', section_props.section_rex_id);
 			$div.attr('data-model-id', section_props.section_model_id);

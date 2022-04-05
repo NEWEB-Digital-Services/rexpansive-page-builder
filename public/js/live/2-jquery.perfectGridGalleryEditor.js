@@ -403,9 +403,12 @@
    * @param  {Event} e dobule click event
    * @return {void}
    * @since  2.0.4    move the handler oustide the plugin declaration
+   * @version   2.0.13  prevent double click on blocks with slider
    */
   function handleDbClick(e) {
     if ( 'default' !== Rexbuilder_Util.activeLayout ) return false;
+
+    if (e.currentTarget.classList.contains('block-has-slider')) return false;
 
     if (
       !(

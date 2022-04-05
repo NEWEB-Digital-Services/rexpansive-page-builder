@@ -106,14 +106,14 @@ if (!empty($customizations_names)) {
 }
 
 ?>
-<noscript id="rex-buttons-ids-used" data-nosnippet><?php
+<script id="rex-buttons-ids-used" data-nosnippet><?php
 if ( $buttonsIDsUsed == null ) {
     echo "[]";
 } else {
     echo json_encode( $buttonsIDsUsed );
 }
-?></noscript>
-<noscript id="sections-ids-used" data-nosnippet>
+?></script>
+<script id="sections-ids-used" data-nosnippet>
 <?php
 if ($sectionsIDsUsed == null) {
     echo "[]";
@@ -121,9 +121,9 @@ if ($sectionsIDsUsed == null) {
     echo json_encode($sectionsIDsUsed);
 }
 ?>
-</noscript>
-<noscript id="blocks-ids-used" data-nosnippet><?php echo $blocksIDsJSON; ?></noscript>
-<noscript id="layout-avaiable-dimensions" data-nosnippet><?php echo json_encode($layoutsAvaiable); ?></noscript>
+</script>
+<script id="blocks-ids-used" data-nosnippet><?php echo $blocksIDsJSON; ?></script>
+<script id="layout-avaiable-dimensions" data-nosnippet><?php echo json_encode($layoutsAvaiable); ?></script>
 <div id="rexbuilder-model-data" data-nosnippet style="display:none;">
     <div class="models-customizations" data-nosnippet <?php
     if (!$flag_models) {
@@ -144,20 +144,20 @@ if ($sectionsIDsUsed == null) {
                     $customTargets = "";
                 }
 
-                echo '<div class="model-customization-data" data-nosnippet data-model-layout-name="' . $customName . '">';
+                echo '<script class="model-customization-data" data-nosnippet data-model-layout-name="' . $customName . '">';
 
                 if($customTargets != ""){
                     echo json_encode($customTargets);
                 } else{
                     echo '[]';
                 }
-                echo '</div>';
+                echo '</script>';
             }
             echo '</div>';
         }
     }
     ?></div>
-    <div class="available-models-customizations-names" data-nosnippet><?php echo json_encode($models_customizations_avaiable);?></div>
+    <script class="available-models-customizations-names" data-nosnippet><?php echo json_encode($models_customizations_avaiable);?></script>
 </div>
 <div id="rexbuilder-layout-data" data-nosnippet style="display: none;">
     <div data-nosnippet class="layouts-customizations"<?php
@@ -194,7 +194,7 @@ if ($sectionsIDsUsed == null) {
                         $targets = "";
                     }
 
-                    echo '<div data-nosnippet class="section-targets"';
+                    echo '<script data-nosnippet class="section-targets"';
                     echo ' data-section-rex-id="' . $sectionRexID . '"';
                     echo ' data-model-id="'.$sectionModelID.'"';
                     echo ' data-model-number="'.$sectionModelNumber.'"';
@@ -207,20 +207,20 @@ if ($sectionsIDsUsed == null) {
                     } else {
                         echo "[]";
                     }
-                    echo '</div>';
+                    echo '</script>';
                 }
             }
             echo '</div>';
         }
     }
     ?></div>
-    <div data-nosnippet id="available-layouts-names"><?php
+    <script data-nosnippet id="available-layouts-names"><?php
     if($customizations_names != ""){
         echo json_encode($customizations_names);
     }else{
         echo "[]";
     }
-    ?></div>
+    ?></script>
 </div>
 <div data-nosnippet id="rexbuilder-layout-data-live" style="display: none;"></div><!-- // Current data of the builder -->
 <div data-nosnippet id="rexbuilder-layouts-sections-order" style="display: none;"></div><!-- // Current order of the sections -->

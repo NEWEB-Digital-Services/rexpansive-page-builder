@@ -3,6 +3,13 @@
 	<latest>2.0.11</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.0.13</strong> - April 5, 2022</h4>
+			<p><strong>Updated</strong>: Tested up to Wordpress 5.9.2</p>
+			<p><strong>Added</strong>: Allow use of numeric keypad to set measures, like padding or margin</p>
+			<p><strong>Fixed</strong>: Animation not triggered on blocks positioned attached to top of the page</p>
+			<p><strong>Fixed</strong>: Avoid noscript elements to prevent formatting problems</p>
+			<p><strong>Fixed</strong>: Prevent double click on blocks with slider</p>
+			<p><strong>Fixed</strong>: Tools buttons sizes</p>
 			<h4><strong>v2.0.12</strong> - August 26, 2021</h4>
 			<p><strong>Added</strong>: Minimun height to sections with one element when dragging the element around</p>
 			<p><strong>Fixed</strong>: Compatibility with PHP 8.0.0 which interruped saving process</p>

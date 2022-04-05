@@ -288,6 +288,7 @@ var CustomLayouts_Modal = (function($) {
     var $target = $(e.target);
     if (
       (e.keyCode >= 48 && e.keyCode <= 57) ||
+      (e.keyCode >= 96 && e.keyCode <= 105) ||
       e.keyCode == 38 ||
       e.keyCode == 40 ||
       e.keyCode == 8

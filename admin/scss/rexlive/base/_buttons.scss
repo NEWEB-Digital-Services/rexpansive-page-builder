@@ -88,8 +88,9 @@
 	}
 
 	&.tool-button--empty {
-		min-width: $block-tools-size;
-		min-height: $block-tools-size;
+		width: $block-tools-size;
+		height: $block-tools-size;
+		box-sizing: border-box;
 		background-color: transparent;
 	}
 
