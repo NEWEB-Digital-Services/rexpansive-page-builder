@@ -344,7 +344,7 @@ void (function (window, factory) {
 
 			if (0 !== heightInUnits) {
 				this.properties.singleHeight =
-					(globalViewportSize.height + this.properties.fullHeightOffset - (topSeparator + bottomSeparator)) /
+					((globalViewportSize.height * this.properties.fullHeightScale) + this.properties.fullHeightOffset - (topSeparator + bottomSeparator)) /
 					heightInUnits;
 			}
 		}
@@ -465,6 +465,10 @@ void (function (window, factory) {
 		// Defaults silently to 0 if the data attribute is not a number
 		var fullHeightOffset = parseInt(this.element.dataset.fullHeightOffset);
 		this.properties.fullHeightOffset = isNaN(fullHeightOffset) ? 0 : fullHeightOffset;
+
+		// Defaults silently to 1 if the data attribute is not a number
+		var fullHeightScale = parseFloat(this.element.dataset.fullHeightScale);
+		this.properties.fullHeightScale = isNaN(fullHeightScale) ? 1 : fullHeightScale;
 	}
 
 	function _getDOMGutterOptions() {
