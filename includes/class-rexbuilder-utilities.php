@@ -209,6 +209,9 @@ class Rexbuilder_Utilities {
 				wp_enqueue_script('velocity', REXPANSIVE_BUILDER_URL . 'public/js/vendor/3-velocity.min.js', array('jquery'), REXCLASSIC_VERSION, true);
 				wp_enqueue_script('velocityui', REXPANSIVE_BUILDER_URL . 'public/js/vendor/3-velocity.ui.min.js', array('jquery'), REXCLASSIC_VERSION, true);
 				break;
+			case 'anime':
+				wp_enqueue_script('animejs', REXPANSIVE_BUILDER_URL . 'public/js/vendor/anime.min.js', array(), REXCLASSIC_VERSION, true);
+				break;
 			default:
 				break;
 		}
