@@ -10,6 +10,16 @@
 
 	var popupContentCloseTmpl = document.getElementById('tmpl-popupcontent-close');
 
+	var keydownCallbacksArray = []
+
+	function handleKeydownGlobalListener(ev) {
+		for (var i = 0; i < keydownCallbacksArray.length; i++) {
+			keydownCallbacksArray[i].call(ev)
+		}
+	}
+
+	document.addEventListener('keydown', handleKeydownGlobalListener)
+
 	function PopUpContent() {
 		// call object (button)
 		this.element = null;
@@ -47,6 +57,8 @@
 			contentRetrieveMethod: 'ajax',		// ajax | iframe
 			getPopUpContentComplete: null,
 			ajaxSettings: null,
+			listenESCKey: false,
+			listenClickOutside: false
 		};
 
 		// Create options by extending defaults with the passed in arugments
@@ -114,6 +126,45 @@
 		if ( 'hover' === this.options.loadTiming ) {
 			this.element.addEventListener('mouseover', getPopUpContent.bind(this), {once: true});
 		}
+		if (this.options.listenESCKey) {
+			keydownCallbacksArray.push(handleKeydownEvent.bind(this))
+		}
+		if (this.options.listenClickOutside) {
+			this.target.addEventListener('click', handleClickOutsideEvent.bind(this))
+		}
+	}
+
+	function handleClickOutsideEvent(ev) {
+		if (this.target !== ev.target) return
+		ev.preventDefault()
+		closePopUp.call(this)
+	}
+
+	function handleKeydownEvent(ev) {
+		ev = ev || window.event;
+		var isEscape = false;
+
+		if ("key" in ev) {
+			isEscape = (ev.key === "Escape" || ev.key === "Esc");
+		} else {
+			isEscape = (ev.keyCode === 27);
+		}
+
+		if(!isEscape) return
+
+		closePopUp.call(this, ev)
+	}
+
+	function closePopUp() {
+		if (!this.open) return
+
+		removeClass(this.target, this.options.popupViewClass);
+		removeClass(document.body, this.options.bodyPopUpViewClass);
+
+		this.open = false
+
+		var stateEvent = new Event( 'popUpContent:close' );
+		document.dispatchEvent(stateEvent);
 	}
 
 	function togglePopUp(ev) {
