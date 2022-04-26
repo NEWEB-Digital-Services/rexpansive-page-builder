@@ -59,8 +59,7 @@
 			getPopUpContentComplete: null,
 			ajaxSettings: null,
 			listenESCKey: false,
-			listenClickOutside: false,
-			customAnimation: false
+			listenClickOutside: false
 		};
 
 		// Create options by extending defaults with the passed in arugments
@@ -309,9 +308,7 @@
 		addClass( popUpContainer,options.popUpWrapper );
 		addClass( popUpContainer, 'popup-content__method--' + options.contentRetrieveMethod );
 
-		if (!options.customAnimation) {
-			addClass(popUpContainer, options.popUpAnimationClass)
-		}
+		addClass(popUpContainer, options.popUpAnimationClass)
 
 		var closeWrapper = document.createElement('div');
 		addClass( closeWrapper,options.popUpCloseWrapper );
