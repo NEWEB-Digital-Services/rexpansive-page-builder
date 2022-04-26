@@ -19,7 +19,7 @@
 	z-index: -2500;
 	transform: translate(0%, 105%) matrix(1, 0, 0, 1, 0, 0);
 	transition: opacity .24s, transform .24s, z-index .24s;
-	transition-delay: .3s;
+	// transition-delay: .3s;
 	background-color: #fff;
 
 	&.popup-content--loaded {
@@ -35,7 +35,7 @@
 	// max-width: 120em;
 	margin: 0 auto;
 	transition: opacity .24s;
-	transition-delay: .0s;
+	// transition-delay: .3s;
 
 	iframe {
 		width:100%;
@@ -63,7 +63,7 @@
 	position: sticky;
 	top: 0;
 	transition: opacity .24s;
-	transition-delay: .3s;
+	// transition-delay: .3s;
 	z-index: 2600;
 }
 
@@ -104,7 +104,7 @@
 	}
 	.popup-content-content {
 		opacity: 1;
-		transition-delay: .3s;
+		transition-delay: .0s;
 	}
 	.popup-content-close-wrapper {
 		opacity: 1;
