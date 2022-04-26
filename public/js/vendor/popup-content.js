@@ -52,13 +52,15 @@
 			popUpCloseWrapper: 'popup-content-close-wrapper',
 			popUpCloseClass: 'popup-content-close',
 			popUpContent: 'popup-content-content',
+			popUpAnimationClass: 'popup-content--base-animation',
 			contentInjectorPoint: 'rexpansive_section',
 			loadTiming: 'hover',				// hover | load | scroll(?)
 			contentRetrieveMethod: 'ajax',		// ajax | iframe
 			getPopUpContentComplete: null,
 			ajaxSettings: null,
 			listenESCKey: false,
-			listenClickOutside: false
+			listenClickOutside: false,
+			customAnimation: false
 		};
 
 		// Create options by extending defaults with the passed in arugments
@@ -306,6 +308,11 @@
 		var popUpContainer = document.createElement('div');
 		addClass( popUpContainer,options.popUpWrapper );
 		addClass( popUpContainer, 'popup-content__method--' + options.contentRetrieveMethod );
+
+		if (!options.customAnimation) {
+			addClass(popUpContainer, options.popUpAnimationClass)
+		}
+
 		var closeWrapper = document.createElement('div');
 		addClass( closeWrapper,options.popUpCloseWrapper );
 
