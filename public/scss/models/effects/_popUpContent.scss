@@ -109,7 +109,6 @@
 		&.popup-content {
 			opacity: 1;
 			transform: matrix(1, 0, 0, 1, 0, 0);
-			visibility: visible;
 			z-index: 2500;
 			&.popup-content__method--ajax {
 				overflow-x: hidden;

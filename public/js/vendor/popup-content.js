@@ -59,7 +59,9 @@
 			getPopUpContentComplete: null,
 			ajaxSettings: null,
 			listenESCKey: false,
-			listenClickOutside: false
+			listenClickOutside: false,
+			closeCallback: null,
+			openCallback: null
 		};
 
 		// Create options by extending defaults with the passed in arugments
@@ -164,6 +166,10 @@
 
 		this.open = false
 
+		if (this.options.closeCallback) {
+			this.options.closeCallback.call(this)
+		}
+
 		var stateEvent = new Event( 'popUpContent:close' );
 		document.dispatchEvent(stateEvent);
 	}
@@ -174,6 +180,16 @@
 		toggleClass(document.body, this.options.bodyPopUpViewClass);
 
 		this.open = ! this.open;
+
+		if (this.open) {
+			if (this.options.openCallback) {
+				this.options.openCallback.call(this)
+			}
+		} else {
+			if (this.options.closeCallback) {
+				this.options.closeCallback.call(this)
+			}
+		}
 
 		// trigger open/close event to parent
 		var eventName = ( this.open ? 'popUpContent:open' : 'popUpContent:close' );
