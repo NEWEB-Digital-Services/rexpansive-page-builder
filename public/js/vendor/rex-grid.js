@@ -337,16 +337,15 @@ void (function (window, factory) {
 	}
 
 	function _checkFullHeight() {
-		if (this.properties.fullHeight) {
-			var heightInUnits = _calculateGridHeight.call(this);
-			var topSeparator = this.properties.gridTopSeparator - this.properties.halfSeparatorTop;
-			var bottomSeparator = this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom;
+		if (!this.properties.fullHeight) return
+		var heightInUnits = _calculateGridHeight.call(this);
+		var topSeparator = this.properties.gridTopSeparator - this.properties.halfSeparatorTop;
+		var bottomSeparator = this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom;
 
-			if (0 !== heightInUnits) {
-				this.properties.singleHeight =
-					((globalViewportSize.height * this.properties.fullHeightScale) + this.properties.fullHeightOffset - (topSeparator + bottomSeparator)) /
-					heightInUnits;
-			}
+		if (0 !== heightInUnits) {
+			this.properties.singleHeight =
+				((globalViewportSize.height * this.properties.fullHeightScale) + this.properties.fullHeightOffset - (topSeparator + bottomSeparator)) /
+				heightInUnits;
 		}
 	}
 
