@@ -230,6 +230,12 @@ class Rexbuilder_Block {
 					'attribute' => 'overlay="' . $overlay_block_color . '"',
 				) );
 			}
+
+			// pass down block classes to slider shortcode
+			Rexbuilder_Utilities::add_attribute_to_shortcode( $content, array(
+				'shortcode' => 'RexSlider',
+				'attribute' => 'block_classes="' . $block_custom_class . '"',
+			) );
 		}
 
 		if ( false !== strpos( $content, 'RexSliderDefintion' ) ) {
