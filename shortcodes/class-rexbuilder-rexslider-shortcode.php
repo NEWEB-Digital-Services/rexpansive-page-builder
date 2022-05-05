@@ -20,6 +20,11 @@
  */
 class Rexbuilder_RexSlider {
 	/**
+	 * @since 2.0.14
+	 */
+	public static $SLIDER_FLUID_BLOCK_CLASS = 'block-slider--fluid';
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -36,13 +41,15 @@ class Rexbuilder_RexSlider {
 	 * @param      string    $content    		The content passed.
 	 * @version 1.1.3	Add nav preview feature
 	 * @version 1.1.3	Add photoswipe on slider
+	 * @version 2.0.14	Add block_classes shortocde attribute
 	 */
 	public function render_slider( $atts, $content = null ) {
 		extract( shortcode_atts( array(
 			'slider_id' => '',
 			'class' => '',
-			'photoswipe' => '',		// handling photoswipe on slider
+			'photoswipe' => '',			// handling photoswipe on slider
 			'overlay' => '',			// handling overlay on slides
+			'block_classes' => ''		// classes that comes from parent block
 		), $atts ) );
 
 		ob_start();
@@ -82,137 +89,149 @@ class Rexbuilder_RexSlider {
 			$overlay_el = '<div class="slider-overlay" style="background-color:' . $overlay . '"></div>';
 		}
 
-		foreach( $slider_gallery as $slide ) {
-			$hide_slide = $slide['_rex_slider_hide_slide'];
-			if( isset( $hide_slide[0] ) && 'hide' === $hide_slide[0] ) {
-				continue;
-			}
+		$slider_is_fluid = false !== strpos($block_classes, self::$SLIDER_FLUID_BLOCK_CLASS);
 
-			$slider_el_style = '';
-			$slideHasImage = false;
-			if( isset( $slide['_rex_banner_gallery_image']['url'] ) ) {
-				$slideHasImage = true;
-				if ( ! $editor ) {
-					$slider_el_style = ' data-flickity-bg-lazyload="' . $slide['_rex_banner_gallery_image']['url'] . '"';
-				} else {
-					$slider_el_style = ' style="background-image:url(' . $slide['_rex_banner_gallery_image']['url'] . ')"';
-				}
-				$slideImageIdAttr = " data-rex-slide-image-id=\"". $slide['_rex_banner_gallery_image']['id'] ."\"";
-			}
-
+		if ($slider_is_fluid) {
+			foreach( $slider_gallery as $slide ) {
 			?>
-			<div class="rex-slider-element<?php echo ( $slideHasImage && $natural_blur && ! 'true' == $photoswipe && "" == $slide['_rex_banner_gallery_url'] ? ' natural-slide__wrap' : '' ); ?><?php echo ( ( $active_video && ( $slide['_rex_banner_gallery_video'] || $slide['_rex_banner_gallery_video_mp4'] ) ) ? ' rex-slide--video' : '' ); ?>"<?php echo ( 1 != $nav_previewed ? ( !$natural_blur ? $slider_el_style : '' ) : '' ); echo (!$slideHasImage? "" : $slideImageIdAttr); ?>>
+			<div class="rex-slider-element rex-slider-element--fluid"><img src="<?php echo esc_url( $slide['_rex_banner_gallery_image']['url'] ); ?>"></div>
 			<?php
-
-			if ( $slideHasImage && $natural_blur && ! 'true' == $photoswipe && "" == $slide['_rex_banner_gallery_url']  ) {
-				?>
-				<div class="natural-blur-effect blur-slide"<?php echo $slider_el_style; ?>></div>
-				<img class="natural-slide" <?php echo Rexbuilder_Utilities::isBuilderLive() ? 'src' : 'data-flickity-lazyload' ?>="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>">
-				<?php
 			}
-
-			if( 1 == $nav_previewed && 'true' != $photoswipe && isset( $slide['_rex_banner_gallery_image']['url'] ) ) {
+		} else {
+			foreach( $slider_gallery as $slide ) {
+				$hide_slide = $slide['_rex_slider_hide_slide'];
+				if( isset( $hide_slide[0] ) && 'hide' === $hide_slide[0] ) {
+					continue;
+				}
+	
+				$slider_el_style = '';
+				$slideHasImage = false;
+				if( isset( $slide['_rex_banner_gallery_image']['url'] ) ) {
+					$slideHasImage = true;
+					if ( ! $editor ) {
+						$slider_el_style = ' data-flickity-bg-lazyload="' . $slide['_rex_banner_gallery_image']['url'] . '"';
+					} else {
+						$slider_el_style = ' style="background-image:url(' . $slide['_rex_banner_gallery_image']['url'] . ')"';
+					}
+					$slideImageIdAttr = " data-rex-slide-image-id=\"". $slide['_rex_banner_gallery_image']['id'] ."\"";
+				}
+	
 				?>
-				<img src="<?php echo esc_url( $slide['_rex_banner_gallery_image']['url'] ); ?>">
+				<div class="rex-slider-element<?php echo ( $slideHasImage && $natural_blur && ! 'true' == $photoswipe && "" == $slide['_rex_banner_gallery_url'] ? ' natural-slide__wrap' : '' ); ?><?php echo ( ( $active_video && ( $slide['_rex_banner_gallery_video'] || $slide['_rex_banner_gallery_video_mp4'] ) ) ? ' rex-slide--video' : '' ); ?>"<?php echo ( 1 != $nav_previewed ? ( !$natural_blur ? $slider_el_style : '' ) : '' ); echo (!$slideHasImage? "" : $slideImageIdAttr); ?>>
 				<?php
-			}
-
-			if( $active_video && ( $slide['_rex_banner_gallery_video'] || $slide['_rex_banner_gallery_video_mp4'] ) ) {
-				// check if is a valid URL
-
-				//youtube
-				if( false !== strpos( $slide['_rex_banner_gallery_video'], "youtu" ) ) {
+	
+				if ( $slideHasImage && $natural_blur && ! 'true' == $photoswipe && "" == $slide['_rex_banner_gallery_url']  ) {
 					?>
-					<div class="rex-slider-video-wrapper youtube-player">
-						<div class="rex-youtube-wrap" data-property="{videoURL:'<?php echo $slide['_rex_banner_gallery_video']; ?>',containment:'self',startAt:0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}" data-ytvideo-stop-on-click="false">
-						</div>
-				<?php
-				//vimeo
-				} else if( false !== strpos( $slide['_rex_banner_gallery_video'], "vimeo" ) ) {
+					<div class="natural-blur-effect blur-slide"<?php echo $slider_el_style; ?>></div>
+					<img class="natural-slide" <?php echo Rexbuilder_Utilities::isBuilderLive() ? 'src' : 'data-flickity-lazyload' ?>="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>">
+					<?php
+				}
+	
+				if( 1 == $nav_previewed && 'true' != $photoswipe && isset( $slide['_rex_banner_gallery_image']['url'] ) ) {
 					?>
-					<div class="rex-slider-video-wrapper vimeo-player">
-						<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block">
-							<iframe src="<?php echo $slide['_rex_banner_gallery_video']; ?>?autoplay=1&loop=1&byline=0&title=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+					<img src="<?php echo esc_url( $slide['_rex_banner_gallery_image']['url'] ); ?>">
+					<?php
+				}
+	
+				if( $active_video && ( $slide['_rex_banner_gallery_video'] || $slide['_rex_banner_gallery_video_mp4'] ) ) {
+					// check if is a valid URL
+	
+					//youtube
+					if( false !== strpos( $slide['_rex_banner_gallery_video'], "youtu" ) ) {
+						?>
+						<div class="rex-slider-video-wrapper youtube-player">
+							<div class="rex-youtube-wrap" data-property="{videoURL:'<?php echo $slide['_rex_banner_gallery_video']; ?>',containment:'self',startAt:0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}" data-ytvideo-stop-on-click="false">
+							</div>
+					<?php
+					//vimeo
+					} else if( false !== strpos( $slide['_rex_banner_gallery_video'], "vimeo" ) ) {
+						?>
+						<div class="rex-slider-video-wrapper vimeo-player">
+							<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block">
+								<iframe src="<?php echo $slide['_rex_banner_gallery_video']; ?>?autoplay=1&loop=1&byline=0&title=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+							</div>
+						<?php
+					//mp4
+					} else if( $slide['_rex_banner_gallery_video_mp4'] ) {
+						$mp4IDattr = "data-rex-video-mp4-id=\"". $slide["_rex_banner_gallery_video_mp4"]["id"] . "\"";
+	
+						?>
+						<div class="rex-slider-video-wrapper mp4-player">
+							<div class="rex-video-wrap intrinsic-ignore" <?php echo $mp4IDattr;?>>
+								<video class="rex-video-container" preload muted autoplay loop playsinline>
+									<source type="video/mp4" src="<?php echo $slide['_rex_banner_gallery_video_mp4']['url']; ?>" />
+								</video>
+							</div>
+					<?php
+					}
+					if( is_array( $slide['_rex_banner_gallery_video_audio'] ) ) {
+					?>
+						<div class="rex-video-toggle-audio">
+							<div class="rex-video-toggle-audio-shadow"></div>
 						</div>
 					<?php
-				//mp4
-				} else if( $slide['_rex_banner_gallery_video_mp4'] ) {
-					$mp4IDattr = "data-rex-video-mp4-id=\"". $slide["_rex_banner_gallery_video_mp4"]["id"] . "\"";
-
+					}
 					?>
-					<div class="rex-slider-video-wrapper mp4-player">
-						<div class="rex-video-wrap intrinsic-ignore" <?php echo $mp4IDattr;?>>
-							<video class="rex-video-container" preload muted autoplay loop playsinline>
-								<source type="video/mp4" src="<?php echo $slide['_rex_banner_gallery_video_mp4']['url']; ?>" />
-							</video>
-						</div>
+					</div>
+					<?php
+				}
+				// Link section
+				if( $slide['_rex_banner_gallery_url'] ) {
+				?>
+				<a class="rex-slider-element-link" href="<?php echo esc_url( $slide['_rex_banner_gallery_url'] ); ?>">
 				<?php
 				}
-				if( is_array( $slide['_rex_banner_gallery_video_audio'] ) ) {
+	
+				// text section
+				if( $slide['_rex_banner_gallery_image_title'] ) {
+					echo '<div class="rex-slider-element-title">';
+					echo do_shortcode( apply_filters( 'rexpansive_slider_filter_element_title', $slide['_rex_banner_gallery_image_title'], $slide ) );
+					echo '</div>';
+				}
+	
+				if( $slide['_rex_banner_gallery_url'] ) {
 				?>
-					<div class="rex-video-toggle-audio">
-						<div class="rex-video-toggle-audio-shadow"></div>
+				</a>
+				<?php
+				}
+	
+				if( 'true' == $photoswipe && "" == $slide['_rex_banner_gallery_url'] && $slideHasImage ) {
+						?>
+					<figure class="pswp-figure" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
+						<a class="pswp-item" href="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" itemprop="contentUrl" data-size="<?php echo $slide['_rex_banner_gallery_image']['width']; ?>x<?php echo $slide['_rex_banner_gallery_image']['height']; ?>">
+							<div class="pswp-item-thumb" data-thumb-image-type="full" data-thumburl="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" itemprop="thumbnail"></div>
+							<div class="rex-custom-scrollbar<?php echo ( $natural_blur ? ' natural-slide__wrap' : '' ); ?>">
+							<?php
+								if ( $natural_blur ) {
+									?>
+									<div class="natural-blur-effect blur-slide"<?php echo $slider_el_style; ?>></div>
+									<img class="natural-slide" data-flickity-lazyload="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>">
+									<?php
+								}
+								if( 1 == $nav_previewed && isset( $slide['_rex_banner_gallery_image']['url'] ) ) { ?>
+								<img src="<?php echo esc_url( $slide['_rex_banner_gallery_image']['url'] ); ?>">
+							<?php } ?>
+							</div>
+						</a>
+						<figcaption class="pswp-item-caption" itemprop="caption description">
+							<?php do_action( 'rexbuilder_slider_pswp_item_caption' ); ?>
+						</figcaption>
+					</figure>
+					<?php
+				}
+	
+				// eventually overlay
+				echo $overlay_el;
+				?>
 					</div>
 				<?php
+				if( 1 == $nav_previewed ) {
+					$nav_previewed_html .= '<li class="dot"><span' . $slider_el_style . '></span></li>';
 				}
-				?>
-				</div>
-				<?php
 			}
-			// Link section
-			if( $slide['_rex_banner_gallery_url'] ) {
-			?>
-			<a class="rex-slider-element-link" href="<?php echo esc_url( $slide['_rex_banner_gallery_url'] ); ?>">
-			<?php
-			}
-
-			// text section
-			if( $slide['_rex_banner_gallery_image_title'] ) {
-				echo '<div class="rex-slider-element-title">';
-				echo do_shortcode( apply_filters( 'rexpansive_slider_filter_element_title', $slide['_rex_banner_gallery_image_title'], $slide ) );
-				echo '</div>';
-			}
-
-			if( $slide['_rex_banner_gallery_url'] ) {
-			?>
-			</a>
-			<?php
-			}
-
-			if( 'true' == $photoswipe && "" == $slide['_rex_banner_gallery_url'] && $slideHasImage ) {
-					?>
-				<figure class="pswp-figure" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
-					<a class="pswp-item" href="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" itemprop="contentUrl" data-size="<?php echo $slide['_rex_banner_gallery_image']['width']; ?>x<?php echo $slide['_rex_banner_gallery_image']['height']; ?>">
-						<div class="pswp-item-thumb" data-thumb-image-type="full" data-thumburl="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" itemprop="thumbnail"></div>
-						<div class="rex-custom-scrollbar<?php echo ( $natural_blur ? ' natural-slide__wrap' : '' ); ?>">
-						<?php
-							if ( $natural_blur ) {
-								?>
-								<div class="natural-blur-effect blur-slide"<?php echo $slider_el_style; ?>></div>
-								<img class="natural-slide" data-flickity-lazyload="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>">
-								<?php
-							}
-							if( 1 == $nav_previewed && isset( $slide['_rex_banner_gallery_image']['url'] ) ) { ?>
-							<img src="<?php echo esc_url( $slide['_rex_banner_gallery_image']['url'] ); ?>">
-						<?php } ?>
-						</div>
-					</a>
-					<figcaption class="pswp-item-caption" itemprop="caption description">
-						<?php do_action( 'rexbuilder_slider_pswp_item_caption' ); ?>
-					</figcaption>
-				</figure>
-				<?php
-			}
-
-			// eventually overlay
-			echo $overlay_el;
-			?>
-				</div>
-			<?php
-			if( 1 == $nav_previewed ) {
-				$nav_previewed_html .= '<li class="dot"><span' . $slider_el_style . '></span></li>';
-			}
+			
 		}
+
 
 		if( !empty( $nav_previewed_html ) && 1 !== $num_slides ) {
 			echo  '<ol class="flickity-page-dots rex-slider__previewed-nav rex-slider__custom-nav">' . $nav_previewed_html . '</ol>';
