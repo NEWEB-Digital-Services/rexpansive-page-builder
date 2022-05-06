@@ -79,8 +79,30 @@ class Rexbuilder_RexSlider {
 		$active_video = apply_filters( 'rexpansive_slider_filter_active_video', true );
 
 		$num_slides = count( $slider_gallery );
+
+		$slider_is_fluid = false !== strpos($block_classes, self::$SLIDER_FLUID_BLOCK_CLASS);
+
+		// wrap classes
+		$slider_wrap_classes = array('rex-slider-wrap');
+
+		if (1 === $nav_previewed) {
+			array_push($slider_wrap_classes, 'rex-slider--bottom-interface');
+			if (1 !== $num_slides) {
+				array_push($slider_wrap_classes, 'rex-slider--bottom-interface--active');
+			}
+		}
+
+		array_push($slider_wrap_classes, 'rex-slider--' . $num_slides . '-slides');
+		if ("" != $nav_layout) {
+			array_push($slider_wrap_classes, 'rex-slider-navigator--' . $nav_layout);
+		}
+
+		if ($slider_is_fluid) {
+			array_push($slider_wrap_classes, 'rex-slider-wrap--fluid');
+		}
+
 		?>
-		<div data-slider-id="<?php echo $slider_id;?>" class="rex-slider-wrap<?php echo ( 1 == $nav_previewed ? ' rex-slider--bottom-interface' . ( 1 !== $num_slides ? ' rex-slider--bottom-interface--active' : '' ) : '' ); ?><?php echo ' rex-slider--' . $num_slides . '-slides'; ?><?php echo ( "" != $nav_layout ? ' rex-slider-navigator--' . $nav_layout : '' ); ?>" data-rex-slider-animation="<?php echo ( is_array( $slider_animation ) ? 'true': ( "0" == $slider_animation ? 'true' : 'false' ) ); ?>" data-rex-slider-prev-next="<?php echo ( is_array( $slider_prev_next ) ? '1': ( "0" == $slider_prev_next ? 'true' : 'false' ) ); ?>" data-rex-slider-dots="<?php echo ( is_array( $slider_dots ) ? '1': ( "0" == $slider_dots ? 'true' : 'false' ) ); ?>" data-set-gallery-size="<?php echo esc_attr( ( 1 == $nav_previewed || 1 == $set_gallery_size ) ? 'true' : 'false' ); ?>"<?php echo ( '' !== $wrap_around ? ' data-wrap-around="' . $wrap_around . '"' : '' ); ?> data-rexlider-lazyload="<?php echo ( ! $editor ); ?>">
+		<div data-slider-id="<?php echo $slider_id;?>" class="<?php echo implode(' ', $slider_wrap_classes); ?>" data-rex-slider-animation="<?php echo ( is_array( $slider_animation ) ? 'true': ( "0" == $slider_animation ? 'true' : 'false' ) ); ?>" data-rex-slider-prev-next="<?php echo ( is_array( $slider_prev_next ) ? '1': ( "0" == $slider_prev_next ? 'true' : 'false' ) ); ?>" data-rex-slider-dots="<?php echo ( is_array( $slider_dots ) ? '1': ( "0" == $slider_dots ? 'true' : 'false' ) ); ?>" data-set-gallery-size="<?php echo esc_attr( ( 1 == $nav_previewed || 1 == $set_gallery_size ) ? 'true' : 'false' ); ?>"<?php echo ( '' !== $wrap_around ? ' data-wrap-around="' . $wrap_around . '"' : '' ); ?> data-rexlider-lazyload="<?php echo ( ! $editor ); ?>">
 		<?php
 
 		// creating overlay element
@@ -88,8 +110,6 @@ class Rexbuilder_RexSlider {
 		if ( !empty( $overlay ) ) {
 			$overlay_el = '<div class="slider-overlay" style="background-color:' . $overlay . '"></div>';
 		}
-
-		$slider_is_fluid = false !== strpos($block_classes, self::$SLIDER_FLUID_BLOCK_CLASS);
 
 		if ($slider_is_fluid) {
 			foreach( $slider_gallery as $slide ) {
