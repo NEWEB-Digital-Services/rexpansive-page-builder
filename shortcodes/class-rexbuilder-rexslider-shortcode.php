@@ -42,6 +42,7 @@ class Rexbuilder_RexSlider {
 	 * @version 1.1.3	Add nav preview feature
 	 * @version 1.1.3	Add photoswipe on slider
 	 * @version 2.0.14	Add block_classes shortocde attribute
+	 * @version 2.0.14	Allow to customize render function
 	 */
 	public function render_slider( $atts, $content = null ) {
 		extract( shortcode_atts( array(
@@ -52,6 +53,10 @@ class Rexbuilder_RexSlider {
 			'block_classes' => ''		// classes that comes from parent block
 		), $atts ) );
 
+		$custom_render = apply_filters('rexbuilder_rexslider_custom_render_function', '', $atts);
+		if (!empty($custom_render)) {
+			return $custom_render;
+		}
 		ob_start();
 
 		// slider does not exists, return empty
