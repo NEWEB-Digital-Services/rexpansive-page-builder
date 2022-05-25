@@ -68,20 +68,26 @@ var RexSlider = (function ($) {
       Rexbuilder_Util.startVideoPlugin($video);
     });
 
-    if (true == settings.setGallerySize) {
-      settings.on = {
-        ready: function (e) {
-          // Resizing the parent grid (if present) after the load of the carousel
-          var parentSection = this.$element.parents(".rexpansive_section").eq(0);
-          if (parentSection.length > 0) {
-            var galleryInstance = Rexbuilder_Util.getGalleryInstance(parentSection);
-            if ('undefined' !== galleryInstance) {
-              galleryInstance.updateElementHeight(this.$element.parents(".grid-stack-item").get(0));
-            }
-          }
-        }
-      };
-    }
+    // if (true == settings.setGallerySize) {
+    //   settings.on = {
+    //     ready: function (e) {
+    //       // Resizing the parent grid (if present) after the load of the carousel
+    //       var $parentSection = this.$element.parents(".perfect-grid-gallery").eq(0);
+    //       var parentSection = $parentSection.get(0)
+
+    //       if (!parentSection) return
+
+    //       var galleryInstance = RexGrid.data(parentSection)
+    //       if(!galleryInstance) return
+
+    //       galleryInstance.fixAllBlocksHeights()
+    //       // var galleryInstance = Rexbuilder_Util.getGalleryInstance(parentSection);
+    //       // if ('undefined' !== galleryInstance) {
+    //       //   galleryInstance.updateElementHeight(this.$element.parents(".grid-stack-item").get(0));
+    //       // }
+    //     }
+    //   };
+    // }
 
     // var hasCustomAutoplay = $parentBlock.hasClass('custom-autoplay');    // custom autoplay becomes the default
     var hasCustomAutoplay = ( settings.autoPlay ? true : false );
