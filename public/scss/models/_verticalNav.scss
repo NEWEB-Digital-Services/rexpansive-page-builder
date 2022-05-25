@@ -145,6 +145,15 @@
 			border-width: 5px 0 5px 5px;
 			border-left-color: inherit;
 		}
+
+    &[data-nav-position="left"] {
+      &:after {
+        right: auto;
+        left: -5px;
+        border-width: 5px 5px 5px 0;
+        border-right-color: inherit;
+      }
+    }
 	}
 }
 

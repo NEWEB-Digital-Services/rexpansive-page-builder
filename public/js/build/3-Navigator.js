@@ -242,6 +242,9 @@ var Rex_Navigator = (function ($) {
 		var navigationLabel = document.getElementById('vertical-nav-label');
 		var navigationLinks = Array.prototype.slice.call( document.querySelectorAll('.vertical-nav-link[href]') );
 
+    var position = navigationLabel.getAttribute('data-nav-position')
+    position = 'undefined' !== typeof position ? position : 'right'
+
 		for (var i = 0; i < navigationLinks.length; i++) {
 			navigationLinks[i].addEventListener('mouseenter', function (event) {
 				// When RexClassic is active this function never gets called
@@ -256,7 +259,12 @@ var Rex_Navigator = (function ($) {
 				navigationLabel.style.display = 'inline';
 				navigationLabel.style.opacity = '1';
 				navigationLabel.style.top = ( targetsPositions[targetHref].top + ( targetsPositions[targetHref].height / 2 ) - ( navigationLabel.offsetHeight / 2 ) ) + 'px';
-				navigationLabel.style.right = targetsPositions[targetHref].width * 1.5 + 'px';
+        var positionAmount = targetsPositions[targetHref].width * 1.5 + 'px';
+        if ('right' === position) {
+          navigationLabel.style.right = positionAmount
+        } else {
+          navigationLabel.style.left = positionAmount
+        }
 			});
 
 			navigationLinks[i].addEventListener('mouseleave', function (event) {
