@@ -242,6 +242,8 @@ var Rex_Navigator = (function ($) {
 		var navigationLabel = document.getElementById('vertical-nav-label');
 		var navigationLinks = Array.prototype.slice.call( document.querySelectorAll('.vertical-nav-link[href]') );
 
+    if (null === navigationLabel) return
+
     var position = navigationLabel.getAttribute('data-nav-position')
     position = 'undefined' !== typeof position ? position : 'right'
 
