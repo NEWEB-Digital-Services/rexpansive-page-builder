@@ -844,7 +844,8 @@ class Rexbuilder_Public {
 
 		$response['shortcode'] = $shortcode;
 		$response['shortcode_transformed'] = do_shortcode($shortcode);
-		$response['element_data_html'] = get_post_meta($elementID, "_rex_element_data_html");
+		$form_html = get_post_meta($elementID, "_rex_element_data_html");
+		$response['element_data_html'] = !empty($form_html) ? $form_html : array('<span class="rex-element-data"></span>');
 
 		$postType = get_post_type($elementID);
 		if ($postType == "wpcf7_contact_form") {
