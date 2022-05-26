@@ -295,7 +295,9 @@ if ( ! class_exists( 'Rexbuilder_Meta_Box' ) ) {
                                     if( isset( $block_attr['image_size'] ) && 'undefined' != $block_attr['image_size'] ) :
                                       $background_block_setts['image_size'] = $block_attr['image_size'];
                                       $img_attrs = wp_get_attachment_image_src( $block_attr['id_image_bg_block'], $block_attr['image_size'] );
-                                      $preview_image_url = $img_attrs[0];
+                                      if(false !== $img_attrs) :
+                                        $preview_image_url = $img_attrs[0];
+                                      endif;
                                     else :
                                       $background_block_setts['image_size'] = 'full';
                                       $preview_image_url = $block_attr['image_bg_block'];
