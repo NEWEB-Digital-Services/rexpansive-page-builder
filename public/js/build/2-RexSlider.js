@@ -54,9 +54,9 @@ var RexSlider = (function ($) {
     }
 
 		var originalLazyLoad = $sliderWrap.attr('data-rexlider-lazyload');
-    if ('undefined' != typeof originalLazyLoad && '1' == originalLazyLoad.toString()) {
-      settings.bgLazyLoad = 1;
-      settings.lazyLoad = 1;
+    if ('undefined' != typeof originalLazyLoad && '0' !== originalLazyLoad.toString()) {
+      settings.bgLazyLoad = parseInt(originalLazyLoad);
+      settings.lazyLoad = parseInt(originalLazyLoad);
     }
 
     if ($sliderWrap.hasClass('rex-slider--bottom-interface')) {
