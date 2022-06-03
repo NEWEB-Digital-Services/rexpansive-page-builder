@@ -186,6 +186,11 @@ class Rexbuilder_Block {
 			$type_bg_block = "";
 		}
 
+		$has_popup_video = false;
+		if (-1 !== strpos($block_custom_class, 'popup-video-button')) {
+			$has_popup_video = true;
+		}
+
 		if ( !$editor ) {
 			if ($photoswipe == 'true' && '' == $video_bg_id && '' == $video_bg_url && isset($img_attrs[0]) && '' != $img_attrs[0]) {
 				$block_link_pre .= '<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
@@ -201,7 +206,7 @@ class Rexbuilder_Block {
 				$content = strip_tags($content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br><font>');
 			}
 			if ($linkurl != '') {
-				$block_link_pre .= '<a class="element-link hovered' . $element_link_cc . '" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';
+				$block_link_pre .= '<a class="element-link hovered' . $element_link_cc . ($has_popup_video ? ' popup-video-button' : '') . '" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';
 				$block_link_before .= '</a>';
 				$content = strip_tags($content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br><svg><use><font>');
 			}
