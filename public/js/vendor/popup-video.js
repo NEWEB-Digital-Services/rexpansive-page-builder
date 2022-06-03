@@ -86,6 +86,7 @@
 
 		if ( null === this.element ) return;
 		if ( '' === this.element.href ) return;
+		if ( 'undefined' === typeof this.element.href ) return;
 
 		initialize.call( this );
 
@@ -99,7 +100,8 @@
 	}
 
 	function initialize() {
-		if ( -1 !== this.element.href.search(/https?:\/\/youtu.be\/[a-zA-Z0-9\-\_]+$/g) ) {
+		console.log(this)
+		if ( -1 !== this.element.href.search(/https?:\/\/youtu\.be\/[a-zA-Z0-9\-\_]+$/g) ) {
 			this.typology = 'youtube';
 
 			// get video id
@@ -107,13 +109,14 @@
 			var m = t.exec(this.element.href);
 			this.resource_id = m[1];
 
-		} else if ( -1 !== this.element.href.search(/https?:\/\/vimeo.com\/[a-zA-Z0-9]+$/g) ) {
+		} else if ( -1 !== this.element.href.search(/https?:\/\/vimeo\.com\/[a-zA-Z0-9]+(?:\/[a-zA-Z0-9]+)?$/g) ) {
 			this.typology = 'vimeo';
 
 			// get video id
-			var t1 = /https?:\/\/vimeo.com\/([a-zA-Z0-9]+)$/g;
+			var t1 = /https?:\/\/vimeo\.com\/([a-zA-Z0-9]+)(?:\/([a-zA-Z0-9]+))?$/g;
 			var m1 = t1.exec(this.element.href);
 			this.resource_id = m1[1];
+			this.resource_optional = m1[2];
 
 		} else if ( -1 !== this.element.href.search(/https?:\/\/\S*\.mp4$/g) ) {
 			this.typology = 'mp4';
@@ -141,7 +144,7 @@
 				video_element.setAttribute('allowfullscreen', true);
 				video_element.setAttribute('frameborder', '0');
 				video_element.setAttribute('allow', 'autoplay,fullscreen');
-				video_element.setAttribute('src', 'https://player.vimeo.com/video/' + this.resource_id + '?autoplay=1' );
+				video_element.setAttribute('src', 'https://player.vimeo.com/video/' + this.resource_id + '?autoplay=1' + ('undefined' !== typeof this.resource_optional ? '&h=' + this.resource_optional : '') );
 				break;
 			case 'mp4':
 				video_element = document.createElement('video');
