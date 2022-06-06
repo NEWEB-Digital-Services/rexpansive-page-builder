@@ -75,6 +75,8 @@
 			return;
 		}
 
+		if ( 'undefined' === typeof this.element.href ) return;
+
 		initialize.call(this);
 
 		if( null === this.target ) {
