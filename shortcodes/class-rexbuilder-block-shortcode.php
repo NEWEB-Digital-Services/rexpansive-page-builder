@@ -20,6 +20,23 @@
  */
 class Rexbuilder_Block {
 	private $plugin_name;
+
+	/**
+	 * Class that identifies that a block is a popup content
+	 *
+	 * @var String
+	 * @since 2.0.14
+	 */
+	private $POPUP_CONTENT_BUTTON_CLASSNAME;
+
+	/**
+	 * Class that identifies that a block is a popup video
+	 *
+	 * @var String
+	 * @since 2.0.14
+	 */
+	private $POPUP_VIDEO_BUTTON_CLASSNAME;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -28,6 +45,9 @@ class Rexbuilder_Block {
 	public function __construct()
 	{
 		$this->plugin_name = 'rexpansive-builder';
+
+		$this->POPUP_CONTENT_BUTTON_CLASSNAME = 'popup-content-button';
+		$this->POPUP_VIDEO_BUTTON_CLASSNAME = 'popup-video-button';
 	}
 
 	/**
@@ -186,8 +206,13 @@ class Rexbuilder_Block {
 			$type_bg_block = "";
 		}
 
+		$has_popup_content = false;
+		if (false !== strpos($block_custom_class, $this->POPUP_CONTENT_BUTTON_CLASSNAME)) {
+			$has_popup_content = true;
+		}
+
 		$has_popup_video = false;
-		if (-1 !== strpos($block_custom_class, 'popup-video-button')) {
+		if (false !== strpos($block_custom_class, $this->POPUP_VIDEO_BUTTON_CLASSNAME)) {
 			$has_popup_video = true;
 		}
 
@@ -206,7 +231,7 @@ class Rexbuilder_Block {
 				$content = strip_tags($content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br><font>');
 			}
 			if ($linkurl != '') {
-				$block_link_pre .= '<a class="element-link hovered' . $element_link_cc . ($has_popup_video ? ' popup-video-button' : '') . '" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';
+				$block_link_pre .= '<a class="element-link hovered' . $element_link_cc . ($has_popup_content ? " {$this->POPUP_CONTENT_BUTTON_CLASSNAME}" : '') . ($has_popup_video ? " {$this->POPUP_VIDEO_BUTTON_CLASSNAME}" : '') . '" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';
 				$block_link_before .= '</a>';
 				$content = strip_tags($content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br><svg><use><font>');
 			}
