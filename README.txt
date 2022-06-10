@@ -202,7 +202,7 @@ For the more experienced among us: you can insert CSS anywhere.
 
 = 2.0.14 - June 10, 2022 =
  * Updated: Tested up to Wordpress 6.0
- * Added: Allow closing popup pressing esc key or clicking outside popup
+ * Added: Allow closing popup page pressing esc key or clicking outside popup
  * Added: Allow to customize rexslider render function
  * Added: Add feature to set vertical nav position
  * Added: Allow to having a block that opens a popup video
