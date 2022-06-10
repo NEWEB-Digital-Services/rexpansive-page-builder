@@ -5,6 +5,7 @@
 		<![CDATA[
 			<h4><strong>v2.0.14</strong> - </h4>
 			<p><strong>Updated</strong>: Tested up to Wordpress 6.0</p>
+			<p><strong>Fixed</strong>: Sometimes a row stays or become locked (black background) even if user do not want to drag blocks between rows</p>
 			<h4><strong>v2.0.13</strong> - April 5, 2022</h4>
 			<p><strong>Updated</strong>: Tested up to Wordpress 5.9.2</p>
 			<p><strong>Added</strong>: Allow use of numeric keypad to set measures, like padding or margin</p>
