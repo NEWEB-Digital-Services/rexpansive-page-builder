@@ -200,18 +200,18 @@ For the more experienced among us: you can insert CSS anywhere.
 
 == Changelog ==
 
-= 2.0.14 - =
+= 2.0.14 - June 10, 2022 =
  * Updated: Tested up to Wordpress 6.0
  * Added: Allow closing popup pressing esc key or clicking outside popup
  * Added: Allow to customize rexslider render function
- * Added: Add feature to set vertical nav position (fixing labels placed with js)
+ * Added: Add feature to set vertical nav position
  * Added: Allow to having a block that opens a popup video
  * Added: Allow to having a block that opens a popup page
  * Added: Add block class to customize the link target behavior
  * Fixed: Sometimes a row stays or become locked (black background) even if user do not want to drag blocks between rows
  * Fixed: Import of a new cf7 form cause some problems
- * Fixed: PHP Warning
  * Fixed: Popup video with a Vimeo link
+ * Fixed: PHP Warning
 
 = 2.0.13 - April 5, 2022 =
  * Updated: Tested up to Wordpress 5.9.2

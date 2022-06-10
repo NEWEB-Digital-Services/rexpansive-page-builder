@@ -3,9 +3,18 @@
 	<latest>2.0.11</latest>
 	<changelog>
 		<![CDATA[
-			<h4><strong>v2.0.14</strong> - </h4>
+			<h4><strong>v2.0.14</strong> - June 10, 2022</h4>
 			<p><strong>Updated</strong>: Tested up to Wordpress 6.0</p>
+			<p><strong>Added</strong>: Allow closing popup pressing esc key or clicking outside popup</p>
+			<p><strong>Added</strong>: Allow to customize rexslider render function</p>
+			<p><strong>Added</strong>: Add feature to set vertical nav position </p>
+			<p><strong>Added</strong>: Allow to having a block that opens a popup video</p>
+			<p><strong>Added</strong>: Allow to having a block that opens a popup page</p>
+			<p><strong>Added</strong>: Add block class to customize the link target behavior</p>
 			<p><strong>Fixed</strong>: Sometimes a row stays or become locked (black background) even if user do not want to drag blocks between rows</p>
+			<p><strong>Fixed</strong>: Import of a new cf7 form cause some problems</p>
+			<p><strong>Fixed</strong>: Popup video with a Vimeo link</p>
+			<p><strong>Fixed</strong>: PHP Warning</p>
 			<h4><strong>v2.0.13</strong> - April 5, 2022</h4>
 			<p><strong>Updated</strong>: Tested up to Wordpress 5.9.2</p>
 			<p><strong>Added</strong>: Allow use of numeric keypad to set measures, like padding or margin</p>
