@@ -546,7 +546,8 @@
       initialStateGrid: null,
       mirrorStateGrid: null,
       fullWidthNaturalBackground: false,
-      naturalBackground: false
+      naturalBackground: false,
+      isGridLocked: false
     };
 
     this.$section = this.$element.parents(this._defaults.gridParentWrap);
@@ -2417,6 +2418,8 @@
                     $btn.css("left", e.clientX - elemCoords.left - ( $btn[0].offsetWidth / 2 ) );
                     $btn.css("top", e.clientY - elemCoords.top - ( $btn[0].offsetHeight / 2 ) );
                     $elem.addClass("grid-stack-item--drag-to-row");
+
+                    gallery.properties.isGridLocked = true
                     gallery.$section.addClass("rexpansive-lock-section--overlay");
                   }
                 }, 1500);
@@ -2447,6 +2450,11 @@
             clearTimeout(gallery.doubleDownTimer);
             Rexbuilder_Util_Editor.mouseDownEvent = null;
           }
+        }
+
+        if(gallery.properties.isGridLocked) {
+          Rexbuilder_Util_Editor.releaseRowsLight();
+          gallery.properties.isGridLocked = false;
         }
       }
 
@@ -2858,11 +2866,11 @@
         if (Rexbuilder_Util_Editor.dragAndDropFromParent) {
           return;
         }
-        if(!locked) {
+        if(!gallery.properties.isGridLocked) {
           // Locking rows on drag to premit the drag itself
           setTimeout(function() {
             Rexbuilder_Util_Editor.lockRowsLight(gallery.$section);
-            locked = true;
+            gallery.properties.isGridLocked = true;
           },100);
         }
 
@@ -2933,9 +2941,9 @@
         if (Rexbuilder_Util_Editor.dragAndDropFromParent) {
           return;
         }
-        if(locked) {
+        if(gallery.properties.isGridLocked) {
           Rexbuilder_Util_Editor.releaseRowsLight();
-          locked = false;
+          gallery.properties.isGridLocked = false;
         }
         stop = true;
 
