@@ -3,6 +3,8 @@
 	<latest>2.0.11</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.0.14</strong> - </h4>
+			<p><strong>Updated</strong>: Tested up to Wordpress 6.0</p>
 			<h4><strong>v2.0.13</strong> - April 5, 2022</h4>
 			<p><strong>Updated</strong>: Tested up to Wordpress 5.9.2</p>
 			<p><strong>Added</strong>: Allow use of numeric keypad to set measures, like padding or margin</p>

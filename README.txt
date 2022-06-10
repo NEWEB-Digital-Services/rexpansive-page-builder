@@ -3,8 +3,8 @@ Contributors: neweb_agency
 Donate link: http://www.neweb.info/
 Tags: builder, composer, content builder, custom, drag and drop, editor, page builder, page composer, responsive, theme
 Requires at least: 4.2
-Tested up to: 5.9.2
-Stable tag: 2.0.13
+Tested up to: 6.0
+Stable tag: 2.0.14
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -199,6 +199,9 @@ For the more experienced among us: you can insert CSS anywhere.
 11. Clean interface
 
 == Changelog ==
+
+= 2.0.14 - =
+ * Updated: Tested up to Wordpress 6.0
 
 = 2.0.13 - April 5, 2022 =
  * Updated: Tested up to Wordpress 5.9.2
