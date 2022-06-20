@@ -100,7 +100,6 @@
 	}
 
 	function initialize() {
-		console.log(this)
 		if ( -1 !== this.element.href.search(/https?:\/\/youtu\.be\/[a-zA-Z0-9\-\_]+$/g) ) {
 			this.typology = 'youtube';
 
