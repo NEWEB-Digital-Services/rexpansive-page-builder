@@ -27,23 +27,20 @@ defined('ABSPATH') or exit;
 					<div id="iconsSpinner" class="spinner"></div>
 					<div id="iconsPreview">
 					<?php
-					$upload_dir = wp_upload_dir();
-					$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
+					$icons_name_list = Rexbuilder_Utilities::get_icons_name_list();
 
-					if ( file_exists( $uploads_dirname . '/assets/sprite-list.json' ) )
+					if ($icons_name_list)
 					{
-						$sprite_list = file_get_contents( $uploads_dirname . '/assets/sprite-list.json' );
-						$sprite_a = json_decode( $sprite_list, true );
-						foreach( $sprite_a['l-svg-icons'] as $spriteId )
+						foreach ($icons_name_list as $name)
 						{
-					?>
-					<span class="preview-wrap" data-sprite-id="<?php echo $spriteId; ?>">
-						<i class="icon">
-							<svg><use xlink:href="#<?php echo $spriteId; ?>"></use></svg>
-						</i>
-						<span class="label"><?php echo $spriteId; ?></span>
-					</span>
-					<?php
+						?>
+						<span class="preview-wrap" data-sprite-id="<?php echo $name; ?>">
+							<i class="icon">
+								<svg><use xlink:href="#<?php echo $name; ?>"></use></svg>
+							</i>
+							<span class="label"><?php echo $name; ?></span>
+						</span>
+						<?php
 						}
 					}
 					?>

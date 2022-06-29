@@ -256,6 +256,25 @@ class Rexbuilder_Utilities {
 	}
 
 	/**
+	 * Get the list of uploaded svg icons
+	 *
+	 * @return array | null
+	 * @since 2.1.0
+	 */
+	public static function get_icons_name_list()
+	{
+		$upload_dir = wp_upload_dir();
+		$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
+
+		if ( !file_exists( $uploads_dirname . '/assets/sprite-list.json' ) ) return null;
+
+		$sprite_list = file_get_contents( $uploads_dirname . '/assets/sprite-list.json' );
+		$sprite_a = json_decode( $sprite_list, true );
+
+		return array_key_exists('l-svg-icons', $sprite_a) ? $sprite_a['l-svg-icons'] : null;
+	}
+
+	/**
 	 * Create a new Rexbuilder valid ID, checking if not already present on
 	 * a common pool of ids
 	 *
