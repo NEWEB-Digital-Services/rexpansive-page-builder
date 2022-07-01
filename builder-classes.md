@@ -28,6 +28,8 @@
   - Disables a grid on front end (destroy rex-grid instance, set block heights and launch lazy load)
 - `.sticky-section`
   - makes a section **_sticky_**, whose background remains attached to the viewport while scrolling the section content
+- `.overflowed-row`
+  - makes a section overflow visible
 
 ## BLOCKS
 
@@ -42,6 +44,8 @@
   - Removes a block from the grid on front-end, preventing its instantiation
 - `.rex-num-spin__block-scrolled`
   - launch a spin when its block container is visible (obviously must be a spin inside the block)
+- `.overflowed-block`
+  - makes a block overflow visible
 
 ## OTHER
 
