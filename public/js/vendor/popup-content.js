@@ -71,6 +71,16 @@
 			this.options = defaults;
 		}
 
+		var inlineOptionsAttr = this.element.getAttribute('data-popup-content-options')
+		if (null !== inlineOptionsAttr) {
+			try {
+				var inlineOptions = JSON.parse(inlineOptionsAttr)
+				this.options = extendDefaults(this.options, inlineOptions);
+			} catch (error) {
+				console.warn('[PopupContent]: inline options passed in wrong manner')
+			}
+		}
+
 		if ( null === this.element ) {
 			return;
 		}
