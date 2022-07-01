@@ -65,4 +65,16 @@
 	// 		}
 	// 	}
 	// }
+	@if not $live_builder {
+		&.overflowed-row {
+			.rex-row__dimension,
+			.perfect-grid-gallery,
+			.perfect-grid-item {
+				overflow:visible;
+			}
+			.responsive-overlay {
+				overflow: hidden;
+			}
+		}
+	}
 }
