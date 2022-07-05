@@ -55,7 +55,11 @@ var Rexbuilder_Photoswipe = (function($){
 		/*Setting photoswipe*/
 
 		// selects the alignment of the image
-		var align = $img.attr("class").split(' ')[1];
+		var classes = $img.attr("class")
+		var align = 'alignone'
+		if ('undefined' !== typeof classes) {
+			align = $img.attr("class").split(' ')[1];
+		}
 
 		tmpl.arg = "image";
 		$img.before(tmpl("tmpl-photoswipe-block-inline", {
