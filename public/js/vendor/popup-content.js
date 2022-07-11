@@ -61,7 +61,8 @@
 			listenESCKey: false,
 			listenClickOutside: false,
 			closeCallback: null,
-			openCallback: null
+			openCallback: null,
+			iframeClickCallback: null
 		};
 
 		// Create options by extending defaults with the passed in arugments
@@ -314,21 +315,29 @@
 	 * @since  2.0.5
 	 */
 	function onIframeClick( event ) {
-		if ('A' === event.target.tagName.toUpperCase() && '' !== event.target.href ) {
-			event.preventDefault();
+		if ('A' !== event.target.tagName.toUpperCase() || '' === event.target.href ) return
 
-			// close popup
-			removeClass(this.target, this.options.popupViewClass);
-			removeClass(document.body, this.options.bodyPopUpViewClass);
+		event.preventDefault();
 
-			var data = {
-				rexliveEvent: true,
-				eventName: "popUpContent:changePage",
-				href: event.target.href
-			};
-
-			window.parent.postMessage(data, "*");
+		var changePage = true
+		if (this.options.iframeClickCallback) {
+			var callBackResponse = this.options.iframeClickCallback.call(this, event)
+			changePage = 'undefined' !== typeof callBackResponse ? callBackResponse : true
 		}
+
+		if (true !== changePage) return
+
+		// close popup
+		removeClass(this.target, this.options.popupViewClass);
+		removeClass(document.body, this.options.bodyPopUpViewClass);
+
+		var data = {
+			rexliveEvent: true,
+			eventName: "popUpContent:changePage",
+			href: event.target.href
+		};
+
+		window.parent.postMessage(data, "*");
 	}
 
 	function generatePopUpContainer( options ) {
