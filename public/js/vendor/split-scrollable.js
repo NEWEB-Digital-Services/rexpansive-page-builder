@@ -71,6 +71,8 @@
 		var defaults = {
 			splitScrollElClass: 'split-scrollable-container',
 			splitScrollActiveElClass: 'split-scrollable--active',
+			splitScrollLeftClass: 'split-scrollable--left',
+			splitScrollRightClass: 'split-scrollable--right',
 			scrollElsWrapClass: 'scroll-block-wrapper',
 			scrollElsClass: 'scroll-block',
 			scrollElsToWatchClass: 'scroll-block',
@@ -79,6 +81,7 @@
 			opacityElsClass: 'opacity-block',
 			opacityFakeElClass: 'opacity-block-fake',
 			opacityElActiveClass: 'opacity-block-active',
+			scrollSide: 'left',		// left | right
 			initializeComplete: null
 		};
 
@@ -89,6 +92,7 @@
 			this.options = defaults;
 		}
 
+		_checkElementClasses.call(this);
 		_initialize.call(this);
 		_addWrappers.call(this);
 
@@ -107,6 +111,16 @@
 		// simulateLast.call(this);
 		instances.push( this );
 	};
+
+	function _checkElementClasses() {
+		if (hasClass(this.element, this.options.splitScrollLeftClass)) {
+			this.options.scrollSide = 'left'
+		}
+
+		if (hasClass(this.element, this.options.splitScrollRightClass)) {
+			this.options.scrollSide = 'right'
+		}
+	}
 
 	function _initialize() {
 		this.scrollEls = [].slice.call( this.element.getElementsByClassName(this.options.scrollElsClass) );
@@ -161,8 +175,13 @@
 			this.splitScrollWrapper = document.createElement('div');
 			addClass( this.splitScrollWrapper, this.options.splitScrollElClass );
 			this.scrollElsWrapper.parentNode.appendChild(this.splitScrollWrapper);
-			this.splitScrollWrapper.appendChild(this.scrollElsWrapper);
-			this.splitScrollWrapper.appendChild(this.opacityElsWrapper);
+			if ('right' === this.options.scrollSide) {
+				this.splitScrollWrapper.appendChild(this.opacityElsWrapper);
+				this.splitScrollWrapper.appendChild(this.scrollElsWrapper);
+			} else {
+				this.splitScrollWrapper.appendChild(this.scrollElsWrapper);
+				this.splitScrollWrapper.appendChild(this.opacityElsWrapper);
+			}
 		} else {
 			this.splitScrollWrapper = this.element;
 		}
