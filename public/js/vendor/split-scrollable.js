@@ -330,6 +330,8 @@
 				}
 				if (this.opacityEls[i]) {
 					addClass( this.opacityEls[i], this.options.opacityElActiveClass );
+				} else {
+					addClass( this.opacityEls[this.opacityEls.length - 1], this.options.opacityElActiveClass );
 				}
 			} else {
 				if (this.scrollEls[i]) {
