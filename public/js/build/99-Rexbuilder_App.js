@@ -365,11 +365,13 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   function launchRexScrollify() {
-    // var $animationBlocks = $(document.getElementsByClassName( 'rs-animation' ));
-    var $animationBlocks = $(document.querySelectorAll( '.rs-animation:not(.deactivate-rexpansive-animation)' ) );
-    $animationBlocks.rexScrollify({
-      mobile: false
-    });
+    Rexbuilder_Util.$rexContainer.imagesLoaded({ background: true }, function() {
+      // var $animationBlocks = $(document.getElementsByClassName( 'rs-animation' ));
+      var $animationBlocks = $(document.querySelectorAll( '.rs-animation:not(.deactivate-rexpansive-animation)' ) );
+      $animationBlocks.rexScrollify({
+        mobile: false
+      });
+    })
   }
 
   /**
