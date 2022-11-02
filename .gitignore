@@ -9,4 +9,5 @@ package-lock.json
 /test-*/
 /notes/
 
+.vscode/
 diff.txt
