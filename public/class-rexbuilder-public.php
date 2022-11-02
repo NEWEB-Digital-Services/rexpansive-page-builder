@@ -326,6 +326,11 @@ class Rexbuilder_Public {
 			if ( false !== strpos( $customEffects, 'rex-indicator__placeholder' ) ) {
 				wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
 			}
+			
+			if ( false !== strpos( $customEffects, 'RexIndicator' ) ) {
+				wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
+			}
+
 
 			if( !Rexbuilder_Utilities::isBuilderLive() ) {
 				if ( false !== strpos( $customEffects, 'rex-effect' ) ) {
@@ -545,6 +550,9 @@ class Rexbuilder_Public {
 			'popUpVideo' => array(
 				'closeOnEnd' => false
 			),
+			'rexIndicator' => array(
+				'collapse_dimension' => 768,
+			),
 			'slider' => array(
 				'arrowShape' => 'M 71.080084,1.034481 C 71.763642,0.34482599 72.61809,-1.250001e-8 73.557983,-1.250001e-8 c 0.939893,0 1.794341,0.34482600250001 2.477899,1.03448101250001 1.367117,1.37931 1.367117,3.620689 0,5 L 32.459031,49.999998 76.035882,93.965515 c 1.367117,1.379311 1.367117,3.62069 0,5 -1.367117,1.379315 -3.588681,1.379315 -4.955798,0 L 25.025333,52.499998 c -1.367117,-1.37931 -1.367117,-3.62069 0,-5 l 46.054751,-46.465517 0,0 z'
 			),
@@ -627,7 +635,7 @@ class Rexbuilder_Public {
 	 */
 	public function remove_shortcodes_from_live() {
 		if ( Rexbuilder_Utilities::isBuilderLive() ) {
-			$shortcodes = apply_filters( 'rexpansive_builder_remove_shortcodes_live', array( 'RexTimelinePro', 'RexTimelineProEvent', 'RexliveIcon' ) );
+			$shortcodes = apply_filters( 'rexpansive_builder_remove_shortcodes_live', array( 'RexTimelinePro', 'RexTimelineProEvent', 'RexliveIcon', 'RexIndicator' ) );
 			foreach( $shortcodes as $shortcode ) {
 				remove_shortcode( $shortcode );
 			}

@@ -1800,6 +1800,10 @@ var Rex_Save_Listeners = (function($) {
         active: false
       },
       {
+        condition: 'RexIndicator',
+        active: false
+      },
+      {
         condition: 'popup-content-button',
         active: false
       },

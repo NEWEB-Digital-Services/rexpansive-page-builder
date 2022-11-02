@@ -42,8 +42,12 @@ class Rexbuilder_Indicator {
 			'color_line' => '',
 			'from' => 'inside',		// inside|outside
 			'to' => 'bottom',		// top|right|bottom|left
+			'to_amount' => 'auto',	// auto|all
 			'position' => 'absolute',	// static|absolute,
-			'classes' => ''
+			'relative_to' => 'block', 		// block|start|parent
+			'realtive_to_parent_position' => '50',	// precentage position from the top parent
+			'classes' => '',
+			'wrap_classes' => ''
 		), $atts ) );
 
 		if( empty( $color_dot ) ) {
@@ -65,21 +69,23 @@ class Rexbuilder_Indicator {
 			$direction .= 'vertical';
 		}
 
-		$wrap_classes = '';
+		$wrap = '';
 		if( $position == 'absolute' ) {
-			$wrap_classes .= 'rex-indicator__placeholder';
+			$wrap .= 'rex-indicator__placeholder';
 		} else {
-			$wrap_classes .= 'rex-indicator__standard';
+			$wrap .= 'rex-indicator__standard';
 		}
 
-		if( "" !== $classes ) {
-			$wrap_classes .= ' ' . $classes;
+		$wrap .= ' rex-indicator__' . $relative_to . '-relative';
+
+		if( "" !== $wrap_classes ) {
+			$wrap .= ' ' . $wrap_classes;
 		}
 
 		ob_start();
 
-?><div class="<?php echo $wrap_classes; ?>">
-	<div class="rex-indicator__wrap--<?php echo $position; ?>" data-ri-from="<?php echo esc_attr( $from ); ?>" data-ri-to="<?php echo esc_attr( $to ); ?>">
+?><span class="<?php echo $wrap; ?>">
+	<span class="rex-indicator__wrap rex-indicator__wrap--<?php echo $position; ?><?php echo ( "" != $classes ? ' ' . $classes : '' ); ?>" data-ri-from="<?php echo esc_attr( $from ); ?>" data-ri-to="<?php echo esc_attr( $to ); ?>" data-ri-relative-to="<?php echo esc_attr( $relative_to ); ?>" data-ri-relative-to-parent-position="<?php echo esc_attr( $realtive_to_parent_position ); ?>" data-ri-to-amount="<?php echo esc_attr($to_amount); ?>">
 		<span class="<?php echo esc_attr( $direction ); ?>">
 		<?php if( ( ( $to == 'left' || $to == 'top' ) && ( $from == 'inside' ) ) || ( ( $to == 'right' || $to == 'bottom' ) && ( $from == 'outside' ) ) ) { ?>
 			<span class="rex-indicator__dot"<?php echo $color_dot_style ?>></span>
@@ -89,9 +95,9 @@ class Rexbuilder_Indicator {
 			<span class="rex-indicator__dot"<?php echo $color_dot_style ?>></span>
 		<?php } ?>
 		</span>
-	</div>
+		</span>
 	<?php if( $position == 'static' && "" != $content ) { ?><div><?php echo do_shortcode( $content ); ?></div><?php } ?>
-</div>
+</span>
 <?php
 
 		return ob_get_clean();

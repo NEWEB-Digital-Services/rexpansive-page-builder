@@ -50,10 +50,13 @@
     this._defaults = defaults;
     this._name = pluginName;
 
-    this.settings.from = this.$element.find(this.settings.indicator).attr('data-ri-from') || this.settings.from;
-    this.settings.to = this.$element.find(this.settings.indicator).attr('data-ri-to') || this.settings.to;
-    this.settings.relative_to = this.$element.find(this.settings.indicator).attr('data-ri-relative-to') || this.settings.relative_to;
-    this.settings.relative_to_parent_position = this.$element.find(this.settings.indicator).attr('data-ri-relative-to-parent-position') || this.settings.relative_to_parent_position;
+    this.$indicator = this.$element.find(this.settings.indicator)
+
+    this.settings.from = this.$indicator.attr('data-ri-from') || this.settings.from;
+    this.settings.to = this.$indicator.attr('data-ri-to') || this.settings.to;
+    this.settings.relative_to = this.$indicator.attr('data-ri-relative-to') || this.settings.relative_to;
+    this.settings.relative_to_parent_position = this.$indicator.attr('data-ri-relative-to-parent-position') || this.settings.relative_to_parent_position;
+    this.settings.to_amount = this.$indicator.attr('data-ri-to-amount') || this.settings.to_amount
 
     this.settings.relative_to_parent_position = parseInt( this.settings.relative_to_parent_position ) / 100;
 
@@ -67,8 +70,8 @@
   // Avoid Plugin.prototype conflicts
   $.extend(rexIndicator.prototype, {
     init: function () {
-      
       this.move_indicator();
+      this.set_indicator_width()
       this.place_indicator();
 
       var that = this;
@@ -81,6 +84,7 @@
       this.$after_ref.on("relayoutComplete", function() {
         that.place_indicator();
       });
+      console.log(this)
     },
 
     /**
@@ -101,21 +105,21 @@
 
       switch( this.settings.relative_to ) {
         case 'block':
-          if( viewport().width >= parseInt(_plugin_frontend_settings.collapse_dimension) ) {
+          if( viewport().width >= parseInt(_plugin_frontend_settings.rexIndicator.collapse_dimension) ) {
             p = this._get_position_desktop_block_relative();
           } else {
             p = this._get_position_mobile();
           }
           break;
         case 'start':
-          if( viewport().width >= parseInt(_plugin_frontend_settings.collapse_dimension) ) {
+          if( viewport().width >= parseInt(_plugin_frontend_settings.rexIndicator.collapse_dimension) ) {
             p = this._get_position_desktop_start_relative();
           } else {
             p = this._get_position_mobile();
           }
           break;
         case 'parent': {
-          if( viewport().width >= parseInt(_plugin_frontend_settings.collapse_dimension) ) {
+          if( viewport().width >= parseInt(_plugin_frontend_settings.rexIndicator.collapse_dimension) ) {
             p = this._get_position_desktop_parent_relative();
           } else {
             p = this._get_position_mobile();
@@ -127,6 +131,19 @@
       }
 
       this.$line_ref.offset(p);
+    },
+
+    /**
+     * Set indicator width 
+     * @returns void
+     */
+    set_indicator_width: function() {
+      if (this.settings.to_amount === 'auto') return
+      
+      const L = this.element.getBoundingClientRect().x
+      const l =  this.$line_ref.parent().get(0).getBoundingClientRect().x
+      console.log(L - l)
+      this.$line_ref.get(0).style.setProperty('--rex-indicator-wrap-width', `${L - l}px`)
     },
 
     /**

@@ -15,6 +15,9 @@
   }
 }
 
+.rex-indicator__wrap {
+  --rex-indicator-wrap-width: #{$indicator-line-dimension + $indicator-dot-width};
+}
 .rex-indicator__wrap--absolute {
   position:absolute;
   z-index:100;
@@ -48,9 +51,11 @@
   display:block;
 }
 .rex-indicator__wrap--horizontal {
-  min-width: $indicator-line-dimension + $indicator-dot-width;
+  // min-width: $indicator-line-dimension + $indicator-dot-width;
+  width: var(--rex-indicator-wrap-width);
   .rex-indicator__line {
-    width:$indicator-line-dimension;
+    // width:$indicator-line-dimension;
+    width: calc( 100% - #{$indicator-dot-width} );
     height:1px;
   }
 }
