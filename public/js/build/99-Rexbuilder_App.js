@@ -250,7 +250,7 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   function launchIndicators( $grids ) {
-    if ( 'undefined' === typeof rexIndicator ) return;
+    if ( 'undefined' === typeof $().rexIndicator ) return;
 
     $grids.find(".rex-indicator__placeholder").rexIndicator();
   }
