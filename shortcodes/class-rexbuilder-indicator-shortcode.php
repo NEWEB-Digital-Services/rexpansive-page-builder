@@ -40,6 +40,8 @@ class Rexbuilder_Indicator {
 			'color' => '#000',
 			'color_dot' => '',
 			'color_line' => '',
+			'dot_size' => '', 		// measure in pixel
+			'line_style' => '',		// solid|dotted|dashed|... (css border style prop)
 			'from' => 'inside',		// inside|outside
 			'to' => 'bottom',		// top|right|bottom|left
 			'to_amount' => 'auto',	// auto|all
@@ -62,6 +64,14 @@ class Rexbuilder_Indicator {
 
 		array_push($rules_arr, '--rex-indicator-dot-background-color:' . $color_dot);
 		array_push($rules_arr, '--rex-indicator-line-background-color:' . $color_line);
+
+		if (!empty($line_style)) {
+			array_push($rules_arr, '--rex-indicator-line-style:' . $line_style);
+		}
+
+		if (!empty($dot_size)) {
+			array_push($rules_arr, '--rex-indicator-dot-size:' . $dot_size);
+		}
 
 		$wrap_styles = '';
 		if (!empty($rules_arr)) {
