@@ -3,6 +3,7 @@
  * @version 1.0.0
  *
  *  Made by NEWEB - Digital Agency
+ * @preserve
  */
 // the semi-colon before function invocation is a safety net against concatenated
 // scripts and/or other plugins which may not be closed properly.
@@ -86,7 +87,6 @@
       this.$after_ref.on('relayoutComplete', function () {
         that.place_indicator()
       })
-      console.log(this)
     },
 
     /**
@@ -270,7 +270,6 @@
           if (this.settings.to_amount === 'auto') {
             p.top = b_offset.top + this.$block_ref.outerHeight() - (this.$line_ref.height() / 2)
           } else {
-            console.log(this.$element)
             p.top = this.$element.offset().top + (this.element.getBoundingClientRect().height / 2)
           }
         }
