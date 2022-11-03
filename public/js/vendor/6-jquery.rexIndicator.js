@@ -63,6 +63,8 @@
     this.$line_ref = this.$element.children(this.settings.indicator);
     this.$block_ref = this.$element.parents(this.settings.block_parent);
     this.$after_ref = this.$element.parents(this.settings.after);
+    this.$line_ref_moved_parent = null
+    this.line_ref_moved_parent = null
 
     this.init();
   }
@@ -71,7 +73,7 @@
   $.extend(rexIndicator.prototype, {
     init: function () {
       this.move_indicator();
-      this.set_indicator_width()
+      this.set_indicator_dimension()
       this.place_indicator();
 
       var that = this;
@@ -92,6 +94,8 @@
      */
     move_indicator: function() {
       this.$after_ref.after(this.$line_ref);
+      this.$line_ref_moved_parent = this.$line_ref.parent()
+      this.line_ref_moved_parent = this.$line_ref_moved_parent.get().pop()
     },
 
     /**
@@ -134,18 +138,32 @@
     },
 
     /**
-     * Set indicator width 
+     * Set indicator dimension
      * @returns void
      */
-    set_indicator_width: function() {
+    set_indicator_dimension: function() {
       if (this.settings.to_amount === 'auto') return
       
       // todo: refactor
-      const L = this.element.getBoundingClientRect().x
-      const l =  this.$line_ref.parent().get(0).getBoundingClientRect().x
-      console.log(L - l)
-      this.$line_ref.get(0).style.setProperty('--rex-indicator-wrap-width', `${L - l}px`)
-    },
+      // todo: set height when indicator to bottom/top
+      switch (this.settings.to) {
+        case 'left': {
+          const L = this.element.getBoundingClientRect().x
+          const l =  this.line_ref_moved_parent.getBoundingClientRect().x
+          this.$line_ref.get(0).style.setProperty('--rex-indicator-wrap-width', `${L - l}px`)
+          break
+        }
+        case 'right': {
+          const info = this.line_ref_moved_parent.getBoundingClientRect()
+          const L = this.element.getBoundingClientRect().x
+          const newWidth = info.x + info.width - L
+          this.$line_ref.get().pop().style.setProperty('--rex-indicator-wrap-width', `${newWidth}px`)
+          break
+        }
+        default:
+          break
+      }
+   },
 
     /**
      * Position relative to the block
@@ -249,15 +267,14 @@
           if (this.settings.to_amount === 'auto') {
             p.left = b_offset.left - (this.$line_ref.width() / 2);
           } else {
-            const line_parent_offset = this.$line_ref.parent().get().pop().getBoundingClientRect() 
+            const line_parent_offset = this.line_ref_moved_parent.getBoundingClientRect() 
             p.left = line_parent_offset.left
           }
         } else if( this.settings.to == 'right' ) {
           if (this.settings.to_amount === 'auto') {
             p.left = b_offset.left + this.$block_ref.outerWidth() - (this.$line_ref.width() / 2);
           } else {
-            const line_parent_offset = this.$line_ref.parent().get().pop().getBoundingClientRect() 
-            console.log(line_parent_offset)
+            const line_parent_offset = this.line_ref_moved_parent.getBoundingClientRect() 
             p.left = line_parent_offset.left + line_parent_offset.width - this.$line_ref.width();
           }
         }
