@@ -61,6 +61,7 @@
     this.settings.relative_to_parent_position = parseInt( this.settings.relative_to_parent_position ) / 100;
 
     this.$line_ref = this.$element.children(this.settings.indicator);
+    this.line_ref = this.$line_ref.get().pop()
     this.$block_ref = this.$element.parents(this.settings.block_parent);
     this.$after_ref = this.$element.parents(this.settings.after);
     this.$line_ref_moved_parent = null
@@ -150,14 +151,22 @@
         case 'left': {
           const L = this.element.getBoundingClientRect().x
           const l =  this.line_ref_moved_parent.getBoundingClientRect().x
-          this.$line_ref.get(0).style.setProperty('--rex-indicator-wrap-width', `${L - l}px`)
+          this.line_ref.style.setProperty('--rex-indicator-wrap-width', `${L - l}px`)
           break
         }
         case 'right': {
           const info = this.line_ref_moved_parent.getBoundingClientRect()
           const L = this.element.getBoundingClientRect().x
           const newWidth = info.x + info.width - L
-          this.$line_ref.get().pop().style.setProperty('--rex-indicator-wrap-width', `${newWidth}px`)
+          this.line_ref.style.setProperty('--rex-indicator-wrap-width', `${newWidth}px`)
+          break
+        }
+        case 'bottom': {
+          // const
+          const parentInfo = this.$after_ref.get().pop().getBoundingClientRect()
+          const elementInfo = this.element.getBoundingClientRect()
+          const newHeight = parentInfo.y + parentInfo.height - elementInfo.y - (elementInfo.height / 2) 
+          this.line_ref.style.setProperty('--rex-indicator-wrap-height', `${newHeight}px`)
           break
         }
         default:
@@ -253,15 +262,28 @@
         p.top = this.$element.offset().top + ( this.$element.outerHeight(true) / 2 ) - (this.$line_ref.height() / 2)
       } else {
         if( this.settings.to == 'top' ) {
-          p.top = b_offset.top - (this.$line_ref.height() / 2);
+          if (this.settings.to_amount === 'auto') {
+            p.top = b_offset.top - (this.$line_ref.height() / 2);
+          } else {
+            // todo
+          }
         } else if ( this.settings.to == 'bottom' ) {
-          p.top = b_offset.top + this.$block_ref.outerHeight() - (this.$line_ref.height() / 2);
+          if (this.settings.to_amount === 'auto') {
+            p.top = b_offset.top + this.$block_ref.outerHeight() - (this.$line_ref.height() / 2);
+          } else {
+            console.log(this.$element)
+            p.top = this.$element.offset().top + ( this.element.getBoundingClientRect().height / 2 )
+          }
         }
       }
       
       // define left position
       if( this.settings.to == 'top' || this.settings.to == 'bottom' ) {
-        p.left = p_offset.left + (this.$line_ref.width() / 2);
+        if (this.settings.to_amount === 'auto') {
+          p.left = p_offset.left + (this.$line_ref.width() / 2);
+        } else {
+          p.left = this.$element.offset().left - (this.$line_ref.width() / 2)
+        }
       } else {
         if( this.settings.to == 'left' ) {
           if (this.settings.to_amount === 'auto') {
@@ -275,6 +297,7 @@
             p.left = b_offset.left + this.$block_ref.outerWidth() - (this.$line_ref.width() / 2);
           } else {
             const line_parent_offset = this.line_ref_moved_parent.getBoundingClientRect() 
+            // todo: take count of indicator width
             p.left = line_parent_offset.left + line_parent_offset.width - this.$line_ref.width();
           }
         }
