@@ -1007,50 +1007,49 @@ var Rexbuilder_App = (function($) {
    * @return {void}
    */
   function launchFrontEndEffects() {
-    if( !Rexbuilder_Util.editorMode ) {
-			disableGrids();
+    if( Rexbuilder_Util.editorMode ) return
+    disableGrids();
 
-      Rexbuilder_Photoswipe.init('.photoswipe-gallery');
+    Rexbuilder_Photoswipe.init('.photoswipe-gallery');
 
-      // launch odometer
-      // launchOdometers();
+    // launch odometer
+    // launchOdometers();
 
-      // inline photoswipe
-      launchInlineGallery();
+    // inline photoswipe
+    launchInlineGallery();
 
-      // launch distortion effect
-      launchEffectDistortion();
+    // launch distortion effect
+    launchEffectDistortion();
 
-      // launch border space animated
-      launchBorderSpaceAnimated();
+    // launch border space animated
+    launchBorderSpaceAnimated();
 
-      // sticky sections
-      launchStickySections();
+    // sticky sections
+    launchStickySections();
 
-      // launch rexScrolled
-      launchRexScrolled( $sections );
+    // launch rexScrolled
+    launchRexScrolled( $sections );
 
-      // launch rexScrollify
-      if (1 == _plugin_frontend_settings.animations ) {
-        launchRexScrollify();
-      }
-
-      // launch distance accordions
-      launchDistanceAccordion();
-      // launch popUpContent
-      launchPopUpContent();
-      // launch popUpVideo
-      launchPopUpVideo();
-      // launch splitScrollable
-      launchSplitScrollable();
-
-      launchParticleSwarm();
-
-      launchIndicators();
-
-      // listen iframe events (for popupcontent)
-      listenPopUpContentEvents();
+    // launch rexScrollify
+    if (1 == _plugin_frontend_settings.animations ) {
+      launchRexScrollify();
     }
+
+    // launch distance accordions
+    launchDistanceAccordion();
+    // launch popUpContent
+    launchPopUpContent();
+    // launch popUpVideo
+    launchPopUpVideo();
+    // launch splitScrollable
+    launchSplitScrollable();
+
+    launchParticleSwarm();
+
+    launchIndicators();
+
+    // listen iframe events (for popupcontent)
+    listenPopUpContentEvents();
   }
 
 	/**
@@ -1306,8 +1305,6 @@ var Rexbuilder_App = (function($) {
 
     // autoplay sliders
     RexSlider.startAutoPlay();
-
-    
 
     checkEmptyRows();
 		launchFrontEndEffects();
