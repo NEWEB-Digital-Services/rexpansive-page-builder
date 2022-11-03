@@ -16,7 +16,11 @@
 }
 
 .rex-indicator__wrap {
-  --rex-indicator-wrap-width: #{$indicator-line-dimension + $indicator-dot-width};
+  --rex-indicator-dot-size: #{$indicator-dot-size};
+  --rex-indicator-dot-width: var(--rex-indicator-dot-size);
+  --rex-indicator-dot-height: var(--rex-indicator-dot-size);
+  --rex-indicator-wrap-width: #{$indicator-line-dimension + $indicator-dot-size};
+  --rex-indicator-wrap-height: #{$indicator-line-dimension + $indicator-dot-size};
 }
 .rex-indicator__wrap--absolute {
   position:absolute;
@@ -41,8 +45,8 @@
 
 .rex-indicator__dot {
   background-color:#009ddf;
-  width:$indicator-dot-width;
-  height:$indicator-dot-width;
+  width:$indicator-dot-size;
+  height:$indicator-dot-size;
   display:block;
   border-radius:50%;
 }
@@ -51,11 +55,11 @@
   display:block;
 }
 .rex-indicator__wrap--horizontal {
-  // min-width: $indicator-line-dimension + $indicator-dot-width;
+  // min-width: $indicator-line-dimension + $indicator-dot-size;
   width: var(--rex-indicator-wrap-width);
   .rex-indicator__line {
     // width:$indicator-line-dimension;
-    width: calc( 100% - #{$indicator-dot-width} );
+    width: calc( 100% - #{$indicator-dot-size} );
     height:1px;
   }
 }
