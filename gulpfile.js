@@ -7,6 +7,7 @@ const sass = require('gulp-sass');
 const plumber = require('gulp-plumber');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
+const saveLicense = require('uglify-save-license')
 const size = require('gulp-size');
 const autoprefixer = require('gulp-autoprefixer');
 const rename = require('gulp-rename');
@@ -309,7 +310,7 @@ var builderlive_public_editor = [
 function builderliveEditor(cb) {
 	cb();
 	return src(builderlive_public_editor)
-		.pipe(uglify({ preserveComments: 'license' }).on('error', gulpUtil.log))
+		.pipe(uglify({ /*preserveComments: 'license'*/output:{comments: saveLicense} }).on('error', gulpUtil.log))
 		.pipe(concat('builderlive-editor.js'))
 		.pipe(size({ title: 'Builderlive Editor' }))
 		.pipe(dest('public/js'));
@@ -359,7 +360,7 @@ var builderlive_public = [
 
 function builderlive(cb) {
 	return src(builderlive_public)
-		.pipe(uglify({ preserveComments: 'license' }).on('error', gulpUtil.log))
+		.pipe(uglify({ output:{comments:saveLicense} }/*preserveComments: 'license'*/ ).on('error', gulpUtil.log))
 		.pipe(concat('builderlive-public.js'))
 		.pipe(size({ title: 'Builderlive' }))
 		.pipe(dest('public/js'));
@@ -448,7 +449,7 @@ var effects_js_src = [
 function minifyExternal(cb) {
 	effects_js_src.forEach(function (effect_src) {
 		return src(effect_src)
-			.pipe(uglify({ preserveComments: 'license' }).on('error', gulpUtil.log))
+			.pipe(uglify({ /*preserveComments: 'license'*/output:{comments:saveLicense} }).on('error', gulpUtil.log))
 			.pipe(rename({ suffix: '.min' }))
 			.pipe(dest('public/js/vendor'));
 	});
