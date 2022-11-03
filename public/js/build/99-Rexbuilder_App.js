@@ -246,10 +246,9 @@ var Rexbuilder_App = (function($) {
 
   /**
    * Launching indicators
-   * @param  {jQuery} $grids grids
    * @return {void}
    */
-  function launchIndicators( $grids ) {
+  function launchIndicators( ) {
     if ( 'undefined' === typeof $().rexIndicator ) return;
 
     $grids.find(".rex-indicator__placeholder").rexIndicator();
@@ -1047,6 +1046,8 @@ var Rexbuilder_App = (function($) {
 
       launchParticleSwarm();
 
+      launchIndicators();
+
       // listen iframe events (for popupcontent)
       listenPopUpContentEvents();
     }
@@ -1306,9 +1307,7 @@ var Rexbuilder_App = (function($) {
     // autoplay sliders
     RexSlider.startAutoPlay();
 
-    if( $grids ) {
-      launchIndicators( $grids );
-    }
+    
 
     checkEmptyRows();
 		launchFrontEndEffects();
