@@ -23,6 +23,7 @@
   --rex-indicator-wrap-height: #{$indicator-line-dimension + $indicator-dot-size};
   --rex-indicator-dot-background-color: #009ddf;
   --rex-indicator-line-background-color: #009ddf;
+  font-size: 0;
 }
 .rex-indicator__wrap--absolute {
   position:absolute;
