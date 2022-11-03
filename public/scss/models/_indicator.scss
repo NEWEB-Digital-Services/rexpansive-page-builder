@@ -21,6 +21,8 @@
   --rex-indicator-dot-height: var(--rex-indicator-dot-size);
   --rex-indicator-wrap-width: #{$indicator-line-dimension + $indicator-dot-size};
   --rex-indicator-wrap-height: #{$indicator-line-dimension + $indicator-dot-size};
+  --rex-indicator-dot-background-color: #009ddf;
+  --rex-indicator-line-background-color: #009ddf;
 }
 .rex-indicator__wrap--absolute {
   position:absolute;
@@ -44,14 +46,14 @@
 }
 
 .rex-indicator__dot {
-  background-color:#009ddf;
+  background-color: var(--rex-indicator-dot-background-color);
   width: var(--rex-indicator-dot-width);
   height: var(--rex-indicator-dot-height);
   display:block;
   border-radius:50%;
 }
 .rex-indicator__line {
-  background-color:#009ddf;
+  background-color: var(--rex-indicator-line-background-color);
   display:block;
 }
 .rex-indicator__wrap--horizontal {

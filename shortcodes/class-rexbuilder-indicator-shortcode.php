@@ -50,6 +50,8 @@ class Rexbuilder_Indicator {
 			'wrap_classes' => ''
 		), $atts ) );
 
+		$rules_arr = array();
+
 		if( empty( $color_dot ) ) {
 			$color_dot = $color;
 		}
@@ -58,8 +60,13 @@ class Rexbuilder_Indicator {
 			$color_line = $color;
 		}
 
-		$color_dot_style = ' style="background-color:' . $color_dot . ';"';
-		$color_line_style = ' style="background-color:' . $color_line . ';"';
+		array_push($rules_arr, '--rex-indicator-dot-background-color:' . $color_dot);
+		array_push($rules_arr, '--rex-indicator-line-background-color:' . $color_line);
+
+		$wrap_styles = '';
+		if (!empty($rules_arr)) {
+			$wrap_styles = ' style="' . implode(';', $rules_arr) . '"';
+		}
 
 		$direction = 'rex-indicator__wrap--';
 
@@ -85,14 +92,14 @@ class Rexbuilder_Indicator {
 		ob_start();
 
 ?><span class="<?php echo $wrap; ?>">
-	<span class="rex-indicator__wrap rex-indicator__wrap--<?php echo $position; ?><?php echo ( "" != $classes ? ' ' . $classes : '' ); ?>" data-ri-from="<?php echo esc_attr( $from ); ?>" data-ri-to="<?php echo esc_attr( $to ); ?>" data-ri-relative-to="<?php echo esc_attr( $relative_to ); ?>" data-ri-relative-to-parent-position="<?php echo esc_attr( $realtive_to_parent_position ); ?>" data-ri-to-amount="<?php echo esc_attr($to_amount); ?>">
+	<span class="rex-indicator__wrap rex-indicator__wrap--<?php echo $position; ?><?php echo ( "" != $classes ? ' ' . $classes : '' ); ?>" data-ri-from="<?php echo esc_attr( $from ); ?>" data-ri-to="<?php echo esc_attr( $to ); ?>" data-ri-relative-to="<?php echo esc_attr( $relative_to ); ?>" data-ri-relative-to-parent-position="<?php echo esc_attr( $realtive_to_parent_position ); ?>" data-ri-to-amount="<?php echo esc_attr($to_amount); ?>"<?php echo $wrap_styles; ?>>
 		<span class="<?php echo esc_attr( $direction ); ?>">
 		<?php if( ( ( $to == 'left' || $to == 'top' ) && ( $from == 'inside' ) ) || ( ( $to == 'right' || $to == 'bottom' ) && ( $from == 'outside' ) ) ) { ?>
-			<span class="rex-indicator__dot"<?php echo $color_dot_style ?>></span>
-			<span class="rex-indicator__line"<?php echo $color_line_style ?>></span>
+			<span class="rex-indicator__dot"></span>
+			<span class="rex-indicator__line"></span>
 		<?php } else { ?>
-			<span class="rex-indicator__line"<?php echo $color_line_style ?>></span>
-			<span class="rex-indicator__dot"<?php echo $color_dot_style ?>></span>
+			<span class="rex-indicator__line"></span>
+			<span class="rex-indicator__dot"></span>
 		<?php } ?>
 		</span>
 		</span>
