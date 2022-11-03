@@ -233,7 +233,6 @@
       if( this.settings.to == 'left' || this.settings.to == 'right' ) {
         // p.top = p_offset.top + ( this.$element.parent().outerHeight(true) * this.settings.relative_to_parent_position ) - parseInt( this.$element.parent().css('marginTop') ) - (this.$line_ref.height() / 2);
         p.top = this.$element.offset().top + ( this.$element.outerHeight(true) / 2 ) - (this.$line_ref.height() / 2)
-        console.log(this.$element.outerHeight(true))
       } else {
         if( this.settings.to == 'top' ) {
           p.top = b_offset.top - (this.$line_ref.height() / 2);
@@ -250,11 +249,17 @@
           if (this.settings.to_amount === 'auto') {
             p.left = b_offset.left - (this.$line_ref.width() / 2);
           } else {
-            const line_parent_offset = this.$line_ref.get().pop().getBoundingClientRect() 
+            const line_parent_offset = this.$line_ref.parent().get().pop().getBoundingClientRect() 
             p.left = line_parent_offset.left
           }
         } else if( this.settings.to == 'right' ) {
-          p.left = b_offset.left + this.$block_ref.outerWidth() - (this.$line_ref.width() / 2);
+          if (this.settings.to_amount === 'auto') {
+            p.left = b_offset.left + this.$block_ref.outerWidth() - (this.$line_ref.width() / 2);
+          } else {
+            const line_parent_offset = this.$line_ref.parent().get().pop().getBoundingClientRect() 
+            console.log(line_parent_offset)
+            p.left = line_parent_offset.left + line_parent_offset.width - this.$line_ref.width();
+          }
         }
       }
 
