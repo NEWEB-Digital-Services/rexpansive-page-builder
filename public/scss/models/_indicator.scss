@@ -45,8 +45,8 @@
 
 .rex-indicator__dot {
   background-color:#009ddf;
-  width:$indicator-dot-size;
-  height:$indicator-dot-size;
+  width: var(--rex-indicator-dot-width);
+  height: var(--rex-indicator-dot-height);
   display:block;
   border-radius:50%;
 }
@@ -59,7 +59,7 @@
   width: var(--rex-indicator-wrap-width);
   .rex-indicator__line {
     // width:$indicator-line-dimension;
-    width: calc( 100% - #{$indicator-dot-size} );
+    width: calc( 100% - var(--rex-indicator-dot-width) );
     height:1px;
   }
 }
@@ -69,7 +69,7 @@
   .rex-indicator__line {
     width:1px;
     // height:$indicator-line-dimension;
-    height: calc( 100% - #{$indicator-dot-size} );
+    height: calc( 100% - var(--rex-indicator-dot-height) );
   }
 }
 
@@ -96,12 +96,12 @@
     }
     .rex-indicator__wrap--horizontal {
       .rex-indicator__line {
-        width: $indicator-line-dimension;
+        width: calc( 100% - var(--rex-indicator-wrap-width) );
       }
     }
     .rex-indicator__wrap--vertical {
       .rex-indicator__line {
-        height: $indicator-line-dimension;
+        height: calc( 100% - var(--rex-indicator-wrap-height) );
       }
     }
   }
