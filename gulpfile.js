@@ -350,7 +350,7 @@ var builderlive_public = [
 	'public/js/build/8-VimeoVideo.js',
 	'public/js/vendor/4-jquery.rexScrolled.js',
 	'public/js/vendor/jquery.rexAccordion.js',
-	'public/js/vendor/6-jquery.rexIndicator.js',
+	// 'public/js/vendor/6-jquery.rexIndicator.js',
 	'public/js/vendor/utilities.js',
 	'public/js/vendor/anime.min.js',
 	'public/js/vendor/4-jquery.rexScrollify.js',
@@ -443,6 +443,7 @@ var effects_js_src = [
 	'public/js/vendor/split-scrollable.js',
 	'public/js/vendor/jquery.rexAccordion.js',
 	'public/js/vendor/particle-swarm.js',
+ 	'public/js/vendor/6-jquery.rexIndicator.js',
 	'public/js/build/fast-load.js'
 ];
 

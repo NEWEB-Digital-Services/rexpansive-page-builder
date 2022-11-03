@@ -502,6 +502,10 @@ class Rexbuilder_Public {
 				if( !Rexbuilder_Utilities::isBuilderLive() ) {
 					wp_enqueue_script('fast-load', REXPANSIVE_BUILDER_URL . 'public/js/vendor/fast-load.min.js', array( $this->plugin_name ), REXPANSIVE_BUILDER_VERSION, true);
 				}
+
+				if ( false !== strpos( $customEffects, 'RexIndicator' ) ) {
+					wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
+				}
 			}
 
 			wp_localize_script( $this->plugin_name, '_plugin_frontend_settings', $front_end_settings );
