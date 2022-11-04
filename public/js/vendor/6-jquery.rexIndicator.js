@@ -26,6 +26,21 @@
     block_parent: '.perfect-grid-item',
     after: '.rexpansive_section'
   }
+  
+  /**
+   * Handling indicator positions on resize
+   * Keeping a single resize handler with multiple callbacks 
+   */
+  const resizeCallbacks = []
+  function globalResizeHandler() {
+    for (let i = 0; i < resizeCallbacks.length; i++) {
+      if (null === resizeCallbacks[i]) continue
+      console.log('resize callback', i)
+      resizeCallbacks[i].call()
+    }
+  }
+
+  window.addEventListener('resize', globalResizeHandler)
 
   function viewport () {
     let e = window; let a = 'inner'
@@ -87,6 +102,8 @@
       this.$after_ref.on('relayoutComplete', function () {
         that.place_indicator()
       })
+
+      resizeCallbacks.push(this.place_indicator.bind(this))
     },
 
     /**
