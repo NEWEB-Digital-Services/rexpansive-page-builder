@@ -35,7 +35,6 @@
   function globalResizeHandler() {
     for (let i = 0; i < resizeCallbacks.length; i++) {
       if (null === resizeCallbacks[i]) continue
-      console.log('resize callback', i)
       resizeCallbacks[i].call()
     }
   }
@@ -99,13 +98,17 @@
       //   that.place_indicator()
       // })
 
-      this.$after_ref.on('relayoutComplete', function () {
-        that.place_indicator()
-      })
+      // this.$after_ref.on('relayoutComplete', function () {
+      //  that.place_indicator()
+      // })
 
-      resizeCallbacks.push(this.place_indicator.bind(this))
+      resizeCallbacks.push(this.resize_callback.bind(this))
     },
 
+    resize_callback: function()  {
+        this.set_indicator_dimension()
+        this.place_indicator()
+    },
     /**
      * moving navigator outside its placeholder
      */
