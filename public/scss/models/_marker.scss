@@ -25,6 +25,9 @@
 
 	--rex-marker-icon-transform: rotate(0deg);
 	--rex-marker-icon-color: var(--rex-marker-color-2);
+	--rex-marker-icon-border-color: var(--rex-marker-color-2);
+	--rex-marker-icon-font-size: 13px;
+	--rex-marker-icon-padding: 8px;
 
 	--rex-marker-link-padding: 10px 20px;
 	--rex-marker-link-color: var(--rex-marker-color-1);
@@ -45,7 +48,11 @@
 	box-shadow: var(--rex-marker-box-shadow);
 	// transform: var(--rex-marker-transform);
 
-	&__header,
+	&__header {
+		display: inline-flex;
+		align-items: center;
+	}
+
 	&__body {
 		display: block;
 	}
@@ -66,9 +73,9 @@
 
 	&__icon {
 		display: inline-flex;
-		padding: 8px;
-		font-size: 13px;
-		border: 2px solid var(--rex-marker-color-2);
+		padding: var(--rex-marker-icon-padding);
+		font-size: var(--rex-marker-icon-font-size);
+		border: 2px solid var(--rex-marker-icon-border-color);
 		border-radius: 50%;
 		transform: var(--rex-marker-icon-transform);
 		transition: transform 0.3s;
