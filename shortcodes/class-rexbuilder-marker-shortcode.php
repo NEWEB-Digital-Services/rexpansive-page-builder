@@ -79,7 +79,7 @@ class Rexbuilder_Marker {
 ?>
 <span class="rex-marker"<?php echo $style; ?>>
 	<span class="rex-marker__header">
-		<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?><?php echo $title; ?>
+		<span class="rex-marker__icon"><?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?></span><?php echo $title; ?>
 	</span>
 	<span class="rex-marker__content">
 		<?php echo do_shortcode($content); ?>

@@ -1,6 +1,7 @@
 .rex-marker {
 	--rex-marker-left: 50%;
 	--rex-marker-top: 50%;
+	--rex-marker-padding: 10px;
 	--rex-marker-color-1: #000;
 	--rex-marker-color-2: #fff;
 	--rex-marker-background-color: var(--rex-marker-color-1);
@@ -9,6 +10,8 @@
 	--rex-marker-border-radius: 5px;
 	--rex-marker-box-shadow: 0px 4px 31px 0px #000000;
 	--rex-marker-transform: translate(-50%, -50%);
+	--rex-marker-content-max-height: 0;
+	--rex-marker-icon-transform: rotate(0deg);
 
 	--rex-marker-link-color: var(--rex-marker-color-1);
 	--rex-marker-link-background-color: var(--rex-marker-color-2);
@@ -18,21 +21,43 @@
 	position: absolute;
 	left: var(--rex-marker-left);
 	top: var(--rex-marker-top);
-	// width: auto;
-	// white-space: nowrap;
+	padding: var(--rex-marker-padding);
 	cursor: pointer;
 
 	background-color: var(--rex-marker-background-color);
 	color: var(--rex-marker-color);
 	border-radius: var(--rex-marker-border-radius);
 	box-shadow: var(--rex-marker-box-shadow);
-	transform: var(--rex-marker-transform);
+	// transform: var(--rex-marker-transform);
 
 	&__header,
 	&__content {
 		display: block;
 	}
 
+	&__content {
+		overflow: hidden;
+		max-height: var(--rex-marker-content-max-height);
+		transition: max-height 0.3s;
+	}
+	
+	&:hover {
+		--rex-marker-content-max-height: 100vh;
+		--rex-marker-icon-transform: rotate(45deg);
+		// .rex-marker__content {
+		// 	max-height: 100vh;
+		// }
+	}
+
+	&__icon {
+		display: inline-flex;
+		padding: 8px;
+		font-size: 13px;
+		border: 2px solid var(--rex-marker-color-2);
+		border-radius: 50%;
+		transform: var(--rex-marker-icon-transform);
+		transition: transform 0.3s;
+	}
 	&__link {
 		display: block;
 		text-decoration: none;
