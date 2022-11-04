@@ -638,11 +638,11 @@ class Rexbuilder_Public {
 	 * @date 03-05-2019
 	 */
 	public function remove_shortcodes_from_live() {
-		if ( Rexbuilder_Utilities::isBuilderLive() ) {
-			$shortcodes = apply_filters( 'rexpansive_builder_remove_shortcodes_live', array( 'RexTimelinePro', 'RexTimelineProEvent', 'RexliveIcon', 'RexIndicator' ) );
-			foreach( $shortcodes as $shortcode ) {
-				remove_shortcode( $shortcode );
-			}
+		if ( !Rexbuilder_Utilities::isBuilderLive() ) return;
+
+		$shortcodes = apply_filters( 'rexpansive_builder_remove_shortcodes_live', array( 'RexTimelinePro', 'RexTimelineProEvent', 'RexliveIcon', 'RexIndicator' ) );
+		foreach( $shortcodes as $shortcode ) {
+			remove_shortcode( $shortcode );
 		}
 	}
 
