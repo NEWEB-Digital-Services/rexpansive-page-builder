@@ -12,14 +12,14 @@
 	--rex-marker-background-color: var(--rex-marker-color-1);
 	--rex-marker-color: var(--rex-marker-color-2);
 	--rex-marker-border-radius: 5px;
-	--rex-marker-box-shadow: 0px 4px 31px 0px #000000;
+	--rex-marker-box-shadow: 0px 4px 31px 0px rgba(0,0,0,0.7);
 	--rex-marker-transform: translate(-50%, -50%);
 	
 	--rex-marker-title-padding: 0 0 0 10px;
 
 	--rex-marker-body-max-height: 0;
 
-	--rex-marker-content-padding: 0 0 15px 0;
+	--rex-marker-content-padding: 10px 0 15px 0;
 
 	--rex-marker-icon-transform: rotate(0deg);
 	--rex-marker-icon-color: var(--rex-marker-color-2);
