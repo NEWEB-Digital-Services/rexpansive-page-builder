@@ -82,8 +82,10 @@ class Rexbuilder_Marker {
 	<span class="rex-marker__header">
 		<span class="rex-marker__icon"><?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?></span><span class="rex-marker__title"><?php echo $title; ?></span>
 	</span>
-	<span class="rex-marker__content">
-		<?php echo do_shortcode($content); ?>
+	<span class="rex-marker__body">
+		<span class="rex-marker__content">
+			<?php echo do_shortcode($content); ?>
+		</span>
 		<?php 
 		if (!empty($link)) {
 			?><a class="rex-marker__link" href="<?php echo esc_url($link); ?>" target="<?php echo esc_attr($target); ?>"><?php echo $link_label; ?></a><?php

@@ -1,5 +1,5 @@
 @mixin markerOpen {
-	--rex-marker-content-max-height: 100vh;
+	--rex-marker-body-max-height: 100vh;
 	--rex-marker-icon-transform: rotate(45deg);
 }
 
@@ -17,7 +17,9 @@
 	
 	--rex-marker-title-padding: 0 0 0 10px;
 
-	--rex-marker-content-max-height: 0;
+	--rex-marker-body-max-height: 0;
+
+	--rex-marker-content-padding: 0 0 15px 0;
 
 	--rex-marker-icon-transform: rotate(0deg);
 	--rex-marker-icon-color: var(--rex-marker-color-2);
@@ -41,13 +43,13 @@
 	// transform: var(--rex-marker-transform);
 
 	&__header,
-	&__content {
+	&__body {
 		display: block;
 	}
 
-	&__content {
+	&__body {
 		overflow: hidden;
-		max-height: var(--rex-marker-content-max-height);
+		max-height: var(--rex-marker-body-max-height);
 		transition: max-height 0.3s;
 	}
 	
@@ -68,6 +70,12 @@
 		transform: var(--rex-marker-icon-transform);
 		transition: transform 0.3s;
 	}
+
+	&__content {
+		display: block;
+		padding: var(--rex-marker-content-padding);
+	}
+
 	&__link {
 		display: block;
 		padding: var(--rex-marker-link-padding);
