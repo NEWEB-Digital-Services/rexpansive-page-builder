@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2022-11-04 15:02+0100\n"
-"PO-Revision-Date: 2022-11-04 15:02+0100\n"
+"PO-Revision-Date: 2022-11-04 15:08+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: it\n"
@@ -3388,7 +3388,7 @@ msgstr ""
 #: admin/partials/rexlive-js-templates.php:155
 #: admin/partials/toolbox/rexlive-toolbox-fixed.php:43
 msgid "Save"
-msgstr ""
+msgstr "Salva"
 
 #: admin/partials/modals/rexlive-block-content-position-modal.php:72
 #: admin/partials/modals/rexlive-block-image-editor-modal.php:121
@@ -3718,7 +3718,7 @@ msgstr ""
 #: admin/partials/modals/rexlive-page-settings-modal.php:13
 #: admin/partials/rexlive-modals-display.php:350
 msgid "Close"
-msgstr ""
+msgstr "Chiudi"
 
 #: admin/partials/modals/rexlive-layout-custom-modal.php:58
 #: admin/partials/modals/rexlive-layout-custom-modal.php:85
@@ -4657,7 +4657,7 @@ msgstr ""
 
 #: includes/class-rexbuilder-meta-box.php:107
 msgid "CSS Editor"
-msgstr ""
+msgstr "Editor CSS"
 
 #: includes/wp-background-processing/wp-background-process.php:425
 #, php-format
@@ -4742,7 +4742,7 @@ msgstr ""
 
 #: shortcodes/class-rexbuilder-accordion-shortcode.php:83
 msgid "CONTINUE"
-msgstr ""
+msgstr "CONTINUA"
 
 #: shortcodes/class-rexbuilder-marker-shortcode.php:44
 msgid "Learn more"
