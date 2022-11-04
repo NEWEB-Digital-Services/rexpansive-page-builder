@@ -1,3 +1,8 @@
+@mixin markerOpen {
+	--rex-marker-content-max-height: 100vh;
+	--rex-marker-icon-transform: rotate(45deg);
+}
+
 .rex-marker {
 	--rex-marker-left: 50%;
 	--rex-marker-top: 50%;
@@ -6,13 +11,18 @@
 	--rex-marker-color-2: #fff;
 	--rex-marker-background-color: var(--rex-marker-color-1);
 	--rex-marker-color: var(--rex-marker-color-2);
-	--rex-marker-icon-color: var(--rex-marker-color-2);
 	--rex-marker-border-radius: 5px;
 	--rex-marker-box-shadow: 0px 4px 31px 0px #000000;
 	--rex-marker-transform: translate(-50%, -50%);
-	--rex-marker-content-max-height: 0;
-	--rex-marker-icon-transform: rotate(0deg);
+	
+	--rex-marker-title-padding: 0 0 0 10px;
 
+	--rex-marker-content-max-height: 0;
+
+	--rex-marker-icon-transform: rotate(0deg);
+	--rex-marker-icon-color: var(--rex-marker-color-2);
+
+	--rex-marker-link-padding: 10px 20px;
 	--rex-marker-link-color: var(--rex-marker-color-1);
 	--rex-marker-link-background-color: var(--rex-marker-color-2);
 	--rex-marker-link-border-radius: 5px;
@@ -41,12 +51,12 @@
 		transition: max-height 0.3s;
 	}
 	
-	&:hover {
-		--rex-marker-content-max-height: 100vh;
-		--rex-marker-icon-transform: rotate(45deg);
-		// .rex-marker__content {
-		// 	max-height: 100vh;
-		// }
+	&.open {
+		@include markerOpen();
+	}
+
+	&__title {
+		padding: var(--rex-marker-title-padding);
 	}
 
 	&__icon {
@@ -60,6 +70,7 @@
 	}
 	&__link {
 		display: block;
+		padding: var(--rex-marker-link-padding);
 		text-decoration: none;
 		color: var(--rex-marker-link-color);
 		background-color: var(--rex-marker-link-background-color);
@@ -69,6 +80,14 @@
 	.l-svg-icons {
 		> svg {
 			fill: var(--rex-marker-icon-color);
+		}
+	}
+}
+
+@media (hover: hover) and (pointer: fine) {
+	.rex-marker {
+		&:hover {
+			@include markerOpen();			
 		}
 	}
 }

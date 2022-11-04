@@ -44,6 +44,7 @@ class Rexbuilder_Marker {
 			'link_label' => __('Learn more', 'rexpansive-builder'),
 			'title' => '',
 			'link' => '',
+			'link_taget' => '_self',
 			'classes' => ''
 		), $atts ) );
 
@@ -77,15 +78,15 @@ class Rexbuilder_Marker {
 
 		ob_start();
 ?>
-<span class="rex-marker"<?php echo $style; ?>>
+<span class="rex-marker"<?php echo $style; ?> onclick="this.classList.toggle('open')">
 	<span class="rex-marker__header">
-		<span class="rex-marker__icon"><?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?></span><?php echo $title; ?>
+		<span class="rex-marker__icon"><?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?></span><span class="rex-marker__title"><?php echo $title; ?></span>
 	</span>
 	<span class="rex-marker__content">
 		<?php echo do_shortcode($content); ?>
 		<?php 
 		if (!empty($link)) {
-			?><a class="rex-marker__link" href="<?php echo esc_url($link); ?>"><?php echo $link_label; ?></a><?php
+			?><a class="rex-marker__link" href="<?php echo esc_url($link); ?>" target="<?php echo esc_attr($target); ?>"><?php echo $link_label; ?></a><?php
 		} 
 		?>
 	</span>
