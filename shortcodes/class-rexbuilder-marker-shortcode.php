@@ -41,10 +41,34 @@ class Rexbuilder_Marker {
 			'y' => '',
 			'color_1' => '',
 			'color_2' => '',
-			'label' => '',
+			'link_label' => __('Learn more', 'rexpansive-builder'),
+			'title' => '',
 			'link' => '',
 			'classes' => ''
 		), $atts ) );
+
+		$styles_arr = array();
+
+		if (!empty($x)) {
+			array_push($styles_arr, '--rex-marker-left:' . $x . '%');
+		}
+
+		if (!empty($y)) {
+			array_push($styles_arr, '--rex-marker-top:' . $y . '%');
+		}
+
+		if (!empty($color_1)) {
+			array_push($styles_arr, '--rex-marker-color-1:' . $color_1);
+		}
+
+		if (!empty($color_2)) {
+			array_push($styles_arr, '--rex-marker-color-2:' . $color_2);
+		}
+
+		$style = '';
+		if (!empty($styles_arr)) {
+			$style = ' style="' . implode(';', $styles_arr) . '"';
+		}
 
 		$wrap_classes = 'rex-marker';
 		if (!empty($classes)) {
@@ -53,12 +77,17 @@ class Rexbuilder_Marker {
 
 		ob_start();
 ?>
-<span class="rex-marker">
+<span class="rex-marker"<?php echo $style; ?>>
 	<span class="rex-marker__header">
-		<?php echo $label; ?>
+		<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?><?php echo $title; ?>
 	</span>
 	<span class="rex-marker__content">
-		
+		<?php echo do_shortcode($content); ?>
+		<?php 
+		if (!empty($link)) {
+			?><a class="rex-marker__link" href="<?php echo esc_url($link); ?>"><?php echo $link_label; ?></a><?php
+		} 
+		?>
 	</span>
 </span>
 <?php
