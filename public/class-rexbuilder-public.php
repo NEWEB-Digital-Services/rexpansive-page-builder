@@ -640,7 +640,7 @@ class Rexbuilder_Public {
 	public function remove_shortcodes_from_live() {
 		if ( !Rexbuilder_Utilities::isBuilderLive() ) return;
 
-		$shortcodes = apply_filters( 'rexpansive_builder_remove_shortcodes_live', array( 'RexTimelinePro', 'RexTimelineProEvent', 'RexliveIcon', 'RexIndicator' ) );
+		$shortcodes = apply_filters( 'rexpansive_builder_remove_shortcodes_live', array( 'RexTimelinePro', 'RexTimelineProEvent', 'RexliveIcon', 'RexIndicator', 'RexMarker' ) );
 		foreach( $shortcodes as $shortcode ) {
 			remove_shortcode( $shortcode );
 		}

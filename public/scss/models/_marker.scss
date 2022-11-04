@@ -1,0 +1,23 @@
+.rex-marker {
+	--rex-marker-left: 50%;
+	--rex-marker-top: 50%;
+	--rex-marker-color-1: #000;
+	--rex-marker-color-2: #fff;
+	--rex-marker-border-radius: 5px;
+	--rex-marker-box-shadow: 0px 4px 31px 0px #000000;
+	--rex-marker-transform: translate(-50%, -50%);
+
+	display: inline-block;
+	position: absolute;
+	left: var(--rex-marker-left);
+	top: var(--rex-marker-top);
+	// width: auto;
+	// white-space: nowrap;
+	cursor: pointer;
+
+	background-color: var(--rex-marker-color-1);
+	color: var(--rex-marker-color-2);
+	border-radius: var(--rex-marker-border-radius);
+	box-shadow: var(--rex-marker-box-shadow);
+	transform: var(--rex-marker-transform);
+}

@@ -165,6 +165,7 @@ class Rexbuilder {
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-timeline-pro-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-timeline-pro-event-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-form-wrapper-shortcode.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-marker-shortcode.php';
 
 		$this->loader = new Rexbuilder_Loader();
 
@@ -480,6 +481,7 @@ class Rexbuilder {
 		$model = new Rexbuilder_Model();
 		$button = new Rexbuilder_Button();
 		$accordion = new Rexbuilder_Accordion();
+		$marker = new Rexbuilder_Marker();
 
 		$this->loader->add_shortcode( 'RexpansiveSection', $section, 'render_section' );
 		$this->loader->add_shortcode( 'RexpansiveBlock', $block, 'render_block' );
@@ -499,6 +501,7 @@ class Rexbuilder {
 		$this->loader->add_shortcode( 'RexTimelineProEvent', 'Rexbuilder_Timeline_Pro_Event', 'render' );
 		$this->loader->add_shortcode( 'RexTimelinePro', 'Rexbuilder_Timeline_Pro', 'render' );
 		$this->loader->add_shortcode( 'RexFormWrapper', 'Rexbuilder_FormWrapper', 'render' );
+		$this->loader->add_shortcode( 'RexMarker', $marker, 'render' );
 	}
 
 	/**
