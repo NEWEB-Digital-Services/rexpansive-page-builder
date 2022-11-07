@@ -101,7 +101,6 @@
       // })
 
       resizeCallbacks.push(this.resize_callback.bind(this))
-      console.log(this)
     },
 
     resize_callback: function()  {
