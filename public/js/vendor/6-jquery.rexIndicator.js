@@ -91,8 +91,6 @@
       this.set_indicator_dimension()
       this.place_indicator()
 
-      const that = this
-
       // this.$after_ref.on('rearrangeComplete', function() {
       //   console.log('riarrangio')
       //   that.place_indicator()
@@ -103,6 +101,7 @@
       // })
 
       resizeCallbacks.push(this.resize_callback.bind(this))
+      console.log(this)
     },
 
     resize_callback: function()  {
@@ -185,6 +184,13 @@
           const parentInfo = this.$after_ref.get().pop().getBoundingClientRect()
           const elementInfo = this.element.getBoundingClientRect()
           const newHeight = parentInfo.y + parentInfo.height - elementInfo.y - (elementInfo.height / 2)
+          this.line_ref.style.setProperty('--rex-indicator-wrap-height', `${newHeight}px`)
+          break
+        }
+        case 'top': {
+          const parentInfo = this.$after_ref.get().pop().getBoundingClientRect()
+          const elementInfo = this.element.getBoundingClientRect()
+          const newHeight = elementInfo.y - parentInfo.y + (elementInfo.height / 2)
           this.line_ref.style.setProperty('--rex-indicator-wrap-height', `${newHeight}px`)
           break
         }
