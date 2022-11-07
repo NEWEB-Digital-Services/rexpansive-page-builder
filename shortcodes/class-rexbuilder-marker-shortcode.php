@@ -1,17 +1,17 @@
 <?php
 
 /**
- * The class that register and render a indicator element.
+ * The class that register and render a marker element.
  *
  * @link       htto://www.neweb.info
- * @since      1.1.3
+ * @since      2.1.0
  *
  * @package    Rexbuilder
  * @subpackage Rexbuilder/shortcodes
  */
 
 /**
- * Defines the characteristics of the indicator
+ * Defines the characteristics of the marker
  *
  * @package    Rexbuilder
  * @subpackage Rexbuilder/shortcodes
@@ -22,7 +22,7 @@ class Rexbuilder_Marker {
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since    1.1.3
+	 * @since    2.1.0
 	 */
 	public function __construct( ) {
 
@@ -31,7 +31,7 @@ class Rexbuilder_Marker {
 	/**
 	 * Function that render the shortcode, merging the attributes and displaying the template.
 	 *
-	 * @since   	1.1.3
+	 * @since   	2.1.0
 	 * @param      string    $atts       		The attributest passed.
 	 * @param      string    $content    		The content passed.
 	 */
