@@ -3,8 +3,8 @@ Contributors: neweb_agency
 Donate link: http://www.neweb.info/
 Tags: builder, composer, content builder, custom, drag and drop, editor, page builder, page composer, responsive, theme
 Requires at least: 4.2
-Tested up to: 6.0
-Stable tag: 2.0.14
+Tested up to: 6.1
+Stable tag: 2.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -199,6 +199,14 @@ For the more experienced among us: you can insert CSS anywhere.
 11. Clean interface
 
 == Changelog ==
+
+= 2.1.0 - November 7, 2022 =
+ * Updated: Tested up to Wordpress 6.1
+ * Added: Classes to allow overflow on blocks and sections
+ * Added: RexIndicator shortcode, for placing indicator lines inside blocks
+ * Added: RexMarker shortcode for placing tooltips on blocks, setting their coordinates
+ * Fixed: Inline Image with photoswipe zoom
+ * Fixed: Launch blocks and sections animation after images are fully loaded
 
 = 2.0.14 - June 10, 2022 =
  * Updated: Tested up to Wordpress 6.0

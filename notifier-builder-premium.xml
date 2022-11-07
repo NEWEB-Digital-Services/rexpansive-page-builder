@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <notifier>
-	<latest>2.0.11</latest>
+	<latest>2.1.0</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.1.0</strong> - November 7, 2022</h4>
+			<p><strong>Updated</strong>: Tested up to Wordpress 6.1</p>
+			<p><strong>Added</strong>: Classes to allow overflow on blocks and sections</p>
+			<p><strong>Added</strong>: RexIndicator shortcode, for placing indicator lines inside blocks</p>
+			<p><strong>Added</strong>: RexMarker shortcode for placing tooltips on blocks, setting their coordinates</p>
+			<p><strong>Fixed</strong>: Inline Image with photoswipe zoom</p>
+			<p><strong>Fixed</strong>: Launch blocks and sections animation after images are fully loaded</p>
 			<h4><strong>v2.0.14</strong> - June 10, 2022</h4>
 			<p><strong>Updated</strong>: Tested up to Wordpress 6.0</p>
 			<p><strong>Added</strong>: Allow closing popup page pressing esc key or clicking outside popup</p>
