@@ -290,9 +290,7 @@
           if (this.settings.to_amount === 'auto') {
             p.top = b_offset.top - (this.$line_ref.height() / 2)
           } else {
-            // todo
-            // p.top = b_offset.top - (this.element.getBoundingClientRect().height / 2)
-            p.top = this.$element.offset().top - (this.element.getBoundingClientRect().height )
+            p.top = this.$after_ref.offset().top
           }
         } else if (this.settings.to == 'bottom') {
           if (this.settings.to_amount === 'auto') {
