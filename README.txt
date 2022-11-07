@@ -206,7 +206,7 @@ For the more experienced among us: you can insert CSS anywhere.
  * Added: RexIndicator shortcode, for placing indicator lines inside blocks
  * Added: RexMarker shortcode for placing tooltips on blocks, setting their coordinates
  * Fixed: Inline Image with photoswipe zoom
- * Fixed: Launch blocks and sections animation after images are fully loaded
+ * Fixed: Launch blocks and sections animation after their possible images are fully loaded
 
 = 2.0.14 - June 10, 2022 =
  * Updated: Tested up to Wordpress 6.0
