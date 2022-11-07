@@ -5,6 +5,7 @@
    - con l'opzione `--name-only` è possibile visualizzare solamente il nome del file, eventualmente per recuperare velocemente la lista dei file da copiare
 2. salvare eventulmente questa lista
 3. usando la lista spostare solamente i file necessari (evitare package.json o gulpfile.js) nel repository del plugin per wordpress.org
+   3.1. ricordarsi che per aggiornare file con modifiche, basta sovrascriverli, mentre, per aggiunte bisogna lanciare il comando `svn add %PATH%` mentre per eliminazioni bisogna lanciare il comando `svn delete %PATH%`
 4. andare nel repository
 5. lanciare `svn up`
 6. lanciare `svn stat`
