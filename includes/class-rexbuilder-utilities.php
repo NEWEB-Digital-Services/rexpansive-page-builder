@@ -197,7 +197,7 @@ class Rexbuilder_Utilities {
 				wp_enqueue_script( 'rex-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexAccordion.min.js', $script_depths, REXCLASSIC_VERSION, true );
 				break;
 			case 'rex-indicator':
-				wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.min.js', array('jquery'), null, true);
+				wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rex-indicator.min.js', array('jquery'), null, true);
 				break;
 			case 'photoswipe':
 				wp_enqueue_style( 'photoswipe-style', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/photoswipe.css', $style_depths, REXCLASSIC_VERSION );
