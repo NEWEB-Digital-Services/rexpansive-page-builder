@@ -1,6 +1,7 @@
 /**
  * RexIndicator script in plain js
  * @version 1.0.0
+ * @todo manage missing condition (view jQuery version)
  */
 ;( function( window, factory ) {
   'use strict';
@@ -108,14 +109,14 @@
         }
         case 'bottom': {
           // const
-          const parentInfo = this.$after_ref.get().pop().getBoundingClientRect()
+          const parentInfo = this.after_ref.getBoundingClientRect()
           const elementInfo = this.element.getBoundingClientRect()
           const newHeight = parentInfo.y + parentInfo.height - elementInfo.y - (elementInfo.height / 2)
           this.indicator.style.setProperty('--rex-indicator-wrap-height', `${newHeight}px`)
           break
         }
         case 'top': {
-          const parentInfo = this.$after_ref.get().pop().getBoundingClientRect()
+          const parentInfo = this.after_ref.getBoundingClientRect()
           const elementInfo = this.element.getBoundingClientRect()
           const newHeight = elementInfo.y - parentInfo.y + (elementInfo.height / 2)
           this.indicator.style.setProperty('--rex-indicator-wrap-height', `${newHeight}px`)
@@ -222,7 +223,7 @@
           } else {
             const line_parent_offset = this.indicator_moved_parent.getBoundingClientRect()
             // todo: take count of indicator width
-            p.left = line_parent_offset.left + line_parent_offset.width - this.indicator.width()
+            p.left = line_parent_offset.left + line_parent_offset.width - this.indicator.getBoundingClientRect().width
           }
         }
       }
