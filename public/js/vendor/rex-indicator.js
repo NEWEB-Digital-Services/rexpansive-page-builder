@@ -68,6 +68,7 @@
 	function init() {
 		move_indicator.call(this)
 		set_indicator_dimension.call(this)
+		place_indicator.call(this)
 	}
 
 	function move_indicator() {
@@ -117,12 +118,157 @@
       }
     }
 
+    /**
+     * moving the indicator in the right place
+     */
+    function place_indicator() {
+      let p = {
+        top: 0,
+        left: 0
+      }
+
+      switch (this.options.relative_to) {
+        case 'block':
+        //   if (viewport().width >= parseInt(_plugin_frontend_settings.rexIndicator.collapse_dimension)) {
+            p = _get_position_desktop_block_relative.call(this)
+        //   } else {
+        //     p = this._get_position_mobile()
+        //   }
+          break
+        case 'start':
+        //   if (viewport().width >= parseInt(_plugin_frontend_settings.rexIndicator.collapse_dimension)) {
+            p = _get_position_desktop_start_relative.call(this)
+        //   } else {
+        //     p = this._get_position_mobile()
+        //   }
+          break
+        case 'parent': {
+        //   if (viewport().width >= parseInt(_plugin_frontend_settings.rexIndicator.collapse_dimension)) {
+            p = _get_position_desktop_parent_relative.call(this)
+        //   } else {
+        //     p = this._get_position_mobile()
+        //   }
+          break
+        }
+        default:
+          break
+      }
+
+	  setOffset(this.indicator, p)
+    }
+
+	function _get_position_desktop_block_relative() {}
+	function _get_position_desktop_start_relative() {}
+
+    /**
+     * Positioning relative to the parent
+     */
+    function _get_position_desktop_parent_relative() {
+      const p = {
+        top: 0,
+        left: 0
+      }
+
+      const b_offset = offset(this.block_ref)
+      const p_offset = offset(this.element.parentElement)
+	  const e_offset = offset(this.element)
+	  const a_offset = offset(this.after_ref)
+
+      // define top position
+      if (this.options.to == 'left' || this.options.to == 'right') {
+        p.top = e_offset.top + (outerHeight(this.element, true) / 2) - (this.indicator.getBoundingClientRect().height / 2)
+		console.log(outerHeight(this.element, true))
+		console.log(this.indicator.getBoundingClientRect())
+      } else {
+        if (this.options.to == 'top') {
+          if (this.options.to_amount === 'auto') {
+            p.top = b_offset.top - (this.indicator.getBoundingClientRect().height / 2)
+          } else {
+            p.top = a_offset.top
+          }
+        } else if (this.options.to == 'bottom') {
+          if (this.options.to_amount === 'auto') {
+            p.top = b_offset.top + outerHeight(this.block_ref, true) - (this.indicator.getBoundingClientRect().height / 2)
+          } else {
+            p.top = e_offset.top + (this.element.getBoundingClientRect().height / 2)
+          }
+        }
+      }
+
+      // define left position
+      if (this.options.to == 'top' || this.options.to == 'bottom') {
+        if (this.options.to_amount === 'auto') {
+          p.left = p_offset.left + (this.indicator.getBoundingClientRect().width / 2)
+        } else {
+          p.left = e_offset.left - (this.indicator.getBoundingClientRect().width / 2)
+        }
+      } else {
+        if (this.options.to == 'left') {
+          if (this.options.to_amount === 'auto') {
+            p.left = b_offset.left - (this.indicator.getBoundingClientRect().width / 2)
+          } else {
+            const line_parent_offset = this.indicator_moved_parent.getBoundingClientRect()
+            p.left = line_parent_offset.left
+          }
+        } else if (this.options.to == 'right') {
+          if (this.options.to_amount === 'auto') {
+            p.left = b_offset.left + outerWidth(this.block_ref) - (this.indicator.getBoundingClientRect().width / 2)
+          } else {
+            const line_parent_offset = this.indicator_moved_parent.getBoundingClientRect()
+            // todo: take count of indicator width
+            p.left = line_parent_offset.left + line_parent_offset.width - this.indicator.width()
+          }
+        }
+      }
+
+	  console.log(p)
+      return p
+    }
+
 	function parents(el, selector) {
 		const parents = [];
 		while ((el = el.parentNode) && el !== document) {
 			if (!selector || el.matches(selector)) parents.unshift(el);
 		}
 		return parents;
+	}
+
+	function offset(el) {
+		const box = el.getBoundingClientRect()
+		const docElem = document.documentElement
+		return {
+			top: box.top + window.pageYOffset - docElem.clientTop,
+			left: box.left + window.pageXOffset - docElem.clientLeft
+		}
+	}
+
+	function setOffset(el, coordinates) {
+		el.style.top = `${coordinates.top}px`
+		el.style.left = `${coordinates.left}px`
+	}
+
+	function outerHeight(el, withMargin = false) {
+		if (!withMargin) return el.offsetHeight
+	
+		const style = getComputedStyle(el);
+
+		return (
+			el.getBoundingClientRect().height +
+			parseFloat(style.getPropertyValue('margin-top')) +
+			parseFloat(style.getPropertyValue('margin-bottom'))
+		);
+	}
+
+	function outerWidth(el, withMargin = false) {
+		if (!withMargin) return el.offsetWidth
+
+		const style = getComputedStyle(el);
+
+		return (
+			el.getBoundingClientRect().width +
+			parseFloat(style.getPropertyValue('margin-left')) +
+			parseFloat(style.getPropertyValue('margin-right'))
+		);
 	}
 
 	// Utility method to extend defaults with user options
