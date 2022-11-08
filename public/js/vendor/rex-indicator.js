@@ -177,8 +177,6 @@
       // define top position
       if (this.options.to == 'left' || this.options.to == 'right') {
         p.top = e_offset.top + (outerHeight(this.element, true) / 2) - (this.indicator.getBoundingClientRect().height / 2)
-		console.log(outerHeight(this.element, true))
-		console.log(this.indicator.getBoundingClientRect())
       } else {
         if (this.options.to == 'top') {
           if (this.options.to_amount === 'auto') {
@@ -221,7 +219,6 @@
         }
       }
 
-	  console.log(p)
       return p
     }
 
