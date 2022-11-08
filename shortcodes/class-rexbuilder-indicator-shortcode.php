@@ -99,9 +99,30 @@ class Rexbuilder_Indicator {
 			$wrap .= ' ' . $wrap_classes;
 		}
 
+		$inline_options = array();
+		if (!empty($from)) {
+			$inline_options['from'] = $from;
+		}
+		if (!empty($to)) {
+			$inline_options['to'] = $to;
+		}
+		if (!empty($relative_to)) {
+			$inline_options['relative_to'] = $relative_to;
+		}
+		if (!empty($relative_to_parent_position)) {
+			$inline_options['relative_to_parent_position'] = $relative_to_parent_position;
+		}
+		if (!empty($to_amount)) {
+			$inline_options['to_amount'] = $to_amount;
+		}
+		$inline_options_attr = '';
+		if (!empty($inline_options)) {
+			$inline_options_attr = " data-rex-indicator-options='" . json_encode($inline_options) . "'";
+		}
+
 		ob_start();
 
-?><span class="<?php echo $wrap; ?>">
+?><span class="<?php echo $wrap; ?>"<?php echo $inline_options_attr; ?>>
 	<span class="rex-indicator__wrap rex-indicator__wrap--<?php echo $position; ?><?php echo ( "" != $classes ? ' ' . $classes : '' ); ?>" data-ri-from="<?php echo esc_attr( $from ); ?>" data-ri-to="<?php echo esc_attr( $to ); ?>" data-ri-relative-to="<?php echo esc_attr( $relative_to ); ?>" data-ri-relative-to-parent-position="<?php echo esc_attr( $realtive_to_parent_position ); ?>" data-ri-to-amount="<?php echo esc_attr($to_amount); ?>"<?php echo $wrap_styles; ?>>
 		<span class="<?php echo esc_attr( $direction ); ?>">
 		<?php if( ( ( $to == 'left' || $to == 'top' ) && ( $from == 'inside' ) ) || ( ( $to == 'right' || $to == 'bottom' ) && ( $from == 'outside' ) ) ) { ?>

@@ -248,10 +248,20 @@ var Rexbuilder_App = (function($) {
    * Launching indicators
    * @return {void}
    */
-  function launchIndicators( ) {
+  function launchIndicatorsJQuery( ) {
     if ( 'undefined' === typeof $().rexIndicator ) return;
 
     $grids.find(".rex-indicator__placeholder").rexIndicator();
+  }
+
+  function launchIndicators() {
+    if ( 'undefined' === typeof RexIndicator ) {
+      return;
+    }
+    const indicators = Array.prototype.slice.call(document.getElementsByClassName('rex-indicator__placeholder'))
+    for (let i = 0; i < indicators.length; i++) {
+      new RexIndicator(indicators[i])
+    }
   }
 
   /**
@@ -1046,7 +1056,8 @@ var Rexbuilder_App = (function($) {
 
     launchParticleSwarm();
 
-    launchIndicators();
+    launchIndicators()
+    // launchIndicatorsJQuery();
 
     // listen iframe events (for popupcontent)
     listenPopUpContentEvents();

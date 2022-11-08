@@ -328,7 +328,8 @@ class Rexbuilder_Public {
 			}
 			
 			if ( false !== strpos( $customEffects, 'RexIndicator' ) ) {
-				wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
+				wp_enqueue_script('jquery-indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
+				wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rex-indicator.js', array('jquery'), $ver, true);
 			}
 
 
