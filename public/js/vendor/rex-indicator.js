@@ -20,6 +20,8 @@
 		}
 	}
 
+	window.addEventListener('resize', globalResizeHandler)
+
 	function RexIndicator() {
 		this.element = null;
 		this.indicator = null
@@ -67,6 +69,12 @@
 
 	function init() {
 		move_indicator.call(this)
+		set_indicator_dimension.call(this)
+		place_indicator.call(this)
+		resizeCallbacks.push(resize_callback.bind(this))
+	}
+
+	function resize_callback() {
 		set_indicator_dimension.call(this)
 		place_indicator.call(this)
 	}
