@@ -14,14 +14,18 @@
 	 * Keeping a single resize handler with multiple callbacks 
 	 */
 	const resizeCallbacks = []
-		function globalResizeHandler() {
+	function globalResizeHandler() {
 		for (let i = 0; i < resizeCallbacks.length; i++) {
 			if (null === resizeCallbacks[i]) continue
 			resizeCallbacks[i].call()
 		}
 	}
 
-	window.addEventListener('resize', globalResizeHandler)
+	const viewportResizeObserver = new ResizeObserver(globalResizeHandler)
+
+	viewportResizeObserver.observe(document.body)
+
+	// window.addEventListener('resize', globalResizeHandler)
 
 	function RexIndicator() {
 		this.element = null;
