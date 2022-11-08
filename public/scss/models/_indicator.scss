@@ -121,9 +121,11 @@
 /** RESPONSIVNESS **/
 @media screen and (max-width:$small) {
   .rex-indicator__wrap--absolute {
-    &[data-ri-to=left],
-    &[data-ri-to=right] {
-      transform: rotate(90deg);
+    &.rex-indicator__wrap--mobile-rotate {
+      &[data-ri-to=left],
+      &[data-ri-to=right] {
+        transform: rotate(90deg);
+      }
     }
   }
 }

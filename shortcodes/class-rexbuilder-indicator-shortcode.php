@@ -49,7 +49,8 @@ class Rexbuilder_Indicator {
 			'relative_to' => 'block', 		// block|start|parent
 			'realtive_to_parent_position' => '50',	// precentage position from the top parent
 			'classes' => '',
-			'wrap_classes' => ''
+			'wrap_classes' => '',
+			'mobile_rotate' => 'false'
 		), $atts ) );
 
 		$rules_arr = array();
@@ -120,10 +121,17 @@ class Rexbuilder_Indicator {
 			$inline_options_attr = " data-rex-indicator-options='" . json_encode($inline_options) . "'";
 		}
 
+		$indicator_classes = array();
+		array_push($indicator_classes, 'rex-indicator__wrap');
+		array_push($indicator_classes, 'rex-indicator__wrap--' . $position);
+		if ('true' == $mobile_rotate) {
+			array_push($indicator_classes, 'rex-indicator__wrap--mobile-rotate');
+		}
+
 		ob_start();
 
 ?><span class="<?php echo $wrap; ?>"<?php echo $inline_options_attr; ?>>
-	<span class="rex-indicator__wrap rex-indicator__wrap--<?php echo $position; ?><?php echo ( "" != $classes ? ' ' . $classes : '' ); ?>" data-ri-from="<?php echo esc_attr( $from ); ?>" data-ri-to="<?php echo esc_attr( $to ); ?>" data-ri-relative-to="<?php echo esc_attr( $relative_to ); ?>" data-ri-relative-to-parent-position="<?php echo esc_attr( $realtive_to_parent_position ); ?>" data-ri-to-amount="<?php echo esc_attr($to_amount); ?>"<?php echo $wrap_styles; ?>>
+	<span class="<?php echo implode(' ', $indicator_classes); ?><?php echo ( "" != $classes ? ' ' . $classes : '' ); ?>" data-ri-from="<?php echo esc_attr( $from ); ?>" data-ri-to="<?php echo esc_attr( $to ); ?>" data-ri-relative-to="<?php echo esc_attr( $relative_to ); ?>" data-ri-relative-to-parent-position="<?php echo esc_attr( $realtive_to_parent_position ); ?>" data-ri-to-amount="<?php echo esc_attr($to_amount); ?>"<?php echo $wrap_styles; ?>>
 		<span class="<?php echo esc_attr( $direction ); ?>">
 		<?php if( ( ( $to == 'left' || $to == 'top' ) && ( $from == 'inside' ) ) || ( ( $to == 'right' || $to == 'bottom' ) && ( $from == 'outside' ) ) ) { ?>
 			<span class="rex-indicator__dot"></span>
