@@ -1063,6 +1063,14 @@ var Rexbuilder_App = (function($) {
     listenPopUpContentEvents();
   }
 
+  function destroyFrontEndEffects() {
+    if( Rexbuilder_Util.editorMode ) return
+
+    if ('undefined' !== typeof RexIndicator) {
+      RexIndicator.destroyAll()
+    }
+  }
+
 	/**
 	 * Prevents <video> tag bug that auto scrolls window.
 	 * Controls if the page is the same.
@@ -1475,6 +1483,7 @@ var Rexbuilder_App = (function($) {
 
       checkEmptyRows();
 
+      destroyFrontEndEffects()
       // Re-launch effects
       launchFrontEndEffects();
     }

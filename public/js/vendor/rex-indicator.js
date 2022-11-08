@@ -7,7 +7,7 @@
   'use strict';
   window.RexIndicator = factory( window );
 } )( 'undefined' !== typeof window ? window : this, function() {
-	const instances = []
+	let instances = []
 
 	/**
 	 * Handling indicator positions on resize
@@ -64,12 +64,13 @@
 		this.block_ref = parents(this.element, this.options.block_parent).pop()
 		this.after_ref = parents(this.element, this.options.after).pop()
 		this.indicator_moved_parent = null
+		this.resizeCallbackIndex = -1
 
 		init.call(this)
 
 		instances.push( this );
 
-		console.log(this)
+		// console.log(this)
 	}
 
 	function init() {
@@ -77,6 +78,7 @@
 		set_indicator_dimension.call(this)
 		place_indicator.call(this)
 		resizeCallbacks.push(resize_callback.bind(this))
+		this.resizeCallbackIndex = resizeCallbacks.length - 1
 	}
 
 	function resize_callback() {
@@ -291,6 +293,42 @@
 		}
 		return source;
 	}
+
+	RexIndicator.prototype.destroy = function() {
+		// place element in placeholder
+		this.element.append(this.indicator)
+		// remove resize callback
+		resizeCallbacks[this.resizeCallbackIndex] = null
+
+		function removeInstance(instance) {
+			return instance.element !== this.element;
+		}
+
+		instances = instances.filter(removeInstance.bind(this));
+	}
+
+	/**
+	 * Function to grab an instance of the RexGrid based from an element
+	 * @param  {Element} el dom element
+	 * @return {RexIndicator}    instance of RexGrid
+	 */
+	RexIndicator.data = function (el) {
+		var i = 0,
+			tot = instances.length;
+		for (i = 0; i < tot; i++) {
+			if (el === instances[i].element) {
+				return instances[i];
+			}
+		}
+
+		return null;
+	};
+
+	RexIndicator.destroyAll = function () {
+		instances.forEach(function (instance) {
+			instance.destroy();
+		});
+	};
 
 	return RexIndicator
 })
