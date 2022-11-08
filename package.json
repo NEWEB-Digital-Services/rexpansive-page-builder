@@ -1,6 +1,6 @@
 {
 	"name": "rexpansive-builder",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"description": "Wordpress Plugin",
 	"main": "gulpfile.js",
 	"author": "neweb",
