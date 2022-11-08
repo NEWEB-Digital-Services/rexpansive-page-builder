@@ -443,7 +443,7 @@ var effects_js_src = [
 	'public/js/vendor/split-scrollable.js',
 	'public/js/vendor/jquery.rexAccordion.js',
 	'public/js/vendor/particle-swarm.js',
- 	'public/js/vendor/6-jquery.rexIndicator.js',
+ 	'public/js/vendor/rex-indicator.js',
 	'public/js/build/fast-load.js'
 ];
 

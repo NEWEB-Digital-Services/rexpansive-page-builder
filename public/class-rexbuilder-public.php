@@ -324,12 +324,13 @@ class Rexbuilder_Public {
 			wp_enqueue_script('rex-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexAccordion.js', array('jquery'), $ver, true);
 
 			if ( false !== strpos( $customEffects, 'rex-indicator__placeholder' ) ) {
-				wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
+				// wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
+				wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rex-indicator.js', array(), $ver, true);
 			}
 			
 			if ( false !== strpos( $customEffects, 'RexIndicator' ) ) {
-				wp_enqueue_script('jquery-indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
-				wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rex-indicator.js', array('jquery'), $ver, true);
+				// wp_enqueue_script('jquery-indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
+				wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rex-indicator.js', array(), $ver, true);
 			}
 
 
@@ -437,9 +438,9 @@ class Rexbuilder_Public {
 			if( Rexbuilder_Utilities::isBuilderLive() ) {
 				wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
 
-				if ( false !== strpos( $customEffects, 'rex-indicator__placeholder' ) ) {
-					wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
-				}
+				// if ( false !== strpos( $customEffects, 'rex-indicator__placeholder' ) ) {
+				// 	wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
+				// }
 				wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-editor.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
 
 			} else {
@@ -505,7 +506,8 @@ class Rexbuilder_Public {
 				}
 
 				if ( false !== strpos( $customEffects, 'RexIndicator' ) ) {
-					wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
+					// wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.min.js', array('jquery'), REXPANSIVE_BUILDER_VERSION, true);
+					wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rex-indicator.js', array(), REXPANSIVE_BUILDER_VERSION, true);
 				}
 			}
 
