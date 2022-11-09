@@ -357,6 +357,7 @@ void (function (window, factory) {
 
 		for (i = 0; i < blocksArray.length; i++) {
 			if (Utils.hasClass(blocksArray[i], 'rex-block--no-flow')) continue;
+			console.log(i)
 
 			blockInstance = new RexBlock({
 				el: blocksArray[i],
@@ -1024,9 +1025,8 @@ void (function (window, factory) {
 
 		// for native loop guarantees more performance efficiency
 		for (i = 0; i < this.gridBlocksTotal; i++) {
-			if (this.gridBlocks[i].setHeight) {
-				this.calcAndSetBlockHeight(this.gridBlocks[i]);
-			}
+			if (!this.gridBlocks[i].setHeight) continue
+			this.calcAndSetBlockHeight(this.gridBlocks[i]);
 		}
 	};
 
@@ -1039,9 +1039,8 @@ void (function (window, factory) {
 
 		// for native loop guarantees more performance efficiency
 		for (i = 0; i < this.gridBlocksTotal; i++) {
-			if (!this.gridBlocks[i].hide) {
-				this.fixBlockHeight(this.gridBlocks[i]);
-			}
+			if (this.gridBlocks[i].hide) continue
+			this.fixBlockHeight(this.gridBlocks[i]);
 		}
 	};
 
@@ -1173,6 +1172,15 @@ void (function (window, factory) {
 	 * @return {void}
 	 */
 	RexGrid.prototype.endChangeLayout = function () {
+		console.log('endchangelayout')
+		console.log(this)
+
+		// todo: remove gutter from no-flow blocks
+		// todo: remove top and height from no-flow-blocks
+		this.gridBlocksTotal = 0
+		this.gridBlocks = []
+		_getGridBlocks.call(this)
+
 		// get new grid props
 		_getGridAttributes.call(this);
 
@@ -1232,6 +1240,7 @@ void (function (window, factory) {
 	 * @todo	 Change name?
 	 */
 	RexGrid.prototype.endResize = function () {
+		console.log('endResize')
 		// Update grid width, single height and single width
 		_calcGridBaseAttrs.call(this);
 
