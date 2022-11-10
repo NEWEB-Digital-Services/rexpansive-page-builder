@@ -223,6 +223,12 @@ void (function (window, factory) {
 		this.gridBlocksTotal = 0;
 
 		/**
+		 * Block element to not instatiate in the grid
+		 * We found them with the class .rex-block--no-flow
+		 */
+		this.noFlowBlocks = []
+
+		/**
 		 * Section DOM Element.
 		 * It's identified by the class .rexpansive_section
 		 * because we get it from Rexpansive builder.
@@ -356,8 +362,10 @@ void (function (window, factory) {
 		var i = 0;
 
 		for (i = 0; i < blocksArray.length; i++) {
-			if (Utils.hasClass(blocksArray[i], 'rex-block--no-flow')) continue;
-			console.log(i)
+			if (Utils.hasClass(blocksArray[i], 'rex-block--no-flow')) {
+				this.noFlowBlocks.push(blocksArray[i])
+				continue;
+			}
 
 			blockInstance = new RexBlock({
 				el: blocksArray[i],
@@ -962,6 +970,29 @@ void (function (window, factory) {
 	}
 
 	/**
+	 * Reset grid blocks array, no flow blocks array and grid blocks total props
+	 * @since 2.1.1
+	 */
+	function _resetBlocksProps() {
+		this.gridBlocksTotal = 0
+		this.gridBlocks = []
+		this.noFlowBlocks = []
+	}
+
+	/**
+	 * Reset no flow blocks style properties set by grid
+	 * @since 2.1.1
+	 */
+	function _resetNoFlowBlocks() {
+		for (let i = 0; i < this.noFlowBlocks.length; i++) {
+			const itemContent = this.noFlowBlocks[i].querySelector('.grid-stack-item-content');
+			itemContent.style.padding = ''
+			this.noFlowBlocks[i].style.height = ''
+			this.noFlowBlocks[i].style.top = ''
+			this.noFlowBlocks[i].style.left = ''
+		}
+	}
+	/**
 	 *
 	 * @param  {[type]} toMaintainCoords [description]
 	 * @return {[type]}                  [description]
@@ -1082,6 +1113,7 @@ void (function (window, factory) {
 		gridBlockObj.toCheck = true;
 	}
 
+
 	/**
 	 * Fixing the block positions according to heights
 	 * @return 	{void}
@@ -1172,14 +1204,14 @@ void (function (window, factory) {
 	 * @return {void}
 	 */
 	RexGrid.prototype.endChangeLayout = function () {
-		console.log('endchangelayout')
-		console.log(this)
+		// reset blocks instance properties
+		_resetBlocksProps.call(this)
 
-		// todo: remove gutter from no-flow blocks
-		// todo: remove top and height from no-flow-blocks
-		this.gridBlocksTotal = 0
-		this.gridBlocks = []
+		// on change layout, get the blocks
 		_getGridBlocks.call(this)
+
+		// remove block properties from eventually no flow blocks
+		_resetNoFlowBlocks.call(this)
 
 		// get new grid props
 		_getGridAttributes.call(this);
@@ -1240,7 +1272,6 @@ void (function (window, factory) {
 	 * @todo	 Change name?
 	 */
 	RexGrid.prototype.endResize = function () {
-		console.log('endResize')
 		// Update grid width, single height and single width
 		_calcGridBaseAttrs.call(this);
 
