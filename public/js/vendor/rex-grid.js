@@ -418,6 +418,7 @@ void (function (window, factory) {
 	/**
 	 * Set the grid height in pixels
 	 * @param {Array} info array of objects with the information to check; can be undefined
+	 * @version 2.1.1 setting min height instead of height
 	 */
 	function _setGridHeight(info) {
 		if (!this.properties.gridHeightSettable) return;
@@ -1642,6 +1643,7 @@ void (function (window, factory) {
 	 * Destroy a RexGrid instance destroying all instance RexBlocks
 	 * @return 	{void}
 	 * @since		1.0.0
+	 * @version 2.1.1 	reset min height
 	 */
 	RexGrid.prototype.destroy = function () {
 		this.element.style.minHeight = '';
