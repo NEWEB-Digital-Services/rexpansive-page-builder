@@ -424,7 +424,7 @@ void (function (window, factory) {
 
 		var newGridHeight = _calculateGridHeight.call(this, info);
 
-		this.element.style.height = newGridHeight * this.properties.singleHeight + 'px';
+		this.element.style.minHeight = newGridHeight * this.properties.singleHeight + 'px';
 	}
 
 	/**
@@ -1644,7 +1644,7 @@ void (function (window, factory) {
 	 * @since		1.0.0
 	 */
 	RexGrid.prototype.destroy = function () {
-		this.element.style.height = '';
+		this.element.style.minHeight = '';
 
 		// RexBlocks
 		var i;
