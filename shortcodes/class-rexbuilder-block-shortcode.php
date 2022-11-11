@@ -356,6 +356,65 @@ class Rexbuilder_Block {
 			$content = Rexbuilder_Utilities::remove_shortcode_wrap_paragraphs($content, 'RexGoogleMap');
 		}
 
+		$block_classes = array();
+		if (!$block_is_static) {
+			array_push($block_classes, 'perfect-grid-item');
+			array_push($block_classes, 'grid-stack-item');
+		}
+
+		if ("" == $block_background_style && "" == $id_image_bg_block && "" == $content && (empty($video_bg_id) || 'undefined' == $video_bg_id) && (empty($video_bg_url) || 'undefined' == $video_bg_url) && (empty($video_bg_url_vimeo) || 'undefined' == $video_bg_url_vimeo)) {
+			array_push($block_classes, 'real-empty');
+		}
+
+		if (('full' == $type_bg_block && "" != $id_image_bg_block && "" == $content && $section_layout == 'fixed') || (!empty($video_bg_id) && "" == $content) || (!empty($video_bg_url) && "" == $content) || (!empty($video_bg_url_vimeo) && "" == $content)) {
+			array_push($block_classes, 'only-background');
+		}
+
+		if ('full' == $type_bg_block && $section_layout == 'masonry' && "" == $content) {
+			array_push($block_classes, 'natural-fluid-image');
+		}
+
+		if ($editor && 'full' == $type_bg_block && $section_layout == 'masonry' && "" == $content) {
+			array_push($block_classes, 'has-rs-animation');
+			array_push($block_classes, 'rs-animation');
+		}
+
+		array_push($block_classes, 'w' . $size_x);
+		if (! $editor && '' !== $id_image_bg_block) {
+			array_push($block_classes, 'block-w-image');
+		}
+		if (! $editor && '' != $video_bg_id && 'undefined' != $video_bg_id) {
+			array_push($block_classes, 'block-w-html-video');
+		}
+		if ($block_has_slider) {
+			array_push($block_classes, 'block-has-slider');
+		} else if ($editor) {
+			array_push($block_classes, 'rex-text-editable');
+		}
+
+		if($flex_positioned_active && !$block_has_slider){
+			array_push($block_classes, "rex-flex-".$flex_position[0]);
+			array_push($block_classes, "rex-flex-".$flex_position[1]);
+		}
+		if($flex_img_positioned_active && !$block_has_slider){
+			array_push($block_classes, "rex-flex-img-".$flex_img_position[0]);
+			array_push($block_classes, "rex-flex-img-".$flex_img_position[1]);
+		}
+		if ('expand' == $type) {
+			array_push($block_classes, 'wrapper-expand-effect');
+			array_push($block_classes, 'effect-expand-' . $zak_side);
+		}
+		if ( false !== strpos( $content, 'RexLastWorks' ) ) {
+			array_push($block_classes, 'horizontal-carousel');
+		}
+		if ($floating_horizontal || $floating_vertical) {
+			array_push($block_classes, ' rex-floating-block');
+		}
+
+		$block_custom_class_arr = explode(' ', trim($block_custom_class));
+		$block_classes_array = array_merge($block_classes, $block_custom_class_arr);
+		$block_classes_array = apply_filters('rexbuilder_block_classes', $block_classes_array);
+
 		ob_start();
 
 		echo '<div id="' . $id . '" class="';
