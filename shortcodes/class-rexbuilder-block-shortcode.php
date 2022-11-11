@@ -416,44 +416,79 @@ class Rexbuilder_Block {
 		$block_classes_array = array_merge($block_classes, $block_custom_class_arr);
 		$block_classes_array = apply_filters('rexbuilder_block_classes', $block_classes_array);
 
-		ob_start();
-
-		echo '<div id="' . $id . '" class="' . implode(' ', $block_classes_array) . '"';
-		echo ' data-height="' . $size_y . '"';
-		echo ' data-width="' . $size_x . '"';
-		echo ' data-row="' . $row . '"';
-		echo ' data-col="' . $col . '"';
-
+		$data_attrs_arr = array();
+		array_push($data_attrs_arr, 'data-height="' . $size_y . '"');
+		array_push($data_attrs_arr, 'data-width="' . $size_x . '"');
+		array_push($data_attrs_arr, 'data-row="' . $row . '"');
+		array_push($data_attrs_arr, 'data-col="' . $col . '"');
 		if ($edited_from_backend == "true") {
-			echo ' data-gs-height="' . $size_y . '"';
-			echo ' data-gs-width="' . $size_x . '"';
-			echo ' data-gs-y="' . ($row - 1) . '"';
-			echo ' data-gs-x="' . ($col - 1) . '"';
+			array_push($data_attrs_arr, 'data-gs-height="' . $size_y . '"');
+			array_push($data_attrs_arr, 'data-gs-width="' . $size_x . '"');
+			array_push($data_attrs_arr, 'data-gs-y="' . ($row - 1) . '"');
+			array_push($data_attrs_arr, 'data-gs-x="' . ($col - 1) . '"');
 		} else {
-			echo ' data-gs-height="' . $gs_height . '"';
-			echo ' data-gs-width="' . $gs_width . '"';
-			echo ' data-gs-y="' . $gs_y . '"';
-			echo ' data-gs-x="' . $gs_x . '"';
+			array_push($data_attrs_arr, 'data-gs-height="' . $gs_height . '"');
+			array_push($data_attrs_arr, 'data-gs-width="' . $gs_width . '"');
+			array_push($data_attrs_arr, 'data-gs-y="' . $gs_y . '"');
+			array_push($data_attrs_arr, 'data-gs-x="' . $gs_x . '"');
 		}
 
-		echo ' data-rexbuilder-block-id="';
-		if ($rexbuilder_block_id != "") {
-			echo $rexbuilder_block_id;
-		}
-		echo '"';
-
+		array_push($data_attrs_arr, 'data-rexbuilder-block-id="' . $rexbuilder_block_id . '"');
 		if ($floating_border != '') {
-			echo ' data-rs-animation-delay="0.5s"';
+			array_push($data_attrs_arr, 'data-rs-animation-delay="0.5s"');
 			if ($floating_horizontal) {
-				echo ' data-rs-animation-offset="50"';
+				array_push($data_attrs_arr, 'data-rs-animation-offset="50"');
 			} else if ($floating_vertical) {
-				echo ' data-rs-animation-offset="-50"';
+				array_push($data_attrs_arr, 'data-rs-animation-offset="-50"');
 			}
 		}
-		echo ( $block_delayed ? ' data-rs-animation-delay="0.5s"' : '');
-		echo ( $block_offset ? ' data-rs-animation-offset="10"' : '');
-		echo ( $visible_element_percentage ? ' data-rs-animation-visible-percentage="' . $visible_element_percentage . '"' : '' );
-		echo '>';
+		if ($block_delayed) {
+			array_push($data_attrs_arr, 'data-rs-animation-delay="0.5s"');
+		}
+		if ($block_offset) {
+			array_push($data_attrs_arr, 'data-rs-animation-offset="10"');
+		}
+		if ($visible_element_percentage) {
+			array_push($data_attrs_arr, ' data-rs-animation-visible-percentage="' . $visible_element_percentage . '"');
+		}
+		ob_start();
+
+		echo '<div id="' . $id . '" class="' . implode(' ', $block_classes_array) . '" ' . implode(' ', $data_attrs_arr) . '>';
+		// echo ' data-height="' . $size_y . '"';
+		// echo ' data-width="' . $size_x . '"';
+		// echo ' data-row="' . $row . '"';
+		// echo ' data-col="' . $col . '"';
+
+		// if ($edited_from_backend == "true") {
+		// 	echo ' data-gs-height="' . $size_y . '"';
+		// 	echo ' data-gs-width="' . $size_x . '"';
+		// 	echo ' data-gs-y="' . ($row - 1) . '"';
+		// 	echo ' data-gs-x="' . ($col - 1) . '"';
+		// } else {
+		// 	echo ' data-gs-height="' . $gs_height . '"';
+		// 	echo ' data-gs-width="' . $gs_width . '"';
+		// 	echo ' data-gs-y="' . $gs_y . '"';
+		// 	echo ' data-gs-x="' . $gs_x . '"';
+		// }
+
+		// echo ' data-rexbuilder-block-id="';
+		// if ($rexbuilder_block_id != "") {
+		// 	echo $rexbuilder_block_id;
+		// }
+		// echo '"';
+
+		// if ($floating_border != '') {
+		// 	echo ' data-rs-animation-delay="0.5s"';
+		// 	if ($floating_horizontal) {
+		// 		echo ' data-rs-animation-offset="50"';
+		// 	} else if ($floating_vertical) {
+		// 		echo ' data-rs-animation-offset="-50"';
+		// 	}
+		// }
+		// echo ( $block_delayed ? ' data-rs-animation-delay="0.5s"' : '');
+		// echo ( $block_offset ? ' data-rs-animation-offset="10"' : '');
+		// echo ( $visible_element_percentage ? ' data-rs-animation-visible-percentage="' . $visible_element_percentage . '"' : '' );
+		// echo '>';
 
 		$block_style_padding = '';
 		if ('' != $block_padding):
