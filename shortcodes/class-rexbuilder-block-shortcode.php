@@ -399,7 +399,8 @@ class Rexbuilder_Block {
 			echo ' rex-floating-block';
 		}
 
-		echo '" data-height="' . $size_y . '"';
+		echo '"';
+		echo ' data-height="' . $size_y . '"';
 		echo ' data-width="' . $size_x . '"';
 		echo ' data-row="' . $row . '"';
 		echo ' data-col="' . $col . '"';
