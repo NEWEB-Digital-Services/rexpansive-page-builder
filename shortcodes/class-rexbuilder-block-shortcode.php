@@ -374,7 +374,7 @@ class Rexbuilder_Block {
 			array_push($block_classes, 'natural-fluid-image');
 		}
 
-		if ($editor && 'full' == $type_bg_block && $section_layout == 'masonry' && "" == $content) {
+		if (!$editor && $animation == 1 && $block_animation && !$block_is_static) {
 			array_push($block_classes, 'has-rs-animation');
 			array_push($block_classes, 'rs-animation');
 		}
