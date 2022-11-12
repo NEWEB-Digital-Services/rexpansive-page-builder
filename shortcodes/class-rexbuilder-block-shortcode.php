@@ -404,6 +404,7 @@ class Rexbuilder_Block {
 		$block_classes_array = array_merge($block_classes, $block_custom_class_arr);
 		$block_classes_array = apply_filters('rexbuilder_block_classes', $block_classes_array);
 
+		// add block attributes to array for better readability
 		$data_attrs_arr = array();
 		array_push($data_attrs_arr, 'data-height="' . $size_y . '"');
 		array_push($data_attrs_arr, 'data-width="' . $size_x . '"');
@@ -439,15 +440,11 @@ class Rexbuilder_Block {
 		if ($visible_element_percentage) {
 			array_push($data_attrs_arr, ' data-rs-animation-visible-percentage="' . $visible_element_percentage . '"');
 		}
-		ob_start();
-
-		echo '<div id="' . $id . '" class="' . implode(' ', $block_classes_array) . '" ' . implode(' ', $data_attrs_arr) . '>';
 
 		$block_style_padding = '';
 		if ('' != $block_padding):
 			$block_padding_values = explode(';', $block_padding);
 			if (count($block_padding_values) > 1):
-				//$block_style_padding = ' style="padding:' . $block_padding . '"';
 				$block_style_padding = ' style="padding-top:' . $block_padding_values[0] . ';';
 				$block_style_padding .= 'padding-right:' . $block_padding_values[1] . ';';
 				$block_style_padding .= 'padding-bottom:' . $block_padding_values[2] . ';';
@@ -456,6 +453,10 @@ class Rexbuilder_Block {
 				$block_style_padding = ' style="padding:' . $block_padding . '"';
 			endif;
 		endif;
+
+		ob_start();
+		?>
+<div id="<?php echo $id; ?>" class="<?php echo implode(' ', $block_classes_array); ?>"<?php echo implode(' ', $data_attrs_arr); ?>><?php
 
 		$bg_video_toggle_audio_markup = "";
 
@@ -556,10 +557,6 @@ class Rexbuilder_Block {
 					echo ' data-background_image_height="' . $img_attrs[2]. '"';
 				}
 				echo '>';	// <\.grid-item-content>
-
-				// if ( $editor ) {
-				// 	echo '<div class="rexlive-block-drag-handle"></div>';
-				// }
 
 				echo "<div class=\"rex-image-wrapper {$type_bg_block}-image-background\"".$background_img_style;
 				echo $alt_tag;
