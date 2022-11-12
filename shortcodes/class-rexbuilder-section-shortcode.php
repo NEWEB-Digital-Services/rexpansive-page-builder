@@ -216,17 +216,7 @@ class Rexbuilder_Section {
 			$bg_video_vimeo_markup .= '<iframe src="' . $video_bg_url_vimeo_section . '?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 			$bg_video_vimeo_markup .= '</div>';
 		}
-
-		ob_start();
-
-		echo '<section';
-
-		if ($section_name != '' && $section_name != "undefined") {
-			$section_id_parsed = preg_replace('/[\W\s+]/m', '', $section_name);
-			echo ' data-rexlive-section-name="' . $section_name . '"';
-			echo ' href="#' . $section_id_parsed . '" id="' . $section_id_parsed . '"';
-		}
-
+		
 		if($content == ""){
 			$empty_section = true;
 		} else{
@@ -240,6 +230,57 @@ class Rexbuilder_Section {
 		$content_has_static_block = strpos($content, 'rex-static-block');
 
 		$row_has_accordion = strpos($content, 'RexAccordion');
+
+
+		$section_classes_arr = array();
+		if ($empty_section) {
+			array_push($section_classes_arr, 'empty-section');
+		}
+		if ($videoTypeActive!= "") {
+			array_push($section_classes_arr, $videoTypeActive);
+		}
+		if ("" != $rexlive_model_id) {
+			array_push($section_classes_arr, 'rex-model-section');
+		}
+		if ($content_has_photoswipe > 0) {
+			array_push($section_classes_arr, 'photoswipe-gallery');
+		}
+		if ('' != $custom_classes) {
+			array_push($section_classes_arr, $custom_classes);
+		}
+		if ('true' == $full_height) {
+			array_push($section_classes_arr, 'full-height-section');
+		}
+		if ($content_has_floating_blocks !== false) {
+			array_push($section_classes_arr, 'rex-section-has-floating-blocks');
+		}
+		if ($content_has_static_block !== false) {
+			array_push($section_classes_arr, 'rex-section-has-static-blocks');
+		}
+		if (false !== $row_has_accordion) {
+			array_push($section_classes_arr, 'rex-section-has-accordion');
+		}
+		if ($editor && $row_separator_top < 25) {
+			array_push($section_classes_arr, 'ui-tools--near-top');
+		}
+		if (!$editor) {
+			if ('' !== $id_image_bg_section) {
+				array_push($section_classes_arr, 'section-w-image');
+			}
+			if ('' != $video_bg_id_section && 'undefined' != $video_bg_id_section) {
+				array_push($section_classes_arr, 'section-w-html-video');
+			}
+		}
+
+		ob_start();
+
+		echo '<section';
+
+		if ($section_name != '' && $section_name != "undefined") {
+			$section_id_parsed = preg_replace('/[\W\s+]/m', '', $section_name);
+			echo ' data-rexlive-section-name="' . $section_name . '"';
+			echo ' href="#' . $section_id_parsed . '" id="' . $section_id_parsed . '"';
+		}
 
 		// echo classes
 		echo ' class="rexpansive_section' . ($empty_section ? ' empty-section' : '');
