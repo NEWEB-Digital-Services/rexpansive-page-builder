@@ -103,8 +103,6 @@ class Rexbuilder_Block {
 			"fast_load" => "true"
 		), $atts));
 
-		global $post;
-
 		if($empty_block_backend_fix == "true"){
 			ob_start();
 			echo "";
@@ -342,9 +340,7 @@ class Rexbuilder_Block {
 			}
 		}
 
-		$block_has_map = false;
 		if ( false !== strpos( $content, 'RexGoogleMap' ) ) {
-			$block_has_map = true;
 			$content = Rexbuilder_Utilities::remove_shortcode_wrap_paragraphs($content, 'RexGoogleMap');
 		}
 
