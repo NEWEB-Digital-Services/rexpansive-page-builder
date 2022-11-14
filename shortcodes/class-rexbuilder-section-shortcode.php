@@ -271,6 +271,7 @@ class Rexbuilder_Section {
 				array_push($section_classes_arr, 'section-w-html-video');
 			}
 		}
+		// todo: add custom classes and use the array
 
 		ob_start();
 
