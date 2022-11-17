@@ -63,6 +63,7 @@
 		this.indicator = this.element.querySelector(this.options.indicator)
 		this.block_ref = parents(this.element, this.options.block_parent).pop()
 		this.after_ref = parents(this.element, this.options.after).pop()
+		this.relative_to_element = document.querySelector(this.options.relative_to_selector)
 		this.indicator_moved_parent = null
 		this.resizeCallbackIndex = -1
 
@@ -115,14 +116,24 @@
         }
         case 'bottom': {
           // const
-          const parentInfo = this.after_ref.getBoundingClientRect()
+		  let parentInfo
+		  if (this.relative_to_element) {
+			parentInfo = this.relative_to_element.getBoundingClientRect()
+		  } else {
+          	parentInfo = this.after_ref.getBoundingClientRect()
+		  }
           const elementInfo = this.element.getBoundingClientRect()
           const newHeight = parentInfo.y + parentInfo.height - elementInfo.y - (elementInfo.height / 2)
           this.indicator.style.setProperty('--rex-indicator-wrap-height', `${newHeight}px`)
           break
         }
         case 'top': {
-          const parentInfo = this.after_ref.getBoundingClientRect()
+		  let parentInfo
+		  if (this.relative_to_element) {
+			parentInfo = this.relative_to_element.getBoundingClientRect()
+		  } else {
+          	parentInfo = this.after_ref.getBoundingClientRect()
+		  }
           const elementInfo = this.element.getBoundingClientRect()
           const newHeight = elementInfo.y - parentInfo.y + (elementInfo.height / 2)
           this.indicator.style.setProperty('--rex-indicator-wrap-height', `${newHeight}px`)
@@ -187,7 +198,6 @@
       const b_offset = offset(this.block_ref)
       const p_offset = offset(this.element.parentElement)
 	  const e_offset = offset(this.element)
-	  const a_offset = offset(this.after_ref)
 
       // define top position
       if (this.options.to == 'left' || this.options.to == 'right') {
@@ -197,7 +207,13 @@
           if (this.options.to_amount === 'auto') {
             p.top = b_offset.top - (this.indicator.getBoundingClientRect().height / 2)
           } else {
-            p.top = a_offset.top
+			if (this.relative_to_element) {
+				const r_offset = offset(this.relative_to_element)
+				p.top = r_offset.top
+			} else {
+				const a_offset = offset(this.after_ref)
+            	p.top = a_offset.top
+			}
           }
         } else if (this.options.to == 'bottom') {
           if (this.options.to_amount === 'auto') {

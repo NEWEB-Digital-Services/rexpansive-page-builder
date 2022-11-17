@@ -48,6 +48,7 @@ class Rexbuilder_Indicator {
 			'position' => 'absolute',	// static|absolute,
 			'relative_to' => 'block', 		// block|start|parent
 			'realtive_to_parent_position' => '50',	// precentage position from the top parent
+			'relative_to_selector' => '',
 			'classes' => '',
 			'wrap_classes' => '',
 			'mobile_rotate' => 'false'
@@ -115,6 +116,9 @@ class Rexbuilder_Indicator {
 		}
 		if (!empty($to_amount)) {
 			$inline_options['to_amount'] = $to_amount;
+		}
+		if (!empty($relative_to_selector)) {
+			$inline_options['relative_to_selector'] = $relative_to_selector;
 		}
 		$inline_options_attr = '';
 		if (!empty($inline_options)) {
