@@ -1,11 +1,11 @@
 .rex-indicator__placeholder {
   visibility: hidden;
-  @media screen and (max-width: 900px ){
-    &:first-child,
-    &:last-child {
-      min-height: 50px;
-    }
-  }
+  // @media screen and (max-width: 900px ){
+  //   &:first-child,
+  //   &:last-child {
+  //     min-height: 50px;
+  //   }
+  // }
 }
 
 .rex-indicator__wrap--static {
