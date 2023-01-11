@@ -245,7 +245,7 @@ var Rex_Navigator = (function ($) {
     if (null === navigationLabel) return
 
     var position = navigationLabel.getAttribute('data-nav-position')
-    position = 'undefined' !== typeof position ? position : 'right'
+    position = position ? position : 'right'
 
 		for (var i = 0; i < navigationLinks.length; i++) {
 			navigationLinks[i].addEventListener('mouseenter', function (event) {
