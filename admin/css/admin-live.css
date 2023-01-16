@@ -1,0 +1,54 @@
+.live-info-wrap.live-saved + .form-table.rexbuilder-table {
+  display: none;
+}
+
+.go-live-advice {
+  text-align: center;
+  position:relative;
+}
+
+.go-live-advice-overlay-status{
+  width:100%;
+  height:36px;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:200;
+}
+
+.go-live-advice-overlay-status .go-live-advice-overlay-alert{
+  width:80px;
+  height:36px;
+  border-radius:25px;
+  margin:0px auto 0px auto;
+  transition:1s;
+  z-index:225;
+}
+
+.go-live-advice-overlay-status .go-live-advice-overlay-alert:hover .go-live-showalert-content{  
+    display:block;
+}
+
+.cool-btn {
+  padding: 10px 20px;
+  display: inline-block;
+  transition: all 0.3s ease-out;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 25px;
+  font-weight: normal;
+  margin: 0 7px;
+  width: auto;
+}
+
+.cool-btn.cool-bnt--primary {
+  background-color: #ff0055;
+  color: #fff;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/*.glaCC-overlay-grey{background-color:#505050;}*/
+.cool-btn.cool-bnt--primary.glaCC-true{background-color:#ff0055;}
+.cool-btn.cool-bnt--primary.glaCC-false{background-color:#404040;cursor:default;}

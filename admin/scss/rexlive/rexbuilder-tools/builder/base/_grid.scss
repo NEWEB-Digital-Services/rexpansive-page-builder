@@ -1,0 +1,29 @@
+.b-row {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-content-center {
+  justify-content: center;
+}
+
+.justify-content-space-between {
+  justify-content: space-between;
+}
+
+.b--border-bottom {
+  border-bottom: 1px solid $border-color;
+}
+
+.b-col {
+  width: 100%;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.b--border-right {
+  border-right: 1px solid $border-color;
+}

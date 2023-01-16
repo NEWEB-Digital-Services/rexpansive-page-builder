@@ -1,0 +1,27 @@
+@mixin fill-icon( $color ) {
+  // .l-svg-icons,
+  .l-svg-icons > svg {
+    fill: $color;
+    // stroke: $btn-base-color;
+  }
+}
+
+@mixin style-icon {
+	.l-svg-icons > svg {
+		@content;
+  }
+}
+
+@mixin clearfix() {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+@mixin safariFlickerFix {
+  // transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ALGHORITHM</title>
+	<style>
+		.toolbar {
+			width: 100%;
+			margin: 0 auto;		
+			position: fixed;
+			top: 0;
+			left: 0;
+			background-color: white;	
+		}
+		.grid {
+			max-width: 500px;
+			width: 100%;
+			margin: 0 auto;
+			margin-top: 50px;
+			position: relative;
+		}
+
+		.block[data-w='1'] {
+		  width: 8.3333333333%;
+		}
+
+		.block[data-x='1'] {
+		  left: 8.3333333333%;
+		}
+
+		.block[data-w='2'] {
+		  width: 16.6666666667%;
+		}
+
+		.block[data-x='2'] {
+		  left: 16.6666666667%;
+		}
+
+		.block[data-w='3'] {
+		  width: 25%;
+		}
+
+		.block[data-x='3'] {
+		  left: 25%;
+		}
+
+		.block[data-w='4'] {
+		  width: 33.3333333333%;
+		}
+
+		.block[data-x='4'] {
+		  left: 33.3333333333%;
+		}
+
+		.block[data-w='5'] {
+		  width: 41.6666666667%;
+		}
+
+		.block[data-x='5'] {
+		  left: 41.6666666667%;
+		}
+
+		.block[data-w='6'] {
+		  width: 50%;
+		}
+
+		.block[data-x='6'] {
+		  left: 50%;
+		}
+
+		.block[data-w='7'] {
+		  width: 58.3333333333%;
+		}
+
+		.block[data-x='7'] {
+		  left: 58.3333333333%;
+		}
+
+		.block[data-w='8'] {
+		  width: 66.6666666667%;
+		}
+
+		.block[data-x='8'] {
+		  left: 66.6666666667%;
+		}
+
+		.block[data-w='9'] {
+		  width: 75%;
+		}
+
+		.block[data-x='9'] {
+		  left: 75%;
+		}
+
+		.block[data-w='10'] {
+		  width: 83.3333333333%;
+		}
+
+		.block[data-x='10'] {
+		  left: 83.3333333333%;
+		}
+
+		.block[data-w='11'] {
+		  width: 91.6666666667%;
+		}
+
+		.block[data-x='11'] {
+		  left: 91.6666666667%;
+		}
+
+		.block[data-w='12'] {
+		  width: 100%;
+		}
+
+		.block[data-x='12'] {
+		  left: 100%;
+		}
+
+		.block {
+			outline: 1px dotted #888;
+			position: absolute;
+		}
+
+		.block-wrap {
+			padding: 10px;
+			position: absolute;
+			text-align: 0;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+
+		.block-content {
+			height:100%;
+			display: flex;
+			-ms-align-items: center;
+			align-items: center;
+			justify-content: center;
+		}
+
+		#b0 .block-content { background-color: cornflowerblue; }
+		#b1 .block-content { background-color: green; }
+		#b2 .block-content { background-color: orange; }
+		#b3 .block-content { background-color: bisque; }
+		#b4 .block-content { background-color: grey; }
+		#b5 .block-content { background-color: palegoldenrod; }
+	</style>
+</head>
+<body>
+	<div class="toolbar">
+		<button id="fix">FIX</button>
+		<button id="collapse">COLLAPSE</button>
+	</div>
+	<div id="grid" class="grid">
+		<div id="b0" class="block" data-w="2" data-h="2" data-x="0" data-y="0">
+			<div class="block-wrap">
+				<div class="block-content">A</div>
+			</div>
+		</div>
+		<div id="b2" class="block" data-w="5" data-h="2" data-x="7" data-y="1">
+			<div class="block-wrap">
+				<div class="block-content">C</div>
+			</div>
+		</div>
+		<div id="b1" class="block" data-w="2" data-h="2" data-x="2" data-y="0">
+			<div class="block-wrap">
+				<div class="block-content">B</div>
+			</div>
+		</div>
+		<div id="b3" class="block" data-w="1" data-h="3" data-x="0" data-y="5">
+			<div class="block-wrap">
+				<div class="block-content">E</div>
+			</div>
+		</div>
+		<div id="b4" class="block" data-w="11" data-h="3" data-x="1" data-y="3">
+			<div class="block-wrap">
+				<div class="block-content">D</div>
+			</div>
+		</div>
+		<div id="b5" class="block" data-w="8" data-h="3" data-x="1" data-y="6">
+			<div class="block-wrap">
+				<div class="block-content">F</div>
+			</div>
+		</div>
+	</div>
+	<script src="/Applications/MAMP/htdocs/local/wp-content/plugins/builderlive/public/js/live/0-Rexbuilder_Array_Utilities.js"></script>
+	<script>
+;(function() {
+	var sW;
+	var sH;
+	var grid;
+
+	var bList = [];
+
+	function attachListeners() {
+		var buttonFix = document.getElementById('fix');
+		buttonFix.addEventListener('click', handleFixGrid);
+
+		var buttonCollapse = document.getElementById('collapse');
+		buttonCollapse.addEventListener('click', handleCollapseGrid);
+	}
+
+	function handleDOMContentLoaded() {
+		grid = document.getElementById('grid');
+		var blocks = Array.prototype.slice.call( grid.getElementsByClassName('block') );
+		var i, tot_blocks = blocks.length;
+		var gW = grid.offsetWidth;
+		sW = gW/12;
+		sH = sW;
+
+		// set height and y
+		// trace blocks info
+		for( i=0; i<tot_blocks; i++) {
+			var bh = parseInt( blocks[i].getAttribute('data-h') );
+			var by = parseInt( blocks[i].getAttribute('data-y') );
+			blocks[i].style.height = (bh * sH) + 'px';
+			blocks[i].style.top = (by * sH) + 'px';
+
+			blocks[i].addEventListener('click', selectBlock);
+
+			bList.push( {
+				el: blocks[i],
+				id: blocks[i].getAttribute('id'),
+				w: parseInt( blocks[i].getAttribute('data-w') ),
+				h: bh,
+				x: parseInt( blocks[i].getAttribute('data-x') ),
+				y: by,
+				toCheck: false,
+			} );
+
+			bList[i].domIndex = bList[i].x + ( bList[i].y * 12 )
+		}
+
+		// sort blocks array by ascending DOM order
+		bList.sort( function( bA, bB ) {
+			return ( bA.domIndex - bB.domIndex )
+		})
+
+		// attach button handlers
+		attachListeners();
+	}
+
+	function selectBlock(e) {
+		e.preventDefault()
+		var i, tot_bList = bList.length;
+		for( i=0; i<tot_bList; i++ ) {
+			if ( bList[i].el === this ) {
+				bList[i].toCheck = true;
+				break;
+			}
+		}
+		this.style.background = '#000';
+	}
+
+	function handleFixGrid() {
+		var i;
+		var j, tot_bList = bList.length;
+
+		grid.style.display = 'none';
+
+		// set the new height
+		for( i=0; i<tot_bList; i++ ) {
+			if ( ! bList[i].toCheck ) {
+				continue;
+			}
+
+			var randomH = Math.ceil( Math.random() * 5 )
+			var newBh = bList[i].h + ( randomH );
+			bList[i].el.setAttribute('data-h', newBh );
+			bList[i].el.style.height = (newBh * sH) + 'px';
+			bList[i].el.style.background = '';
+
+			bList[i].h = newBh;
+		}
+
+		// check other blocks collapse
+		for( i=0; i<tot_bList; i++ ) {
+			if ( ! bList[i].toCheck ) {
+				continue;
+			}
+
+			for( j=0; j<tot_bList; j++ ) {
+				if( bList[i].el === bList[j].el ) {
+					continue;
+				}
+
+				if (bList[i].x < bList[j].x + bList[j].w &&
+					bList[i].x + bList[i].w > bList[j].x &&
+					bList[i].y < bList[j].y + bList[j].h &&
+					bList[i].y + bList[i].h > bList[j].y) {
+					
+					var t = ( bList[i].y + bList[i].h ) - bList[j].y;
+					var newY = bList[j].y + t;
+
+					bList[j].el.setAttribute( 'data-y', newY );
+
+					bList[j].el.style.top = ((newY) * sH) + 'px';
+					bList[j].y = newY;
+					bList[j].domIndex = bList[j].x + ( bList[j].y * 12 )
+
+					bList[j].toCheck = true;
+				}
+			}
+
+			bList[i].toCheck = false;
+		}
+
+		grid.style.display = '';
+	}
+
+	function handleCollapseGrid() {
+		var i;
+		var j, tot_bList = bList.length;
+		for( j=0; j<tot_bList; j++ ) {
+			bList[j].x = 0;
+			bList[j].w = 12;
+			bList[j].el.setAttribute('data-x', 0)
+			bList[j].el.setAttribute('data-w', 12)
+
+			// set new height
+			
+			if ( j+1 < tot_bList ) {
+				var newT = bList[j].y + bList[j].h;
+				bList[j+1].y = newT;
+				bList[j+1].el.setAttribute('data-y', newT);
+				bList[j+1].el.style.top = ( newT * sH ) + 'px';
+			}
+		}
+
+		// sort blocks array by ascending DOM order
+		bList.sort( function( bA, bB ) {
+			return ( bA.domIndex - bB.domIndex )
+		})
+
+		console.log(bList)
+	}
+
+	document.addEventListener('DOMContentLoaded', handleDOMContentLoaded)
+})();
+	</script>
+</body>
+</html>

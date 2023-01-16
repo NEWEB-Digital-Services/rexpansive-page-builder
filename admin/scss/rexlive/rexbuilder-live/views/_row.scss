@@ -1,0 +1,124 @@
+// LIVE
+.rexbuilder-live-content--editing {
+
+  .rex-container {
+    min-height: 100px;
+  }
+
+  position: relative;
+  .rexpansive_section {
+    z-index: 0;
+    &.highLightRow {
+      z-index: 10;
+    }
+    // z-index: 2000;
+    // border: 2px solid $icon-active-color;
+    .rex-row__dimension {
+      overflow: visible;
+    }
+
+    .perfect-grid-gallery {
+      overflow: visible;
+
+      &[data-gs-current-height="0"] {
+        min-height: 100px;
+      }
+    }
+
+    &.empty-section {
+      min-height: 100px;
+      .perfect-grid-gallery {
+        min-height: 100px;
+      }
+    }
+  }
+
+  // .rex-video-section-wrap {
+  //   z-index: 0;
+  // }
+
+  // .responsive-overlay {
+  //   z-index: auto;
+  // }
+  
+  #{$row-focused} {
+  
+    &.empty-section {
+      .responsive-overlay {
+        min-height: 100px;
+      }
+    }
+
+    &.rexpansive-lock-section--light {
+      &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 5000;
+      }
+    }
+
+    &.rexpansive-lock-section--overlay {
+      &:before {
+        opacity: 1;
+        z-index: 10;
+      }
+      .grid-stack-item {
+        &:not(.grid-stack-item--drag-to-row) {
+          .ui-focused-element-highlight {
+            visibility: visible;
+            box-shadow: none;
+            outline-color: transparent;
+            &:before {
+              opacity: 1;
+              z-index: 30;
+            }
+          }
+        }
+      }
+    }
+
+    &:before {
+      opacity: 0;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -30;
+      transition: opacity 0.3s;
+      background-color: rgba(0,0,0,1);
+    }
+
+    .grid-stack-item {
+      .ui-focused-element-highlight {
+        &:before {
+          opacity: 0;
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: -30;
+          transition: opacity 0.3s;
+          background-color: rgba(0,0,0,0.7);
+        }
+      }
+    }
+  
+    // &:hover {
+    //   outline: 2px solid $palette-color-1;
+    // }
+  }
+}
+
+// .perfect-grid-gallery {
+//   &#{$row-focused} {
+//     overflow: visible;
+//   }
+// }

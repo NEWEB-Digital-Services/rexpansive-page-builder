@@ -1,0 +1,14 @@
+#adminmenumain,
+#wpcontent,
+#wpfooter {
+  display: none;
+}
+
+html.wp-toolbar {
+  padding-top: 0;
+}
+
+body.rexpansive-editor {
+  overflow: hidden;
+  background-color: grey;
+}

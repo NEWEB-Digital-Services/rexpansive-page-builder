@@ -1,0 +1,65 @@
+// .text-gradient {
+//   -webkit-background-clip: text;
+//   -webkit-text-fill-color: transparent;
+// }
+.fadeIn {
+  animation-duration: 1.2s;
+  animation-timing-function: cubic-bezier(.39,.575,.565,1.000);
+  animation-fill-mode: both;
+}
+.fadeOut {
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+
+.rSlideInTop {
+  animation: rSlideInTop 0.25s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+.rSlideOutTop {
+	animation: rSlideOutTop 0.25s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+}
+
+.alignleft {
+	display: inline;
+	float: left;
+	margin-right: 1.5em;
+}
+
+.alignright {
+	display: inline;
+	float: right;
+	margin-left: 1.5em;
+}
+
+.aligncenter {
+	clear: both;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+/* Accordion animations */
+
+// .accordion-animate-block {
+	// transition: height 150ms, top 150ms;
+	// transition: top 150ms;
+// }
+
+.hide-video-controls {
+	.rex-video__controls {
+		display: none;
+	}
+}
+
+.natural-blur-effect {
+	filter: blur(6px);
+}
+
+.fit-natural-bg-image {
+	.rex-image-wrapper.natural-image-background {
+		background-size: contain;
+		background-position: left top;
+	}
+}

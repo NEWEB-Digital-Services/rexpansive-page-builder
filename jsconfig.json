@@ -1,0 +1,11 @@
+{
+	"typeAcquisition": {
+		"include": ["jquery@1.12.4", "lodash", "medium-editor", "blueimp-tmpl", "tinycolor", "gridstack"]
+	},
+	"compilerOptions": {
+		"checkJs": true,
+		"target": "es5"
+	},
+	"include": ["public/js/**/*", "admin/js/**/*"],
+	"exclude": ["**/node_modules/*"]
+}

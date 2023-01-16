@@ -1,0 +1,49 @@
+// LIVE
+// on drop models
+.rexlive-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  opacity: 0;
+  visibility: hidden;
+  z-index: -10;
+  // transition: visibility 0s linear 1000ms, opacity 1000ms;
+
+  .rexlive-loader--element {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &.active {
+    visibility: visible;
+    z-index: 1000;
+    opacity: 1;
+  }
+
+  .sk-double-bounce {
+    .sk-child {
+      background-color: $palette-color-3;
+    }
+  }
+}
+
+.rexbuilder-live-content--loading {
+  .grid-stack.grid-stack-animate, 
+  .grid-stack.grid-stack-animate .grid-stack-item {
+    transition: none;
+  }
+  overflow: hidden;
+  // .rexlive-loader {
+    // opacity: 1;
+    // visibility: visible;
+    // z-index: 2000;
+    // transition: visibility 0s, opacity 1000ms;
+  // }
+
+  // .grid-stack-item {
+  //   opacity: 0;
+  // }
+}

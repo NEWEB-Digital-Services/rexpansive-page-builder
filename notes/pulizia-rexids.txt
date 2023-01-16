@@ -1,0 +1,12 @@
+bisogna fare attenzione ai rexids, che cominiciano a diventare tanti. da fare:
+1) non tenerne più traccia quando elimino un blocco o una section, o un modello o un pulsante
+2) algoritmo di pulizia iniziale quando attivo il plugin direi: idea
+	- raccolta dati contenenti gli ID
+
+		SELECT * FROM `wplc_postmeta` WHERE `meta_key` LIKE '_rex_customization_%' (questo per le customizzazioni)
+
+		/("section_rex_id":"([a-zA-Z0-9]{4})"|"rexbuilder_block_id":"([a-zA-Z0-9]{4})")/
+		
+	- creazione di nuovo array degli ID con questi dati
+	- sostituzione dell'opzione _rex_section_ids_used con l'array creato
+3) anche quando elimino definitivamente una pagina dovrei fare questo controllo

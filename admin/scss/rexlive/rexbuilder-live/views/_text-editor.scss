@@ -1,0 +1,5 @@
+.item--me-focus {
+	.grid-item-content {
+		@include rex-offset($palette-color-3);
+	}
+}

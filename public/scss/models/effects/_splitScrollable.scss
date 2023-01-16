@@ -1,0 +1,147 @@
+// $first-block-top: 20vh;
+
+.split-scrollable {
+	--split-scrollable-first-block-before-fix-height: 20vh;
+	--split-scrollable-other-block-before-fix-height: 60vh;
+	--split-scrollable-last-block-after-fix-height: 25vh;
+
+	&.split-scrollable--active {
+		.rex-row__dimension,
+		.perfect-grid-gallery {
+			overflow: visible;
+		}
+	}
+}
+
+.split-scrollable-container {
+	display: flex;
+	justify-content: space-between;
+	position: relative;
+
+	.perfect-grid-item {
+		width: 100%;
+		.grid-stack-item-content {
+			height: 100%;
+		}
+	}
+}
+
+.scroll-block-wrapper {
+	// width: 32.33333%;
+	width: 50%;
+	// margin-top: 20vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.split-scrollable--active {
+	.scroll-block {
+		opacity: 0.1 !important;
+		transition: opacity 500ms ease-out;
+		/** 2022-01-31 - Necessary fix, caused by something as yet unknown **/
+		overflow: visible;
+
+		// prevent rexScrollify uneccessary animation
+		&:not(:first-child) {
+			animation-name: none;
+		}
+
+		&.scroll-block-active {
+			opacity: 1 !important;
+		}
+
+		// These before and after pseudo elements
+		// are needed to make the js IntersectionObserver
+		// work correctly
+		&:first-child {
+			// Arbitrary dimension
+			@media (min-height: 500px) {
+				&::before {
+					content: '';
+					display: block;
+					width: 100%;
+					height: var(--split-scrollable-first-block-before-fix-height);
+					background-color: transparent;
+				}
+			}
+		}
+
+		&:nth-child(n + 2) {
+			&::before {
+				content: '';
+				display: block;
+				width: 100%;
+				height: var(--split-scrollable-other-block-before-fix-height);
+				background-color: transparent;
+			}
+		}
+
+		&:last-child {
+			&::after {
+				content: '';
+				display: block;
+				width: 100%;
+				height: var(--split-scrollable-last-block-after-fix-height);
+				background-color: transparent;
+			}
+		}
+	}
+
+	.opacity-block-wrapper {
+		// width: 57.33333%;
+		width: 50%;
+		position: sticky;
+		align-self: flex-start;
+		top: 0;
+
+		&:after {
+			content: '';
+			display: table;
+			clear: both;
+		}
+	}
+
+	.opacity-block-fake,
+	.opacity-block {
+		width: 100%;
+		position: absolute;
+		top: var(--split-scrollable-first-block-before-fix-height);
+		right: 0;
+		opacity: 0 !important;
+		z-index: 1;
+
+		&:not(.block-has-slider) {
+			img {
+				max-width: 100%;
+				height: auto;
+			}
+		}
+	}
+
+	/**
+   * forcing transition
+   */
+	.perfect-grid-item {
+		&.opacity-block {
+			transition: opacity 0.24s;
+			// prevent rexScrollify uneccessary animation
+			&:not(:first-child) {
+				animation-name: none;
+			}
+		}
+	}
+
+	.opacity-block-fake {
+		opacity: 1 !important;
+	}
+
+	.opacity-block {
+		&.opacity-block-active {
+			opacity: 1 !important;
+			z-index: 2;
+			~ .opacity-block-fake {
+				opacity: 0 !important;
+			}
+		}
+	}
+}

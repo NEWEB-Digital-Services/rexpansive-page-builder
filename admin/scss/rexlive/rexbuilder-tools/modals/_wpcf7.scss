@@ -1,0 +1,17 @@
+.rex-wpcf7-modal-row-tall {
+	padding-top: 15px;
+	padding-bottom: 15px;
+}
+
+.modal-row-grey {
+	background-color: $palette-color-6;
+
+	&:last-child {
+		border-bottom: 1px solid #ddd;
+	}
+
+	.active,
+	:not(.tool-button) .l-svg-icons > svg {
+		background-color: $palette-color-6;
+	}
+}

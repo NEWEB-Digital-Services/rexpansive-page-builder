@@ -1,0 +1,54 @@
+#rex-wpcf7-content-adder {
+	.add-content {
+		&__row {
+			@include flex-center-both;
+		}
+
+		&__button {
+			@include flex-center-both;
+	
+			width: 29px;
+			height: 29px;
+			cursor: pointer;
+			padding: 0;
+			margin-left: 10px;
+	
+			#{$icon-class} {
+				font-size: 13px;
+			}
+		}
+
+		&__icon {
+			@include flex-center-both;
+
+			width: 30px;
+			height: 30px;
+			margin-left: 53px;
+
+			#{$icon-class} {
+				font-size: 30px;
+			}
+
+			&#rex-wpcf7-add-checkbox-field {
+				#{$icon-class} {
+					font-size: 20px;
+				}
+			}
+
+			&#rex-wpcf7-add-submit-field {
+				#{$icon-class} {
+					font-size: 22px;
+				}
+			}
+		}
+
+		&__text {
+			display: inline-block;
+			margin-left: 12px;
+			text-transform: uppercase;
+			font-size: 17px;
+			line-height: 25px;
+			letter-spacing: 2px;
+		}
+	}
+}

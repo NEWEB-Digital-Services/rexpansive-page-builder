@@ -1,0 +1,41 @@
+.rex-accordion {
+  @include clearfix();
+  .rex-accordion--toggle {
+    cursor: pointer;
+    position: relative;
+  }
+
+  .rex-accordion--toggle-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    @include fill-icon(#000);
+  }
+
+  .rex-accordion--arrow-icon {
+    transition: transform 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
+  }
+  
+  .rex-accordion--close-icon {
+    transition: transform 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
+  }
+
+  &.close {
+    .rex-accordion--arrow-icon {
+      transform: rotate(-90deg);
+    }
+    .rex-accordion--close-icon {
+      transform: rotate(0); 
+    }
+  }
+
+  &.open {
+    .rex-accordion--arrow-icon {
+      transform: rotate(90deg);
+    }
+    .rex-accordion--close-icon {
+      transform: rotate(-45deg); 
+    }
+  }
+
+}

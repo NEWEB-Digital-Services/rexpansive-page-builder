@@ -1,0 +1,18 @@
+.rex-dragging-button {
+	@include drop-marker($palette-color-3);
+
+	.drop-marker--rex-button:not(.vertical) {
+		display: flex;
+		justify-content: center;
+
+		&::before {
+			content: '';
+			position: relative;
+			display: block;
+			width: 43px;
+			height: 43px;
+			background: $palette-color-3;
+			border-radius: 1000px;
+		}
+	}
+}

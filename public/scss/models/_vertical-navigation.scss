@@ -1,0 +1,115 @@
+/* --------- Vertical Navigation ------- */
+#rex-vertical-nav {
+	position: fixed;
+	right: 40px;
+	top: 50%;
+	bottom: auto;
+	transform: translateY(-50%);
+	z-index: 2500;
+	ul {
+		list-style-type: none;
+	}
+	li {
+		text-align: right;
+	}
+	a {
+		display: inline-block;
+		/* prevent weird movements on hover when you use a CSS3 transformation - webkit browsers */
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
+		-webkit-tap-highlight-color: transparent;
+		&:focus {
+			outline: none;
+		}
+		&:after {
+			content: "";
+			display: table;
+			clear: both;
+		}
+		span {
+			float: right;
+			display: inline-block;
+			transform: scale(0.6);
+		}
+		&.is-selected {
+			.rex-dot {
+				background-color: $dotlight;
+				&:before {
+					background-color: $dotopacity;
+				}
+			}
+		}
+	}
+	.rex-dot {
+		position: relative;
+		/* we set a top value in order to align the dot with the label. If you change label's font, you may need to change this top value*/
+		top: 4px;
+		height: 20px;
+		width: 20px;
+		border-radius: 50%;
+		border: 2px solid $dotlight;
+		background-color: transparent;
+		transition: transform 0.2s, background-color 0.5s;
+		transform-origin: 50% 50%;
+		@include card-transparent;
+		&:before {
+			content: '';
+			position: absolute;
+			border-radius: 50%;
+			display: block;
+			width: 22px;
+			height: 22px;
+			top: -3px;
+			left: -3px;
+			background-color: transparent;
+			border: 1px solid $dotborder;
+		}
+	}
+	.rex-label {
+		position: relative;
+		margin-right: 10px;
+		padding: .4em .5em;
+		color: $dotdark;
+		background-color: $dotlight;
+		border-radius: 4px;
+		font-size: 14px;
+		font-size: 0.875rem;
+		border: 1px solid $dotborder;
+		transition: transform 0.2s, opacity 0.2s;
+		opacity: 0;
+		transform-origin: 100% 50%;
+	}
+}
+
+.no-touch {
+	#rex-vertical-nav {
+		a {
+			&:hover {
+				span {
+					transform: scale(1);
+				}
+				.rex-label {
+					opacity: 1;
+				}
+				.rex-dot {
+					background-color: $dotlight;
+					&:before {
+						background-color: $dotopacity;
+					}
+				}
+			}
+		}
+	}
+}
+
+.touch {
+	#rex-vertical-nav {
+		a {
+			.rex-label.fadeInAndOut {
+				transform: scale(1);
+				animation-duration: 2.5s;
+				animation-timing-function: ease;
+			}
+		}
+	}
+}

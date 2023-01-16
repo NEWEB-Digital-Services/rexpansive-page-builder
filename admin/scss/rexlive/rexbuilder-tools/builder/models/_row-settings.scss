@@ -1,0 +1,19 @@
+.block-padding-wrap {
+  // font-size: 0;
+  .b-svg-icons {
+    font-size: 26px;
+    margin-top: 2px;
+  }
+}
+
+.b-svg__margin-icon {
+  &.b-svg-icons {
+    font-size: 130px;
+    margin-top: 0;
+    max-height: 71px;
+    z-index: -1;
+    > svg {
+      max-height: 71px;
+    }
+  }
+}

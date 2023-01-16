@@ -1,0 +1,874 @@
+%svg-common {
+	background: url("svg/sprite.view.svg") no-repeat;
+}
+
+.svg-A001-Tablet {
+	@extend %svg-common;
+	background-position: 92.66846361185985% 72.30154888673766%;
+}
+
+.svg-A001-Tablet-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-A002-Redo {
+	@extend %svg-common;
+	background-position: 90.1078167115903% 73.59390125847048%;
+}
+
+.svg-A002-Redo-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-A003-Undo {
+	@extend %svg-common;
+	background-position: 93.56693620844565% 72.30154888673766%;
+}
+
+.svg-A003-Undo-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-A006-Save {
+	@extend %svg-common;
+	background-position: 91.90476190476191% 73.59390125847048%;
+}
+
+.svg-A006-Save-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-A006-Save-Clear {
+	@extend %svg-common;
+	background-position: 98.05929919137468% 72.30154888673766%;
+}
+
+.svg-A006-Save-Clear-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-A007-Close {
+	@extend %svg-common;
+	background-position: 95.36388140161726% 72.30154888673766%;
+}
+
+.svg-A007-Close-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-A008-Code {
+	@extend %svg-common;
+	background-position: 91.76999101527404% 72.30154888673766%;
+}
+
+.svg-A008-Code-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-A009-Range {
+	@extend %svg-common;
+	background-position: 93.70170709793352% 73.59390125847048%;
+}
+
+.svg-A009-Range-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-A010-Mobile {
+	@extend %svg-common;
+	background-position: 89.97304582210243% 72.30154888673766%;
+}
+
+.svg-A010-Mobile-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-A011-Desktop {
+	@extend %svg-common;
+	background-position: 97.4752920035939% 71.23668925459826%;
+}
+
+.svg-A011-Desktop-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-A012-Models-List {
+	@extend %svg-common;
+	background-position: 96.5768194070081% 71.23668925459826%;
+}
+
+.svg-A012-Models-List-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-A013-Template-Import {
+	@extend %svg-common;
+	background-position: 0 0;
+}
+
+.svg-A013-Template-Import-dims {
+	width: 612px;
+	height: 612px;
+}
+
+.svg-B001-Full {
+	@extend %svg-common;
+	background-position: 95.6783468104223% 71.23668925459826%;
+}
+
+.svg-B001-Full-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B002-Boxed {
+	@extend %svg-common;
+	background-position: 94.7798742138365% 71.23668925459826%;
+}
+
+.svg-B002-Boxed-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B003-Text {
+	@extend %svg-common;
+	background-position: 93.88140161725069% 71.23668925459826%;
+}
+
+.svg-B003-Text-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B005-RexModel {
+	@extend %svg-common;
+	background-position: 92.98292902066488% 71.23668925459826%;
+}
+
+.svg-B005-RexModel-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B006-Collapse {
+	@extend %svg-common;
+	background-position: 92.08445642407908% 71.23668925459826%;
+}
+
+.svg-B006-Collapse-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B007-Move {
+	@extend %svg-common;
+	background-position: 91.18598382749327% 71.23668925459826%;
+}
+
+.svg-B007-Move-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B010-Masonry {
+	@extend %svg-common;
+	background-position: 92.80323450134772% 73.59390125847048%;
+}
+
+.svg-B010-Masonry-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B011-Grid {
+	@extend %svg-common;
+	background-position: 91.00628930817611% 73.59390125847048%;
+}
+
+.svg-B011-Grid-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B012-Full-Height {
+	@extend %svg-common;
+	background-position: 89.20934411500451% 73.59390125847048%;
+}
+
+.svg-B012-Full-Height-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B013-Row-ID {
+	@extend %svg-common;
+	background-position: 88.31087151841871% 73.59390125847048%;
+}
+
+.svg-B013-Row-ID-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B014-Closed {
+	@extend %svg-common;
+	background-position: 87.4123989218329% 73.59390125847048%;
+}
+
+.svg-B014-Closed-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B015-UnClosed {
+	@extend %svg-common;
+	background-position: 84.71698113207549% 73.59390125847048%;
+}
+
+.svg-B015-UnClosed-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B016-New-Adjacent-Row {
+	@extend %svg-common;
+	background-position: 94.46540880503146% 72.30154888673766%;
+}
+
+.svg-B016-New-Adjacent-Row-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B017-Grid-Layout {
+	@extend %svg-common;
+	background-position: 90.87151841868824% 72.30154888673766%;
+}
+
+.svg-B017-Grid-Layout-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-B018-Mail {
+	@extend %svg-common;
+	background-position: 0 99.99408633944411%;
+}
+
+.svg-B018-Mail-dims {
+	width: 395px;
+	height: 395px;
+}
+
+.svg-B018-Mobile-Grid {
+	@extend %svg-common;
+	background-position: 93.77920792079208% 70.00242483026189%;
+}
+
+.svg-B018-Mobile-Grid-dims {
+	width: 24px;
+	height: 24px;
+}
+
+.svg-B019-Error {
+	@extend %svg-common;
+	background-position: 99.3314557196097% 31.297924947575975%;
+}
+
+.svg-B019-Error-dims {
+	width: 488.45px;
+	height: 488.45px;
+}
+
+.svg-B020-Checked {
+	@extend %svg-common;
+	background-position: 97.47627024008935% 60.60392397302269%;
+}
+
+.svg-B020-Checked-dims {
+	width: 455px;
+	height: 455px;
+}
+
+.svg-B021-Form-Background {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 67.29115031345675%;
+}
+
+.svg-B021-Form-Background-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B022-Form-Border {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 68.66647227486997%;
+}
+
+.svg-B022-Form-Border-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B023-Input-Text {
+	@extend %svg-common;
+	background-position: 86.70243946430989% 70.14870972444963%;
+}
+
+.svg-B023-Input-Text-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B024-Input-Text-Hover {
+	@extend %svg-common;
+	background-position: 87.97853632141408% 70.14870972444963%;
+}
+
+.svg-B024-Input-Text-Hover-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B025-Input-Background {
+	@extend %svg-common;
+	background-position: 89.25463317851829% 70.14870972444963%;
+}
+
+.svg-B025-Input-Background-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B026-Input-Background-Hover {
+	@extend %svg-common;
+	background-position: 90.5307300356225% 70.14870972444963%;
+}
+
+.svg-B026-Input-Background-Hover-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B027-Input-Border {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 63.16518442921707%;
+}
+
+.svg-B027-Input-Border-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B028-Input-Border-Hover {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 60.41454050639062%;
+}
+
+.svg-B028-Input-Border-Hover-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B029-Input-Text-Area {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 59.039218544977395%;
+}
+
+.svg-B029-Input-Text-Area-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B030-Input-Select {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 57.66389658356417%;
+}
+
+.svg-B030-Input-Select-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B031-Input-Radio {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 56.28857462215094%;
+}
+
+.svg-B031-Input-Radio-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B032-Input-Checkbox {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 54.91325266073771%;
+}
+
+.svg-B032-Input-Checkbox-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B033-Input-Upload {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 53.537930699324484%;
+}
+
+.svg-B033-Input-Upload-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B034-Input-Button {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 61.78986246780384%;
+}
+
+.svg-B034-Input-Button-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B035-Input-Number {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 52.162608737911256%;
+}
+
+.svg-B035-Input-Number-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B036-Input-Obligatory {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 50.787286776498036%;
+}
+
+.svg-B036-Input-Obligatory-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B037-Input-Text-Focus {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 49.41196481508481%;
+}
+
+.svg-B037-Input-Text-Focus-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B038-Input-Text-Placeholder {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 48.03664285367158%;
+}
+
+.svg-B038-Input-Text-Placeholder-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B039-Input-Text-Placeholder-Hover {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 65.91582835204352%;
+}
+
+.svg-B039-Input-Text-Placeholder-Hover-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B040-Input-Dimension-File {
+	@extend %svg-common;
+	background-position: 99.2379492266763% 64.5405063906303%;
+}
+
+.svg-B040-Input-Dimension-File-dims {
+	width: 28.3px;
+	height: 28.3px;
+}
+
+.svg-B041-One-Column {
+	@extend %svg-common;
+	background-position: 0 40.28701204660655%;
+}
+
+.svg-B041-One-Column-dims {
+	width: 566.9px;
+	height: 566.9px;
+}
+
+.svg-B042-Two-Columns {
+	@extend %svg-common;
+	background-position: 33.76213447680305% 40.28701204660655%;
+}
+
+.svg-B042-Two-Columns-dims {
+	width: 566.9px;
+	height: 566.9px;
+}
+
+.svg-B043-Three-Columns {
+	@extend %svg-common;
+	background-position: 70.21023167172892% 0;
+}
+
+.svg-B043-Three-Columns-dims {
+	width: 566.9px;
+	height: 566.9px;
+}
+
+.svg-B044-Four-Columns {
+	@extend %svg-common;
+	background-position: 36.44809719492586% 0;
+}
+
+.svg-B044-Four-Columns-dims {
+	width: 566.9px;
+	height: 566.9px;
+}
+
+.svg-B045-Row-Label {
+	@extend %svg-common;
+	background-position: 98.37376460017971% 71.23668925459826%;
+}
+
+.svg-B045-Row-Label-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-C001-Link {
+	@extend %svg-common;
+	background-position: 99.27223719676552% 71.23668925459826%;
+}
+
+.svg-C001-Link-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-C002-No-Select {
+	@extend %svg-common;
+	background-position: 86.37915543575922% 72.30154888673766%;
+}
+
+.svg-C002-No-Select-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-C003-Image-Full {
+	@extend %svg-common;
+	background-position: 87.27762803234502% 72.30154888673766%;
+}
+
+.svg-C003-Image-Full-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-C004-Image-Natural {
+	@extend %svg-common;
+	background-position: 88.17610062893083% 72.30154888673766%;
+}
+
+.svg-C004-Image-Natural-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-C005-Layout {
+	@extend %svg-common;
+	background-position: 89.07457322551663% 72.30154888673766%;
+}
+
+.svg-C005-Layout-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-C006-Insert-Icon {
+	@extend %svg-common;
+	background-position: 58.64833906071019% 74.33165195460279%;
+}
+
+.svg-C006-Insert-Icon-dims {
+	width: 500px;
+	height: 500px;
+}
+
+.svg-C007-Open-Box {
+	@extend %svg-common;
+	background-position: 99.98854524627723% 0;
+}
+
+.svg-C007-Open-Box-dims {
+	width: 500px;
+	height: 500px;
+}
+
+.svg-C008-Star {
+	@extend %svg-common;
+	background-position: 20.36082474226804% 94.99438202247191%;
+}
+
+.svg-C008-Star-dims {
+	width: 306px;
+	height: 306px;
+}
+
+.svg-C009-RexSlider-Animation {
+	@extend %svg-common;
+	background-position: 90.28751123090747% 71.23979263375462%;
+}
+
+.svg-C009-RexSlider-Animation-dims {
+	width: 20px;
+	height: 20.09px;
+}
+
+.svg-C010-RexSlider-Arrow {
+	@extend %svg-common;
+	background-position: 95.7670260557053% 69.49051362658206%;
+}
+
+.svg-C010-RexSlider-Arrow-dims {
+	width: 20px;
+	height: 8.81px;
+}
+
+.svg-C011-RexSlider-Dots {
+	@extend %svg-common;
+	background-position: 99.9342493693307% 24.119982440652784%;
+}
+
+.svg-C011-RexSlider-Dots-dims {
+	width: 10.28px;
+	height: 13.03px;
+}
+
+.svg-D001-Radius {
+	@extend %svg-common;
+	background-position: 86.45683453237412% 71.30571705426357%;
+}
+
+.svg-D001-Radius-dims {
+	width: 22px;
+	height: 22px;
+}
+
+.svg-D002-PopUpVideo {
+	@extend %svg-common;
+	background-position: 85.09912402028586% 71.84917869586859%;
+}
+
+.svg-D002-PopUpVideo-dims {
+	width: 77px;
+	height: 77px;
+}
+
+.svg-Z001-Plus {
+	@extend %svg-common;
+	background-position: 96.26235399820307% 72.30154888673766%;
+}
+
+.svg-Z001-Plus-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-Z002-Image-Full {
+	@extend %svg-common;
+	background-position: 97.16082659478887% 72.30154888673766%;
+}
+
+.svg-Z002-Image-Full-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-Z003-Close {
+	@extend %svg-common;
+	background-position: 81.35135135135137% 72.68126888217523%;
+}
+
+.svg-Z003-Close-dims {
+	width: 100px;
+	height: 100px;
+}
+
+.svg-Z003-RexSlider {
+	@extend %svg-common;
+	background-position: 98.95777178796048% 72.30154888673766%;
+}
+
+.svg-Z003-RexSlider-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-Z004-Copy {
+	@extend %svg-common;
+	background-position: 99.85624438454629% 72.30154888673766%;
+}
+
+.svg-Z004-Copy-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-Z005-Setting {
+	@extend %svg-common;
+	background-position: 82.92003593890388% 73.59390125847048%;
+}
+
+.svg-Z005-Setting-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-Z006-Video {
+	@extend %svg-common;
+	background-position: 83.81850853548968% 73.59390125847048%;
+}
+
+.svg-Z006-Video-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-Z007-Zoom {
+	@extend %svg-common;
+	background-position: 89.38426966292135% 71.27118644067797%;
+}
+
+.svg-Z007-Zoom-dims {
+	width: 21px;
+	height: 21px;
+}
+
+.svg-Z008-Edit {
+	@extend %svg-common;
+	background-position: 85.6154537286613% 73.59390125847048%;
+}
+
+.svg-Z008-Edit-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-Z009-More {
+	@extend %svg-common;
+	background-position: 86.5139263252471% 73.59390125847048%;
+}
+
+.svg-Z009-More-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-Z010-Logo {
+	@extend %svg-common;
+	background-position: 94.85931593159316% 69.49687048627828%;
+}
+
+.svg-Z010-Logo-dims {
+	width: 24px;
+	height: 9px;
+}
+
+.svg-Z011-Arrow {
+	@extend %svg-common;
+	background-position: 99.95964125560539% 47.91323315559864%;
+}
+
+.svg-Z011-Arrow-dims {
+	width: 16px;
+	height: 23px;
+}
+
+.svg-Z012-HeightBars {
+	@extend %svg-common;
+	background-position: 92.71221922731357% 70.07038834951456%;
+}
+
+.svg-Z012-HeightBars-dims {
+	width: 20px;
+	height: 26px;
+}
+
+.svg-Z012-Page {
+	@extend %svg-common;
+	background-position: 87.44604316546764% 71.30571705426357%;
+}
+
+.svg-Z012-Page-dims {
+	width: 22px;
+	height: 22px;
+}
+
+.svg-Z013-Pages {
+	@extend %svg-common;
+	background-position: 88.43525179856117% 71.30571705426357%;
+}
+
+.svg-Z013-Pages-dims {
+	width: 22px;
+	height: 22px;
+}
+
+.svg-Z014-Refresh {
+	@extend %svg-common;
+	background-position: 0 74.89834815756036%;
+}
+
+.svg-Z014-Refresh-dims {
+	width: 512px;
+	height: 512px;
+}
+
+.svg-Z015-Question-Mark-Sign {
+	@extend %svg-common;
+	background-position: 91.78505706812561% 70.13078252825491%;
+}
+
+.svg-Z015-Question-Mark-Sign-dims {
+	width: 27.774px;
+	height: 27.774px;
+}
+
+.svg-Z016-Checked {
+	@extend %svg-common;
+	background-position: 29.52710495963091% 74.89834815756036%;
+}
+
+.svg-Z016-Checked-dims {
+	width: 512px;
+	height: 512px;
+}
+
+.svg-Z016-Warning {
+	@extend %svg-common;
+	background-position: 67.98731257208766% 36.016518424396445%;
+}
+
+.svg-Z016-Warning-dims {
+	width: 512px;
+	height: 512px;
+}
+

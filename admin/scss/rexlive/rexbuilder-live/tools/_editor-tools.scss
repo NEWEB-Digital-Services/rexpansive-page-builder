@@ -1,0 +1,483 @@
+// LIVE
+.text-wrap {
+  ::selection {
+		background: rgba($palette-color-1, 0.5);
+  }
+}
+
+.medium-editor-placeholder:after {
+  @include live-fonts();
+  font-size: 1em;
+  letter-spacing: 1px;
+  color: rgba(0,0,0,0.3);
+  font-weight: bold;
+}
+
+/**
+ *  Allow medium editor placeholder only on blocks without image background
+ */
+.rexbuilder-block-data:not([data-id_image_bg_block='']) ~ .grid-stack-item-content {
+  .medium-editor-placeholder {
+    &:after {
+      opacity: 0;
+    }
+    &[data-medium-focused=true] {
+      &:after {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.medium-insert-images.medium-insert-images-left,
+.medium-insert-images-left.mediumInsert,
+.mediumInsert.small {
+  max-width: 100%;
+}
+
+.medium-insert-images.medium-insert-images-right,
+.medium-insert-images-right.mediumInsert,
+.mediumInsert.small {
+  max-width: 100%;
+}
+
+.medium-insert-images figure,
+.mediumInsert figure,
+.medium-insert-embeds figure,
+.mediumInsert-embeds figure {
+  display: inline-block;
+}
+
+ // More specificity to avoid themes conflicts
+.rexbuilder-live-active .medium-editor-action {
+  text-transform: uppercase;
+  font-weight: normal;
+  background-color: #000;
+  color: #fff;
+  border-radius: 0;
+  font-family: sans-serif;
+  border: none;
+
+  &:hover {
+    background-color: #000;
+  }
+
+  &.medium-editor-button-first {
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+  }
+
+  &.medium-editor-button-last {
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+  }
+
+  @include fill-icon(#fff);
+
+  &.medium-editor-button-active {
+    background-color: $palette-color-1;
+  }
+
+}
+
+.medium-editor-toolbar-form {
+  .medium-editor-toolbar-input {
+    @include live-fonts();
+    border: 2px solid #000;
+    border-radius: 20px;
+    box-shadow: $modal-shadow;
+    &::-webkit-input-placeholder {
+      @include live-fonts();
+    }
+    &:-moz-placeholder {
+      @include live-fonts();
+    }
+    &::-moz-placeholder {
+      @include live-fonts();
+    }
+    &:-ms-input-placeholder {
+      @include live-fonts();
+    }
+    &:focus {
+      border-radius: 20px;
+      border: 2px solid #000;
+      box-shadow: $modal-shadow;
+    }
+  }
+  .medium-editor-toolbar-close {
+    #{$icon-class} {
+      font-size: 10px;
+    }
+  }
+  .medium-editor-toolbar-save {
+    .tool-button {
+      padding: 0;
+      @include fill-icon($palette-color-1);
+    }
+    #{$icon-class} {
+      font-size: 20px;
+    }
+  }
+  a {
+    margin: 0 0 0 15px;
+    font-size: 0;
+    line-height: 1;
+  }
+}
+
+.medium-editor-anchor-preview {
+  &.medium-toolbar-arrow-over{
+    &:before {
+      border-color: $tooltip-background transparent $tooltip-background transparent;
+    }
+  }
+  a {
+    font-size: 9px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background-color: $tooltip-background;
+    border-radius: 4px;
+    padding: .2rem .4rem;
+    margin: 0;
+    display: block;
+    @include live-fonts();
+    &:hover,
+    &:visited,
+    &:focus {
+      color: #fff;
+    }
+  }
+}
+
+.medium-editor-toolbar-form-active {
+  display: flex;
+  align-items: center;
+}
+
+.medium-toolbar-arrow-under{
+  &:after {
+    border-color: #000 transparent transparent transparent;
+  }
+}
+
+.medium-toolbar-arrow-over{
+  &:before {
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: #000;
+    border-left-color: transparent;
+  }
+}
+
+.meditor-color-picker {
+  box-sizing: border-box;
+  background-image: url(../img/colors-hd.png);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  display: block;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  .meditor-color-picker__placeholder {
+    opacity:0;
+  }
+}
+
+.meditor-color-picker--preview {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  display: block;
+  position: absolute;
+  top: 9px;
+  left: 10px;
+  border: 2px solid white;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.meditor-spectrum-color-picker {
+  padding: 30px;
+  box-shadow: $tools-area-shadow;
+  .sp-palette-container {
+    border: none;
+  }
+  .sp-choose,
+  .sp-cancel {
+    display: none;
+  }
+}
+
+@mixin me-tool-btn {
+  padding: 5px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.medium-insert-buttons {
+  left: 50%!important;
+  position: absolute;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+
+  .medium-insert-buttons-addons {
+    display: flex;
+    margin: 0;
+    position: absolute;
+    left: 100%;
+    list-style-type: none;
+    align-items: center;
+    font-size: 0;
+    li {
+      margin-left: 15px;
+    }
+  }
+  .medium-insert-buttons-show {
+    @include me-tool-btn();
+    background-color: $palette-color-1;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    @include live-fonts();
+    font-weight: 100;
+    text-align: center;
+    letter-spacing: 0;
+    font-size: 30px;
+    line-height: 20px;
+    @include bl-btn--hover-shadow;
+    // &:hover {
+    //   + .medium-insert-buttons-addons {
+    //     display: flex!important;
+    //   }
+    // }
+  }
+  .medium-insert-action {
+    @include me-tool-btn();
+    font-size: 10px;
+    @include fill-icon(#000);
+    @include bl-btn--hover-shadow;
+
+    &[data-addon="wordpressImages"] {
+      padding: 0;
+      overflow: hidden;
+      font-size: 20px;
+    }
+  }
+}
+
+.medium-editor-element {
+  word-wrap: normal;
+  &:focus {
+    outline: none;
+    &[data-medium-focused=true] {
+      position: relative;
+    }
+  }
+}
+
+.me-insert-media-button {
+  // width: 100%;
+  // text-align: center;
+  position: absolute;
+  z-index: 2000;
+  font-size: 10px;
+  // bottom: 0;
+  .tool-button {
+    background-color: $palette-color-1;
+    @include fill-icon(#fff);
+  }
+}
+
+.me-ui-custom-wrapper {
+  overflow: visible!important;
+  z-index: 2000;
+  .ui-resizable-e {
+    width: 10px;
+    right: -5px;
+  }
+  .ui-resizable-s {
+    height: 10px;
+  }
+  .ui-resizable-se {
+    right: -5px;
+    bottom: -5px;
+  }
+  .ui-icon {
+    background-image: none;
+  }
+}
+// Inline editor elements resize
+.me-resize-mirror {
+  position: absolute;
+  display: none;
+  outline: 1px dotted $palette-color-3;
+}
+.me-resize-sizes {
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  color: #fff;
+  background-color: #000;
+  padding: 5px 3px;
+  display: none;
+  z-index: 20;
+  border-radius: 5px;
+  @include live-fonts();
+  font-weight: 400;
+  letter-spacing: 1px;
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.medium-editor-toolbar {
+  .medium-editor-toolbar-actions {
+    border-radius: 20px;
+    box-shadow: $modal-shadow;
+  }
+  li {
+    &:not(:last-child) {
+      border-right: 1px solid #313131;
+    }
+    > .medium-editor-action {
+      padding: 10px;
+      &.medium-editor-action--color-picker,
+      &.me-svg-color {
+        padding: 9px 10px;
+      }
+    }
+  }
+}
+
+.medium-editor-action-list {
+  position: relative;
+  .medium-editor-action {
+    padding: 5px;
+  }
+  .me__action-list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    left: 0;
+  }
+  .drop-down-icon {
+    margin-right: 5px;
+    font-size: 13px;
+    &.l-svg-icons > svg {
+      fill: #afafaf;
+    }
+    // @include fill-icon(#afafaf);
+  }
+  &:hover {
+    .me__action-list {
+      display: block;
+    }
+  }
+}
+
+input.me-insert-embed__value[type=text] {
+  position: absolute;
+  bottom: 100%;
+  padding: 0;
+  width: 150px;
+  max-width: none;
+  background-color: #fff;
+  border: 1px solid $palette-color-1;
+  // transform: translateX(-50%);
+  // left: 50%;
+  right: 0;
+  padding: 2px;
+  font-size: 12px;
+  color: #000;
+  display: none;
+
+  &.embed-loading {
+    background-color: rgba($palette-color-1,0.5);
+  }
+}
+
+.embed-value-visibile {
+  input.me-insert-embed__value[type=text] {
+    display: inline-block;
+  }
+}
+
+.medium-insert-embeds,
+.mediumInsert-embeds {
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid black;
+  background-color: #fff;
+  p {
+    margin: 0!important;
+  }
+}
+
+// .medium-editor-button-first {
+//   border-left-radius:50%;
+// }
+
+/**
+ *  Style for the color picker save button
+ *  Keep it!
+ */
+.rex-modal__outside-footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  transform: translateY(50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .tool-button {
+    margin: 0 10px;
+  }
+
+  .tool-button--save {
+    padding: 0;
+    @include page-edited-ui();
+
+    @include fill-icon($palette-color-1);
+    .l-svg-icons {
+      font-size: 30px;
+    }
+    &:hover {
+      @include fill-icon($palette-color-1);
+    }
+  }
+}
+
+// CSS - Overlay for Inline Video with <span>
+.overlay-status-for-video-inline{
+  display:inline-block;
+  position:relative;
+}
+.medium-editor-element {
+  .overlay-status-for-video-inline::after{
+    content:'';
+    position:absolute;
+    top:0;
+    bottom:0;
+    left:0;
+    right:0;
+    width:100%;
+    height:100%;
+    z-index:200;
+    display:block;
+  }
+}
+
+.medium-editor-toolbar.medium-toolbar-hover-rexbutton,
+.medium-editor-toolbar.medium-toolbar-hover-rexelement {
+  .hide-tool-rexbutton,
+  .hide-tool-rexelement {
+    display: none;
+  }
+}

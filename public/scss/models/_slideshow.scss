@@ -1,0 +1,5 @@
+.rex-slideshow__slide {
+  &:not(:first-child) {
+    display: none;
+  }
+}

@@ -1,0 +1,57 @@
+#spritesContainer,
+#svgContainer {
+	display: none;
+}
+.preview-wrap {
+	display: -webkit-inline-flex;
+	display: -moz-inline-flex;
+	display: -ms-inline-flex;
+	display: -o-inline-flex;
+	display: inline-flex;
+	-ms-align-items: center;
+	align-items: center;
+	-webkit-flex-direction: column;
+	-moz-flex-direction: column;
+	-ms-flex-direction: column;
+	-o-flex-direction: column;
+	flex-direction: column;
+	padding: 5px;
+	cursor: pointer;
+}
+.preview-wrap.selected {
+	outline: 2px dotted #000;
+}
+.icon {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	vertical-align: -0.1em;
+	line-height: 1;
+}
+.icon > svg {
+  display: inline-block;
+	width: 1em;
+	height: 1em;
+	fill: #000;
+	vertical-align: -0.1em;
+	-webkit-transition: fill 600ms ease-out;
+	-o-transition: fill 600ms ease-out;
+	transition: fill 600ms ease-out;
+}
+.label {
+	font-size: 12px;
+	font-weight: 900;
+	padding-top: 5px;
+}
+#iconsPreview {
+	margin-top: 20px;
+	font-size: 70px;
+}
+#uploadIcons {
+	opacity: 0;
+	visibility: hidden;
+	position: absolute;
+}
+#iconsSpinner.spinner {
+  float: none;
+}

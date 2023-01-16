@@ -1,0 +1,28 @@
+// LIVE
+.builderlive-editable-field[contenteditable=true]:empty:before{
+  content: attr(data-editable-placeholder);
+  display: block; /* For Firefox */
+}
+
+.builderlive-editable-field {
+  border: 1px dashed #AAA;
+}
+
+span {
+  &.builderlive-editable-field[contenteditable=true] {
+    display: inline-block;
+  }
+}
+
+.builderlive-editable-media__wrapper {
+  display: block;
+  position: relative;
+}
+
+.builderlive-editable-media__toolbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 10px;
+  // @include fill-icon(#fff);
+}

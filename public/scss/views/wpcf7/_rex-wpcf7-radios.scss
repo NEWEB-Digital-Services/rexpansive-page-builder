@@ -1,0 +1,191 @@
+/* Radio Buttons
+========================================================================== */
+@import 'rex-wpcf7-variables';
+
+// Remove default Radio Buttons
+[type='radio']:not(:checked),
+[type='radio']:checked {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+}
+
+[type='radio']:not(:checked) + span,
+[type='radio']:checked + span {
+	position: relative;
+	// padding-left: 25px;
+	padding-left: 28px;
+	cursor: pointer;
+	display: inline-flex;
+	align-items: center;
+	height: 24px;
+	// line-height: 25px;
+	font-size: 1em;
+	transition: 0.28s ease;
+	user-select: none;
+}
+
+[type='radio'] + span:before,
+[type='radio'] + span:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	margin: 4px 0;
+	width: 16px;
+	height: 16px;
+	z-index: 0;
+	transition: 0.28s ease;
+}
+
+[type='radio']:not(:checked) + span:before,
+[type='radio']:not(:checked) + span:after,
+[type='radio']:checked + span:before,
+[type='radio']:checked + span:after,
+[type='radio'].with-gap:checked + span:before,
+[type='radio'].with-gap:checked + span:after {
+	border-radius: 50%;
+}
+
+/* Unchecked styles */
+[type='radio']:not(:checked) + span:before,
+[type='radio']:not(:checked) + span:after {
+	border: 2px solid $radio-empty-color;
+}
+
+[type='radio']:not(:checked) + span:after {
+	transform: scale(0);
+}
+
+/* Checked styles */
+[type='radio']:checked + span:before {
+	border: 2px solid transparent;
+}
+
+[type='radio']:checked + span:after,
+[type='radio'].with-gap:checked + span:before,
+[type='radio'].with-gap:checked + span:after {
+	border: $radio-border;
+}
+
+[type='radio']:checked + span:after,
+[type='radio'].with-gap:checked + span:after {
+	background-color: $radio-fill-color;
+}
+
+[type='radio']:checked + span:after {
+	transform: scale(1.02);
+}
+
+/* Radio With gap */
+[type='radio'].with-gap:checked + span:after {
+	transform: scale(0.5);
+}
+
+/* Focused styles */
+[type='radio'].tabbed:focus + span:before {
+	box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Disabled Radio With gap */
+[type='radio'].with-gap:disabled:checked + span:before {
+	border: 2px solid $input-disabled-color;
+}
+
+[type='radio'].with-gap:disabled:checked + span:after {
+	border: none;
+	background-color: $input-disabled-color;
+}
+
+/* Disabled style */
+[type='radio']:disabled:not(:checked) + span:before,
+[type='radio']:disabled:checked + span:before {
+	background-color: transparent;
+	border-color: $input-disabled-color;
+}
+
+[type='radio']:disabled + span {
+	color: $input-disabled-color;
+}
+
+[type='radio']:disabled:not(:checked) + span:before {
+	border-color: $input-disabled-color;
+}
+
+[type='radio']:disabled:checked + span:after {
+	background-color: $input-disabled-color;
+	border-color: $input-disabled-solid-color; //var
+}
+
+[type='radio']:checked + span {
+	@include fill-icon($radio-fill-color);
+}
+
+[type='radio']:not(:checked) + span,
+[type='radio']:not(:checked) + span {
+	@include fill-icon($radio-empty-color);
+}
+
+// flat checkbox style
+[type='radio'].flat-checkbox {
+	font-size: 1em;
+}
+[type='radio'].flat-checkbox:not(:checked) + span,
+[type='radio'].flat-checkbox:checked + span {
+	padding-left: 15px;
+	height: 10px;
+	line-height: 10px;
+}
+
+[type='radio'].flat-checkbox + span:before,
+[type='radio'].flat-checkbox + span:after {
+	margin: 0;
+	width: 10px;
+	height: 10px;
+}
+
+/* Unchecked styles */
+[type='radio'].flat-checkbox:not(:checked) + span:before,
+[type='radio'].flat-checkbox:not(:checked) + span:after {
+	border: 2px solid #fff;
+}
+
+/* Checked styles */
+[type='radio'].flat-checkbox:checked + span:after,
+[type='radio'].flat-checkbox.with-gap:checked + span:before,
+[type='radio'].flat-checkbox.with-gap:checked + span:after {
+	border: #000;
+}
+
+[type='radio'].flat-checkbox:checked + span:after,
+[type='radio'].flat-checkbox.with-gap:checked + span:after {
+	background-color: #000;
+}
+
+/* Disabled style */
+[type='radio'].flat-checkbox:disabled:not(:checked) + span:before,
+[type='radio'].flat-checkbox:disabled:checked + span:before {
+	border-color: $input-flat-disabled-color;
+}
+
+[type='radio'].flat-checkbox:disabled + span {
+	color: $input-flat-disabled-color;
+}
+
+[type='radio'].flat-checkbox:disabled:not(:checked) + span:before {
+	border-color: $input-flat-disabled-color;
+}
+
+[type='radio'].flat-checkbox:disabled:checked + span:after {
+	background-color: $input-flat-disabled-color;
+	border-color: $input-disabled-solid-color;
+}
+
+[type='radio'].flat-checkbox:checked + span {
+	@include fill-icon(#000);
+}
+
+[type='radio'].flat-checkbox:not(:checked) + span,
+[type='radio'].flat-checkbox:not(:checked) + span {
+	@include fill-icon(#fff);
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>text editor: foucs & blur</title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+	<style>
+		html, body {
+			margin: 0;
+			padding: 0;
+		}
+		#wrap {
+			padding: 50px;
+			max-width: 1024px;
+			margin: 0 auto;
+			margin-top: 50px;
+			background: beige;
+		}
+		.editable {
+			outline: 1px dotted #000;
+		}
+		.toolbar {
+			position: fixed;
+			width: 100%;
+			top: 0;
+			left: 0;
+			padding: 20px;
+			background: palegoldenrod;
+			z-index: 10;
+		}
+	</style>
+</head>
+<body>
+	<div class="toolbar">
+		<button id="addEditor">Add editor</button>
+	</div>
+	<div id="wrap">
+		<div id="editor" class="editable"></div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+	<script>
+;(function() {
+	function handleDOMContentLoaded(event) {
+		var wrap = document.getElementById('wrap');
+		var addEditor = document.getElementById('addEditor');
+		var editor = document.getElementById('editor');
+
+		window.mdEditor = new MediumEditor( editor );
+
+		window.mdEditor.subscribe('focus', function(event, element) {
+			console.log('handle focus')
+			element.style.outlineStyle = 'solid';
+		});
+
+		window.mdEditor.subscribe('blur', function(event, element) {
+			console.log('handle blur')
+			console.log(event)
+			element.style.outlineStyle = 'dotted';
+		});
+
+		window.mdEditor.subscribe('editableKeydown', function(event, element) {
+			if ( !MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ESCAPE)) return;
+
+			console.log('editableKeydown: ESC')
+			window.mdEditor.trigger('blur', event, element)
+			element.removeAttribute('data-medium-focused')
+			element.blur()
+		});
+
+		addEditor.addEventListener('click', function(event) {
+			var newE = document.createElement('div');
+			newE.classList.add('editable')
+			wrap.appendChild(newE)
+			window.mdEditor.addElements( newE );
+		});
+	}
+
+	document.addEventListener('DOMContentLoaded', handleDOMContentLoaded);
+}())
+	</script>
+</body>
+</html>

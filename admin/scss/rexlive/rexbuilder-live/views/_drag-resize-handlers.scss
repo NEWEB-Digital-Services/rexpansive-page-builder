@@ -1,0 +1,180 @@
+// LIVE
+
+// .grid-stack > .grid-stack-item > .ui-resizable-handle {
+//   visibility: hidden;
+//   overflow: visible;
+//   position: absolute;
+//   z-index: 20;
+//   box-sizing: inherit;
+// }
+
+.grid-stack .grid-stack-placeholder > .placeholder-content {
+  left: 0px;
+  right: 0px;
+  border: none;
+  background-color: rgba(#000,0.1);
+}
+
+.grid-stack > .grid-stack-item {
+  &.ui-draggable-dragging,
+  &.ui-resizable-resizing {
+    > .grid-stack-item-content,
+    > .grid-stack-item-content {
+      box-shadow: none;
+    }
+  }
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-e {
+  right: 0px;
+  top: 0px;
+  bottom: 0px;
+  width: 30px;
+  height: auto;
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-w {
+  left: 0px;
+  top: 0px;
+  bottom: 0px;
+  width: 30px;
+  height: auto;
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-s {
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  width: auto;
+  height: 30px;
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-se {
+  width: 30px;
+  height: 30px;
+  bottom: 0px;
+  right: 0px;
+  background-image: none;
+  transform: rotate(0deg);
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-sw {
+  width: 30px;
+  height: 30px;
+  bottom: 0px;
+  left: 0px;
+  background-image: none;
+  transform: rotate(0deg);
+}
+
+.circle-handle-e {
+  top: 50%;
+  right: 0%;
+  transform: translateX(50%);
+}
+
+.circle-handle-w {
+  top: 50%;
+  left: 0%;
+  transform: translateX(-50%);
+}
+
+.circle-handle-s {
+  left: 50%;
+  bottom: 0%;
+  transform: translate(-50%, 50%);
+}
+
+.circle-handle-se {
+  bottom: 0%;
+  right: 0%;
+  transform: translate(50%, 50%);
+}
+
+.circle-handle-sw {
+  bottom: 0%;
+  left: 0%;
+  transform: translate(-50%, 50%);
+}
+
+.img-resize-handle-e {
+  top: 50%;
+  right: 0%;
+  transform: translateY(-50%);
+}
+
+.img-resize-handle-w {
+  top: 50%;
+  left: 0%;
+  transform: translateY(-50%);
+}
+
+.img-resize-handle-s {
+  left: 50%;
+  bottom: 0%;
+  transform: translateX(-50%);
+}
+
+.img-resize-handle-se {
+  bottom: 0%;
+  right: 0%;
+  // transform: translate(50%, 50%);
+}
+
+.img-resize-handle-sw {
+  bottom: 0%;
+  left: 0%;
+  transform: translate(-50%, 50%);
+}
+
+.img-resize-handle {
+  width: 10px;
+  height: 10px;
+  background-color: $palette-color-3;
+  border:none;
+  overflow: visible;
+  // transition: all 0s ease-out;
+  transition: transform 200ms;
+  z-index: 20;
+  position: absolute;
+
+  &:hover {
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  }
+}
+
+.circle-handle {
+  width: 10px;
+  height: 10px;
+  background-color: $palette-color-3;
+  border:none;
+  overflow: visible;
+  // transition: all 0s ease-out;
+  transition: transform 200ms;
+  z-index: 20;
+  position: absolute;
+
+  &:hover {
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  }
+}
+
+.ui-resizable-e:hover > .circle-handle {
+  transform: scale(2) translateX(25%);
+}
+
+.ui-resizable-s:hover > .circle-handle {
+  transform: scale(2) translate(-25%, 25%);
+}
+
+.ui-resizable-w:hover > .circle-handle {
+  transform: scale(2) translateX(-25%);
+}
+
+.ui-resizable-se:hover > .circle-handle {
+  transform: scale(2) translate(25%, 25%);
+}
+
+.ui-resizable-sw:hover > .circle-handle {
+  transform: scale(2) translate(-25%, 25%);
+}

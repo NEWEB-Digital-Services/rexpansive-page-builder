@@ -1,0 +1,132 @@
+#rex-button-editor {
+	&.editing-model {
+		.add-rex-button-model__wrap {
+			display: none;
+		}
+	}
+	.add-rex-button-model {
+		background-color: rgb(0, 190, 0);
+		&.saving-rex-button {
+			background-color: rgb(0, 190, 0);
+		}
+	}
+}
+.add-rex-button-model.editing-model {
+	display: none;
+}
+
+#rex-button-editor .rexbutton-cont_row10 .l-svg-icons > svg {
+	transform: rotate(45deg);
+	cursor: pointer;
+}
+
+#rex-button__label {
+	text-shadow: 2px 2px 4px black !important;
+}
+
+#rex-button-font-size-wrap {
+	display: flex;
+}
+
+#rex-button-preview-background {
+	width: 181px;
+	height: 42px;
+	background-color: blue;
+	border-radius: 20px;
+}
+
+#rex-button-preview-text-hover {
+	width: 181px;
+	height: 42px;
+	background-color: blue;
+	border-radius: 20px;
+}
+
+#rex-button-height-wrap {
+	display: flex;
+}
+
+#rex-button-preview-background-hover {
+	width: 181px;
+	height: 42px;
+	background-color: blue;
+	border-radius: 20px;
+}
+
+#rex-button-border-preview {
+	width: 181px;
+	height: 42px;
+	border-color: blue;
+	border-radius: 20px;
+	border-style: solid;
+	border-width: 2px;
+}
+
+#rex-button-preview-border-hover {
+	width: 181px;
+	height: 42px;
+	background-color: blue;
+	border-radius: 20px;
+}
+
+#rex-button-border-width-wrap {
+	display: flex;
+}
+#rex-button-border-radius-wrap {
+	display: flex;
+}
+#rex-button-margin-top-wrap {
+	display: flex;
+}
+#rex-button-preview-empty {
+	width: 100%;
+	height: 30px;
+	background-color: grey;
+	/*border-radius:14px;*/
+}
+#rex-button-margin-bottom-wrap {
+	display: flex;
+}
+
+#rex-button-link-target-wrap {
+	width: 100%;
+}
+.rexbutton-cont_row45 #rex-button-link-target-wrap {
+	height: 21px;
+	margin: 11px 0px 10px 0px;
+}
+
+#rex-button-name-wrap {
+	width: 100%;
+}
+.rexbutton-cont_row77 #rex-button-name-wrap {
+	height: 21px;
+	margin: 11px 0px 10px 0px;
+}
+
+.rex-apply-button {
+	width: 30px;
+	background-color: blue;
+	border-radius: 50%;
+}
+
+#rex-button-name-model-wrap {
+	width: 100%;
+}
+
+#rex-button-add-model-wrap {
+	display: block;
+	width: 30px;
+	height: 30px;
+	font-size: 24px;
+	text-align: center;
+	box-sizing: border-box;
+	border-radius: 50%;
+	overflow: hidden;
+	margin: 6px 0px 6px 0px;
+	padding: 6px 0px 0px 0px;
+	color: #ffffff;
+}
+#rex-button-add-model-wrap:hover {
+	cursor: pointer;
+}

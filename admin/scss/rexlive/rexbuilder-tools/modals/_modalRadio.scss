@@ -1,0 +1,22 @@
+// .rex-modal {
+//   [type="radio"]:not(:checked) + span, 
+//   [type="radio"]:not(:checked) + span {
+//     @include fill-icon($palette-color-12);
+//   }
+
+//   [type="radio"]:not(:checked) + span:before, 
+//   [type="radio"]:not(:checked) + span:after {
+//     border-color: $palette-color-12;
+//   }
+// }
+
+.rexbuilder-materialize-wrap {
+  [type="radio"]:not(:checked) {
+    + label {
+      color: $palette-color-4;
+      &:before {
+        border-color: $palette-color-4;
+      }
+    }
+  }
+}

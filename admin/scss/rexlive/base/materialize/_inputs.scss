@@ -1,0 +1,68 @@
+.rexbuilder-materialize-wrap {
+  .input-field {
+    &.input-field--medium {
+      margin: 0;
+      width: auto;
+      input {
+        margin: 0;
+        line-height: 1;
+        font-size: 15px;
+        height: auto;
+        max-width: 30px;
+        text-align: center;
+        &:focus {
+          color:$palette-color-1;
+        }
+      }
+    }
+    &.input-field--small {
+      position: relative;
+      margin: 0;
+      input {
+        margin-bottom: 7px;
+        margin-top: 7px;
+        line-height: 15px;
+        height: 20px;
+        font-size: 11px;
+        ~ label {
+          // position: absolute;
+          top: 7px;
+          left: 0;
+          font-size: 15px;
+          z-index: -1;
+          // cursor: text;
+          // transition: 0.2s ease-out;
+          &.active {
+            font-size: 10px;
+            transform: translateY(-100%);
+          }
+        }
+      }
+    }
+  }
+  
+  input[type=text]:disabled, 
+  input[type=text][readonly="readonly"], 
+  input[type=password]:disabled, 
+  input[type=password][readonly="readonly"], 
+  input[type=email]:disabled, 
+  input[type=email][readonly="readonly"], 
+  input[type=url]:disabled, 
+  input[type=url][readonly="readonly"], 
+  input[type=time]:disabled, 
+  input[type=time][readonly="readonly"], 
+  input[type=date]:disabled, 
+  input[type=date][readonly="readonly"], 
+  input[type=datetime-local]:disabled, 
+  input[type=datetime-local][readonly="readonly"], 
+  input[type=tel]:disabled, 
+  input[type=tel][readonly="readonly"], 
+  input[type=number]:disabled, 
+  input[type=number][readonly="readonly"], 
+  input[type=search]:disabled, 
+  input[type=search][readonly="readonly"], 
+  textarea.materialize-textarea:disabled, 
+  textarea.materialize-textarea[readonly="readonly"] {
+    border-bottom-style: solid;
+  }
+}

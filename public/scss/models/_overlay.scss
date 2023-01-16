@@ -1,0 +1,72 @@
+/* ------- OVERLAY ------------ */
+.responsive-overlay {
+	visibility: hidden;
+	height: inherit;
+	position: relative;
+	width: 100%;
+	display: block;
+	top: 0;
+	left: 0;
+	z-index: 30;
+	// .full-height-section & {
+	// 	min-height: 100vh;
+	// }
+	@media screen and (min-width: $large) {
+		.active-large-overlay & {
+			visibility: visible;
+		}
+	}
+	@media screen and (min-width: $medium-start) and (max-width: $medium-end) {
+		.active-medium-overlay & {
+			visibility: visible;
+		}
+	}
+	@media screen and (max-width: $small) {
+		.active-small-overlay & {
+			visibility: visible;
+		}
+	}
+}
+
+.responsive-block-overlay {
+	position: relative;
+	// visibility: hidden;
+	background-color:transparent;
+	width: 100%;
+	// height: inherit;
+	height: 100%;
+	display: inherit;
+	@include align(inherit);
+	@include justify-content(inherit);
+	> div {
+		visibility: visible;
+	}
+	@media screen and (min-width: $large) {
+		.active-large-block-overlay & {
+			visibility: visible;
+		}
+	}
+	@media screen and (min-width: $medium-start) and (max-width: $medium-end) {
+		.active-medium-block-overlay & {
+			visibility: visible;
+		}
+	}
+	@media screen and (max-width: $small) {
+		.active-small-block-overlay & {
+			visibility: visible;
+		}
+	}
+}
+
+.slider-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	visibility: hidden;
+	z-index: 5;
+	.rex-active-overlay & {
+		visibility: visible;
+	}
+}

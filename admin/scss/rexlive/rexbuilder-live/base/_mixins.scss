@@ -1,0 +1,4 @@
+@mixin rex-offset($color) {
+	outline: 2px solid $color;
+	outline-offset: -1px;
+}

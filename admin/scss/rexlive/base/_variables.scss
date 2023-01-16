@@ -1,0 +1,98 @@
+
+//background palette colors
+$palette-blue:rgba(33, 150, 243, 1);
+$palette-green:rgba(139, 195, 74, 1);
+$palette-black:rgba(0, 0, 0, 1);
+$palette-red:rgba(244, 67, 54, 1);
+$palette-orange:rgba(255, 152, 0, 1);
+$palette-purple:rgba(156, 39, 176, 1);
+$palette-transparent:rgba(255, 255, 255, 0);
+
+//background palette colors
+$overlay-palette-blue:rgba(33, 150, 243, 0.6);
+$overlay-palette-green:rgba(139, 195, 74, 0.6);
+$overlay-palette-black:rgba(0, 0, 0, 0.6);
+$overlay-palette-red:rgba(244, 67, 54, 0.6);
+$overlay-palette-orange:rgba(255, 152, 0, 0.6);
+$overlay-palette-purple:rgba(156, 39, 176, 0.6);
+$overlay-palette-transparent:rgba(255, 255, 255, 0);
+
+// shadow
+$shadow-1: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
+$shadow-2: 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -7px rgba(0,0,0,0.2);
+$main-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+$modal-shadow: 0 0 100px 5px rgba(0, 0, 0, 0.4);
+$tools-area-shadow: 0 0 70px 0 rgba(0, 0, 0, 0.5);
+$smooth-shadow: 0 2px 60px 0 rgba(0,0,0,.13);
+$top-tool-shadow: 0 0 20px 2px rgba(0,0,0,0.5);
+
+// main-palette
+$palette-color-1: #00ACFF;
+$palette-color-2: #979797;
+$palette-color-3: #FF0055;
+$palette-color-4: #424242;
+$palette-color-5: #daf3ff;
+$palette-color-6: #f4f4f4;
+$palette-color-7: #fafafa;
+$palette-color-8: #d8d8d8;
+$palette-color-9: #efefef;
+$palette-color-9b: #D6D6D6;
+$palette-color-10: #ccc;
+$palette-color-11: #81d7ff;
+$palette-color-12: #bdbdbd;
+
+//icons
+$icon-class: '.l-svg-icons';
+$icon-base-color: #979797;
+$icon-hover-color: #979797;
+$icon-active-color: #00ACFF;
+$icon-deactive-color: #979797;
+
+$row-tools-size: 13px;
+$row-fast-config-tools-size: 18px;
+$block-tools-size: 20px;
+
+// buttons
+$btn-base-color: #979797;
+$btn-base-background: #fff;
+$btn-hover-color: #fff;
+$btn-hover-background: #00ACFF;
+$btn-active-color: #00ACFF;
+$btn-active-background: #fff;
+
+// forms
+// radio button
+$input-flat-disabled-color: #fff;
+
+// Classes
+$row-focused: '.focusedRow';
+
+// Modals
+$modal-background-color: #fafafa;
+
+// Top Tools
+$top-tools-height: 50px;
+$small-tools: true;
+
+// Models
+$panel-side: 'left';
+$drop-marker-height: 70px;
+
+// Tooltips
+$tooltip-background: #333;
+
+// Buttons
+$button-text-color: #FF0055;
+$button-bg-color: transparent;
+$button-bg-invert-color: #FFFFFF;
+$button-grey-text-color: #555555;
+$button-border-radius: 25px;
+
+$builder-active: '.rexbuilder-live-active';
+
+// RexClassic fixes
+$rexclassic-class: '.rexclassic';
+
+// Loader pulse
+$loader-pulse-size: 40px !default;
+$loader-pulse-color: #333 !default;

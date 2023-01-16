@@ -1,0 +1,10 @@
+#rex-edit-model-choose {
+  .tool-button--modal {
+    &.remove-model {
+      padding: 7px;
+      #{$icon-class} {
+        font-size: 16px;
+      }
+    }
+  }
+}

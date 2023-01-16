@@ -1,0 +1,12 @@
+.tippy-tooltip.rexlive-theme {
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  text-transform: uppercase;
+  @include live-fonts();
+  // Customize here background-color
+  // background-color:
+  .tippy-roundarrow * {
+    fill: #333;
+  }
+}

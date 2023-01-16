@@ -1,0 +1,26 @@
+problema 1)
+non basta semplicemente non salvare la prop: se manca, da dei problemi, bisogna azzerarla in qualche modo, darle dei default
+problema 2)
+devo capire che non ho toccato certe proprietà, per fare in modo che non venga passato loro il valore al gestore dei salvataggi
+-> variabile di stato attuale con tutte le info delle row e dei blocchi, toccati o meno
+	-> quando salvo, se non sono in default, e la proprietà è cambiata, la salvo
+	-> da sincronizzare in caso di: editing, undo/redo, e SOPRATTUTTO, di aggiunta/eliminazione elementi
+	-> da generare al caricamento layout, ovviamente con tutti i valori a false
+
+in generale però, sembra che, se la proprietà manca, essa viene presa dal default
+
+DA CONTROLLARE
+== 2020-05-05
+- problema con photoswipe su singolo blocco, manca un gestore evento unico per il photoswipe, ora è tutto assieme all'immagine
+
+DA CONTROLLARE
+== 2020-05-04
+- inserisco row, inserisco blocco di testo
+- salvo default
+- vado mobile
+- cambio colore di sfondo al blocco
+- ricarico
+	-> colore di sfondo non più presente sul blocco in mobile, nè front nè live
+
+	==> PROBABILMENTE: manca tracciamento per blocchi nuovi ==> NON è VERO, mancavano i dati iniziali corretti, erano da prendere da mergedEdits (dopo averlo manipolato in un array)
+== **

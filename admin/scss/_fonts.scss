@@ -1,0 +1,22 @@
+/* ------ FONTS ----------- */
+.rex-icon {
+	font-family: 'font3933';
+	font-size: 36px;
+	line-height: 1;
+	color: $builder-button-inactive-modal;
+	font-weight: normal;
+	font-style: normal;
+	letter-spacing: normal;
+	text-transform: none;
+	display: inline-block;
+	white-space: nowrap;
+	word-wrap: normal;
+	direction: ltr;
+	-webkit-font-feature-settings: 'liga';
+	-webkit-font-smoothing: antialiased;
+	.sp-picker-container .sp-button-container & {
+		font-size: 18px;
+		line-height: 36px;
+		color: #ffffff;
+	}
+}

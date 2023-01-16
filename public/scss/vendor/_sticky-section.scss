@@ -1,0 +1,154 @@
+.rexpansive_section {
+  &.sticky-section {
+    &.sticky-css {
+      .rex-video-wrap {
+				@include safariFlickerFix;
+        position: sticky;
+        top: 0;
+        z-index: 20;
+				height: 100vh;
+      }
+      .sticky-background-simulator {
+        // @include safariFlickerFix;
+        position: sticky;
+        top: 0;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        z-index: 20;
+        width: 100%;
+        height: 100vh;
+        background-size: inherit;
+        background-position: inherit;
+        background-repeat: no-repeat;
+      }
+			&.will-change-rule {
+				.rex-video-wrap {
+					will-change: transform;
+				}
+			}
+			@media screen and (min-width: 768px) {
+				.perfect-grid-gallery {
+					// min-height: 100vh;
+					// margin-top: 100vh!important;
+					margin-bottom: 20vh!important;
+				}
+			}
+	
+			@media screen and (max-width: 767px) {
+				.perfect-grid-gallery {
+					// margin-top: 0vh!important;
+					margin-bottom: 20vh!important;
+				}
+			}
+			.responsive-overlay {
+				&.rex-active-overlay {
+					visibility: hidden;
+				}
+			}
+    }
+
+  }
+
+}
+/** sticky border animation **/
+// .sticky__border-animation__wrap {
+//   position: absolute;
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//   z-index: 40;
+// }
+
+.sticky-video-controls {
+	@media (max-width: $small) {
+		display: none;
+	}
+	
+  position: sticky !important;
+  // bottom: auto;
+  // right: auto;
+  left: 0;
+  top: calc(100% - 20px);
+  margin-bottom: 20px;
+  margin-left: 20px;
+  width: 40px;
+  height: 40px;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.sticky-element__wrapper {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  z-index: 0;
+}
+
+.sticky__overlay {
+  /*
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  */
+  @include safariFlickerFix;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity ease-out .3s;
+}
+
+.sticky__border-animation__top,
+.sticky__border-animation__right,
+.sticky__border-animation__bottom,
+.sticky__border-animation__left {
+  @include safariFlickerFix;
+  position: absolute;
+  transform: scale(1,1);
+  background-color: #fff;
+  transition: transform 400ms cubic-bezier(0.075, 0.82, 0.165, 1);
+  z-index: 40;
+}
+.sticky__border-animation__top {
+  top: 0;
+  transform-origin: top;
+}
+.sticky__border-animation__bottom {
+  bottom: 0;
+  transform-origin: bottom;
+}
+.sticky__border-animation__top,
+.sticky__border-animation__bottom {
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 90px;
+  @media screen and (max-width:767px) {
+    height: 40px;
+  }
+}
+.sticky__border-animation__right {
+  right: 0;
+  transform-origin: right;
+}
+.sticky__border-animation__left {
+  left: 0;
+  transform-origin: left;
+}
+.sticky__border-animation__right,
+.sticky__border-animation__left {
+  top: 0;
+  bottom: 0;
+  width: 90px;
+  height: 100%;
+  @media screen and (max-width:767px) {
+    width: 40px;
+  }
+}

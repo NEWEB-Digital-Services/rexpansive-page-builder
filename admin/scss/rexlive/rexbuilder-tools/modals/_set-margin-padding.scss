@@ -1,0 +1,48 @@
+.rex-live__row-margin-padding {
+  max-width:340px;
+  margin: 0 auto;
+  padding: 8px 0;
+}
+.rex-live__row-padding-wrap {
+  border: 2px solid $palette-color-12;
+  margin: 5px;
+  padding: 5px;
+}
+.rex-live__block-padding-wrap {
+  margin: 5px;
+  padding: 5px;
+}
+.rex-live__row-gutter-wrap {
+  width:120px;
+  height: 120px;
+  border: 2px dotted $palette-color-12;
+  position:relative;
+  margin: 5px;
+}
+.rex-live__gutter-wrap--yaxis {
+  width:2px;
+  height:100%;
+  top:0;
+  left:50%;
+  transform:translateX(-1px);
+  background:$palette-color-12;
+  position:absolute;
+  z-index: 0;
+}
+.rex-live__gutter-wrap--xaxis {
+  width:100%;
+  height:2px;
+  top:50%;
+  left:0;
+  transform:translateY(-1px);
+  background:$palette-color-12;
+  position:absolute;
+  z-index: 0;
+}
+.rex-live__row-gutter {
+  width: 50%;
+  height: 50%;
+  z-index: 10;
+  background-color: $modal-background-color;
+}
+ 

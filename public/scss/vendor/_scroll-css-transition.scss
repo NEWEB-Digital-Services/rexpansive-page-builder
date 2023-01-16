@@ -1,0 +1,36 @@
+.perfect-grid-item,
+.rexpansive_section {
+  &.fadeUpTextCSS {
+    .perfect-grid-item,
+    .grid-stack-item-content,
+    .grid-item-content,
+    .rex-custom-scrollbar {
+      overflow: visible!important;
+    }
+    .text-wrap {
+      > * {
+        opacity: 0;
+        transform: translateY(120px);
+        transition: opacity 500ms $easeOutSine, transform 600ms $easeOutCirc;
+      }
+    }
+  }
+  &.forward-animation {
+    .text-wrap {
+      > * {
+        opacity: 1;
+        transition: opacity 500ms $easeOutSine, transform 400ms $easeOutCirc;
+        transform: translateY(0);
+      }
+    }
+  }
+  &.backward-animation {
+    .text-wrap {
+      > * {
+        opacity: 0;
+        transform: translateY(120px);
+        transition: opacity 500ms $easeOutSine, transform 600ms $easeOutCirc;
+      }
+    }
+  }
+}

@@ -1,0 +1,101 @@
+/* ------ TOOLTIP REDEFINITION -------- */
+.material-tooltip {
+	font-size: 12px;
+	padding: 8px 6px;
+	line-height: 1;
+	letter-spacing: 1px;
+	font-weight: 100;
+	min-height: 0;
+}
+.backdrop {
+	background-color: $builder-button-inactive-modal;
+}
+
+/* ------ SPECTRUM PICKER REDEFINITION ------- */
+.#{$wrap-class} {
+	.sp-input-container {
+		position: relative;
+		margin: 15px 0 20px 0;
+	}
+	input[type=text].sp-input {
+		height: 20px;
+		line-height: 15px;
+		font-size: 15px!important;
+		color: $builder-button-inactive-modal;
+		border-bottom-color: $builder-button-inactive-modal;
+		font-family: "Open Sans", sans-serif;
+		margin-bottom: 0;
+		~ .rex-material-bar {
+			bottom: 0;
+		}
+	}
+}
+.sp-container {
+	background-color: #ffffff;
+	border: none;
+}
+.sp-picker-container {
+	width: 230px;
+	border-left: none;
+	a {
+		&:active,
+		&:hover {
+			color: #343434;
+		}
+	}
+	.sp-button-container {
+		float: none;
+		position: relative;
+		left: -10px;
+		width: 255px;
+		bottom: -10px;
+		.sp-cancel,
+		.sp-choose {
+			border-radius: 0;
+			box-sizing: border-box;
+			text-align: center;
+		}
+		.sp-cancel {
+			width: 127px;
+			height: 38px;
+			background-color: $builder-labels;
+			&:hover {
+				background-color: $builder-resizer-inactive!important;
+			}
+		}
+		.sp-choose {
+			border: none;
+			width: 128px;
+			height: 38px;
+			background-color: $button-choice-positive;
+			&:hover {
+				background-color: #42a5f5!important;
+			}
+			.rex-icon {
+				font-size: 24px;
+			}
+		}
+	}
+}
+.sp-replacer {
+	padding: 0;
+	border: none;
+	color: transparent;
+	@include palette-opacity-preview;
+}
+.sp-preview {
+	background-image: none;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	border: none;
+}
+.sp-preview-inner {
+	top: -1px;
+	right: -1px;
+	bottom: -1px;
+	left: -1px;
+}
+.sp-dd {
+	display: none;
+}

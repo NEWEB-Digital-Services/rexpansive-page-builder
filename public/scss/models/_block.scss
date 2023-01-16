@@ -1,0 +1,10 @@
+.perfect-grid-item {
+	@if not $live_builder {
+		&.overflowed-block {
+			.grid-item-content,
+			.rex-custom-scrollbar {
+				overflow: visible;
+			}
+		}
+	}
+}

@@ -1,0 +1,8 @@
+/* -------------- TYPOGRAPHY ------------- */
+.perfect-grid-item {
+	.text-wrap {
+		p:not(:last-child) {
+			margin-bottom: 1em;
+		}
+	}
+}

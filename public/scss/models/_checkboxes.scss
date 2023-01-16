@@ -1,0 +1,55 @@
+.rex-checkbox__indicator {
+  position: relative;
+  display: inline-block;
+  width: 15px;
+  min-width: 15px;
+  height: 15px;
+  background: transparent;
+  outline: 2px solid #8a8a8a;
+  margin-left: 2px;
+  &:after {
+    position: absolute;
+    display: none;
+    content: "";
+    top: 10%;
+    left: 35%;
+    width: 30%;
+    height: 60%;
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+    border-style: solid;
+    border-color: #8a8a8a;
+    border-width: 0 2px 2px 0;
+  }
+}
+
+input[type=checkbox] {
+  &:checked ~ {
+    .rex-checkbox__indicator{
+      &:after {
+        display: block;
+      }
+    }
+  }
+}
+
+.#{$form-custom-checkboxes} {
+  label {
+    input[type=checkbox] {
+      position: absolute;
+      z-index: -1;
+      opacity: 0;
+    }
+    .wpcf7-checkbox {
+      .wpcf7-list-item {
+        position: relative;
+      }
+    }
+  }
+  span.wpcf7-list-item {
+    margin: 0;
+  }
+  .rex-checkbox__indicator {
+    margin-right: 0.5em;
+  }
+}

@@ -1,0 +1,61 @@
+.sp-rex-palette-wrap {
+  display: none;
+  float: none;
+  clear: both;
+  padding-top: 10px;
+}
+
+.sp-picker-container {
+  .palette-list {
+    max-width: 200px;
+    flex-wrap: wrap;
+    margin-bottom: -10px;
+  }
+  .palette-item,
+  .palette__add-color {
+    margin-bottom: 10px;
+  }
+  .palette__gradient-default {
+    margin-bottom: 0;
+  }
+}
+
+.palette-item {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid $palette-color-4;
+  margin-right: 10px;
+  cursor: pointer;
+  position: relative;
+}
+
+.palette-item__delete {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  padding: 3px;
+  line-height: 4px;
+  #{$icon-class} {
+    font-size: 8px!important;
+  }
+}
+
+.palette__add-color,
+.palette__add-gradient {
+  cursor: pointer;
+  margin-left: 5px;
+  #{$icon-class} {
+    font-size: 15px!important;
+  }
+}
+
+.palette__gradient-default {
+  background: rgb(0,0,0);
+  background: -moz-linear-gradient(-45deg, rgba(0,0,0,1) 1%, rgba(255,229,229,1) 99%);
+  background: -webkit-linear-gradient(-45deg, rgba(0,0,0,1) 1%,rgba(255,229,229,1) 99%);
+  background: linear-gradient(135deg, rgba(0,0,0,1) 1%,rgba(255,229,229,1) 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#ffe5e5',GradientType=1 );
+  margin: 0;
+}

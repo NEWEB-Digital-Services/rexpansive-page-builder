@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<script>
+;(function() {
+	var promise = false;
+
+	function handleDOMContentLoad() {
+		if (promise) {
+			let myFirstPromise = new Promise((resolve, reject) => {
+				// Chiamiamo resolve(...) quando viene eseguito correttamente, e reject(...) quando fallisce.
+				// In questo esempio viene utilizzato setTimeout(...) per simulare un'operazione asincrona.
+				// Nella realtà probabilmente utilizzerai qualcosa del tipo XHR o HTML5 API.
+				setTimeout(function(){
+					resolve("Success!"); // È andato tutto perfettamente!
+				}, 3000);
+			});
+
+			myFirstPromise.then((successMessage) => {
+				// successMessage viene passato alla funzione resolve(...) .
+				// Non deve essere necessariamente una stringa, ma nel caso sia solo un messaggio probabilmemte lo sarà.
+				console.log("Yay! " + successMessage);
+			});
+		} else {
+			setTimeout(function() {
+				setTimeout(function() {
+					console.log('timeout inception')
+				}, 1000)
+			}, 1000)
+		}
+	}
+
+	function handleLoad() {
+		console.log('load arrivato')
+	}
+
+	document.addEventListener('DOMContentLoaded', handleDOMContentLoad)
+	window.addEventListener('load', handleLoad)
+}())
+	</script>
+</body>
+</html>

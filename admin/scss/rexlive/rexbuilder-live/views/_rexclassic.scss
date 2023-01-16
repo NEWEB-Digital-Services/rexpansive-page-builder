@@ -1,0 +1,16 @@
+/**
+ *  RexClassic Theme tools fixies
+ *  LIVE
+ */
+#{$rexclassic-class} {
+	&#{$builder-active} {
+		overflow-x: hidden;
+	}
+	
+	.section-toolBox {
+		.tools {
+			margin-left: 5px;
+			margin-right: 5px;
+		}
+	}
+}

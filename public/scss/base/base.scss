@@ -1,0 +1,14 @@
+html {
+	// Fix for mix-blend-mode in the navigator
+	background-color: white;
+}
+
+@import 'variables';
+@import 'mixins';
+@import 'classes';
+@import '_linear-gradient.scss';
+//@import "typography";
+@import 'icons';
+
+@import 'double-bounce';
+@import 'animations';

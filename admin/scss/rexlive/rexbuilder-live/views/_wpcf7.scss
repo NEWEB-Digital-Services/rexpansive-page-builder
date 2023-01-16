@@ -1,0 +1,170 @@
+$input-min-width: 115px;
+
+.wpcf7 {
+	position: relative;
+
+	.wpcf7-form:not(.no-builder-form) {
+		display: flex;
+		flex-wrap: wrap;
+		cursor: default;
+
+		input[type='text'],
+		input[type='number'],
+		input[type='email'],
+		textarea,
+		select {
+			// Want to override themes' padding
+			padding-left: 18px !important;
+
+			&:focus {
+				outline: none;
+			}
+		}
+
+		&:hover {
+			@include rex-offset($palette-color-1);
+		}
+
+		.wpcf7-rows {
+			display: block;
+			width: 100%;
+
+			.wpcf7-row {
+				display: flex;
+				width: 100%;
+				position: relative;
+
+				&:hover {
+					@include rex-offset($palette-color-1);
+				}
+
+				.wpcf7-column {
+					display: flex;
+					align-items: center;
+
+					.wpcf7-add-new-form-content {
+						display: block;
+					}
+
+					&.with-button {
+						min-height: 72px;
+						justify-content: center;
+					}
+
+					.wpcf7-add-new-form-content {
+						margin: auto 0;
+					}
+
+					.wpcf7-add-new-row {
+						margin: auto 0;
+					}
+
+					.wpcf7-column-content {
+						width: 100%;
+
+						.wpcf7-form-control-wrap {
+							display: inline-block;
+							min-width: $input-min-width;
+							max-width: 100%;
+							max-height: 100%;
+
+							&:hover {
+								@include rex-offset($palette-color-3);
+							}
+
+							.wpcf7-text,
+							.wpcf7-select,
+							.wpcf7-textarea,
+							.wpwcf7-control-wrap[class^='radio-'],
+							.wpwcf7-control-wrap[class^='acceptance-'],
+							.wpwcf7-control-wrap[class^='file-'] {
+								min-width: $input-min-width;
+							}
+
+							.wpcf7-radio,
+							.wpcf7-acceptance {
+								overflow: hidden;
+							}
+						}
+
+						// Fix for twenty-sixteen theme
+						p,
+						label {
+							margin: 0;
+						}
+
+						label {
+							display: block;
+						}
+					}
+
+					.rex-wpcf7-column-content-data {
+						display: none;
+					}
+
+					.wpcf7-list-item {
+						display: inline-flex;
+						align-items: center;
+					}
+				}
+
+				&.wpcf7-row__1-column,
+				&.wpcf7-row__2-columns,
+				&.wpcf7-row__3-columns,
+				&.wpcf7-row__4-columns {
+					.wpcf7-column {
+						float: left;
+					}
+				}
+
+				&.wpcf7-row__1-column {
+					.wpcf7-column {
+						width: 100%;
+					}
+				}
+
+				&.wpcf7-row__2-columns {
+					.wpcf7-column {
+						width: 50%;
+						max-width: 50%;
+					}
+				}
+
+				&.wpcf7-row__3-columns {
+					.wpcf7-column {
+						width: 33.3333%;
+					}
+				}
+
+				&.wpcf7-row__4-columns {
+					.wpcf7-column {
+						width: 25%;
+					}
+				}
+			}
+		}
+
+		.wpcf7-response-output {
+			width: 100%;
+		}
+
+		.wpcf7-submit {
+			min-width: 150px;
+			min-height: 40px;
+			max-width: 100%;
+
+			&:focus {
+				outline: none;
+			}
+		}
+
+		.wpcf7-select {
+			max-width: 100%;
+			max-height: 100%;
+		}
+
+		.wpcf7-file + label {
+			max-width: 100%;
+		}
+	}
+}

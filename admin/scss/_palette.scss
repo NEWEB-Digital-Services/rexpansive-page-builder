@@ -1,0 +1,139 @@
+/* -------- PALETTES ------------- */
+
+.bg-palette-selector {
+	width: 30px;
+	height: 30px;
+	margin: 0;
+	float: left;
+	text-align: center;
+	vertical-align: middle;
+	line-height: 34px;
+	margin-right: 4px;
+	#modal-background-responsive-set & {
+		margin-right: 0;
+	}
+	.bg-palette-button {
+		width: 12px;
+		height: 12px;
+		display: inline-block;
+		cursor: pointer;
+		position: relative;
+		&:before {
+			content: '';
+			position: absolute;
+			display: none;
+			top: -6px;
+			left: -6px;
+			width: 24px;
+			height: 24px;
+			background-color: transparent;
+			border: 3px solid transparent;
+		}
+	}
+	&.palette-color-active {
+		.bg-palette-button {
+			&:before {
+				display: block;
+			}
+		}
+	}
+}
+
+.bg-palette-selector {
+	&:not(#palette-transparent):not(#overlay-palette-transparent):not(#overlay-block-palette-transparent) {
+		.bg-palette-button {
+			&:after {
+				@include palette-opacity-preview;
+			}
+		}
+	}
+}
+
+#overlay-palette-preview {
+	margin-right: 0;
+}
+#palette-preview .bg-palette-button,
+#overlay-palette-preview .bg-palette-button {
+	border: 1px solid #bbb;
+	background-color: #fff;
+}
+#palette-preview .bg-palette-button:before,
+#overlay-palette-preview .bg-palette-button:before {
+	display: none;
+}
+#palette-preview .bg-palette-button-before,
+#overlay-palette-preview .bg-palette-button-before {
+	position: absolute;
+	display: none;
+	top: -7px;
+	left: -7px;
+	width: 24px;
+	height: 24px;
+	background-color: transparent;
+	border: 3px solid transparent;
+}
+#palette-preview.palette-color-active .bg-palette-button-before,
+#overlay-palette-preview.palette-color-active .bg-palette-button-before {
+	display: block;
+}
+#palette-transparent,
+#overlay-palette-transparent,
+#overlay-block-palette-transparent {
+	margin-left: 0;
+	margin-right: 0;
+}
+#palette-transparent .bg-palette-button,
+#overlay-palette-transparent .bg-palette-button,
+#overlay-block-palette-transparent .bg-palette-button {
+	width: 100%;
+	height: 100%;
+}
+#palette-transparent .bg-palette-button i,
+#overlay-palette-transparent .bg-palette-button i,
+#overlay-block-palette-transparent .bg-palette-button i {
+	font-size: 25px;
+	color: #000;
+	margin-top: 4px;
+}
+#palette-transparent.palette-color-active .bg-palette-button i,
+#overlay-palette-transparent.palette-color-active .bg-palette-button i,
+#overlay-block-palette-transparent.palette-color-active .bg-palette-button i {
+	color: #039be5;
+}
+#palette-transparent .bg-palette-button:before,
+#overlay-palette-transparent .bg-palette-button:before,
+#overlay-block-palette-transparent .bg-palette-button:before {
+	top: 4px;
+	left: 3px;
+}
+
+@include define-palette(black, $palette-black);
+@include define-palette(green, $palette-green);
+@include define-palette(blue, $palette-blue);
+//@include define-palette(violet, $palette-violet);
+@include define-palette(red, $palette-red);
+@include define-palette(orange, $palette-orange);
+@include define-palette(purple, $palette-purple);
+//@include define-palette(white, #fff);
+//@include define-palette(white, #fff, overlay-block);
+
+@include define-palette(black, transparentize($palette-black, 0.4), overlay);
+@include define-palette(green, transparentize($palette-green, 0.4), overlay);
+@include define-palette(blue, transparentize($palette-blue, 0.4), overlay);
+@include define-palette(red, transparentize($palette-red, 0.4), overlay);
+
+@include define-palette(green, transparentize($palette-green, 0.4), overlay-block);
+@include define-palette(blue, transparentize($palette-blue, 0.4), overlay-block);
+
+#overlay-palette-white,
+#overlay-block-palette-white {
+	.bg-palette-button {
+		border: 1px solid #bbb;
+	}
+}
+
+.sp-picker-container {
+	.sp-button-container.sp-cf {
+		@include clearfix;
+	}
+}

@@ -1,0 +1,532 @@
+@mixin item {
+  padding: 0 20px;
+  height: 100%;
+}
+
+@mixin hide-element($zIndex: false) {
+  visibility: hidden;
+  opacity: 0;
+  @if $zIndex {
+    z-index: -9999;
+  }
+  transition: visibility 0s 200ms, opacity 200ms linear;
+}
+
+@mixin view-element($zIndex: false) {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 200ms linear;
+  @if $zIndex {
+    z-index: auto;
+  }
+}
+
+// Icons mixins
+@mixin fill-icon( $color ) {
+  // .l-svg-icons,
+  .l-svg-icons > svg {
+    fill: $color;
+    // stroke: $btn-base-color;
+  }
+}
+
+@mixin style-icon {
+	.l-svg-icons > svg {
+		@content;
+  }
+}
+
+// Buttons mixins
+@mixin bl-btn {
+  background-color: $btn-base-background;
+  color: $palette-color-4;
+
+  @include fill-icon($palette-color-4);
+}
+
+@mixin bl-btn-flat {
+  background-color: transparent;
+  color: #fff;
+  @include fill-icon(#fff);
+}
+
+@mixin bl-btn--hover {
+  background-color: $btn-hover-background;
+  color: $btn-hover-color;
+
+  @include fill-icon($btn-hover-color);
+}
+
+@mixin bl-btn-flat--hover {
+  background-color: transparent;
+  color: #fff;
+
+  @include fill-icon(#fff);
+}
+
+@mixin bl-btn--active {
+  background-color: $btn-active-background;
+  color: $btn-active-color;
+
+  @include fill-icon($btn-active-color);
+}
+
+@mixin bl-btn--black {
+  background-color: #000;
+  color: #fff;
+
+  @include fill-icon(#fff);
+}
+
+@mixin bl-btn--dark {
+  background-color: $palette-color-4;
+  color: #fff;
+
+  @include fill-icon(#fff);
+}
+
+@mixin bl-btn--blue {
+  background-color: $palette-color-1;
+  color: #fff;
+
+  @include fill-icon(#fff);
+}
+
+@mixin bl-btn--pink {
+  background-color: $palette-color-3;
+  color: #fff;
+
+  @include fill-icon(#fff);
+}
+
+@mixin bl-btn--hover-shadow {
+  box-shadow: $shadow-1;
+  transition: box-shadow 300ms;
+  &:hover {
+    @include fill-icon($palette-color-1);
+    box-shadow: $shadow-2;
+  }
+}
+
+@mixin bl-btn--add-big {
+  padding: 10px;
+  background-color: transparent;
+  @include fill-icon($palette-color-1);
+  border: 2px solid $palette-color-1;
+  &:hover {
+    @include fill-icon($palette-color-1);
+  }
+}
+
+@mixin bl-btn--add-big-grey {
+  padding: 10px;
+  background-color: transparent;
+  @include fill-icon($palette-color-2);
+  border: 2px solid $palette-color-2;
+  &:hover {
+    @include fill-icon($palette-color-2);
+  }
+}
+
+@mixin bl-btn--add-big-pink {
+  padding: 10px;
+  background-color: transparent;
+  @include fill-icon($palette-color-3);
+  border: 2px solid $palette-color-3;
+  &:hover {
+    @include fill-icon($palette-color-3);
+  }
+}
+
+@mixin bl-btn--add-mdm {
+  display: inline-flex;
+  padding: 3px;
+  background-color: transparent;
+  @include fill-icon($palette-color-4);
+  border: 2px solid $palette-color-4;
+  &:hover {
+    @include fill-icon($palette-color-4);
+  }
+}
+
+@mixin bl-btn--add-small {
+  padding: 3px;
+  border-radius: 50%;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #000;
+  &:hover {
+    border-color: $palette-color-1;
+  }
+}
+
+// Tools mixins
+@mixin generic-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin live-fonts {
+  font-family: 'Roboto', sans-serif;
+}
+
+@mixin page-edited-ui {
+  position: relative;
+  .btn-save--wrap {
+    display: block;
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 1px;
+      top: 1px;
+      right: 1px;
+      background-color: white;
+      border-radius: 50%;
+      z-index: -1;
+      bottom: 1px;
+    }
+  }
+  .btn-save--edited {
+    display: inline-block;
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    @include fill-icon($palette-color-2);
+    &:hover {
+      @include fill-icon(#000);
+    }
+  }
+  .btn-save--saved {
+    display: inline-block;
+    visibility: visible;
+    @include fill-icon($palette-color-1);
+  }
+  &.page-edited {
+    .btn-save--edited {
+      visibility: visible;
+    }
+    .btn-save--saved {
+      visibility: hidden;
+    }
+  }
+  .setting-edited & {
+    .btn-save--edited {
+      visibility: visible;
+    }
+    .btn-save--saved {
+      visibility: hidden;
+    }
+  }
+  .setting-saving & {
+    // .btn-save--edited {
+    //   animation: scale-out-center 0.2s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    // }
+    .btn-save--saved {
+      visibility: visible;
+      animation: scale-in-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    }
+  }
+}
+
+@mixin page-edited-ui-toolbox {
+  background-color: $palette-color-1;
+  &.page-edited {
+    background-color: $palette-color-2;
+    &:hover {
+      background-color: $palette-color-1;
+    }
+  }
+}
+
+@mixin view-floating-button {
+  .tool-button_list {
+    z-index: 10000;
+    visibility: visible;
+    display: block;
+    .tool-button_list--item {
+      opacity: 1;
+      transform: scale(1) translateY(0) translateX(0);
+    }
+
+    &.tool-button_list--horizontal {
+      display: flex;
+      justify-content: flex-end;
+      // flex-wrap: wrap;
+    }
+  }
+}
+
+@mixin center-from-left-abs {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+// Row tools mixins
+@mixin view-row-tools {
+  .tools {
+    @include generic-toolbar;
+    transform: translateY(-50%);
+  }
+  .tool-area--center {
+    animation: fade-in 200ms ease-in-out both;
+  }
+
+  .tool-area--side {
+    animation: fade-in 200ms ease-in-out both;
+  }
+
+  + .section-toolBoox__highlight {
+    opacity: 1;
+  }
+}
+
+@mixin view-row-tools-new {
+  .tools {
+    @include generic-toolbar;
+    transform: translateY(-50%);
+  }
+  .tool-area--center {
+    @include view-element();
+  }
+
+  .tool-area--side {
+    @include view-element();
+  }
+
+  + .section-toolBoox__highlight {
+    @include view-element();
+  }
+}
+
+// Block tool mixins
+@mixin block-tools-position( $st ) {
+  &[data-row-separator-top="#{$st}"] {
+    .grid-stack-item[data-gs-y="0"] {
+      .rexlive-block-toolbox {
+        &.top-tools,
+        &.floating-tools {
+          top: 20px - $st;
+        }
+      }
+    }
+  }
+}
+
+@mixin blocks-tools-positions( $steps ) {
+  @for $i from 0 through $steps {
+    @include block-tools-position( $i );
+  }
+}
+//rex button
+
+@mixin button-definition {
+  border: 1px solid transparent;
+  padding: 15px 20px;
+  display: inline-block;
+  transition: all 0.3s ease-out;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: $button-border-radius;
+  font-weight: normal;
+  margin: 0 7px;
+  width: auto;
+
+  &:hover {
+    color: inherit;
+    // box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  @media screen and (max-width: 450px) {
+    padding: 15px;
+    // margin: 7px 0;
+    ~ .rex-theme-button {
+      margin-top: 1em;
+    }
+  }
+}
+
+@mixin button-definition-style {
+  background-color: $button-bg-color;
+  color: $button-text-color!important;
+
+  &.inverted {
+    background-color: $button-text-color;
+    color: $button-bg-invert-color!important;
+  }
+  &.rex-white-inverted {
+    border-color: #fff;
+    background-color: #000;
+    color: #fff!important;
+  }
+  &.rex-grey {
+    border-color: $button-bg-invert-color;
+    background-color: $button-bg-invert-color;
+    color: $button-grey-text-color!important;
+  }
+  &.rex-red {
+    border-color: $button-bg-invert-color;
+    background-color: $button-bg-invert-color;
+  }
+  &.rex-black {
+    border-color: #000;
+    background-color: #000;
+    color: #fff!important;
+  }
+  &.rex-white {
+    border-color: #fff;
+    background-color: #fff;
+    color: #000!important;
+  }
+  &.rex-grey-inverted {
+    background-color: $button-grey-text-color;
+    border-color: $button-grey-text-color;
+    color: #fff!important;
+  }
+  &.rex-black-border {
+    border: 2px solid black;
+  }
+
+  svg * {
+    fill: inherit;
+  }
+}
+
+@mixin button-definition-standard-style {
+  background-color: $button-text-color;
+  color: $button-bg-invert-color!important;
+
+  &:hover {
+    background-color: $button-text-color;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
+
+@mixin drop-marker($markerColor) {
+	$shadowColor: rgba(255, 255, 255, 0.4);
+
+	.drop-marker {
+		position: relative;
+		height: $drop-marker-height;
+		visibility: visible !important;
+		z-index: 10000;
+		pointer-events: none;
+
+		&.horizontal {
+			text-align: center;
+
+			&.topside {
+				margin-top: 0;
+			}
+
+			&.bottomside {
+				margin-top: 2px;
+			}
+
+			.drop-marker--ruler {
+				width: 100%;
+				position: absolute;
+				height: 2px;
+				background-color: $markerColor;
+				top: 50%;
+				transform: translateY(-50%);
+
+				&::before {
+					content: '';
+					position: absolute;
+					width: 8px;
+					height: 8px;
+					background-color: $markerColor;
+					margin-top: -3px;
+					left: 0;
+				}
+
+				&::after {
+					content: '';
+					position: absolute;
+					width: 8px;
+					height: 8px;
+					background-color: $markerColor;
+					margin-top: -3px;
+					right: 0;
+				}
+			}
+		}
+
+		&.vertical {
+			list-style: none;
+			border: 1px solid $markerColor;
+			position: absolute;
+			margin-left: 3px;
+			display: inline;
+			box-shadow: 1px 0 2px $shadowColor, -1px 0 2px $shadowColor;
+
+			&::before {
+				content: '';
+				width: 8px;
+				height: 8px;
+				background: $markerColor;
+				margin-top: -4px;
+				top: 0;
+				position: absolute;
+				margin-left: -4px;
+				box-shadow: 1px 0 2px $shadowColor, -1px 0 2px $shadowColor;
+			}
+
+			&::after {
+				content: '';
+				width: 8px;
+				height: 8px;
+				background: $markerColor;
+				margin-left: -4px;
+				bottom: -4px;
+				position: absolute;
+				box-shadow: 1px 0 2px $shadowColor, -1px 0 2px $shadowColor;
+			}
+
+			&.leftside {
+				margin-left: 0;
+			}
+
+			&.rightside {
+				margin-left: 3px;
+			}
+		}
+	}
+}
+
+@mixin flex-center-both {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+@mixin loader-pulse($loader-pulse-size, $loader-pulse-color) {
+	.loader-pulse {
+		width: $loader-pulse-size;
+		height: $loader-pulse-size;
+		position: relative;
+
+		.loader-pulse__child {
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+			background-color: $loader-pulse-color;
+			opacity: 0.6;
+			position: absolute;
+			top: 0;
+			left: 0;
+			animation: doubleBounce 2.0s infinite ease-in-out;
+		}
+
+		.loader-pulse__child--delayed {
+			animation-delay: -1.0s;
+		}
+	}
+}

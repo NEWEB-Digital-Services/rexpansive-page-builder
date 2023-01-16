@@ -1,0 +1,41 @@
+#rex-block-accordion-editor {
+  max-width: 640px;
+  .modal-editor-editorarea {
+    width: 100%;
+  }
+}
+
+.rex-accordion-gallery__item {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  outline: 2px solid $palette-color-4;
+  .tool-button--deactivate {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 10px;
+    #{$icon-class} {
+      font-size: 10px;
+    }
+  }
+}
+
+.rex-accordion--content {
+  border-bottom: 1px solid #ddd;
+
+  .rex-accordion--toggle:hover {
+    cursor: pointer;
+  }
+
+  &.modal-row-default {
+    background-color: #FFF;
+
+    .l-svg-icons > svg {
+      background-color: #FFF;
+    }
+  }
+}

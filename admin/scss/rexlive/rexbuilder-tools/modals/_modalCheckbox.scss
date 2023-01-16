@@ -1,0 +1,49 @@
+.rex-modal {
+  [type="checkbox"] {
+    + span {
+      @include fill-icon($palette-color-4);
+    }
+    &:checked {
+      + span {
+        @include fill-icon($palette-color-1);
+      }
+    }
+  }
+
+  [type="checkbox"] + span:not(.lever):before, 
+  [type="checkbox"]:not(.filled-in) + span:not(.lever):after {
+    border-color: $palette-color-4;
+  }
+
+  [type="checkbox"]:checked + span:not(.lever):before {
+    border-top-color: transparent;
+    border-left-color: transparent;
+    border-right-color: $palette-color-1;
+    border-bottom-color: $palette-color-1;
+  }
+}
+
+.rexbuilder-materialize-wrap [type="checkbox"] + label {
+  color: $palette-color-4;
+}
+
+.rexbuilder-materialize-wrap [type="checkbox"] + label:before {
+  border-color: $palette-color-4;
+}
+
+.rexbuilder-materialize-wrap [type="checkbox"]:checked + label:before {
+  border-top-color: transparent;
+  border-left-color: transparent;
+  border-right-color: $palette-color-1;
+  border-bottom-color: $palette-color-1;
+}
+
+.rexbuilder-materialize-wrap [type="radio"]:checked + label {
+  padding-left: 28px;
+  color: $palette-color-1;
+}
+
+.rexbuilder-materialize-wrap [type="radio"]:checked + label i,
+.rexbuilder-materialize-wrap [type="radio"]:checked + label:before {
+  color: $palette-color-1;
+}

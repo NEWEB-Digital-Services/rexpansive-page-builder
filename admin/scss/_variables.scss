@@ -1,0 +1,117 @@
+/* ------ MAIN WRAPPER ------ */
+$wrap-class: rexbuilder-materialize-wrap;
+
+/* ------ COLORS ------------ */
+$builder-button-active: #039be5;
+$builder-button-inactive: #616161;
+$builder-button-inactive-modal: #757575;
+$builder-labels: #9e9e9e;
+$builder-modal-close: #9e9e9e;
+
+$builder-row-header: #f5f5f5;
+
+$builder-resizer-inactive: #bdbdbd;
+$button-choice-positive: #1E88E5;
+
+/* ----- MODAL DIMENSIONS ---- */
+$block-modal-min-width: 200px;
+$block-modal-width: 405px;
+$block-modal-height: 570px;
+$section-modal-width: 510px;
+
+/* ----- PALETTE VARIABLES ----- */
+$palette-black: #000;
+$palette-green: #8bc34a;
+$palette-blue: #2196f3;
+$palette-violet: #EA148C;
+$palette-red: #f44336;
+$palette-orange: #ff9800;
+$palette-purple: #9c27b0;
+
+/* ------ ROW VARIABLES ------ */
+$new-row-btn-dimension: 40px;
+
+/* ----- SHADOW ------------ */
+@mixin hover-base-shadow {
+	box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
+}
+
+/**
+ *	Mixin for the style of the palettes
+ *	$destination: String [block, overlay, both]
+ */
+@mixin define-palette($color-name, $color-value, $destination: block) {
+	@if $destination == block {
+		#palette-#{$color-name} {
+			.bg-palette-button {
+				background-color: $color-value;
+				&:before {
+					border-color: $color-value;
+				}
+			}
+		}
+	}
+	@else if $destination == overlay {
+		#overlay-palette-#{$color-name} {
+			.bg-palette-button {
+				background-color: $color-value;
+				&:before {
+					border-color: $color-value;
+				}
+			}
+		}
+	}
+	@else if $destination == overlay-block {
+		#overlay-block-palette-#{$color-name} {
+			.bg-palette-button {
+				background-color: $color-value;
+				&:before {
+					border-color: $color-value;
+				}
+			}
+		}
+	}
+	@else {
+		#palette-#{$color-name},
+		#overlay-palette-#{$color-name},
+		#overlay-block-palette-#{$color-name} {
+			.bg-palette-button {
+				background-color: $color-value;
+				&:before {
+					border-color: $color-value;
+				}
+			}
+		}
+	}
+}
+
+/* ------ CLEARFIX --------- */
+@mixin clearfix {
+	zoom: 1;
+	clear: both;
+	&:before,
+	&:after {
+		content: "\0020";
+		display: block;
+		height: 0;
+		visibility: hidden;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+/* -- TRANSPARENT PALETTE PREVIEW --- */
+@mixin palette-opacity-preview {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	background-position: center;
+	background-size: 6px;
+	background-repeat: repeat;
+	background-image: url('../../img/transparent.jpg');
+}

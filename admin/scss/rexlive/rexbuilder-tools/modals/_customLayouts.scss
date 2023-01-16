@@ -1,0 +1,140 @@
+.layout {
+  // display: flex;
+  // justify-content: space-around;
+  &.layout__item--standard {
+    background-color: $palette-color-5;
+  }
+
+  &.layout__item--custom {
+    background-color: $palette-color-7;
+  }
+
+  &.active-on-page {
+    background-color: $palette-color-1;
+    color: #fff;
+    @include fill-icon(#fff);
+    label,
+    input {
+      color: #fff;
+    }
+    input[type="text"] {
+      border-bottom-color: #fff;
+      &:focus {
+        + label {
+          color: #fff;
+        }
+      }
+    }
+    .rex-material-bar {
+      background-color: #fff;
+    }
+  }
+
+  margin: 0;
+
+  @include fill-icon($palette-color-4);
+
+  .dashicons, 
+  .dashicons-before:before {
+    width: 16px;
+    height: 16px;
+    font-size: 16px; 
+  }
+}
+
+.layout__list {
+  display: table;
+  border-collapse: collapse; 
+  width: 100%;
+  margin: 0;
+}
+
+.layout__item {
+  display: table-row;
+  vertical-align: middle;
+  border-bottom: 1px solid $palette-color-5;
+  .layout__setting {
+    &:first-child {
+      padding-left: 20px;
+    }
+    &:last-child {
+      padding-right: 20px;
+    }
+  }
+}
+
+.layout__setting {
+  text-align: left;
+  display: table-cell;
+  padding: 10px;
+}
+
+.rexlive-layout--edit,
+.rexlive-layout--delete {
+  cursor: pointer;
+}
+
+.rexlive-layout--move {
+  cursor: move;
+}
+
+.rexlive-layout--edit,
+.rexlive-layout--delete,
+.rexlive-layout--move {
+  #{$icon-class} {
+    font-size: 10px;
+  }
+}
+
+.hide-icon {
+  display: none;
+}
+
+.layout__item.editing .layout-value {
+  display: none;
+}
+
+.layout__item {
+  // input {
+  //   max-width: 45px;
+  // }
+  .removing-item {
+    display: none;
+  }
+}
+
+.add-custom-layout__wrap {
+  padding: 20px 0;
+  text-align: center;
+}
+
+.layout-value--hide {
+  display: none;
+}
+
+// #rexlive-custom-layout-modal .rex-cancel-button {
+//   width: 100%;
+// }
+#rexlive-custom-layout-modal {
+  &.rexbuilder-materialize-wrap {
+    input[type=text] {
+      font-size: 15px;
+      line-height: 15px;
+      height: 20px;
+      margin: 0;
+    }
+    .input-field {
+      label {
+        top: 0;
+        left: 0;
+        &.active {
+          font-size: 10px;
+          transform: translateY(-100%);
+        }
+      }
+    }
+    .rex-material-bar {
+      bottom: 1px;
+    }
+  }
+}

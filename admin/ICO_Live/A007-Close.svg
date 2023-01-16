@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="100px" height="100px" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>Mobile</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Mobile" stroke="none" stroke-width="1" fill="" fill-rule="evenodd">
+        <g id="right-arrow-(2)" transform="translate(50.000000, 49.846154) rotate(-90.000000) translate(-50.000000, -49.846154) translate(21.153846, -0.153846)" fill="#000000" fill-rule="nonzero">
+            <path d="M6.19967794,98.9655172 C5.49114332,99.6551724 4.60547504,100 3.63123994,100 C2.65700483,100 1.77133655,99.6551724 1.06280193,98.9655172 C-0.354267311,97.5862069 -0.354267311,95.3448276 1.06280193,93.9655172 L46.2318841,50 L1.06280193,6.03448276 C-0.354267311,4.65517241 -0.354267311,2.4137931 1.06280193,1.03448276 C2.47987118,-0.344827586 4.7826087,-0.344827586 6.19967794,1.03448276 L53.9371981,47.5 C55.3542673,48.8793103 55.3542673,51.1206897 53.9371981,52.5 L6.19967794,98.9655172 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>

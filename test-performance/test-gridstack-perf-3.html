@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="../public/gridstack/dist/gridstack.css">
+	<title>Document</title>
+	<style>
+		.grid-stack-item {
+			outline: 1px dotted black;
+		}
+		.center-disposition {
+			margin: 0 auto;
+		}
+	</style>
+</head>
+<body>
+	<div id="wrap">
+		<div id="gsi" class="grid-stack">
+			<div class="grid-stack-item" data-gs-x="0" data-gs-y="0" data-gs-width="4" data-gs-height="2" style="background-image:url(https://images.unsplash.com/photo-1549480017-d76466a4b7e8?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1638&q=80)">
+				<div class="grid-stack-item-content">my first widget</div>
+			</div>
+			<div class="grid-stack-item" data-gs-x="4" data-gs-y="0" data-gs-width="4" data-gs-height="4" style="background-image:url(https://images.unsplash.com/photo-1568430328012-21ed450453ea?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2853&q=80)">
+				<div class="grid-stack-item-content">another widget!</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ=" crossorigin="anonymous"></script>
+	<script src="../public/js/vendor/lodash.js"></script>
+	<script src="../public/js/vendor/jquery-ui.min.js"></script>
+	<script src="../public/gridstack/dist/gridstack.all.js"></script>
+	<script src="../public/gridstack/dist/gridstack.jQueryUI.min.js"></script>
+	<script>
+;(function(){
+	function handleDOMContentLoaded() {
+		var fragment = new DocumentFragment();
+		var wrap = document.getElementById('wrap');
+
+		// var nodes = [{
+		// 	width:4,height:2,x:0,y:0,content:'my first widget',
+		// },{
+		// 	width:4,height:4,x:4,y:0,content:'another widget'
+		// }];
+
+		// var gwrap = document.createElement('div');
+		// gwrap.classList.add('grid-stack')
+
+		// for(var i=0;i<nodes.length;i++) {
+		// 	var gsi = document.createElement('div');
+		// 	gsi.classList.add('grid-stack-item');
+		// 	gsi.setAttribute('data-gs-x', nodes[i].x);
+		// 	gsi.setAttribute('data-gs-y', nodes[i].y);
+		// 	gsi.setAttribute('data-gs-width', nodes[i].width);
+		// 	gsi.setAttribute('data-gs-height', nodes[i].height);
+		// 	var gsic = document.createElement('div');
+		// 	gsic.classList.add('grid-stack-item-content');
+		// 	gsic.textContent = nodes[i].content;
+		// 	gsi.appendChild(gsic);
+
+		// 	gwrap.appendChild(gsi);
+		// }
+
+		var gwrap = document.getElementById('gsi')
+
+		var p1 = performance.now();
+
+		$(gwrap).gridstack({
+			auto: true,
+			autoHide: false,
+			animate: true,
+			acceptWidgets: false,
+			alwaysShowResizeHandle: true,
+			disableOneColumnMode: true,
+			cellHeight: 40,
+			draggable: {
+				containment: gwrap,
+				handle: ".rexlive-block-drag-handle",
+				scroll: false
+			},
+			float: true,
+			resizable: {
+				minWidth: 40,
+				minHeight: 40,
+				handles: {
+					e: ".ui-resizable-e",
+					s: ".ui-resizable-s",
+					w: ".ui-resizable-w",
+					se: ".ui-resizable-se",
+					sw: ".ui-resizable-sw"
+				}
+			},
+			verticalMargin: 0,
+			width: 12
+		});
+
+		var p2 = performance.now();
+		console.log('gridstack', p2-p1)
+
+		// fragment.appendChild(gwrap);
+		// wrap.appendChild(fragment)
+	}
+
+	document.addEventListener('DOMContentLoaded', handleDOMContentLoaded);
+}());
+	</script>
+</body>
+</html>
