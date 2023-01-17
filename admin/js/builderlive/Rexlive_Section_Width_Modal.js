@@ -144,7 +144,7 @@ var Section_Width_Modal = (function ($) {
 			_onClickSectionType
 		);
 
-		Rexlive_Base_Settings.$document.get(0).addEventListener('click', _onInputBlur);
+		sectionWidthProperties.$section_boxed_width_input.change(_onInputChange)
 		sectionWidthProperties.$section_boxed_width_input.keyup(_onKeyUp);
 		sectionWidthProperties.$section_boxed_width_input.keydown(_onKeyDown);
 	}
@@ -236,6 +236,23 @@ var Section_Width_Modal = (function ($) {
 
 		if (hasInputParent || !isEditingWidthValue) return;
 
+		// Selecting the boxed radio button
+		sectionWidthProperties.$section_width_type_wrap.filter('[data-rex-section-width="full"]').removeClass('selected');
+		sectionWidthProperties.$section_width_type_wrap
+			.filter('[data-rex-section-width="boxed"]')
+			.addClass('selected')
+			.find('input')
+			.prop('checked', true);
+
+		_castWidthInputToMinValue();
+		applySectionWidth();
+	}
+
+	/**
+	 * Listening to width input change to set the section witdh type to boxed
+	 * @since	2.1.1
+	 */
+	function _onInputChange() {
 		// Selecting the boxed radio button
 		sectionWidthProperties.$section_width_type_wrap.filter('[data-rex-section-width="full"]').removeClass('selected');
 		sectionWidthProperties.$section_width_type_wrap
