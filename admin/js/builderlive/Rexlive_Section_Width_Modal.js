@@ -154,6 +154,7 @@ var Section_Width_Modal = (function ($) {
 	 *
 	 * @param		{MouseEvent}	clickEvent
 	 * @version	2.0.9					Moved in named function
+	 * @version 2.1.1 at the end of the function apply the width to the section live
 	 */
 	function _onClickWidthUnit(clickEvent) {
 		clickEvent.preventDefault();
@@ -190,6 +191,7 @@ var Section_Width_Modal = (function ($) {
 		}
 
 		_castWidthInputToMinValue();
+		applySectionWidth()
 	}
 
 	/**
