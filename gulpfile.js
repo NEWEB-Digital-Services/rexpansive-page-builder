@@ -553,7 +553,7 @@ var live_file_map = [
 	'shared/**/*',
 	'shortcodes/**/*',
 	'index.php',
-	'LICENSE.txt',
+	'LICENSE',
 	'README.txt',
 	'rexpansive-builder.php',
 	'uninstall.php',
