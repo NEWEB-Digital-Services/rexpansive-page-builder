@@ -3,6 +3,12 @@
 	<latest>2.1.0</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.1.1</strong> - January 17, 2023</h4>
+			<p><strong>Updated</strong>: Update license version to GNU GPLv3</p>
+			<p><strong>Updated</strong>: Setting min-height instead of height for sections</p>
+			<p><strong>Fixed</strong>: Some problem of update when changing section boxed dimension</p>
+			<p><strong>Fixed</strong>: Navigator label default position error</p>
+			<p><strong>Fixed</strong>: No-flow blocks behaviour after change layout</p>
 			<h4><strong>v2.1.0</strong> - November 7, 2022</h4>
 			<p><strong>Updated</strong>: Tested up to Wordpress 6.1</p>
 			<p><strong>Added</strong>: Classes to allow overflow on blocks and sections</p>

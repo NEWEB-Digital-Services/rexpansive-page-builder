@@ -200,6 +200,13 @@ For the more experienced among us: you can insert CSS anywhere.
 
 == Changelog ==
 
+= 2.1.1 - January 17, 2023 =
+ * Updated: Update license version to GNU GPLv3
+ * Updated: Setting min-height instead of height for sections
+ * Fixed: Some problem of update when changing section boxed dimension
+ * Fixed: Navigator label default position error
+ * Fixed: No-flow blocks behaviour after change layout
+
 = 2.1.0 - November 7, 2022 =
  * Updated: Tested up to Wordpress 6.1
  * Added: Classes to allow overflow on blocks and sections
