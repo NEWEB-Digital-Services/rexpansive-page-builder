@@ -200,7 +200,7 @@ For the more experienced among us: you can insert CSS anywhere.
 
 == Changelog ==
 
-= 2.1.1 - January 17, 2023 =
+= 2.1.1 - January 18, 2023 =
  * Updated: Update license version to GNU GPLv3
  * Updated: Setting min-height instead of height for sections
  * Fixed: Some problem of update when changing section boxed dimension
