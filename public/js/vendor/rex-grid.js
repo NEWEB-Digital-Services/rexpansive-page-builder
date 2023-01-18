@@ -223,6 +223,12 @@ void (function (window, factory) {
 		this.gridBlocksTotal = 0;
 
 		/**
+		 * Block element to not instatiate in the grid
+		 * We found them with the class .rex-block--no-flow
+		 */
+		this.noFlowBlocks = []
+
+		/**
 		 * Section DOM Element.
 		 * It's identified by the class .rexpansive_section
 		 * because we get it from Rexpansive builder.
@@ -356,7 +362,10 @@ void (function (window, factory) {
 		var i = 0;
 
 		for (i = 0; i < blocksArray.length; i++) {
-			if (Utils.hasClass(blocksArray[i], 'rex-block--no-flow')) continue;
+			if (Utils.hasClass(blocksArray[i], 'rex-block--no-flow')) {
+				this.noFlowBlocks.push(blocksArray[i])
+				continue;
+			}
 
 			blockInstance = new RexBlock({
 				el: blocksArray[i],
@@ -409,13 +418,14 @@ void (function (window, factory) {
 	/**
 	 * Set the grid height in pixels
 	 * @param {Array} info array of objects with the information to check; can be undefined
+	 * @version 2.1.1 setting min height instead of height
 	 */
 	function _setGridHeight(info) {
 		if (!this.properties.gridHeightSettable) return;
 
 		var newGridHeight = _calculateGridHeight.call(this, info);
 
-		this.element.style.height = newGridHeight * this.properties.singleHeight + 'px';
+		this.element.style.minHeight = newGridHeight * this.properties.singleHeight + 'px';
 	}
 
 	/**
@@ -961,6 +971,29 @@ void (function (window, factory) {
 	}
 
 	/**
+	 * Reset grid blocks array, no flow blocks array and grid blocks total props
+	 * @since 2.1.1
+	 */
+	function _resetBlocksProps() {
+		this.gridBlocksTotal = 0
+		this.gridBlocks = []
+		this.noFlowBlocks = []
+	}
+
+	/**
+	 * Reset no flow blocks style properties set by grid
+	 * @since 2.1.1
+	 */
+	function _resetNoFlowBlocks() {
+		for (let i = 0; i < this.noFlowBlocks.length; i++) {
+			const itemContent = this.noFlowBlocks[i].querySelector('.grid-stack-item-content');
+			itemContent.style.padding = ''
+			this.noFlowBlocks[i].style.height = ''
+			this.noFlowBlocks[i].style.top = ''
+			this.noFlowBlocks[i].style.left = ''
+		}
+	}
+	/**
 	 *
 	 * @param  {[type]} toMaintainCoords [description]
 	 * @return {[type]}                  [description]
@@ -1024,9 +1057,8 @@ void (function (window, factory) {
 
 		// for native loop guarantees more performance efficiency
 		for (i = 0; i < this.gridBlocksTotal; i++) {
-			if (this.gridBlocks[i].setHeight) {
-				this.calcAndSetBlockHeight(this.gridBlocks[i]);
-			}
+			if (!this.gridBlocks[i].setHeight) continue
+			this.calcAndSetBlockHeight(this.gridBlocks[i]);
 		}
 	};
 
@@ -1039,9 +1071,8 @@ void (function (window, factory) {
 
 		// for native loop guarantees more performance efficiency
 		for (i = 0; i < this.gridBlocksTotal; i++) {
-			if (!this.gridBlocks[i].hide) {
-				this.fixBlockHeight(this.gridBlocks[i]);
-			}
+			if (this.gridBlocks[i].hide) continue
+			this.fixBlockHeight(this.gridBlocks[i]);
 		}
 	};
 
@@ -1082,6 +1113,7 @@ void (function (window, factory) {
 		gridBlockObj.el.setAttribute('data-height', gridBlockObj.h);
 		gridBlockObj.toCheck = true;
 	}
+
 
 	/**
 	 * Fixing the block positions according to heights
@@ -1173,6 +1205,15 @@ void (function (window, factory) {
 	 * @return {void}
 	 */
 	RexGrid.prototype.endChangeLayout = function () {
+		// reset blocks instance properties
+		_resetBlocksProps.call(this)
+
+		// on change layout, get the blocks
+		_getGridBlocks.call(this)
+
+		// remove block properties from eventually no flow blocks
+		_resetNoFlowBlocks.call(this)
+
 		// get new grid props
 		_getGridAttributes.call(this);
 
@@ -1602,9 +1643,10 @@ void (function (window, factory) {
 	 * Destroy a RexGrid instance destroying all instance RexBlocks
 	 * @return 	{void}
 	 * @since		1.0.0
+	 * @version 2.1.1 	reset min height
 	 */
 	RexGrid.prototype.destroy = function () {
-		this.element.style.height = '';
+		this.element.style.minHeight = '';
 
 		// RexBlocks
 		var i;

@@ -4,7 +4,7 @@ Donate link: http://www.neweb.info/
 Tags: builder, composer, content builder, custom, drag and drop, editor, page builder, page composer, responsive, theme
 Requires at least: 4.2
 Tested up to: 6.1
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -199,6 +199,13 @@ For the more experienced among us: you can insert CSS anywhere.
 11. Clean interface
 
 == Changelog ==
+
+= 2.1.1 - January 18, 2023 =
+ * Updated: Update license version to GNU GPLv3
+ * Updated: Setting min-height instead of height for sections
+ * Fixed: Some problem of update when changing section boxed dimension
+ * Fixed: Navigator label default position error
+ * Fixed: No-flow blocks behaviour after change layout
 
 = 2.1.0 - November 7, 2022 =
  * Updated: Tested up to Wordpress 6.1

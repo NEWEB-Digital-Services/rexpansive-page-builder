@@ -3,135 +3,135 @@
  *
  * @since 2.0.0
  */
-var Section_Width_Modal = (function($) {
-  "use strict";
+var Section_Width_Modal = (function ($) {
+	"use strict";
 
-  var sectionWidthProperties;
+	var sectionWidthProperties;
 
-  var oldSectionWidthData;
-  var defaultSectionWidthData;
+	var oldSectionWidthData;
+	var defaultSectionWidthData;
 	var sectionTarget;
 
 	var isEditingWidthValue = false;
 	var minPercentage = 20;
 	var minPixels = 320;
 
-  var _resetOldWidthData = function() {
-    oldSectionWidthData.dimension = "";
-    oldSectionWidthData.sectionWidth = "";
-    oldSectionWidthData.widthType = "";
-  };
+	var _resetOldWidthData = function () {
+		oldSectionWidthData.dimension = "";
+		oldSectionWidthData.sectionWidth = "";
+		oldSectionWidthData.widthType = "";
+	};
 
-  var updateSectionWidth = function(data) {
-    _clearSectionWidth();
+	var updateSectionWidth = function (data) {
+		_clearSectionWidth();
 
-    sectionTarget = data.sectionTarget;
-    var dimension = data.dimension;
-    var sectionWidth = data.section_width;
-    var widthType = "%";
-    var width = "100";
+		sectionTarget = data.sectionTarget;
+		var dimension = data.dimension;
+		var sectionWidth = data.section_width;
+		var widthType = "%";
+		var width = "100";
 
-    if (dimension != "full") {
-      width = parseInt(sectionWidth);
-      if (sectionWidth.indexOf("%") == -1) {
-        widthType = "px";
-      }
-    }
+		if (dimension != "full") {
+			width = parseInt(sectionWidth);
+			if (sectionWidth.indexOf("%") == -1) {
+				widthType = "px";
+			}
+		}
 
-    oldSectionWidthData.type = dimension;
-    oldSectionWidthData.sectionWidth = width;
-    oldSectionWidthData.dimension = widthType;
+		oldSectionWidthData.type = dimension;
+		oldSectionWidthData.sectionWidth = width;
+		oldSectionWidthData.dimension = widthType;
 
-    sectionWidthProperties.$section_boxed_width_input.val(width);
+		sectionWidthProperties.$section_boxed_width_input.val(width);
 
-    var $sectionWidthWrap = sectionWidthProperties.$section_width_type.children(
-      '[data-rex-section-width="' + dimension + '"]'
-    );
-    $sectionWidthWrap.addClass("selected");
-    $sectionWidthWrap.find("input").prop("checked", true);
+		var $sectionWidthWrap = sectionWidthProperties.$section_width_type.children(
+			'[data-rex-section-width="' + dimension + '"]'
+		);
+		$sectionWidthWrap.addClass("selected");
+		$sectionWidthWrap.find("input").prop("checked", true);
 
-    var $sectionBoxedWidthTypeWrap = sectionWidthProperties.$section_boxed_width_wrap.children(
-      '[data-rex-section-width-type="' + widthType + '"]'
-    );
-    $sectionBoxedWidthTypeWrap.addClass("selected");
-    $sectionBoxedWidthTypeWrap.find("input").prop("checked", true);
-  };
+		var $sectionBoxedWidthTypeWrap = sectionWidthProperties.$section_boxed_width_wrap.children(
+			'[data-rex-section-width-type="' + widthType + '"]'
+		);
+		$sectionBoxedWidthTypeWrap.addClass("selected");
+		$sectionBoxedWidthTypeWrap.find("input").prop("checked", true);
+	};
 
-  var _clearSectionWidth = function() {
-    sectionWidthProperties.$section_width_type_wrap.each(function(i, el) {
-      $(el).removeClass("selected");
-      $(el)
-        .find("input")
-        .prop("checked", false);
-    });
-    sectionWidthProperties.$section_boxed_width_input.val("");
-  };
-
-  var _clearSectionBoxedWidthType = function() {
-    sectionWidthProperties.$section_boxed_width_wrap
-			.children()
-			.each(function(i, el) {
-				$(el).removeClass("selected");
-				$(el)
+	var _clearSectionWidth = function () {
+		sectionWidthProperties.$section_width_type_wrap.each(function (i, el) {
+			$(el).removeClass("selected");
+			$(el)
 				.find("input")
 				.prop("checked", false);
-			});
-  };
+		});
+		sectionWidthProperties.$section_boxed_width_input.val("");
+	};
 
-  var _updateSectionBoxedWidthData = function(data) {
+	var _clearSectionBoxedWidthType = function () {
+		sectionWidthProperties.$section_boxed_width_wrap
+			.children()
+			.each(function (i, el) {
+				$(el).removeClass("selected");
+				$(el)
+					.find("input")
+					.prop("checked", false);
+			});
+	};
+
+	var _updateSectionBoxedWidthData = function (data) {
 		_clearSectionBoxedWidthType();
 
 		sectionWidthProperties.$section_boxed_width_input.val(data.sectionWidth);
 
-    var $sectionBoxedWidthTypeWrap = sectionWidthProperties.$section_boxed_width_wrap.children(
-      '[data-rex-section-width-type="' + data.dimension + '"]'
-    );
+		var $sectionBoxedWidthTypeWrap = sectionWidthProperties.$section_boxed_width_wrap.children(
+			'[data-rex-section-width-type="' + data.dimension + '"]'
+		);
 		$sectionBoxedWidthTypeWrap.addClass("selected");
-    $sectionBoxedWidthTypeWrap.find("input").prop("checked", true);
-  };
+		$sectionBoxedWidthTypeWrap.find("input").prop("checked", true);
+	};
 
-  var getData = function() {
-    var section_width = sectionWidthProperties.$section_boxed_width_input.val();
-    var section_width_boxed_type = sectionWidthProperties.$section_boxed_width_wrap
-      .children(".selected")
-      .attr("data-rex-section-width-type");
-
-    return {
-      width: section_width,
-      type: section_width_boxed_type
-    };
-  };
-
-  var applySectionWidth = function() {
+	var getData = function () {
 		var section_width = sectionWidthProperties.$section_boxed_width_input.val();
-    var section_width_boxed_type = sectionWidthProperties.$section_boxed_width_wrap
+		var section_width_boxed_type = sectionWidthProperties.$section_boxed_width_wrap
+			.children(".selected")
+			.attr("data-rex-section-width-type");
+
+		return {
+			width: section_width,
+			type: section_width_boxed_type
+		};
+	};
+
+	var applySectionWidth = function () {
+		var section_width = sectionWidthProperties.$section_boxed_width_input.val();
+		var section_width_boxed_type = sectionWidthProperties.$section_boxed_width_wrap
 			.children(".selected")
 			.attr("data-rex-section-width-type");
 
 		isEditingWidthValue = false;
 
-    // Synch top toolbar tools
-    Rexbuilder_Util_Admin_Editor.highlightRowSetData({
-      'section_width': section_width + section_width_boxed_type,
-      'dimension': ( "100%" === ( section_width + section_width_boxed_type ) ? 'full' : 'boxed' )
-    });
+		// Synch top toolbar tools
+		Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+			'section_width': section_width + section_width_boxed_type,
+			'dimension': ("100%" === (section_width + section_width_boxed_type) ? 'full' : 'boxed')
+		});
 		Rexbuilder_Util_Admin_Editor.updateWidthTool();
 
-    var data_image = {
-      eventName: "rexlive:set_section_width",
-      data_to_send: {
-        sectionWidth: {
-          width: section_width,
-          type: section_width_boxed_type
-        },
-        sectionTarget: sectionTarget
-      }
-    };
+		var data_image = {
+			eventName: "rexlive:set_section_width",
+			data_to_send: {
+				sectionWidth: {
+					width: section_width,
+					type: section_width_boxed_type
+				},
+				sectionTarget: sectionTarget
+			}
+		};
 
-    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_image);
-  };
+		Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_image);
+	};
 
-  function _linkDocumentListeners() {
+	function _linkDocumentListeners() {
 		Rexlive_Base_Settings.$document.on(
 			'click',
 			'#modal-background-responsive-set .boxed-width-type-wrap',
@@ -144,7 +144,7 @@ var Section_Width_Modal = (function($) {
 			_onClickSectionType
 		);
 
-		Rexlive_Base_Settings.$document.get(0).addEventListener('click', _onInputBlur);
+		sectionWidthProperties.$section_boxed_width_input.change(_onInputChange)
 		sectionWidthProperties.$section_boxed_width_input.keyup(_onKeyUp);
 		sectionWidthProperties.$section_boxed_width_input.keydown(_onKeyDown);
 	}
@@ -154,6 +154,7 @@ var Section_Width_Modal = (function($) {
 	 *
 	 * @param		{MouseEvent}	clickEvent
 	 * @version	2.0.9					Moved in named function
+	 * @version 2.1.1 at the end of the function apply the width to the section live
 	 */
 	function _onClickWidthUnit(clickEvent) {
 		clickEvent.preventDefault();
@@ -190,6 +191,7 @@ var Section_Width_Modal = (function($) {
 		}
 
 		_castWidthInputToMinValue();
+		applySectionWidth()
 	}
 
 	/**
@@ -236,6 +238,23 @@ var Section_Width_Modal = (function($) {
 
 		if (hasInputParent || !isEditingWidthValue) return;
 
+		// Selecting the boxed radio button
+		sectionWidthProperties.$section_width_type_wrap.filter('[data-rex-section-width="full"]').removeClass('selected');
+		sectionWidthProperties.$section_width_type_wrap
+			.filter('[data-rex-section-width="boxed"]')
+			.addClass('selected')
+			.find('input')
+			.prop('checked', true);
+
+		_castWidthInputToMinValue();
+		applySectionWidth();
+	}
+
+	/**
+	 * Listening to width input change to set the section witdh type to boxed
+	 * @since	2.1.1
+	 */
+	function _onInputChange() {
 		// Selecting the boxed radio button
 		sectionWidthProperties.$section_width_type_wrap.filter('[data-rex-section-width="full"]').removeClass('selected');
 		sectionWidthProperties.$section_width_type_wrap
@@ -314,53 +333,53 @@ var Section_Width_Modal = (function($) {
 		}
 	}
 
-  var _init = function($container) {
-    var $self = $container.find(".section-width-wrapper");
-    sectionWidthProperties = {
+	var _init = function ($container) {
+		var $self = $container.find(".section-width-wrapper");
+		sectionWidthProperties = {
 			$self: $self,
 			// 2 elements selected: full and box selectors
-      $section_width_type_wrap: $self.find(".rexlive-section-width"),
-      $section_width_type: $self.find(".rex-edit-row-width"),
-      $section_full: $self.find("#section-full-modal"),
-      $section_boxed: $self.find("#section-boxed-modal"),
-      $section_boxed_width_input: $self.find(".section-set-boxed-width"),
-      $section_boxed_width_type: $self.find(".section-width-type"),
-      $section_boxed_width_wrap: $self.find(".section-set-boxed-width-wrap")
+			$section_width_type_wrap: $self.find(".rexlive-section-width"),
+			$section_width_type: $self.find(".rex-edit-row-width"),
+			$section_full: $self.find("#section-full-modal"),
+			$section_boxed: $self.find("#section-boxed-modal"),
+			$section_boxed_width_input: $self.find(".section-set-boxed-width"),
+			$section_boxed_width_type: $self.find(".section-width-type"),
+			$section_boxed_width_wrap: $self.find(".section-set-boxed-width-wrap")
 		};
 
-    defaultSectionWidthData = {
-      boxed: {
-        type: "boxed",
-        dimension: "%",
-        sectionWidth: "80"
-      },
+		defaultSectionWidthData = {
+			boxed: {
+				type: "boxed",
+				dimension: "%",
+				sectionWidth: "80"
+			},
 			boxedPixels: {
 				type: "boxed",
 				dimension: "px",
 				sectionWidth: "320"
 			},
-      full: {
-        type: "full",
-        dimension: "%",
-        sectionWidth: "100"
+			full: {
+				type: "full",
+				dimension: "%",
+				sectionWidth: "100"
 			},
-    };
+		};
 
-    oldSectionWidthData = {
-      dimension: "",
-      sectionWidth: "",
-      widthType: ""
-    };
+		oldSectionWidthData = {
+			dimension: "",
+			sectionWidth: "",
+			widthType: ""
+		};
 
-    _linkDocumentListeners();
-  };
+		_linkDocumentListeners();
+	};
 
-  return {
-    init: _init,
-    resetOldWidthData: _resetOldWidthData,
-    getData: getData,
-    clearSectionWidth: _clearSectionWidth,
-    updateSectionWidth: updateSectionWidth,
-    applySectionWidth: applySectionWidth
-  };
+	return {
+		init: _init,
+		resetOldWidthData: _resetOldWidthData,
+		getData: getData,
+		clearSectionWidth: _clearSectionWidth,
+		updateSectionWidth: updateSectionWidth,
+		applySectionWidth: applySectionWidth
+	};
 })(jQuery);

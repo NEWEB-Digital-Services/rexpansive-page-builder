@@ -25,6 +25,15 @@ class Rexbuilder_RexSlider {
 	public static $SLIDER_FLUID_BLOCK_CLASS = 'block-slider--fluid';
 
 	/**
+	 * Class name that identifies that user wants to activate photoswipe on slider
+	 * @todo: the block must activate photoswipe (the class is not enough)
+	 *
+	 * @var string
+	 * @since 2.1.1
+	 */
+	public static $SLIDER_BLOCK_CLASS = 'block-slider--photoswipe';
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -57,6 +66,9 @@ class Rexbuilder_RexSlider {
 		if (!empty($custom_render)) {
 			return $custom_render;
 		}
+
+		$photoswipe = (false !== strpos($block_classes, self::$SLIDER_BLOCK_CLASS) ? 'true' : $photoswipe);
+
 		ob_start();
 
 		// slider does not exists, return empty
@@ -119,7 +131,24 @@ class Rexbuilder_RexSlider {
 		if ($slider_is_fluid) {
 			foreach( $slider_gallery as $slide ) {
 			?>
-			<div class="rex-slider-element rex-slider-element--fluid"><img src="<?php echo esc_url( $slide['_rex_banner_gallery_image']['url'] ); ?>"></div>
+			<div class="rex-slider-element rex-slider-element--fluid">
+				<!-- <img src="<?php echo esc_url( $slide['_rex_banner_gallery_image']['url'] ); ?>"> -->
+				<?php if ('true' === $photoswipe) { ?>
+				<figure class="pswp-figure" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
+					<a class="pswp-item" href="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" itemprop="contentUrl" data-size="<?php echo $slide['_rex_banner_gallery_image']['width']; ?>x<?php echo $slide['_rex_banner_gallery_image']['height']; ?>">
+						<div class="pswp-item-thumb" data-thumb-image-type="full" data-thumburl="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" itemprop="thumbnail"></div>
+						<div class="rex-custom-scrollbar<?php echo ( $natural_blur ? ' natural-slide__wrap' : '' ); ?>">
+				<?php } ?>
+						<img src="<?php echo esc_url( $slide['_rex_banner_gallery_image']['url'] ); ?>">
+				<?php if ('true' === $photoswipe) { ?>
+						</div>
+					</a>
+					<figcaption class="pswp-item-caption" itemprop="caption description">
+						<?php do_action( 'rexbuilder_slider_pswp_item_caption' ); ?>
+					</figcaption>
+				</figure>
+				<?php } ?>
+			</div>
 			<?php
 			}
 		} else {

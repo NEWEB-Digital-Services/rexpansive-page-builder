@@ -443,7 +443,7 @@ var effects_js_src = [
 	'public/js/vendor/split-scrollable.js',
 	'public/js/vendor/jquery.rexAccordion.js',
 	'public/js/vendor/particle-swarm.js',
- 	'public/js/vendor/6-jquery.rexIndicator.js',
+ 	'public/js/vendor/rex-indicator.js',
 	'public/js/build/fast-load.js'
 ];
 
@@ -494,7 +494,7 @@ exports.build = series(
 );
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
-var live_zip_name = 'Premium-210-Rexpansive-Builder.zip';
+var live_zip_name = 'Premium-211-Rexpansive-Builder.zip';
 var live_folder_name = 'rexpansive-page-builder';
 
 var live_file_map = [
@@ -553,7 +553,7 @@ var live_file_map = [
 	'shared/**/*',
 	'shortcodes/**/*',
 	'index.php',
-	'LICENSE.txt',
+	'LICENSE',
 	'README.txt',
 	'rexpansive-builder.php',
 	'uninstall.php',

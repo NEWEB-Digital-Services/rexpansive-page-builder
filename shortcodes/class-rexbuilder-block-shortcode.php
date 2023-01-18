@@ -103,8 +103,6 @@ class Rexbuilder_Block {
 			"fast_load" => "true"
 		), $atts));
 
-		global $post;
-
 		if($empty_block_backend_fix == "true"){
 			ob_start();
 			echo "";
@@ -183,14 +181,6 @@ class Rexbuilder_Block {
 		$background_img_style = "";
 		$alt_tag = '';
 		if ("" != $id_image_bg_block) {
-			// $backgroundImagePos = "";
-			/* if(('natural' == $type_bg_block)) {
-				if($flex_positioned){
-					$posX = $flex_position[1] == "middle" ? "center" : $flex_position[1] ;
-					$posY = $flex_position[0];
-					$backgroundImagePos = "background-position: " . $posX . " " . $posY . ";";
-				}
-			} */
 			$img_attrs = wp_get_attachment_image_src($id_image_bg_block, $image_size);
 
 			$alt_value = get_post_meta($id_image_bg_block, '_wp_attachment_image_alt', true);
@@ -350,96 +340,111 @@ class Rexbuilder_Block {
 			}
 		}
 
-		$block_has_map = false;
 		if ( false !== strpos( $content, 'RexGoogleMap' ) ) {
-			$block_has_map = true;
 			$content = Rexbuilder_Utilities::remove_shortcode_wrap_paragraphs($content, 'RexGoogleMap');
 		}
 
-		ob_start();
-
-		echo '<div id="' . $id . '" class="';
-		echo (!$block_is_static ? 'perfect-grid-item grid-stack-item' : '');
-		echo (("" == $block_background_style && "" == $id_image_bg_block && "" == $content && (empty($video_bg_id) || 'undefined' == $video_bg_id) && (empty($video_bg_url) || 'undefined' == $video_bg_url) && (empty($video_bg_url_vimeo) || 'undefined' == $video_bg_url_vimeo)) ? ' real-empty' : '');
-		echo ((('full' == $type_bg_block && "" != $id_image_bg_block && "" == $content && $section_layout == 'fixed') || (!empty($video_bg_id) && "" == $content) || (!empty($video_bg_url) && "" == $content) || (!empty($video_bg_url_vimeo) && "" == $content)) ? ' only-background' : '');
-		echo (('full' == $type_bg_block && $section_layout == 'masonry' && "" == $content) ? ' natural-fluid-image' : '');
-		if ( ! $editor ) {
-			if ($animation == 1 && $block_animation && !$block_is_static) {
-				echo ' has-rs-animation rs-animation';
-			}
+		// add block classes to array for better readability
+		$block_classes = array();
+		if (!$block_is_static) {
+			array_push($block_classes, 'perfect-grid-item');
+			array_push($block_classes, 'grid-stack-item');
 		}
-		echo ' w' . $size_x;
 
-		echo ( ! $editor && '' !== $id_image_bg_block ? ' block-w-image' : '' );
-		echo ( ! $editor && '' != $video_bg_id && 'undefined' != $video_bg_id ? ' block-w-html-video' : '' );
+		if ("" == $block_background_style && "" == $id_image_bg_block && "" == $content && (empty($video_bg_id) || 'undefined' == $video_bg_id) && (empty($video_bg_url) || 'undefined' == $video_bg_url) && (empty($video_bg_url_vimeo) || 'undefined' == $video_bg_url_vimeo)) {
+			array_push($block_classes, 'real-empty');
+		}
 
-		// adding class for text editor
-		echo ( $block_has_slider ? ' block-has-slider' : ( $editor ? ' rex-text-editable' : '' ) );
+		if (('full' == $type_bg_block && "" != $id_image_bg_block && "" == $content && $section_layout == 'fixed') || (!empty($video_bg_id) && "" == $content) || (!empty($video_bg_url) && "" == $content) || (!empty($video_bg_url_vimeo) && "" == $content)) {
+			array_push($block_classes, 'only-background');
+		}
+
+		if ('full' == $type_bg_block && $section_layout == 'masonry' && "" == $content) {
+			array_push($block_classes, 'natural-fluid-image');
+		}
+
+		if (!$editor && $animation == 1 && $block_animation && !$block_is_static) {
+			array_push($block_classes, 'has-rs-animation');
+			array_push($block_classes, 'rs-animation');
+		}
+
+		array_push($block_classes, 'w' . $size_x);
+		if (! $editor && '' !== $id_image_bg_block) {
+			array_push($block_classes, 'block-w-image');
+		}
+		if (! $editor && '' != $video_bg_id && 'undefined' != $video_bg_id) {
+			array_push($block_classes, 'block-w-html-video');
+		}
+		if ($block_has_slider) {
+			array_push($block_classes, 'block-has-slider');
+		} else if ($editor) {
+			array_push($block_classes, 'rex-text-editable');
+		}
 
 		if($flex_positioned_active && !$block_has_slider){
-			echo " rex-flex-".$flex_position[0]." rex-flex-".$flex_position[1];
+			array_push($block_classes, "rex-flex-".$flex_position[0]);
+			array_push($block_classes, "rex-flex-".$flex_position[1]);
 		}
-
 		if($flex_img_positioned_active && !$block_has_slider){
-			echo " rex-flex-img-".$flex_img_position[0]." rex-flex-img-".$flex_img_position[1];
+			array_push($block_classes, "rex-flex-img-".$flex_img_position[0]);
+			array_push($block_classes, "rex-flex-img-".$flex_img_position[1]);
 		}
-
-		echo (' ' != $block_custom_class ? ' ' . $block_custom_class : '');
 		if ('expand' == $type) {
-			echo ' wrapper-expand-effect';
-			echo ' ';
-			echo 'effect-expand-' . $zak_side;
+			array_push($block_classes, 'wrapper-expand-effect');
+			array_push($block_classes, 'effect-expand-' . $zak_side);
 		}
-
 		if ( false !== strpos( $content, 'RexLastWorks' ) ) {
-			echo ' horizontal-carousel';
+			array_push($block_classes, 'horizontal-carousel');
 		}
-
 		if ($floating_horizontal || $floating_vertical) {
-			echo ' rex-floating-block';
+			array_push($block_classes, ' rex-floating-block');
 		}
 
-		echo '" data-height="' . $size_y . '"';
-		echo ' data-width="' . $size_x . '"';
-		echo ' data-row="' . $row . '"';
-		echo ' data-col="' . $col . '"';
+		$block_custom_class_arr = explode(' ', trim($block_custom_class));
+		$block_classes_array = array_merge($block_classes, $block_custom_class_arr);
+		$block_classes_array = apply_filters('rexbuilder_block_classes', $block_classes_array);
 
+		// add block attributes to array for better readability
+		$data_attrs_arr = array();
+		array_push($data_attrs_arr, 'data-height="' . $size_y . '"');
+		array_push($data_attrs_arr, 'data-width="' . $size_x . '"');
+		array_push($data_attrs_arr, 'data-row="' . $row . '"');
+		array_push($data_attrs_arr, 'data-col="' . $col . '"');
 		if ($edited_from_backend == "true") {
-			echo ' data-gs-height="' . $size_y . '"';
-			echo ' data-gs-width="' . $size_x . '"';
-			echo ' data-gs-y="' . ($row - 1) . '"';
-			echo ' data-gs-x="' . ($col - 1) . '"';
+			array_push($data_attrs_arr, 'data-gs-height="' . $size_y . '"');
+			array_push($data_attrs_arr, 'data-gs-width="' . $size_x . '"');
+			array_push($data_attrs_arr, 'data-gs-y="' . ($row - 1) . '"');
+			array_push($data_attrs_arr, 'data-gs-x="' . ($col - 1) . '"');
 		} else {
-			echo ' data-gs-height="' . $gs_height . '"';
-			echo ' data-gs-width="' . $gs_width . '"';
-			echo ' data-gs-y="' . $gs_y . '"';
-			echo ' data-gs-x="' . $gs_x . '"';
+			array_push($data_attrs_arr, 'data-gs-height="' . $gs_height . '"');
+			array_push($data_attrs_arr, 'data-gs-width="' . $gs_width . '"');
+			array_push($data_attrs_arr, 'data-gs-y="' . $gs_y . '"');
+			array_push($data_attrs_arr, 'data-gs-x="' . $gs_x . '"');
 		}
 
-		echo ' data-rexbuilder-block-id="';
-		if ($rexbuilder_block_id != "") {
-			echo $rexbuilder_block_id;
-		}
-		echo '"';
-
+		array_push($data_attrs_arr, 'data-rexbuilder-block-id="' . $rexbuilder_block_id . '"');
 		if ($floating_border != '') {
-			echo ' data-rs-animation-delay="0.5s"';
+			array_push($data_attrs_arr, 'data-rs-animation-delay="0.5s"');
 			if ($floating_horizontal) {
-				echo ' data-rs-animation-offset="50"';
+				array_push($data_attrs_arr, 'data-rs-animation-offset="50"');
 			} else if ($floating_vertical) {
-				echo ' data-rs-animation-offset="-50"';
+				array_push($data_attrs_arr, 'data-rs-animation-offset="-50"');
 			}
 		}
-		echo ( $block_delayed ? ' data-rs-animation-delay="0.5s"' : '');
-		echo ( $block_offset ? ' data-rs-animation-offset="10"' : '');
-		echo ( $visible_element_percentage ? ' data-rs-animation-visible-percentage="' . $visible_element_percentage . '"' : '' );
-		echo '>';
+		if ($block_delayed) {
+			array_push($data_attrs_arr, 'data-rs-animation-delay="0.5s"');
+		}
+		if ($block_offset) {
+			array_push($data_attrs_arr, 'data-rs-animation-offset="10"');
+		}
+		if ($visible_element_percentage) {
+			array_push($data_attrs_arr, ' data-rs-animation-visible-percentage="' . $visible_element_percentage . '"');
+		}
 
 		$block_style_padding = '';
 		if ('' != $block_padding):
 			$block_padding_values = explode(';', $block_padding);
 			if (count($block_padding_values) > 1):
-				//$block_style_padding = ' style="padding:' . $block_padding . '"';
 				$block_style_padding = ' style="padding-top:' . $block_padding_values[0] . ';';
 				$block_style_padding .= 'padding-right:' . $block_padding_values[1] . ';';
 				$block_style_padding .= 'padding-bottom:' . $block_padding_values[2] . ';';
@@ -448,6 +453,10 @@ class Rexbuilder_Block {
 				$block_style_padding = ' style="padding:' . $block_padding . '"';
 			endif;
 		endif;
+
+		ob_start();
+		?>
+<div id="<?php echo $id; ?>" class="<?php echo implode(' ', $block_classes_array); ?>"<?php echo implode(' ', $data_attrs_arr); ?>><?php
 
 		$bg_video_toggle_audio_markup = "";
 
@@ -549,10 +558,6 @@ class Rexbuilder_Block {
 				}
 				echo '>';	// <\.grid-item-content>
 
-				// if ( $editor ) {
-				// 	echo '<div class="rexlive-block-drag-handle"></div>';
-				// }
-
 				echo "<div class=\"rex-image-wrapper {$type_bg_block}-image-background\"".$background_img_style;
 				echo $alt_tag;
 				echo "></div>";
@@ -626,18 +631,6 @@ class Rexbuilder_Block {
 
 		echo '</div>';
 		echo '</div>';
-
-		// if ( $editor ) {
-		// 	$not_has_image = ( ! isset( $image_bg_elem_active ) || 'true' != $image_bg_elem_active || "" == $id_image_bg_block );
-		// 	$not_has_overlay = ( 'true' != $overlay_block_color_active || "" == $overlay_block_color );
-		// 	$not_has_video = ( '' == $video_bg_id && '' == $video_bg_url && '' == $video_bg_url_vimeo );
-
-		// 	echo '<div class="ui-focused-element-highlight">';
-		// 	include REXPANSIVE_BUILDER_PATH . 'public/partials/rexlive-block-tools-top.php';
-		// 	include REXPANSIVE_BUILDER_PATH . 'public/partials/rexlive-block-tools-bottom.php';
-		// 	include REXPANSIVE_BUILDER_PATH . 'public/partials/rexlive-block-tools-mobile.php';
-		// 	echo '</div>';
-		// }
 
 		echo '</div>';
 
