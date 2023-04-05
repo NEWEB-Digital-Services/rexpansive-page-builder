@@ -892,13 +892,23 @@ var Rexbuilder_App = (function($) {
       onSetup: function() {
         if( Rexbuilder_Util.editorMode ) return;
 
-        var $grid = this.$element.parents( '.perfect-grid-gallery' );
+        var elType = ''
+        var $grid, block = null
+        if (this.$element.hasClass('rexpansive_section')) {
+          elType = 'section'
+          $grid = this.$element.find( '.perfect-grid-gallery' );
+        } else if (this.$element.hasClass('perfect-grid-item')) {
+          elType = 'block'
+          $grid = this.$element.parents( '.perfect-grid-gallery' );
+          block = this.$element.parents( '.perfect-grid-item' ).get( 0 );
+        }
+
         var $blocks = $grid.find( '.perfect-grid-item' );
         var grid = $grid.get(0);
-        var block = this.$element.parents( '.perfect-grid-item' ).get( 0 );
         var rexGridInstance = getRexGridInstance( grid );
 
         this.caching = {
+          elType: elType,
           $blocks: $blocks,
           block: block,
           $block: $(block),
