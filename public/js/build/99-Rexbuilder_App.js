@@ -899,8 +899,6 @@ var Rexbuilder_App = (function($) {
         var rexGridInstance = getRexGridInstance( grid );
 
         this.caching = {
-          $grid: $grid,
-          grid: grid,
           $blocks: $blocks,
           block: block,
           $block: $(block),
