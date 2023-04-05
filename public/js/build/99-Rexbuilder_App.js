@@ -930,22 +930,9 @@ var Rexbuilder_App = (function($) {
     } else {
       accordionSettings.open = {
         startClbk: function( data ) {
-					// var $grid = data.$element.parents( '.perfect-grid-gallery' );
-					// var $blocks = $grid.find( '.perfect-grid-item' );
-
-					//  $blocks.addClass( 'accordion-animate-block' );
-
 					data.caching.$blocks.addClass('accordion-animate-block');
 				},
         progressClbk: function( data ) {
-        	// var grid = data.$element.parents( '.perfect-grid-gallery' ).get( 0 );
-        	// var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
-        	// var rexGridInstance = getRexGridInstance( grid );
-
-         //  if ( rexGridInstance ) {
-         //    rexGridInstance.instance.reCalcBlockHeight( block );
-         //  }
-
          if ( data.caching.rexGridInstance ) {
             data.caching.rexGridInstance.instance.reCalcBlockHeight( data.caching.block );
           }
@@ -953,26 +940,11 @@ var Rexbuilder_App = (function($) {
       };
       accordionSettings.close = {
         progressClbk: function( data ) {
-        	// var grid = data.$element.parents( '.perfect-grid-gallery' ).get( 0 );
-        	// var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
-        	// var rexGridInstance = getRexGridInstance( grid );
-
-         //  if ( rexGridInstance ) {
-         //    rexGridInstance.instance.reCalcBlockHeight( block );
-         //  }
           if ( data.caching.rexGridInstance ) {
             data.caching.rexGridInstance.instance.reCalcBlockHeight( data.caching.block );
           }
         },
         completeClbk: function( data ) {
-        	// var $grid = data.$element.parents( '.perfect-grid-gallery' );
-        	// var $blocks = $grid.find( '.perfect-grid-item' );
-        	// var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
-
-        	// $( block ).one( Rexbuilder_Util._transitionEvent, function() {
-        	// 	$blocks.removeClass( 'accordion-animate-block' );
-        	// } );
-
           data.caching.$block.one( Rexbuilder_Util._transitionEvent, function() {
             data.caching.$blocks.removeClass( 'accordion-animate-block' );
           } );
