@@ -300,14 +300,60 @@
       }
     },
 
-    // _viewport: function () {
-    //   var e = window, a = 'inner';
-    //   if (!('innerWidth' in window)) {
-    //     a = 'client';
-    //     e = document.documentElement || document.body;
-    //   }
-    //   return { width: e[a + 'Width'], height: e[a + 'Height'] };
-    // },
+    /**
+     * @todo add since
+     */
+    open_single_accordion: function () {
+      var that = this
+      this.$element.addClass('open').removeClass('close');
+      this.properties.$content.slideDown({
+        duration: this.settings.durationOpen,
+        start: function (animation) {
+          if (typeof that.settings.open.startClbk == 'function') {
+            that.settings.open.startClbk.call(this, that); // brings the scope to the callback
+          }
+        },
+        progress: function (animation, step, remain) {
+          if (typeof that.settings.open.progressClbk == 'function') {
+            that.settings.open.progressClbk.call(this, that, step); // brings the scope to the callback
+          }
+        },
+        complete: function () {
+          if (typeof that.settings.open.completeClbk == 'function') {
+            that.settings.open.completeClbk.call(this, that); // brings the scope to the callback
+          }
+          that.$element.trigger('rex_accordion:open');
+        },
+      }).attr('data-item-status', 'open');
+
+    },
+
+    /**
+     * @todo add since
+     */
+    close_single_accordion: function() {
+      var that = this
+      this.$element.addClass('close').removeClass('open');
+      this.properties.$content.slideUp({
+        duration: this.settings.durationClose,
+        start: function (animation) {
+          if (typeof that.settings.close.startClbk == 'function') {
+            that.settings.close.startClbk.call(this, that); // brings the scope to the callback
+          }
+        },
+        progress: function (animation, step, remain) {
+          if (typeof that.settings.close.progressClbk == 'function') {
+            that.settings.close.progressClbk.call(this, that, step); // brings the scope to the callback
+          }
+        },
+        complete: function () {
+          if (typeof that.settings.close.completeClbk == 'function') {
+            that.settings.close.completeClbk.call(this, that); // brings the scope to the callback
+          }
+          that.$element.trigger('rex_accordion:close');
+        }
+      }).attr('data-item-status', 'close');
+    },
 
     open_all: function( ) {
       this.properties.$content.attr('data-item-status', 'open');
