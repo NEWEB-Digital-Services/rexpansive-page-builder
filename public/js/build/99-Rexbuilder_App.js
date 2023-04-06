@@ -993,10 +993,10 @@ var Rexbuilder_App = (function($) {
         close: {
           startClbk: function(data) {
             $(data.settings.other_toggle).addClass('close').removeClass('open');
-            var upToScroll = $(data.settings.other_toggle).offset().top;
-            if( upToScroll < document.documentElement.scrollTop ) {
-              $("html, body").animate({scrollTop: upToScroll},150);
-            }
+            // var upToScroll = $(data.settings.other_toggle).offset().top;
+            // if( upToScroll < document.documentElement.scrollTop ) {
+            //   $("html, body").animate({scrollTop: upToScroll},150);
+            // }
           },
           // progressClbk: function() {
           //   $(this).find('.perfect-grid-gallery').perfectGridGallery('refreshGrid');
@@ -1023,7 +1023,7 @@ var Rexbuilder_App = (function($) {
       var $this = $(this);
       var $s = $($this.attr('href'));
       if( $this.hasClass('close') ) {
-        $s.rexAccordion('open_single_accordion')
+        // $s.rexAccordion('open_single_accordion')
         $(this).toggleClass('close').toggleClass('open');
       } else {
         e.preventDefault();
@@ -1348,6 +1348,7 @@ var Rexbuilder_App = (function($) {
 
       Rexbuilder_Util.playAllVideos();
 
+      // launchSectionAccordions()
 			launchBlockAccordions();
       launchOtherAccordions()
 		}
