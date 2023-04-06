@@ -886,7 +886,6 @@ var Rexbuilder_App = (function($) {
 
 	function launchBlockAccordions() {
     $builderBlockAccordions = Rexbuilder_Util.$rexContainer.find('.perfect-grid-item .rex-accordion');
-    $otherAccordions = Rexbuilder_Util.$document.find('.rex-accordion').not( $builderBlockAccordions );
 
     accordionSettings = {
       onSetup: function() {
@@ -952,6 +951,10 @@ var Rexbuilder_App = (function($) {
     }
 
     $builderBlockAccordions.rexAccordion(accordionSettings);
+  }
+
+  function launchOtherAccordions() {
+    $otherAccordions = Rexbuilder_Util.$document.find('.rex-accordion').not( $builderBlockAccordions );
     $otherAccordions.rexAccordion({
       open: {},
       close: {}
@@ -1265,6 +1268,7 @@ var Rexbuilder_App = (function($) {
       Rexbuilder_Util.playAllVideos();
 
 			launchBlockAccordions();
+      launchOtherAccordions()
 		}
   }
 
@@ -1288,6 +1292,7 @@ var Rexbuilder_App = (function($) {
       Rexbuilder_Util.launchVideoPlugins();
       Rexbuilder_Util.playAllVideos();
       launchBlockAccordions();
+      launchOtherAccordions();
 		}
 
     /* -- Launching the textfill -- */
