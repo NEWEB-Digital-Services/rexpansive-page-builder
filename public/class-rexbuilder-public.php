@@ -2435,7 +2435,7 @@ class Rexbuilder_Public {
 			/* Loader background color */
 			if( isset( $atts['loader_background'] ) && "" !== $atts['loader_background'] ) {
 			?>
-			div.wpcf7 .rxcf7-custom-loader .ajax-loader{background-color:<?php echo $atts['loader_background']; ?>;}
+			div.wpcf7 .rxcf7-custom-loader .ajax-loader, div.wpcf7 .rxcf7-custom-loader .wpcf7-spinner{background-color:<?php echo $atts['loader_background']; ?>;}
 			<?php
 			}
 
