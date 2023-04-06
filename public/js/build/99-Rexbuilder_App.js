@@ -14,7 +14,7 @@ var Rexbuilder_App = (function($) {
 
   var $sections = null;
   var $grids = null;
-  var $builderAccordions = null;
+  var $builderBlockAccordions = null;
   var $otherAccordions = null;
   var odometers = [];
   var accordionSettings = {};
@@ -884,31 +884,22 @@ var Rexbuilder_App = (function($) {
     }
   }
 
-	function launchAccordions() {
-    $builderAccordions = Rexbuilder_Util.$rexContainer.find('.rex-accordion');
-    $otherAccordions = Rexbuilder_Util.$document.find('.rex-accordion').not( $builderAccordions );
+	function launchBlockAccordions() {
+    $builderBlockAccordions = Rexbuilder_Util.$rexContainer.find('.perfect-grid-item .rex-accordion');
+    $otherAccordions = Rexbuilder_Util.$document.find('.rex-accordion').not( $builderBlockAccordions );
 
     accordionSettings = {
       onSetup: function() {
         if( Rexbuilder_Util.editorMode ) return;
 
-        var elType = ''
-        var $grid, block = null
-        if (this.$element.hasClass('rexpansive_section')) {
-          elType = 'section'
-          $grid = this.$element.find( '.perfect-grid-gallery' );
-        } else if (this.$element.hasClass('perfect-grid-item')) {
-          elType = 'block'
-          $grid = this.$element.parents( '.perfect-grid-gallery' );
-          block = this.$element.parents( '.perfect-grid-item' ).get( 0 );
-        }
+        var $grid = this.$element.parents( '.perfect-grid-gallery' );
 
         var $blocks = $grid.find( '.perfect-grid-item' );
         var grid = $grid.get(0);
+        var block = this.$element.parents( '.perfect-grid-item' ).get( 0 );
         var rexGridInstance = getRexGridInstance( grid );
 
         this.caching = {
-          elType: elType,
           $blocks: $blocks,
           block: block,
           $block: $(block),
@@ -960,7 +951,7 @@ var Rexbuilder_App = (function($) {
       };
     }
 
-    $builderAccordions.rexAccordion(accordionSettings);
+    $builderBlockAccordions.rexAccordion(accordionSettings);
     $otherAccordions.rexAccordion({
       open: {},
       close: {}
@@ -1273,7 +1264,7 @@ var Rexbuilder_App = (function($) {
 
       Rexbuilder_Util.playAllVideos();
 
-			launchAccordions();
+			launchBlockAccordions();
 		}
   }
 
@@ -1296,7 +1287,7 @@ var Rexbuilder_App = (function($) {
 
       Rexbuilder_Util.launchVideoPlugins();
       Rexbuilder_Util.playAllVideos();
-      launchAccordions();
+      launchBlockAccordions();
 		}
 
     /* -- Launching the textfill -- */
