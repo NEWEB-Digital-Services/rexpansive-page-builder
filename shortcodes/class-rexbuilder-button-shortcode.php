@@ -78,6 +78,16 @@ class Rexbuilder_Button {
             $additional_data_attrs = ' data-msg="' . $default_message . '" data-field="' . $default_message_field . '"';
         }
 
+        $additional_button_content = '';
+        $toggle_section_accordion = strpos( $classes, 'open-accordion-section' );
+        var_dump($toggle_section_accordion);
+        if( false !== $toggle_section_accordion ) {
+            $classes .= ' close';
+            $additional_button_content .= '<span class="open-accordion-section__icon-wrap"><i class="rex-svg-icons"><svg style="fill:' . $color . ';"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#plus-crisp"></use></svg></i></span>';
+        }
+
+        $content = $additional_button_content . $content;
+
         ob_start();
         if( 'true' == $isinsidelink ) {
     ?>

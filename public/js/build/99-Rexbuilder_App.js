@@ -15,6 +15,7 @@ var Rexbuilder_App = (function($) {
   var $sections = null;
   var $grids = null;
   var $builderBlockAccordions = null;
+  var $builderSectionAccordions = null
   var $otherAccordions = null;
   var odometers = [];
   var accordionSettings = {};
@@ -953,6 +954,86 @@ var Rexbuilder_App = (function($) {
     $builderBlockAccordions.rexAccordion(accordionSettings);
   }
 
+  function launchSectionAccordions() {
+    console.log('launchSectionAccordions')
+    var $sectionAccordions = Rexbuilder_Util.$rexContainer.find('.rexpansive_section.rex-accordion');
+    var $toggleSectionAccordions = Rexbuilder_Util.$body.find('.open-accordion-section');
+
+    // Section accordion behaviour
+    $sectionAccordions.each(function(i,el) {
+      var $s = $(el);
+
+      var $blocks = $s.find('.perfect-grid-item')
+
+      // preventing scroll animation glitches
+      $blocks.removeClass('rs-animation');
+      // $blocks.removeClass('has-rs-animation');
+
+      var accordionSettings = {
+        onSetup: function() {
+          this.caching = {
+            rexGridInstance: getRexGridInstance(el.querySelector('.perfect-grid-gallery'))
+          }
+        },
+        open: {
+          // startClbk: function(data) {
+            
+          // },
+          progressClbk: function(data) {
+            // data.$element.find('.perfect-grid-gallery').perfectGridGallery('refreshGrid');
+          },
+          completeClbk: function(data) {
+            // var $that = data.$element;
+            data.caching.rexGridInstance.instance.section.classList.add('open_complete')
+            // $that.find('.perfect-grid-gallery').perfectGridGallery('refreshGrid').one('rearrangeComplete', function() {
+            //   $that.addClass('open_complete');
+            // });
+          }
+        },
+        close: {
+          startClbk: function(data) {
+            $(data.settings.other_toggle).addClass('close').removeClass('open');
+            var upToScroll = $(data.settings.other_toggle).offset().top;
+            if( upToScroll < document.documentElement.scrollTop ) {
+              $("html, body").animate({scrollTop: upToScroll},150);
+            }
+          },
+          // progressClbk: function() {
+          //   $(this).find('.perfect-grid-gallery').perfectGridGallery('refreshGrid');
+          // },
+          completeClbk: function(data) {
+            data.$element.removeClass('open_complete');
+          }
+        }
+      }
+
+      // setting open/close accordion callbacks to reveal correctly the contents
+      $s.rexAccordion(accordionSettings)
+
+      // Listen to smooth scroll complete and open the accordion
+      $s.on('rexclassic:smooth_link_complete', function(e,initiator) {
+        var $this = $(this);
+        $this.data('plugin_rexAccordion').settings.other_toggle = initiator;
+        $this.rexAccordion('open_single_accordion');
+      });
+    });
+
+    // Toggle section accordions behaviour
+    $toggleSectionAccordions.on('click', function(e) {
+      var $this = $(this);
+      var $s = $($this.attr('href'));
+      if( $this.hasClass('close') ) {
+        $s.rexAccordion('open_single_accordion')
+        $(this).toggleClass('close').toggleClass('open');
+      } else {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        $s.rexAccordion('close_single_accordion');
+      }
+    });
+
+  }
+
   function launchOtherAccordions() {
     $otherAccordions = Rexbuilder_Util.$document.find('.rex-accordion').not( $builderBlockAccordions );
     $otherAccordions.rexAccordion({
@@ -1291,6 +1372,7 @@ var Rexbuilder_App = (function($) {
 
       Rexbuilder_Util.launchVideoPlugins();
       Rexbuilder_Util.playAllVideos();
+      launchSectionAccordions()
       launchBlockAccordions();
       launchOtherAccordions();
 		}
