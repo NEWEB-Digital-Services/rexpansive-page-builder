@@ -974,11 +974,13 @@ var Rexbuilder_App = (function($) {
           }
         },
         open: {
-          // startClbk: function(data) {
-          //   console.log('open', data)
-          // },
           progressClbk: function(data) {
             // data.$element.find('.perfect-grid-gallery').perfectGridGallery('refreshGrid');
+
+            var gridEl = data.element.querySelector('.perfect-grid-gallery');
+            var gridInstance = RexGrid.data(gridEl);
+
+            gridInstance.endResize();
           },
           completeClbk: function(data) {
             // var $that = data.$element;
@@ -1031,15 +1033,16 @@ var Rexbuilder_App = (function($) {
   function _listenSectionAccordionTogglers() {
     var $toggleSectionAccordions = Rexbuilder_Util.$body.find('.open-accordion-section');
     // Toggle section accordions behaviour
-    $toggleSectionAccordions.on('click', function(e) {
+    $toggleSectionAccordions.on('click', function(event) {
       if (this.classList.contains('open')) {
-        e.preventDefault();
-        e.stopImmediatePropagation();
+        event.preventDefault();
+        event.stopImmediatePropagation();
         var $s = $(this.getAttribute('href'));
         $s.rexAccordion('close_single_accordion');
+      } else {
+        this.classList.toggle('close')
+        this.classList.toggle('open')
       }
-      this.classList.toggle('close')
-      this.classList.toggle('open')
     });
   }
 
