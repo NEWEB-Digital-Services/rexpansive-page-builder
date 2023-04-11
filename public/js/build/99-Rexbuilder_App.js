@@ -990,16 +990,22 @@ var Rexbuilder_App = (function($) {
         },
         close: {
           startClbk: function(data) {
-            console.log(data)
-            $(data.settings.other_toggle).addClass('close').removeClass('open');
-            // var upToScroll = $(data.settings.other_toggle).offset().top;
-            // if( upToScroll < document.documentElement.scrollTop ) {
-            //   $("html, body").animate({scrollTop: upToScroll},150);
-            // }
+            const sectionHref = data.element.getAttribute('href')
+            const toggler = Rexbuilder_Util.rexContainer.querySelector(`a[href="${sectionHref}"`)
+
+            toggler.classList.add('close')
+            toggler.classList.remove('open')
+            var upToScroll = $(toggler).offset().top;
+            if( upToScroll < document.documentElement.scrollTop ) {
+              $("html, body").animate({scrollTop: upToScroll},150);
+            }
           },
-          // progressClbk: function() {
-          //   $(this).find('.perfect-grid-gallery').perfectGridGallery('refreshGrid');
-          // },
+          progressClbk: function(data) {
+            var gridEl = data.element.querySelector('.perfect-grid-gallery');
+            var gridInstance = RexGrid.data(gridEl);
+
+            gridInstance.endResize();
+          },
           completeClbk: function(data) {
             data.$element.removeClass('open_complete');
           }
