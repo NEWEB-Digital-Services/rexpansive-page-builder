@@ -955,9 +955,7 @@ var Rexbuilder_App = (function($) {
   }
 
   function launchSectionAccordions() {
-    console.log('launchSectionAccordions')
     var $sectionAccordions = Rexbuilder_Util.$rexContainer.find('.rexpansive_section.rex-accordion');
-    var $toggleSectionAccordions = Rexbuilder_Util.$body.find('.open-accordion-section');
 
     // Section accordion behaviour
     $sectionAccordions.each(function(i,el) {
@@ -977,7 +975,7 @@ var Rexbuilder_App = (function($) {
         },
         open: {
           // startClbk: function(data) {
-            
+          //   console.log('open', data)
           // },
           progressClbk: function(data) {
             // data.$element.find('.perfect-grid-gallery').perfectGridGallery('refreshGrid');
@@ -992,6 +990,7 @@ var Rexbuilder_App = (function($) {
         },
         close: {
           startClbk: function(data) {
+            console.log(data)
             $(data.settings.other_toggle).addClass('close').removeClass('open');
             // var upToScroll = $(data.settings.other_toggle).offset().top;
             // if( upToScroll < document.documentElement.scrollTop ) {
@@ -1013,25 +1012,29 @@ var Rexbuilder_App = (function($) {
       // Listen to smooth scroll complete and open the accordion
       $s.on('rexclassic:smooth_link_complete', function(e,initiator) {
         var $this = $(this);
-        $this.data('plugin_rexAccordion').settings.other_toggle = initiator;
         $this.rexAccordion('open_single_accordion');
       });
     });
+  }
 
+  /**
+   * Listen to sectrion accordion togglers
+   * Attach listener on init, to allow preventing smooth scroll 
+   * on close accordion
+   */
+  function _listenSectionAccordionTogglers() {
+    var $toggleSectionAccordions = Rexbuilder_Util.$body.find('.open-accordion-section');
     // Toggle section accordions behaviour
     $toggleSectionAccordions.on('click', function(e) {
-      var $this = $(this);
-      var $s = $($this.attr('href'));
-      if( $this.hasClass('close') ) {
-        // $s.rexAccordion('open_single_accordion')
-        $(this).toggleClass('close').toggleClass('open');
-      } else {
+      if (this.classList.contains('open')) {
         e.preventDefault();
         e.stopImmediatePropagation();
+        var $s = $(this.getAttribute('href'));
         $s.rexAccordion('close_single_accordion');
       }
+      this.classList.toggle('close')
+      this.classList.toggle('open')
     });
-
   }
 
   function launchOtherAccordions() {
@@ -1337,6 +1340,10 @@ var Rexbuilder_App = (function($) {
         }
       };
 		}
+
+    if (!Rexbuilder_Util.editorMode) {
+      _listenSectionAccordionTogglers()
+    }
 
 		_linkDocumentListeners();
 
