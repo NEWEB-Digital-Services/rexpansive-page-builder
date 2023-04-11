@@ -34,12 +34,11 @@ var Rexbuilder_FormFixes = (function($) {
 
   var _listen_events = function() {
     document.addEventListener( 'wpcf7submit', function( event ) {
-      var $g = $(event.target).parents('.perfect-grid-gallery');
-      if($g.length>0) {
-        setTimeout(function() {
-          $g.perfectGridGallery("refreshGrid");
-        }, 200);
-      }
+      var gridEl = $(event.target).parents('.perfect-grid-gallery').get(0)
+      if ('undefined' === typeof gridEl || null === gridEl) return
+
+      var gridInstance = RexGrid.data(gridEl);
+      gridInstance.endResize();
     }, false );
   };
 

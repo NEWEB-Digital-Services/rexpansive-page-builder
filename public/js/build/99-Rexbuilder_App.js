@@ -1250,7 +1250,9 @@ var Rexbuilder_App = (function($) {
 		}
 
     Rex_Navigator.init();
-		//Rexbuilder_FormFixes.init();
+    if ( !Rexbuilder_Util.editorMode ) {
+      Rexbuilder_FormFixes.init();
+    }
 
 		if ( Rexbuilder_Util.editorMode ) {
 			// Fix needed because grids are launched before TextEditor
