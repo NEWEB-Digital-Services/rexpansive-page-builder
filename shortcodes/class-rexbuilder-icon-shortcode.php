@@ -26,6 +26,7 @@ if ( ! class_exists( 'Rexbuilder_Icon_Shortcode' ) ) {
 				'id' => '',
 				'size' => '',
 				'color' => '',
+				'class' => ''
 			), $atts ) );
 
 			ob_start();
@@ -41,7 +42,13 @@ if ( ! class_exists( 'Rexbuilder_Icon_Shortcode' ) ) {
 					$svg_style = ' style="fill:' . $color . ';"';
 				}
 
-				?><i class="l-svg-icons"<?php echo $i_style; ?>><svg<?php echo $svg_style; ?>><use xlink:href="#<?php echo $id; ?>"></use></svg></i><?php
+				$icon_class = array("l-svg-icons");
+				if (!empty($class)) {
+					$icon_class_arr = explode(' ', $class);
+					$icon_class = array_merge($icon_class, $icon_class_arr);
+				}
+
+				?><i class="<?php echo implode(' ', $icon_class); ?>"<?php echo $i_style; ?>><svg<?php echo $svg_style; ?>><use xlink:href="#<?php echo $id; ?>"></use></svg></i><?php
 
 			}
 

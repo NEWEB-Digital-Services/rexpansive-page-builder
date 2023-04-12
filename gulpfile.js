@@ -444,7 +444,8 @@ var effects_js_src = [
 	'public/js/vendor/jquery.rexAccordion.js',
 	'public/js/vendor/particle-swarm.js',
  	'public/js/vendor/rex-indicator.js',
-	'public/js/build/fast-load.js'
+	'public/js/build/fast-load.js',
+	'public/js/vendor/4-jquery.rexScrolled.js'
 ];
 
 function minifyExternal(cb) {
