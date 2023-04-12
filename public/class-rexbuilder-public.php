@@ -1952,6 +1952,7 @@ class Rexbuilder_Public {
 	 * - success_border
 	 * - acceptance_color
 	 * - acceptance_font_size
+	 * - acceptance_font_weight
 	 * - acceptance_letter_spacing
 	 * - acceptance_line_height
 	 * - acceptance_text_align
@@ -2381,21 +2382,28 @@ class Rexbuilder_Public {
 			<?php
 			}
 
-			/* Acceptance text font size */
+			/* Acceptance text font weight */
 			if( isset( $atts['acceptance_font_size'] ) && "" !== $atts['acceptance_font_size'] ) {
 			?>
 			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-acceptance .wpcf7-list-item-label { font-size:<?php echo $atts['acceptance_font_size']; ?>; }
 			<?php
 			}
 
-			/* Acceptance text font size */
+			/* Acceptance text font weight */
+			if( isset( $atts['acceptance_font_weight'] ) && "" !== $atts['acceptance_font_weight'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-acceptance .wpcf7-list-item-label { font-weight:<?php echo $atts['acceptance_font_weight']; ?>; }
+			<?php
+			}
+
+			/* Acceptance text letter spacing */
 			if( isset( $atts['acceptance_letter_spacing'] ) && "" !== $atts['acceptance_letter_spacing'] ) {
 			?>
 			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-acceptance .wpcf7-list-item-label { letter-spacing:<?php echo $atts['acceptance_letter_spacing']; ?>; }
 			<?php
 			}
 
-			/* Acceptance text font size */
+			/* Acceptance text line height */
 			if( isset( $atts['acceptance_line_height'] ) && "" !== $atts['acceptance_line_height'] ) {
 			?>
 			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-acceptance .wpcf7-list-item { line-height:<?php echo $atts['acceptance_line_height']; ?>; }
