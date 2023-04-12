@@ -49,6 +49,7 @@
 div.wpcf7 {
   .#{$form-custom-loader} {
     position: relative;
+    .wpcf7-spinner,
     .ajax-loader {
       position: absolute;
       width: 100%;
@@ -60,6 +61,14 @@ div.wpcf7 {
       background-image:none;
       margin: 0;
       background-color: rgba(255,255,255,0.5);
+    }
+    .wpcf7-spinner {
+      border-radius: 0;
+      &::before {
+        top: 50%; 
+        left: 50%; 
+        transform: translate(-50%, -50%);
+      }
     }
     .sk-double-bounce {
       top: 50%;

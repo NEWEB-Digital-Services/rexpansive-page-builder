@@ -27,6 +27,7 @@ var Rexbuilder_FormFixes = (function($) {
       }
       if($this.hasClass('rxcf7-custom-loader') && 0 == $this.find('.sk-double-bounce').length) {
         $this.find('.ajax-loader').append('<div class="sk-double-bounce"><div class="sk-child sk-double-bounce1"></div><div class="sk-child sk-double-bounce2"></div></div>');
+        $this.find('.wpcf7-spinner').append('<div class="sk-double-bounce"><div class="sk-child sk-double-bounce1"></div><div class="sk-child sk-double-bounce2"></div></div>');
       }
     });
   };

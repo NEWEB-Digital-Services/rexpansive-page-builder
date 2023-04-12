@@ -14,7 +14,8 @@ var Rexbuilder_App = (function($) {
 
   var $sections = null;
   var $grids = null;
-  var $builderAccordions = null;
+  var $builderBlockAccordions = null;
+  var $builderSectionAccordions = null
   var $otherAccordions = null;
   var odometers = [];
   var accordionSettings = {};
@@ -884,23 +885,21 @@ var Rexbuilder_App = (function($) {
     }
   }
 
-	function launchAccordions() {
-    $builderAccordions = Rexbuilder_Util.$rexContainer.find('.rex-accordion');
-    $otherAccordions = Rexbuilder_Util.$document.find('.rex-accordion').not( $builderAccordions );
+	function launchBlockAccordions() {
+    $builderBlockAccordions = Rexbuilder_Util.$rexContainer.find('.perfect-grid-item .rex-accordion');
 
     accordionSettings = {
       onSetup: function() {
         if( Rexbuilder_Util.editorMode ) return;
 
         var $grid = this.$element.parents( '.perfect-grid-gallery' );
+
         var $blocks = $grid.find( '.perfect-grid-item' );
         var grid = $grid.get(0);
         var block = this.$element.parents( '.perfect-grid-item' ).get( 0 );
         var rexGridInstance = getRexGridInstance( grid );
 
         this.caching = {
-          $grid: $grid,
-          grid: grid,
           $blocks: $blocks,
           block: block,
           $block: $(block),
@@ -930,22 +929,9 @@ var Rexbuilder_App = (function($) {
     } else {
       accordionSettings.open = {
         startClbk: function( data ) {
-					// var $grid = data.$element.parents( '.perfect-grid-gallery' );
-					// var $blocks = $grid.find( '.perfect-grid-item' );
-
-					//  $blocks.addClass( 'accordion-animate-block' );
-
 					data.caching.$blocks.addClass('accordion-animate-block');
 				},
         progressClbk: function( data ) {
-        	// var grid = data.$element.parents( '.perfect-grid-gallery' ).get( 0 );
-        	// var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
-        	// var rexGridInstance = getRexGridInstance( grid );
-
-         //  if ( rexGridInstance ) {
-         //    rexGridInstance.instance.reCalcBlockHeight( block );
-         //  }
-
          if ( data.caching.rexGridInstance ) {
             data.caching.rexGridInstance.instance.reCalcBlockHeight( data.caching.block );
           }
@@ -953,26 +939,11 @@ var Rexbuilder_App = (function($) {
       };
       accordionSettings.close = {
         progressClbk: function( data ) {
-        	// var grid = data.$element.parents( '.perfect-grid-gallery' ).get( 0 );
-        	// var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
-        	// var rexGridInstance = getRexGridInstance( grid );
-
-         //  if ( rexGridInstance ) {
-         //    rexGridInstance.instance.reCalcBlockHeight( block );
-         //  }
           if ( data.caching.rexGridInstance ) {
             data.caching.rexGridInstance.instance.reCalcBlockHeight( data.caching.block );
           }
         },
         completeClbk: function( data ) {
-        	// var $grid = data.$element.parents( '.perfect-grid-gallery' );
-        	// var $blocks = $grid.find( '.perfect-grid-item' );
-        	// var block = data.$element.parents( '.perfect-grid-item' ).get( 0 );
-
-        	// $( block ).one( Rexbuilder_Util._transitionEvent, function() {
-        	// 	$blocks.removeClass( 'accordion-animate-block' );
-        	// } );
-
           data.caching.$block.one( Rexbuilder_Util._transitionEvent, function() {
             data.caching.$blocks.removeClass( 'accordion-animate-block' );
           } );
@@ -980,7 +951,105 @@ var Rexbuilder_App = (function($) {
       };
     }
 
-    $builderAccordions.rexAccordion(accordionSettings);
+    $builderBlockAccordions.rexAccordion(accordionSettings);
+  }
+
+  function launchSectionAccordions() {
+    $builderSectionAccordions = Rexbuilder_Util.$rexContainer.find('.rexpansive_section.rex-accordion');
+
+    if (Rexbuilder_Util.editorMode) return
+
+    // Section accordion behaviour
+    $builderSectionAccordions.each(function(i,el) {
+      var $s = $(el);
+
+      var $blocks = $s.find('.perfect-grid-item')
+
+      // preventing scroll animation glitches
+      $blocks.removeClass('rs-animation');
+      // $blocks.removeClass('has-rs-animation');
+
+      var accordionSettings = {
+        onSetup: function() {
+          this.caching = {
+            rexGridInstance: getRexGridInstance(el.querySelector('.perfect-grid-gallery'))
+          }
+        },
+        open: {
+          progressClbk: function(data) {
+            // data.$element.find('.perfect-grid-gallery').perfectGridGallery('refreshGrid');
+
+            var gridEl = data.element.querySelector('.perfect-grid-gallery');
+            var gridInstance = RexGrid.data(gridEl);
+
+            gridInstance.endResize();
+          },
+          completeClbk: function(data) {
+            // var $that = data.$element;
+            data.caching.rexGridInstance.instance.section.classList.add('open_complete')
+            // $that.find('.perfect-grid-gallery').perfectGridGallery('refreshGrid').one('rearrangeComplete', function() {
+            //   $that.addClass('open_complete');
+            // });
+          }
+        },
+        close: {
+          startClbk: function(data) {
+            const sectionHref = data.element.getAttribute('href')
+            const toggler = Rexbuilder_Util.rexContainer.querySelector(`a[href="${sectionHref}"`)
+
+            toggler.classList.add('close')
+            toggler.classList.remove('open')
+            var upToScroll = $(toggler).offset().top;
+            if( upToScroll < document.documentElement.scrollTop ) {
+              $("html, body").animate({scrollTop: upToScroll},150);
+            }
+          },
+          progressClbk: function(data) {
+            var gridEl = data.element.querySelector('.perfect-grid-gallery');
+            var gridInstance = RexGrid.data(gridEl);
+
+            gridInstance.endResize();
+          },
+          completeClbk: function(data) {
+            data.$element.removeClass('open_complete');
+          }
+        }
+      }
+
+      // setting open/close accordion callbacks to reveal correctly the contents
+      $s.rexAccordion(accordionSettings)
+
+      // Listen to smooth scroll complete and open the accordion
+      $s.on('rexclassic:smooth_link_complete', function(e,initiator) {
+        var $this = $(this);
+        $this.rexAccordion('open_single_accordion');
+      });
+    });
+  }
+
+  /**
+   * Listen to sectrion accordion togglers
+   * Attach listener on init, to allow preventing smooth scroll 
+   * on close accordion
+   */
+  function _listenSectionAccordionTogglers() {
+    var $toggleSectionAccordions = Rexbuilder_Util.$body.find('.open-accordion-section');
+    // Toggle section accordions behaviour
+    $toggleSectionAccordions.on('click', function(event) {
+      if (this.classList.contains('open')) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        var $s = $(this.getAttribute('href'));
+        $s.rexAccordion('close_single_accordion');
+      } else {
+        this.classList.toggle('close')
+        this.classList.toggle('open')
+      }
+    });
+  }
+
+  function launchOtherAccordions() {
+    $otherAccordions = Rexbuilder_Util.$document.find('.rex-accordion').not($builderSectionAccordions).not( $builderBlockAccordions );
     $otherAccordions.rexAccordion({
       open: {},
       close: {}
@@ -1283,6 +1352,10 @@ var Rexbuilder_App = (function($) {
       };
 		}
 
+    if (!Rexbuilder_Util.editorMode) {
+      _listenSectionAccordionTogglers()
+    }
+
 		_linkDocumentListeners();
 
     if (Rexbuilder_Util.editorMode) {
@@ -1293,7 +1366,9 @@ var Rexbuilder_App = (function($) {
 
       Rexbuilder_Util.playAllVideos();
 
-			launchAccordions();
+      launchSectionAccordions()
+			launchBlockAccordions();
+      launchOtherAccordions()
 		}
   }
 
@@ -1316,7 +1391,9 @@ var Rexbuilder_App = (function($) {
 
       Rexbuilder_Util.launchVideoPlugins();
       Rexbuilder_Util.playAllVideos();
-      launchAccordions();
+      launchSectionAccordions()
+      launchBlockAccordions();
+      launchOtherAccordions();
 		}
 
     /* -- Launching the textfill -- */
