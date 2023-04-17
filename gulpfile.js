@@ -496,7 +496,7 @@ exports.build = series(
 );
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
-var live_zip_name = 'Premium-211-Rexpansive-Builder.zip';
+var live_zip_name = 'Premium-220-Rexpansive-Builder.zip';
 var live_folder_name = 'rexpansive-page-builder';
 
 var live_file_map = [
