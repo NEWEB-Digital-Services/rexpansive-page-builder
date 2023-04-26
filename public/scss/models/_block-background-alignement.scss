@@ -1,0 +1,63 @@
+/** block background custom alignement **/
+
+.perfect-grid-item {
+  &.background--contain {
+    .rex-image-wrapper {
+      background-size: contain;
+    }
+  }
+
+  &.background--left-top {
+    .rex-image-wrapper {
+      background-position: left top;
+    }
+  }
+
+  &.background--left-center {
+    .rex-image-wrapper {
+      background-position: left center;
+    }
+  }
+
+  &.background--left-bottom {
+    .rex-image-wrapper {
+      background-position: left bottom;
+    }
+  }
+
+  &.background--center-top {
+    .rex-image-wrapper {
+      background-position: center top;
+    }
+  }
+
+  &.background--center-center {
+    .rex-image-wrapper {
+      background-position: center center;
+    }
+  }
+
+  &.background--center-bottom {
+    .rex-image-wrapper {
+      background-position: center bottom;
+    }
+  }
+
+  &.background--right-top {
+    .rex-image-wrapper {
+      background-position: right top;
+    }
+  }
+
+  &.background--right-center {
+    .rex-image-wrapper {
+      background-position: right center;
+    }
+  }
+
+  &.background--right-bottom {
+    .rex-image-wrapper {
+      background-position: right bottom;
+    }
+  }
+}
