@@ -8,3 +8,9 @@
 		}
 	}
 }
+
+.disable-grid.disabled .grid-stack>.grid-stack-item.perfect-grid-item {
+	position: relative;
+	width: 100%;
+	left: auto;
+}
