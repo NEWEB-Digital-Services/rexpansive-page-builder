@@ -46,6 +46,26 @@
   - launch a spin when its block container is visible (obviously must be a spin inside the block)
 - `.overflowed-block`
   - makes a block overflow visible
+- `.background--contain`
+  - sets background contain on a block
+- `.background--left-top`
+  - sets background left-top on a block
+- `.background--left-center`
+  - sets background left-center on a block
+- `.background--left-bottom`
+  - sets background left-bottom on a block
+- `.background--center-top`
+  - sets background center-top on a block
+- `.background--center-center`
+  - sets background center-center on a block
+- `.background--center-bottom`
+  - sets background center-bottom on a block
+- `.background--right-top`
+  - sets background right-top on a block
+- `.background--right-center`
+  - sets background right-center on a block
+- `.background--right-bottom`
+  - sets background right-bottom on a block
 
 ## OTHER
 
