@@ -3559,9 +3559,11 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 				var $parentGrid = $(form).parents('.perfect-grid-gallery');
 				if (0 === $parentGrid.length) return;
 				var rexgrid = RexGrid.data($parentGrid.get(0));
-				setTimeout(function () {
-					rexgrid.endResize();
-				}, 200);
+				if (rexgrid) {
+					setTimeout(function () {
+						rexgrid.endResize();
+					}, 200);
+				}
 			});
 		}
 	}

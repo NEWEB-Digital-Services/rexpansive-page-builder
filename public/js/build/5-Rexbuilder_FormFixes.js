@@ -32,13 +32,39 @@ var Rexbuilder_FormFixes = (function($) {
     });
   };
 
+  /**
+   * Fixing a RexGrid disabled block heights
+   * @param {DOMElement} gridEl DOM element of a perfect grid gallery
+   * @since 2.2.0
+   */
+  function fixDisabledGridHeights(gridEl) {
+    const blocks = Array.prototype.slice.call(gridEl.querySelectorAll('.perfect-grid-item'))
+    for (let i = 0; i < blocks.length; i++) {
+      const block = blocks[i]
+      const content = block.querySelector('.text-wrap')
+      const actualeHeight = parseInt(block.style.height)
+      const mayebNewHeight = Math.ceil(content.getBoundingClientRect().height)
+      if (mayebNewHeight > actualeHeight) {
+        block.style.height = `${mayebNewHeight}px`
+      }
+    }
+  }
+
   var _listen_events = function() {
     document.addEventListener( 'wpcf7submit', function( event ) {
       var gridEl = $(event.target).parents('.perfect-grid-gallery').get(0)
       if ('undefined' === typeof gridEl || null === gridEl) return
 
       var gridInstance = RexGrid.data(gridEl);
-      gridInstance.endResize();
+      if (gridInstance) {
+        setTimeout(() => {
+          gridInstance.endResize();
+        }, 200);
+      } else {
+        setTimeout(() => {
+          fixDisabledGridHeights(gridEl)
+        }, 200);
+      }
     }, false );
   };
 
