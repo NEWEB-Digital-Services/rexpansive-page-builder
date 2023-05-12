@@ -269,20 +269,20 @@
   }
 }
 
-@media screen and (max-width:$small) {
-  .full-height-section {
-    .perfect-grid-item {
-      &.block-has-slider {
-        .rex-slider-wrap {
-          min-height: 100vh;
-          .flickity-viewport {
-            min-height: 100vh;
-          }
-        }
-      }
-    }
-  }
-}
+// @media screen and (max-width:$small) {
+//   .full-height-section {
+//     .perfect-grid-item {
+//       &.block-has-slider {
+//         .rex-slider-wrap {
+//           min-height: 100vh;
+//           .flickity-viewport {
+//             min-height: 100vh;
+//           }
+//         }
+//       }
+//     }
+//   }
+// }
 
 .block-has-slider {
   // p {
