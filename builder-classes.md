@@ -66,6 +66,8 @@
   - sets background right-center on a block
 - `.background--right-bottom`
   - sets background right-bottom on a block
+- `.rex-block--force-masonry`
+  - force a block to be treated as a masonry, resizing it at contents even if the grid is fixed
 
 ## OTHER
 
