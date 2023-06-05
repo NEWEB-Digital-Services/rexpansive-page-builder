@@ -357,13 +357,13 @@ void (function (window, factory) {
 	 * @since 2.2.0
 	 */
 	function _checkForceMasonryPositions() {
-		this.properties.forceMasonry = false
+		this.properties.forceMasonryPositions = false
 		// TODO: could add this check with a class on the grid
 		if ('masonry' === this.properties.layout) return
 		for (let i = 0; i < this.gridBlocksTotal; i++) {
 			const blockCustomClasses = this.gridBlocks[i].blockData.getAttribute('data-block_custom_class')
 			if (-1 !== blockCustomClasses.indexOf(this.REX_BLOCK_FORCE_MASONRY_CLASSNAME)) {
-				this.properties.forceMasonry = true
+				this.properties.forceMasonryPositions = true
 				break
 			}
 		}
