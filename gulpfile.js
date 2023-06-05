@@ -3,7 +3,7 @@ const { series, parallel } = require('gulp');
 const exec = require('child_process').exec;
 const clean = require('gulp-clean');
 const zip = require('gulp-zip');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const plumber = require('gulp-plumber');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
@@ -42,7 +42,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 const sassConfig = {
 	// Default: nested
 	// Values: nested, expanded, compact, compressed
-	outputStyle: production ? 'compressed' : 'nested'
+	outputStyle: production ? 'compressed' : 'expanded'
 };
 
 /** LIVE BUILDER */
