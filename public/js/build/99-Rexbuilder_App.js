@@ -1251,7 +1251,9 @@ var Rexbuilder_App = (function($) {
 
     Rex_Navigator.init();
     if ( !Rexbuilder_Util.editorMode ) {
-      Rexbuilder_FormFixes.init();
+      if ('undefined' !== typeof Rexbuilder_FormFixes) {
+        Rexbuilder_FormFixes.init();
+      }
     }
 
 		if ( Rexbuilder_Util.editorMode ) {
