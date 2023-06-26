@@ -8,10 +8,30 @@
  */
 var CKEditor_Handler = (function ($) {
 	let editorInstance
+	const TEXT_WRAP_CLASSNAME = 'text-wrap'
+	let EDITOR_STATE = 'deactive'
 
-	function createEditorInstance() {
+	function isUndefined(el) {
+		return 'undefined' === typeof el
+	}
+
+	function isNull(el) {
+		return null === el
+	}
+
+	function isNil(el) {
+		return isUndefined(el) || isNull(el)
+	}
+
+	function isEmpty(el) {
+		return '' !== el
+	}
+
+	function createEditorInstance(el) {
+		if ('deactive' !== EDITOR_STATE) return
+
 		editorInstance = CKEDITOR.BalloonEditor
-			.create('', {
+			.create(el, {
 				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo],
 				toolbar: [
 					'heading',
@@ -70,14 +90,34 @@ var CKEditor_Handler = (function ($) {
 			})
 			.then(editor => {
 				console.log('Editor was initialized', editor);
+				EDITOR_STATE = 'active'
 			})
 			.catch(error => {
 				console.error(error.stack);
 			});
 	}
 
+	function initListeners() {
+		document.addEventListener('rexpansive:perfect-grid-gallery:block:dbclick', function(event) {
+			const block = event.detail.block
+			if (isNil(block)) {
+				console.warn('[CKEditor_Handler/initListeners]: block element  is nil')
+				return
+			}
+			const textWrap = block.querySelector(`.${TEXT_WRAP_CLASSNAME}`)
+
+			if (isNil(textWrap)) {
+				console.warn('[CKEditor_Handler/initListeners]: textWrap element is nil')
+				return
+			}
+
+			createEditorInstance(textWrap)
+		})
+	}
+
 	function init() {
-		createEditorInstance()
+		initListeners()
+		// createEditorInstance()
 	}
 
 	function load() { }

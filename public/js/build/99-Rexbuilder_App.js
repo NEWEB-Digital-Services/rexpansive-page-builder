@@ -1242,7 +1242,7 @@ var Rexbuilder_App = (function($) {
       Rexbuilder_Block.init();
       Rexbuilder_Block_Editor.init();
       Rexbuilder_Live_Utilities.addBuilderListeners();
-			TextEditor.init();
+			// TextEditor.init();
       CKEditor_Handler.init()
       Rexbuilder_Section_Editor.triggerRowDataChange();
     } else {
@@ -1260,7 +1260,7 @@ var Rexbuilder_App = (function($) {
 		if ( Rexbuilder_Util.editorMode ) {
 			// Fix needed because grids are launched before TextEditor
 			$grids.each(function (index, grid) {
-				TextEditor.launchTextEditors( grid );
+				// TextEditor.launchTextEditors( grid );
 			});
 		}
 
@@ -1381,7 +1381,7 @@ var Rexbuilder_App = (function($) {
     // @bugfix on other layouts than desktop with mixed customization definitions
 
     if ( Rexbuilder_Util.editorMode ) {
-      TextEditor.load();
+      // TextEditor.load();
       CKEditor_Handler.load()
       Rexbuilder_Util_Editor.load();
 			Rexbuilder_Live_Utilities.load();

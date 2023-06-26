@@ -406,6 +406,15 @@
    * @version   2.0.13  prevent double click on blocks with slider
    */
   function handleDbClick(e) {
+
+    // todo: insert me at correct position down below
+    const blockDbClickEvent = new CustomEvent('rexpansive:perfect-grid-gallery:block:dbclick', {
+      detail: {
+        block: e.currentTarget
+      }
+    })
+    document.dispatchEvent(blockDbClickEvent)
+
     if ( 'default' !== Rexbuilder_Util.activeLayout ) return false;
 
     if (e.currentTarget.classList.contains('block-has-slider')) return false;

@@ -3379,6 +3379,7 @@ var TextEditor = (function ($) {
 			data: {},
 			editable: textWrap
 		});
+		console.log('[TextEditor/focusTextWrap]')
 
 		textWrap.focus();
 	}
