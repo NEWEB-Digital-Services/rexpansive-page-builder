@@ -137,6 +137,9 @@ class Rexbuilder_Public {
 
 				wp_enqueue_style('spectrum-style', REXPANSIVE_BUILDER_URL . $folder . 'css/spectrum.css', array(), $ver, 'all');
 				wp_enqueue_style('medium-editor-style', REXPANSIVE_BUILDER_URL . $folder . 'css/medium-editor.css', array(), $ver, 'all');
+
+				// CKEDITOR5
+				wp_enqueue_style('ckeditor5-style', REXPANSIVE_BUILDER_URL . 'public/js/vendor/ckeditor5/ckeditor5-bundle.css', array(), $ver, 'all');
 			}
 
 			wp_enqueue_style('photoswipe-skin', REXPANSIVE_BUILDER_URL . $folder . 'Photoswipe/default-skin/default-skin.css', array(), $ver, 'all');
@@ -235,6 +238,9 @@ class Rexbuilder_Public {
 				wp_enqueue_script('medium-editor', REXPANSIVE_BUILDER_URL . 'public/js/vendor/medium-editor.js', array('jquery'), $ver, true);
 				wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . 'public/js/vendor/medium-editor-toolbar-states.min.js', array('jquery'), $ver, true);
 
+				// CKEDITOR5
+				wp_enqueue_script('ckeditor5', REXPANSIVE_BUILDER_URL . 'public/js/vendor/ckeditor5/ckeditor5-bundle.umd.js', array(), $ver, true);
+
 				// Rexbuilder
 				wp_enqueue_script('0-Rexbuilder_Live_Templates', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Templates.js', array('jquery'), $ver, true);
 				wp_enqueue_script('0-Rexbuilder_Live_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Utilities.js', array('jquery'), $ver, true);
@@ -245,6 +251,7 @@ class Rexbuilder_Public {
 				wp_enqueue_script('1-RexOverlayPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Overlay_Palette.js', array('jquery'), $ver, true);
 
 				wp_enqueue_script('textEditor', REXPANSIVE_BUILDER_URL . 'public/js/live/2-Text_Editor.js', array('jquery'), $ver, true);
+				wp_enqueue_script('ckeditorHandler', REXPANSIVE_BUILDER_URL . 'public/js/live/2-CKEditor_Handler.js', array(), $ver, true);
 
 				wp_enqueue_script('section-js', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Section.js', array('jquery'), $ver, true);
 				wp_enqueue_script('section-editor-js', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Section_Editor.js', array('jquery'), $ver, true);

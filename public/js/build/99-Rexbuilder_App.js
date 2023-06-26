@@ -1243,6 +1243,7 @@ var Rexbuilder_App = (function($) {
       Rexbuilder_Block_Editor.init();
       Rexbuilder_Live_Utilities.addBuilderListeners();
 			TextEditor.init();
+      CKEditor_Handler.init()
       Rexbuilder_Section_Editor.triggerRowDataChange();
     } else {
 			// fixes for front end only
@@ -1381,6 +1382,7 @@ var Rexbuilder_App = (function($) {
 
     if ( Rexbuilder_Util.editorMode ) {
       TextEditor.load();
+      CKEditor_Handler.load()
       Rexbuilder_Util_Editor.load();
 			Rexbuilder_Live_Utilities.load();
     } else {
