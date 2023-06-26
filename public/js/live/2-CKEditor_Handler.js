@@ -7,8 +7,11 @@
  * @since 2.2.0
  */
 var CKEditor_Handler = (function ($) {
-	let editorInstance
 	const TEXT_WRAP_CLASSNAME = 'text-wrap'
+	const PERFECT_GRID_GALLERY_CLASSNAME = 'perfect-grid-gallery'
+	const GRID_STACK_ITEM_CLASSNAME = 'grid-stack-item'
+
+	let editorInstance
 	let EDITOR_STATE = 'deactive'
 
 	function isUndefined(el) {
@@ -26,6 +29,15 @@ var CKEditor_Handler = (function ($) {
 	function isEmpty(el) {
 		return '' !== el
 	}
+
+	function parents(el, selector) {
+		const parents = [];
+		while ((el = el.parentNode) && el !== document) {
+			if (!selector || el.matches(selector)) parents.push(el);
+		}
+		return parents;
+	}
+
 
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.BalloonEditor
@@ -91,14 +103,38 @@ var CKEditor_Handler = (function ($) {
 				editorInstance = editor
 				EDITOR_STATE = 'active'
 
-				editorInstance.ui.focusTracker.on('change:isFocused', function(eventInfo, name, value, oldValue) {
+				editorInstance.ui.focusTracker.on('change:isFocused', function (eventInfo, name, value, oldValue) {
 					if (value) return
+					foo(editorInstance.sourceElement)
 					destroyEditorInstance(editorInstance.sourceElement)
 				})
 			})
 			.catch(error => {
 				console.error(error.stack);
 			});
+	}
+
+	function foo(editorElement) {
+		const perfectGridGallery = parents(editorElement, `.${PERFECT_GRID_GALLERY_CLASSNAME}`)[0]
+		const $perfectGridGallery = $(perfectGridGallery)
+		const perfectGridGalleryInstance = $perfectGridGallery.data('plugin_perfectGridGalleryEditor');
+
+		if (isNil(perfectGridGalleryInstance)) return;
+
+		perfectGridGalleryInstance.section.classList.remove('block-editing')
+
+		const block = parents(editorElement, `.${GRID_STACK_ITEM_CLASSNAME}`)[0]
+		block.classList.remove('item--me-focus')
+
+		// View or hide the little T icon
+		Rexbuilder_Block_Editor.updateTextTool(editorElement);
+
+		// Enable dragging on gristack
+		perfectGridGalleryInstance.properties.gridstackInstance.enableMove(true);
+
+		Rexbuilder_Util_Editor.activateElementFocus = false;
+		Rexbuilder_Util_Editor.endEditingElement();
+		Rexbuilder_Util_Editor.activateElementFocus = true;
 	}
 
 	function destroyEditorInstance(editorContentElement) {
@@ -111,7 +147,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function initListeners() {
-		document.addEventListener('rexpansive:perfect-grid-gallery:block:dbclick', function(event) {
+		document.addEventListener('rexpansive:perfect-grid-gallery:block:dbclick', function (event) {
 			if ('deactive' !== EDITOR_STATE) return
 
 			const block = event.detail.block
@@ -129,7 +165,7 @@ var CKEditor_Handler = (function ($) {
 			createEditorInstance(textWrap)
 		})
 
-		document.addEventListener('rexpansive:perfect-grid-gallery:block:blur', function(event) {
+		document.addEventListener('rexpansive:perfect-grid-gallery:block:blur', function (event) {
 			if ('active' !== EDITOR_STATE) return
 
 			if (isNil(editorInstance)) {
@@ -152,7 +188,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 17')
+		console.log('CKEditor_Handler 19')
 		initListeners()
 	}
 
@@ -162,4 +198,4 @@ var CKEditor_Handler = (function ($) {
 		init: init,
 		load: load
 	}
-}) (jQuery);
+})(jQuery);
