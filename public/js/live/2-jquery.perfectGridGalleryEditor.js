@@ -384,15 +384,6 @@
    * @deprecated 2.0.4
    */
   function handleBlur(e) {
-    console.log('handle blur')
-    const blockDbClickEvent = new CustomEvent('rexpansive:perfect-grid-gallery:block:blur', {
-      detail: {
-        block: e.currentTarget
-      }
-    })
-    document.dispatchEvent(blockDbClickEvent)
-    return
-
     var $current_textWrap = $(e.currentTarget);
     var $top_tools = $current_textWrap.parents('.grid-stack-item').find('.block-toolBox__editor-tools');
     var $T_tool = $top_tools.find('.edit-block-content');
@@ -415,14 +406,6 @@
    * @version   2.0.13  prevent double click on blocks with slider
    */
   function handleDbClick(e) {
-
-    // todo: insert me at correct position down below
-    const blockDbClickEvent = new CustomEvent('rexpansive:perfect-grid-gallery:block:dbclick', {
-      detail: {
-        block: e.currentTarget
-      }
-    })
-    document.dispatchEvent(blockDbClickEvent)
 
     if ( 'default' !== Rexbuilder_Util.activeLayout ) return false;
 
@@ -478,6 +461,13 @@
           Rexbuilder_Live_Utilities.setEndOfContenteditable($textWrap[0]);
         }
       }
+
+      const blockDbClickEvent = new CustomEvent('rexpansive:perfect-grid-gallery:block:dbclick', {
+        detail: {
+          block: e.currentTarget
+        }
+      })
+      document.dispatchEvent(blockDbClickEvent)
       Rexbuilder_Util_Editor.startEditingElement();
     }
   }
@@ -577,7 +567,7 @@
   // Avoid Plugin.prototype conflicts
   $.extend(perfectGridGalleryEditor.prototype, {
     init: function() {
-      console.log('init 4')
+      console.log('init 10')
       if ( this.$section.children(".section-data").attr("data-row_edited_live") != "true" ) {
         this.properties.editedFromBackend = true;
       }
