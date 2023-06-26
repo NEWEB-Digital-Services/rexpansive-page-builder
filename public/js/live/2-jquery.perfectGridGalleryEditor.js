@@ -384,6 +384,15 @@
    * @deprecated 2.0.4
    */
   function handleBlur(e) {
+    console.log('handle blur')
+    const blockDbClickEvent = new CustomEvent('rexpansive:perfect-grid-gallery:block:blur', {
+      detail: {
+        block: e.currentTarget
+      }
+    })
+    document.dispatchEvent(blockDbClickEvent)
+    return
+
     var $current_textWrap = $(e.currentTarget);
     var $top_tools = $current_textWrap.parents('.grid-stack-item').find('.block-toolBox__editor-tools');
     var $T_tool = $top_tools.find('.edit-block-content');
@@ -568,6 +577,7 @@
   // Avoid Plugin.prototype conflicts
   $.extend(perfectGridGalleryEditor.prototype, {
     init: function() {
+      console.log('init 4')
       if ( this.$section.children(".section-data").attr("data-row_edited_live") != "true" ) {
         this.properties.editedFromBackend = true;
       }
@@ -614,7 +624,7 @@
       // add the click listener to the row, it's useless on the single element
       this.$element.on('click', '.perfect-grid-item', handleClick);
       // add the blur listener to the row, it's useless on the single element
-      // this.$element.on('blur','.medium-editor-element', handleBlur.bind(this));
+      this.$element.on('blur','.medium-editor-element', handleBlur.bind(this));
 
       this._updateElementsSizeViewers();
       this._linkResizeEvents();

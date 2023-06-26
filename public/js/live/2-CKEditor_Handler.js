@@ -28,9 +28,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function createEditorInstance(el) {
-		if ('deactive' !== EDITOR_STATE) return
-
-		editorInstance = CKEDITOR.BalloonEditor
+		const editor = CKEDITOR.BalloonEditor
 			.create(el, {
 				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo],
 				toolbar: [
@@ -90,6 +88,7 @@ var CKEditor_Handler = (function ($) {
 			})
 			.then(editor => {
 				console.log('Editor was initialized', editor);
+				editorInstance = editor
 				EDITOR_STATE = 'active'
 			})
 			.catch(error => {
@@ -97,8 +96,19 @@ var CKEditor_Handler = (function ($) {
 			});
 	}
 
+	function destroyEditorInstance(editorContentElement) {
+		const editorData = editorInstance.data.get()
+		editorInstance.destroy().then(() => {
+			editorInstance = null
+			editorContentElement.innerHTML = editorData
+			EDITOR_STATE = 'deactive'
+		})
+	}
+
 	function initListeners() {
 		document.addEventListener('rexpansive:perfect-grid-gallery:block:dbclick', function(event) {
+			if ('deactive' !== EDITOR_STATE) return
+
 			const block = event.detail.block
 			if (isNil(block)) {
 				console.warn('[CKEditor_Handler/initListeners]: block element  is nil')
@@ -113,11 +123,60 @@ var CKEditor_Handler = (function ($) {
 
 			createEditorInstance(textWrap)
 		})
+
+		document.addEventListener('rexpansive:perfect-grid-gallery:block:blur', function(event) {
+			console.log('rexpansive:perfect-grid-gallery:block:blur')
+			if ('active' !== EDITOR_STATE) return
+
+			if (isNil(editorInstance)) {
+				console.warn('[CKEditor_Handler/initListeners]: editorInstance is nil')
+				return
+			}
+
+			const block = event.detail.block
+			if (isNil(block)) {
+				console.warn('[CKEditor_Handler/initListeners]: block element is nil')
+				return
+			}
+			const textWrap = block.querySelector(`.${TEXT_WRAP_CLASSNAME}`)
+
+			if (isNil(textWrap)) {
+				console.warn('[CKEditor_Handler/initListeners]: textWrap element is nil')
+				return
+			}
+
+			destroyEditorInstance(textWrap)
+		})
+	}
+
+	function mockEditorDestroy() {
+		const btn = document.createElement('button')
+		btn.innerText = 'Destroy'
+		const builderContent = document.querySelector('.rexbuilder-live-content')
+		builderContent.prepend(btn)
+
+		btn.addEventListener('click', function() {
+			if (isNil(editorInstance)) {
+				console.warn('[CKEditor_Handler/initListeners]: editorInstance is nil')
+				return
+			}
+
+			const textWrap = editorInstance.sourceElement
+
+			if (isNil(textWrap)) {
+				console.warn('[CKEditor_Handler/initListeners]: textWrap element is nil')
+				return
+			}
+
+			if ('active' !== EDITOR_STATE) return
+			destroyEditorInstance(textWrap)
+		})
 	}
 
 	function init() {
+		console.log('CKEditor_Handler 6')
 		initListeners()
-		// createEditorInstance()
+		mockEditorDestroy()
 	}
 
 	function load() { }
