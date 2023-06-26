@@ -90,6 +90,11 @@ var CKEditor_Handler = (function ($) {
 				console.log('Editor was initialized', editor);
 				editorInstance = editor
 				EDITOR_STATE = 'active'
+
+				editorInstance.ui.focusTracker.on('change:isFocused', function(eventInfo, name, value, oldValue) {
+					if (value) return
+					destroyEditorInstance(editorInstance.sourceElement)
+				})
 			})
 			.catch(error => {
 				console.error(error.stack);
@@ -125,7 +130,6 @@ var CKEditor_Handler = (function ($) {
 		})
 
 		document.addEventListener('rexpansive:perfect-grid-gallery:block:blur', function(event) {
-			console.log('rexpansive:perfect-grid-gallery:block:blur')
 			if ('active' !== EDITOR_STATE) return
 
 			if (isNil(editorInstance)) {
@@ -144,39 +148,12 @@ var CKEditor_Handler = (function ($) {
 				console.warn('[CKEditor_Handler/initListeners]: textWrap element is nil')
 				return
 			}
-
-			destroyEditorInstance(textWrap)
-		})
-	}
-
-	function mockEditorDestroy() {
-		const btn = document.createElement('button')
-		btn.innerText = 'Destroy'
-		const builderContent = document.querySelector('.rexbuilder-live-content')
-		builderContent.prepend(btn)
-
-		btn.addEventListener('click', function() {
-			if (isNil(editorInstance)) {
-				console.warn('[CKEditor_Handler/initListeners]: editorInstance is nil')
-				return
-			}
-
-			const textWrap = editorInstance.sourceElement
-
-			if (isNil(textWrap)) {
-				console.warn('[CKEditor_Handler/initListeners]: textWrap element is nil')
-				return
-			}
-
-			if ('active' !== EDITOR_STATE) return
-			destroyEditorInstance(textWrap)
 		})
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 6')
+		console.log('CKEditor_Handler 17')
 		initListeners()
-		mockEditorDestroy()
 	}
 
 	function load() { }

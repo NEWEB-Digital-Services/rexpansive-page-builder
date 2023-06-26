@@ -624,7 +624,7 @@
       // add the click listener to the row, it's useless on the single element
       this.$element.on('click', '.perfect-grid-item', handleClick);
       // add the blur listener to the row, it's useless on the single element
-      this.$element.on('blur','.medium-editor-element', handleBlur.bind(this));
+      // this.$element.on('blur','.medium-editor-element', handleBlur.bind(this));
 
       this._updateElementsSizeViewers();
       this._linkResizeEvents();
