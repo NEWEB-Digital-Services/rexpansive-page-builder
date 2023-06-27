@@ -60,7 +60,8 @@ var Rexbuilder_Section = (function($) {
 
     for( i=0; i<totBlocks; i++ ) {
       if ( Rexbuilder_Util.hasClass( blocks[i], 'block-has-slider' ) ) continue;
-      TextEditor.addElementToTextEditor( blocks[i].querySelector(".text-wrap") );
+      // todo: use new editor
+      // TextEditor.addElementToTextEditor( blocks[i].querySelector(".text-wrap") );
     }
   }
 

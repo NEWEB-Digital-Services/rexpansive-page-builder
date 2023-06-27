@@ -22,7 +22,8 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
     var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout);
     var el = $el[0];
     $el.find(".grid-item-content").addClass("empty-content");
-    TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
+      // todo: use new editor
+    // TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
 
     // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
     // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($el.find('input[name=edit-block-overlay-color]')[0]);
@@ -75,7 +76,8 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
 
     var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, new_w, new_h, "text");
     var el = $el[0];
-    TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
+    // todo: use new editor
+    // TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
 
     Rexbuilder_Live_Utilities.launchTooltips();
 
@@ -139,7 +141,8 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
 
     var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, blockWidth, blockHeight, "text");
 		var el = $el[0];
-    TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
+      // todo: use new editor
+    // TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
 
     Rexbuilder_Live_Utilities.launchTooltips();
     var event = jQuery.Event("dblclick");
@@ -267,7 +270,8 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
       //     galleryInstance.addScrollbar($el);
       // }
       var el = $el[0];
-      TextEditor.addElementToTextEditor(el.querySelector(".text-wrap"));
+      // todo: use new editor
+      // TextEditor.addElementToTextEditor(el.querySelector(".text-wrap"));
 
       // Rexbuilder_Block_Editor.updateBlockTools($el);
       Rexbuilder_Util.editedDataInfo.addBlockData( data.sectionTarget.sectionID, el.getAttribute('data-rexbuilder-block-id') );
@@ -330,7 +334,8 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
         Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
         // galleryInstance.addScrollbar($el);
         var el = $el[0];
-        TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
+      // todo: use new editor
+        // TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
 
         Rexbuilder_Util.editedDataInfo.addBlockData( data.sectionTarget.sectionID, el.getAttribute('data-rexbuilder-block-id') );
       } else {
@@ -359,7 +364,8 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
           //     galleryInstance.addScrollbar($el);
           // }
           var el = $el[0];
-          TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
+      // todo: use new editor
+          // TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
 
           Rexbuilder_Util.editedDataInfo.addBlockData( data.sectionTarget.sectionID, el.getAttribute('data-rexbuilder-block-id') );
         }
@@ -728,7 +734,8 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
       //     galleryEditorInstance.addScrollbar($newBlock);
       // }
       var newBlock = $newBlock[0];
-      TextEditor.addElementToTextEditor( newBlock.querySelector(".text-wrap") );
+      // todo: use new editor
+      // TextEditor.addElementToTextEditor( newBlock.querySelector(".text-wrap") );
 		}
 
     // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
@@ -919,7 +926,8 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
 			//     galleryEditorInstance.addScrollbar($newBlock);
 			// }
 			var newBlock = $newBlock[0];
-			TextEditor.addElementToTextEditor(newBlock.querySelector('.text-wrap'));
+      // todo: use new editor
+			// TextEditor.addElementToTextEditor(newBlock.querySelector('.text-wrap'));
 		}
 		// Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
 		// Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($newBlock.find('input[name=edit-block-overlay-color]')[0]);
@@ -1049,7 +1057,8 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
       //     galleryEditorInstance.addScrollbar($newBlock);
       // }
       var newBlock = $newBlock[0];
-      TextEditor.addElementToTextEditor( newBlock.querySelector(".text-wrap") );
+      // todo: use new editor
+      // TextEditor.addElementToTextEditor( newBlock.querySelector(".text-wrap") );
     }
     // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
     // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($newBlock.find('input[name=edit-block-overlay-color]')[0]);
@@ -1203,6 +1212,7 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
    * @since  2.0.3
    */
   function init() {
+    console.log('Rexbuilder_CreateBlocks: 2')
     addListeners();
   }
 
