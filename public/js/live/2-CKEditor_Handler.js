@@ -96,7 +96,8 @@ var CKEditor_Handler = (function ($) {
 						'|',
 						'imageTextAlternative'
 					]
-				}
+				},
+				placeholder: 'Type your text here'
 			})
 			.then(editor => {
 				console.log('Editor was initialized', editor);
@@ -190,7 +191,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 20')
+		console.log('CKEditor_Handler 21')
 		initListeners()
 	}
 
