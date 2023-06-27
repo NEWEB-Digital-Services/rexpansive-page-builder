@@ -103,6 +103,8 @@ var CKEditor_Handler = (function ($) {
 				editorInstance = editor
 				EDITOR_STATE = 'active'
 
+				editorInstance.focus()
+
 				editorInstance.ui.focusTracker.on('change:isFocused', function (eventInfo, name, value, oldValue) {
 					if (value) return
 					foo(editorInstance.sourceElement)
@@ -188,7 +190,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 19')
+		console.log('CKEditor_Handler 20')
 		initListeners()
 	}
 
