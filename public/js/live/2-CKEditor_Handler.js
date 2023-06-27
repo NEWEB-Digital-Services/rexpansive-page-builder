@@ -218,15 +218,49 @@ var CKEditor_Handler = (function ($) {
 		})
 	}
 
+	function foo(data) {
+		console.log(data)
+		console.log(EDITOR_STATE)
+		console.log(editorInstance)
+
+		if ('deactive' === EDITOR_STATE) return
+		if (isNil(editorInstance)) return
+
+		editorInstance.model.change((writer) => {
+			const imageElement = writer.createElement('image', {
+				src: data.imgData.urlImage
+			});
+
+			// Inserisci l'elemento immagine nel contenuto dell'editor
+			editorInstance.model.insertContent(imageElement, editorInstance.model.document.selection);
+
+			// Imposta il cursore dopo l'immagine
+			writer.setSelection(imageElement, 'after');
+		})
+	}
+
+	function handleEvent(event) {
+		console.log(event)
+		switch (event.name) {
+			case 'rexlive:ckeditor:inlineImageEdit':
+				foo(event.data)
+				break;
+		
+			default:
+				break;
+		}
+	}
+
 	function init() {
-		console.log('CKEditor_Handler 21')
+		console.log('CKEditor_Handler 31')
 		initListeners()
 	}
 
 	function load() { }
 
 	return {
-		init: init,
-		load: load
+		init,
+		load,
+		handleEvent
 	}
 })(jQuery);

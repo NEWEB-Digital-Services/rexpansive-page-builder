@@ -767,11 +767,16 @@ var Rexbuilder_Block_Editor = (function($) {
      * @since 2.0.0
      */
     Rexbuilder_Util.$document.on('rexlive:inlineImageEdit',function(e) {
-      TextEditor.triggerMEEvent({
-        name:"rexlive:mediumEditor:inlineImageEdit",
+      CKEditor_Handler.handleEvent({
+        name: "rexlive:ckeditor:inlineImageEdit",
         data: e.settings.data_to_send,
         editable: null
-      });
+      })
+      // TextEditor.triggerMEEvent({
+      //   name:"rexlive:mediumEditor:inlineImageEdit",
+      //   data: e.settings.data_to_send,
+      //   editable: null
+      // });
     });
 
     /**
@@ -1938,6 +1943,7 @@ var Rexbuilder_Block_Editor = (function($) {
    * Initing the block toolbar
    */
   var init = function() {
+    console.log('Rexbuilder_Block_Editor: 2')
     block_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum';
     _attachEvents();
     // _setTools();
