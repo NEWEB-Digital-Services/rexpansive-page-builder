@@ -38,12 +38,42 @@ var CKEditor_Handler = (function ($) {
 		return parents;
 	}
 
+	class WPImageUpload extends CKEDITOR.Plugin {
+		init() {
+			console.log('WPImageUpload initialized')
+			const editor = this.editor
+			editor.ui.componentFactory.add('wpImageUpload', () => {
+				const button = new CKEDITOR.ButtonView()
+				button.set({
+					tooltip: 'WP Image Upload',
+					withText: false,
+					icon: '<svg xmlns="http://www.w3.org/2000/svg" class="ck ck-icon ck-reset_all-excluded ck-icon_inherit-color ck-button__icon" viewBox="0 0 20 20" fill="#000"><path d="M6.91 10.54c.26-.23.64-.21.88.03l3.36 3.14 2.23-2.06a.64.64 0 0 1 .87 0l2.52 2.97V4.5H3.2v10.12l3.71-4.08zm10.27-7.51c.6 0 1.09.47 1.09 1.05v11.84c0 .59-.49 1.06-1.09 1.06H2.79c-.6 0-1.09-.47-1.09-1.06V4.08c0-.58.49-1.05 1.1-1.05h14.38zm-5.22 5.56a1.96 1.96 0 1 1 3.4-1.96 1.96 1.96 0 0 1-3.4 1.96z" fill="#000"></path></svg>',
+					class: 'ckeditor-wp-image-upload'
+				})
+
+				button.on('execute', () => {
+					console.log('upload wp media')
+					const data = {
+						eventName: 'rexlive:openMEImageUploader',
+						img_data: {}
+					};
+
+					Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+				})
+
+				return button
+			})
+		}
+	}
 
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.BalloonEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload],
 				toolbar: [
+					'undo',
+					'redo',
+					'|',
 					'heading',
 					'bold',
 					'italic',
@@ -52,9 +82,7 @@ var CKEditor_Handler = (function ($) {
 					'fontColor',
 					'horizontalLine',
 					'link',
-					'|',
-					'undo',
-					'redo'
+					'wpImageUpload'
 				],
 				heading: {
 					options: [
