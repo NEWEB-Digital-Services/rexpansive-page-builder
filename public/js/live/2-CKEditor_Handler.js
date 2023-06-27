@@ -12,7 +12,6 @@ var CKEditor_Handler = (function ($) {
 	const GRID_STACK_ITEM_CLASSNAME = 'grid-stack-item'
 
 	let editorInstance
-	let EDITOR_STATE = 'deactive'
 
 	function isUndefined(el) {
 		return 'undefined' === typeof el
@@ -44,12 +43,12 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
-	class Deactive extends CKEditorState {
+	class DeactiveState extends CKEditorState {
 		handleAction(context, action) {
-			if (context.currentState instanceof Deactive) {
+			if (context.currentState instanceof DeactiveState) {
 				switch (action) {
-					case 'active':
-						context.transitionTo(new Active())
+					case 'ACTIVE':
+						context.transitionTo(new ActiveState())
 						break
 					default:
 						break
@@ -58,16 +57,46 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
-	class Active extends CKEditorState {
+	class ActiveState extends CKEditorState {
 		handleAction(context, action) {
-			if (context.currentState instanceof Active) {
+			if (context.currentState instanceof ActiveState) {
 				switch (action) {
-					case 'deactive':
-						context.transitionTo(new Deactive())
+					case 'DEACTIVE':
+						context.transitionTo(new DeactiveState())
 						break;
+					case 'OPEN_WP_IMAGE_UPLOAD':
+						context.transitionTo(new WPImageUploadOpenState())
 					default:
 						break;
 				}
+			}
+		}
+	}
+
+	class WPImageUploadOpenState extends CKEditorState {
+		handleAction(context, action) {
+			if (!(context.currentState instanceof ActiveState)) return
+			switch (action) {
+				case 'CLOSE_WP_IMAGE_UPLOAD':
+					context.transitionTo(new ActiveState())
+					break;
+			
+				default:
+					break;
+			}
+		}
+	}
+
+	class WPImageUploadCloseState extends CKEditorState {
+		handleAction(context, action) {
+			if (!(context.currentState instanceof WPImageUploadOpenState)) return
+			switch (action) {
+				case 'CLOSE_WP_IMAGE_UPLOAD':
+					context.transitionTo(new ActiveState())
+					break;
+			
+				default:
+					break;
 			}
 		}
 	}
@@ -85,10 +114,69 @@ var CKEditor_Handler = (function ($) {
 			console.log(`Transition to ${newState.constructor.name}`)
 			this.currentState = newState
 		}
+
+		getCurrentState() {
+			return this.currentState
+		}
 	}
 
-	const context = new Context(new Deactive())
+	class CKEditorStateMachine {
+		constructor() {
+			this.context = new Context(new DeactiveState())
+			this.editorInstance = null
+		}
+
+		setEditorInstance(editor) {
+			this.editorInstance = editor
+		}
+
+		clearEditorInstance() {
+			this.editorInstance = null
+		}
+
+		isEditorActive() {
+			return this.context.getCurrentState() instanceof ActiveState
+		}
+
+		isEditorDeactive() {
+			return this.context.getCurrentState() instanceof DeactiveState
+		}
+
+		isWpImageUploadOpen() {
+			return this.context.getCurrentState() instanceof WPImageUploadOpenState
+		}
+
+		toActiveState() {
+			this.context.performAction('ACTIVE')
+		}
+
+		toDeactiveState() {
+			this.context.performAction('DEACTIVE')
+		}
+
+		toWpImageUploadOpen() {
+			this.context.performAction('OPEN_WP_IMAGE_UPLOAD')
+		}
+
+		toWpImageUploadClose() {
+			this.context.performAction('CLOSE_WP_IMAGE_UPLOAD')
+		}
+	}
+
+	const context = new Context(new DeactiveState())
 	console.log(context)
+
+	function isEditorActive() {
+		return context.getCurrentState() instanceof ActiveState
+	}
+
+	function isEditorDeactive() {
+		return context.getCurrentState() instanceof DeactiveState
+	}
+
+	function isWpImageUploadOpen() {
+		return context.getCurrentState() instanceof WPImageUploadOpenState
+	}
 
 	class WPImageUpload extends CKEDITOR.Plugin {
 		init() {
@@ -111,6 +199,7 @@ var CKEditor_Handler = (function ($) {
 					};
 
 					Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+					context.performAction('OPEN_WP_IMAGE_UPLOAD')
 				})
 
 				return button
@@ -182,17 +271,16 @@ var CKEditor_Handler = (function ($) {
 			.then(editor => {
 				console.log('Editor was initialized', editor);
 				editorInstance = editor
-				EDITOR_STATE = 'active'
-				context.performAction('active')
+				context.performAction('ACTIVE')
 
 				editorInstance.focus()
 
 				editorInstance.ui.focusTracker.on('change:isFocused', function (eventInfo, name, value, oldValue) {
-					console.log(eventInfo.source)
-					console.log(eventInfo.path)
 					if (value) return
-					restoreBlockTools(editorInstance.sourceElement)
-					destroyEditorInstance(editorInstance.sourceElement)
+					if (isEditorActive()) {
+						restoreBlockTools(editorInstance.sourceElement)
+						destroyEditorInstance(editorInstance.sourceElement)
+					}
 				})
 			})
 			.catch(error => {
@@ -228,14 +316,13 @@ var CKEditor_Handler = (function ($) {
 		editorInstance.destroy().then(() => {
 			editorInstance = null
 			editorContentElement.innerHTML = editorData
-			EDITOR_STATE = 'deactive'
-			context.performAction('deactive')
+			context.performAction('DEACTIVE')
 		})
 	}
 
 	function initListeners() {
 		document.addEventListener('rexpansive:perfect-grid-gallery:block:dbclick', function (event) {
-			if ('deactive' !== EDITOR_STATE) return
+			if (!isEditorDeactive()) return
 
 			const block = event.detail.block
 			if (isNil(block)) {
@@ -275,24 +362,32 @@ var CKEditor_Handler = (function ($) {
 		})
 	}
 
-	function foo(data) {
-		console.log(data)
-		console.log(EDITOR_STATE)
-		console.log(editorInstance)
+	function handleInlineImageEdit(data) {
+		// console.log(data)
+		// console.log(editorInstance)
 
-		if ('deactive' === EDITOR_STATE) return
-		if (isNil(editorInstance)) return
+		if (isEditorDeactive()) return
+
+		// if (isNil(editorInstance)) return
+
+		editorInstance.focus()
 
 		editorInstance.model.change((writer) => {
 			const imageElement = writer.createElement('image', {
 				src: data.imgData.urlImage
 			});
+			console.log(imageElement)
+			console.log(editorInstance)
+			console.log(editorInstance.model)
+			console.log(editorInstance.model.document)
+			// console.log(editorInstance.model.document.getSelectedContent())
 
-			// Inserisci l'elemento immagine nel contenuto dell'editor
+			// Insert element image in the editor content
 			editorInstance.model.insertContent(imageElement, editorInstance.model.document.selection);
 
-			// Imposta il cursore dopo l'immagine
+			// Set the cursor after the image
 			writer.setSelection(imageElement, 'after');
+			context.performAction('CLOSE_WP_IMAGE_UPLOAD')
 		})
 	}
 
@@ -300,7 +395,7 @@ var CKEditor_Handler = (function ($) {
 		console.log(event)
 		switch (event.name) {
 			case 'rexlive:ckeditor:inlineImageEdit':
-				foo(event.data)
+				handleInlineImageEdit(event.data)
 				break;
 		
 			default:
@@ -309,7 +404,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 31')
+		console.log('CKEditor_Handler 37')
 		initListeners()
 	}
 
