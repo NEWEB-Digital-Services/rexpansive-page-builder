@@ -38,6 +38,58 @@ var CKEditor_Handler = (function ($) {
 		return parents;
 	}
 
+	class CKEditorState {
+		handleAction(context, action) {
+			throw new Error('Method "handleAction" not implemented')
+		}
+	}
+
+	class Deactive extends CKEditorState {
+		handleAction(context, action) {
+			if (context.currentState instanceof Deactive) {
+				switch (action) {
+					case 'active':
+						context.transitionTo(new Active())
+						break
+					default:
+						break
+				}
+			}
+		}
+	}
+
+	class Active extends CKEditorState {
+		handleAction(context, action) {
+			if (context.currentState instanceof Active) {
+				switch (action) {
+					case 'deactive':
+						context.transitionTo(new Deactive())
+						break;
+					default:
+						break;
+				}
+			}
+		}
+	}
+
+	class Context {
+		constructor(initialState) {
+			this.currentState = initialState
+		}
+
+		performAction(action) {
+			this.currentState.handleAction(this, action)
+		}
+
+		transitionTo(newState) {
+			console.log(`Transition to ${newState.constructor.name}`)
+			this.currentState = newState
+		}
+	}
+
+	const context = new Context(new Deactive())
+	console.log(context)
+
 	class WPImageUpload extends CKEDITOR.Plugin {
 		init() {
 			console.log('WPImageUpload initialized')
@@ -131,10 +183,13 @@ var CKEditor_Handler = (function ($) {
 				console.log('Editor was initialized', editor);
 				editorInstance = editor
 				EDITOR_STATE = 'active'
+				context.performAction('active')
 
 				editorInstance.focus()
 
 				editorInstance.ui.focusTracker.on('change:isFocused', function (eventInfo, name, value, oldValue) {
+					console.log(eventInfo.source)
+					console.log(eventInfo.path)
 					if (value) return
 					restoreBlockTools(editorInstance.sourceElement)
 					destroyEditorInstance(editorInstance.sourceElement)
@@ -174,6 +229,7 @@ var CKEditor_Handler = (function ($) {
 			editorInstance = null
 			editorContentElement.innerHTML = editorData
 			EDITOR_STATE = 'deactive'
+			context.performAction('deactive')
 		})
 	}
 
@@ -196,6 +252,7 @@ var CKEditor_Handler = (function ($) {
 			createEditorInstance(textWrap)
 		})
 
+		// @deprecated
 		document.addEventListener('rexpansive:perfect-grid-gallery:block:blur', function (event) {
 			if ('active' !== EDITOR_STATE) return
 
