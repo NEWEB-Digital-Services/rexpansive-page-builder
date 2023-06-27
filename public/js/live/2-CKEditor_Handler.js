@@ -107,7 +107,7 @@ var CKEditor_Handler = (function ($) {
 
 				editorInstance.ui.focusTracker.on('change:isFocused', function (eventInfo, name, value, oldValue) {
 					if (value) return
-					foo(editorInstance.sourceElement)
+					restoreBlockTools(editorInstance.sourceElement)
 					destroyEditorInstance(editorInstance.sourceElement)
 				})
 			})
@@ -116,7 +116,7 @@ var CKEditor_Handler = (function ($) {
 			});
 	}
 
-	function foo(editorElement) {
+	function restoreBlockTools(editorElement) {
 		const perfectGridGallery = parents(editorElement, `.${PERFECT_GRID_GALLERY_CLASSNAME}`)[0]
 		const $perfectGridGallery = $(perfectGridGallery)
 		const perfectGridGalleryInstance = $perfectGridGallery.data('plugin_perfectGridGalleryEditor');
