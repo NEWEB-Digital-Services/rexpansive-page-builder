@@ -11,8 +11,6 @@ var CKEditor_Handler = (function ($) {
 	const PERFECT_GRID_GALLERY_CLASSNAME = 'perfect-grid-gallery'
 	const GRID_STACK_ITEM_CLASSNAME = 'grid-stack-item'
 
-	let editorInstance
-
 	function isUndefined(el) {
 		return 'undefined' === typeof el
 	}
@@ -163,20 +161,7 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
-	const context = new Context(new DeactiveState())
-	console.log(context)
-
-	function isEditorActive() {
-		return context.getCurrentState() instanceof ActiveState
-	}
-
-	function isEditorDeactive() {
-		return context.getCurrentState() instanceof DeactiveState
-	}
-
-	function isWpImageUploadOpen() {
-		return context.getCurrentState() instanceof WPImageUploadOpenState
-	}
+	const ckeditorStateMachine = new CKEditorStateMachine()
 
 	class WPImageUpload extends CKEDITOR.Plugin {
 		init() {
@@ -199,7 +184,7 @@ var CKEditor_Handler = (function ($) {
 					};
 
 					Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-					context.performAction('OPEN_WP_IMAGE_UPLOAD')
+					ckeditorStateMachine.toWpImageUploadOpen()
 				})
 
 				return button
@@ -270,16 +255,16 @@ var CKEditor_Handler = (function ($) {
 			})
 			.then(editor => {
 				console.log('Editor was initialized', editor);
-				editorInstance = editor
-				context.performAction('ACTIVE')
+				ckeditorStateMachine.setEditorInstance(editor)
+				ckeditorStateMachine.toActiveState()
 
-				editorInstance.focus()
+				ckeditorStateMachine.editorInstance.focus()
 
-				editorInstance.ui.focusTracker.on('change:isFocused', function (eventInfo, name, value, oldValue) {
+				ckeditorStateMachine.editorInstance.ui.focusTracker.on('change:isFocused', function (eventInfo, name, value, oldValue) {
 					if (value) return
-					if (isEditorActive()) {
-						restoreBlockTools(editorInstance.sourceElement)
-						destroyEditorInstance(editorInstance.sourceElement)
+					if (ckeditorStateMachine.isEditorActive()) {
+						restoreBlockTools(ckeditorStateMachine.editorInstance.sourceElement)
+						destroyEditorInstance(ckeditorStateMachine.editorInstance.sourceElement)
 					}
 				})
 			})
@@ -312,17 +297,17 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function destroyEditorInstance(editorContentElement) {
-		const editorData = editorInstance.data.get()
-		editorInstance.destroy().then(() => {
-			editorInstance = null
+		const editorData = ckeditorStateMachine.editorInstance.data.get()
+		ckeditorStateMachine.editorInstance.destroy().then(() => {
+			ckeditorStateMachine.clearEditorInstance()
 			editorContentElement.innerHTML = editorData
-			context.performAction('DEACTIVE')
+			ckeditorStateMachine.toDeactiveState()
 		})
 	}
 
 	function initListeners() {
 		document.addEventListener('rexpansive:perfect-grid-gallery:block:dbclick', function (event) {
-			if (!isEditorDeactive()) return
+			if (!ckeditorStateMachine.isEditorDeactive()) return
 
 			const block = event.detail.block
 			if (isNil(block)) {
@@ -363,31 +348,25 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function handleInlineImageEdit(data) {
-		// console.log(data)
-		// console.log(editorInstance)
+		if (ckeditorStateMachine.isEditorDeactive()) return
 
-		if (isEditorDeactive()) return
+		ckeditorStateMachine.editorInstance.focus()
 
-		// if (isNil(editorInstance)) return
-
-		editorInstance.focus()
-
-		editorInstance.model.change((writer) => {
+		ckeditorStateMachine.editorInstance.model.change((writer) => {
 			const imageElement = writer.createElement('image', {
 				src: data.imgData.urlImage
 			});
 			console.log(imageElement)
-			console.log(editorInstance)
-			console.log(editorInstance.model)
-			console.log(editorInstance.model.document)
-			// console.log(editorInstance.model.document.getSelectedContent())
+			console.log(ckeditorStateMachine.editorInstance)
+			console.log(ckeditorStateMachine.editorInstance.model)
+			console.log(ckeditorStateMachine.editorInstance.model.document)
 
 			// Insert element image in the editor content
-			editorInstance.model.insertContent(imageElement, editorInstance.model.document.selection);
+			ckeditorStateMachine.editorInstance.model.insertContent(imageElement, ckeditorStateMachine.editorInstance.model.document.selection);
 
 			// Set the cursor after the image
 			writer.setSelection(imageElement, 'after');
-			context.performAction('CLOSE_WP_IMAGE_UPLOAD')
+			ckeditorStateMachine.toWpImageUploadClose()
 		})
 	}
 
@@ -404,7 +383,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 37')
+		console.log('CKEditor_Handler 38')
 		initListeners()
 	}
 
