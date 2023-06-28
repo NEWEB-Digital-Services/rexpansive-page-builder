@@ -11,22 +11,53 @@ var CKEditor_Handler = (function ($) {
 	const PERFECT_GRID_GALLERY_CLASSNAME = 'perfect-grid-gallery'
 	const GRID_STACK_ITEM_CLASSNAME = 'grid-stack-item'
 
+	/**
+	 * Check if an element is undefined
+	 * @param {Element} el 
+	 * @returns boolean
+	 * @since 2.2.0
+	 */
 	function isUndefined(el) {
 		return 'undefined' === typeof el
 	}
 
+	/**
+	 * Check if an element is null
+	 * @param {Element} el 
+	 * @returns boolean
+	 * @since 2.2.0
+	 */
 	function isNull(el) {
 		return null === el
 	}
 
+	/**
+	 * Check if element is undefined or null
+	 * @param {Element} el 
+	 * @returns boolean
+	 * @since 2.2.0
+	 */
 	function isNil(el) {
 		return isUndefined(el) || isNull(el)
 	}
 
+	/**
+	 * Check if a string is empty
+	 * @param {string} el 
+	 * @returns bool
+	 * @since 2.2.0
+	 */
 	function isEmpty(el) {
 		return '' !== el
 	}
 
+	/**
+	 * Get the parents
+	 * @param {Element} el 
+	 * @param {string} selector 
+	 * @returns Element[]
+	 * @since 2.2.0
+	 */
 	function parents(el, selector) {
 		const parents = [];
 		while ((el = el.parentNode) && el !== document) {
@@ -35,57 +66,76 @@ var CKEditor_Handler = (function ($) {
 		return parents;
 	}
 
+	/**
+	 * Generic Editor State
+	 * @since 2.2.0
+	 */
 	class CKEditorState {
+		/**
+		 * Handle a state machine action
+		 * @param {Context} context 
+		 * @param {string} action 
+		 */
 		handleAction(context, action) {
 			throw new Error('Method "handleAction" not implemented')
 		}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class DeactiveState extends CKEditorState {
+		/**
+		 * Performs an action from deactive: state can only go to active
+		 * @param {Context} context 
+		 * @param {string} action 
+		 */
 		handleAction(context, action) {
-			if (context.currentState instanceof DeactiveState) {
-				switch (action) {
-					case 'ACTIVE':
-						context.transitionTo(new ActiveState())
-						break
-					default:
-						break
-				}
+			if (!(context.currentState instanceof DeactiveState)) return
+			switch (action) {
+				case 'ACTIVE':
+					context.transitionTo(new ActiveState())
+					break
+				default:
+					break
 			}
 		}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class ActiveState extends CKEditorState {
-		handleAction(context, action) {
-			if (context.currentState instanceof ActiveState) {
-				switch (action) {
-					case 'DEACTIVE':
-						context.transitionTo(new DeactiveState())
-						break;
-					case 'OPEN_WP_IMAGE_UPLOAD':
-						context.transitionTo(new WPImageUploadOpenState())
-					default:
-						break;
-				}
-			}
-		}
-	}
-
-	class WPImageUploadOpenState extends CKEditorState {
+		/**
+		 * Performs an action from active: state can go to other tools open
+		 * or to deactive
+		 * @param {Context} context 
+		 * @param {string} action 
+		 */
 		handleAction(context, action) {
 			if (!(context.currentState instanceof ActiveState)) return
 			switch (action) {
-				case 'CLOSE_WP_IMAGE_UPLOAD':
-					context.transitionTo(new ActiveState())
+				case 'DEACTIVE':
+					context.transitionTo(new DeactiveState())
 					break;
-			
+				case 'OPEN_WP_IMAGE_UPLOAD':
+					context.transitionTo(new WPImageUploadOpenState())
 				default:
 					break;
 			}
 		}
 	}
 
-	class WPImageUploadCloseState extends CKEditorState {
+	/**
+	 * @since 2.2.0
+	 */
+	class WPImageUploadOpenState extends CKEditorState {
+		/**
+		 * Performs an action from active: state can go to other tools open
+		 * or to deactive
+		 * @param {Context} context 
+		 * @param {string} action 
+		 */
 		handleAction(context, action) {
 			if (!(context.currentState instanceof WPImageUploadOpenState)) return
 			switch (action) {
@@ -99,25 +149,47 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class Context {
+		/**
+		 * Initial state of the context
+		 * @param {CKEditorState} initialState 
+		 */
 		constructor(initialState) {
 			this.currentState = initialState
 		}
 
+		/**
+		 * Performing an action on a state
+		 * @param {string} action 
+		 */
 		performAction(action) {
 			this.currentState.handleAction(this, action)
 		}
 
+		/**
+		 * Changing state
+		 * @param {CKEditorState} newState 
+		 */
 		transitionTo(newState) {
 			console.log(`Transition to ${newState.constructor.name}`)
 			this.currentState = newState
 		}
 
+		/**
+		 * The current context state
+		 * @returns {CKEditorState} The current state machine state
+		 */
 		getCurrentState() {
 			return this.currentState
 		}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class CKEditorStateMachine {
 		constructor() {
 			this.context = new Context(new DeactiveState())
@@ -132,14 +204,26 @@ var CKEditor_Handler = (function ($) {
 			this.editorInstance = null
 		}
 
+		/**
+		 * The editor is active
+		 * @returns {boolean}
+		 */
 		isEditorActive() {
 			return this.context.getCurrentState() instanceof ActiveState
 		}
 
+		/**
+		 * The editor is deactive
+		 * @returns {boolean}
+		 */
 		isEditorDeactive() {
 			return this.context.getCurrentState() instanceof DeactiveState
 		}
 
+		/**
+		 * The Worpdress image uploader is open
+		 * @returns {boolean}
+		 */
 		isWpImageUploadOpen() {
 			return this.context.getCurrentState() instanceof WPImageUploadOpenState
 		}
@@ -323,28 +407,6 @@ var CKEditor_Handler = (function ($) {
 
 			createEditorInstance(textWrap)
 		})
-
-		// @deprecated
-		document.addEventListener('rexpansive:perfect-grid-gallery:block:blur', function (event) {
-			if ('active' !== EDITOR_STATE) return
-
-			if (isNil(editorInstance)) {
-				console.warn('[CKEditor_Handler/initListeners]: editorInstance is nil')
-				return
-			}
-
-			const block = event.detail.block
-			if (isNil(block)) {
-				console.warn('[CKEditor_Handler/initListeners]: block element is nil')
-				return
-			}
-			const textWrap = block.querySelector(`.${TEXT_WRAP_CLASSNAME}`)
-
-			if (isNil(textWrap)) {
-				console.warn('[CKEditor_Handler/initListeners]: textWrap element is nil')
-				return
-			}
-		})
 	}
 
 	function handleInlineImageEdit(data) {
@@ -383,7 +445,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 38')
+		console.log('CKEditor_Handler 40')
 		initListeners()
 	}
 
