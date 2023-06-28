@@ -6,6 +6,42 @@
  *
  * @since 2.2.0
  */
+
+/**
+ * @typedef {Object} WPImageUploadImgData
+ * @property {number} idImage
+ * @property {string} urlImage
+ * @property {number} width
+ * @property {number} height
+ * @property {string} align
+ */
+
+/**
+ * @typedef {Object} WpImageUploadDisplayData
+ * @property {string} align
+ * @property {string} size
+ * @property {string} link
+ * @property {boolean} canEmbed
+ * @property {string} string
+ * @property {string} url
+ * @property {string[]} classes
+ * @property {string} title
+ * @property {string} linkUrl
+ * @property {string} caption
+ * @property {string} alt
+ * @property {number} width
+ * @property {number} height
+ * @property {string} src
+ * @property {string} captionId
+ * @property {string} previousLink
+ */
+
+/**
+ * @typedef {Object} WPImageUploadData
+ * @property {WPImageUploadImgData} imgData
+ * @property {WpImageUploadDisplayData} displayData
+ */
+
 var CKEditor_Handler = (function ($) {
 	const TEXT_WRAP_CLASSNAME = 'text-wrap'
 	const PERFECT_GRID_GALLERY_CLASSNAME = 'perfect-grid-gallery'
@@ -349,6 +385,8 @@ var CKEditor_Handler = (function ($) {
 
 				ckeditorStateMachine.editorInstance.focus()
 
+				console.log(ckeditorStateMachine.editorInstance.model.schema.getDefinitions())
+
 				ckeditorStateMachine.editorInstance.ui.focusTracker.on('change:isFocused', function (eventInfo, name, value, oldValue) {
 					if (value) return
 					if (ckeditorStateMachine.isEditorActive()) {
@@ -414,8 +452,14 @@ var CKEditor_Handler = (function ($) {
 		})
 	}
 
-	const useUtils = true
+	// const useUtils = true
 
+	/**
+	 * Handling inserting of the image on closing the WP Media Editor
+	 * @param {WPImageUploadData} data 
+	 * @returns void
+	 * @since 2.2.0
+	 */
 	function handleInlineImageEdit(data) {
 		if (ckeditorStateMachine.isEditorDeactive()) return
 
@@ -426,7 +470,24 @@ var CKEditor_Handler = (function ($) {
 			const imageUtils = ckeditorStateMachine.editorInstance.plugins.get('ImageUtils');
 
 			if (!isNil(imageUtils)) {
-				imageUtils.insertImage({ src: data.imgData.urlImage })
+				const imgClasses = data.displayData.classes
+				imgClasses.push(data.imgData.align)
+
+				const insertImageData = { 
+					src: data.imgData.urlImage,
+					title: data.displayData.title,
+					alt: data.displayData.alt,
+					classes: imgClasses,
+					// width: `${data.imgData.width}px`,
+					// height: `${data.imgData.height}px`,
+					attributes: {
+						'data-image-id': data.imgData.idImage.toString(),
+						width: data.imgData.width,
+						height: data.imgData.height
+					}
+				}
+				console.log(insertImageData)
+				imageUtils.insertImage(insertImageData, null, 'imageBlock')
 			} 
 			// } else {
 			// 	const imageElement = writer.createElement('image', {
@@ -446,7 +507,6 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function handleEvent(event) {
-		console.log(event)
 		switch (event.name) {
 			case 'rexlive:ckeditor:inlineImageEdit':
 				handleInlineImageEdit(event.data)
@@ -458,7 +518,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 50')
+		console.log('CKEditor_Handler 60')
 		initListeners()
 	}
 
