@@ -178,7 +178,7 @@ var CKEditor_Handler = (function ($) {
 				case 'CLOSE_WP_IMAGE_UPLOAD':
 					context.transitionTo(new ActiveState())
 					break;
-			
+
 				default:
 					break;
 			}
@@ -285,7 +285,7 @@ var CKEditor_Handler = (function ($) {
 
 	class WPImageUpload extends CKEDITOR.Plugin {
 		init() {
-			console.log('WPImageUpload initialized')
+			this._defineSchema()
 			const editor = this.editor
 			editor.ui.componentFactory.add('wpImageUpload', () => {
 				const button = new CKEDITOR.ButtonView()
@@ -310,6 +310,99 @@ var CKEditor_Handler = (function ($) {
 				return button
 			})
 		}
+
+		_defineSchema() {
+			const schema = this.editor.model.schema
+			console.log(schema)
+			schema.extend('$inlineObject', {
+				allowAttributes: ['class']
+			})
+		}
+	}
+
+	class AbbreviationEditing extends CKEDITOR.Plugin {
+		init() {
+			this._defineSchema();
+			this._defineConverters();
+		}
+		_defineSchema() {
+			const schema = this.editor.model.schema;
+
+			// Extend the text node's schema to accept the abbreviation attribute.
+			schema.extend('$text', {
+				allowAttributes: ['abbreviation']
+			});
+		}
+		_defineConverters() {
+			const conversion = this.editor.conversion;
+
+			// Conversion from a model attribute to a view element
+			conversion.for('downcast').attributeToElement({
+				model: 'abbreviation',
+
+				// Callback function provides access to the model attribute value
+				// and the DowncastWriter
+				view: (modelAttributeValue, conversionApi) => {
+					const { writer } = conversionApi;
+					return writer.createAttributeElement('abbr', {
+						title: modelAttributeValue
+					});
+				}
+			});
+
+			// Conversion from a view element to a model attribute
+			conversion.for('upcast').elementToAttribute({
+				view: {
+					name: 'abbr',
+					attributes: ['title']
+				},
+				model: {
+					key: 'abbreviation',
+
+					// Callback function provides access to the view element
+					value: viewElement => {
+						const title = viewElement.getAttribute('title');
+						return title;
+					}
+				}
+			});
+		}
+	}
+
+	class AbbreviationUI extends CKEDITOR.Plugin {
+		init() {
+			const editor = this.editor;
+
+			// Register the button in the editor's UI component factory.
+			editor.ui.componentFactory.add('abbreviation', () => {
+				const button = new CKEDITOR.ButtonView();
+
+				button.label = 'Abbreviation';
+				button.tooltip = true;
+				button.withText = true;
+
+				this.listenTo(button, 'execute', () => {
+					const title = 'What You See Is What You Get';
+					const abbr = 'WYSIWYG';
+
+					// Change the model to insert the abbreviation.
+					editor.model.change(writer => {
+						editor.model.insertContent(
+							// Create a text node with the abbreviation attribute.
+							writer.createText(abbr, { abbreviation: title })
+						);
+					});
+				});
+
+				return button;
+			});
+		}
+	}
+
+	class Abbreviation extends CKEDITOR.Plugin {
+		static get requires() {
+			return [AbbreviationEditing, AbbreviationUI];
+		}
 	}
 
 	/**
@@ -320,7 +413,7 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.BalloonEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, Abbreviation],
 				toolbar: [
 					'undo',
 					'redo',
@@ -333,7 +426,8 @@ var CKEditor_Handler = (function ($) {
 					'fontColor',
 					'horizontalLine',
 					'link',
-					'wpImageUpload'
+					'wpImageUpload',
+					'abbreviation'
 				],
 				heading: {
 					options: [
@@ -452,7 +546,7 @@ var CKEditor_Handler = (function ($) {
 		})
 	}
 
-	// const useUtils = true
+	const useUtils = false
 
 	/**
 	 * Handling inserting of the image on closing the WP Media Editor
@@ -466,41 +560,56 @@ var CKEditor_Handler = (function ($) {
 		ckeditorStateMachine.editorInstance.focus()
 
 		ckeditorStateMachine.editorInstance.model.change((writer) => {
-			// if (useUtils) {
-			const imageUtils = ckeditorStateMachine.editorInstance.plugins.get('ImageUtils');
+			const imgClasses = data.displayData.classes
+			imgClasses.push(data.imgData.align)
 
-			if (!isNil(imageUtils)) {
-				const imgClasses = data.displayData.classes
-				imgClasses.push(data.imgData.align)
-
-				const insertImageData = { 
-					src: data.imgData.urlImage,
-					title: data.displayData.title,
-					alt: data.displayData.alt,
-					classes: imgClasses,
-					// width: `${data.imgData.width}px`,
-					// height: `${data.imgData.height}px`,
-					attributes: {
-						'data-image-id': data.imgData.idImage.toString(),
-						width: data.imgData.width,
-						height: data.imgData.height
-					}
+			const insertImageData = {
+				src: data.imgData.urlImage,
+				title: data.displayData.title,
+				alt: data.displayData.alt,
+				// classes: imgClasses,
+				class: imgClasses.join(' '),
+				// width: `${data.imgData.width}px`,
+				// height: `${data.imgData.height}px`,
+				attributes: {
+					'data-image-id': data.imgData.idImage.toString(),
+					width: data.imgData.width,
+					height: data.imgData.height,
+					// classes: imgClasses,
+					// class: imgClasses.join(' '),
 				}
-				console.log(insertImageData)
-				imageUtils.insertImage(insertImageData, null, 'imageBlock')
-			} 
-			// } else {
-			// 	const imageElement = writer.createElement('image', {
-			// 		src: data.imgData.urlImage,
-			// 		alt: data.displayData.alt
-			// 	});
+			}
 
-			// 	// Insert element image in the editor content
-			// 	ckeditorStateMachine.editorInstance.model.insertContent(imageElement, ckeditorStateMachine.editorInstance.model.document.selection);
+			if (useUtils) {
+				const imageUtils = ckeditorStateMachine.editorInstance.plugins.get('ImageUtils');
 
-			// 	// Set the cursor after the image
-			// 	writer.setSelection(imageElement, 'after');
-			// }
+				if (!isNil(imageUtils)) {
+					for (const attributeName in insertImageData) {
+						console.log(attributeName, ckeditorStateMachine.editorInstance.model.schema.checkAttribute('imageInline', attributeName))
+					}
+
+					console.log(insertImageData)
+					imageUtils.insertImage(insertImageData, null, 'imageInline')
+				}
+
+
+			} else {
+				// 	const imageElement = writer.createElement('image', {
+				// 		src: data.imgData.urlImage,
+				// 		alt: data.displayData.alt
+				// 	});
+
+				// 	// Insert element image in the editor content
+				// 	ckeditorStateMachine.editorInstance.model.insertContent(imageElement, ckeditorStateMachine.editorInstance.model.document.selection);
+
+				// 	// Set the cursor after the image
+				// 	writer.setSelection(imageElement, 'after');
+				ckeditorStateMachine.editorInstance.execute('insertImage', {
+					source: [
+						insertImageData
+					]
+				})
+			}
 
 			ckeditorStateMachine.toWpImageUploadClose()
 		})
@@ -511,14 +620,14 @@ var CKEditor_Handler = (function ($) {
 			case 'rexlive:ckeditor:inlineImageEdit':
 				handleInlineImageEdit(event.data)
 				break;
-		
+
 			default:
 				break;
 		}
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 60')
+		console.log('CKEditor_Handler 65')
 		initListeners()
 	}
 
