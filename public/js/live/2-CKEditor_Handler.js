@@ -276,6 +276,11 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	/**
+	 * Creating the editor instance
+	 * @param {Element} el 
+	 * @since 2.2.0
+	 */
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.BalloonEditor
 			.create(el, {
@@ -409,25 +414,33 @@ var CKEditor_Handler = (function ($) {
 		})
 	}
 
+	const useUtils = true
+
 	function handleInlineImageEdit(data) {
 		if (ckeditorStateMachine.isEditorDeactive()) return
 
 		ckeditorStateMachine.editorInstance.focus()
 
 		ckeditorStateMachine.editorInstance.model.change((writer) => {
-			const imageElement = writer.createElement('image', {
-				src: data.imgData.urlImage
-			});
-			console.log(imageElement)
-			console.log(ckeditorStateMachine.editorInstance)
-			console.log(ckeditorStateMachine.editorInstance.model)
-			console.log(ckeditorStateMachine.editorInstance.model.document)
+			// if (useUtils) {
+			const imageUtils = ckeditorStateMachine.editorInstance.plugins.get('ImageUtils');
 
-			// Insert element image in the editor content
-			ckeditorStateMachine.editorInstance.model.insertContent(imageElement, ckeditorStateMachine.editorInstance.model.document.selection);
+			if (!isNil(imageUtils)) {
+				imageUtils.insertImage({ src: data.imgData.urlImage })
+			} 
+			// } else {
+			// 	const imageElement = writer.createElement('image', {
+			// 		src: data.imgData.urlImage,
+			// 		alt: data.displayData.alt
+			// 	});
 
-			// Set the cursor after the image
-			writer.setSelection(imageElement, 'after');
+			// 	// Insert element image in the editor content
+			// 	ckeditorStateMachine.editorInstance.model.insertContent(imageElement, ckeditorStateMachine.editorInstance.model.document.selection);
+
+			// 	// Set the cursor after the image
+			// 	writer.setSelection(imageElement, 'after');
+			// }
+
 			ckeditorStateMachine.toWpImageUploadClose()
 		})
 	}
@@ -445,7 +458,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 40')
+		console.log('CKEditor_Handler 50')
 		initListeners()
 	}
 
