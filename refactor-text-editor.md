@@ -35,6 +35,8 @@
  2.6) inserting an ordered or unordered list
  2.7) align the text inside the block, therefore horizontal and vertical
  2.8) edit the HTML opening the modal editor
+3) when editor loose focus:
+ 3.1) page goes in state "changes made" (save button becomes gray)
 
 ## NOTES
 
