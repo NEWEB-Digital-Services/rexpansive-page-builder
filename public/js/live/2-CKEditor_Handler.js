@@ -331,20 +331,43 @@ var CKEditor_Handler = (function ($) {
 
 					if (isNil(selectedElement)) return
 
-					if (!selectedElement.is('element', 'inlineImage')) return
+					if (!selectedElement.is('element', 'imageInline')) return
+
+					const imageHtmlAttributes = selectedElement.getAttribute('htmlAttributes')
+
+					let image_id = null
+					let align = ''
+
+					for (let i = 0; i < imageHtmlAttributes.classes.length; i++) {
+						// todo: regexp to track precisely align possibilities
+						if (-1 !== imageHtmlAttributes.classes[i].indexOf('align')) {
+							align = imageHtmlAttributes.classes[i]
+							continue
+						}
+
+						// todo: regexp to track precisely wp-image-X class, and extract the id
+						if (-1 !== imageHtmlAttributes.classes[i].indexOf('wp-image')) {
+							const temp = imageHtmlAttributes.classes[i].split('-')
+							image_id = parseInt(temp[2])
+							continue
+						}
+					}
+
+					let imgInsideLink = false
 
 					// create object to pass to media editor
 					const img_data = {
-
+						image_id,
+						width: parseInt(imageHtmlAttributes.attributes.width),
+						height: parseInt(imageHtmlAttributes.attributes.height),
+						align,
+						imgInsideLink
 					}
 
 					const data = {
 						eventName: 'rexlive:openMEImageUploader',
 						img_data 
 					};
-
-					console.log(data)
-					return
 
 					Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 					ckeditorStateMachine.toWpImageUploadOpen()
@@ -548,7 +571,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 70')
+		console.log('CKEditor_Handler 74')
 		initListeners()
 	}
 
