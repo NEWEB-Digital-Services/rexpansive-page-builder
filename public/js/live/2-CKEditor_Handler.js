@@ -285,7 +285,6 @@ var CKEditor_Handler = (function ($) {
 
 	class WPImageUpload extends CKEDITOR.Plugin {
 		init() {
-			this._defineSchema()
 			const editor = this.editor
 			editor.ui.componentFactory.add('wpImageUpload', () => {
 				const button = new CKEDITOR.ButtonView()
@@ -308,14 +307,6 @@ var CKEditor_Handler = (function ($) {
 				})
 
 				return button
-			})
-		}
-
-		_defineSchema() {
-			const schema = this.editor.model.schema
-			console.log(schema)
-			schema.extend('$inlineObject', {
-				allowAttributes: ['class']
 			})
 		}
 	}
@@ -565,51 +556,21 @@ var CKEditor_Handler = (function ($) {
 
 			const insertImageData = {
 				src: data.imgData.urlImage,
-				title: data.displayData.title,
 				alt: data.displayData.alt,
-				// classes: imgClasses,
-				class: imgClasses.join(' '),
-				// width: `${data.imgData.width}px`,
-				// height: `${data.imgData.height}px`,
-				attributes: {
+				htmlAttributes: {
 					'data-image-id': data.imgData.idImage.toString(),
 					width: data.imgData.width,
 					height: data.imgData.height,
-					// classes: imgClasses,
-					// class: imgClasses.join(' '),
+					classes: imgClasses,
+					title: data.displayData.title,
 				}
 			}
 
-			if (useUtils) {
-				const imageUtils = ckeditorStateMachine.editorInstance.plugins.get('ImageUtils');
-
-				if (!isNil(imageUtils)) {
-					for (const attributeName in insertImageData) {
-						console.log(attributeName, ckeditorStateMachine.editorInstance.model.schema.checkAttribute('imageInline', attributeName))
-					}
-
-					console.log(insertImageData)
-					imageUtils.insertImage(insertImageData, null, 'imageInline')
-				}
-
-
-			} else {
-				// 	const imageElement = writer.createElement('image', {
-				// 		src: data.imgData.urlImage,
-				// 		alt: data.displayData.alt
-				// 	});
-
-				// 	// Insert element image in the editor content
-				// 	ckeditorStateMachine.editorInstance.model.insertContent(imageElement, ckeditorStateMachine.editorInstance.model.document.selection);
-
-				// 	// Set the cursor after the image
-				// 	writer.setSelection(imageElement, 'after');
-				ckeditorStateMachine.editorInstance.execute('insertImage', {
-					source: [
-						insertImageData
-					]
-				})
-			}
+			ckeditorStateMachine.editorInstance.execute('insertImage', {
+				source: [
+					insertImageData
+				]
+			})
 
 			ckeditorStateMachine.toWpImageUploadClose()
 		})
@@ -627,7 +588,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 65')
+		console.log('CKEditor_Handler 68')
 		initListeners()
 	}
 
