@@ -311,91 +311,6 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
-	class AbbreviationEditing extends CKEDITOR.Plugin {
-		init() {
-			this._defineSchema();
-			this._defineConverters();
-		}
-		_defineSchema() {
-			const schema = this.editor.model.schema;
-
-			// Extend the text node's schema to accept the abbreviation attribute.
-			schema.extend('$text', {
-				allowAttributes: ['abbreviation']
-			});
-		}
-		_defineConverters() {
-			const conversion = this.editor.conversion;
-
-			// Conversion from a model attribute to a view element
-			conversion.for('downcast').attributeToElement({
-				model: 'abbreviation',
-
-				// Callback function provides access to the model attribute value
-				// and the DowncastWriter
-				view: (modelAttributeValue, conversionApi) => {
-					const { writer } = conversionApi;
-					return writer.createAttributeElement('abbr', {
-						title: modelAttributeValue
-					});
-				}
-			});
-
-			// Conversion from a view element to a model attribute
-			conversion.for('upcast').elementToAttribute({
-				view: {
-					name: 'abbr',
-					attributes: ['title']
-				},
-				model: {
-					key: 'abbreviation',
-
-					// Callback function provides access to the view element
-					value: viewElement => {
-						const title = viewElement.getAttribute('title');
-						return title;
-					}
-				}
-			});
-		}
-	}
-
-	class AbbreviationUI extends CKEDITOR.Plugin {
-		init() {
-			const editor = this.editor;
-
-			// Register the button in the editor's UI component factory.
-			editor.ui.componentFactory.add('abbreviation', () => {
-				const button = new CKEDITOR.ButtonView();
-
-				button.label = 'Abbreviation';
-				button.tooltip = true;
-				button.withText = true;
-
-				this.listenTo(button, 'execute', () => {
-					const title = 'What You See Is What You Get';
-					const abbr = 'WYSIWYG';
-
-					// Change the model to insert the abbreviation.
-					editor.model.change(writer => {
-						editor.model.insertContent(
-							// Create a text node with the abbreviation attribute.
-							writer.createText(abbr, { abbreviation: title })
-						);
-					});
-				});
-
-				return button;
-			});
-		}
-	}
-
-	class Abbreviation extends CKEDITOR.Plugin {
-		static get requires() {
-			return [AbbreviationEditing, AbbreviationUI];
-		}
-	}
-
 	/**
 	 * Creating the editor instance
 	 * @param {Element} el 
@@ -404,7 +319,7 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.BalloonEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, Abbreviation],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload],
 				toolbar: [
 					'undo',
 					'redo',
@@ -418,7 +333,6 @@ var CKEditor_Handler = (function ($) {
 					'horizontalLine',
 					'link',
 					'wpImageUpload',
-					'abbreviation'
 				],
 				heading: {
 					options: [
@@ -588,7 +502,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 68')
+		console.log('CKEditor_Handler 69')
 		initListeners()
 	}
 
