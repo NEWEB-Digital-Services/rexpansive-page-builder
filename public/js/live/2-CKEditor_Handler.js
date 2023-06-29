@@ -378,6 +378,26 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	class InlineImagePhotoswipe extends CKEDITOR.Plugin {
+		init() {
+			const editor = this.editor
+			
+			editor.ui.componentFactory.add('inlineImagePhotoswipe', () => {
+
+				const button = new CKEDITOR.ButtonView()
+				button.set({
+					tooltip: 'Photoswipe',
+					withText: false,
+					icon: '<svg xmlns="http://www.w3.org/2000/svg" class="ck ck-icon ck-reset_all-excluded ck-icon_inherit-color ck-button__icon" viewBox="0 0 20 20" fill="#000"><path d="M14 12.586l7.014 7.014v1.385l-.03.03H19.6L12.586 14H0V0h14v12.586zM2 2v10h10V2H2zm6 4h2v2H8v2H6V8H4V6h2V4h2v2z" fill-rule="evenodd"/></path></svg>'
+				})
+
+				// todo: execute
+
+				return button
+			})
+		}
+	}
+
 	/**
 	 * Creating the editor instance
 	 * @param {Element} el 
@@ -386,7 +406,7 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.BalloonEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, WpImageEdit],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, WpImageEdit, InlineImagePhotoswipe],
 				toolbar: [
 					'undo',
 					'redo',
@@ -441,7 +461,8 @@ var CKEditor_Handler = (function ($) {
 						'|',
 						'imageTextAlternative',
 						'|',
-						'wpImageEdit'
+						'wpImageEdit',
+						'inlineImagePhotoswipe'
 					]
 				},
 				placeholder: 'Type your text here'
@@ -455,10 +476,10 @@ var CKEditor_Handler = (function ($) {
 
 				ckeditorStateMachine.editorInstance.ui.focusTracker.on('change:isFocused', function (eventInfo, name, value, oldValue) {
 					if (value) return
-					if (ckeditorStateMachine.isEditorActive()) {
-						restoreBlockTools(ckeditorStateMachine.editorInstance.sourceElement)
-						destroyEditorInstance(ckeditorStateMachine.editorInstance.sourceElement)
-					}
+					// if (ckeditorStateMachine.isEditorActive()) {
+					// 	restoreBlockTools(ckeditorStateMachine.editorInstance.sourceElement)
+					// 	destroyEditorInstance(ckeditorStateMachine.editorInstance.sourceElement)
+					// }
 				})
 			})
 			.catch(error => {
@@ -572,7 +593,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 76')
+		console.log('CKEditor_Handler 78')
 		initListeners()
 	}
 
