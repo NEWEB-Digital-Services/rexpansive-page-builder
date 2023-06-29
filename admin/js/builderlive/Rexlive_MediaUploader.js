@@ -417,6 +417,11 @@ var Rexlive_MediaUploader = (function($) {
     });
 
     image_uploader_me_frame.on("close", function() {
+      const data = {
+        eventName: "rexlive:inlineImageClose"
+      }
+      console.log(data)
+      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
       setUserSetting('imgsize', 'full');
     });
 

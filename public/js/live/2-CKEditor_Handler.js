@@ -453,8 +453,6 @@ var CKEditor_Handler = (function ($) {
 
 				ckeditorStateMachine.editorInstance.focus()
 
-				console.log(ckeditorStateMachine.editorInstance.model.schema.getDefinitions())
-
 				ckeditorStateMachine.editorInstance.ui.focusTracker.on('change:isFocused', function (eventInfo, name, value, oldValue) {
 					if (value) return
 					if (ckeditorStateMachine.isEditorActive()) {
@@ -563,15 +561,18 @@ var CKEditor_Handler = (function ($) {
 		switch (event.name) {
 			case 'rexlive:ckeditor:inlineImageEdit':
 				handleInlineImageEdit(event.data)
-				break;
-
+				break
+			case 'rexlive:ckeditor:inlineImageClose':
+				console.log('attiva o chiodi')
+				ckeditorStateMachine.toWpImageUploadClose()
+				break
 			default:
 				break;
 		}
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 74')
+		console.log('CKEditor_Handler 76')
 		initListeners()
 	}
 
