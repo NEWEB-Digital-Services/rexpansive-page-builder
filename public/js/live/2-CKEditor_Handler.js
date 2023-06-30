@@ -389,17 +389,79 @@ var CKEditor_Handler = (function ($) {
 	class InlineImagePhotoswipe extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
-			
-			editor.ui.componentFactory.add('inlineImagePhotoswipe', () => {
 
+			editor.ui.componentFactory.add('inlineImagePhotoswipe', () => {
 				const button = new CKEDITOR.ButtonView()
+
 				button.set({
 					tooltip: 'Photoswipe',
 					withText: false,
-					icon: '<svg xmlns="http://www.w3.org/2000/svg" class="ck ck-icon ck-reset_all-excluded ck-icon_inherit-color ck-button__icon" viewBox="0 0 21 21" fill="#000"><path d="M14 12.586l7.014 7.014v1.385l-.03.03H19.6L12.586 14H0V0h14v12.586zM2 2v10h10V2H2zm6 4h2v2H8v2H6V8H4V6h2V4h2v2z" fill-rule="evenodd"></path></svg>'
+					icon: '<svg xmlns="http://www.w3.org/2000/svg" class="ck ck-icon ck-reset_all-excluded ck-icon_inherit-color ck-button__icon" viewBox="0 0 21 21"><path d="M14 12.586l7.014 7.014v1.385l-.03.03H19.6L12.586 14H0V0h14v12.586zM2 2v10h10V2H2zm6 4h2v2H8v2H6V8H4V6h2V4h2v2z" fill-rule="evenodd"></path></svg>'
 				})
 
-				// todo: execute
+				const selection = editor.model.document.selection;
+				const selectedElement = selection.getSelectedElement();
+
+				if (isNil(selectedElement)) return
+
+				if (!selectedElement.is('element', 'imageInline')) return
+
+				const imageHtmlAttributes = selectedElement.getAttribute('htmlAttributes')
+				const isInlinePhotoswipeActive = isNil(imageHtmlAttributes.attributes) ? false : imageHtmlAttributes.attributes['inline-photoswipe']
+				button.set({
+					isOn: 'true' === isInlinePhotoswipeActive,
+				})
+
+				editor.model.document.on('change', () => {
+					const selection = editor.model.document.selection;
+					const selectedElement = selection.getSelectedElement();
+
+					if (isNil(selectedElement)) return
+
+					if (!selectedElement.is('element', 'imageInline')) return
+
+					const imageHtmlAttributes = selectedElement.getAttribute('htmlAttributes')
+					const isInlinePhotoswipeActive = isNil(imageHtmlAttributes.attributes) ? false: imageHtmlAttributes.attributes['inline-photoswipe']
+					button.set({
+						isOn: 'true' === isInlinePhotoswipeActive, 
+					})
+				})
+
+				button.on('execute', () => {
+					const selection = editor.model.document.selection;
+					const selectedElement = selection.getSelectedElement();
+
+					if (isNil(selectedElement)) return
+
+					if (!selectedElement.is('element', 'imageInline')) return
+
+					let isOn = false
+
+					// note: changes on selected element happen inplace
+					const imageHtmlAttributes = selectedElement.getAttribute('htmlAttributes')
+					if (isNil(imageHtmlAttributes.attributes)) {
+						imageHtmlAttributes.attributes = {}
+						imageHtmlAttributes.attributes['inline-photoswipe'] = 'true'
+						isOn = true
+					} else {
+						if (isNil(imageHtmlAttributes.attributes['inline-photoswipe']))	{
+							imageHtmlAttributes.attributes['inline-photoswipe'] = 'true'
+							isOn = true
+						} else {
+							if ('true' === imageHtmlAttributes.attributes['inline-photoswipe']) {
+								delete imageHtmlAttributes.attributes['inline-photoswipe']
+								isOn = false
+							} else {
+								imageHtmlAttributes.attributes['inline-photoswipe'] = 'true'
+								isOn = false
+							}
+						}
+					}
+
+					button.set({
+						isOn
+					})
+				})
 
 				return button
 			})
@@ -650,7 +712,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 82')
+		console.log('CKEditor_Handler 86')
 		initListeners()
 	}
 
