@@ -129,7 +129,7 @@ var CKEditor_Handler = (function ($) {
 		handleAction(context, action) {
 			if (!(context.currentState instanceof DeactiveState)) return
 			switch (action) {
-				case 'ACTIVE':
+				case 'ACTIVATE':
 					context.transitionTo(new ActiveState())
 					break
 				default:
@@ -151,7 +151,7 @@ var CKEditor_Handler = (function ($) {
 		handleAction(context, action) {
 			if (!(context.currentState instanceof ActiveState)) return
 			switch (action) {
-				case 'DEACTIVE':
+				case 'DEACTIVATE':
 					context.transitionTo(new DeactiveState())
 					break;
 				case 'OPEN_WP_IMAGE_UPLOAD':
@@ -175,7 +175,7 @@ var CKEditor_Handler = (function ($) {
 		handleAction(context, action) {
 			if (!(context.currentState instanceof WPImageUploadOpenState)) return
 			switch (action) {
-				case 'CLOSE_WP_IMAGE_UPLOAD':
+				case 'ACTIVATE':
 					context.transitionTo(new ActiveState())
 					break;
 
@@ -265,11 +265,11 @@ var CKEditor_Handler = (function ($) {
 		}
 
 		toActiveState() {
-			this.context.performAction('ACTIVE')
+			this.context.performAction('ACTIVATE')
 		}
 
 		toDeactiveState() {
-			this.context.performAction('DEACTIVE')
+			this.context.performAction('DEACTIVATE')
 		}
 
 		toWpImageUploadOpen() {
@@ -277,12 +277,15 @@ var CKEditor_Handler = (function ($) {
 		}
 
 		toWpImageUploadClose() {
-			this.context.performAction('CLOSE_WP_IMAGE_UPLOAD')
+			this.context.performAction('ACTIVATE')
 		}
 	}
 
 	const ckeditorStateMachine = new CKEditorStateMachine()
 
+	/**
+	 * @since 2.2.0
+	 */
 	class WPImageUpload extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
@@ -311,6 +314,9 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class WpImageEdit extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor;
@@ -377,6 +383,9 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class InlineImagePhotoswipe extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
@@ -397,6 +406,9 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class InlineImageRemove extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
@@ -553,6 +565,9 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function initListeners() {
+		/**
+		 * @since 2.2.0
+		 */
 		document.addEventListener('rexpansive:perfect-grid-gallery:block:dbclick', function (event) {
 			if (!ckeditorStateMachine.isEditorDeactive()) return
 
@@ -627,7 +642,6 @@ var CKEditor_Handler = (function ($) {
 				handleInlineImageEdit(event.data)
 				break
 			case 'rexlive:ckeditor:inlineImageClose':
-				console.log('attiva o chiodi')
 				ckeditorStateMachine.toWpImageUploadClose()
 				break
 			default:
@@ -636,7 +650,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 80')
+		console.log('CKEditor_Handler 82')
 		initListeners()
 	}
 
