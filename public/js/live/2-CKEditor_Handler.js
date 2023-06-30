@@ -570,9 +570,19 @@ var CKEditor_Handler = (function ($) {
 
 			createEditorInstance(textWrap)
 		})
-	}
 
-	const useUtils = false
+		/**
+		 * @since 2.2.0
+		 */
+		document.addEventListener('keydown', function(event) {
+			if (event.key === 'Escape') {
+				if (ckeditorStateMachine.isEditorActive()) {
+					restoreBlockTools(ckeditorStateMachine.editorInstance.sourceElement)
+					destroyEditorInstance(ckeditorStateMachine.editorInstance.sourceElement)
+				}
+			}
+		})
+	}
 
 	/**
 	 * Handling inserting of the image on closing the WP Media Editor
