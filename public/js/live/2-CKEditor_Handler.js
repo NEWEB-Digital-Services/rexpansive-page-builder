@@ -325,7 +325,6 @@ var CKEditor_Handler = (function ($) {
 				})
 
 				button.on('execute', () => {
-					console.log('edit the image')
 					const selection = editor.model.document.selection;
 					const selectedElement = selection.getSelectedElement();
 
@@ -412,6 +411,18 @@ var CKEditor_Handler = (function ($) {
 				})
 
 				// todo: execute
+				button.on('execute', () => {
+					const selection = editor.model.document.selection;
+					const selectedElement = selection.getSelectedElement();
+
+					if (isNil(selectedElement)) return
+
+					if (!selectedElement.is('element', 'imageInline')) return
+
+					editor.model.change(writer => {
+						writer.remove(selectedElement)
+					})
+				})
 
 				return button
 			})
@@ -498,10 +509,10 @@ var CKEditor_Handler = (function ($) {
 
 				ckeditorStateMachine.editorInstance.ui.focusTracker.on('change:isFocused', function (eventInfo, name, value, oldValue) {
 					if (value) return
-					// if (ckeditorStateMachine.isEditorActive()) {
-					// 	restoreBlockTools(ckeditorStateMachine.editorInstance.sourceElement)
-					// 	destroyEditorInstance(ckeditorStateMachine.editorInstance.sourceElement)
-					// }
+					if (ckeditorStateMachine.isEditorActive()) {
+						restoreBlockTools(ckeditorStateMachine.editorInstance.sourceElement)
+						destroyEditorInstance(ckeditorStateMachine.editorInstance.sourceElement)
+					}
 				})
 			})
 			.catch(error => {
@@ -615,7 +626,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 78')
+		console.log('CKEditor_Handler 80')
 		initListeners()
 	}
 
