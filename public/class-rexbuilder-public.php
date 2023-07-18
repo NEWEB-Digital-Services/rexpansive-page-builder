@@ -2343,42 +2343,42 @@ class Rexbuilder_Public {
 			/* Error color */
 			if( isset( $atts['error_color'] ) && "" !== $atts['error_color'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing { color:<?php echo $atts['error_color']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.invalid .wpcf7-response-output, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.unaccepted .wpcf7-response-output, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.payment-required .wpcf7-response-output { color:<?php echo $atts['error_color']; ?>; }
 			<?php
 			}
 
 			/* Error background */
 			if( isset( $atts['error_background'] ) && "" !== $atts['error_background'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing { background-color:<?php echo $atts['error_background']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.invalid .wpcf7-response-output, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.unaccepted .wpcf7-response-output, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.payment-required .wpcf7-response-output { background-color:<?php echo $atts['error_background']; ?>; }
 			<?php
 			}
 
 			/* Error border */
 			if( isset( $atts['error_border'] ) && "" !== $atts['error_border'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing { border-color:<?php echo $atts['error_border']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.invalid .wpcf7-response-output, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.unaccepted .wpcf7-response-output, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.payment-required .wpcf7-response-output { border-color:<?php echo $atts['error_border']; ?>; }
 			<?php
 			}
 
 			/* Success color */
 			if( isset( $atts['success_color'] ) && "" !== $atts['success_color'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok { color:<?php echo $atts['success_color']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.sent .wpcf7-response-output { color:<?php echo $atts['success_color']; ?>; }
 			<?php
 			}
 
 			/* Success background */
 			if( isset( $atts['success_background'] ) && "" !== $atts['success_background'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok { background-color:<?php echo $atts['success_background']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.sent .wpcf7-response-output { background-color:<?php echo $atts['success_background']; ?>; }
 			<?php
 			}
 
 			/* Success border */
 			if( isset( $atts['success_border'] ) && "" !== $atts['success_border'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok { border-color:<?php echo $atts['success_border']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.sent .wpcf7-response-output { border-color:<?php echo $atts['success_border']; ?>; }
 			<?php
 			}
 
