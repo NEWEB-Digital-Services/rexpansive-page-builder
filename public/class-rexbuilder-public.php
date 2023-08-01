@@ -696,7 +696,7 @@ class Rexbuilder_Public {
 		if ( file_exists( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ) )
 		{
 		?>
-		<div style="display:none"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
+		<div style="display:none"><svg id="builder-icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
 		<?php
 		}
 	}
