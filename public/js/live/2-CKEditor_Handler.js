@@ -47,6 +47,34 @@ var CKEditor_Handler = (function ($) {
 	const PERFECT_GRID_GALLERY_CLASSNAME = 'perfect-grid-gallery'
 	const GRID_STACK_ITEM_CLASSNAME = 'grid-stack-item'
 
+	const IconInlineEvents = {
+		IconInlineInserted: 'iconInlineInserted'
+	}
+
+	const BUILDER_ICON_CLASS_PREFIX = 'builder-icon'
+	const builderIconsWrap = document.getElementById('builder-icons')
+	const builderIcons = Array.prototype.slice.call(builderIconsWrap.children)
+
+	/**
+	 * Get icons inserted in the builder
+	 * @returns Object[]
+	 * @since 2.2.0
+	 */
+	function getIconInlineModels() {
+		const response = []
+		for (let i = 0; i < builderIcons.length; i++) {
+			const iconId = builderIcons[i].id
+			const iconModel = {
+				withText: false,
+				label: iconId,
+				class: `${BUILDER_ICON_CLASS_PREFIX}-${iconId}`,
+				icon: `<svg viewBox="${builderIcons[i].getAttribute('viewBox')}" xmlns="${builderIcons[i].getAttribute('xmlns')}">${builderIcons[i].innerHTML.trim()}</svg>`
+			}
+			response.push(iconModel)
+		}
+		return response
+	}
+
 	/**
 	 * Check if an element is undefined
 	 * @param {Element} el 
@@ -468,6 +496,291 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	class InsertIconInlineCommand extends CKEDITOR.Command {
+		execute(opts) {
+			const editor = this.editor
+			const selection = editor.model.document.selection
+
+			const selectedElement = selection.getSelectedElement();
+			let size = ''
+			let color = ''
+
+			if (selectedElement) {
+				size = selectedElement.getAttribute('size')
+				color = selectedElement.getAttribute('color')
+			}
+
+			let iconInlineData = Object.assign({},
+				{ name: `#${opts.iconId}` },
+				!isEmpty(size) ? { size } : null,
+				!isEmpty(color) ? { color } : null
+			)
+
+			editor.model.change(writer => {
+				editor.model.insertContent(
+					writer.createElement('iconInline', iconInlineData)
+				)
+			})
+		}
+
+		// todo: implement refresh to define where the command can be executed
+		// refresh() {
+		// 	const model = this.editor.model
+		// 	const selection = model.document.selection
+
+		// 	const isAllowed = model.schema.checkChild(selection.focus.parent, '')
+		// }
+	}
+
+	class RemoveIconInlineCommand extends CKEDITOR.Command {
+		execute() {
+			const editor = this.editor
+			const selection = editor.model.document.selection
+			const selectedElement = selection.getSelectedElement()
+
+			if (!selectedElement) return
+			if (!selectedElement.is('element', 'iconInline')) return
+
+			editor.model.change(writer => {
+				writer.remove(selectedElement)
+			})
+		}
+
+		// todo: implement refresh method
+		// refresh() {}
+	}
+
+	class IconInlineEditing extends CKEDITOR.Plugin {
+		static get requires() {
+			return [CKEDITOR.Widget]
+		}
+
+		init() {
+			this._defineSchema()
+
+			// this.editor.editing.view.addObserver(IconInlineLoadObserver)
+
+			this._defineConverters()
+
+			this.editor.commands.add('insertIconInline', new InsertIconInlineCommand(this.editor))
+			this.editor.commands.add('removeIconInline', new RemoveIconInlineCommand(this.editor))
+
+			this.editor.editing.mapper.on('viewToModelPosition', CKEDITOR.viewToModelPositionOutsideModelElement(this.editor.model, viewElement => viewElement.hasClass('l-svg-icons')))
+		}
+
+		_defineSchema() {
+			const schema = this.editor.model.schema
+
+			schema.register('iconInline', {
+				inheritAllFrom: '$inlineObject',
+				allowAttributes: ['name', 'size', 'color'],
+			})
+		}
+
+		_defineConverters() {
+			const conversion = this.editor.conversion
+
+			conversion.for('upcast').add(dispatcher => {
+				dispatcher.on('element:i', (evt, data, conversionApi) => {
+					const {
+						consumable,
+						writer,
+						safeInsert,
+						convertChildren,
+						updateConversionResult
+					} = conversionApi
+
+					const { viewItem } = data
+					const iElementConsumable = { name: 'i', classes: 'l-svg-icons', attributes: 'style' };
+					const svgElementConsumable = { name: 'svg', attributes: 'style' };
+					const useElementConsumable = { name: 'use', attributes: ['xlink:href'] }
+
+					if (!consumable.test(viewItem, iElementConsumable)) return
+
+					if (1 !== viewItem.childCount) return
+
+					const iFirstChildViewItem = viewItem.getChild(0);
+					if (!iFirstChildViewItem.is('element', 'svg')) return
+
+					if (!consumable.test(iFirstChildViewItem, svgElementConsumable)) return
+
+					const svgFirstChildViewItem = iFirstChildViewItem.getChild(0)
+					if (!svgFirstChildViewItem.is('element', 'use')) return
+					if (!consumable.test(svgFirstChildViewItem, useElementConsumable)) return
+
+					const viewItemStyle = viewItem.getStyle()
+					const size = !isNil(viewItemStyle) && !isNil(viewItemStyle['font-size']) ? viewItemStyle['font-size'] : ''
+
+					const svgItemStyle = iFirstChildViewItem.getStyle()
+					const color = !isNil(svgItemStyle) && !isNil(svgItemStyle['fill']) ? svgItemStyle['fill'] : ''
+
+					const name = svgFirstChildViewItem.getAttribute('xlink:href')
+
+					let iconInlineData = Object.assign({},
+						{ name },
+						!isEmpty(size) ? { size } : null,
+						!isEmpty(color) ? { color } : null
+					)
+					const iconInlineElement = writer.createElement('iconInline', iconInlineData)
+					if (!safeInsert(iconInlineElement, data.modelCursor)) return
+
+					consumable.consume(viewItem, iElementConsumable)
+					consumable.consume(iFirstChildViewItem, svgElementConsumable)
+					consumable.consume(svgFirstChildViewItem, useElementConsumable)
+
+					convertChildren(viewItem, iconInlineElement)
+					updateConversionResult(iconInlineElement, data)
+				})
+			})
+
+			conversion.for('editingDowncast').elementToStructure({
+				model: 'iconInline',
+				view: (modelElement, conversionApi) => {
+					const { writer } = conversionApi
+					const name = modelElement.getAttribute('name')
+					const color = modelElement.getAttribute('color')
+
+					const domIconWithSymbol = document.querySelector(name)
+
+					let iViewElementAttributes = Object.assign({},
+						{ class: 'l-svg-icons' },
+					)
+					let svgElementAttributes = Object.assign({},
+						!isEmpty(color) ? { style: `fill:${color}` } : null,
+						{ viewBox: domIconWithSymbol.getAttribute('viewBox') },
+						{ xmlns: domIconWithSymbol.getAttribute('xmlns') }
+					)
+
+					const iViewElement = writer.createContainerElement('i', iViewElementAttributes)
+
+					const svgRawElement = writer.createRawElement('svg', svgElementAttributes, function (domElement) {
+						domElement.innerHTML = domIconWithSymbol.innerHTML
+					})
+					writer.insert(writer.createPositionAt(iViewElement, 0), svgRawElement)
+
+					// return iViewElement
+					return CKEDITOR.toWidget(iViewElement, writer)
+				}
+			})
+				.attributeToAttribute({
+					model: {
+						name: 'iconInline',
+						key: 'size'
+					},
+					view: (value) => {
+						if ('' === value) return null
+						return {
+							name: 'i',
+							key: 'style',
+							value: {
+								'font-size': value
+							}
+						}
+					}
+				})
+				.add((dispatcher) => {
+					dispatcher.on('attribute:color', (evt, data, conversionApi) => {
+						const { item } = data
+
+						if (!item.is('element', 'iconInline')) return
+
+						const color = item.getAttribute('color')
+
+						const viewElement = conversionApi.mapper.toViewElement(item)
+
+						const maybeSvgElement = viewElement.getChild(0)
+						if ('svg' !== maybeSvgElement.name) return
+
+						maybeSvgElement._setStyle('fill', color)
+					})
+					dispatcher.on('insert:iconInline', (evt, data, conversionApi) => {
+						const iconInlineElement = data.item;
+
+						this.editor.editing.view.document.fire(IconInlineEvents.IconInlineInserted, {
+							iconInlineElement,
+							conversionApi
+						})
+					})
+				})
+
+			conversion.for('dataDowncast').elementToStructure({
+				model: 'iconInline',
+				view: (modelElement, conversionApi) => {
+					const { writer } = conversionApi
+					const name = modelElement.getAttribute('name')
+					const size = modelElement.getAttribute('size')
+					const color = modelElement.getAttribute('color')
+
+					let iViewElementAttributes = Object.assign({},
+						{ class: 'l-svg-icons' },
+						!isEmpty(size) ? { style: `font-size:${size}` } : null
+					)
+					let svgElementAttributes = Object.assign({},
+						!isEmpty(color) ? { style: `fill:${color}` } : null
+					)
+
+					const iViewElement = writer.createContainerElement('i', iViewElementAttributes)
+					const svgElement = writer.createContainerElement('svg', svgElementAttributes)
+					const useElement = writer.createContainerElement('use', { 'xlink:href': name })
+
+					writer.insert(writer.createPositionAt(iViewElement, 0), svgElement)
+					writer.insert(writer.createPositionAt(svgElement, 0), useElement)
+					writer.insert(writer.createPositionAt(useElement, 0), writer.createSlot())
+
+					return iViewElement
+				}
+			})
+		}
+	}
+
+	class IconInlineUI extends CKEDITOR.Plugin {
+		init() {
+			const editor = this.editor
+			const t = editor.t
+
+			editor.ui.componentFactory.add('iconInline', (locale) => {
+				const dropdownView = CKEDITOR.createDropdown(locale)
+
+				dropdownView.buttonView.set({
+					withText: false,
+					label: t('Add icon'),
+					icon: '<svg viewBox="0 0 306 306" id="C008-Star" xmlns="http://www.w3.org/2000/svg"><path d="M153 230.775l94.35 68.85-35.7-112.2 94.35-66.3H191.25L153 6.375l-38.25 114.75H0l94.35 66.3-35.7 112.2z"></path></svg>',
+					tooltip: true
+				})
+
+				const iconInlineModels = getIconInlineModels()
+
+				const items = new CKEDITOR.Collection()
+				for (let i = 0; i < iconInlineModels.length; i++) {
+					items.add({
+						type: 'button',
+						model: new CKEDITOR.Model(iconInlineModels[i])
+					})
+				}
+				CKEDITOR.addListToDropdown(dropdownView, items)
+
+				dropdownView.on('execute', (event) => {
+					const buttonViewClicked = event.source
+					const classToCheck = buttonViewClicked.class
+					if (-1 === classToCheck.indexOf(BUILDER_ICON_CLASS_PREFIX)) return
+
+					const iconId = classToCheck.replace(`${BUILDER_ICON_CLASS_PREFIX}-`, '')
+
+					editor.execute('insertIconInline', { iconId })
+					editor.editing.view.focus()
+				})
+
+				return dropdownView
+			})
+		}
+	}
+
+	class IconInline extends CKEDITOR.Plugin {
+		static get requires() {
+			return [IconInlineEditing, IconInlineUI]
+		}
+	}
+
 	/**
 	 * @since 2.2.0
 	 */
@@ -503,6 +816,7 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+
 	/**
 	 * Creating the editor instance
 	 * @param {Element} el 
@@ -511,7 +825,7 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.BalloonEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline],
 				toolbar: [
 					'undo',
 					'redo',
@@ -525,6 +839,7 @@ var CKEditor_Handler = (function ($) {
 					'horizontalLine',
 					'link',
 					'wpImageUpload',
+					'iconInline'
 				],
 				heading: {
 					options: [
