@@ -823,9 +823,9 @@ var CKEditor_Handler = (function ($) {
 	 * @since 2.2.0
 	 */
 	function createEditorInstance(el) {
-		const editor = CKEDITOR.BalloonEditor
+		const editor = CKEDITOR.InlineEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.SourceEditing, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline],
 				toolbar: [
 					'undo',
 					'redo',
@@ -839,7 +839,8 @@ var CKEditor_Handler = (function ($) {
 					'horizontalLine',
 					'link',
 					'wpImageUpload',
-					'iconInline'
+					'iconInline',
+					'sourceEditing'
 				],
 				heading: {
 					options: [
@@ -1027,7 +1028,8 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 86')
+		console.log(CKEDITOR)
+		console.log('CKEditor_Handler 89)')
 		initListeners()
 	}
 
