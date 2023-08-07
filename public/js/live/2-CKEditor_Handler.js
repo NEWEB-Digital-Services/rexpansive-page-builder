@@ -184,6 +184,10 @@ var CKEditor_Handler = (function ($) {
 					break;
 				case 'OPEN_WP_IMAGE_UPLOAD':
 					context.transitionTo(new WPImageUploadOpenState())
+					break
+				case 'OPEN_HTML_EDITOR':
+					context.transitionTo(new HTMLEditorOpenState())
+					break
 				default:
 					break;
 			}
@@ -207,6 +211,20 @@ var CKEditor_Handler = (function ($) {
 					context.transitionTo(new ActiveState())
 					break;
 
+				default:
+					break;
+			}
+		}
+	}
+
+	class HTMLEditorOpenState extends CKEditorState {
+		handleAction(context, action) {
+			if (!(context.currentState instanceof HTMLEditorOpenState)) return
+			switch (action) {
+				case 'ACTIVATE':
+					context.transitionTo(new ActiveState())
+					break;
+			
 				default:
 					break;
 			}
@@ -305,6 +323,14 @@ var CKEditor_Handler = (function ($) {
 		}
 
 		toWpImageUploadClose() {
+			this.context.performAction('ACTIVATE')
+		}
+
+		toHTMLEditOpen() {
+			this.context.performAction('OPEN_HTML_EDITOR')
+		}
+
+		toHTMLEditClose() {
 			this.context.performAction('ACTIVATE')
 		}
 	}
@@ -816,6 +842,34 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	class HTMLEditing extends CKEDITOR.Plugin {
+		init() {
+			const editor = this.editor
+			const t = editor.t
+
+			editor.ui.componentFactory.add('htmlEditing', (locale) => {
+				const button = new CKEDITOR.ButtonView(locale)
+
+				button.set({
+					tooltip: 'Edit HTML',
+					withText: false,
+					icon: '<svg viewBox="0 0 20 20" id="A008-Code" xmlns="http://www.w3.org/2000/svg"><g fill-rule="evenodd"><path d="M14 5.846V4l6 5.94L14 16v-2.03l4-4.03zM6 14.154V16l-6-5.94L6 4v2.03l-4 4.03zM8.508 20H6.5l5.02-20h1.98z"/></g></svg>'
+				})
+
+				button.on('execute', () => {
+					const document = editor.editing.view.document
+					// document.fire('html-editing:open-editor', editor.data.get())
+					const data = {
+						eventName: 'rexlive:openHTMLEditor',
+						htmlContent: editor.data.get()
+					}
+					Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+				})
+
+				return button
+			})
+		}
+	}
 
 	/**
 	 * Creating the editor instance
@@ -825,7 +879,7 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.InlineEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.SourceEditing, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, HTMLEditing],
 				toolbar: [
 					'undo',
 					'redo',
@@ -840,7 +894,8 @@ var CKEditor_Handler = (function ($) {
 					'link',
 					'wpImageUpload',
 					'iconInline',
-					'sourceEditing'
+					'|',
+					'htmlEditing'
 				],
 				heading: {
 					options: [
@@ -975,6 +1030,10 @@ var CKEditor_Handler = (function ($) {
 				}
 			}
 		})
+
+		Rexbuilder_Util.$document.on('rexlive:SetcustomHTML', function (e) {
+			console.log(ckeditorStateMachine)
+		})
 	}
 
 	/**
@@ -1014,6 +1073,11 @@ var CKEditor_Handler = (function ($) {
 		})
 	}
 
+	function handleSaveHTMLContent(data) {
+		if (ckeditorStateMachine.isEditorDeactive()) return
+		ckeditorStateMachine.editorInstance.focus()
+	}
+
 	function handleEvent(event) {
 		switch (event.name) {
 			case 'rexlive:ckeditor:inlineImageEdit':
@@ -1022,6 +1086,9 @@ var CKEditor_Handler = (function ($) {
 			case 'rexlive:ckeditor:inlineImageClose':
 				ckeditorStateMachine.toWpImageUploadClose()
 				break
+			case 'rexlive:ckeditor:saveHTMLContent':
+				handleSaveHTMLContent(event.data)
+				break
 			default:
 				break;
 		}
@@ -1029,7 +1096,7 @@ var CKEditor_Handler = (function ($) {
 
 	function init() {
 		console.log(CKEDITOR)
-		console.log('CKEditor_Handler 89)')
+		console.log('CKEditor_Handler 91')
 		initListeners()
 	}
 
