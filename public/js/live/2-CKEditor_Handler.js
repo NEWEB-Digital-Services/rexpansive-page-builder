@@ -50,6 +50,7 @@ var CKEditor_Handler = (function ($) {
 	const IconInlineEvents = {
 		IconInlineInserted: 'iconInlineInserted'
 	}
+	const RESIZED_ICON_CLASS = 'icon_resized'
 
 	const BUILDER_ICON_CLASS_PREFIX = 'builder-icon'
 	const builderIconsWrap = document.getElementById('builder-icons')
@@ -966,6 +967,151 @@ var CKEditor_Handler = (function ($) {
 	/**
 	 * @since 2.2.0
 	 */
+	class ResizeIconInlineCommand extends CKEDITOR.Command {
+		execute(options) {
+			const editor = this.editor
+			const selection = editor.model.document.selection
+			const selectedElement = selection.getSelectedElement()
+
+			if (!selectedElement) return
+			if (!selectedElement.is('element', 'iconInline')) return
+
+			editor.model.change(writer => {
+				writer.setAttribute('size', options.size, selectedElement)
+			})
+		}
+
+		// todo: implement refresh method
+		// refresh() {}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class IconInlineResizeEditing extends CKEDITOR.Plugin {
+		init() {
+			const editor = this.editor
+			const resizeIconInlineCommand = new ResizeIconInlineCommand(editor)
+
+			this._registerSchema()
+			// this._registerConverters()
+
+			this.editor.commands.add('resizeIconInline', resizeIconInlineCommand)
+		}
+
+		_registerSchema() {
+			if (this.editor.plugins.has('IconInlineEditing')) {
+				this.editor.model.schema.extend('iconInline', { allowAttributes: 'width' });
+			}
+		}
+
+		_registerConverters() {
+			const editor = this.editor
+
+			editor.conversion.for('downcast').add(dispatcher => {
+				console.log('define upgraded downcast')
+				dispatcher.on('attribute:width:iconInline', (evt, data, conversionApi) => {
+					console.log('attribute:width:iconInline')
+					if (!conversionApi.consumable.consume(data.item, evt.name)) {
+						return
+					}
+
+
+				})
+			})
+
+			// editor.conversion.for('upcast')
+			// 	.attributeToAttribute({
+			// 		view: {
+			// 			name: 'i',
+			// 			styles: {
+			// 				'font-size': /.+/
+			// 			}
+			// 		},
+			// 		model: {
+			// 			key: 'font-size',
+			// 			value: (viewElement) => viewElement.getStyle('width')
+			// 		}
+			// 	})
+		}
+	}
+
+	class IconInlineResizeHandles extends CKEDITOR.Plugin {
+		init() {
+			const command = this.editor.commands.get('resizeIconInline')
+			this.bind('isEnabled').to(command)
+
+			this._setupResizerCreator()
+		}
+
+		_setupResizerCreator() {
+			const editor = this.editor
+			const editingView = editor.editing.view
+
+			this.listenTo(editingView.document, IconInlineEvents.IconInlineInserted, (evt, data) => {
+				const { iconInlineElement, conversionApi } = data
+
+				const domConverter = editor.editing.view.domConverter
+				const widgetView = conversionApi.mapper.toViewElement(iconInlineElement)
+				let resizer = editor.plugins.get(CKEDITOR.WidgetResize).getResizerByViewElement(widgetView);
+				if (resizer) {
+					resizer.redraw()
+					return
+				}
+
+				const mapper = editor.editing.mapper;
+				const iconInlineModel = mapper.toModelElement(widgetView);
+
+				resizer = editor.plugins
+					.get(CKEDITOR.WidgetResize)
+					.attachTo({
+						unit: 'px',
+						modelElement: iconInlineModel,
+						viewElement: widgetView,
+						editor,
+						getHandleHost(domWidgetElement) {
+							return domWidgetElement
+						},
+						getResizeHost() {
+							return domConverter.mapViewToDom(mapper.toViewElement(iconInlineModel.parent))
+						},
+						isCentered: () => true,
+						onCommit(newValue) {
+							editingView.change(writer => {
+								writer.removeClass(RESIZED_ICON_CLASS, widgetView)
+							})
+							editor.execute('resizeIconInline', { size: newValue })
+						}
+					})
+
+				resizer.on('updateSize', () => {
+					if (!isNil(resizer.state.proposedWidth)) {
+						editor.execute('resizeIconInline', { size: `${resizer.state.proposedWidth}px` })
+					}
+					if (!widgetView.hasClass(RESIZED_ICON_CLASS)) {
+						editingView.change(writer => {
+							writer.addClass(RESIZED_ICON_CLASS, widgetView)
+						})
+					}
+				})
+
+				resizer.bind('isEnabled').to(this)
+			})
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class IconInlineResize extends CKEDITOR.Plugin {
+		static get requires() {
+			return [ IconInlineResizeEditing, IconInlineResizeHandles ]
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
 	class HTMLEditing extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
@@ -1002,7 +1148,7 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.InlineEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, HTMLEditing],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, HTMLEditing],
 				toolbar: [
 					'undo',
 					'redo',
@@ -1228,7 +1374,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 103')
+		console.log('CKEditor_Handler 104')
 		initListeners()
 	}
 
