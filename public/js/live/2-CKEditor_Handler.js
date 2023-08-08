@@ -56,6 +56,10 @@ var CKEditor_Handler = (function ($) {
 	const builderIconsWrap = document.getElementById('builder-icons')
 	const builderIcons = Array.prototype.slice.call(builderIconsWrap.children)
 
+	const RESIZED_MEDIA_EMBED_CLASS = 'media_resized'
+	const RESIZABLE_MEDIA_EMBED_CSS_SELECTOR = 'figure.ck-widget iframe'
+	const MEDIA_EMBED_WIDGETS_CLASSES_MATCH_REGEXP = /media/;
+
 	/**
 	 * Get icons inserted in the builder
 	 * @returns Object[]
@@ -1135,6 +1139,179 @@ var CKEditor_Handler = (function ($) {
 	/**
 	 * @since 2.2.0
 	 */
+	class MediaEmbedResizeCommand extends CKEDITOR.Command {
+		execute(options) {
+			const editor = this.editor
+			const selection = editor.model.document.selection
+			const selectedElement = selection.getSelectedElement()
+
+			if (!selectedElement) return
+			if (!selectedElement.is('element', 'media')) return
+
+			editor.model.change(writer => {
+				writer.setAttribute('width', options.width, selectedElement)
+			})
+		}
+
+		// todo: implement refresh method
+		// refresh() {}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class MediaEmbedObserver extends CKEDITOR.Observer {
+		observe(domRoot) {
+			this.listenTo(domRoot, 'load', (event, domEvent) => {
+				const domElement = domEvent.target
+
+				if (this.checkShouldIgnoreEventFromTarget(domElement)) {
+					return
+				}
+
+				if (domElement.tagName == 'IFRAME') {
+					this._fireEvents(domEvent)
+				}
+			}, { useCapture: true })
+		}
+
+		_fireEvents(domEvent) {
+			if (this.isEnabled) {
+				this.document.fire('layoutChanged')
+				this.document.fire('iframeLoaded', domEvent)
+			}
+		}
+
+		stopObserving(domRoot) {
+			this.stopListening(domRoot)
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class MediaEmbedResizeEditing extends CKEDITOR.Plugin {
+		init() {
+			const editor = this.editor
+			const mediaEmbedResizeCommand = new MediaEmbedResizeCommand(editor)
+
+			editor.editing.view.addObserver(MediaEmbedObserver)
+
+			this._registerSchema()
+			this._registerConverters()
+
+			this.editor.commands.add('mediaEmbedResize', mediaEmbedResizeCommand)
+		}
+
+		_registerSchema() {
+			if (this.editor.plugins.has('MediaEmbedEditing')) {
+				this.editor.model.schema.extend('media', { allowAttributes: 'width' });
+			}
+		}
+
+		_registerConverters() {
+			const editor = this.editor
+
+			editor.conversion.for('downcast').add(dispatcher => {
+				dispatcher.on('attribute:width:media', (evt, data, conversionApi) => {
+					if (!conversionApi.consumable.consume(data.item, evt.name)) {
+						return;
+					}
+
+					const viewWriter = conversionApi.writer;
+					const figure = conversionApi.mapper.toViewElement(data.item);
+
+					if (data.attributeNewValue !== null) {
+						viewWriter.setStyle('width', data.attributeNewValue, figure);
+						viewWriter.addClass('media_resized', figure);
+					} else {
+						viewWriter.removeStyle('width', figure);
+						viewWriter.removeClass('media_resized', figure);
+					}
+				})
+			})
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class MediaEmbedResizeHandles extends CKEDITOR.Plugin {
+		init() {
+			const command = this.editor.commands.get('mediaEmbedResize')
+			this.bind('isEnabled').to(command)
+
+			this._setupResizerCreator()
+		}
+
+		_setupResizerCreator() {
+			const editor = this.editor
+			const editingView = editor.editing.view
+			// const editingModel = editor.editing.model
+
+			this.listenTo(editingView.document, 'iframeLoaded', (evt, domEvent) => {
+				if (!domEvent.target.matches(RESIZABLE_MEDIA_EMBED_CSS_SELECTOR)) return
+
+				const domConverter = editor.editing.view.domConverter
+				const iframeView = domConverter.domToView(domEvent.target)
+				const widgetView = iframeView.findAncestor({ classes: MEDIA_EMBED_WIDGETS_CLASSES_MATCH_REGEXP })
+				let resizer = editor.plugins.get(CKEDITOR.WidgetResize).getResizerByViewElement(widgetView);
+
+				if (resizer) {
+					resizer.redraw()
+					return
+				}
+
+				const mapper = editor.editing.mapper;
+				const mediaModel = mapper.toModelElement(widgetView)
+
+				resizer = editor.plugins
+					.get(CKEDITOR.WidgetResize)
+					.attachTo({
+						unit: 'px',
+						modelElement: mediaModel,
+						viewElement: widgetView,
+						editor,
+						getHandleHost(domWidgetElement) {
+							return domWidgetElement.querySelector('iframe')
+						},
+						getResizeHost() {
+							return domConverter.mapViewToDom(mapper.toViewElement(mediaModel.parent))
+						},
+						isCentered: () => true,
+						onCommit(newValue) {
+							editingView.change(writer => {
+								writer.removeClass(RESIZED_MEDIA_EMBED_CLASS, widgetView)
+							})
+							editor.execute('mediaEmbedResize', { width: newValue })
+						}
+					})
+
+				resizer.on('updateSize', () => {
+					if (!widgetView.hasClass(RESIZED_MEDIA_EMBED_CLASS)) {
+						editingView.change(writer => {
+							writer.addClass(RESIZED_MEDIA_EMBED_CLASS, widgetView)
+						})
+					}
+				})
+
+				resizer.bind('isEnabled').to(this)
+			})
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class MediaEmbedResize extends CKEDITOR.Plugin {
+		static get requires() {
+			return [MediaEmbedResizeEditing, MediaEmbedResizeHandles]
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
 	class HTMLEditing extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
@@ -1171,7 +1348,7 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.InlineEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.MediaEmbed, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, HTMLEditing],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.MediaEmbed, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, MediaEmbedResize, HTMLEditing],
 				toolbar: [
 					'undo',
 					'redo',
@@ -1411,7 +1588,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 112')
+		console.log('CKEditor_Handler 113')
 		initListeners()
 	}
 
