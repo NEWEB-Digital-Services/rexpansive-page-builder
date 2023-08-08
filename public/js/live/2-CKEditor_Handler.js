@@ -1401,22 +1401,24 @@ var CKEditor_Handler = (function ($) {
 			.create(el, {
 				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.MediaEmbed, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, MediaEmbedResize, MediaEmbedLegacy, HTMLEditing, CloseEditor],
 				toolbar: [
-					'undo',
-					'redo',
-					'|',
 					'heading',
+					'|',
+					'fontColor',
 					'bold',
 					'italic',
 					'underline',
 					'|',
-					'fontColor',
-					'horizontalLine',
 					'link',
 					'wpImageUpload',
-					'mediaEmbed',
 					'iconInline',
+					'mediaEmbed',
 					'|',
 					'htmlEditing',
+					'|',
+					'undo',
+					'redo',
+					'|',
+					'horizontalLine',
 					'|',
 					'closeEditor'
 				],
@@ -1649,7 +1651,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 116')
+		console.log('CKEditor_Handler 117')
 		initListeners()
 	}
 
