@@ -217,6 +217,9 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class HTMLEditorOpenState extends CKEditorState {
 		handleAction(context, action) {
 			if (!(context.currentState instanceof HTMLEditorOpenState)) return
@@ -308,6 +311,14 @@ var CKEditor_Handler = (function ($) {
 		 */
 		isWpImageUploadOpen() {
 			return this.context.getCurrentState() instanceof WPImageUploadOpenState
+		}
+
+		/**
+		 * The HTML editor is open
+		 * @returns {boolean}
+		 */
+		isHTMLEditorOpen() {
+			return this.context.getCurrentState() instanceof HTMLEditorOpenState
 		}
 
 		toActiveState() {
@@ -522,6 +533,9 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class InsertIconInlineCommand extends CKEDITOR.Command {
 		execute(opts) {
 			const editor = this.editor
@@ -558,6 +572,9 @@ var CKEditor_Handler = (function ($) {
 		// }
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class RemoveIconInlineCommand extends CKEDITOR.Command {
 		execute() {
 			const editor = this.editor
@@ -576,6 +593,9 @@ var CKEditor_Handler = (function ($) {
 		// refresh() {}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class IconInlineEditing extends CKEDITOR.Plugin {
 		static get requires() {
 			return [CKEDITOR.Widget]
@@ -759,6 +779,9 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class IconInlineUI extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
@@ -801,6 +824,9 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class IconInline extends CKEDITOR.Plugin {
 		static get requires() {
 			return [IconInlineEditing, IconInlineUI]
@@ -842,6 +868,9 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class HTMLEditing extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
@@ -857,13 +886,12 @@ var CKEditor_Handler = (function ($) {
 				})
 
 				button.on('execute', () => {
-					const document = editor.editing.view.document
-					// document.fire('html-editing:open-editor', editor.data.get())
 					const data = {
 						eventName: 'rexlive:openHTMLEditor',
 						htmlContent: editor.data.get()
 					}
 					Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+					ckeditorStateMachine.toHTMLEditOpen()
 				})
 
 				return button
@@ -1030,10 +1058,6 @@ var CKEditor_Handler = (function ($) {
 				}
 			}
 		})
-
-		Rexbuilder_Util.$document.on('rexlive:SetcustomHTML', function (e) {
-			console.log(ckeditorStateMachine)
-		})
 	}
 
 	/**
@@ -1073,8 +1097,15 @@ var CKEditor_Handler = (function ($) {
 		})
 	}
 
+	/**
+	 * Handling data updated from ace editor modal
+	 * @param {Object} data object with html content updated with editor
+	 * @returns void
+	 * @since 2.2.0
+	 */
 	function handleSaveHTMLContent(data) {
 		if (ckeditorStateMachine.isEditorDeactive()) return
+		ckeditorStateMachine.editorInstance.data.set(data.customHTML, {batchType: {isUndoable: true}})
 		ckeditorStateMachine.editorInstance.focus()
 	}
 
@@ -1095,8 +1126,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log(CKEDITOR)
-		console.log('CKEditor_Handler 91')
+		console.log('CKEditor_Handler 100')
 		initListeners()
 	}
 
