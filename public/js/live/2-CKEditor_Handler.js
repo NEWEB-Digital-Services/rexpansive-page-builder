@@ -116,6 +116,16 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	/**
+	 * Chedk if a variable is an object
+	 * @param {any} value variable to chedk
+	 * @returns boolean
+	 */
+	function isObject(value) {
+		const type = typeof value
+		return value != null && (type === 'object' || type === 'function')
+	}
+
+	/**
 	 * Get the parents
 	 * @param {Element} el 
 	 * @param {string} selector 
@@ -454,12 +464,13 @@ var CKEditor_Handler = (function ($) {
 	class InlineImagePhotoswipe extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
+			const t = editor.t
 
-			editor.ui.componentFactory.add('inlineImagePhotoswipe', () => {
-				const button = new CKEDITOR.ButtonView()
+			editor.ui.componentFactory.add('inlineImagePhotoswipe', (locale) => {
+				const button = new CKEDITOR.ButtonView(locale)
 
 				button.set({
-					tooltip: 'Photoswipe',
+					tooltip: t('Photoswipe'),
 					withText: false,
 					icon: '<svg xmlns="http://www.w3.org/2000/svg" class="ck ck-icon ck-reset_all-excluded ck-icon_inherit-color ck-button__icon" viewBox="0 0 21 21"><path d="M14 12.586l7.014 7.014v1.385l-.03.03H19.6L12.586 14H0V0h14v12.586zM2 2v10h10V2H2zm6 4h2v2H8v2H6V8H4V6h2V4h2v2z" fill-rule="evenodd"></path></svg>'
 				})
@@ -471,7 +482,7 @@ var CKEditor_Handler = (function ($) {
 
 				if (!selectedElement.is('element', 'imageInline')) return
 
-				const imageHtmlAttributes = selectedElement.getAttribute('htmlAttributes')
+				const imageHtmlAttributes = selectedElement.getAttribute('htmlImgAttributes')
 				const isInlinePhotoswipeActive = isNil(imageHtmlAttributes.attributes) ? false : imageHtmlAttributes.attributes['inline-photoswipe']
 				button.set({
 					isOn: 'true' === isInlinePhotoswipeActive,
@@ -485,10 +496,10 @@ var CKEditor_Handler = (function ($) {
 
 					if (!selectedElement.is('element', 'imageInline')) return
 
-					const imageHtmlAttributes = selectedElement.getAttribute('htmlAttributes')
-					const isInlinePhotoswipeActive = isNil(imageHtmlAttributes.attributes) ? false: imageHtmlAttributes.attributes['inline-photoswipe']
+					const imageHtmlAttributes = selectedElement.getAttribute('htmlImgAttributes')
+					const isInlinePhotoswipeActive = isNil(imageHtmlAttributes.attributes) ? false : imageHtmlAttributes.attributes['inline-photoswipe']
 					button.set({
-						isOn: 'true' === isInlinePhotoswipeActive, 
+						isOn: 'true' === isInlinePhotoswipeActive,
 					})
 				})
 
@@ -503,13 +514,13 @@ var CKEditor_Handler = (function ($) {
 					let isOn = false
 
 					// note: changes on selected element happen inplace
-					const imageHtmlAttributes = selectedElement.getAttribute('htmlAttributes')
+					const imageHtmlAttributes = selectedElement.getAttribute('htmlImgAttributes')
 					if (isNil(imageHtmlAttributes.attributes)) {
 						imageHtmlAttributes.attributes = {}
 						imageHtmlAttributes.attributes['inline-photoswipe'] = 'true'
 						isOn = true
 					} else {
-						if (isNil(imageHtmlAttributes.attributes['inline-photoswipe']))	{
+						if (isNil(imageHtmlAttributes.attributes['inline-photoswipe'])) {
 							imageHtmlAttributes.attributes['inline-photoswipe'] = 'true'
 							isOn = true
 						} else {
@@ -529,6 +540,7 @@ var CKEditor_Handler = (function ($) {
 				})
 
 				return button
+
 			})
 		}
 	}
@@ -869,6 +881,64 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	/**
+	 * @param {Object} config 
+	 * @returns Object
+	 * @since 2.2.0
+	 */
+	function normalizeDeclarativeConfig( config ) {
+		return config.map( item => isObject( item ) ? item.name : item );
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class IconInlineToolbar extends CKEDITOR.Plugin {
+		static get requires() {
+			return [ CKEDITOR.WidgetToolbarRepository ]
+		}
+
+		isIconInlineWidget( viewElement ) {
+			return CKEDITOR.isWidget(viewElement) && viewElement.is('element', 'i') && viewElement.hasClass('l-svg-icons')
+		}
+
+		afterInit() {
+			const editor = this.editor
+			const t = editor.t
+			const widgetToolbarRepository = editor.plugins.get(CKEDITOR.WidgetToolbarRepository)
+			
+			widgetToolbarRepository.register('iconInline', {
+				ariaLabel: t('Icon toolbar'),
+				items: normalizeDeclarativeConfig(editor.config.get('iconInline.toolbar') || []),
+				getRelatedElement: selection => { 
+					const selectionPosition = selection.getFirstPosition();
+
+					if ( !selectionPosition ) {
+						return null;
+					}
+
+					const viewElement = selection.getSelectedElement();
+
+					if ( viewElement && this.isIconInlineWidget( viewElement ) ) {
+						return viewElement;
+					}
+
+					let parent = selectionPosition.parent;
+
+					while ( parent ) {
+						if ( parent.is( 'element' ) && this.isIconInlineWidget( parent ) ) {
+							return parent;
+						}
+
+						parent = parent.parent;
+					}
+
+					return null;
+				}
+			})
+		}
+	}
+
+	/**
 	 * @since 2.2.0
 	 */
 	class HTMLEditing extends CKEDITOR.Plugin {
@@ -907,7 +977,7 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.InlineEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, HTMLEditing],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, HTMLEditing],
 				toolbar: [
 					'undo',
 					'redo',
@@ -969,6 +1039,13 @@ var CKEditor_Handler = (function ($) {
 						'inlineImagePhotoswipe',
 						'|',
 						'inlineImageRemove'
+					]
+				},
+				iconInline: {
+					toolbar: [
+						'fontColor',
+						'iconInline',
+						'removeIconInline'
 					]
 				},
 				placeholder: 'Type your text here'
@@ -1126,7 +1203,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 100')
+		console.log('CKEditor_Handler 102')
 		initListeners()
 	}
 
