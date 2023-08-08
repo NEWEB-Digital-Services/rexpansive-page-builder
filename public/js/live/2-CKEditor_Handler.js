@@ -107,26 +107,6 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	/**
-	 * Check if a string is empty
-	 * @param {string} el 
-	 * @returns bool
-	 * @since 2.2.0
-	 */
-	function isEmpty(el) {
-		return '' !== el
-	}
-
-	/**
-	 * Chedk if a variable is an object
-	 * @param {any} value variable to chedk
-	 * @returns boolean
-	 */
-	function isObject(value) {
-		const type = typeof value
-		return value != null && (type === 'object' || type === 'function')
-	}
-
-	/**
 	 * Get the parents
 	 * @param {Element} el 
 	 * @param {string} selector 
@@ -565,8 +545,8 @@ var CKEditor_Handler = (function ($) {
 
 			let iconInlineData = Object.assign({},
 				{ name: `#${opts.iconId}` },
-				!isEmpty(size) ? { size } : null,
-				!isEmpty(color) ? { color } : null
+				!_.isEmpty(size) ? { size } : null,
+				!_.isEmpty(color) ? { color } : null
 			)
 
 			editor.model.change(writer => {
@@ -677,8 +657,8 @@ var CKEditor_Handler = (function ($) {
 
 					let iconInlineData = Object.assign({},
 						{ name },
-						!isEmpty(size) ? { size } : null,
-						!isEmpty(color) ? { color } : null
+						!_.isEmpty(size) ? { size } : null,
+						!_.isEmpty(color) ? { color } : null
 					)
 					const iconInlineElement = writer.createElement('iconInline', iconInlineData)
 					if (!safeInsert(iconInlineElement, data.modelCursor)) return
@@ -705,7 +685,7 @@ var CKEditor_Handler = (function ($) {
 						{ class: 'l-svg-icons' },
 					)
 					let svgElementAttributes = Object.assign({},
-						!isEmpty(color) ? { style: `fill:${color}` } : null,
+						!_.isEmpty(color) ? { style: `fill:${color}` } : null,
 						{ viewBox: domIconWithSymbol.getAttribute('viewBox') },
 						{ xmlns: domIconWithSymbol.getAttribute('xmlns') }
 					)
@@ -772,10 +752,10 @@ var CKEditor_Handler = (function ($) {
 
 					let iViewElementAttributes = Object.assign({},
 						{ class: 'l-svg-icons' },
-						!isEmpty(size) ? { style: `font-size:${size}` } : null
+						!_.isEmpty(size) ? { style: `font-size:${size}` } : null
 					)
 					let svgElementAttributes = Object.assign({},
-						!isEmpty(color) ? { style: `fill:${color}` } : null
+						!_.isEmpty(color) ? { style: `fill:${color}` } : null
 					)
 
 					const iViewElement = writer.createContainerElement('i', iViewElementAttributes)
@@ -887,7 +867,7 @@ var CKEditor_Handler = (function ($) {
 	 * @since 2.2.0
 	 */
 	function normalizeDeclarativeConfig( config ) {
-		return config.map( item => isObject( item ) ? item.name : item );
+		return config.map( item => _.isObject( item ) ? item.name : item );
 	}
 
 	/**
@@ -1427,7 +1407,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 107')
+		console.log('CKEditor_Handler 110')
 		initListeners()
 	}
 
