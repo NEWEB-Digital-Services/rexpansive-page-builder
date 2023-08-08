@@ -1312,6 +1312,29 @@ var CKEditor_Handler = (function ($) {
 	/**
 	 * @since 2.2.0
 	 */
+	class MediaEmbedLegacy extends CKEDITOR.Plugin {
+		init() {
+			const editor = this.editor
+
+			editor.conversion.for('upcast').elementToElement({
+				view: {
+					name: 'iframe'
+				},
+				model: (viewElement, conversionApi) => {
+					const src = viewElement.getAttribute('src')
+					const { writer } = conversionApi
+
+					return writer.createElement('media', {
+						url: src
+					})
+				}
+			})
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
 	class HTMLEditing extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
@@ -1348,7 +1371,7 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.InlineEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.MediaEmbed, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, MediaEmbedResize, HTMLEditing],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.MediaEmbed, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, MediaEmbedResize, MediaEmbedLegacy, HTMLEditing],
 				toolbar: [
 					'undo',
 					'redo',
@@ -1571,6 +1594,11 @@ var CKEditor_Handler = (function ($) {
 		ckeditorStateMachine.editorInstance.focus()
 	}
 
+	/**
+	 * Handling events concerning ckeditor
+	 * @param {Object} event event data
+	 * @since 2.2.0
+	 */
 	function handleEvent(event) {
 		switch (event.name) {
 			case 'rexlive:ckeditor:inlineImageEdit':
@@ -1582,13 +1610,16 @@ var CKEditor_Handler = (function ($) {
 			case 'rexlive:ckeditor:saveHTMLContent':
 				handleSaveHTMLContent(event.data)
 				break
+			case 'rexlive:ckeditor:closeHTMLEditorModal':
+				ckeditorStateMachine.toHTMLEditClose()
+				break
 			default:
 				break;
 		}
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 113')
+		console.log('CKEditor_Handler 115')
 		initListeners()
 	}
 
