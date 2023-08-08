@@ -136,7 +136,8 @@ class Rexbuilder_Public {
 				wp_enqueue_style('custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . $folder_admin . 'css/rex-custom-editor-buttons.css', array(), $ver, 'all');
 
 				wp_enqueue_style('spectrum-style', REXPANSIVE_BUILDER_URL . $folder . 'css/spectrum.css', array(), $ver, 'all');
-				wp_enqueue_style('medium-editor-style', REXPANSIVE_BUILDER_URL . $folder . 'css/medium-editor.css', array(), $ver, 'all');
+				// wp_enqueue_style('medium-editor-style', REXPANSIVE_BUILDER_URL . $folder . 'css/medium-editor.css', array(), $ver, 'all');
+				wp_enqueue_style('ckeditor5-style', REXPANSIVE_BUILDER_URL . $folder . 'js/vendor/ckeditor5/ckeditor5-bundle.css', array(), $ver, 'all');
 
 			}
 
