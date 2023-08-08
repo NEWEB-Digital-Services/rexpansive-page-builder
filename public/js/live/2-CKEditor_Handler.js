@@ -1112,6 +1112,49 @@ var CKEditor_Handler = (function ($) {
 	/**
 	 * @since 2.2.0
 	 */
+	class ColorIconInlineCommand extends CKEDITOR.Command {
+		execute(options) {
+			const editor = this.editor
+			const selection = editor.model.document.selection
+			const selectedElement = selection.getSelectedElement()
+
+			if (!selectedElement) return
+			if (!selectedElement.is('element', 'iconInline')) return
+
+			editor.model.change(writer => {
+				if (isNil(options.color)) {
+					writer.removeAttribute('color', selectedElement)
+				} else {
+					writer.setAttribute('color', options.color, selectedElement)
+				}
+			})
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class IconInlineColor extends CKEDITOR.Plugin {
+		init() {
+			const editor = this.editor
+
+			this.editor.commands.add('colorIconInline', new ColorIconInlineCommand(this.editor))
+
+			editor.commands.get('fontColor').on('execute', (event, data) => {
+				if (isUndefined(data[0].value)) return
+				const modelElement = editor.model.document.selection.getSelectedElement()
+				if (!(modelElement && modelElement.is('element', 'iconInline'))) return
+
+				editor.execute('colorIconInline', {
+					color: data[0].value
+				})
+			})
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
 	class HTMLEditing extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
@@ -1148,7 +1191,7 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.InlineEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, HTMLEditing],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, HTMLEditing],
 				toolbar: [
 					'undo',
 					'redo',
@@ -1241,6 +1284,11 @@ var CKEditor_Handler = (function ($) {
 			});
 	}
 
+	/**
+	 * @param {Element} editorElement element that contains the editor
+	 * @returns void
+	 * @since 2.2.0
+	 */
 	function restoreBlockTools(editorElement) {
 		const perfectGridGallery = parents(editorElement, `.${PERFECT_GRID_GALLERY_CLASSNAME}`)[0]
 		const $perfectGridGallery = $(perfectGridGallery)
@@ -1264,6 +1312,11 @@ var CKEditor_Handler = (function ($) {
 		Rexbuilder_Util_Editor.activateElementFocus = true;
 	}
 
+	/**
+	 * Destroy the editor instance and save the html on the block content
+	 * @param {Element} editorContentElement element that contains the editor
+	 * @since 2.2.0
+	 */
 	function destroyEditorInstance(editorContentElement) {
 		const editorData = ckeditorStateMachine.editorInstance.data.get()
 		ckeditorStateMachine.editorInstance.destroy().then(() => {
@@ -1374,7 +1427,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 104')
+		console.log('CKEditor_Handler 107')
 		initListeners()
 	}
 
