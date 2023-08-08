@@ -1364,6 +1364,34 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	/**
+	 * @since 2.2.0
+	 */
+	class CloseEditor extends CKEDITOR.Plugin {
+		init() {
+			const editor = this.editor
+			const t = editor.t
+
+			editor.ui.componentFactory.add('closeEditor', (locale) => {
+				const button = new CKEDITOR.ButtonView(locale)
+
+				button.set({
+					tooltip: 'Close editor',
+					withText: false,
+					icon: '<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="ck ck-icon ck-reset_all-excluded ck-icon_inherit-color" fill="#000"><path d="M85.355 77.157L58.198 50l27.156-27.155a5.8 5.8 0 00.001-8.2 5.8 5.8 0 00-8.199 0L50 41.802 22.843 14.645a5.802 5.802 0 00-8.199 0 5.795 5.795 0 000 8.199l27.157 27.157-27.156 27.155a5.792 5.792 0 000 8.2 5.795 5.795 0 008.199 0l27.155-27.157 27.157 27.157a5.794 5.794 0 008.199 0 5.8 5.8 0 000-8.2z" fill-rule="nonzero" fill="#000"></path></svg>'
+				})
+
+				button.on('execute', () => {
+					if (!ckeditorStateMachine.isEditorActive()) return
+					restoreBlockTools(ckeditorStateMachine.editorInstance.sourceElement)
+					destroyEditorInstance(ckeditorStateMachine.editorInstance.sourceElement)
+				})
+
+				return button
+			})
+		}
+	}
+
+	/**
 	 * Creating the editor instance
 	 * @param {Element} el 
 	 * @since 2.2.0
@@ -1371,7 +1399,7 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.InlineEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.MediaEmbed, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, MediaEmbedResize, MediaEmbedLegacy, HTMLEditing],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.MediaEmbed, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, MediaEmbedResize, MediaEmbedLegacy, HTMLEditing, CloseEditor],
 				toolbar: [
 					'undo',
 					'redo',
@@ -1388,7 +1416,9 @@ var CKEditor_Handler = (function ($) {
 					'mediaEmbed',
 					'iconInline',
 					'|',
-					'htmlEditing'
+					'htmlEditing',
+					'|',
+					'closeEditor'
 				],
 				heading: {
 					options: [
@@ -1619,7 +1649,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 115')
+		console.log('CKEditor_Handler 116')
 		initListeners()
 	}
 
