@@ -1366,6 +1366,165 @@ var CKEditor_Handler = (function ($) {
 	/**
 	 * @since 2.2.0
 	 */
+	class TextGradientCommand extends CKEDITOR.Command {
+		attributeKey = 'textgradient'
+
+		refresh() {
+			const model = this.editor.model
+			const doc = model.document
+
+			// this.value = this._getValueFromFirstAllowedNode()
+			this.value = doc.selection.getAttribute(this.attributeKey)
+			this.isEnabled = model.schema.checkAttributeInSelection(doc.selection, this.attributeKey)
+		}
+
+		execute(options) {
+			const model = this.editor.model
+			const doc = model.document
+			const selection = doc.selection
+			const value = options.gradient
+
+			model.change(writer => {
+				if (selection.isCollapsed) {
+					if (value) {
+						writer.setSelectionAttribute(this.attributeKey, value);
+					} else {
+						writer.removeSelectionAttribute(this.attributeKey);
+					}
+				} else {
+					const ranges = model.schema.getValidRanges(selection.getRanges(), this.attributeKey);
+
+					for (const range of ranges) {
+						if (value) {
+							writer.setAttribute(this.attributeKey, value, range);
+						} else {
+							writer.removeAttribute(this.attributeKey, range);
+						}
+					}
+				}
+			})
+		}
+
+		_getValueFromFirstAllowedNode() {
+			const model = this.editor.model;
+			const schema = model.schema;
+			const selection = model.document.selection;
+
+			if (selection.isCollapsed) {
+				return selection.hasAttribute(this.attributeKey);
+			}
+
+			for (const range of selection.getRanges()) {
+				for (const item of range.getItems()) {
+					if (schema.checkAttribute(item, this.attributeKey)) {
+						return item.hasAttribute(this.attributeKey);
+					}
+				}
+			}
+
+			return false;
+		}
+	}
+
+	const TEXT_GRADIENT = 'textgradient'
+
+	/**
+	 * @since 2.2.0
+	 */
+	class TextGradientEditing extends CKEDITOR.Plugin {
+		init() {
+			this._defineSchema()
+			this._defineConverters()
+		}
+
+		_defineSchema() {
+			const schema = this.editor.model.schema
+
+			schema.extend('$text', { allowAttributes: TEXT_GRADIENT })
+			schema.setAttributeProperties(TEXT_GRADIENT, {
+				isFormatting: true,
+				copyOnEnter: true
+			})
+		}
+
+		_defineConverters() {
+			const editor = this.editor
+			const conversion = editor.conversion
+
+			conversion.for('upcast').elementToAttribute({
+				view: {
+					name: 'span',
+					classes: ['text-gradient'],
+					styles: {
+						'background': /.+/
+					}
+				},
+				model: {
+					key: TEXT_GRADIENT,
+					value: (viewElement) => viewElement.getStyle('background')
+				}
+			})
+
+			conversion.for('downcast').attributeToElement({
+				model: TEXT_GRADIENT,
+				view: (modelAttributeValue, { writer }) => {
+					const view = writer.createAttributeElement('span', {
+						class: ['text-gradient'],
+						style: `background:${modelAttributeValue};`
+					})
+					return view
+				}
+			})
+
+			editor.commands.add(TEXT_GRADIENT, new TextGradientCommand(editor))
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class TextGradientUI extends CKEDITOR.Plugin {
+		init() {
+			const editor = this.editor
+			const t = editor.t
+			editor.ui.componentFactory.add('textGradient', (locale) => {
+				const command = editor.commands.get(TEXT_GRADIENT)
+				const view = new CKEDITOR.ButtonView(locale)
+
+				view.set({
+					// label: 'TextGradient',
+					tooltip: 'TextGradient',
+					withText: false,
+					icon: '<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" style="enable-background:new 0 0 384 384" viewBox="0 0 384 384"><path d="M213.333 170.667H256v42.667h-42.667zM256 128h42.667v42.667H256z"/><path d="M341.333 0H42.667C19.2 0 0 19.2 0 42.667v298.667C0 364.8 19.2 384 42.667 384h298.667C364.8 384 384 364.8 384 341.333V42.667C384 19.2 364.8 0 341.333 0zM128 320H85.333v-42.667H128V320zm85.333 0h-42.667v-42.667h42.667V320zm85.334 0H256v-42.667h42.667V320zm42.666-149.333h-42.667v42.667h42.667V256h-42.667v-42.667H256V256h-42.667v-42.667h-42.667V256H128v-42.667H85.333V256H42.667v-42.667h42.667v-42.667H42.667v-128h298.667v128.001z"/><path d="M170.667 128h42.667v42.667h-42.667zM128 170.667h42.667v42.667H128zM85.333 128H128v42.667H85.333z"/></svg>'
+				})
+
+				view.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled')
+
+				this.listenTo(view, 'execute', () => {
+					const value = {
+						gradient: 'linear-gradient(to left, rgba(33, 58, 243, 0.822) 0%, rgb(255, 161, 0) 49.85994397759104%, rgb(10, 10, 11) 90.75630252100841%)'
+					}
+					editor.execute(TEXT_GRADIENT, value)
+					editor.editing.view.focus()
+				})
+
+				return view
+			})
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class TextGradient extends CKEDITOR.Plugin {
+		static get requires() {
+			return [ TextGradientEditing, TextGradientUI ]
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
 	class CloseEditor extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
@@ -1399,11 +1558,12 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.InlineEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.MediaEmbed, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, MediaEmbedResize, MediaEmbedLegacy, HTMLEditing, CloseEditor],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.MediaEmbed, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, MediaEmbedResize, MediaEmbedLegacy, HTMLEditing, TextGradient, CloseEditor],
 				toolbar: [
 					'heading',
 					'|',
 					'fontColor',
+					'textGradient',
 					'bold',
 					'italic',
 					'underline',
