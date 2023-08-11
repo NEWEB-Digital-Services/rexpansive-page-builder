@@ -183,6 +183,9 @@ var CKEditor_Handler = (function ($) {
 				case 'OPEN_HTML_EDITOR':
 					context.transitionTo(new HTMLEditorOpenState())
 					break
+				case 'OPEN_TEXT_GRADIENT':
+					context.transitionTo(new TextGradientOpenState())
+					break
 				default:
 					break;
 			}
@@ -218,6 +221,23 @@ var CKEditor_Handler = (function ($) {
 	class HTMLEditorOpenState extends CKEditorState {
 		handleAction(context, action) {
 			if (!(context.currentState instanceof HTMLEditorOpenState)) return
+			switch (action) {
+				case 'ACTIVATE':
+					context.transitionTo(new ActiveState())
+					break;
+			
+				default:
+					break;
+			}
+		}
+	}
+
+	/**
+	 *  @since 2.2.0
+	 */
+	class TextGradientOpenState extends CKEditorState {
+		handleAction(context, action) {
+			if (!(context.currentState instanceof TextGradientOpenState)) return
 			switch (action) {
 				case 'ACTIVATE':
 					context.transitionTo(new ActiveState())
@@ -337,6 +357,14 @@ var CKEditor_Handler = (function ($) {
 		}
 
 		toHTMLEditClose() {
+			this.context.performAction('ACTIVATE')
+		}
+
+		toTextGradientOpen() {
+			this.context.performAction('OPEN_TEXT_GRADIENT')
+		}
+
+		toTextGradientClose() {
 			this.context.performAction('ACTIVATE')
 		}
 	}
@@ -1530,6 +1558,7 @@ var CKEditor_Handler = (function ($) {
 					};
 
 					Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+					ckeditorStateMachine.toTextGradientOpen()
 
 					// const value = {
 					// 	gradient: 'linear-gradient(to left, rgba(33, 58, 243, 0.822) 0%, rgb(255, 161, 0) 49.85994397759104%, rgb(10, 10, 11) 90.75630252100841%)'
