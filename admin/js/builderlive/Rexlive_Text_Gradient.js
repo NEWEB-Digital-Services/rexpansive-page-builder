@@ -14,9 +14,17 @@ var Rexlive_Text_Gradient = (function($) {
   };
 
   var _closeBlockOptionsModal = function() {
+    const closeModalEventData = {
+      eventName: 'rexlive:textGradientModal:close',
+      data_to_send: {}
+    }
+    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(closeModalEventData);
+
     Rexlive_Modals_Utils.closeModal(
       modal_props.$self.parent(".rex-modal-wrap")
     );
+
+    _updateLive()
   };
 
   var _launchGPicker = function() {
@@ -85,9 +93,10 @@ var Rexlive_Text_Gradient = (function($) {
       modal_props.gpicker.setDirection(this.value);
     });
 
-    modal_props.gpicker.on("change", function(complete) {
-      _updateLive();
-    });
+    // todo: decide what to do: keep it or not?
+    // modal_props.gpicker.on("change", function(complete) {
+    //   _updateLive();
+    // });
 
     modal_props.$add_palette.on("click", function(e) {
       e.preventDefault();
@@ -166,18 +175,18 @@ var Rexlive_Text_Gradient = (function($) {
     direction = "135deg" === direction ? "top left" : direction;
     direction = "315deg" === direction ? "bottom right" : direction;
     var styleGradient = Rexlive_Gradient_Utils.getMarkup(type, direction, modal_props.gpicker.getHandlers(),"cover");
-    if( "" !== value ) {
-      var data_updateBlockGradient = {
-        eventName: "rexlive:setTextGradient",
-        data_to_send: {
-          target: target,
-          color: value,
-          style: styleGradient,
-          active: true
-        }
-      };
-      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_updateBlockGradient);
-    }
+    if( "" === value ) return
+
+    var data_updateBlockGradient = {
+      eventName: "rexlive:setTextGradient",
+      data_to_send: {
+        target: target,
+        color: value,
+        style: styleGradient,
+        active: true
+      }
+    };
+    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_updateBlockGradient);
   };
 
   var _getProps = function(){

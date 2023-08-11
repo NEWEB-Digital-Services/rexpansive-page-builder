@@ -2131,16 +2131,34 @@
     });
 
     /**
-     * Setting the text gradient with Medium Editor
+     * Setting the text gradient with CKEditor
      * @since 2.0.0
+     * @version 2.2.0
      */
     $document.on("rexlive:setTextGradient", function(e) {
-      TextEditor.triggerMEEvent({
-        name:"rexlive:mediumeditor:setTextGradient",
+      // TextEditor.triggerMEEvent({
+      //   name:"rexlive:mediumeditor:setTextGradient",
+      //   data: e.settings.data_to_send,
+      //   editable: null
+      // });
+      CKEditor_Handler.handleEvent({
+        name: 'rexlive:ckeditor:setTextGradient',
         data: e.settings.data_to_send,
         editable: null
-      });
+      })
     });
+
+    /**
+     * Closing the text gradient modal
+     * since 2.2.0
+     */
+    $document.on('rexlive:textGradientModal:close', function(e) {
+      CKEditor_Handler.handleEvent({
+        name: 'rexlive:ckeditor:closeTextGradientModal',
+        data: e.settings.data_to_send,
+        editable: null
+      })
+    })
 
     $document.on("rexlive:editModel", function(e) {
       var data = e.settings.data_to_send;

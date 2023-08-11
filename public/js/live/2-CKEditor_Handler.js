@@ -1846,6 +1846,23 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	/**
+	 * 
+	 * @param {Object} data 
+	 * @since 2.2.0
+	 */
+	function handleSetTextGradient(data) {
+		console.log(data)
+		if (ckeditorStateMachine.isEditorDeactive()) return
+		ckeditorStateMachine.editorInstance.focus()
+		ckeditorStateMachine.editorInstance.model.change(() => {
+			ckeditorStateMachine.editorInstance.execute('textgradient', {
+				gradient: data.style
+			})
+			ckeditorStateMachine.toTextGradientClose()
+		})
+	}
+
+	/**
 	 * Handling events concerning ckeditor
 	 * @param {Object} event event data
 	 * @since 2.2.0
@@ -1864,13 +1881,19 @@ var CKEditor_Handler = (function ($) {
 			case 'rexlive:ckeditor:closeHTMLEditorModal':
 				ckeditorStateMachine.toHTMLEditClose()
 				break
+			case 'rexlive:ckeditor:setTextGradient':
+				handleSetTextGradient(event.data)
+				break
+			case 'rexlive:ckeditor:closeTextGradientModal':
+				ckeditorStateMachine.toTextGradientClose()
+				break
 			default:
 				break;
 		}
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 120')
+		console.log('CKEditor_Handler 127')
 		initListeners()
 	}
 
