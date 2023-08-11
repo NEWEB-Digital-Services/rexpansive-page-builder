@@ -46,6 +46,14 @@ defined('ABSPATH') or exit;
             <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-gradient-palette.php'; ?>
             </div><!-- PALETTE -->
         </div>
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button tool-button--inline tool-button--confirm tool-button--modal rex-modal__save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save', 'rexpansive-builder' ); ?>">
+                <span class="rex-button btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z016-Checked'); ?></span>
+            </div>
+            <div class="tool-button tool-button--inline tool-button--modal rex-modal-option rex-modal__reset-button tippy" data-rex-option="reset" data-tippy-content="<?php _e('Reset','rexpansive-builder'); ?>">
+                <span class="rex-button btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z014-Refresh'); ?></span>
+            </div>
+        </div>
         <?php // include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
     </div>
 </div>

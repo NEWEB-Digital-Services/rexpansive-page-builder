@@ -24,7 +24,7 @@ var Rexlive_Text_Gradient = (function($) {
       modal_props.$self.parent(".rex-modal-wrap")
     );
 
-    _updateLive()
+    // _updateLive()
   };
 
   var _launchGPicker = function() {
@@ -84,6 +84,12 @@ var Rexlive_Text_Gradient = (function($) {
       e.preventDefault();
       _closeBlockOptionsModal();
     });
+
+    modal_props.$save_button.on('click', function(e) {
+      e.preventDefault()
+      _updateLive()
+      _closeBlockOptionsModal()
+    })
 
     modal_props.$gradient_type.on('change', function(e) {
       modal_props.gpicker.setType(this.value);
@@ -201,6 +207,7 @@ var Rexlive_Text_Gradient = (function($) {
 
       $close_button: $modal.find(".rex-modal__close-button"),
       $save_button: $modal.find(".rex-modal__save-button"),
+      $reset_button: $modal.find('.rex-modal__reset-button'),
 
       $gpicker: $modal.find(gpicker_selector),
       gpicker_selector: gpicker_selector,

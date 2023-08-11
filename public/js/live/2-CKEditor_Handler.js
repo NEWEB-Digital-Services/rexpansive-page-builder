@@ -1858,7 +1858,7 @@ var CKEditor_Handler = (function ($) {
 			ckeditorStateMachine.editorInstance.execute('textgradient', {
 				gradient: data.style
 			})
-			ckeditorStateMachine.toTextGradientClose()
+			// ckeditorStateMachine.toTextGradientClose()
 		})
 	}
 
