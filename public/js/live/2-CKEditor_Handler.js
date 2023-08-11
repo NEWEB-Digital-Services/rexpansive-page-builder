@@ -1539,7 +1539,7 @@ var CKEditor_Handler = (function ($) {
 							: '';
 
 					// var bgGradientCol = editorElement.getAttribute('data-selection-gradient');
-					const bgGradientCol = null
+					const bgGradientCol = "null"
 
 					const settings = {
 						blockData: {
