@@ -1413,20 +1413,20 @@ var CKEditor_Handler = (function ($) {
 			const value = options.gradient
 
 			model.change(writer => {
-				if (selection.isCollapsed) {
-					if (value) {
-						writer.setSelectionAttribute(this.attributeKey, value);
+				if ( selection.isCollapsed ) {
+					if ( value ) {
+						writer.setSelectionAttribute( this.attributeKey, value );
 					} else {
-						writer.removeSelectionAttribute(this.attributeKey);
+						writer.removeSelectionAttribute( this.attributeKey );
 					}
 				} else {
-					const ranges = model.schema.getValidRanges(selection.getRanges(), this.attributeKey);
+					const ranges = model.schema.getValidRanges( selection.getRanges(), this.attributeKey );
 
-					for (const range of ranges) {
-						if (value) {
-							writer.setAttribute(this.attributeKey, value, range);
+					for ( const range of ranges ) {
+						if ( value ) {
+							writer.setAttribute( this.attributeKey, value, range );
 						} else {
-							writer.removeAttribute(this.attributeKey, range);
+							writer.removeAttribute( this.attributeKey, range );
 						}
 					}
 				}
@@ -1482,6 +1482,7 @@ var CKEditor_Handler = (function ($) {
 			conversion.for('upcast').elementToAttribute({
 				view: {
 					name: 'span',
+					attributes: ['data-gradient'],
 					classes: ['text-gradient'],
 					styles: {
 						'background': /.+/
@@ -1489,16 +1490,19 @@ var CKEditor_Handler = (function ($) {
 				},
 				model: {
 					key: TEXT_GRADIENT,
-					value: (viewElement) => viewElement.getStyle('background')
+					value: (viewElement) => viewElement.getAttribute('data-gradient')
 				}
 			})
 
 			conversion.for('downcast').attributeToElement({
 				model: TEXT_GRADIENT,
 				view: (modelAttributeValue, { writer }) => {
+	  				const { gradientType, inputPos, handlers, inputSize } = Rexbuilder_Gradient_Utils.getGradientValues(modelAttributeValue)
+					const style = Rexbuilder_Gradient_Utils.getMarkup(gradientType, inputPos, handlers, inputSize)
 					const view = writer.createAttributeElement('span', {
+						'data-gradient': modelAttributeValue,
 						class: ['text-gradient'],
-						style: `background:${modelAttributeValue};`
+						style: style
 					})
 					return view
 				}
@@ -1856,7 +1860,7 @@ var CKEditor_Handler = (function ($) {
 		ckeditorStateMachine.editorInstance.focus()
 		ckeditorStateMachine.editorInstance.model.change(() => {
 			ckeditorStateMachine.editorInstance.execute('textgradient', {
-				gradient: data.style
+				gradient: data.color
 			})
 			// ckeditorStateMachine.toTextGradientClose()
 		})
@@ -1893,7 +1897,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 128')
+		console.log('CKEditor_Handler 134')
 		initListeners()
 	}
 

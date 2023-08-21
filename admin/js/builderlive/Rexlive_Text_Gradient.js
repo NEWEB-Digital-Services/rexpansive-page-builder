@@ -190,6 +190,7 @@ var Rexlive_Text_Gradient = (function($) {
     var styleGradient = Rexlive_Gradient_Utils.getMarkup(type, direction, modal_props.gpicker.getHandlers(),"cover");
     if( "" === value ) return
 
+    // todo: pass only color (value) attribute
     var data_updateBlockGradient = {
       eventName: "rexlive:setTextGradient",
       data_to_send: {
