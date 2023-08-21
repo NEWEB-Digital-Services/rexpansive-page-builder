@@ -304,7 +304,16 @@ var Rexbuilder_Gradient_Utils = (function($) {
     return newSample;
   }
 
+  /**
+   * Getting the string value of the gradient web safe
+   * @param {string} gradientType type of gradient
+   * @param {string} inputPos direction of the gradient
+   * @param {string[]} handlers list of rgba colors of the gradient
+   * @param {string} inputSize size of the gradient
+   * @returns {string}
+   */
   function getMarkup(gradientType, inputPos, handlers, inputSize) {
+    let w3c, gecko, oldwebkit, newwebkit, opera, ms = ''
     if (gradientType == "linear") {
       w3c = lineargradient_w3c(inputPos, handlers);
       gecko = lineargradient_gecko(inputPos, handlers);
@@ -315,14 +324,14 @@ var Rexbuilder_Gradient_Utils = (function($) {
     } else if (gradientType == "radial") {
       gecko = radialgradient_gecko(inputPos, handlers, inputSize);
       w3c = radialgradient_w3c(inputPos, handlers, inputSize);
-      oldwebkit = radialgradient_webkit(inputPos, handlers, inputSize);
+      oldwebkit = radialgradient_webkit(inputPos, handlers);
       newwebkit = gecko.replace("-moz-", "-webkit-");
       opera = gecko.replace("-moz-", "-o-");
       ms = gecko.replace("-moz-", "-ms-");
     } else {
       return "";
     }
-    markup = "";
+    let markup = "";
 
     markup += "background:" + ms + ";";
     markup += "background:" + gecko + ";";
