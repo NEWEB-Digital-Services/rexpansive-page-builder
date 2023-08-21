@@ -77,6 +77,8 @@ class Rexbuilder_Public {
 	public function rexlive_body_class( $classes ) {
 		if (!$this->builder_active_on_this_post_type()) return $classes;
 
+		$classes[] = 'rexbuilder-editor';
+
 		if( Rexbuilder_Utilities::isBuilderLive() ) {
 			// live builder main body class
 			$classes[] = 'rexbuilder-live-active';
