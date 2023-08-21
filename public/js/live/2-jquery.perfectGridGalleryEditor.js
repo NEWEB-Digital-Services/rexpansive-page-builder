@@ -567,7 +567,6 @@
   // Avoid Plugin.prototype conflicts
   $.extend(perfectGridGalleryEditor.prototype, {
     init: function() {
-      console.log('init 10')
       if ( this.$section.children(".section-data").attr("data-row_edited_live") != "true" ) {
         this.properties.editedFromBackend = true;
       }
