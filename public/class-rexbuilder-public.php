@@ -75,6 +75,8 @@ class Rexbuilder_Public {
 	 * @since 2.0.0
 	 */
 	public function rexlive_body_class( $classes ) {
+		if (!$this->builder_active_on_this_post_type()) return $classes;
+
 		if( Rexbuilder_Utilities::isBuilderLive() ) {
 			// live builder main body class
 			$classes[] = 'rexbuilder-live-active';
@@ -1682,6 +1684,8 @@ class Rexbuilder_Public {
 	 * @since  2.0.9
 	 */
 	public function rexbuilder_wp_footer() {
+		if ( !$this->builder_active_on_this_post_type() ) return;
+
 		$this->print_photoswipe_template();
 		$this->print_vertical_dots();
 		$this->print_post_id();
@@ -1698,9 +1702,7 @@ class Rexbuilder_Public {
 	 */
 	public function print_photoswipe_template() {
 		global $post;
-		if ( $this->builder_active_on_this_post_type() ) {
-			include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-photoswipe-template.php');
-		}
+		include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-photoswipe-template.php');
 	}
 
 	/**
@@ -1729,15 +1731,14 @@ class Rexbuilder_Public {
 			$buttonsIDs = get_post_meta($post->ID, '_rexbuilder_buttons_ids_in_page', true);
 			$buttonsInPage = json_decode($buttonsIDs, true);
 			$style = "";
-			if ( null !== $buttonsInPage )
-			{
-				foreach ( $buttonsInPage as $index => $id_button ) {
-					$buttonStyle = get_option('_rex_button_'.$id_button.'_css', "");
+			if (null !== $buttonsInPage) {
+				foreach ($buttonsInPage as $index => $id_button) {
+					$buttonStyle = get_option('_rex_button_' . $id_button . '_css', "");
 					$buttonStyle = stripslashes($buttonStyle);
 					$style .= $buttonStyle;
 				}
 			}
-			if($style != ''){
+			if ($style != '') {
 				wp_add_inline_style('rexpansive-builder-rexbutton-style', $style);
 			}
 		}
@@ -1754,8 +1755,6 @@ class Rexbuilder_Public {
 		if (!$dots_active) return;
 
 		global $post;
-
-		if ( ! $this->builder_active_on_this_post_type() ) return;
 
 		$nav = get_post_meta(get_the_ID(), '_rex_navigation_type', true);
 
@@ -1838,8 +1837,6 @@ class Rexbuilder_Public {
 	 */
 	public function print_popup_content_template() {
 		global $post;
-
-		if ( ! $this->builder_active_on_this_post_type() ) return;
 
 		$customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
 		if ( false === strpos( $customEffects, 'popup-content-button' ) ) return;
