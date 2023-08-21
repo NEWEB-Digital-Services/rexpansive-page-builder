@@ -347,6 +347,7 @@ var Rexbuilder_Gradient_Utils = (function($) {
   /**
    * Explode gradient string to return single values describing the gradient
    * @param {string} gradient gradient value
+   * @returns {Object} response
    * 
    * example: linear-gradient(right, rgba(26,48,212,0.95) 0%, rgb(212,102,26) 100%)
    * example: linear-gradient(left, rgba(197, 244, 9, 228) 0%, rgba(9, 81, 244, 0.741) 51.82072829131653%)
@@ -360,7 +361,7 @@ var Rexbuilder_Gradient_Utils = (function($) {
       gradientType: '',
       inputPos: '',
       handlers: [],
-      inputSize: ''
+      inputSize: 'cover'
     }
 
     if (!gradient) return response
