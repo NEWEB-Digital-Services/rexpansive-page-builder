@@ -257,6 +257,7 @@ var builderlive_public_editor = [
 	// 'public/js/vendor/medium-editor-toolbar-states.min.js',
 	'public/js/vendor/ckeditor5/ckeditor5-bundle.umd.js',
 	'public/js/live/0-Rexbuilder_Array_Utilities.js',
+	'public/js/live/0-Rexbuilder_Gradient_Utils.js',
 	'public/js/live/0-Rexbuilder_Live_Templates.js',
 	'public/js/live/0-Rexbuilder_Live_Utilities.js',
 	'public/js/live/0-Rexbuilder_RexEditedData.js',
