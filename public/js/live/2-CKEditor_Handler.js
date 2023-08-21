@@ -1897,7 +1897,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 134')
+		console.log('CKEditor_Handler 137')
 		initListeners()
 	}
 

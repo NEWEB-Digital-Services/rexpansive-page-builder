@@ -95,7 +95,9 @@ var Rexlive_Text_Gradient = (function($) {
 
     modal_props.$reset_button.on('click', function(e) {
       e.preventDefault()
-      console.log(modal_props.old_data)
+      // todo: map all possible values coming from the gradient, to check if editor sets them correctly
+      // in particular, check code on 2-CKEditor_Handler:1500
+      console.log(modal_props.gpicker.getValue())
     })
 
     modal_props.$gradient_type.on('change', function(e) {
@@ -197,7 +199,9 @@ var Rexlive_Text_Gradient = (function($) {
         target: target,
         color: value,
         style: styleGradient,
-        active: true
+        active: true,
+        type,
+        direction
       }
     };
     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_updateBlockGradient);

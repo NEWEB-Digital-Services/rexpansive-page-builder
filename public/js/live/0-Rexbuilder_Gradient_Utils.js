@@ -397,6 +397,7 @@ var Rexbuilder_Gradient_Utils = (function($) {
 
       response.handlers.push(handler)
     }
+    console.log(response)
 
     return response
   }
