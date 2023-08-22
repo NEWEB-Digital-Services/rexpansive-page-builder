@@ -23,8 +23,8 @@ defined('ABSPATH') or exit;
                 <div class="bl_modal__option-wrap">
                     <select class="browser-default" id="text-gradient-type">
                         <option value="">Select Type</option>
-                        <option value="radial">Radial</option>
                         <option value="linear">Linear</option>
+                        <option value="radial">Radial</option>
                         <!-- <option value="repeating-radial">Repeating Radial</option>
                         <option value="repeating-linear">Repeating Linear</option> -->
                     </select>
