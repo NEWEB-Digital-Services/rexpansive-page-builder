@@ -89,7 +89,11 @@ var Rexlive_Text_Gradient = (function($) {
 
   function allowLinearAngles() {
     modal_props.$gradient_angle.children().each((index, el) => {
-      el.disabled = false
+      if ('center' === el.value) {
+        el.disabled = true
+      } else {
+        el.disabled = false
+      }
     })
   }
 
