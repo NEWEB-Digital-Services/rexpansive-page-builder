@@ -125,6 +125,9 @@ var Rexlive_Text_Gradient = (function($) {
 
     modal_props.$save_button.on('click', function(e) {
       e.preventDefault()
+      if ('' === modal_props.$gradient_angle.val()) return
+      if ('' === modal_props.$gradient_type.val()) return
+
       _updateLive()
       _closeBlockOptionsModal()
     })
