@@ -81,6 +81,42 @@ var Rexlive_Text_Gradient = (function($) {
     });
   };
 
+  function allowAllAngles() {
+    modal_props.$gradient_angle.children().each((index, el) => {
+      el.disabled = false
+    })
+  }
+
+  function allowLinearAngles() {
+    modal_props.$gradient_angle.children().each((index, el) => {
+      el.disabled = false
+    })
+  }
+
+  function allowRadialAngles() {
+    modal_props.$gradient_angle.children().each((index, el) => {
+      if ('' === el.value || 'center' === el.value) {
+        el.disabled = false
+      } else {
+        el.disabled = true
+      }
+    })
+  }
+
+  function checkDirectionAvailability() {
+    console.log(modal_props.$gradient_type.val())
+    switch(modal_props.$gradient_type.val()) {
+      case 'linear':
+        allowLinearAngles()
+        break
+      case 'radial':
+        allowRadialAngles()
+      default:
+        allowAllAngles()
+        break
+    }
+  }
+
   var _linkDocumentListeners = function() {
     modal_props.$close_button.on("click", function(e) {
       e.preventDefault();
@@ -102,6 +138,7 @@ var Rexlive_Text_Gradient = (function($) {
 
     modal_props.$gradient_type.on('change', function(e) {
       modal_props.gpicker.setType(this.value);
+      checkDirectionAvailability()
     });
 
     modal_props.$gradient_angle.on('change', function(e) {
