@@ -242,7 +242,9 @@ var Rexbuilder_Gradient_Utils = (function($) {
       stops += handlers[i].color + " " + handlers[i].position + "%, ";
     }
 
-    dispInputSize = inputSize.toString().toLowerCase();
+    // forcing input size to the default, due the limits of the gradient interface
+    // const dispInputSize = inputSize.toString().toLowerCase();
+    const dispInputSize = 'farthest-corner'
 
     var newSample =
       "radial-gradient(" + shape + " " + dispInputSize + " " + position + ", ";
@@ -397,6 +399,7 @@ var Rexbuilder_Gradient_Utils = (function($) {
 
       response.handlers.push(handler)
     }
+
     console.log(response)
 
     return response
