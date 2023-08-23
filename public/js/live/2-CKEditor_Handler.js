@@ -1860,7 +1860,7 @@ var CKEditor_Handler = (function ($) {
 		ckeditorStateMachine.editorInstance.focus()
 		ckeditorStateMachine.editorInstance.model.change(() => {
 			ckeditorStateMachine.editorInstance.execute('textgradient', {
-				gradient: data.color
+				gradient: data.value
 			})
 			// ckeditorStateMachine.toTextGradientClose()
 		})
@@ -1897,7 +1897,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 137')
+		console.log('CKEditor_Handler 140')
 		initListeners()
 	}
 
