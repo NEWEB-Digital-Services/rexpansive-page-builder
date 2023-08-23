@@ -1892,13 +1892,16 @@ var CKEditor_Handler = (function ($) {
 			case 'rexlive:ckeditor:closeTextGradientModal':
 				ckeditorStateMachine.toTextGradientClose()
 				break
+			case 'rexlive:ckeditor:closeModal':
+				ckeditorStateMachine.toActiveState()
+				break
 			default:
 				break;
 		}
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 144')
+		console.log('CKEditor_Handler 150')
 		initListeners()
 	}
 

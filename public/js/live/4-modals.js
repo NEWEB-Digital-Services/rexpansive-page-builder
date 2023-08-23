@@ -2150,13 +2150,23 @@
 
     /**
      * Closing the text gradient modal
-     * since 2.2.0
+     * @since 2.2.0
      */
     $document.on('rexlive:textGradientModal:close', function(e) {
       CKEditor_Handler.handleEvent({
         name: 'rexlive:ckeditor:closeTextGradientModal',
         data: e.settings.data_to_send,
         editable: null
+      })
+    })
+
+    /**
+     * React to close a generic modal with a click outside its area or with the Escape key
+     * @since 2.2.0
+     */
+    $document.on('rexlive:close_modal', function(ev) {
+      CKEditor_Handler.handleEvent({
+        name: 'rexlive:ckeditor:closeModal'
       })
     })
 
