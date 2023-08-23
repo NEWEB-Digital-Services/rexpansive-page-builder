@@ -50,7 +50,7 @@ defined('ABSPATH') or exit;
             <div class="tool-button tool-button--inline tool-button--confirm tool-button--modal rex-modal__save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save', 'rexpansive-builder' ); ?>">
                 <span class="rex-button btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z016-Checked'); ?></span>
             </div>
-            <div class="tool-button tool-button--inline tool-button--modal rex-modal-option rex-modal__reset-button tippy" data-rex-option="reset" data-tippy-content="<?php _e('Reset','rexpansive-builder'); ?>">
+            <div class="tool-button tool-button--inline tool-button--modal rex-modal-option rex-modal__reset-button tippy" data-rex-option="reset" data-tippy-content="<?php _e('Reset','rexpansive-builder'); ?>" style="display:none;">
                 <span class="rex-button btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z014-Refresh'); ?></span>
             </div>
         </div>

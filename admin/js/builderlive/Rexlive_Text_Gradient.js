@@ -150,11 +150,13 @@ var Rexlive_Text_Gradient = (function($) {
       _closeBlockOptionsModal()
     })
 
+    /**
+     * @since 2.2.0
+     */
     modal_props.$reset_button.on('click', function(e) {
       e.preventDefault()
-      // todo: map all possible values coming from the gradient, to check if editor sets them correctly
-      // in particular, check code on 2-CKEditor_Handler:1500
-      console.log(modal_props.gpicker.getValue())
+      // todo: implement reset
+      // console.log(modal_props.gpicker.getValue())
     })
 
     modal_props.$gradient_type.on('change', function(e) {
@@ -165,11 +167,6 @@ var Rexlive_Text_Gradient = (function($) {
     modal_props.$gradient_angle.on('change', function(e) {
       modal_props.gpicker.setDirection(this.value);
     });
-
-    // todo: decide what to do: keep it or not?
-    // modal_props.gpicker.on("change", function(complete) {
-    //   _updateLive();
-    // });
 
     modal_props.$add_palette.on("click", function(e) {
       e.preventDefault();
