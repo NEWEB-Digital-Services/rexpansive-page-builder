@@ -9,9 +9,10 @@ var Rexlive_Text_Gradient = (function($) {
   var target;
 
   var _openModal = function(data) {
-    allowAllAngles()
+    // allowAllAngles()
     modal_props.old_data = data
     _updateData(data);
+    checkDirectionAvailability()
     Rexlive_Modals_Utils.openModal(modal_props.$self.parent(".rex-modal-wrap"));
   };
 
@@ -82,12 +83,18 @@ var Rexlive_Text_Gradient = (function($) {
     });
   };
 
+  /**
+   * @since 2.2.0
+   */
   function allowAllAngles() {
     modal_props.$gradient_angle.children().each((index, el) => {
       el.disabled = false
     })
   }
 
+  /**
+   * @since 2.2.0
+   */
   function allowLinearAngles() {
     modal_props.$gradient_angle.children().each((index, el) => {
       if ('center' === el.value) {
@@ -98,6 +105,9 @@ var Rexlive_Text_Gradient = (function($) {
     })
   }
 
+  /**
+   * @since 2.2.0
+   */
   function allowRadialAngles() {
     modal_props.$gradient_angle.children().each((index, el) => {
       if ('' === el.value || 'center' === el.value) {
@@ -108,8 +118,10 @@ var Rexlive_Text_Gradient = (function($) {
     })
   }
 
+  /**
+   * @since 2.2.0
+   */
   function checkDirectionAvailability() {
-    console.log(modal_props.$gradient_type.val())
     switch(modal_props.$gradient_type.val()) {
       case 'linear':
         allowLinearAngles()
