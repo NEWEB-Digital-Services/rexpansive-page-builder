@@ -110,6 +110,7 @@
 	--ck-color-link-default: hsl(190, 100%, 75%);
 
 	.ck-editor {
+
 		.ck.ck-balloon-panel,
 		.ck.ck-toolbar {
 			cursor: pointer;
@@ -121,4 +122,23 @@
 		border-radius: 20px;
 		/* border */
 	}
+
+	.ck.ck-editor__editable_inline[dir=ltr] {
+		text-align: inherit;
+	}
+
+	.ck.ck-dropdown.ck-heading-dropdown {
+		.ck-dropdown__button {
+			.ck-button__label {
+				width: auto;
+			}
+		}
+
+		.ck-dropdown__panel {
+			.ck-list__item {
+				min-width: auto;
+			}
+		}
+	}
+
 }
