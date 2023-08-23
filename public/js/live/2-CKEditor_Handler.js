@@ -1542,8 +1542,9 @@ var CKEditor_Handler = (function ($) {
 							? section.getAttribute('data-rexlive-model-number')
 							: '';
 
-					// var bgGradientCol = editorElement.getAttribute('data-selection-gradient');
-					const bgGradientCol = "null"
+					const selection = editor.model.document.selection;
+					const selectionTextGradientAttribute = selection.getAttribute('textgradient')
+					const bgGradientCol = isUndefined(selectionTextGradientAttribute) ? "null" : selectionTextGradientAttribute
 
 					const settings = {
 						blockData: {
@@ -1897,7 +1898,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 140')
+		console.log('CKEditor_Handler 144')
 		initListeners()
 	}
 
