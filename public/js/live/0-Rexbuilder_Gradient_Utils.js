@@ -361,7 +361,7 @@ var Rexbuilder_Gradient_Utils = (function($) {
   function getGradientValues(gradient) {
     const response = {
       gradientType: '',
-      inputPos: '',
+      direction: '',
       handlers: [],
       inputSize: 'cover'
     }
@@ -380,7 +380,7 @@ var Rexbuilder_Gradient_Utils = (function($) {
       }
 
       response.gradientType = gradientMatch[1]
-      response.inputPos = gradientMatch[2]
+      response.direction = gradientMatch[2]
       handlersString = gradientMatch[3]
     }
 

@@ -1497,8 +1497,8 @@ var CKEditor_Handler = (function ($) {
 			conversion.for('downcast').attributeToElement({
 				model: TEXT_GRADIENT,
 				view: (modelAttributeValue, { writer }) => {
-	  				const { gradientType, inputPos, handlers, inputSize } = Rexbuilder_Gradient_Utils.getGradientValues(modelAttributeValue)
-					const style = Rexbuilder_Gradient_Utils.getMarkup(gradientType, inputPos, handlers, inputSize)
+	  				const { gradientType, direction, handlers, inputSize } = Rexbuilder_Gradient_Utils.getGradientValues(modelAttributeValue)
+					const style = Rexbuilder_Gradient_Utils.getMarkup(gradientType, direction, handlers, inputSize)
 					const view = writer.createAttributeElement('span', {
 						'data-gradient': modelAttributeValue,
 						class: ['text-gradient'],
