@@ -1794,8 +1794,10 @@ var CKEditor_Handler = (function ($) {
 		document.addEventListener('keydown', function(event) {
 			if (event.key === 'Escape') {
 				if (ckeditorStateMachine.isEditorActive()) {
-					restoreBlockTools(ckeditorStateMachine.editorInstance.sourceElement)
-					destroyEditorInstance(ckeditorStateMachine.editorInstance.sourceElement)
+					if (!isNil(ckeditorStateMachine.editorInstance)) {
+						restoreBlockTools(ckeditorStateMachine.editorInstance.sourceElement)
+						destroyEditorInstance(ckeditorStateMachine.editorInstance.sourceElement)
+					}
 				}
 			}
 		})
