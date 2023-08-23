@@ -398,7 +398,7 @@ var Rexbuilder_Gradient_Utils = (function($) {
       handlers.push(handler)
     }
 
-    console.log(response)
+    direction = maybeConvertDirectionValue(direction)
 
     return {
       gradientType,
@@ -406,6 +406,19 @@ var Rexbuilder_Gradient_Utils = (function($) {
       handlers,
       inputSize
     }
+  }
+
+  /**
+   * Maybe convert the direction value that comes from the TextGradient picker
+   * The value that it returns is the direction, but the gradient value, if not a degree, must be have a "to direction" format
+   * @param {string} direction direction value as come from the TextGradient picker
+   * @returns string
+   * @since 2.2.0
+   */
+  function maybeConvertDirectionValue(direction) {
+    if ('135deg' === direction) return 'top left'
+    if ('315deg' === direction) return 'bottom right'
+    return direction
   }
 
   var _textGradientRuleset = function() {
