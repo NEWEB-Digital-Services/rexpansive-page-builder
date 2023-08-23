@@ -47,6 +47,9 @@ var CKEditor_Handler = (function ($) {
 	const PERFECT_GRID_GALLERY_CLASSNAME = 'perfect-grid-gallery'
 	const GRID_STACK_ITEM_CLASSNAME = 'grid-stack-item'
 
+	const ALIGNMENT = 'alignment';
+	const LEFT_ALIGNMENT = 'left'
+
 	const IconInlineEvents = {
 		IconInlineInserted: 'iconInlineInserted'
 	}
@@ -370,6 +373,86 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	const ckeditorStateMachine = new CKEditorStateMachine()
+
+	/**
+	 * @since 2.2.0
+	 */
+	class EnableAlignmentLeft extends CKEDITOR.Plugin {
+		init() {
+			const editor = this.editor;
+			const model = editor.model;
+			const doc = model.document;
+			const alignmentCommand = editor.commands.get('alignment')
+
+			this._defineConverters()
+
+			alignmentCommand.on('execute', (evt, args) => {
+				model.change(writer => {
+					const blocks = Array.from(doc.selection.getSelectedBlocks()).filter(block => this._canBeAligned(block));
+					const currentAlignment = blocks[0].getAttribute('alignment');
+
+					for (let i = 0; i < args.length; i++) {
+						const alignment = args[i].value
+						if (alignment === currentAlignment) continue
+						if (LEFT_ALIGNMENT !== alignment) continue
+
+						setAlignmentOnSelection(blocks, writer, alignment);
+					}
+				})
+			})
+		}
+
+		_defineConverters() {
+			const editor = this.editor
+			const viewDefinition = {}
+			viewDefinition[LEFT_ALIGNMENT] = {
+				key: 'style',
+				value: {
+					'text-align': LEFT_ALIGNMENT
+				}
+			}
+
+			const downcastDefintion = {
+				model: {
+					key: ALIGNMENT,
+					values: [LEFT_ALIGNMENT]
+				},
+				view: viewDefinition
+			}
+
+			editor.conversion.for('downcast').attributeToAttribute(downcastDefintion)
+
+			const upcastDefintion = {
+				view: {
+					key: 'style',
+					value: {
+						'text-align': LEFT_ALIGNMENT
+					}
+				},
+				model: {
+					key: ALIGNMENT,
+					value: LEFT_ALIGNMENT
+				}
+			}
+			editor.conversion.for('upcast').attributeToAttribute(upcastDefintion)
+		}
+
+		_canBeAligned(block) {
+			return this.editor.model.schema.checkAttribute(block, ALIGNMENT);
+		}
+	}
+
+	/**
+	 * @param {Element[]} blocks editor elements
+	 * @param {Writer} writer editor writer
+	 * @param {string} alignment possible text alignment
+	 * @since 2.2.0
+	 */
+	function setAlignmentOnSelection(blocks, writer, alignment) {
+		for (const block of blocks) {
+			writer.setAttribute(ALIGNMENT, alignment, block);
+		}
+	}
 
 	/**
 	 * @since 2.2.0
@@ -1622,7 +1705,7 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.InlineEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Alignment, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.MediaEmbed, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, MediaEmbedResize, MediaEmbedLegacy, HTMLEditing, TextGradient, CloseEditor],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Alignment, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.MediaEmbed, EnableAlignmentLeft, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, MediaEmbedResize, MediaEmbedLegacy, HTMLEditing, TextGradient, CloseEditor],
 				toolbar: [
 					'heading',
 					'|',
@@ -1904,7 +1987,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 150')
+		console.log('CKEditor_Handler 151')
 		initListeners()
 	}
 
