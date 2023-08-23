@@ -9,6 +9,7 @@ var Rexlive_Text_Gradient = (function($) {
   var target;
 
   var _openModal = function(data) {
+    allowAllAngles()
     modal_props.old_data = data
     _updateData(data);
     Rexlive_Modals_Utils.openModal(modal_props.$self.parent(".rex-modal-wrap"));
@@ -115,6 +116,7 @@ var Rexlive_Text_Gradient = (function($) {
         break
       case 'radial':
         allowRadialAngles()
+        break
       default:
         allowAllAngles()
         break
@@ -174,6 +176,7 @@ var Rexlive_Text_Gradient = (function($) {
       e.preventDefault();
       var gradient = this.getAttribute("data-gradient-value");
       _setGradientPicker( gradient, false );
+      checkDirectionAvailability()
     });
 
     modal_props.$self.on("click", ".palette-item__delete", function(e) {
