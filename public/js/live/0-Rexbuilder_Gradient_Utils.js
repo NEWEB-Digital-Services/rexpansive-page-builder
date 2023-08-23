@@ -359,14 +359,12 @@ var Rexbuilder_Gradient_Utils = (function($) {
    * @since 2.2.0
    */
   function getGradientValues(gradient) {
-    const response = {
-      gradientType: '',
-      direction: '',
-      handlers: [],
-      inputSize: 'cover'
-    }
+    let gradientType = ''
+    let direction = ''
+    let handlers = []
+    let inputSize = 'cover'
 
-    if (!gradient) return response
+    if (!gradient) return { gradientType, direction, handlers, inputSize }
 
     const gradientRegex = /^(linear|radial)-gradient\(([a-zA-Z0-9]+),\s*([a-zA-Z0-9()\s\%\,\.]+)\)$/gm
     const handlersRegex = /(rgba{0,1}\([0-9,\.\s]+\))\s*([0-9\.%]+)/gm;
@@ -379,8 +377,8 @@ var Rexbuilder_Gradient_Utils = (function($) {
         gradientRegex.lastIndex++;
       }
 
-      response.gradientType = gradientMatch[1]
-      response.direction = gradientMatch[2]
+      gradientType = gradientMatch[1]
+      direction = gradientMatch[2]
       handlersString = gradientMatch[3]
     }
 
@@ -397,12 +395,17 @@ var Rexbuilder_Gradient_Utils = (function($) {
         position: handlersMatch[2].replace('%', '')
       }
 
-      response.handlers.push(handler)
+      handlers.push(handler)
     }
 
     console.log(response)
 
-    return response
+    return {
+      gradientType,
+      direction,
+      handlers,
+      inputSize
+    }
   }
 
   var _textGradientRuleset = function() {
