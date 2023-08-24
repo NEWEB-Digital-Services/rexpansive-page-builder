@@ -2161,7 +2161,8 @@
      */
     $document.on('rexlive:close_modal', function(ev) {
       CKEditor_Handler.handleEvent({
-        name: 'rexlive:ckeditor:closeModal'
+        name: 'rexlive:ckeditor:closeModal',
+        data: ev.settings.data_to_send
       })
     })
 

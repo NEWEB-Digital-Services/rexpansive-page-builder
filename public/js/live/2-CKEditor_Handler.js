@@ -282,6 +282,7 @@ var CKEditor_Handler = (function ($) {
 		 * @param {CKEditorState} newState 
 		 */
 		transitionTo(newState) {
+			console.trace()
 			console.log(`Transition to ${newState.constructor.name}`)
 			this.currentState = newState
 		}
@@ -1903,6 +1904,7 @@ var CKEditor_Handler = (function ($) {
 				console.warn('[CKEditor_Handler/initListeners]: textWrap element is nil')
 				return
 			}
+			console.log(event)
 
 			createEditorInstance(textWrap)
 		})
@@ -2015,6 +2017,7 @@ var CKEditor_Handler = (function ($) {
 				ckeditorStateMachine.toTextGradientClose()
 				break
 			case 'rexlive:ckeditor:closeModal':
+				console.log(event.data)
 				ckeditorStateMachine.toActiveState()
 				break
 			default:
@@ -2023,7 +2026,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 156')
+		console.log('CKEditor_Handler 163')
 		initListeners()
 	}
 
