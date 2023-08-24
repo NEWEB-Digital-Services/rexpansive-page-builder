@@ -808,6 +808,7 @@ var Rexbuilder_Block_Editor = (function($) {
     /**
      * Triggering the event on MediumEditor when the user selects a media from the Video Library
      * @since 2.0.0
+     * @deprecated 2.2.0
      */
     Rexbuilder_Util.$document.on('rexlive:mediumEditor:inlineVideoEditor',function(e) {
       TextEditor.triggerMEEvent({
@@ -820,6 +821,7 @@ var Rexbuilder_Block_Editor = (function($) {
     /**
      * Triggering the event on MediumEditor when user selects an icon from the icon list
      * @since 2.0.0
+     * @deprecated 2.2.0
      */
     Rexbuilder_Util.$document.on('rexlive:mediumEditor:inlineSVG',function(e) {
       TextEditor.triggerMEEvent({
