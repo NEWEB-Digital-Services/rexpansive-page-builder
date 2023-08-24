@@ -306,6 +306,14 @@ var CKEditor_Handler = (function ($) {
 			this.isSectionModel = false
 		}
 
+		getEditorInstance() {
+			return this.editorInstance
+		}
+
+		getEditorInstanceSourceElement() {
+			return this.editorInstance.sourceElement
+		}
+
 		setEditorInstance(editor) {
 			this.editorInstance = editor
 		}
@@ -1683,8 +1691,9 @@ var CKEditor_Handler = (function ($) {
 
 				button.on('execute', () => {
 					if (!ckeditorStateMachine.isEditorActive()) return
-					restoreBlockTools(ckeditorStateMachine.editorInstance.sourceElement)
-					destroyEditorInstance(ckeditorStateMachine.editorInstance.sourceElement)
+					const sourceElement = ckeditorStateMachine.getEditorInstanceSourceElement()
+					restoreBlockTools(sourceElement)
+					destroyEditorInstance(sourceElement)
 				})
 
 				return button
@@ -1794,8 +1803,9 @@ var CKEditor_Handler = (function ($) {
 				ckeditorStateMachine.editorInstance.ui.focusTracker.on('change:isFocused', function (eventInfo, name, value, oldValue) {
 					if (value) return
 					if (ckeditorStateMachine.isEditorActive()) {
-						restoreBlockTools(ckeditorStateMachine.editorInstance.sourceElement)
-						destroyEditorInstance(ckeditorStateMachine.editorInstance.sourceElement)
+						const sourceElement = ckeditorStateMachine.getEditorInstanceSourceElement()
+						restoreBlockTools(sourceElement)
+						destroyEditorInstance(sourceElement)
 					}
 				})
 
@@ -1904,8 +1914,9 @@ var CKEditor_Handler = (function ($) {
 			if (event.key === 'Escape') {
 				if (ckeditorStateMachine.isEditorActive()) {
 					if (!isNil(ckeditorStateMachine.editorInstance)) {
-						restoreBlockTools(ckeditorStateMachine.editorInstance.sourceElement)
-						destroyEditorInstance(ckeditorStateMachine.editorInstance.sourceElement)
+						const sourceElement = ckeditorStateMachine.getEditorInstanceSourceElement()
+						restoreBlockTools(sourceElement)
+						destroyEditorInstance(sourceElement)
 					}
 				}
 			}
