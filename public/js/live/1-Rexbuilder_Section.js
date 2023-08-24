@@ -53,6 +53,7 @@ var Rexbuilder_Section = (function($) {
    * @param  {Element} rowEl row element
    * @return {void}
    * @since  2.0.5
+   * @deprecated 2.2.0
    */
   function launchSectionTextEditors( rowEl ) {
     var blocks = Array.prototype.slice.call( rowEl.getElementsByClassName( 'perfect-grid-item' ) );
@@ -60,8 +61,7 @@ var Rexbuilder_Section = (function($) {
 
     for( i=0; i<totBlocks; i++ ) {
       if ( Rexbuilder_Util.hasClass( blocks[i], 'block-has-slider' ) ) continue;
-      // todo: use new editor
-      // TextEditor.addElementToTextEditor( blocks[i].querySelector(".text-wrap") );
+      TextEditor.addElementToTextEditor( blocks[i].querySelector(".text-wrap") );
     }
   }
 
@@ -627,8 +627,6 @@ var Rexbuilder_Section = (function($) {
 
     // relaunch sortable
     Rexbuilder_Util.$rexContainer.sortable("refresh");
-
-    launchSectionTextEditors( $row[0] );
 
     // update the tools
     // Rexbuilder_Section_Editor.updateRowTools( $newSection );
@@ -1371,8 +1369,6 @@ var Rexbuilder_Section = (function($) {
             500,
             $row
           );
-
-          launchSectionTextEditors( $row.get(0) );
 
           Rexbuilder_Live_Utilities.launchTooltips();
 
