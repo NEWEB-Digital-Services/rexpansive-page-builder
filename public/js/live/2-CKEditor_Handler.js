@@ -1617,14 +1617,15 @@ var CKEditor_Handler = (function ($) {
 
 				this.listenTo(view, 'execute', () => {
 					const editorElement = ckeditorStateMachine.editorInstance.sourceElement
+					const block = parents(editorElement, '.perfect-grid-item').pop()
 					const section = parents(editorElement, '.rexpansive_section').pop()
-					const rex_block_id = editorElement.getAttribute('data-rexbuilder-block-id');
+					const rex_block_id = block.getAttribute('data-rexbuilder-block-id');
 					const sectionID = section.getAttribute('data-rexlive-section-id');
 					const modelNumber =
 						typeof section.getAttribute('data-rexlive-model-number') != 'undefined'
 							? section.getAttribute('data-rexlive-model-number')
 							: '';
-
+						
 					const selection = editor.model.document.selection;
 					const selectionTextGradientAttribute = selection.getAttribute('textgradient')
 					const bgGradientCol = isUndefined(selectionTextGradientAttribute) ? "null" : selectionTextGradientAttribute
@@ -1647,12 +1648,6 @@ var CKEditor_Handler = (function ($) {
 
 					Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 					ckeditorStateMachine.toTextGradientOpen()
-
-					// const value = {
-					// 	gradient: 'linear-gradient(to left, rgba(33, 58, 243, 0.822) 0%, rgb(255, 161, 0) 49.85994397759104%, rgb(10, 10, 11) 90.75630252100841%)'
-					// }
-					// editor.execute(TEXT_GRADIENT, value)
-					// editor.editing.view.focus()
 				})
 
 				return view
@@ -1987,7 +1982,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 151')
+		console.log('CKEditor_Handler 153')
 		initListeners()
 	}
 
