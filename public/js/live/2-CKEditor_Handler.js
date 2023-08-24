@@ -1806,6 +1806,15 @@ var CKEditor_Handler = (function ($) {
 					if (!ckeditorStateMachine.isEditorActive()) return
 					triggerEditorContentChanged()
 				})
+
+				/**
+				 * Hack to remove ckeditor class that adds some styles to contents that interfeer with theme styles
+				 */
+				ckeditorStateMachine.editorInstance.editing.view.change( writer => {
+					const viewEditableRoot = editor.editing.view.document.getRoot();
+
+					writer.removeClass('ck-editor__editable_inline', viewEditableRoot);
+				});
 			})
 			.catch(error => {
 				console.error(error.stack);
