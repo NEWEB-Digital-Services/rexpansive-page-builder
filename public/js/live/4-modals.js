@@ -2136,11 +2136,6 @@
      * @version 2.2.0
      */
     $document.on("rexlive:setTextGradient", function(e) {
-      // TextEditor.triggerMEEvent({
-      //   name:"rexlive:mediumeditor:setTextGradient",
-      //   data: e.settings.data_to_send,
-      //   editable: null
-      // });
       CKEditor_Handler.handleEvent({
         name: 'rexlive:ckeditor:setTextGradient',
         data: e.settings.data_to_send,
