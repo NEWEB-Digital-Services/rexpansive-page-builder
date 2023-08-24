@@ -141,4 +141,8 @@
 		}
 	}
 
+	.ck.ck-editor__editable.ck-focused:not(.ck-editor__nested-editable) {
+		border: none;
+		outline: var(--ck-focus-ring);
+	}
 }
