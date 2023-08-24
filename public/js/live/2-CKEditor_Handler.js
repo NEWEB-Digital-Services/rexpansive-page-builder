@@ -49,6 +49,9 @@ var CKEditor_Handler = (function ($) {
 	const SECTION_CLASSNAME = 'rexpansive_section'
 	const MODEL_CLASSNAME = 'rex-model-section'
 
+	const BLOCK_ID_ATTRIBUTE_NAME = 'data-rexbuilder-block-id'
+	const SECTION_ID_ATTRIBUTE_NAME = 'data-rexlive-section-id'
+
 	const ALIGNMENT = 'alignment';
 	const LEFT_ALIGNMENT = 'left'
 
@@ -1631,10 +1634,10 @@ var CKEditor_Handler = (function ($) {
 
 				this.listenTo(view, 'execute', () => {
 					const editorElement = ckeditorStateMachine.editorInstance.sourceElement
-					const block = parents(editorElement, '.perfect-grid-item').pop()
-					const section = parents(editorElement, '.rexpansive_section').pop()
-					const rex_block_id = block.getAttribute('data-rexbuilder-block-id');
-					const sectionID = section.getAttribute('data-rexlive-section-id');
+					const block = parents(editorElement, `.${GRID_STACK_ITEM_CLASSNAME}`).pop()
+					const section = parents(editorElement, `.${SECTION_CLASSNAME}`).pop()
+					const rex_block_id = block.getAttribute(BLOCK_ID_ATTRIBUTE_NAME);
+					const sectionID = section.getAttribute(SECTION_ID_ATTRIBUTE_NAME);
 					const modelNumber =
 						typeof section.getAttribute('data-rexlive-model-number') != 'undefined'
 							? section.getAttribute('data-rexlive-model-number')
