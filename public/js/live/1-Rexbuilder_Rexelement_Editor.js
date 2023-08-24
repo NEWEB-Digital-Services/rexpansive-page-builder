@@ -277,6 +277,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		// Removing medium editor placeholder if there
 		var $textWrap = $elementWrapper.parents('.text-wrap');
 
+		// todo: use new editor
 		if ($textWrap.length != 0) {
 			TextEditor.removePlaceholder($textWrap.eq(0));
 		}
@@ -632,6 +633,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 			Rexbuilder_Rexwpcf7_Editor.setRowsSortable();
 			Rexbuilder_Rexwpcf7_Editor.addMissingTools(formID);
 			_addElementToolsToDOM();
+			// todo: use new editor
 			TextEditor.focusTextWrap($textWrap);
 		}
 

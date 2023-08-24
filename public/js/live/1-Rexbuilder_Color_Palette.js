@@ -92,6 +92,7 @@ var Rexbuilder_Color_Palette = (function($) {
           break;
         case "text":
           // to open a new modal, must handle the text differently
+          // todo: use new editor
           TextEditor.openTextGradientColor( props.$spicker );
           break;
         default:
