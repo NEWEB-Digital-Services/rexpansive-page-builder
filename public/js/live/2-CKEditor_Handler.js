@@ -1815,10 +1815,30 @@ var CKEditor_Handler = (function ($) {
 						destroyEditorInstance(ckeditorStateMachine.editorInstance.sourceElement)
 					}
 				})
+
+				/**
+				 * Listen to changes on the editor
+				 */
+				ckeditorStateMachine.editorInstance.model.document.on('change:data', () => {
+					if (!ckeditorStateMachine.isEditorActive()) return
+					triggerEditorContentChanged()
+				})
 			})
 			.catch(error => {
 				console.error(error.stack);
 			});
+	}
+
+	/**
+	 * Send event to parent iframe telling the contents are changed
+	 * @since 2.2.0
+	 */
+	function triggerEditorContentChanged() {
+		const data = {
+			eventName: 'rexlive:edited',
+			modelEdited: ckeditorStateMachine.isSectionModel
+		}
+		Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 	}
 
 	/**
@@ -1947,6 +1967,7 @@ var CKEditor_Handler = (function ($) {
 		if (ckeditorStateMachine.isEditorDeactive()) return
 		ckeditorStateMachine.editorInstance.data.set(data.customHTML, {batchType: {isUndoable: true}})
 		ckeditorStateMachine.editorInstance.focus()
+		triggerEditorContentChanged()
 	}
 
 	/**
@@ -2000,7 +2021,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 153')
+		console.log('CKEditor_Handler 156')
 		initListeners()
 	}
 
