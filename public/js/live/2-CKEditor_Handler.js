@@ -140,10 +140,10 @@ var CKEditor_Handler = (function ($) {
 	class CKEditorState {
 		/**
 		 * Handle a state machine action
-		 * @param {Context} context 
+		 * @param {StateMachine} stateMachine 
 		 * @param {string} action 
 		 */
-		handleAction(context, action) {
+		handleAction(stateMachine, action) {
 			throw new Error('Method "handleAction" not implemented')
 		}
 	}
@@ -154,14 +154,14 @@ var CKEditor_Handler = (function ($) {
 	class DeactiveState extends CKEditorState {
 		/**
 		 * Performs an action from deactive: state can only go to active
-		 * @param {Context} context 
+		 * @param {StateMachine} stateMachine 
 		 * @param {string} action 
 		 */
-		handleAction(context, action) {
-			if (!(context.currentState instanceof DeactiveState)) return
+		handleAction(stateMachine, action) {
+			if (!(stateMachine.currentState instanceof DeactiveState)) return
 			switch (action) {
 				case 'ACTIVATE':
-					context.transitionTo(new ActiveState())
+					stateMachine.transitionTo(new ActiveState())
 					break
 				default:
 					break
@@ -176,23 +176,23 @@ var CKEditor_Handler = (function ($) {
 		/**
 		 * Performs an action from active: state can go to other tools open
 		 * or to deactive
-		 * @param {Context} context 
+		 * @param {StateMachine} stateMachine 
 		 * @param {string} action 
 		 */
-		handleAction(context, action) {
-			if (!(context.currentState instanceof ActiveState)) return
+		handleAction(stateMachine, action) {
+			if (!(stateMachine.currentState instanceof ActiveState)) return
 			switch (action) {
 				case 'DEACTIVATE':
-					context.transitionTo(new DeactiveState())
+					stateMachine.transitionTo(new DeactiveState())
 					break;
 				case 'OPEN_WP_IMAGE_UPLOAD':
-					context.transitionTo(new WPImageUploadOpenState())
+					stateMachine.transitionTo(new WPImageUploadOpenState())
 					break
 				case 'OPEN_HTML_EDITOR':
-					context.transitionTo(new HTMLEditorOpenState())
+					stateMachine.transitionTo(new HTMLEditorOpenState())
 					break
 				case 'OPEN_TEXT_GRADIENT':
-					context.transitionTo(new TextGradientOpenState())
+					stateMachine.transitionTo(new TextGradientOpenState())
 					break
 				default:
 					break;
@@ -207,14 +207,14 @@ var CKEditor_Handler = (function ($) {
 		/**
 		 * Performs an action from active: state can go to other tools open
 		 * or to deactive
-		 * @param {Context} context 
+		 * @param {StateMachine} stateMachine 
 		 * @param {string} action 
 		 */
-		handleAction(context, action) {
-			if (!(context.currentState instanceof WPImageUploadOpenState)) return
+		handleAction(stateMachine, action) {
+			if (!(stateMachine.currentState instanceof WPImageUploadOpenState)) return
 			switch (action) {
 				case 'ACTIVATE':
-					context.transitionTo(new ActiveState())
+					stateMachine.transitionTo(new ActiveState())
 					break;
 
 				default:
@@ -227,11 +227,11 @@ var CKEditor_Handler = (function ($) {
 	 * @since 2.2.0
 	 */
 	class HTMLEditorOpenState extends CKEditorState {
-		handleAction(context, action) {
-			if (!(context.currentState instanceof HTMLEditorOpenState)) return
+		handleAction(stateMachine, action) {
+			if (!(stateMachine.currentState instanceof HTMLEditorOpenState)) return
 			switch (action) {
 				case 'ACTIVATE':
-					context.transitionTo(new ActiveState())
+					stateMachine.transitionTo(new ActiveState())
 					break;
 			
 				default:
@@ -244,11 +244,11 @@ var CKEditor_Handler = (function ($) {
 	 *  @since 2.2.0
 	 */
 	class TextGradientOpenState extends CKEditorState {
-		handleAction(context, action) {
-			if (!(context.currentState instanceof TextGradientOpenState)) return
+		handleAction(stateMachine, action) {
+			if (!(stateMachine.currentState instanceof TextGradientOpenState)) return
 			switch (action) {
 				case 'ACTIVATE':
-					context.transitionTo(new ActiveState())
+					stateMachine.transitionTo(new ActiveState())
 					break;
 			
 				default:
@@ -260,9 +260,9 @@ var CKEditor_Handler = (function ($) {
 	/**
 	 * @since 2.2.0
 	 */
-	class Context {
+	class StateMachine {
 		/**
-		 * Initial state of the context
+		 * Initial state of the machine
 		 * @param {CKEditorState} initialState 
 		 */
 		constructor(initialState) {
@@ -287,7 +287,7 @@ var CKEditor_Handler = (function ($) {
 		}
 
 		/**
-		 * The current context state
+		 * The current state
 		 * @returns {CKEditorState} The current state machine state
 		 */
 		getCurrentState() {
@@ -300,7 +300,7 @@ var CKEditor_Handler = (function ($) {
 	 */
 	class CKEditorStateMachine {
 		constructor() {
-			this.context = new Context(new DeactiveState())
+			this.stateMachine = new StateMachine(new DeactiveState())
 
 			this.editorInstance = null
 			this.isSectionModel = false
@@ -329,7 +329,7 @@ var CKEditor_Handler = (function ($) {
 		 * @returns {boolean}
 		 */
 		isEditorActive() {
-			return this.context.getCurrentState() instanceof ActiveState
+			return this.stateMachine.getCurrentState() instanceof ActiveState
 		}
 
 		/**
@@ -337,7 +337,7 @@ var CKEditor_Handler = (function ($) {
 		 * @returns {boolean}
 		 */
 		isEditorDeactive() {
-			return this.context.getCurrentState() instanceof DeactiveState
+			return this.stateMachine.getCurrentState() instanceof DeactiveState
 		}
 
 		/**
@@ -345,7 +345,7 @@ var CKEditor_Handler = (function ($) {
 		 * @returns {boolean}
 		 */
 		isWpImageUploadOpen() {
-			return this.context.getCurrentState() instanceof WPImageUploadOpenState
+			return this.stateMachine.getCurrentState() instanceof WPImageUploadOpenState
 		}
 
 		/**
@@ -353,39 +353,39 @@ var CKEditor_Handler = (function ($) {
 		 * @returns {boolean}
 		 */
 		isHTMLEditorOpen() {
-			return this.context.getCurrentState() instanceof HTMLEditorOpenState
+			return this.stateMachine.getCurrentState() instanceof HTMLEditorOpenState
 		}
 
 		toActiveState() {
-			this.context.performAction('ACTIVATE')
+			this.stateMachine.performAction('ACTIVATE')
 		}
 
 		toDeactiveState() {
-			this.context.performAction('DEACTIVATE')
+			this.stateMachine.performAction('DEACTIVATE')
 		}
 
 		toWpImageUploadOpen() {
-			this.context.performAction('OPEN_WP_IMAGE_UPLOAD')
+			this.stateMachine.performAction('OPEN_WP_IMAGE_UPLOAD')
 		}
 
 		toWpImageUploadClose() {
-			this.context.performAction('ACTIVATE')
+			this.stateMachine.performAction('ACTIVATE')
 		}
 
 		toHTMLEditOpen() {
-			this.context.performAction('OPEN_HTML_EDITOR')
+			this.stateMachine.performAction('OPEN_HTML_EDITOR')
 		}
 
 		toHTMLEditClose() {
-			this.context.performAction('ACTIVATE')
+			this.stateMachine.performAction('ACTIVATE')
 		}
 
 		toTextGradientOpen() {
-			this.context.performAction('OPEN_TEXT_GRADIENT')
+			this.stateMachine.performAction('OPEN_TEXT_GRADIENT')
 		}
 
 		toTextGradientClose() {
-			this.context.performAction('ACTIVATE')
+			this.stateMachine.performAction('ACTIVATE')
 		}
 	}
 
