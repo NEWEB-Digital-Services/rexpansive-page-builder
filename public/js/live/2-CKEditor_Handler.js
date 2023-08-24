@@ -46,6 +46,8 @@ var CKEditor_Handler = (function ($) {
 	const TEXT_WRAP_CLASSNAME = 'text-wrap'
 	const PERFECT_GRID_GALLERY_CLASSNAME = 'perfect-grid-gallery'
 	const GRID_STACK_ITEM_CLASSNAME = 'grid-stack-item'
+	const SECTION_CLASSNAME = 'rexpansive_section'
+	const MODEL_CLASSNAME = 'rex-model-section'
 
 	const ALIGNMENT = 'alignment';
 	const LEFT_ALIGNMENT = 'left'
@@ -296,7 +298,9 @@ var CKEditor_Handler = (function ($) {
 	class CKEditorStateMachine {
 		constructor() {
 			this.context = new Context(new DeactiveState())
+
 			this.editorInstance = null
+			this.isSectionModel = false
 		}
 
 		setEditorInstance(editor) {
@@ -305,6 +309,16 @@ var CKEditor_Handler = (function ($) {
 
 		clearEditorInstance() {
 			this.editorInstance = null
+		}
+
+		setStateMachineContext(editor, isSectionModel) {
+			this.setEditorInstance(editor)
+			this.isSectionModel = isSectionModel
+		}
+
+		clearStateMachineContext() {
+			this.clearEditorInstance()
+			this.isSectionModel = false
 		}
 
 		/**
@@ -1785,7 +1799,8 @@ var CKEditor_Handler = (function ($) {
 			})
 			.then(editor => {
 				console.log('Editor was initialized', editor);
-				ckeditorStateMachine.setEditorInstance(editor)
+				const section = parents(editor.sourceElement, `.${SECTION_CLASSNAME}`).pop()
+				ckeditorStateMachine.setStateMachineContext(editor, section.classList.contains(MODEL_CLASSNAME))
 				ckeditorStateMachine.toActiveState()
 
 				ckeditorStateMachine.editorInstance.focus()
@@ -1839,7 +1854,7 @@ var CKEditor_Handler = (function ($) {
 	function destroyEditorInstance(editorContentElement) {
 		const editorData = ckeditorStateMachine.editorInstance.data.get()
 		ckeditorStateMachine.editorInstance.destroy().then(() => {
-			ckeditorStateMachine.clearEditorInstance()
+			ckeditorStateMachine.clearStateMachineContext()
 			editorContentElement.innerHTML = editorData
 			ckeditorStateMachine.toDeactiveState()
 		})
