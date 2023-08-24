@@ -487,7 +487,6 @@ var CKEditor_Handler = (function ($) {
 				})
 
 				button.on('execute', () => {
-					console.log('upload wp media')
 					const data = {
 						eventName: 'rexlive:openMEImageUploader',
 						img_data: {}
@@ -1121,9 +1120,7 @@ var CKEditor_Handler = (function ($) {
 			const editor = this.editor
 
 			editor.conversion.for('downcast').add(dispatcher => {
-				console.log('define upgraded downcast')
 				dispatcher.on('attribute:width:iconInline', (evt, data, conversionApi) => {
-					console.log('attribute:width:iconInline')
 					if (!conversionApi.consumable.consume(data.item, evt.name)) {
 						return
 					}
@@ -1131,20 +1128,6 @@ var CKEditor_Handler = (function ($) {
 
 				})
 			})
-
-			// editor.conversion.for('upcast')
-			// 	.attributeToAttribute({
-			// 		view: {
-			// 			name: 'i',
-			// 			styles: {
-			// 				'font-size': /.+/
-			// 			}
-			// 		},
-			// 		model: {
-			// 			key: 'font-size',
-			// 			value: (viewElement) => viewElement.getStyle('width')
-			// 		}
-			// 	})
 		}
 	}
 
@@ -1976,7 +1959,6 @@ var CKEditor_Handler = (function ($) {
 	 * @since 2.2.0
 	 */
 	function handleSetTextGradient(data) {
-		console.log(data)
 		if (ckeditorStateMachine.isEditorDeactive()) return
 		ckeditorStateMachine.editorInstance.focus()
 		ckeditorStateMachine.editorInstance.model.change(() => {

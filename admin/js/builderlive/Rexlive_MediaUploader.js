@@ -55,18 +55,6 @@ var Rexlive_MediaUploader = (function($) {
       states: [new insertImage()]
     });
 
-    // image_multiple_uploader_frame.on('all', function(e) {
-    //   console.log(e);
-    // })
-
-    // prevent attachment size strange selections
-    // image_multiple_uploader_frame.on('selection:toggle', function(e) {
-    //   var attachmentSizeEl = document.querySelector( 'select[name="size"]' );
-    //   if ( attachmentSizeEl ) {
-    //     attachmentSizeEl.value = 'full';
-    //   }
-    // });
-
     //reset selection in popup, when open the popup
     image_multiple_uploader_frame.on("open", function() {
       var selection = image_multiple_uploader_frame

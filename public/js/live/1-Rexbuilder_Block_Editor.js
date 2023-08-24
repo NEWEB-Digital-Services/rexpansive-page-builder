@@ -1969,7 +1969,6 @@ var Rexbuilder_Block_Editor = (function($) {
    * Initing the block toolbar
    */
   var init = function() {
-    console.log('Rexbuilder_Block_Editor: 3')
     block_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum';
     _attachEvents();
     // _setTools();

@@ -1212,7 +1212,6 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
    * @since  2.0.3
    */
   function init() {
-    console.log('Rexbuilder_CreateBlocks: 2')
     addListeners();
   }
 

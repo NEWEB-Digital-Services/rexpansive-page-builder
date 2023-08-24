@@ -264,9 +264,6 @@ var Rex_Save_Listeners = (function($) {
               },
               success: function(response) {
                 if (response.success) {
-                  // console.log(
-                  //   "layout " + response.data.layoutName + " updated!"
-                  // );
                 }
               },
               error: function(response) {}
@@ -433,10 +430,6 @@ var Rex_Save_Listeners = (function($) {
             },
             success: function(response) {
               if (response.success) {
-                // console.log(
-                //   "layout " + response.data.layoutName + " updated!"
-                // );
-                // console.log(newCustomization.sections);
               }
             },
             error: function(response) {}
@@ -634,9 +627,6 @@ var Rex_Save_Listeners = (function($) {
               },
               success: function(response) {
                 if (response.success) {
-                  // console.log(
-                  //   "layout " + response.data.layoutName + " updated!"
-                  // );
                 }
               },
               error: function(response) {}

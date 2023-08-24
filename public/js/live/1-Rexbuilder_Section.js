@@ -832,7 +832,6 @@ var Rexbuilder_Section = (function($) {
         }
       })
       $newSection.insertAfter($prevRow);
-      // console.log(parseInt($prevRow.attr('data-rexlive-section-number')) + 1)
     } else {
       $newSection.appendTo(Rexbuilder_Util.$rexContainer);
     }
