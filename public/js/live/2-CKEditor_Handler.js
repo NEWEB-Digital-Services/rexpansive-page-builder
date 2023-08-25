@@ -503,6 +503,10 @@ var CKEditor_Handler = (function ($) {
 	class WPImageUpload extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
+
+			this._defineSchema()
+			this._defineConverters()
+
 			editor.ui.componentFactory.add('wpImageUpload', () => {
 				const button = new CKEDITOR.ButtonView()
 				button.set({
@@ -523,6 +527,21 @@ var CKEditor_Handler = (function ($) {
 				})
 
 				return button
+			})
+		}
+
+		_defineSchema() {
+			const schema = this.editor.model.schema
+
+			schema.extend('imageInline', {
+				allowAttributes: ['imageId']
+			})
+		}
+
+		_defineConverters() {
+			this.editor.conversion.attributeToAttribute({
+				view: 'data-image-id',
+				model: 'imageId'
 			})
 		}
 	}
@@ -1958,14 +1977,18 @@ var CKEditor_Handler = (function ($) {
 			imgClasses.push(data.imgData.align)
 
 			const insertImageData = {
+				// ok
 				src: data.imgData.urlImage,
+				// ok
 				alt: data.displayData.alt,
-				htmlAttributes: {
-					'data-image-id': data.imgData.idImage.toString(),
-					width: data.imgData.width,
-					height: data.imgData.height,
+				width: data.imgData.width,
+				height: data.imgData.height,
+				title: data.displayData.title,
+				// ok
+				imageId: data.imgData.idImage.toString(),
+				htmlImgAttributes: {
+					// ok
 					classes: imgClasses,
-					title: data.displayData.title,
 				}
 			}
 
