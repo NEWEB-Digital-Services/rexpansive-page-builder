@@ -299,7 +299,7 @@ var CKEditor_Handler = (function ($) {
 		 * @param {CKEditorState} newState 
 		 */
 		transitionTo(newState) {
-			console.trace()
+			// console.trace()
 			console.log(`Transition to ${newState.constructor.name}`)
 			this.currentState = newState
 		}
@@ -618,12 +618,83 @@ var CKEditor_Handler = (function ($) {
 	/**
 	 * @since 2.2.0
 	 */
-	class InlineImagePhotoswipe extends CKEDITOR.Plugin {
+	class PhotoswipeCommand extends CKEDITOR.Command {
+		attributekey = 'photoswipe'
+
+		refresh() {
+			const editor = this.editor
+			const imageUtils = editor.plugins.get('ImageUtils')
+			const element = imageUtils.getClosestSelectedImageElement(this.editor.model.document.selection)
+
+			this.isEnabled = !!element
+
+			if (this.isEnabled && element.hasAttribute(this.attributekey)) {
+				this.value = true
+			} else {
+				this.value = false
+			}
+		}
+
+		execute() {
+			const editor = this.editor
+			const model = editor.model
+			const selection = editor.model.document.selection
+			const selectedElement = selection.getSelectedElement()
+
+			if (!selectedElement) return
+			if (!selectedElement.is('element', 'imageInline')) return
+
+			model.change(writer => {
+				if (this.value) {
+					writer.removeAttribute(this.attributekey, selectedElement)
+				} else {
+					writer.setAttribute(this.attributekey, true, selectedElement)
+				}
+			})
+		}
+
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class PhotoswipeEditing extends CKEDITOR.Plugin {
+		init() {
+			this._defineSchema()
+			this._defineConverters()
+		}
+
+		_defineSchema() {
+			const schema = this.editor.model.schema
+
+			schema.extend('imageInline', {
+				allowAttributes: ['photoswipe']
+			})
+		}
+
+		_defineConverters() {
+			const editor = this.editor
+
+			editor.conversion.attributeToAttribute({
+				model: 'photoswipe',
+				view: 'inline-photoswipe'
+			})
+
+			const command = new PhotoswipeCommand(editor)
+			editor.commands.add(command.attributekey, command)
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class PhotoswipeUI extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
 			const t = editor.t
 
-			editor.ui.componentFactory.add('inlineImagePhotoswipe', (locale) => {
+			editor.ui.componentFactory.add('photoswipe', (locale) => {
+				const command = editor.commands.get('photoswipe')
 				const button = new CKEDITOR.ButtonView(locale)
 
 				button.set({
@@ -632,73 +703,24 @@ var CKEditor_Handler = (function ($) {
 					icon: '<svg xmlns="http://www.w3.org/2000/svg" class="ck ck-icon ck-reset_all-excluded ck-icon_inherit-color ck-button__icon" viewBox="0 0 21 21"><path d="M14 12.586l7.014 7.014v1.385l-.03.03H19.6L12.586 14H0V0h14v12.586zM2 2v10h10V2H2zm6 4h2v2H8v2H6V8H4V6h2V4h2v2z" fill-rule="evenodd"></path></svg>'
 				})
 
-				const selection = editor.model.document.selection;
-				const selectedElement = selection.getSelectedElement();
-
-				if (isNil(selectedElement)) return
-
-				if (!selectedElement.is('element', 'imageInline')) return
-
-				const imageHtmlAttributes = selectedElement.getAttribute('htmlImgAttributes')
-				const isInlinePhotoswipeActive = isNil(imageHtmlAttributes.attributes) ? false : imageHtmlAttributes.attributes['inline-photoswipe']
-				button.set({
-					isOn: 'true' === isInlinePhotoswipeActive,
-				})
-
-				editor.model.document.on('change', () => {
-					const selection = editor.model.document.selection;
-					const selectedElement = selection.getSelectedElement();
-
-					if (isNil(selectedElement)) return
-
-					if (!selectedElement.is('element', 'imageInline')) return
-
-					const imageHtmlAttributes = selectedElement.getAttribute('htmlImgAttributes')
-					const isInlinePhotoswipeActive = isNil(imageHtmlAttributes.attributes) ? false : imageHtmlAttributes.attributes['inline-photoswipe']
-					button.set({
-						isOn: 'true' === isInlinePhotoswipeActive,
-					})
-				})
+				button.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled')
 
 				button.on('execute', () => {
-					const selection = editor.model.document.selection;
-					const selectedElement = selection.getSelectedElement();
-
-					if (isNil(selectedElement)) return
-
-					if (!selectedElement.is('element', 'imageInline')) return
-
-					let isOn = false
-
-					// note: changes on selected element happen inplace
-					const imageHtmlAttributes = selectedElement.getAttribute('htmlImgAttributes')
-					if (isNil(imageHtmlAttributes.attributes)) {
-						imageHtmlAttributes.attributes = {}
-						imageHtmlAttributes.attributes['inline-photoswipe'] = 'true'
-						isOn = true
-					} else {
-						if (isNil(imageHtmlAttributes.attributes['inline-photoswipe'])) {
-							imageHtmlAttributes.attributes['inline-photoswipe'] = 'true'
-							isOn = true
-						} else {
-							if ('true' === imageHtmlAttributes.attributes['inline-photoswipe']) {
-								delete imageHtmlAttributes.attributes['inline-photoswipe']
-								isOn = false
-							} else {
-								imageHtmlAttributes.attributes['inline-photoswipe'] = 'true'
-								isOn = false
-							}
-						}
-					}
-
-					button.set({
-						isOn
-					})
+					editor.execute('photoswipe', true)
+					editor.editing.view.focus()
 				})
 
 				return button
-
 			})
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class Photoswipe extends CKEDITOR.Plugin {
+		static get requires() {
+			return [PhotoswipeEditing, PhotoswipeUI]
 		}
 	}
 
@@ -1746,7 +1768,7 @@ var CKEditor_Handler = (function ($) {
 	function createEditorInstance(el) {
 		const editor = CKEDITOR.InlineEditor
 			.create(el, {
-				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Alignment, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.MediaEmbed, EnableAlignmentLeft, WPImageUpload, WpImageEdit, InlineImagePhotoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, MediaEmbedResize, MediaEmbedLegacy, HTMLEditing, TextGradient, CloseEditor],
+				plugins: [CKEDITOR.Essentials, CKEDITOR.Paragraph, CKEDITOR.Alignment, CKEDITOR.Bold, CKEDITOR.Italic, CKEDITOR.Underline, CKEDITOR.Heading, CKEDITOR.FontColor, CKEDITOR.GeneralHtmlSupport, CKEDITOR.HorizontalLine, CKEDITOR.Link, CKEDITOR.Image, CKEDITOR.ImageResize, CKEDITOR.ImageStyle, CKEDITOR.ImageToolbar, CKEDITOR.Undo, CKEDITOR.MediaEmbed, EnableAlignmentLeft, WPImageUpload, WpImageEdit, Photoswipe, InlineImageRemove, IconInline, IconInlineToolbar, RemoveIconInline, IconInlineResize, IconInlineColor, MediaEmbedResize, MediaEmbedLegacy, HTMLEditing, TextGradient, CloseEditor],
 				toolbar: [
 					'heading',
 					'|',
@@ -1812,7 +1834,7 @@ var CKEditor_Handler = (function ($) {
 						'imageTextAlternative',
 						'|',
 						'wpImageEdit',
-						'inlineImagePhotoswipe',
+						'photoswipe',
 						'|',
 						'inlineImageRemove'
 					]
@@ -1940,7 +1962,6 @@ var CKEditor_Handler = (function ($) {
 				console.warn('[CKEditor_Handler/initListeners]: textWrap element is nil')
 				return
 			}
-			console.log(event)
 
 			createEditorInstance(textWrap)
 		})
@@ -2067,7 +2088,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 166')
+		console.log('CKEditor_Handler 172')
 		initListeners()
 	}
 
