@@ -84,7 +84,7 @@ var Rexlive_Modals_Utils = (function($) {
     var closeEvent = {
       eventName: "rexlive:close_modal",
       data_to_send: {
-        modal_id: $target.find('rex-modal').attr('id')
+        modal_id: $target.find('.rex-modal').attr('id')
       }
     };
     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(closeEvent);

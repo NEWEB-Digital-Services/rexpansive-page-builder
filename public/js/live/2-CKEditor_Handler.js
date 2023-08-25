@@ -69,6 +69,23 @@ var CKEditor_Handler = (function ($) {
 	const MEDIA_EMBED_WIDGETS_CLASSES_MATCH_REGEXP = /media/;
 
 	/**
+	 * Check if the closing of a modal outside its area must re-activate the editor
+	 * @param {string} modal_id id of a modal
+	 * @returns boolean
+	 * @since 2.2.0
+	 */
+	function parseModalID(modal_id) {
+		switch (modal_id){
+			case 'rex-text-gradient-editor':
+			case 'rex-html-text-editor':
+				return true
+			default:
+			case '':
+				return false
+		}
+	}
+
+	/**
 	 * Get icons inserted in the builder
 	 * @returns Object[]
 	 * @since 2.2.0
@@ -2017,8 +2034,9 @@ var CKEditor_Handler = (function ($) {
 				ckeditorStateMachine.toTextGradientClose()
 				break
 			case 'rexlive:ckeditor:closeModal':
-				console.log(event.data)
-				ckeditorStateMachine.toActiveState()
+				if (parseModalID(event.data.modal_id)) {
+					ckeditorStateMachine.toActiveState()
+				}
 				break
 			default:
 				break;
@@ -2026,7 +2044,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 163')
+		console.log('CKEditor_Handler 166')
 		initListeners()
 	}
 
