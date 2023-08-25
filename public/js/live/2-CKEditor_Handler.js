@@ -498,6 +498,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	/**
+	 * See this issue that inspire the resolution [https://github.com/ckeditor/ckeditor5/issues/5204]
 	 * @since 2.2.0
 	 */
 	class WPImageUpload extends CKEDITOR.Plugin {
@@ -570,7 +571,7 @@ var CKEditor_Handler = (function ($) {
 
 					if (!selectedElement.is('element', 'imageInline')) return
 
-					const imageHtmlAttributes = selectedElement.getAttribute('htmlAttributes')
+					const imageHtmlAttributes = selectedElement.getAttribute('htmlImgAttributes')
 
 					let image_id = null
 					let align = ''
@@ -2088,7 +2089,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 172')
+		console.log('CKEditor_Handler 174')
 		initListeners()
 	}
 
