@@ -1735,6 +1735,399 @@ var CKEditor_Handler = (function ($) {
 	/**
 	 * @since 2.2.0
 	 */
+	class RemoveRexbuttonCommand extends CKEDITOR.Command {
+		attributekey = 'removeRexbutton'
+
+		refresh() {
+			const editor = this.editor
+			const selection = editor.model.document.selection
+			const selectedElement = selection.getSelectedElement()
+
+			this.isEnabled = selectedElement && selectedElement.is('element', 'rexbutton')
+
+			this.value = true
+		}
+
+		execute() {
+			const editor = this.editor
+			const selection = editor.model.document.selection
+			const selectedElement = selection.getSelectedElement()
+
+			editor.model.change(writer => {
+				writer.remove(selectedElement)
+			})
+		}
+
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class RexbuttonEditing extends CKEDITOR.Plugin {
+		static get requires() {
+			return [CKEDITOR.Widget]
+		}
+
+		init() {
+			this._defineSchema()
+			this._defineConverters()
+			this._defineCommands()
+
+			this.editor.editing.mapper.on('viewToModelPosition', CKEDITOR.viewToModelPositionOutsideModelElement(this.editor.model, viewElement => viewElement.hasClass('rex-button-wrapper')))
+		}
+
+		_defineSchema() {
+			const schema = this.editor.model.schema
+
+			schema.register('rexbutton', {
+				inheritAllFrom: '$inlineObject',
+				allowAttributes: ['id', 'target', 'number', 'separate', 'label', 'color', 'size', 'hoverColor', 'backgroundColor', 'hoverBackgroundColor', 'borderColor', 'hoverBorderColor', 'borderWidth', 'width', 'height', 'marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'name', 'href']
+			})
+		}
+
+		_defineConverters() {
+			const editor = this.editor
+
+			editor.conversion.for('upcast').elementToElement({
+				model: (viewElement, { writer: modelWriter }) => {
+					const id = viewElement.getAttribute('data-rex-button-id')
+					const number = parseInt(viewElement.getAttribute('data-rex-button-number'))
+
+					const dataElement = viewElement.getChild(0)
+					const target = dataElement.getAttribute('data-link-type')
+					const href = dataElement.getAttribute('data-link-target')
+
+					const separate = viewElement.hasClass('rex-separate-button')
+
+					const linkElement = viewElement.getChild(1)
+					const backgroundElement = linkElement.getChild(0)
+					const textElementWrap = backgroundElement.getChild(0)
+					const textElement = textElementWrap.getChild(0)
+					const label = textElement.data
+
+					const buttonAttributes = {
+						id, number, target, href, separate, label
+					}
+
+					const size = dataElement.getAttribute('data-text-size')
+					if (!isNil(size)) {
+						buttonAttributes['size'] = size
+					}
+					const color = dataElement.getAttribute('data-text-color')
+					if (!isNil(color)) {
+						buttonAttributes['color'] = color
+					}
+					const hoverColor = dataElement.getAttribute('data-text-color-hover')
+					if (!isNil(hoverColor)) {
+						buttonAttributes['hoverColor'] = hoverColor
+					}
+					const backgroundColor = dataElement.getAttribute('data-background-color')
+					if (!isNil(backgroundColor)) {
+						buttonAttributes['backgroundColor'] = backgroundColor
+					}
+					const hoverBackgroundColor = dataElement.getAttribute('data-background-color-hover')
+					if (!isNil(hoverBackgroundColor)) {
+						buttonAttributes['hoverBackgroundColor'] = hoverBackgroundColor
+					}
+					const borderColor = dataElement.getAttribute('data-border-color')
+					if (!isNil(borderColor)) {
+						buttonAttributes['borderColor'] = borderColor
+					}
+					const hoverBorderColor = dataElement.getAttribute('data-border-color-hover')
+					if (!isNil(hoverBorderColor)) {
+						buttonAttributes['hoverBorderColor'] = hoverBorderColor
+					}
+					const marginTop = dataElement.getAttribute('data-margin-top')
+					if (!isNil(marginTop) && !isNaN(parseInt(marginTop))) {
+						buttonAttributes['marginTop'] = marginTop
+					}
+					const marginRight = dataElement.getAttribute('data-margin-right')
+					if (!isNil(marginRight) && !isNaN(parseInt(marginRight))) {
+						buttonAttributes['marginRight'] = marginRight
+					}
+					const marginBottom = dataElement.getAttribute('data-margin-bottom')
+					if (!isNil(marginBottom) && !isNaN(parseInt(marginBottom))) {
+						buttonAttributes['marginBottom'] = marginBottom
+					}
+					const marginLeft = dataElement.getAttribute('data-margin-left')
+					if (!isNil(marginLeft) && !isNaN(parseInt(marginLeft))) {
+						buttonAttributes['marginLeft'] = marginLeft
+					}
+					const paddingTop = dataElement.getAttribute('data-padding-top')
+					if (!isNil(paddingTop) && !isNaN(parseInt(paddingTop))) {
+						buttonAttributes['paddingTop'] = paddingTop
+					}
+					const paddingRight = dataElement.getAttribute('data-padding-right')
+					if (!isNil(paddingRight) && !isNaN(parseInt(paddingRight))) {
+						buttonAttributes['paddingRight'] = paddingRight
+					}
+					const paddingBottom = dataElement.getAttribute('data-padding-bottom')
+					if (!isNil(paddingBottom) && !isNaN(parseInt(paddingBottom))) {
+						buttonAttributes['paddingBottom'] = paddingBottom
+					}
+					const paddingLeft = dataElement.getAttribute('data-padding-left')
+					if (!isNil(paddingLeft) && !isNaN(parseInt(paddingLeft))) {
+						buttonAttributes['paddingLeft'] = paddingLeft
+					}
+
+					return modelWriter.createElement('rexbutton', buttonAttributes)
+				},
+				view: {
+					name: 'span',
+					classes: ['rex-button-wrapper']
+				}
+			})
+
+			editor.conversion.for('editingDowncast').elementToStructure({
+				model: 'rexbutton',
+				view: (modelItem, { writer: viewWriter }) => {
+					const widgetElement = this._createRexbuttonView(modelItem, viewWriter)
+
+					return CKEDITOR.toWidget(widgetElement, viewWriter)
+				}
+			})
+
+			editor.conversion.for('dataDowncast').elementToStructure({
+				model: 'rexbutton',
+				view: (modelItem, { writer: viewWriter }) => this._createRexbuttonView(modelItem, viewWriter, 'data')
+			})
+		}
+
+		_defineCommands() {
+			const editor = this.editor
+			const command = new RemoveRexbuttonCommand(editor)
+			editor.commands.add(command.attributekey, command)
+		}
+
+		/**
+		 * @param {Element} modelItem 
+		 * @param {DowncastWriter} viewWriter 
+		 * @param {string} context 
+		 * @returns Element
+		 */
+		_createRexbuttonView(modelItem, viewWriter, context = 'editing') {
+			const id = modelItem.getAttribute('id')
+			const number = modelItem.getAttribute('number')
+			const target = modelItem.getAttribute('target')
+			const href = modelItem.getAttribute('href')
+			const separate = modelItem.getAttribute('separate')
+			const label = modelItem.getAttribute('label')
+
+			const buttonWrapperClasses = ['rex-button-wrapper']
+			if (separate) {
+				buttonWrapperClasses.push('rex-separate-button')
+			}
+
+			const buttonWrapper = viewWriter.createContainerElement('span', {
+				class: buttonWrapperClasses.join(' '),
+				'data-rex-button-id': id,
+				'data-rex-button-number': number.toString()
+			})
+			const buttonDataAttributes = {
+				class: ['rex-button-data'].join(' '),
+				style: 'display:none',
+				'data-link-target': href,
+				'data-link-type': target,
+			}
+
+			const size = modelItem.getAttribute('size')
+			if (!isNil(size)) {
+				buttonDataAttributes['data-text-size'] = size
+			}
+			const color = modelItem.getAttribute('color')
+			if (!isNil(color)) {
+				buttonDataAttributes['data-text-color'] = color
+			}
+			const hoverColor = modelItem.getAttribute('hoverColor')
+			if (!isNil(hoverColor)) {
+				buttonDataAttributes['data-text-color-hover'] = hoverColor
+			}
+			const backgroundColor = modelItem.getAttribute('backgroundColor')
+			if (!isNil(backgroundColor)) {
+				buttonDataAttributes['data-background-color'] = backgroundColor
+			}
+			const hoverBackgroundColor = modelItem.getAttribute('hoverBackgroundColor')
+			if (!isNil(hoverBackgroundColor)) {
+				buttonDataAttributes['data-background-color-hover'] = hoverBackgroundColor
+			}
+			const borderColor = modelItem.getAttribute('borderColor')
+			if (!isNil(borderColor)) {
+				buttonDataAttributes['data-border-color'] = borderColor
+			}
+			const hoverBorderColor = modelItem.getAttribute('hoverBorderColor')
+			if (!isNil(hoverBorderColor)) {
+				buttonDataAttributes['data-border-color-hover'] = hoverBorderColor
+			}
+			const marginTop = modelItem.getAttribute('marginTop')
+			if (!isNil(marginTop)) {
+				buttonDataAttributes['data-margin-top'] = marginTop
+			}
+			const marginRight = modelItem.getAttribute('marginRight')
+			if (!isNil(marginRight)) {
+				buttonDataAttributes['data-margin-right'] = marginRight
+			}
+			const marginBottom = modelItem.getAttribute('marginBottom')
+			if (!isNil(marginBottom)) {
+				buttonDataAttributes['data-margin-bottom'] = marginBottom
+			}
+			const marginLeft = modelItem.getAttribute('marginLeft')
+			if (!isNil(marginLeft)) {
+				buttonDataAttributes['data-margin-left'] = marginLeft
+			}
+			const paddingTop = modelItem.getAttribute('paddingTop')
+			if (!isNil(paddingTop)) {
+				buttonDataAttributes['data-padding-top'] = paddingTop
+			}
+			const paddingRight = modelItem.getAttribute('paddingRight')
+			if (!isNil(paddingRight)) {
+				buttonDataAttributes['data-padding-right'] = paddingRight
+			}
+			const paddingBottom = modelItem.getAttribute('paddingBottom')
+			if (!isNil(paddingBottom)) {
+				buttonDataAttributes['data-padding-bottom'] = paddingBottom
+			}
+			const paddingLeft = modelItem.getAttribute('paddingLeft')
+			if (!isNil(paddingLeft)) {
+				buttonDataAttributes['data-padding-left'] = paddingLeft
+			}
+
+			const buttonData = viewWriter.createEmptyElement('span', buttonDataAttributes)
+			const buttonContainerAttributes = {
+				href,
+				target,
+				class: ['rex-button-container'].join(' ')
+			}
+			if ('editing' === context) {
+				buttonContainerAttributes['style'] = 'pointer-events:none'
+			}
+			const buttonContainer = viewWriter.createContainerElement('a', buttonContainerAttributes)
+			buttonContainer
+			const buttonBackground = viewWriter.createContainerElement('span', {
+				class: 'rex-button-background'
+			})
+			const buttonText = viewWriter.createContainerElement('span', {
+				class: 'rex-button-text'
+			})
+			const text = viewWriter.createText(label)
+
+			viewWriter.insert(viewWriter.createPositionAt(buttonWrapper, 0), buttonData)
+			viewWriter.insert(viewWriter.createPositionAt(buttonWrapper, 'end'), buttonContainer)
+
+			viewWriter.insert(viewWriter.createPositionAt(buttonContainer, 0), buttonBackground)
+			viewWriter.insert(viewWriter.createPositionAt(buttonBackground, 0), buttonText)
+			viewWriter.insert(viewWriter.createPositionAt(buttonText, 0), text)
+
+			return buttonWrapper
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class RexbuttonUI extends CKEDITOR.Plugin {
+		static get requires() {
+			return [CKEDITOR.WidgetToolbarRepository]
+		}
+
+		isRexbuttonWidget(viewElement) {
+			return CKEDITOR.isWidget(viewElement) && viewElement.is('element', 'span') && viewElement.hasClass('rex-button-wrapper')
+		}
+
+		init() {
+			const editor = this.editor
+			const t = editor.t
+
+			editor.ui.componentFactory.add('editRexbutton', (locale) => {
+				// const command = editor.commands.get('photoswipe')
+				const button = new CKEDITOR.ButtonView(locale)
+
+				button.set({
+					tooltip: t('Rexbutton'),
+					withText: false,
+					icon: '<svg xmlns="http://www.w3.org/2000/svg" class="ck ck-icon ck-reset_all-excluded ck-icon_inherit-color ck-button__icon" viewBox="0 0 20 20"><path d="M19.937 8.89c-.031-.282-.359-.493-.642-.493-.917 0-1.73-.538-2.071-1.37a2.227 2.227 0 01.56-2.473.555.555 0 00.06-.754 9.895 9.895 0 00-1.584-1.6.557.557 0 00-.76.062c-.596.66-1.667.905-2.495.56A2.221 2.221 0 0111.655.65a.555.555 0 00-.491-.584A9.984 9.984 0 008.914.06a.556.556 0 00-.495.572 2.225 2.225 0 01-1.37 2.133c-.817.334-1.88.091-2.475-.563a.558.558 0 00-.755-.064 9.933 9.933 0 00-1.617 1.6.556.556 0 00.06.76c.695.63.92 1.633.558 2.495-.345.822-1.198 1.352-2.175 1.352a.544.544 0 00-.578.49 10.017 10.017 0 00-.004 2.275c.031.282.369.491.655.491.871-.022 1.707.517 2.058 1.37.35.853.125 1.847-.56 2.474a.556.556 0 00-.06.753c.465.592.998 1.13 1.582 1.6.23.185.563.16.761-.06.598-.661 1.67-.906 2.493-.56a2.218 2.218 0 011.353 2.17.555.555 0 00.49.584 9.94 9.94 0 002.25.006.557.557 0 00.496-.572 2.223 2.223 0 011.368-2.133c.823-.336 1.882-.09 2.477.563a.559.559 0 00.754.064 9.956 9.956 0 001.618-1.6.555.555 0 00-.06-.76 2.216 2.216 0 01-.56-2.495 2.239 2.239 0 012.046-1.355l.124.003a.557.557 0 00.585-.49c.088-.752.09-1.517.004-2.274zm-9.921 4.467A3.34 3.34 0 016.68 10.02a3.34 3.34 0 013.336-3.335 3.34 3.34 0 013.335 3.335 3.34 3.34 0 01-3.335 3.336z" fill-rule="evenodd"></path></svg>'
+				})
+
+				// button.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled')
+
+				button.on('execute', () => {
+					// todo: send event
+					editor.editing.view.focus()
+				})
+
+				return button
+			})
+
+			editor.ui.componentFactory.add('removeRexbutton', (locale) => {
+				// const command = editor.commands.get('removeRexbutton')
+				const button = new CKEDITOR.ButtonView(locale)
+
+				button.set({
+					tooltip: t('Rexbutton'),
+					withText: false,
+					icon: '<svg xmlns="http://www.w3.org/2000/svg" class="ck ck-icon ck-reset_all-excluded ck-icon_inherit-color ck-button__icon" viewBox="0 0 100 100"><path d="M85.355 77.157L58.198 50l27.156-27.155a5.8 5.8 0 00.001-8.2 5.8 5.8 0 00-8.199 0L50 41.802 22.843 14.645a5.802 5.802 0 00-8.199 0 5.795 5.795 0 000 8.199l27.157 27.157-27.156 27.155a5.792 5.792 0 000 8.2 5.795 5.795 0 008.199 0l27.155-27.157 27.157 27.157a5.794 5.794 0 008.199 0 5.8 5.8 0 000-8.2z" fill-rule="nonzero"></path></svg>'
+				})
+
+				// button.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled')
+
+				button.on('execute', () => {
+					// todo: send command to remove rexbutton
+					editor.execute('removeRexbutton')
+					editor.editing.view.focus()
+				})
+
+				return button
+			})
+		}
+
+		afterInit() {
+			const editor = this.editor
+			const t = editor.t
+			const widgetToolbarRepository = editor.plugins.get(CKEDITOR.WidgetToolbarRepository)
+
+			widgetToolbarRepository.register('rexbutton', {
+				ariaLabel: t('Rexbutton toolbar'),
+				items: normalizeDeclarativeConfig(editor.config.get('rexbutton.toolbar') || []),
+				getRelatedElement: selection => {
+					const selectionPosition = selection.getFirstPosition();
+
+					if (!selectionPosition) {
+						return null;
+					}
+
+					const viewElement = selection.getSelectedElement();
+
+					if (viewElement && this.isRexbuttonWidget(viewElement)) {
+						return viewElement;
+					}
+
+					let parent = selectionPosition.parent;
+
+					while (parent) {
+						if (parent.is('element') && this.isRexbuttonWidget(parent)) {
+							return parent;
+						}
+
+						parent = parent.parent;
+					}
+
+					return null;
+				}
+			})
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class Rexbutton extends CKEDITOR.Plugin {
+		static get requires() {
+			return [ RexbuttonEditing, RexbuttonUI ]
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
 	class CloseEditor extends CKEDITOR.Plugin {
 		init() {
 			const editor = this.editor
@@ -1801,6 +2194,7 @@ var CKEditor_Handler = (function ($) {
 					MediaEmbedLegacy,
 					HTMLEditing,
 					TextGradient,
+					Rexbutton,
 					CloseEditor
 				],
 				toolbar: [
@@ -1878,6 +2272,12 @@ var CKEditor_Handler = (function ($) {
 						'fontColor',
 						'iconInline',
 						'removeIconInline'
+					]
+				},
+				rexbutton: {
+					toolbar: [
+						'editRexbutton',
+						'removeRexbutton'
 					]
 				},
 				mediaEmbed: {
@@ -2122,7 +2522,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 174')
+		console.log('CKEditor_Handler 175')
 		initListeners()
 	}
 
