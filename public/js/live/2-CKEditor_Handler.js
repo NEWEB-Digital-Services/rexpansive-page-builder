@@ -1812,7 +1812,7 @@ var CKEditor_Handler = (function ($) {
 
 			schema.register('rexbutton', {
 				inheritAllFrom: '$inlineObject',
-				allowAttributes: ['id', 'target', 'number', 'separate', 'label', 'color', 'size', 'hoverColor', 'backgroundColor', 'hoverBackgroundColor', 'borderColor', 'hoverBorderColor', 'borderWidth', 'width', 'height', 'marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'name', 'href']
+				allowAttributes: ['id', 'target', 'number', 'separate', 'label', 'color', 'size', 'hoverColor', 'backgroundColor', 'hoverBackgroundColor', 'borderColor', 'hoverBorderColor', 'borderWidth', 'width', 'height', 'marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'name', 'href', 'popupVideo', 'class']
 			})
 		}
 
@@ -1828,18 +1828,24 @@ var CKEditor_Handler = (function ($) {
 					const target = dataElement.getAttribute('data-link-type')
 					const href = dataElement.getAttribute('data-link-target')
 
-					const separate = viewElement.hasClass('rex-separate-button')
+					const separate = viewElement.hasClass(this.SEPARATE_CLASSNAME)
 
 					const linkElement = viewElement.getChild(1)
+					const linkElementClassIterator = linkElement.getClassNames()
 					const backgroundElement = linkElement.getChild(0)
 					const textElementWrap = backgroundElement.getChild(0)
 					const textElement = textElementWrap.getChild(0)
 					const label = textElement.data
+					const popupVideo = linkElement.hasClass(this.POPUP_VIDEO_CLASSNAME)
 
 					const buttonAttributes = {
-						id, number, target, href, separate, label
+						id, number, target, href, separate, label, popupVideo
 					}
 
+					const name = dataElement.getAttribute('data-button-name')
+					if (!isNil(name)) {
+						buttonAttributes['name'] = name
+					}
 					const size = dataElement.getAttribute('data-text-size')
 					if (!isNil(size)) {
 						buttonAttributes['size'] = size
@@ -1901,6 +1907,17 @@ var CKEditor_Handler = (function ($) {
 						buttonAttributes['paddingLeft'] = paddingLeft
 					}
 
+					const customClasses = []
+					for (const cls of linkElementClassIterator) {
+						if (this.BUTTON_CONTAINER_CLASSNAME === cls) continue
+						if (this.SEPARATE_CLASSNAME === cls) continue
+						if (this.POPUP_VIDEO_CLASSNAME === cls) continue
+						customClasses.push(cls)
+					}
+					if (customClasses.length !== 0) {
+						buttonAttributes['class'] = customClasses.join(' ')
+					}
+
 					return modelWriter.createElement('rexbutton', buttonAttributes)
 				},
 				view: {
@@ -1943,10 +1960,12 @@ var CKEditor_Handler = (function ($) {
 			const href = modelItem.getAttribute('href')
 			const separate = modelItem.getAttribute('separate')
 			const label = modelItem.getAttribute('label')
+			const popupVideo = modelItem.getAttribute('popupVideo')
+			const customClasses = modelItem.getAttribute('class')
 
 			const buttonWrapperClasses = ['rex-button-wrapper']
 			if (separate) {
-				buttonWrapperClasses.push('rex-separate-button')
+				buttonWrapperClasses.push(this.SEPARATE_CLASSNAME)
 			}
 
 			const buttonWrapper = viewWriter.createContainerElement('span', {
@@ -1961,6 +1980,10 @@ var CKEditor_Handler = (function ($) {
 				'data-link-type': target,
 			}
 
+			const name = modelItem.getAttribute('name')
+			if (!isNil(name)) {
+				buttonDataAttributes['data-button-name'] = name
+			}
 			const size = modelItem.getAttribute('size')
 			if (!isNil(size)) {
 				buttonDataAttributes['data-text-size'] = size
@@ -2023,10 +2046,17 @@ var CKEditor_Handler = (function ($) {
 			}
 
 			const buttonData = viewWriter.createEmptyElement('span', buttonDataAttributes)
+			const buttonContainerClass = [this.BUTTON_CONTAINER_CLASSNAME]
+			if (customClasses) {
+				buttonContainerClass.push(...customClasses.split(' '))
+			}
+			if (popupVideo) {
+				buttonContainerClass.push(this.POPUP_VIDEO_CLASSNAME)
+			}
 			const buttonContainerAttributes = {
 				href,
 				target,
-				class: ['rex-button-container'].join(' ')
+				class: buttonContainerClass.join(' ')
 			}
 			if ('editing' === context) {
 				buttonContainerAttributes['style'] = 'pointer-events:none'
@@ -2569,7 +2599,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 180')
+		console.log('CKEditor_Handler 181')
 		initListeners()
 	}
 
