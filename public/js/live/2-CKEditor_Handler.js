@@ -1811,7 +1811,9 @@ var CKEditor_Handler = (function ($) {
 			const schema = this.editor.model.schema
 
 			schema.register('rexbutton', {
-				inheritAllFrom: '$inlineObject',
+				isInline: true,
+				isObject: true,
+				allowWhere: '$inlineObject',
 				allowAttributes: ['id', 'target', 'number', 'separate', 'label', 'color', 'size', 'hoverColor', 'backgroundColor', 'hoverBackgroundColor', 'borderColor', 'hoverBorderColor', 'borderWidth', 'width', 'height', 'marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'name', 'href', 'popupVideo', 'class']
 			})
 		}
