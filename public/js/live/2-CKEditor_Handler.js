@@ -1827,11 +1827,15 @@ var CKEditor_Handler = (function ($) {
 			const selectedElement = selection.getSelectedElement()
 
 			editor.model.change(writer => {
-				if (isNil(options.value)) {
-					writer.removeAttribute(options.key, selectedElement)
-				} else {
-					writer.setAttribute(options.key, options.value, selectedElement)
+				let replaceAttributes = {}
+				const attrs = selectedElement.getAttributes()
+
+				for (const attr of attrs) {
+					replaceAttributes[attr[0]] = attr[1]
 				}
+				replaceAttributes = { ...replaceAttributes, ...options }
+				replaceAttributes = Object.fromEntries(Object.entries(replaceAttributes).filter(([_, v]) => !isNil(v)))
+				editor.model.insertContent(writer.createElement('rexbutton', replaceAttributes))
 			})
 		}
 
@@ -2414,6 +2418,7 @@ var CKEditor_Handler = (function ($) {
 				placeholder: 'Type your text here'
 			})
 			.then(editor => {
+				console.trace()
 				console.log('Editor was initialized', editor);
 				const section = parents(editor.sourceElement, `.${SECTION_CLASSNAME}`).pop()
 				ckeditorStateMachine.setStateMachineContext(editor, section.classList.contains(MODEL_CLASSNAME))
@@ -2615,6 +2620,17 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	/**
+	 * @param {Object} data 
+	 * @since 2.2.0
+	 */
+	function handleSetAttributesRexbutton(data) {
+		if (ckeditorStateMachine.isEditorDeactive()) return
+		ckeditorStateMachine.editorInstance.model.change(() => {
+			ckeditorStateMachine.editorInstance.execute('setAttributeRexbutton', data)
+		})
+	}
+
+	/**
 	 * Handling events concerning ckeditor
 	 * @param {Object} event event data
 	 * @since 2.2.0
@@ -2644,13 +2660,16 @@ var CKEditor_Handler = (function ($) {
 					ckeditorStateMachine.toActiveState()
 				}
 				break
+			case 'rexlive:ckeditor:setAttributesRexbutton':
+				handleSetAttributesRexbutton(event.data)
+				break
 			default:
 				break;
 		}
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 181')
+		console.log('CKEditor_Handler 191')
 		initListeners()
 	}
 

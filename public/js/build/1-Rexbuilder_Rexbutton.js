@@ -852,6 +852,17 @@ var Rexbuilder_Rexbutton = (function ($) {
 
 		_updateContainerHoverRule(buttonID, 'color', buttonProperties.hover_text);
 
+		// edit rexbutton html
+		CKEditor_Handler.handleEvent({
+			name: 'rexlive:ckeditor:setAttributesRexbutton',
+			data: {
+				label: buttonProperties.text,
+				href: buttonProperties.link_target,
+				target: buttonProperties.link_type
+			},
+			editable: null
+		})
+
 		var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(
 			'.rex-button-wrapper[data-rex-button-id="' +
 				buttonID +
@@ -953,6 +964,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 	};
 
 	var _addSeparateAttributes = function ($buttonWrapper, buttonData) {
+		console.log(buttonData)
 		var $buttonData = $buttonWrapper.find('.rex-button-data').eq(0);
 		$buttonData.attr('data-text-color', buttonData.text_color);
 		$buttonData.attr('data-text-size', buttonData.font_size);
