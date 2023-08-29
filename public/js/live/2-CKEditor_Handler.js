@@ -799,21 +799,25 @@ var CKEditor_Handler = (function ($) {
 	 * @since 2.2.0
 	 */
 	class RemoveIconInlineCommand extends CKEDITOR.Command {
+		refresh() {
+			const editor = this.editor
+			const selection = editor.model.document.selection
+			const selectedElement = selection.getSelectedElement()
+
+			this.isEnabled = selectedElement && selectedElement.is('element', 'iconInline')
+
+			this.value = true
+		}
+
 		execute() {
 			const editor = this.editor
 			const selection = editor.model.document.selection
 			const selectedElement = selection.getSelectedElement()
 
-			if (!selectedElement) return
-			if (!selectedElement.is('element', 'iconInline')) return
-
 			editor.model.change(writer => {
 				writer.remove(selectedElement)
 			})
 		}
-
-		// todo: implement refresh method
-		// refresh() {}
 	}
 
 	/**
@@ -1178,21 +1182,25 @@ var CKEditor_Handler = (function ($) {
 	 * @since 2.2.0
 	 */
 	class ResizeIconInlineCommand extends CKEDITOR.Command {
+		refresh() {
+			const editor = this.editor
+			const selection = editor.model.document.selection
+			const selectedElement = selection.getSelectedElement()
+
+			this.isEnabled = selectedElement && selectedElement.is('element', 'iconInline')
+
+			this.value = true
+		}
+
 		execute(options) {
 			const editor = this.editor
 			const selection = editor.model.document.selection
 			const selectedElement = selection.getSelectedElement()
 
-			if (!selectedElement) return
-			if (!selectedElement.is('element', 'iconInline')) return
-
 			editor.model.change(writer => {
 				writer.setAttribute('size', options.size, selectedElement)
 			})
 		}
-
-		// todo: implement refresh method
-		// refresh() {}
 	}
 
 	/**
@@ -1307,13 +1315,20 @@ var CKEditor_Handler = (function ($) {
 	 * @since 2.2.0
 	 */
 	class ColorIconInlineCommand extends CKEDITOR.Command {
-		execute(options) {
+		refresh() {
 			const editor = this.editor
 			const selection = editor.model.document.selection
 			const selectedElement = selection.getSelectedElement()
 
-			if (!selectedElement) return
-			if (!selectedElement.is('element', 'iconInline')) return
+			this.isEnabled = selectedElement && selectedElement.is('element', 'iconInline')
+
+			this.value = true
+		}
+
+		execute(options) {
+			const editor = this.editor
+			const selection = editor.model.document.selection
+			const selectedElement = selection.getSelectedElement()
 
 			editor.model.change(writer => {
 				if (isNil(options.color)) {
