@@ -634,7 +634,7 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 			Rexbuilder_Rexwpcf7_Editor.addMissingTools(formID);
 			_addElementToolsToDOM();
 			// todo: use new editor
-			TextEditor.focusTextWrap($textWrap);
+			// TextEditor.focusTextWrap($textWrap);
 		}
 
 		Rexbuilder_Live_Utilities.launchTooltips();
