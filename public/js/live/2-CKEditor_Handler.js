@@ -214,6 +214,9 @@ var CKEditor_Handler = (function ($) {
 				case 'OPEN_TEXT_GRADIENT':
 					stateMachine.transitionTo(new TextGradientOpenState())
 					break
+				case 'OPEN_REXBUTTON_EDITOR':
+					stateMachine.transitionTo(new RexbuttonEditorOpenState())
+					break
 				default:
 					break;
 			}
@@ -266,6 +269,23 @@ var CKEditor_Handler = (function ($) {
 	class TextGradientOpenState extends CKEditorState {
 		handleAction(stateMachine, action) {
 			if (!(stateMachine.currentState instanceof TextGradientOpenState)) return
+			switch (action) {
+				case 'ACTIVATE':
+					stateMachine.transitionTo(new ActiveState())
+					break;
+			
+				default:
+					break;
+			}
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class RexbuttonEditorOpenState extends CKEditorState {
+		handleAction(stateMachine, action) {
+			if (!(stateMachine.currentState instanceof RexbuttonEditorOpenState)) return
 			switch (action) {
 				case 'ACTIVATE':
 					stateMachine.transitionTo(new ActiveState())
@@ -414,6 +434,14 @@ var CKEditor_Handler = (function ($) {
 		}
 
 		toTextGradientClose() {
+			this.stateMachine.performAction('ACTIVATE')
+		}
+
+		toRexbuttonEditorOpen() {
+			this.stateMachine.performAction('OPEN_REXBUTTON_EDITOR')
+		}
+
+		toRexbuttonEditorClose() {
 			this.stateMachine.performAction('ACTIVATE')
 		}
 	}
@@ -2054,7 +2082,24 @@ var CKEditor_Handler = (function ($) {
 
 				button.on('execute', () => {
 					// todo: send event
-					editor.editing.view.focus()
+					const selection = editor.model.document.selection;
+					const selectedElement = selection.getSelectedElement();
+
+					if (!selectedElement) return
+					if (!selectedElement.is('element', 'rexbutton')) return
+
+					const viewElement = editor.editing.mapper.toViewElement(selectedElement)
+					const domElement = editor.editing.view.domConverter.viewToDom(viewElement);
+					const $domElement = $(domElement)
+
+					const data = {
+						eventName: 'rexlive:openRexButtonEditor',
+						buttonData: Rexbuilder_Rexbutton.generateButtonData($domElement)
+					};
+					Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+					ckeditorStateMachine.toRexbuttonEditorOpen()
+
+					// editor.editing.view.focus()
 				})
 
 				return button
@@ -2073,7 +2118,6 @@ var CKEditor_Handler = (function ($) {
 				// button.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled')
 
 				button.on('execute', () => {
-					// todo: send command to remove rexbutton
 					editor.execute('removeRexbutton')
 					editor.editing.view.focus()
 				})
@@ -2525,7 +2569,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 175')
+		console.log('CKEditor_Handler 180')
 		initListeners()
 	}
 
