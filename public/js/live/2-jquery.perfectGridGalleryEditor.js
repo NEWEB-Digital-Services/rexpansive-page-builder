@@ -1758,7 +1758,7 @@
         block_type: block_type,
         defaultPadding: {
           data: _plugin_frontend_settings.defaults.block.padding,
-          style: _plugin_frontend_settings.defaults.block.padding.replace(';', ' ').trim()
+          style: _plugin_frontend_settings.defaults.block.padding.replaceAll(';', ' ').trim()
         }
       });
 
