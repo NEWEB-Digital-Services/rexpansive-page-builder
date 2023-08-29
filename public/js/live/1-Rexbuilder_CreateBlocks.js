@@ -144,10 +144,6 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
     // TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
 
     Rexbuilder_Live_Utilities.launchTooltips();
-    var event = jQuery.Event("dblclick");
-    event.target = el;
-    event.offsetY = 0;
-		galleryInstance.$element.trigger(event);
 
     Rexbuilder_Util.editedDataInfo.addBlockData( data.sectionTarget.sectionID, el.getAttribute('data-rexbuilder-block-id') );
 
@@ -188,6 +184,11 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
     if ( ev ) {
 		  Rexbuilder_Util.$document.trigger(ev);
     }
+
+    var event = jQuery.Event("dblclick");
+    event.target = el;
+    event.offsetY = 0;
+		galleryInstance.$element.trigger(event);
 
 		var data = {
 			eventName: 'rexlive:edited',
