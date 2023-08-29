@@ -79,8 +79,8 @@ var CKEditor_Handler = (function ($) {
 		switch (modal_id){
 			case 'rex-text-gradient-editor':
 			case 'rex-html-text-editor':
-			case 'rex-button-editor':
 			case 'rex-button-model-choose':
+			case 'rex-button-editor':
 				return true
 			default:
 			case '':
@@ -1827,7 +1827,11 @@ var CKEditor_Handler = (function ($) {
 			const selectedElement = selection.getSelectedElement()
 
 			editor.model.change(writer => {
-				writer.setAttribute(options.attribute, options.value, selectedElement)
+				if (isNil(options.value)) {
+					writer.removeAttribute(options.key, selectedElement)
+				} else {
+					writer.setAttribute(options.key, options.value, selectedElement)
+				}
 			})
 		}
 
