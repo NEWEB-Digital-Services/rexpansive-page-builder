@@ -73,11 +73,14 @@ var CKEditor_Handler = (function ($) {
 	 * @param {string} modal_id id of a modal
 	 * @returns boolean
 	 * @since 2.2.0
+	 * @todo refactor adding an attribute to the modal, to avoid checking the different ids
 	 */
 	function parseModalID(modal_id) {
 		switch (modal_id){
 			case 'rex-text-gradient-editor':
 			case 'rex-html-text-editor':
+			case 'rex-button-editor':
+			case 'rex-button-model-choose':
 				return true
 			default:
 			case '':
