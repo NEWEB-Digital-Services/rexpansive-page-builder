@@ -278,9 +278,9 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		var $textWrap = $elementWrapper.parents('.text-wrap');
 
 		// todo: use new editor
-		if ($textWrap.length != 0) {
-			TextEditor.removePlaceholder($textWrap.eq(0));
-		}
+		// if ($textWrap.length != 0) {
+		// 	TextEditor.removePlaceholder($textWrap.eq(0));
+		// }
 
 		if (addingWpcf7) {
 			var firstTimeAdding = 0 === $elementWrapper.find('.wpcf7-rows').length;
