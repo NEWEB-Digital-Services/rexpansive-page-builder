@@ -30,17 +30,17 @@ var Rexbuilder_Util_Editor = (function ($) {
 		var galleryInstance = Rexbuilder_Util.getGalleryInstance($textWrap);
 		var block = $textWrap.parents('.grid-stack-item').get(0);
 		// todo: use new editor
-		var insertMediaExtension = TextEditor.getEditorInstance().getExtensionByName('insert-media');
-		var $gridItemContentWrap = $textWrap.parents('.grid-item-content-wrap');
+		// var insertMediaExtension = TextEditor.getEditorInstance().getExtensionByName('insert-media');
+		// var $gridItemContentWrap = $textWrap.parents('.grid-item-content-wrap');
 
 		needToSave = needToSave || true;
 		this.needToSave = needToSave;
 
 		galleryInstance.updateElementHeight(block, undefined, forceFixedText);
 
-		if (insertMediaExtension) {
-			insertMediaExtension.placeMediaBtn($gridItemContentWrap);
-		}
+		// if (insertMediaExtension) {
+		// 	insertMediaExtension.placeMediaBtn($gridItemContentWrap);
+		// }
 
 		this.needToSave = true;
 	}

@@ -607,15 +607,15 @@ var Rexbuilder_Rexbutton = (function ($) {
 
 		// Removes medium editor placeholder if there
 		var $textWrap = $buttonWrapper.parents('.text-wrap');
-		if ($textWrap.length != 0) {
-			// todo: use new editor
-			TextEditor.removePlaceholder($textWrap.eq(0));
-		}
+		// if ($textWrap.length != 0) {
+		// 	// todo: use new editor
+		// 	TextEditor.removePlaceholder($textWrap.eq(0));
+		// }
 
 		Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
 		Rexbuilder_Util_Editor.builderEdited(false);
 		// todo: use new editor
-		TextEditor.focusTextWrap($textWrap);
+		// TextEditor.focusTextWrap($textWrap);
 	};
 
 	var _addButtonStyle = function ($buttonWrapper) {
