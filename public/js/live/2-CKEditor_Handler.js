@@ -1803,6 +1803,33 @@ var CKEditor_Handler = (function ($) {
 				writer.remove(selectedElement)
 			})
 		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class SetAttributeRexbuttonCommand extends CKEDITOR.Command {
+		attributekey = 'setAttributeRexbutton'
+
+		refresh() {
+			const editor = this.editor
+			const selection = editor.model.document.selection
+			const selectedElement = selection.getSelectedElement()
+
+			this.isEnabled = selectedElement && selectedElement.is('element', 'rexbutton')
+
+			this.value = true
+		}
+
+		execute(options) {
+			const editor = this.editor
+			const selection = editor.model.document.selection
+			const selectedElement = selection.getSelectedElement()
+
+			editor.model.change(writer => {
+				writer.setAttribute(options.attribute, options.value, selectedElement)
+			})
+		}
 
 	}
 
@@ -1960,8 +1987,11 @@ var CKEditor_Handler = (function ($) {
 
 		_defineCommands() {
 			const editor = this.editor
-			const command = new RemoveRexbuttonCommand(editor)
-			editor.commands.add(command.attributekey, command)
+			const removeCommand = new RemoveRexbuttonCommand(editor)
+			editor.commands.add(removeCommand.attributekey, removeCommand)
+
+			const setAttributeCommand = new SetAttributeRexbuttonCommand(editor)
+			editor.commands.add(setAttributeCommand.attributekey, setAttributeCommand)
 		}
 
 		/**
