@@ -1845,6 +1845,10 @@ var CKEditor_Handler = (function ($) {
 	 * @since 2.2.0
 	 */
 	class RexbuttonEditing extends CKEDITOR.Plugin {
+		BUTTON_CONTAINER_CLASSNAME = 'rex-button-container'
+		SEPARATE_CLASSNAME = 'rex-separate-button'
+		POPUP_VIDEO_CLASSNAME = 'popup-video-button'
+
 		static get requires() {
 			return [CKEDITOR.Widget]
 		}
