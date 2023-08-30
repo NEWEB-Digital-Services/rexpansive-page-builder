@@ -2704,8 +2704,18 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	/**
+	 * Get active editor content, empty string if no editor is active
+	 * @returns string
+	 * @since 2.2.0
+	 */
+	function getActiveEditorContent() {
+		if (ckeditorStateMachine.isEditorDeactive()) return ''
+		return ckeditorStateMachine.editorInstance.data.get()
+	}
+
 	function init() {
-		console.log('CKEditor_Handler 191')
+		console.log('CKEditor_Handler 200')
 		initListeners()
 	}
 
@@ -2714,6 +2724,7 @@ var CKEditor_Handler = (function ($) {
 	return {
 		init,
 		load,
-		handleEvent
+		handleEvent,
+		getActiveEditorContent
 	}
 })(jQuery);
