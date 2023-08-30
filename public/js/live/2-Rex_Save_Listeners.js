@@ -931,7 +931,6 @@ var Rex_Save_Listeners = (function($) {
    * @since 2.2.0
    */
   function getBlockContent(el) {
-    console.log(el)
     if (el.classList.contains('ck')) {
       return CKEditor_Handler.getActiveEditorContent()
     } else {
