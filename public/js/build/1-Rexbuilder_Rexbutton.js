@@ -853,16 +853,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 		_updateContainerHoverRule(buttonID, 'color', buttonProperties.hover_text);
 
 		// edit rexbutton html
-		CKEditor_Handler.handleEvent({
-			name: 'rexlive:ckeditor:setAttributesRexbutton',
-			data: {
-				label: buttonProperties.text,
-				href: buttonProperties.link_target,
-				target: buttonProperties.link_type
-			},
-			editable: null
-		})
-
+		// todo: remove
 		var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(
 			'.rex-button-wrapper[data-rex-button-id="' +
 				buttonID +
@@ -883,7 +874,57 @@ var Rexbuilder_Rexbutton = (function ($) {
 		} else {
 			_removeModelData($buttonWrapper);
 		}
+
+		buttonProperties.separate = $buttonWrapper.hasClass('rex-separate-button')
+
+		_setRexbuttonAttributesOnEditor(buttonProperties)
 	};
+
+	/**
+	 * @param {Object} buttonProperties 
+	 * @since 2.2.0
+	 */
+	function _setRexbuttonAttributesOnEditor(buttonProperties) {
+		let eventData = {
+			id: buttonProperties.buttonTarget.button_id,
+			target: buttonProperties.link_type,
+			number: buttonProperties.buttonTarget.button_number,
+			href: buttonProperties.link_target,
+			separate: buttonProperties.separate,
+		}
+
+		if (buttonProperties.separate) {
+			eventData = {
+				...eventData,
+				hoverColor: buttonProperties.hover_text,
+				backgroundColor: buttonProperties.background_color,
+				hoverBackgroundColor: buttonProperties.hover_color,
+				borderColor: buttonProperties.border_color,
+				hoverBorderColor: buttonProperties.hover_border,
+				borderWidth: buttonProperties.border_width,
+				width: buttonProperties.button_width,
+				height: buttonProperties.button_height,
+				marginTop: buttonProperties.margin_top,
+				marginRight: buttonProperties.margin_right,
+				marginBottom: buttonProperties.margin_bottom,
+				marginLeft: buttonProperties.margin_left,
+				paddingTop: buttonProperties.padding_top,
+				paddingRight: buttonProperties.padding_right,
+				paddingBottom: buttonProperties.padding_bottom,
+				paddingLeft: buttonProperties.padding_left,
+				name: buttonProperties.buttonTarget.button_name,
+				popupVideo: false,
+				class: buttonProperties.classes
+			}
+		}
+
+		console.log(buttonProperties)
+		CKEditor_Handler.handleEvent({
+			name: 'rexlive:ckeditor:setAttributesRexbutton',
+			data: eventData,
+			editable: null
+		})
+	}
 
 	var _removeButtonStyle = function (buttonID) {
 		_removeButtonContainerRule(buttonID);
@@ -964,7 +1005,6 @@ var Rexbuilder_Rexbutton = (function ($) {
 	};
 
 	var _addSeparateAttributes = function ($buttonWrapper, buttonData) {
-		console.log(buttonData)
 		var $buttonData = $buttonWrapper.find('.rex-button-data').eq(0);
 		$buttonData.attr('data-text-color', buttonData.text_color);
 		$buttonData.attr('data-text-size', buttonData.font_size);
