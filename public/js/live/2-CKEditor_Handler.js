@@ -1868,7 +1868,36 @@ var CKEditor_Handler = (function ($) {
 				isInline: true,
 				isObject: true,
 				allowWhere: '$inlineObject',
-				allowAttributes: ['id', 'target', 'number', 'separate', 'label', 'color', 'size', 'hoverColor', 'backgroundColor', 'hoverBackgroundColor', 'borderColor', 'hoverBorderColor', 'borderWidth', 'borderRadius', 'width', 'height', 'marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'name', 'href', 'popupVideo', 'class']
+				allowAttributes: [
+					'id',
+					'target',
+					'number',
+					'separate',
+					'label',
+					'color',
+					'size',
+					'hoverColor',
+					'backgroundColor',
+					'hoverBackgroundColor',
+					'borderColor',
+					'hoverBorderColor',
+					'borderWidth',
+					'borderRadius',
+					'width',
+					'height',
+					'marginTop',
+					'marginRight',
+					'marginBottom',
+					'marginLeft',
+					'paddingTop',
+					'paddingRight',
+					'paddingBottom',
+					'paddingLeft',
+					'name',
+					'href',
+					'popupVideo',
+					'class'
+				]
 			})
 		}
 
