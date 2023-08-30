@@ -199,7 +199,6 @@ class Rexbuilder {
 	 * @edit 06-03-2019
 	 */
 	private function define_admin_hooks() {
-
 		$plugin_admin = new Rexbuilder_Admin( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wpml_translation_update', $plugin_admin, 'wpml_translation_update_fix', 90 );
@@ -275,7 +274,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites' );
 
 		// The if is here to prevent conflicts between versions and Gutenberg
-		if( Rexbuilder_Utilities::is_version( '>=', '5.0' ) && ! Rexbuilder_Utilities::check_plugin_active( 'classic-editor/classic-editor.php' ) ) {
+		if(is_admin() && Rexbuilder_Utilities::is_version( '>=', '5.0' ) && ! Rexbuilder_Utilities::check_plugin_active( 'classic-editor/classic-editor.php' ) ) {
 			// Checks if WC product
 			// If post is already saved, get the post_type
 			$post_id = ( isset( $_GET['post'] ) ? $_GET['post'] : null );
