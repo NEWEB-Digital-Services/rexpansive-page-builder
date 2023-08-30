@@ -1868,7 +1868,7 @@ var CKEditor_Handler = (function ($) {
 				isInline: true,
 				isObject: true,
 				allowWhere: '$inlineObject',
-				allowAttributes: ['id', 'target', 'number', 'separate', 'label', 'color', 'size', 'hoverColor', 'backgroundColor', 'hoverBackgroundColor', 'borderColor', 'hoverBorderColor', 'borderWidth', 'width', 'height', 'marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'name', 'href', 'popupVideo', 'class']
+				allowAttributes: ['id', 'target', 'number', 'separate', 'label', 'color', 'size', 'hoverColor', 'backgroundColor', 'hoverBackgroundColor', 'borderColor', 'hoverBorderColor', 'borderWidth', 'borderRadius', 'width', 'height', 'marginTop', 'marginRight', 'marginBottom', 'marginLeft', 'paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft', 'name', 'href', 'popupVideo', 'class']
 			})
 		}
 
@@ -1929,6 +1929,22 @@ var CKEditor_Handler = (function ($) {
 					const hoverBorderColor = dataElement.getAttribute('data-border-color-hover')
 					if (!isNil(hoverBorderColor)) {
 						buttonAttributes['hoverBorderColor'] = hoverBorderColor
+					}
+					const borderWidth = dataElement.getAttribute('data-border-width')
+					if (!isNil(borderWidth)) {
+						buttonAttributes['borderWidth'] = borderWidth
+					}
+					const borderRadius = dataElement.getAttribute('data-border-radius')
+					if (!isNil(borderRadius)) {
+						buttonAttributes['borderRadius'] = borderRadius
+					}
+					const width = dataElement.getAttribute('data-button-width')
+					if (!isNil(width)) {
+						buttonAttributes['width'] = width
+					}
+					const height = dataElement.getAttribute('data-button-height')
+					if (!isNil(height)) {
+						buttonAttributes['height'] = height
 					}
 					const marginTop = dataElement.getAttribute('data-margin-top')
 					if (!isNil(marginTop) && !isNaN(parseInt(marginTop))) {
@@ -2070,6 +2086,22 @@ var CKEditor_Handler = (function ($) {
 			const hoverBorderColor = modelItem.getAttribute('hoverBorderColor')
 			if (!isNil(hoverBorderColor)) {
 				buttonDataAttributes['data-border-color-hover'] = hoverBorderColor
+			}
+			const borderWidth = modelItem.getAttribute('borderWidth')
+			if (!isNil(borderWidth)) {
+				buttonDataAttributes['data-border-width'] = borderWidth
+			}
+			const borderRadius = modelItem.getAttribute('borderRadius')
+			if (!isNil(borderRadius)) {
+				buttonDataAttributes['data-border-radius'] = borderRadius
+			}
+			const width = modelItem.getAttribute('width')
+			if (!isNil(width)) {
+				buttonDataAttributes['width'] = width
+			}
+			const height = modelItem.getAttribute('height')
+			if (!isNil(height)) {
+				buttonDataAttributes['height'] = height
 			}
 			const marginTop = modelItem.getAttribute('marginTop')
 			if (!isNil(marginTop)) {
