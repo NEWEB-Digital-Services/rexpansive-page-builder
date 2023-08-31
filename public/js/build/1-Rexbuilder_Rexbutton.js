@@ -969,7 +969,6 @@ var Rexbuilder_Rexbutton = (function ($) {
 				buttonData.buttonTarget.button_number +
 				'"]'
 		);
-		var $buttonContainer = $buttonWrapper.find('.rex-button-container').eq(0)
 		$buttonWrapper.addClass('rex-separate-button');
 		$buttonWrapper.attr('data-rex-button-id', newID);
 		$buttonWrapper.attr('data-rex-button-number', 1);
@@ -993,7 +992,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 
 		buttonData.separate = true
 		buttonData.buttonTarget.button_id = newID
-		buttonData.popup_video = $buttonContainer.hasClass('popup-video-button')
+		buttonData.popup_video = false
 		_setRexbuttonAttributesOnEditor(buttonData)
 
 		// _addSeparateAttributes($buttonWrapper, buttonData);
