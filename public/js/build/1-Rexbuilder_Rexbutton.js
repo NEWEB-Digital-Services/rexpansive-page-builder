@@ -983,6 +983,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 		_addButtonStyle($buttonWrapper);
 
 		buttonData.separate = true
+		buttonData.buttonTarget.button_id = newID
 		_setRexbuttonAttributesOnEditor(buttonData)
 	};
 
