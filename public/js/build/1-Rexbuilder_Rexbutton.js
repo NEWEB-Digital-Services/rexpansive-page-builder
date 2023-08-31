@@ -549,7 +549,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 				var $paragraphAfter = _getParagraphAfter($buttonsParagraph);
 
 				// todo: use new editor
-				TextEditor.moveCursorToStart($paragraphAfter);
+				// TextEditor.moveCursorToStart($paragraphAfter);
 				break;
 			case 'inside-row':
 				var ev = jQuery.Event('rexlive:insert_new_text_block');
