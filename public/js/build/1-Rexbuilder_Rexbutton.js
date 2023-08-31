@@ -896,12 +896,12 @@ var Rexbuilder_Rexbutton = (function ($) {
 			number: buttonProperties.buttonTarget.button_number,
 			href: buttonProperties.link_target,
 			separate: buttonProperties.separate,
+			label: buttonProperties.text,
 		}
 
 		if (buttonProperties.separate) {
 			eventData = {
 				...eventData,
-				label: buttonProperties.text,
 				size: buttonProperties.font_size,
 				color: buttonProperties.text_color,
 				hoverColor: buttonProperties.hover_text,
