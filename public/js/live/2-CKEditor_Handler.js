@@ -1822,6 +1822,7 @@ var CKEditor_Handler = (function ($) {
 		}
 
 		execute(options) {
+			console.log('execute SetAttributeRexbuttonCommand')
 			const editor = this.editor
 			const selection = editor.model.document.selection
 			const selectedElement = selection.getSelectedElement()
@@ -1835,6 +1836,7 @@ var CKEditor_Handler = (function ($) {
 				}
 				replaceAttributes = { ...replaceAttributes, ...options }
 				replaceAttributes = Object.fromEntries(Object.entries(replaceAttributes).filter(([_, v]) => !isNil(v)))
+				console.log({replaceAttributes})
 				editor.model.insertContent(writer.createElement('rexbutton', replaceAttributes))
 			})
 		}
@@ -2690,6 +2692,7 @@ var CKEditor_Handler = (function ($) {
 		if (ckeditorStateMachine.isEditorDeactive()) return
 		ckeditorStateMachine.editorInstance.model.change(() => {
 			console.log(data)
+			console.log(ckeditorStateMachine.editorInstance.commands.get('setAttributeRexbutton').isEnabled)
 			ckeditorStateMachine.editorInstance.execute('setAttributeRexbutton', data)
 		})
 	}
@@ -2743,7 +2746,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 216')
+		console.log('CKEditor_Handler 220')
 		initListeners()
 	}
 
