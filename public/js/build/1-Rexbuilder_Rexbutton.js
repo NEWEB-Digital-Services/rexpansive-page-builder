@@ -726,7 +726,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 	};
 
 	var _updateButtonLive = function (data) {
-		console.log(data)
+		// console.log(data)
 		switch (data.propertyType) {
 			case 'text':
 				_updateButtonTextRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
@@ -901,12 +901,16 @@ var Rexbuilder_Rexbutton = (function ($) {
 		if (buttonProperties.separate) {
 			eventData = {
 				...eventData,
+				label: buttonProperties.text,
+				size: buttonProperties.font_size,
+				color: buttonProperties.text_color,
 				hoverColor: buttonProperties.hover_text,
 				backgroundColor: buttonProperties.background_color,
 				hoverBackgroundColor: buttonProperties.hover_color,
 				borderColor: buttonProperties.border_color,
 				hoverBorderColor: buttonProperties.hover_border,
 				borderWidth: buttonProperties.border_width,
+				borderRadius: buttonProperties.border_radius,
 				width: buttonProperties.button_width,
 				height: buttonProperties.button_height,
 				marginTop: buttonProperties.margin_top,
