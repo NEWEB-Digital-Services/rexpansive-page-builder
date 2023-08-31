@@ -867,6 +867,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 				'"]'
 		);
 		var $buttonData = $buttonWrapper.find('.rex-button-data').eq(0);
+		var $buttonContainer = $buttonWrapper.find('.rex-button-container').eq(0)
 
 		$buttonWrapper.find('.rex-button-text').eq(0).text(buttonProperties.text);
 		$buttonWrapper.find('a.rex-button-container').eq(0).attr('href', buttonProperties.link_target);
@@ -881,6 +882,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 		// }
 
 		buttonProperties.separate = $buttonWrapper.hasClass('rex-separate-button')
+		buttonProperties.popup_video = $buttonContainer.hasClass('popup-video-button')
 
 		_setRexbuttonAttributesOnEditor(buttonProperties)
 	};
@@ -897,6 +899,8 @@ var Rexbuilder_Rexbutton = (function ($) {
 			href: buttonProperties.link_target,
 			separate: buttonProperties.separate,
 			label: buttonProperties.text,
+			popupVideo: false,
+			class: buttonProperties.classes
 		}
 
 		if (buttonProperties.separate) {
@@ -921,9 +925,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 				paddingRight: buttonProperties.padding_right,
 				paddingBottom: buttonProperties.padding_bottom,
 				paddingLeft: buttonProperties.padding_left,
-				name: buttonProperties.buttonTarget.button_name,
-				popupVideo: false,
-				class: buttonProperties.classes
+				name: buttonProperties.buttonTarget.button_name
 			}
 		}
 
@@ -967,6 +969,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 				buttonData.buttonTarget.button_number +
 				'"]'
 		);
+		var $buttonContainer = $buttonWrapper.find('.rex-button-container').eq(0)
 		$buttonWrapper.addClass('rex-separate-button');
 		$buttonWrapper.attr('data-rex-button-id', newID);
 		$buttonWrapper.attr('data-rex-button-number', 1);
@@ -990,6 +993,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 
 		buttonData.separate = true
 		buttonData.buttonTarget.button_id = newID
+		buttonData.popup_video = $buttonContainer.hasClass('popup-video-button')
 		_setRexbuttonAttributesOnEditor(buttonData)
 
 		// _addSeparateAttributes($buttonWrapper, buttonData);
