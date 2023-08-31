@@ -619,12 +619,16 @@ var Rexbuilder_Rexbutton = (function ($) {
 	};
 
 	var _addButtonStyle = function ($buttonWrapper) {
+		console.group('add button style')
+		console.log($buttonWrapper)
 		if ($buttonWrapper.find('.rex-button-data').eq(0).length != 0) {
 			var buttonProperties = _generateButtonData($buttonWrapper, true);
+			console.log(buttonProperties)
 			var buttonID = buttonProperties.buttonInfo.buttonTarget.button_id;
 
 			_addCSSRules(buttonID, buttonProperties.buttonInfo);
 		}
+		console.groupEnd()
 	};
 
 	var _addCSSRules = function (buttonID, buttonProperties) {
@@ -722,6 +726,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 	};
 
 	var _updateButtonLive = function (data) {
+		console.log(data)
 		switch (data.propertyType) {
 			case 'text':
 				_updateButtonTextRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
@@ -866,8 +871,8 @@ var Rexbuilder_Rexbutton = (function ($) {
 		$buttonWrapper.find('.rex-button-text').eq(0).text(buttonProperties.text);
 		$buttonWrapper.find('a.rex-button-container').eq(0).attr('href', buttonProperties.link_target);
 		$buttonWrapper.find('a.rex-button-container').eq(0).attr('target', buttonProperties.link_type);
-		// $buttonData.attr('data-link-target', buttonProperties.link_target);
-		// $buttonData.attr('data-link-type', buttonProperties.link_type);
+		$buttonData.attr('data-link-target', buttonProperties.link_target);
+		$buttonData.attr('data-link-type', buttonProperties.link_type);
 
 		// if ($buttonWrapper.hasClass('rex-separate-button')) {
 		// 	_addSeparateAttributes($buttonWrapper, buttonProperties);
@@ -958,9 +963,9 @@ var Rexbuilder_Rexbutton = (function ($) {
 				buttonData.buttonTarget.button_number +
 				'"]'
 		);
-		// $buttonWrapper.addClass('rex-separate-button');
-		// $buttonWrapper.attr('data-rex-button-id', newID);
-		// $buttonWrapper.attr('data-rex-button-number', 1);
+		$buttonWrapper.addClass('rex-separate-button');
+		$buttonWrapper.attr('data-rex-button-id', newID);
+		$buttonWrapper.attr('data-rex-button-number', 1);
 		buttonsInPage.push({
 			id: newID,
 			number: 1
@@ -979,12 +984,12 @@ var Rexbuilder_Rexbutton = (function ($) {
 			}
 		}
 
-		// _addSeparateAttributes($buttonWrapper, buttonData);
-		_addButtonStyle($buttonWrapper);
-
 		buttonData.separate = true
 		buttonData.buttonTarget.button_id = newID
 		_setRexbuttonAttributesOnEditor(buttonData)
+
+		// _addSeparateAttributes($buttonWrapper, buttonData);
+		_addButtonStyle($buttonWrapper);
 	};
 
 	var _removeModelData = function ($buttonWrapper) {
