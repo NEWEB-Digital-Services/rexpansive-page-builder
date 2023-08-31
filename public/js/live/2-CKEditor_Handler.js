@@ -2219,7 +2219,6 @@ var CKEditor_Handler = (function ($) {
 			const t = editor.t
 
 			editor.ui.componentFactory.add('editRexbutton', (locale) => {
-				// const command = editor.commands.get('photoswipe')
 				const button = new CKEDITOR.ButtonView(locale)
 
 				button.set({
@@ -2240,7 +2239,6 @@ var CKEditor_Handler = (function ($) {
 
 					const viewElement = editor.editing.mapper.toViewElement(selectedElement)
 					const domElement = editor.editing.view.domConverter.viewToDom(viewElement);
-					console.log(domElement.outerHTML)
 					const $domElement = $(domElement)
 
 					const data = {
