@@ -2240,6 +2240,7 @@ var CKEditor_Handler = (function ($) {
 
 					const viewElement = editor.editing.mapper.toViewElement(selectedElement)
 					const domElement = editor.editing.view.domConverter.viewToDom(viewElement);
+					console.log(domElement.outerHTML)
 					const $domElement = $(domElement)
 
 					const data = {
@@ -2483,7 +2484,6 @@ var CKEditor_Handler = (function ($) {
 				placeholder: 'Type your text here'
 			})
 			.then(editor => {
-				console.trace()
 				console.log('Editor was initialized', editor);
 				const section = parents(editor.sourceElement, `.${SECTION_CLASSNAME}`).pop()
 				ckeditorStateMachine.setStateMachineContext(editor, section.classList.contains(MODEL_CLASSNAME))
@@ -2691,6 +2691,7 @@ var CKEditor_Handler = (function ($) {
 	function handleSetAttributesRexbutton(data) {
 		if (ckeditorStateMachine.isEditorDeactive()) return
 		ckeditorStateMachine.editorInstance.model.change(() => {
+			console.log(data)
 			ckeditorStateMachine.editorInstance.execute('setAttributeRexbutton', data)
 		})
 	}
@@ -2744,7 +2745,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 200')
+		console.log('CKEditor_Handler 210')
 		initListeners()
 	}
 
