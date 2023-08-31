@@ -992,6 +992,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 
 		buttonData.separate = true
 		buttonData.buttonTarget.button_id = newID
+		buttonData.buttonTarget.button_number = 1
 		buttonData.popup_video = false
 		_setRexbuttonAttributesOnEditor(buttonData)
 
