@@ -2364,6 +2364,7 @@
 				Rexbuilder_Util_Editor.builderEdited(false);
 			}
 
+      console.log({reverseData, actionData})
       Rexbuilder_Rexbutton.updateButton(actionData);
 
       Rexbuilder_Util_Editor.pushAction(
