@@ -2126,11 +2126,11 @@ var CKEditor_Handler = (function ($) {
 			}
 			const width = modelItem.getAttribute('width')
 			if (!isNil(width)) {
-				buttonDataAttributes['width'] = width
+				buttonDataAttributes['data-button-width'] = width
 			}
 			const height = modelItem.getAttribute('height')
 			if (!isNil(height)) {
-				buttonDataAttributes['height'] = height
+				buttonDataAttributes['data-button-height'] = height
 			}
 			const marginTop = modelItem.getAttribute('marginTop')
 			if (!isNil(marginTop)) {
@@ -2745,7 +2745,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 211')
+		console.log('CKEditor_Handler 216')
 		initListeners()
 	}
 
