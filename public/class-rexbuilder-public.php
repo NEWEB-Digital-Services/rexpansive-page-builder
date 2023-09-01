@@ -141,7 +141,7 @@ class Rexbuilder_Public {
 
 				wp_enqueue_style('spectrum-style', REXPANSIVE_BUILDER_URL . $folder . 'css/spectrum.css', array(), $ver, 'all');
 				// wp_enqueue_style('medium-editor-style', REXPANSIVE_BUILDER_URL . $folder . 'css/medium-editor.css', array(), $ver, 'all');
-				wp_enqueue_style('ckeditor5-style', REXPANSIVE_BUILDER_URL . $folder . 'js/vendor/ckeditor5/ckeditor5-bundle.css', array(), $ver, 'all');
+				wp_enqueue_style('ckeditor5-style', REXPANSIVE_BUILDER_URL . $folder . 'js/vendor/ckeditor5/dist/ckeditor5-bundle.css', array(), $ver, 'all');
 
 			}
 
@@ -189,7 +189,7 @@ class Rexbuilder_Public {
 
 				// todo: remove me
 				// CKEDITOR5
-				wp_enqueue_style('ckeditor5-style', REXPANSIVE_BUILDER_URL . 'public/js/vendor/ckeditor5/ckeditor5-bundle.css', array(), REXPANSIVE_BUILDER_VERSION, 'all');
+				wp_enqueue_style('ckeditor5-style', REXPANSIVE_BUILDER_URL . 'public/js/vendor/ckeditor5/dist/ckeditor5-bundle.css', array(), REXPANSIVE_BUILDER_VERSION, 'all');
 			} else {
 				// pure front end
 				wp_enqueue_style($this->plugin_name . '-style', REXPANSIVE_BUILDER_URL . 'public/css/builderlive-public.css', array(), REXPANSIVE_BUILDER_VERSION, 'all');
@@ -247,7 +247,7 @@ class Rexbuilder_Public {
 
 				// CKEDITOR5
 				wp_enqueue_script('ckeditor5-inspector', 'https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-inspector@4.1.0/build/inspector.min.js', array(), $ver, true);
-				wp_enqueue_script('ckeditor5', REXPANSIVE_BUILDER_URL . 'public/js/vendor/ckeditor5/ckeditor5-bundle.umd.js', array(), $ver, true);
+				wp_enqueue_script('ckeditor5', REXPANSIVE_BUILDER_URL . 'public/js/vendor/ckeditor5/dist/ckeditor5-bundle.umd.js', array(), $ver, true);
 
 				// Rexbuilder
 				wp_enqueue_script('0-Rexbuilder_Gradient_Utils', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Gradient_Utils.js', array('jquery'), $ver, true);
