@@ -607,16 +607,12 @@ var Rexbuilder_Rexbutton = (function ($) {
 	};
 
 	var _addButtonStyle = function ($buttonWrapper) {
-		console.group('add button style')
-		console.log($buttonWrapper)
 		if ($buttonWrapper.find('.rex-button-data').eq(0).length != 0) {
 			var buttonProperties = _generateButtonData($buttonWrapper, true);
-			console.log(buttonProperties)
 			var buttonID = buttonProperties.buttonInfo.buttonTarget.button_id;
 
 			_addCSSRules(buttonID, buttonProperties.buttonInfo);
 		}
-		console.groupEnd()
 	};
 
 	var _addCSSRules = function (buttonID, buttonProperties) {
