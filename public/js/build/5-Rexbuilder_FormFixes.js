@@ -15,8 +15,13 @@ var Rexbuilder_FormFixes = (function($) {
       var $this = $(e);
       if($this.hasClass('rxcf7-custom-checkbox')) {
         $this.find('.wpcf7-checkbox').each(function(i,e) {
-          if($(e).find('label').length>0 && 0 == $(e).find('.rex-checkbox__indicator').length) {
+          const indicatorEl = $(e).find('.rex-checkbox__indicator')
+          if($(e).find('label').length>0 && 0 == indicatorEl.length) {
             $(e).find('input[type=checkbox]').after('<span class="rex-checkbox__indicator"></span>');
+          }
+          const checkboxInput = $(e).find('input[type=checkbox]')
+          if (0 !== checkboxInput.length && 0 === indicatorEl.length) {
+            checkboxInput.after('<span class="rex-checkbox__indicator"></span>');
           }
         });
         $this.find('.wpcf7-acceptance').each(function(i,e) {

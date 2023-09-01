@@ -27,7 +27,7 @@
 			@include justify-content(flex-start);
 		}
 		.natural-image-content,
-		.text-wrap {
+		.rex-custom-position {
 			text-align: left;
 		}
 	}
@@ -36,7 +36,7 @@
 			@include justify-content(center);
 		}
 		.natural-image-content,
-		.text-wrap {
+		.rex-custom-position {
 			text-align: center;
 		}
 	}
@@ -45,7 +45,7 @@
 			@include justify-content(flex-end);
 		}
 		.natural-image-content,
-		.text-wrap {
+		.rex-custom-position {
 			text-align: right;
 		}
 	}

@@ -118,10 +118,6 @@
 
       // setting hash code
       field.setAttribute('data-editable-hash', hashCode );
-      
-      // field.addEventListener('blur', function(event) {
-      //   console.log(event);
-      // });
     });
   };
 

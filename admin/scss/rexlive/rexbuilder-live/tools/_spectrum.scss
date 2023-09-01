@@ -10,3 +10,36 @@
 		}
 	}
 }
+
+/**
+ *  Style for the color picker save button
+ *  Keep it!
+ */
+.rex-modal__outside-footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  transform: translateY(50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .tool-button {
+    margin: 0 10px;
+  }
+
+  .tool-button--save {
+    padding: 0;
+    @include page-edited-ui();
+
+    @include fill-icon($palette-color-1);
+    .l-svg-icons {
+      font-size: 30px;
+    }
+    &:hover {
+      @include fill-icon($palette-color-1);
+    }
+  }
+}

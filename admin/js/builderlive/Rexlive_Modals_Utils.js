@@ -82,7 +82,10 @@ var Rexlive_Modals_Utils = (function($) {
     $target.trigger('rexlive:this_modal_closed');
 
     var closeEvent = {
-      eventName: "rexlive:close_modal"
+      eventName: "rexlive:close_modal",
+      data_to_send: {
+        modal_id: $target.find('.rex-modal').attr('id')
+      }
     };
     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(closeEvent);
 
@@ -129,9 +132,8 @@ var Rexlive_Modals_Utils = (function($) {
      * @since 2.0.0
      */
     Rexlive_Base_Settings.$document.on('click','.rex-modal-wrap', function(e) {
-      if(e.target===this) {
-        _closeModal($(this));
-      }
+      if(e.target!==this) return
+      _closeModal($(this));
     });
 
     /**
@@ -139,9 +141,8 @@ var Rexlive_Modals_Utils = (function($) {
      * @since 2.0.0
      */
     Rexlive_Base_Settings.$document.on('keydown', function(e) {
-      if( e.keyCode === 27 ) {
-        _close_focus_modal();
-      }
+      if( e.code !== 'Escape' ) return
+      _close_focus_modal();
     });
   };
 
@@ -150,15 +151,14 @@ var Rexlive_Modals_Utils = (function($) {
    * @since 2.0.0
    */
   var _close_focus_modal = function() {
-    if( Rexbuilder_Util_Admin_Editor.$body.hasClass('rex-modal-open') ) {
-      // Rexbuilder_Util_Admin_Editor.$body.find('.lean-overlay')
-      var $focus_modal = Rexbuilder_Util_Admin_Editor.$body.find('.rex-modal--active');
-      if( 0 < $focus_modal.length ) {
-        $focus_modal.each(function(i,el){
-          _closeModal($(el));
-        });
-      }
-    }
+    if( !Rexbuilder_Util_Admin_Editor.$body.hasClass('rex-modal-open') ) return
+    // Rexbuilder_Util_Admin_Editor.$body.find('.lean-overlay')
+    var $focus_modal = Rexbuilder_Util_Admin_Editor.$body.find('.rex-modal--active');
+    if( 0 === $focus_modal.length ) return
+
+    $focus_modal.each(function (i, el) {
+      _closeModal($(el));
+    });
   };
 
   var init = function() {

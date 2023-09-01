@@ -2,7 +2,7 @@
  * Gradient Utilitis, mainlly to generate browser compatible CSS rules
  * @since 2.0.0
  */
-var Rexlive_Gradient_Utils = (function($) {
+var Rexbuilder_Gradient_Utils = (function($) {
   var shape = "ellipse";
 
   function getNewLinearPos(inputPos) {
@@ -242,7 +242,9 @@ var Rexlive_Gradient_Utils = (function($) {
       stops += handlers[i].color + " " + handlers[i].position + "%, ";
     }
 
-    dispInputSize = inputSize.toString().toLowerCase();
+    // forcing input size to the default, due the limits of the gradient interface
+    // const dispInputSize = inputSize.toString().toLowerCase();
+    const dispInputSize = 'farthest-corner'
 
     var newSample =
       "radial-gradient(" + shape + " " + dispInputSize + " " + position + ", ";
@@ -304,7 +306,16 @@ var Rexlive_Gradient_Utils = (function($) {
     return newSample;
   }
 
+  /**
+   * Getting the string value of the gradient web safe
+   * @param {string} gradientType type of gradient
+   * @param {string} inputPos direction of the gradient
+   * @param {string[]} handlers list of rgba colors of the gradient
+   * @param {string} inputSize size of the gradient
+   * @returns {string}
+   */
   function getMarkup(gradientType, inputPos, handlers, inputSize) {
+    let w3c, gecko, oldwebkit, newwebkit, opera, ms = ''
     if (gradientType == "linear") {
       w3c = lineargradient_w3c(inputPos, handlers);
       gecko = lineargradient_gecko(inputPos, handlers);
@@ -315,14 +326,14 @@ var Rexlive_Gradient_Utils = (function($) {
     } else if (gradientType == "radial") {
       gecko = radialgradient_gecko(inputPos, handlers, inputSize);
       w3c = radialgradient_w3c(inputPos, handlers, inputSize);
-      oldwebkit = radialgradient_webkit(inputPos, handlers, inputSize);
+      oldwebkit = radialgradient_webkit(inputPos, handlers);
       newwebkit = gecko.replace("-moz-", "-webkit-");
       opera = gecko.replace("-moz-", "-o-");
       ms = gecko.replace("-moz-", "-ms-");
     } else {
       return "";
     }
-    markup = "";
+    let markup = "";
 
     markup += "background:" + ms + ";";
     markup += "background:" + gecko + ";";
@@ -338,6 +349,7 @@ var Rexlive_Gradient_Utils = (function($) {
   /**
    * Explode gradient string to return single values describing the gradient
    * @param {string} gradient gradient value
+   * @returns {Object} response
    * 
    * example: linear-gradient(right, rgba(26,48,212,0.95) 0%, rgb(212,102,26) 100%)
    * example: linear-gradient(left, rgba(197, 244, 9, 228) 0%, rgba(9, 81, 244, 0.741) 51.82072829131653%)
@@ -347,14 +359,12 @@ var Rexlive_Gradient_Utils = (function($) {
    * @since 2.2.0
    */
   function getGradientValues(gradient) {
-    const response = {
-      gradientType: '',
-      inputPos: '',
-      handlers: [],
-      inputSize: ''
-    }
+    let gradientType = ''
+    let direction = ''
+    let handlers = []
+    let inputSize = 'cover'
 
-    if (!gradient) return response
+    if (!gradient) return { gradientType, direction, handlers, inputSize }
 
     const gradientRegex = /^(linear|radial)-gradient\(([a-zA-Z0-9]+),\s*([a-zA-Z0-9()\s\%\,\.]+)\)$/gm
     const handlersRegex = /(rgba{0,1}\([0-9,\.\s]+\))\s*([0-9\.%]+)/gm;
@@ -367,8 +377,8 @@ var Rexlive_Gradient_Utils = (function($) {
         gradientRegex.lastIndex++;
       }
 
-      response.gradientType = gradientMatch[1]
-      response.inputPos = gradientMatch[2]
+      gradientType = gradientMatch[1]
+      direction = gradientMatch[2]
       handlersString = gradientMatch[3]
     }
 
@@ -385,10 +395,30 @@ var Rexlive_Gradient_Utils = (function($) {
         position: handlersMatch[2].replace('%', '')
       }
 
-      response.handlers.push(handler)
+      handlers.push(handler)
     }
 
-    return response
+    direction = maybeConvertDirectionValue(direction)
+
+    return {
+      gradientType,
+      direction,
+      handlers,
+      inputSize
+    }
+  }
+
+  /**
+   * Maybe convert the direction value that comes from the TextGradient picker
+   * The value that it returns is the direction, but the gradient value, if not a degree, must be have a "to direction" format
+   * @param {string} direction direction value as come from the TextGradient picker
+   * @returns string
+   * @since 2.2.0
+   */
+  function maybeConvertDirectionValue(direction) {
+    if ('135deg' === direction) return 'top left'
+    if ('315deg' === direction) return 'bottom right'
+    return direction
   }
 
   var _textGradientRuleset = function() {

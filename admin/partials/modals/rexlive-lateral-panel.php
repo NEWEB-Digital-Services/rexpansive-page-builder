@@ -20,7 +20,7 @@ defined('ABSPATH') or exit;
 		<ul class="rex-lateral-tabs-list bl_d-flex" data-tabgroup="rex-lateral-tabs">
 			<li><a href="#" data-rex-tab-target="rex-models-list" class="active"><?php _e( 'Templates', 'rexpansive-builder' ); ?></a></li>
 			<li><a href="#" data-rex-tab-target="rex-buttons-list"><?php _e( 'Buttons', 'rexpansive-builder' ); ?></a></li>
-			<li><a href="#" data-rex-tab-target="rex-elements-list"><?php _e( 'Forms', 'rexpansive-builder' ); ?></a></li>
+			<!--<li><a href="#" data-rex-tab-target="rex-elements-list"><?php _e( 'Forms', 'rexpansive-builder' ); ?></a></li>-->
 		</ul>
 		<div class="tool-button tool-button--black tool-button--close rex-close-button rex-lateral-panel--close tippy" data-tippy-content="<?php _e('Close','rexpansive-builder'); ?>">
 			<?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?>

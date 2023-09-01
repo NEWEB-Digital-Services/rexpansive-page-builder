@@ -70,8 +70,6 @@
 		init.call(this)
 
 		instances.push( this );
-
-		// console.log(this)
 	}
 
 	function init() {

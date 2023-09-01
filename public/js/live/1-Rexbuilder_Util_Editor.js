@@ -29,17 +29,11 @@ var Rexbuilder_Util_Editor = (function ($) {
 	function updateBlockContainerHeight($textWrap, needToSave, forceFixedText) {
 		var galleryInstance = Rexbuilder_Util.getGalleryInstance($textWrap);
 		var block = $textWrap.parents('.grid-stack-item').get(0);
-		var insertMediaExtension = TextEditor.getEditorInstance().getExtensionByName('insert-media');
-		var $gridItemContentWrap = $textWrap.parents('.grid-item-content-wrap');
 
 		needToSave = needToSave || true;
 		this.needToSave = needToSave;
 
 		galleryInstance.updateElementHeight(block, undefined, forceFixedText);
-
-		if (insertMediaExtension) {
-			insertMediaExtension.placeMediaBtn($gridItemContentWrap);
-		}
 
 		this.needToSave = true;
 	}
