@@ -2253,7 +2253,7 @@ var CKEditor_Handler = (function ($) {
 					Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 					ckeditorStateMachine.toRexbuttonEditorOpen()
 
-					// editor.editing.view.focus()
+					editor.editing.view.focus()
 				})
 
 				return button
