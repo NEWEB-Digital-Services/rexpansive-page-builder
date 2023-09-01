@@ -2,11 +2,11 @@
  */
 
 @function strip-unit($num) {
-  @return calc($num / ($num * 0 + 1));
+  @return $num / ($num * 0 + 1);
 }
 
 @function convert-to-em($value)  {
-  $value: calc(strip-unit($value) / (strip-unit($em-base) * 1em));
+  $value: strip-unit($value) / (strip-unit($em-base) * 1em);
   @if ($value == 0em) { $value: 0; }
   @return $value;
 }
