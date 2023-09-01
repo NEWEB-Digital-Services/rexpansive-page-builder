@@ -622,5 +622,5 @@ exports.standardBuild = series(createTempLiveFolder, standardZip, removeTempLive
 exports.macBuild = series(createTempLiveFolder, macZip, removeTempLiveFolder);
 
 // Deploy tasks
-exports.deployWin = series(exports.build, exports.standardBuild);
-exports.deployMac = series(exports.build, exports.macBuild);
+exports.deployWin = exports.standardBuild
+exports.deployMac = exports.macBuild;
