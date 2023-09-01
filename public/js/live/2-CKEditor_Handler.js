@@ -1836,8 +1836,11 @@ var CKEditor_Handler = (function ($) {
 				}
 				replaceAttributes = { ...replaceAttributes, ...options }
 				replaceAttributes = Object.fromEntries(Object.entries(replaceAttributes).filter(([_, v]) => !isNil(v)))
-				console.log({replaceAttributes})
-				editor.model.insertContent(writer.createElement('rexbutton', replaceAttributes))
+
+				const replaceRexbutton = writer.createElement('rexbutton', replaceAttributes)
+				editor.model.insertContent(replaceRexbutton)
+
+				writer.setSelection(replaceRexbutton, 'on')
 			})
 		}
 
