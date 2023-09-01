@@ -12,7 +12,9 @@
 		"deploy:win": "gulp deployWin --production",
 		"predeploy:mac": "npm run build",
 		"deploy:mac": "gulp deployMac --production",
-		"start-new-version": "node ./scripts/start-new-version.js"
+		"start-new-version": "node ./scripts/start-new-version.js",
+		"predev": "cd public/js/vendor/ckeditor5 && yarn build",
+		"prebuild": "cd public/js/vendor/ckeditor5 && yarn build"
 	},
 	"devDependencies": {
 		"eslint-config-google": "^0.9.1",
