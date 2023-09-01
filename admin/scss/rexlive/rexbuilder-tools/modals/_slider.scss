@@ -46,6 +46,10 @@ input {
 		&:focus {
 			outline: none;
 		}
+
+		option {
+			color: #000;
+		}
 	}
 
 	.rx__select-wrap {
