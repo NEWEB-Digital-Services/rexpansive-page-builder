@@ -2488,7 +2488,7 @@ var CKEditor_Handler = (function ($) {
 			})
 			.then(editor => {
 				console.log('Editor was initialized', editor);
-				if (!isNil(CKEditorInspector)) {
+				if ('undefined' !== typeof CKEditorInspector) {
 					CKEditorInspector.attach(editor)
 				}
 				const section = parents(editor.sourceElement, `.${SECTION_CLASSNAME}`).pop()
@@ -2752,7 +2752,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 227')
+		console.log('CKEditor_Handler 234')
 		initListeners()
 	}
 
