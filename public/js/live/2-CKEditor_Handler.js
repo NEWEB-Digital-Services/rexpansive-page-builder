@@ -2224,6 +2224,7 @@ var CKEditor_Handler = (function ($) {
 			const t = editor.t
 
 			editor.ui.componentFactory.add('editRexbutton', (locale) => {
+				const command = editor.commands.get('setAttributeRexbutton')
 				const button = new CKEDITOR.ButtonView(locale)
 
 				button.set({
@@ -2232,10 +2233,9 @@ var CKEditor_Handler = (function ($) {
 					icon: '<svg xmlns="http://www.w3.org/2000/svg" class="ck ck-icon ck-reset_all-excluded ck-icon_inherit-color ck-button__icon" viewBox="0 0 20 20"><path d="M19.937 8.89c-.031-.282-.359-.493-.642-.493-.917 0-1.73-.538-2.071-1.37a2.227 2.227 0 01.56-2.473.555.555 0 00.06-.754 9.895 9.895 0 00-1.584-1.6.557.557 0 00-.76.062c-.596.66-1.667.905-2.495.56A2.221 2.221 0 0111.655.65a.555.555 0 00-.491-.584A9.984 9.984 0 008.914.06a.556.556 0 00-.495.572 2.225 2.225 0 01-1.37 2.133c-.817.334-1.88.091-2.475-.563a.558.558 0 00-.755-.064 9.933 9.933 0 00-1.617 1.6.556.556 0 00.06.76c.695.63.92 1.633.558 2.495-.345.822-1.198 1.352-2.175 1.352a.544.544 0 00-.578.49 10.017 10.017 0 00-.004 2.275c.031.282.369.491.655.491.871-.022 1.707.517 2.058 1.37.35.853.125 1.847-.56 2.474a.556.556 0 00-.06.753c.465.592.998 1.13 1.582 1.6.23.185.563.16.761-.06.598-.661 1.67-.906 2.493-.56a2.218 2.218 0 011.353 2.17.555.555 0 00.49.584 9.94 9.94 0 002.25.006.557.557 0 00.496-.572 2.223 2.223 0 011.368-2.133c.823-.336 1.882-.09 2.477.563a.559.559 0 00.754.064 9.956 9.956 0 001.618-1.6.555.555 0 00-.06-.76 2.216 2.216 0 01-.56-2.495 2.239 2.239 0 012.046-1.355l.124.003a.557.557 0 00.585-.49c.088-.752.09-1.517.004-2.274zm-9.921 4.467A3.34 3.34 0 016.68 10.02a3.34 3.34 0 013.336-3.335 3.34 3.34 0 013.335 3.335 3.34 3.34 0 01-3.335 3.336z" fill-rule="evenodd"></path></svg>'
 				})
 
-				// button.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled')
+				button.bind('isEnabled').to(command, 'isEnabled')
 
 				button.on('execute', () => {
-					// todo: send event
 					const selection = editor.model.document.selection;
 					const selectedElement = selection.getSelectedElement();
 
@@ -2260,7 +2260,7 @@ var CKEditor_Handler = (function ($) {
 			})
 
 			editor.ui.componentFactory.add('removeRexbutton', (locale) => {
-				// const command = editor.commands.get('removeRexbutton')
+				const command = editor.commands.get('removeRexbutton')
 				const button = new CKEDITOR.ButtonView(locale)
 
 				button.set({
@@ -2269,7 +2269,7 @@ var CKEditor_Handler = (function ($) {
 					icon: '<svg xmlns="http://www.w3.org/2000/svg" class="ck ck-icon ck-reset_all-excluded ck-icon_inherit-color ck-button__icon" viewBox="0 0 100 100"><path d="M85.355 77.157L58.198 50l27.156-27.155a5.8 5.8 0 00.001-8.2 5.8 5.8 0 00-8.199 0L50 41.802 22.843 14.645a5.802 5.802 0 00-8.199 0 5.795 5.795 0 000 8.199l27.157 27.157-27.156 27.155a5.792 5.792 0 000 8.2 5.795 5.795 0 008.199 0l27.155-27.157 27.157 27.157a5.794 5.794 0 008.199 0 5.8 5.8 0 000-8.2z" fill-rule="nonzero"></path></svg>'
 				})
 
-				// button.bind('isOn', 'isEnabled').to(command, 'value', 'isEnabled')
+				button.bind('isEnabled').to(command, 'isEnabled')
 
 				button.on('execute', () => {
 					editor.execute('removeRexbutton')
