@@ -780,9 +780,9 @@ var CKEditor_Handler = (function ($) {
 			)
 
 			editor.model.change(writer => {
-				editor.model.insertContent(
-					writer.createElement('iconInline', iconInlineData)
-				)
+				const iconToInsert = writer.createElement('iconInline', iconInlineData)
+				editor.model.insertContent(iconToInsert)
+				writer.setSelection(iconToInsert, 'on')
 			})
 		}
 
