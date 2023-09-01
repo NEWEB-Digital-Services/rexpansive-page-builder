@@ -22,11 +22,6 @@ var Rexbuilder_CreateBlocks = (function ($, window, document) {
     var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout);
     var el = $el[0];
     $el.find(".grid-item-content").addClass("empty-content");
-    // TextEditor.addElementToTextEditor( el.querySelector(".text-wrap") );
-
-    // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
-    // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($el.find('input[name=edit-block-overlay-color]')[0]);
-    // Rexbuilder_Block_Editor.updateBlockTools($el);
 
     Rexbuilder_Util.updateSectionStateLive($section);
     if (Rexbuilder_Util.activeLayout == "default") {

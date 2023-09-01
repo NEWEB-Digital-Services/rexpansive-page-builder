@@ -760,11 +760,6 @@ var Rexbuilder_Block_Editor = (function($) {
         data: e.settings.data_to_send,
         editable: null
       })
-      // TextEditor.triggerMEEvent({
-      //   name:"rexlive:mediumEditor:saveHTMLContent",
-      //   data: e.settings.data_to_send,
-      //   editable: null
-      // });
     });
 
     /**
@@ -789,11 +784,6 @@ var Rexbuilder_Block_Editor = (function($) {
         data: e.settings.data_to_send,
         editable: null
       })
-      // TextEditor.triggerMEEvent({
-      //   name:"rexlive:mediumEditor:inlineImageEdit",
-      //   data: e.settings.data_to_send,
-      //   editable: null
-      // });
     });
 
     /**
