@@ -2488,6 +2488,9 @@ var CKEditor_Handler = (function ($) {
 			})
 			.then(editor => {
 				console.log('Editor was initialized', editor);
+				if (!isNil(CKEditorInspector)) {
+					CKEditorInspector.attach(editor)
+				}
 				const section = parents(editor.sourceElement, `.${SECTION_CLASSNAME}`).pop()
 				ckeditorStateMachine.setStateMachineContext(editor, section.classList.contains(MODEL_CLASSNAME))
 				ckeditorStateMachine.toActiveState()

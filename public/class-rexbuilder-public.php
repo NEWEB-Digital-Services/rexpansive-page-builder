@@ -246,6 +246,7 @@ class Rexbuilder_Public {
 				wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . 'public/js/vendor/medium-editor-toolbar-states.min.js', array('jquery'), $ver, true);
 
 				// CKEDITOR5
+				wp_enqueue_script('ckeditor5-inspector', 'https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-inspector@4.1.0/build/inspector.min.js', array(), $ver, true);
 				wp_enqueue_script('ckeditor5', REXPANSIVE_BUILDER_URL . 'public/js/vendor/ckeditor5/ckeditor5-bundle.umd.js', array(), $ver, true);
 
 				// Rexbuilder
