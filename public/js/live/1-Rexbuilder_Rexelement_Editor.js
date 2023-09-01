@@ -277,11 +277,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 		// Removing medium editor placeholder if there
 		var $textWrap = $elementWrapper.parents('.text-wrap');
 
-		// todo: use new editor
-		// if ($textWrap.length != 0) {
-		// 	TextEditor.removePlaceholder($textWrap.eq(0));
-		// }
-
 		if (addingWpcf7) {
 			var firstTimeAdding = 0 === $elementWrapper.find('.wpcf7-rows').length;
 			var formID = elementID;
@@ -633,8 +628,6 @@ var Rexbuilder_Rexelement_Editor = (function ($) {
 			Rexbuilder_Rexwpcf7_Editor.setRowsSortable();
 			Rexbuilder_Rexwpcf7_Editor.addMissingTools(formID);
 			_addElementToolsToDOM();
-			// todo: use new editor
-			// TextEditor.focusTextWrap($textWrap);
 		}
 
 		Rexbuilder_Live_Utilities.launchTooltips();
