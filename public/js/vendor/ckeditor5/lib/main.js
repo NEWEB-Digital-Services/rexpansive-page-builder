@@ -9,13 +9,12 @@ import { Heading } from '@ckeditor/ckeditor5-heading';
 import { FontColor } from '@ckeditor/ckeditor5-font';
 import { MediaEmbed } from '@ckeditor/ckeditor5-media-embed';
 import { GeneralHtmlSupport } from '@ckeditor/ckeditor5-html-support';
-import { HorizontalLine } from '@ckeditor/ckeditor5-horizontal-line';
 import { Link } from '@ckeditor/ckeditor5-link';
 import { Image, ImageResize, ImageStyle, ImageToolbar, ImageUtils } from '@ckeditor/ckeditor5-image';
 import { Undo } from '@ckeditor/ckeditor5-undo';
 import { Model, addListToDropdown, ButtonView, DropdownButtonView, createDropdown } from '@ckeditor/ckeditor5-ui'
 import { Collection } from '@ckeditor/ckeditor5-utils'
-import { Widget, WidgetResize, toWidget, viewToModelPositionOutsideModelElement, WidgetToolbarRepository, isWidget } from '@ckeditor/ckeditor5-widget'
+import { Widget, WidgetResize, toWidget, viewToModelPositionOutsideModelElement, WidgetToolbarRepository, isWidget, findOptimalInsertionRange } from '@ckeditor/ckeditor5-widget'
 
 export {
 	Observer,
@@ -28,7 +27,6 @@ export {
 	FontColor,
 	MediaEmbed,
 	GeneralHtmlSupport,
-	HorizontalLine,
 	Link,
 	Image, ImageResize, ImageStyle, ImageToolbar, ImageUtils,
 	Undo,
@@ -39,5 +37,5 @@ export {
 	addListToDropdown,
 	createDropdown,
 	Collection,
-	Widget, WidgetResize, toWidget, viewToModelPositionOutsideModelElement, WidgetToolbarRepository, isWidget
+	Widget, WidgetResize, toWidget, viewToModelPositionOutsideModelElement, WidgetToolbarRepository, isWidget, findOptimalInsertionRange
 }
