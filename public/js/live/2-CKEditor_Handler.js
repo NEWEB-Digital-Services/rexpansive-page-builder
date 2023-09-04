@@ -2347,6 +2347,7 @@ var CKEditor_Handler = (function ($) {
 				button.on('execute', () => {
 					if (!ckeditorStateMachine.isEditorActive()) return
 					const sourceElement = ckeditorStateMachine.getEditorInstanceSourceElement()
+					unfocusBlock(sourceElement)
 					restoreBlockTools(sourceElement)
 					destroyEditorInstance(sourceElement)
 				})
@@ -2558,11 +2559,6 @@ var CKEditor_Handler = (function ($) {
 
 		if (isNil(perfectGridGalleryInstance)) return;
 
-		perfectGridGalleryInstance.section.classList.remove('block-editing')
-
-		const block = parents(editorElement, `.${GRID_STACK_ITEM_CLASSNAME}`)[0]
-		block.classList.remove('item--me-focus')
-
 		// View or hide the little T icon
 		Rexbuilder_Block_Editor.updateTextTool(editorElement);
 
@@ -2642,6 +2638,7 @@ var CKEditor_Handler = (function ($) {
 				if (ckeditorStateMachine.isEditorActive()) {
 					if (!isNil(ckeditorStateMachine.editorInstance)) {
 						const sourceElement = ckeditorStateMachine.getEditorInstanceSourceElement()
+						unfocusBlock(sourceElement)
 						restoreBlockTools(sourceElement)
 						destroyEditorInstance(sourceElement)
 					}
@@ -2780,7 +2777,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 249')
+		console.log('CKEditor_Handler 250')
 		initListeners()
 	}
 
