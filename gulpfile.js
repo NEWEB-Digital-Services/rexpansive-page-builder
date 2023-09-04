@@ -248,10 +248,6 @@ function watchAdminScript(cb) {
 // LIVE JS
 var builderlive_public_editor = [
 	'public/js/vendor/tippy.all.min.js',
-	'public/js/vendor/rangy-1.3.0/rangy-core.js',
-	'public/js/vendor/rangy-1.3.0/rangy-classapplier.js',
-	'public/js/vendor/rangy-1.3.0/rangy-selectionsaverestore.js',
-	'public/js/vendor/rangy-1.3.0/rangy-textrange.js',
 	'public/js/vendor/spectrum.js',
 	'public/js/vendor/ckeditor5/dist/ckeditor5-bundle.umd.js',
 	'public/js/live/0-Rexbuilder_Array_Utilities.js',
@@ -529,7 +525,7 @@ var live_file_map = [
 	'public/css/flickity.min.css',
 	'public/css/gridstack.css',
 	'public/css/jquery-ui.min.css',
-	'public/js/vendor/ckeditor5/dist/ckeditor5-bundle.css',
+	// 'public/js/vendor/ckeditor5/dist/ckeditor5-bundle.css',
 	'public/css/preloader.gif',
 	'public/css/public.css',
 	'public/css/public-editor.css',

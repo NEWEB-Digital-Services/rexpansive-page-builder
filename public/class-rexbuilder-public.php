@@ -140,7 +140,6 @@ class Rexbuilder_Public {
 				wp_enqueue_style('custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . $folder_admin . 'css/rex-custom-editor-buttons.css', array(), $ver, 'all');
 
 				wp_enqueue_style('spectrum-style', REXPANSIVE_BUILDER_URL . $folder . 'css/spectrum.css', array(), $ver, 'all');
-				// wp_enqueue_style('medium-editor-style', REXPANSIVE_BUILDER_URL . $folder . 'css/medium-editor.css', array(), $ver, 'all');
 				wp_enqueue_style('ckeditor5-style', REXPANSIVE_BUILDER_URL . $folder . 'js/vendor/ckeditor5/dist/ckeditor5-bundle.css', array(), $ver, 'all');
 
 			}
@@ -186,10 +185,6 @@ class Rexbuilder_Public {
 				wp_enqueue_style('material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), false, 'all');
 				wp_enqueue_style('font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), false, 'all');
 				wp_enqueue_style($this->plugin_name . '-style', REXPANSIVE_BUILDER_URL . 'live/css/builderlive-editor.css', array(), REXPANSIVE_BUILDER_VERSION, 'all');
-
-				// todo: remove me
-				// CKEDITOR5
-				wp_enqueue_style('ckeditor5-style', REXPANSIVE_BUILDER_URL . 'public/js/vendor/ckeditor5/dist/ckeditor5-bundle.css', array(), REXPANSIVE_BUILDER_VERSION, 'all');
 			} else {
 				// pure front end
 				wp_enqueue_style($this->plugin_name . '-style', REXPANSIVE_BUILDER_URL . 'public/css/builderlive-public.css', array(), REXPANSIVE_BUILDER_VERSION, 'all');
