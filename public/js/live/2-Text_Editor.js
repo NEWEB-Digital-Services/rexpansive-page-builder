@@ -2,6 +2,7 @@
  * Object that handles the live text editor inside the blocks
  *
  * @since 2.0.0
+ * @deprecated 2.2.0
  */
 var TextEditor = (function ($) {
 	('use strict');
