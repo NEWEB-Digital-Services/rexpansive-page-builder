@@ -48,6 +48,8 @@ var CKEditor_Handler = (function ($) {
 	const GRID_STACK_ITEM_CLASSNAME = 'grid-stack-item'
 	const SECTION_CLASSNAME = 'rexpansive_section'
 	const MODEL_CLASSNAME = 'rex-model-section'
+	const GRID_STACK_ITEM_FOCUS_CLASSNAME = 'item--me-focus'
+	const SECTION_EDITING_CLASSNAME = 'block-editing'
 
 	const BLOCK_ID_ATTRIBUTE_NAME = 'data-rexbuilder-block-id'
 	const SECTION_ID_ATTRIBUTE_NAME = 'data-rexlive-section-id'
@@ -2494,12 +2496,17 @@ var CKEditor_Handler = (function ($) {
 				ckeditorStateMachine.setStateMachineContext(editor, section.classList.contains(MODEL_CLASSNAME))
 				ckeditorStateMachine.toActiveState()
 
-				ckeditorStateMachine.editorInstance.focus()
+				editor.focus()
+				focusBlock(editor.sourceElement)
+				editor.model.change(writer => {
+					writer.setSelection(writer.createPositionAt(editor.model.document.getRoot(), 'end'));
+				});
 
 				ckeditorStateMachine.editorInstance.ui.focusTracker.on('change:isFocused', function (eventInfo, name, value, oldValue) {
 					if (value) return
 					if (ckeditorStateMachine.isEditorActive()) {
 						const sourceElement = ckeditorStateMachine.getEditorInstanceSourceElement()
+						unfocusBlock(sourceElement)
 						restoreBlockTools(sourceElement)
 						destroyEditorInstance(sourceElement)
 					}
@@ -2565,6 +2572,30 @@ var CKEditor_Handler = (function ($) {
 		Rexbuilder_Util_Editor.activateElementFocus = false;
 		Rexbuilder_Util_Editor.endEditingElement();
 		Rexbuilder_Util_Editor.activateElementFocus = true;
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	function focusBlock(sourceElement) {
+		if (isNil(sourceElement)) return
+
+		const gridStackItem = parents(sourceElement, `.${GRID_STACK_ITEM_CLASSNAME}`).pop()
+		gridStackItem.classList.add(GRID_STACK_ITEM_FOCUS_CLASSNAME)
+		const section = parents(sourceElement, `.${SECTION_CLASSNAME}`).pop()
+		section.classList.add(SECTION_EDITING_CLASSNAME)
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	function unfocusBlock(sourceElement) {
+		if (isNil(sourceElement)) return
+
+		const gridStackItem = parents(sourceElement, `.${GRID_STACK_ITEM_CLASSNAME}`).pop()
+		gridStackItem.classList.remove(GRID_STACK_ITEM_FOCUS_CLASSNAME)
+		const section = parents(sourceElement, `.${SECTION_CLASSNAME}`).pop()
+		section.classList.remove(SECTION_EDITING_CLASSNAME)
 	}
 
 	/**
@@ -2749,7 +2780,7 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 237')
+		console.log('CKEditor_Handler 249')
 		initListeners()
 	}
 
