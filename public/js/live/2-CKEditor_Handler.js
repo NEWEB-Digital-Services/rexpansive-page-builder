@@ -1240,6 +1240,9 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	/**
+	 * @since 2.2.0
+	 */
 	class IconInlineResizeHandles extends CKEDITOR.Plugin {
 		init() {
 			const command = this.editor.commands.get('resizeIconInline')
@@ -2327,6 +2330,161 @@ var CKEditor_Handler = (function ($) {
 		}
 	}
 
+	class HRCommand extends CKEDITOR.Command {
+		refresh() {
+			const model = this.editor.model
+			const schema = model.schema
+			const selection = model.document.selection
+
+			this.isEnabled = isHorizontalLineAllowedInParent(selection, schema, model);
+		}
+
+		execute() {
+			const model = this.editor.model
+
+			model.change(writer => {
+				const horizontalElement = writer.createElement('hr')
+				model.insertObject(horizontalElement, null, null, { setSelection: 'after' })
+			})
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	function isHorizontalLineAllowedInParent(selection, schema, model) {
+		const parent = getInsertHorizontalLineParent(selection, model);
+
+		return schema.checkChild(parent, 'hr');
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	function getInsertHorizontalLineParent(selection, model) {
+		const insertionRange = CKEDITOR.findOptimalInsertionRange(selection, model);
+		const parent = insertionRange.start.parent;
+
+		if (parent.isEmpty && !parent.is('element', '$root')) {
+			return parent.parent
+		}
+
+		return parent
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class HREditing extends CKEDITOR.Plugin {
+		init() {
+			const editor = this.editor
+			const schema = editor.model.schema
+			const t = editor.t
+			const conversion = editor.conversion
+
+			schema.register('hr', {
+				inheritAllFrom: '$blockObject',
+				allowAttributes: ['style']
+			})
+
+			conversion.for('dataDowncast').elementToElement({
+				model: 'hr',
+				view: (modelElement, { writer }) => {
+					const styleAttributes = modelElement.getAttribute('style')
+					if (!isNil(styleAttributes)) {
+						const style = Object.entries(styleAttributes).map(([key, value]) => `${key}:${value}`).join(';')
+						return writer.createEmptyElement('hr', { style })
+					}
+					return writer.createEmptyElement('hr')
+				}
+			})
+
+			conversion.for('editingDowncast').elementToStructure({
+				model: 'hr',
+				view: (modelElement, { writer }) => {
+					const styleAttributes = modelElement.getAttribute('style')
+					let viewHR
+					if (!isNil(styleAttributes)) {
+						const style = Object.entries(styleAttributes).map(([key, value]) => `${key}:${value}`).join(';')
+						viewHR = writer.createEmptyElement('hr', { style })
+					} else {
+						viewHR = writer.createEmptyElement('hr')
+					}
+					const label = t('Horizontal line')
+
+					const viewWrapper = writer.createContainerElement('div', null, viewHR)
+
+					writer.addClass('ck-horizontal-line', viewWrapper);
+					writer.setCustomProperty('hr', true, viewWrapper);
+
+					return toHorizontalLineWidget(viewWrapper, writer, label);
+				}
+			})
+
+			conversion.for('upcast').elementToElement({
+				view: 'hr',
+				model: (viewElement, { writer }) => {
+					const style = viewElement.getStyle()
+					if (isNil(style)) {
+						return writer.createElement('hr')
+					}
+
+					return writer.createElement('hr', { style })
+				}
+			})
+
+			editor.commands.add('hr', new HRCommand(editor))
+		}
+	}
+
+	/**
+	 * @since 2.2.0 
+	 */
+	function toHorizontalLineWidget(viewElement, writer, label) {
+		writer.setCustomProperty('hr', true, viewElement);
+
+		return CKEDITOR.toWidget(viewElement, writer, { label });
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class HRUI extends CKEDITOR.Plugin {
+		init() {
+			const editor = this.editor
+			const t = editor.t
+
+			editor.ui.componentFactory.add('hr', locale => {
+				const command = editor.commands.get('hr')
+				const view = new CKEDITOR.ButtonView(locale)
+
+				view.set({
+					label: t('Horizontal line'),
+					icon: '<svg viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2 9h16v2H2z"/></svg>',
+					tooltip: true
+				})
+
+				view.bind('isEnabled').to(command, 'isEnabled')
+
+				this.listenTo(view, 'execute', () => {
+					editor.execute('hr')
+					editor.editing.view.focus()
+				})
+
+				return view
+			})
+		}
+	}
+
+	/**
+	 * @since 2.2.0
+	 */
+	class HR extends CKEDITOR.Plugin {
+		static get requires() {
+			return [HREditing, HRUI, CKEDITOR.Widget]
+		}
+	}
+
 	/**
 	 * @since 2.2.0
 	 */
@@ -2375,7 +2533,6 @@ var CKEditor_Handler = (function ($) {
 					CKEDITOR.Heading,
 					CKEDITOR.FontColor,
 					CKEDITOR.GeneralHtmlSupport,
-					CKEDITOR.HorizontalLine,
 					CKEDITOR.Link,
 					CKEDITOR.Image,
 					CKEDITOR.ImageResize,
@@ -2398,6 +2555,7 @@ var CKEditor_Handler = (function ($) {
 					HTMLEditing,
 					TextGradient,
 					Rexbutton,
+					HR,
 					CloseEditor
 				],
 				toolbar: [
@@ -2420,7 +2578,7 @@ var CKEditor_Handler = (function ($) {
 					'undo',
 					'redo',
 					'|',
-					'horizontalLine',
+					'hr',
 					'|',
 					'closeEditor'
 				],
