@@ -150,7 +150,16 @@
 	}
 
 	.ck-editor__editable .ck-horizontal-line {
-	/* Necessary to render properly next to floated objects, e.g. side image case. */
+		/* Necessary to render properly next to floated objects, e.g. side image case. */
 		display: flow-root;
+	}
+
+	.ck.ck-dropdown {
+		&.ck-icon-inline-toolbar {
+			.ck-dropdown__panel {
+				max-height: 320px;
+				overflow-y: auto;
+			}
+		}
 	}
 }
