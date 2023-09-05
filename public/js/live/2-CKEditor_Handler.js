@@ -2940,7 +2940,6 @@ var CKEditor_Handler = (function ($) {
 	}
 
 	function init() {
-		console.log('CKEditor_Handler 250')
 		initListeners()
 	}
 
