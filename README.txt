@@ -4,7 +4,7 @@ Donate link: http://www.neweb.info/
 Tags: builder, composer, content builder, custom, drag and drop, editor, page builder, page composer, responsive, theme
 Requires at least: 4.2
 Tested up to: 6.1
-Stable tag: 2.1.1
+Stable tag: 2.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -199,6 +199,17 @@ For the more experienced among us: you can insert CSS anywhere.
 11. Clean interface
 
 == Changelog ==
+
+= 2.2.0 - September =
+ * Updated: Sass version
+ * Updated: Deprecate MediumEditor and use CKEditor5
+ * Updated: Remove default margin on paragraph inside a RexSlider
+ * Updated: Style success and error response area for WPCF7 forms
+ * Added: Allow display blocks in a masonry way inside a fixed section, removing empty spaces
+ * Added: Classes to set full image background on block positioning
+ * Fixed: Avoid load useless content on pages withoud builder active
+ * Fixed: Correct section height calculation after a WPCF7 form submission
+ * Fixed: Block only image class
 
 = 2.1.1 - January 18, 2023 =
  * Updated: Update license version to GNU GPLv3
