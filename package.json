@@ -16,6 +16,9 @@
 		"predev": "cd public/js/vendor/ckeditor5 && yarn build",
 		"prebuild": "cd public/js/vendor/ckeditor5 && yarn build"
 	},
+	"browserslist": [
+		"last 2 versions"
+	],
 	"devDependencies": {
 		"eslint-config-google": "^0.9.1",
 		"glob": "^7.1.6",
