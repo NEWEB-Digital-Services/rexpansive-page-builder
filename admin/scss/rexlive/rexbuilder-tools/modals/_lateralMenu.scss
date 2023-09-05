@@ -21,7 +21,8 @@
 .rex-lateral-tabs-list {
 	margin: 0;
 	li {
-		width: 33.33333%;
+		// width: 33.33333%;
+		flex: 1 0 0%;
 		margin: 0;
 		position: relative;
 
@@ -86,7 +87,7 @@
 		display: block;
 		position: absolute;
 		background: #fff;
-		width: calc(33% - 2px);
+		width: calc(50% - 2px);
 		top: -5px;
 		height: 10px;
 	}
@@ -99,7 +100,7 @@
 
 	&#rex-buttons-list {
 		&::before {
-			left: calc(33% + 1px);
+			left: calc(50% + 1px);
 		}
 	}
 

@@ -140,7 +140,8 @@ class Rexbuilder_Public {
 				wp_enqueue_style('custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . $folder_admin . 'css/rex-custom-editor-buttons.css', array(), $ver, 'all');
 
 				wp_enqueue_style('spectrum-style', REXPANSIVE_BUILDER_URL . $folder . 'css/spectrum.css', array(), $ver, 'all');
-				wp_enqueue_style('medium-editor-style', REXPANSIVE_BUILDER_URL . $folder . 'css/medium-editor.css', array(), $ver, 'all');
+				wp_enqueue_style('ckeditor5-style', REXPANSIVE_BUILDER_URL . $folder . 'js/vendor/ckeditor5/dist/ckeditor5-bundle.css', array(), $ver, 'all');
+
 			}
 
 			wp_enqueue_style('photoswipe-skin', REXPANSIVE_BUILDER_URL . $folder . 'Photoswipe/default-skin/default-skin.css', array(), $ver, 'all');
@@ -226,20 +227,15 @@ class Rexbuilder_Public {
 				// TIPPY
 				wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tippy.all.min.js', array( 'jquery' ), null, true );
 
-				// RANGY
-				wp_enqueue_script( 'rangy-core', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-core.js', array( 'jquery' ), null, true );
-				wp_enqueue_script( 'rangy-classapplier', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-classapplier.js', array( 'jquery' ), null, true );
-				wp_enqueue_script( 'rangy-selectionsaverestore', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-selectionsaverestore.js', array( 'jquery' ), null, true );
-				wp_enqueue_script( 'rangy-textrange', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-textrange.js', array( 'jquery' ), null, true );
-
 				// SPECTRUM COLOR PICKER
 				wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . 'public/js/vendor/spectrum.js', array('jquery'), $ver, true);
 
-				// MEDIUM EDITOR
-				wp_enqueue_script('medium-editor', REXPANSIVE_BUILDER_URL . 'public/js/vendor/medium-editor.js', array('jquery'), $ver, true);
-				wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . 'public/js/vendor/medium-editor-toolbar-states.min.js', array('jquery'), $ver, true);
+				// CKEDITOR5
+				wp_enqueue_script('ckeditor5-inspector', 'https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-inspector@4.1.0/build/inspector.min.js', array(), $ver, true);
+				wp_enqueue_script('ckeditor5', REXPANSIVE_BUILDER_URL . 'public/js/vendor/ckeditor5/dist/ckeditor5-bundle.umd.js', array(), $ver, true);
 
 				// Rexbuilder
+				wp_enqueue_script('0-Rexbuilder_Gradient_Utils', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Gradient_Utils.js', array('jquery'), $ver, true);
 				wp_enqueue_script('0-Rexbuilder_Live_Templates', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Templates.js', array('jquery'), $ver, true);
 				wp_enqueue_script('0-Rexbuilder_Live_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Utilities.js', array('jquery'), $ver, true);
 				wp_enqueue_script('0-Rexbuilder_RexEditedData', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_RexEditedData.js', array('jquery'), $ver, true);
@@ -248,7 +244,7 @@ class Rexbuilder_Public {
 				wp_enqueue_script('1-RexColorPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Color_Palette.js', array('jquery'), $ver, true);
 				wp_enqueue_script('1-RexOverlayPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Overlay_Palette.js', array('jquery'), $ver, true);
 
-				wp_enqueue_script('textEditor', REXPANSIVE_BUILDER_URL . 'public/js/live/2-Text_Editor.js', array('jquery'), $ver, true);
+				wp_enqueue_script('ckeditorHandler', REXPANSIVE_BUILDER_URL . 'public/js/live/2-CKEditor_Handler.js', array(), $ver, true);
 
 				wp_enqueue_script('section-js', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Section.js', array('jquery'), $ver, true);
 				wp_enqueue_script('section-editor-js', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Section_Editor.js', array('jquery'), $ver, true);
@@ -691,7 +687,7 @@ class Rexbuilder_Public {
 		if ( file_exists( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ) )
 		{
 		?>
-		<div style="display:none"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
+		<div style="display:none"><svg id="builder-icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
 		<?php
 		}
 	}

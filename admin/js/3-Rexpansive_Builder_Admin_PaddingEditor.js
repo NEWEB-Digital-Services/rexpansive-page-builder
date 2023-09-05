@@ -68,7 +68,6 @@ var Rexpansive_Builder_Admin_PaddingEditor = (function($) {
         block_content_padding_properties.$block_padding_type_pixel.prop('checked', true);
       }
 
-      // $text_editor.addClass('push-down-modal');
       Rexpansive_Builder_Admin_Modals.OpenModal($modal_wrap, true);
     });
 
@@ -120,14 +119,10 @@ var Rexpansive_Builder_Admin_PaddingEditor = (function($) {
 
       $(block_id).attr('data-content-padding', block_padding);
 
-      // $text_editor.removeClass('push-down-modal');
-      // block_content_padding_properties.$modal.hide();
       Rexpansive_Builder_Admin_Modals.CloseModal($modal_wrap, true);
     });
 
     block_content_padding_properties.$cancel_button.on('click', function () {
-      // $text_editor.removeClass('push-down-modal');
-      // block_content_padding_properties.$modal.hide();
       Rexpansive_Builder_Admin_Modals.CloseModal($modal_wrap, true);
     });
   };

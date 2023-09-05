@@ -1242,7 +1242,7 @@ var Rexbuilder_App = (function($) {
       Rexbuilder_Block.init();
       Rexbuilder_Block_Editor.init();
       Rexbuilder_Live_Utilities.addBuilderListeners();
-			TextEditor.init();
+      CKEditor_Handler.init()
       Rexbuilder_Section_Editor.triggerRowDataChange();
     } else {
 			// fixes for front end only
@@ -1255,13 +1255,6 @@ var Rexbuilder_App = (function($) {
         Rexbuilder_FormFixes.init();
       }
     }
-
-		if ( Rexbuilder_Util.editorMode ) {
-			// Fix needed because grids are launched before TextEditor
-			$grids.each(function (index, grid) {
-				TextEditor.launchTextEditors( grid );
-			});
-		}
 
     if ( Rexbuilder_Util.editorMode ) {
 			Rexbuilder_Util.launchEditDomLayout();
@@ -1380,7 +1373,7 @@ var Rexbuilder_App = (function($) {
     // @bugfix on other layouts than desktop with mixed customization definitions
 
     if ( Rexbuilder_Util.editorMode ) {
-      TextEditor.load();
+      CKEditor_Handler.load()
       Rexbuilder_Util_Editor.load();
 			Rexbuilder_Live_Utilities.load();
     } else {

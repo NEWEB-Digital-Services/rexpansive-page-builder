@@ -755,11 +755,11 @@ var Rexbuilder_Block_Editor = (function($) {
      * @since 2.0.0
      */
     Rexbuilder_Util.$document.on('rexlive:SetcustomHTML',function(e) {
-      TextEditor.triggerMEEvent({
-        name:"rexlive:mediumEditor:saveHTMLContent",
+      CKEditor_Handler.handleEvent({
+        name: 'rexlive:ckeditor:saveHTMLContent',
         data: e.settings.data_to_send,
         editable: null
-      });
+      })
     });
 
     /**
@@ -767,16 +767,26 @@ var Rexbuilder_Block_Editor = (function($) {
      * @since 2.0.0
      */
     Rexbuilder_Util.$document.on('rexlive:inlineImageEdit',function(e) {
-      TextEditor.triggerMEEvent({
-        name:"rexlive:mediumEditor:inlineImageEdit",
+      CKEditor_Handler.handleEvent({
+        name: "rexlive:ckeditor:inlineImageEdit",
         data: e.settings.data_to_send,
         editable: null
-      });
+      })
     });
+
+    /**
+     * @since 2.2.0
+     */
+    Rexbuilder_Util.$document.on('rexlive:inlineImageClose', function(e) {
+      CKEditor_Handler.handleEvent({
+        name: 'rexlive:ckeditor:inlineImageClose'
+      })
+    })
 
     /**
      * Triggering the event on MediumEditor when the user selects a media from the Video Library
      * @since 2.0.0
+     * @deprecated 2.2.0
      */
     Rexbuilder_Util.$document.on('rexlive:mediumEditor:inlineVideoEditor',function(e) {
       TextEditor.triggerMEEvent({
@@ -789,6 +799,7 @@ var Rexbuilder_Block_Editor = (function($) {
     /**
      * Triggering the event on MediumEditor when user selects an icon from the icon list
      * @since 2.0.0
+     * @deprecated 2.2.0
      */
     Rexbuilder_Util.$document.on('rexlive:mediumEditor:inlineSVG',function(e) {
       TextEditor.triggerMEEvent({

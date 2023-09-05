@@ -90,10 +90,6 @@ var Rexbuilder_Color_Palette = (function($) {
         case "section":
           Rexbuilder_Section_Editor.openSectionBackgroundGradient( props.$spicker.parents(".rexpansive_section") );
           break;
-        case "text":
-          // to open a new modal, must handle the text differently
-          TextEditor.openTextGradientColor( props.$spicker );
-          break;
         default:
           break;
       }

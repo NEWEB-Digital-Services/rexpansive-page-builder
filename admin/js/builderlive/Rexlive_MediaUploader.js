@@ -55,18 +55,6 @@ var Rexlive_MediaUploader = (function($) {
       states: [new insertImage()]
     });
 
-    // image_multiple_uploader_frame.on('all', function(e) {
-    //   console.log(e);
-    // })
-
-    // prevent attachment size strange selections
-    // image_multiple_uploader_frame.on('selection:toggle', function(e) {
-    //   var attachmentSizeEl = document.querySelector( 'select[name="size"]' );
-    //   if ( attachmentSizeEl ) {
-    //     attachmentSizeEl.value = 'full';
-    //   }
-    // });
-
     //reset selection in popup, when open the popup
     image_multiple_uploader_frame.on("open", function() {
       var selection = image_multiple_uploader_frame
@@ -417,6 +405,10 @@ var Rexlive_MediaUploader = (function($) {
     });
 
     image_uploader_me_frame.on("close", function() {
+      const data = {
+        eventName: "rexlive:inlineImageClose"
+      }
+      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
       setUserSetting('imgsize', 'full');
     });
 

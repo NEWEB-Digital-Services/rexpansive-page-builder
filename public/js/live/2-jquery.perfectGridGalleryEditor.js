@@ -406,6 +406,7 @@
    * @version   2.0.13  prevent double click on blocks with slider
    */
   function handleDbClick(e) {
+
     if ( 'default' !== Rexbuilder_Util.activeLayout ) return false;
 
     if (e.currentTarget.classList.contains('block-has-slider')) return false;
@@ -460,6 +461,13 @@
           Rexbuilder_Live_Utilities.setEndOfContenteditable($textWrap[0]);
         }
       }
+
+      const blockDbClickEvent = new CustomEvent('rexpansive:perfect-grid-gallery:block:dbclick', {
+        detail: {
+          block: e.currentTarget
+        }
+      })
+      document.dispatchEvent(blockDbClickEvent)
       Rexbuilder_Util_Editor.startEditingElement();
     }
   }
@@ -1750,7 +1758,7 @@
         block_type: block_type,
         defaultPadding: {
           data: _plugin_frontend_settings.defaults.block.padding,
-          style: _plugin_frontend_settings.defaults.block.padding.replace(';', ' ').trim()
+          style: _plugin_frontend_settings.defaults.block.padding.replaceAll(';', ' ').trim()
         }
       });
 

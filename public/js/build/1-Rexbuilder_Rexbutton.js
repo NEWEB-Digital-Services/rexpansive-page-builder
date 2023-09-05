@@ -546,9 +546,6 @@ var Rexbuilder_Rexbutton = (function ($) {
 					_createEmptyParagraphAfter($buttonsParagraph);
 				}
 
-				var $paragraphAfter = _getParagraphAfter($buttonsParagraph);
-
-				TextEditor.moveCursorToStart($paragraphAfter);
 				break;
 			case 'inside-row':
 				var ev = jQuery.Event('rexlive:insert_new_text_block');
@@ -604,15 +601,9 @@ var Rexbuilder_Rexbutton = (function ($) {
 
 		_removeModelData($buttonWrapper);
 
-		// Removes medium editor placeholder if there
 		var $textWrap = $buttonWrapper.parents('.text-wrap');
-		if ($textWrap.length != 0) {
-			TextEditor.removePlaceholder($textWrap.eq(0));
-		}
-
 		Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
 		Rexbuilder_Util_Editor.builderEdited(false);
-		TextEditor.focusTextWrap($textWrap);
 	};
 
 	var _addButtonStyle = function ($buttonWrapper) {
@@ -719,6 +710,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 	};
 
 	var _updateButtonLive = function (data) {
+		// console.log(data)
 		switch (data.propertyType) {
 			case 'text':
 				_updateButtonTextRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
@@ -849,6 +841,8 @@ var Rexbuilder_Rexbutton = (function ($) {
 
 		_updateContainerHoverRule(buttonID, 'color', buttonProperties.hover_text);
 
+		// edit rexbutton html
+		// todo: remove
 		var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(
 			'.rex-button-wrapper[data-rex-button-id="' +
 				buttonID +
@@ -857,6 +851,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 				'"]'
 		);
 		var $buttonData = $buttonWrapper.find('.rex-button-data').eq(0);
+		var $buttonContainer = $buttonWrapper.find('.rex-button-container').eq(0)
 
 		$buttonWrapper.find('.rex-button-text').eq(0).text(buttonProperties.text);
 		$buttonWrapper.find('a.rex-button-container').eq(0).attr('href', buttonProperties.link_target);
@@ -864,13 +859,71 @@ var Rexbuilder_Rexbutton = (function ($) {
 		$buttonData.attr('data-link-target', buttonProperties.link_target);
 		$buttonData.attr('data-link-type', buttonProperties.link_type);
 
-		if ($buttonWrapper.hasClass('rex-separate-button')) {
-			_addSeparateAttributes($buttonWrapper, buttonProperties);
-		} else {
-			_removeModelData($buttonWrapper);
-		}
+		// if ($buttonWrapper.hasClass('rex-separate-button')) {
+		// 	_addSeparateAttributes($buttonWrapper, buttonProperties);
+		// } else {
+		// 	_removeModelData($buttonWrapper);
+		// }
+
+		buttonProperties.separate = $buttonWrapper.hasClass('rex-separate-button')
+		buttonProperties.popup_video = $buttonContainer.hasClass('popup-video-button')
+
+		_setRexbuttonAttributesOnEditor(buttonProperties)
 	};
 
+	/**
+	 * @param {Object} buttonProperties 
+	 * @since 2.2.0
+	 */
+	function _setRexbuttonAttributesOnEditor(buttonProperties) {
+		let eventData = {
+			id: buttonProperties.buttonTarget.button_id,
+			target: buttonProperties.link_type,
+			number: buttonProperties.buttonTarget.button_number,
+			href: buttonProperties.link_target,
+			separate: buttonProperties.separate,
+			label: buttonProperties.text,
+			popupVideo: false,
+			class: buttonProperties.classes
+		}
+
+		if (buttonProperties.separate) {
+			eventData = {
+				...eventData,
+				size: buttonProperties.font_size,
+				color: buttonProperties.text_color,
+				hoverColor: buttonProperties.hover_text,
+				backgroundColor: buttonProperties.background_color,
+				hoverBackgroundColor: buttonProperties.hover_color,
+				borderColor: buttonProperties.border_color,
+				hoverBorderColor: buttonProperties.hover_border,
+				borderWidth: buttonProperties.border_width,
+				borderRadius: buttonProperties.border_radius,
+				width: buttonProperties.button_width,
+				height: buttonProperties.button_height,
+				marginTop: buttonProperties.margin_top,
+				marginRight: buttonProperties.margin_right,
+				marginBottom: buttonProperties.margin_bottom,
+				marginLeft: buttonProperties.margin_left,
+				paddingTop: buttonProperties.padding_top,
+				paddingRight: buttonProperties.padding_right,
+				paddingBottom: buttonProperties.padding_bottom,
+				paddingLeft: buttonProperties.padding_left,
+				name: buttonProperties.buttonTarget.button_name
+			}
+		}
+
+		CKEditor_Handler.handleEvent({
+			name: 'rexlive:ckeditor:setAttributesRexbutton',
+			data: eventData,
+			editable: null
+		})
+	}
+
+	/**
+	 * @param {string} buttonID 
+	 * @deprecated function not used
+	 */
 	var _removeButtonStyle = function (buttonID) {
 		_removeButtonContainerRule(buttonID);
 		_removeButtonBackgroundRule(buttonID);
@@ -921,7 +974,13 @@ var Rexbuilder_Rexbutton = (function ($) {
 			}
 		}
 
-		_addSeparateAttributes($buttonWrapper, buttonData);
+		buttonData.separate = true
+		buttonData.buttonTarget.button_id = newID
+		buttonData.buttonTarget.button_number = 1
+		buttonData.popup_video = false
+		_setRexbuttonAttributesOnEditor(buttonData)
+
+		// _addSeparateAttributes($buttonWrapper, buttonData);
 		_addButtonStyle($buttonWrapper);
 	};
 

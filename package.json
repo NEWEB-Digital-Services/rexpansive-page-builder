@@ -12,7 +12,9 @@
 		"deploy:win": "gulp deployWin --production",
 		"predeploy:mac": "npm run build",
 		"deploy:mac": "gulp deployMac --production",
-		"start-new-version": "node ./scripts/start-new-version.js"
+		"start-new-version": "node ./scripts/start-new-version.js",
+		"predev": "cd public/js/vendor/ckeditor5 && yarn build",
+		"prebuild": "cd public/js/vendor/ckeditor5 && yarn build"
 	},
 	"devDependencies": {
 		"eslint-config-google": "^0.9.1",
@@ -25,7 +27,7 @@
 		"gulp-mode": "^1.0.2",
 		"gulp-plumber": "^1.2.0",
 		"gulp-rename": "^1.2.2",
-		"gulp-sass": "^4.0.2",
+		"gulp-sass": "^5.1.0",
 		"gulp-size": "^2.1.0",
 		"gulp-sourcemaps": "^2.6.5",
 		"gulp-svg-sprite": "^1.4.0",
@@ -34,6 +36,7 @@
 		"gulp-util": "^3.0.8",
 		"gulp-watch": "^5.0.1",
 		"gulp-zip": "^3.2.0",
+		"sass": "^1.66.1",
 		"typescript": "^4.0.2",
 		"uglify-save-license": "^0.4.1",
 		"xml2js": "^0.4.23",
