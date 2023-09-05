@@ -2860,7 +2860,6 @@ var CKEditor_Handler = (function ($) {
 	function handleSaveHTMLContent(data) {
 		if (ckeditorStateMachine.isEditorDeactive()) return
 		ckeditorStateMachine.editorInstance.data.set(data.customHTML, {batchType: {isUndoable: true}})
-		ckeditorStateMachine.editorInstance.focus()
 		triggerEditorContentChanged()
 	}
 
@@ -2871,12 +2870,10 @@ var CKEditor_Handler = (function ($) {
 	 */
 	function handleSetTextGradient(data) {
 		if (ckeditorStateMachine.isEditorDeactive()) return
-		ckeditorStateMachine.editorInstance.focus()
 		ckeditorStateMachine.editorInstance.model.change(() => {
 			ckeditorStateMachine.editorInstance.execute('textgradient', {
 				gradient: data.value
 			})
-			// ckeditorStateMachine.toTextGradientClose()
 		})
 	}
 
@@ -2907,22 +2904,17 @@ var CKEditor_Handler = (function ($) {
 			case 'rexlive:ckeditor:saveHTMLContent':
 				handleSaveHTMLContent(event.data)
 				break
-			case 'rexlive:ckeditor:closeHTMLEditorModal':
-				ckeditorStateMachine.toHTMLEditClose()
-				break
 			case 'rexlive:ckeditor:setTextGradient':
 				handleSetTextGradient(event.data)
 				break
-			case 'rexlive:ckeditor:closeTextGradientModal':
-				ckeditorStateMachine.toTextGradientClose()
+			case 'rexlive:ckeditor:setAttributesRexbutton':
+				handleSetAttributesRexbutton(event.data)
 				break
 			case 'rexlive:ckeditor:closeModal':
 				if (parseModalID(event.data.modal_id)) {
+					ckeditorStateMachine.editorInstance.focus()
 					ckeditorStateMachine.toActiveState()
 				}
-				break
-			case 'rexlive:ckeditor:setAttributesRexbutton':
-				handleSetAttributesRexbutton(event.data)
 				break
 			default:
 				break;

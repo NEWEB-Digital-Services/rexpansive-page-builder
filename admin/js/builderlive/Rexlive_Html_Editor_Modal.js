@@ -29,12 +29,6 @@ var HtmlEditor_Modal = (function($) {
   var _closeModal = function() {
     Rexlive_Modals_Utils.closeModal( html_editor_modal_properties.$modal_wrap );
     resetData = null;
-    // const closeModalEventData = {
-    //   eventName: "rexlive:htmlEditorModal:close",
-    //   data_to_send: {}
-    // };
-
-    // Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(closeModalEventData);
   };
 
   var _resetModal = function() {

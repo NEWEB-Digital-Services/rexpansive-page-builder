@@ -18,11 +18,6 @@ var Rexlive_Text_Gradient = (function($) {
 
   var _closeBlockOptionsModal = function() {
     modal_props.old_data = null
-    const closeModalEventData = {
-      eventName: 'rexlive:textGradientModal:close',
-      data_to_send: {}
-    }
-    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(closeModalEventData);
 
     Rexlive_Modals_Utils.closeModal(
       modal_props.$self.parent(".rex-modal-wrap")

@@ -763,18 +763,6 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     /**
-     * Triggering the event on ckeditor when the user close the HTML editor window without saving
-     * @since 2.2.0
-     */
-    Rexbuilder_Util.$document.on('rexlive:htmlEditorModal:close',function(e) {
-      CKEditor_Handler.handleEvent({
-        name: 'rexlive:ckeditor:closeHTMLEditorModal',
-        data: e.settings.data_to_send,
-        editable: null
-      })
-    });
-
-    /**
      * Triggering the event on MediumEditor when the user selects a media from the Media Library
      * @since 2.0.0
      */
