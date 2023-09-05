@@ -2593,6 +2593,11 @@ var CKEditor_Handler = (function ($) {
 						{ model: 'heading6', view: 'h6', title: 'H6', class: 'ck-heading_heading6' }
 					]
 				},
+				fontColor: {
+					colorPicker: {
+						format: 'hex',
+					}
+				},
 				htmlSupport: {
 					allow: [
 						{
