@@ -2,6 +2,7 @@
  * Object that handles the live text editor inside the blocks
  *
  * @since 2.0.0
+ * @deprecated 2.2.0
  */
 var TextEditor = (function ($) {
 	('use strict');
@@ -879,7 +880,6 @@ var TextEditor = (function ($) {
 			var index = this.base.exportSelection().editableElementIndex;
 
 			var meContents = this.base.serialize();
-			console.log(meContents)
 			var htmlSelected = meContents['element-' + index].value;
 			htmlSelected = htmlSelected
 				.replace('<span class="text-editor-span-fix" style="display: none;"></span>', '')
@@ -3380,6 +3380,7 @@ var TextEditor = (function ($) {
 			data: {},
 			editable: textWrap
 		});
+		console.log('[TextEditor/focusTextWrap]')
 
 		textWrap.focus();
 	}

@@ -264,9 +264,6 @@ var Rex_Save_Listeners = (function($) {
               },
               success: function(response) {
                 if (response.success) {
-                  // console.log(
-                  //   "layout " + response.data.layoutName + " updated!"
-                  // );
                 }
               },
               error: function(response) {}
@@ -433,10 +430,6 @@ var Rex_Save_Listeners = (function($) {
             },
             success: function(response) {
               if (response.success) {
-                // console.log(
-                //   "layout " + response.data.layoutName + " updated!"
-                // );
-                // console.log(newCustomization.sections);
               }
             },
             error: function(response) {}
@@ -634,9 +627,6 @@ var Rex_Save_Listeners = (function($) {
               },
               success: function(response) {
                 if (response.success) {
-                  // console.log(
-                  //   "layout " + response.data.layoutName + " updated!"
-                  // );
                 }
               },
               error: function(response) {}
@@ -933,6 +923,22 @@ var Rex_Save_Listeners = (function($) {
   };
 
   /**
+   * Get the content of a block: plain innerHTML if the text editor is not active
+   * either getting the editor data
+   * 
+   * @param {Element} el 
+   * @return string
+   * @since 2.2.0
+   */
+  function getBlockContent(el) {
+    if (el.classList.contains('ck')) {
+      return CKEditor_Handler.getActiveEditorContent()
+    } else {
+      return el.innerHTML.trim()
+    }
+  }
+
+  /**
    * Retrieve all the properties of a block, in JSON or SHORTCODE format
    * @param {jQuery Object} $elem block element to start
    * @param {string} mode customLayout|shortcode
@@ -1129,12 +1135,12 @@ var Rex_Save_Listeners = (function($) {
 						savingBlock.getElementsByTagName('form').length > 0 ||
 						savingBlock.getElementsByTagName('hr').length > 0
 					) {
-						content = savingBlock.innerHTML.trim();
+            content = getBlockContent(savingBlock)
 					} else {
 						content = '';
 					}
 				} else {
-					content = savingBlock.innerHTML.trim();
+            content = getBlockContent(savingBlock)
 
 					// Why are we doing this after the retrieving of the HTML?
 					Array.prototype.slice.call(savingBlock.getElementsByClassName('rex-button-data')).forEach(function (el) {

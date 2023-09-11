@@ -3,7 +3,7 @@ const { series, parallel } = require('gulp');
 const exec = require('child_process').exec;
 const clean = require('gulp-clean');
 const zip = require('gulp-zip');
-const sass = require('gulp-sass');
+const sass = require('gulp-sass')(require('sass'));
 const plumber = require('gulp-plumber');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
@@ -42,7 +42,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 const sassConfig = {
 	// Default: nested
 	// Values: nested, expanded, compact, compressed
-	outputStyle: production ? 'compressed' : 'nested'
+	outputStyle: production ? 'compressed' : 'expanded'
 };
 
 /** LIVE BUILDER */
@@ -248,20 +248,16 @@ function watchAdminScript(cb) {
 // LIVE JS
 var builderlive_public_editor = [
 	'public/js/vendor/tippy.all.min.js',
-	'public/js/vendor/rangy-1.3.0/rangy-core.js',
-	'public/js/vendor/rangy-1.3.0/rangy-classapplier.js',
-	'public/js/vendor/rangy-1.3.0/rangy-selectionsaverestore.js',
-	'public/js/vendor/rangy-1.3.0/rangy-textrange.js',
 	'public/js/vendor/spectrum.js',
-	'public/js/vendor/medium-editor.js',
-	'public/js/vendor/medium-editor-toolbar-states.min.js',
+	'public/js/vendor/ckeditor5/dist/ckeditor5-bundle.umd.js',
 	'public/js/live/0-Rexbuilder_Array_Utilities.js',
+	'public/js/live/0-Rexbuilder_Gradient_Utils.js',
 	'public/js/live/0-Rexbuilder_Live_Templates.js',
 	'public/js/live/0-Rexbuilder_Live_Utilities.js',
 	'public/js/live/0-Rexbuilder_RexEditedData.js',
 	'public/js/live/1-Rexbuilder_Color_Palette.js',
 	'public/js/live/1-Rexbuilder_Overlay_Palette.js',
-	'public/js/live/2-Text_Editor.js',
+	'public/js/live/2-CKEditor_Handler.js',
 	'public/js/live/1-Rexbuilder_Section.js',
 	'public/js/live/1-Rexbuilder_Section_Editor.js',
 	'public/js/live/1-Rexbuilder_Block.js',
@@ -348,6 +344,7 @@ var builderlive_public = [
 	'public/js/build/2-RexSlider.js',
 	'public/js/vendor/2-jquery.textFill.js',
 	'public/js/build/8-VimeoVideo.js',
+	'public/js/build/5-Rexbuilder_FormFixes.js',
 	'public/js/vendor/4-jquery.rexScrolled.js',
 	'public/js/vendor/jquery.rexAccordion.js',
 	// 'public/js/vendor/6-jquery.rexIndicator.js',
@@ -444,7 +441,8 @@ var effects_js_src = [
 	'public/js/vendor/jquery.rexAccordion.js',
 	'public/js/vendor/particle-swarm.js',
  	'public/js/vendor/rex-indicator.js',
-	'public/js/build/fast-load.js'
+	'public/js/build/fast-load.js',
+	'public/js/vendor/4-jquery.rexScrolled.js'
 ];
 
 function minifyExternal(cb) {
@@ -494,7 +492,7 @@ exports.build = series(
 );
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
-var live_zip_name = 'Premium-211-Rexpansive-Builder.zip';
+var live_zip_name = 'Premium-220-Rexpansive-Builder.zip';
 var live_folder_name = 'rexpansive-page-builder';
 
 var live_file_map = [
@@ -527,8 +525,7 @@ var live_file_map = [
 	'public/css/flickity.min.css',
 	'public/css/gridstack.css',
 	'public/css/jquery-ui.min.css',
-	'public/css/medium-editor.css',
-	// 'public/css/medium-editor-insert-plugin-frontend.css',
+	// 'public/js/vendor/ckeditor5/dist/ckeditor5-bundle.css',
 	'public/css/preloader.gif',
 	'public/css/public.css',
 	'public/css/public-editor.css',
@@ -541,7 +538,12 @@ var live_file_map = [
 	'public/jquery.mb.YTPlayer/**/*',
 	'public/js/build/**/*',
 	'public/js/live/**/*',
-	'public/js/vendor/**/*',
+	'public/js/vendor/ckeditor5/dist/**/*',
+	'public/js/vendor/ckeditor5/lib/**/*',
+	'public/js/vendor/ckeditor5/package.json',
+	'public/js/vendor/ckeditor5/vite.config.js',
+	'public/js/vendor/ckeditor5/yarn.lock',
+	'public/js/vendor/*',
 	'public/js/builderlive-editor.js',
 	'public/js/builderlive-public.js',
 	'public/js/rexbuilder-public.js',
@@ -611,5 +613,5 @@ exports.standardBuild = series(createTempLiveFolder, standardZip, removeTempLive
 exports.macBuild = series(createTempLiveFolder, macZip, removeTempLiveFolder);
 
 // Deploy tasks
-exports.deployWin = series(exports.build, exports.standardBuild);
-exports.deployMac = series(exports.build, exports.macBuild);
+exports.deployWin = exports.standardBuild
+exports.deployMac = exports.macBuild;

@@ -231,6 +231,7 @@ class Rexbuilder_Section {
 
 		$row_has_accordion = strpos($content, 'RexAccordion');
 
+		$section_is_accordion = strpos( $custom_classes, 'rex-accordion' );
 
 		$section_classes_arr = array();
 		if ($empty_section) {
@@ -367,13 +368,13 @@ class Rexbuilder_Section {
 		echo '>';
 
 		if ('boxed' == $dimension) {
-			echo '<div class="rex-row__dimension center-disposition"';
+			echo '<div class="rex-row__dimension center-disposition'  . ( false !== $section_is_accordion ? ' rex-accordion--content' : '' ) . '"';
 			if ('' != $section_width) {
 				echo ' style="max-width:' . $section_width . ';"';
 			}
 			echo '>';
 		} else {
-			echo '<div class="rex-row__dimension full-disposition">';
+			echo '<div class="rex-row__dimension full-disposition'  . ( false !== $section_is_accordion ? ' rex-accordion--content' : '' ) . '">';
 		}
 
 		do_action('rexpansive_section_before_grid', array(&$parsed_atts));
@@ -384,6 +385,10 @@ class Rexbuilder_Section {
 		echo '</div>';
 		echo '</div>';
 		echo '</div>';
+
+		if( false !== $section_is_accordion ) {
+			echo '<div class="rex-accordion--toggle rexpansive-section-accordion__toggle"><i class="rex-svg-icons"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#plus"></use></svg></i></div>';
+		}
 
 		echo '</section>';
 		return ob_get_clean();

@@ -124,7 +124,7 @@ var Rexlive_Block_Accordion = (function($) {
     if( data.blockData.accordion.is_gallery ) {
       var img_list = _getImagesListFromHTML(data.blockData.accordion.content);
 
-      // @todo use wp.media fetch to get the current media info
+      // todo: use wp.media fetch to get the current media info
       // by id
       for(var z=0; z < img_list.length; z++) {
         block_accordion_properties.$accordion_preview_gallery.append( tmpl("tmpl-accordion-gallery-item", {
@@ -135,15 +135,6 @@ var Rexlive_Block_Accordion = (function($) {
         }));
       }
 
-      // fetching synch image data by ids
-      /*wp.media.attachment(img_list).fetch({
-        success: function(foo) {
-          console.log(foo);
-        },
-        error: function(err) {
-          console.log(err);
-        }
-      });*/
     } else {
       var tinyMCE_contentEditor = tinyMCE.get('rex-accordion-content-val');
       if (typeof tinyMCE_contentEditor === "undefined" || tinyMCE_contentEditor === null) { // text editor

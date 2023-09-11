@@ -335,11 +335,68 @@ var Rexlive_Gradient_Utils = (function($) {
     return markup;
   }
 
+  /**
+   * Explode gradient string to return single values describing the gradient
+   * @param {string} gradient gradient value
+   * 
+   * example: linear-gradient(right, rgba(26,48,212,0.95) 0%, rgb(212,102,26) 100%)
+   * example: linear-gradient(left, rgba(197, 244, 9, 228) 0%, rgba(9, 81, 244, 0.741) 51.82072829131653%)
+   * example: radial-gradient(135deg, rgba(197,244,9,228) 0%, rgba(9,81,244,0.741) 45.938375350140056%, rgb(244, 76, 9) 98.31932773109244%)
+   * example: linear-gradient(315deg, rgba(26,48,212,0.95) 0%, rgb(192,212,26) 100%)
+   * 
+   * @since 2.2.0
+   */
+  function getGradientValues(gradient) {
+    const response = {
+      gradientType: '',
+      inputPos: '',
+      handlers: [],
+      inputSize: ''
+    }
+
+    if (!gradient) return response
+
+    const gradientRegex = /^(linear|radial)-gradient\(([a-zA-Z0-9]+),\s*([a-zA-Z0-9()\s\%\,\.]+)\)$/gm
+    const handlersRegex = /(rgba{0,1}\([0-9,\.\s]+\))\s*([0-9\.%]+)/gm;
+
+    let gradientMatch
+    let handlersString = ''
+    while ((gradientMatch = gradientRegex.exec(gradient)) !== null) {
+      // This is necessary to avoid infinite loops with zero-width matches
+      if (gradientMatch.index === gradientRegex.lastIndex) {
+        gradientRegex.lastIndex++;
+      }
+
+      response.gradientType = gradientMatch[1]
+      response.inputPos = gradientMatch[2]
+      handlersString = gradientMatch[3]
+    }
+
+    let handlersMatch;
+
+    while ((handlersMatch = handlersRegex.exec(handlersString)) !== null) {
+      // This is necessary to avoid infinite loops with zero-width matches
+      if (handlersMatch.index === handlersRegex.lastIndex) {
+        handlersRegex.lastIndex++;
+      }
+
+      const handler = {
+        color: handlersMatch[1],
+        position: handlersMatch[2].replace('%', '')
+      }
+
+      response.handlers.push(handler)
+    }
+
+    return response
+  }
+
   var _textGradientRuleset = function() {
     return "-webkit-background-clip:text;-webkit-text-fill-color:transparent;";
   }
 
   return {
     getMarkup: getMarkup,
+    getGradientValues: getGradientValues
   };
 })(jQuery);

@@ -215,6 +215,9 @@ class Rexbuilder_Utilities {
 			case 'anime':
 				wp_enqueue_script('animejs', REXPANSIVE_BUILDER_URL . 'public/js/vendor/anime.min.js', array(), REXCLASSIC_VERSION, true);
 				break;
+			case 'rex-scrolled':
+				wp_enqueue_script('rex-scrolled', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrolled.min.js', array(), REXCLASSIC_VERSION, true);
+				break;
 			default:
 				break;
 		}

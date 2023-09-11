@@ -38,7 +38,7 @@ var RexSlider = (function ($) {
 
     var auto_player = $sliderWrap.attr('data-rex-slider-animation');
     if ('undefined' != typeof auto_player && 'true' == auto_player.toString()) {
-      settings.autoPlay = true;
+      settings.autoPlay = _plugin_frontend_settings.slider.autoPlay;
     } else {
       settings.autoPlay = false;
     }
@@ -90,7 +90,7 @@ var RexSlider = (function ($) {
     // }
 
     // var hasCustomAutoplay = $parentBlock.hasClass('custom-autoplay');    // custom autoplay becomes the default
-    var hasCustomAutoplay = ( settings.autoPlay ? true : false );
+    var hasCustomAutoplay = ( false !== settings.autoPlay ? true : false );
 
     if ( settings.prevNextButtons && hasCustomAutoplay ) {
       settings.pauseAutoPlayOnHover = false;

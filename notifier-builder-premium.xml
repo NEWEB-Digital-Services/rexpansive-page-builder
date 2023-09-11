@@ -1,8 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <notifier>
-	<latest>2.1.0</latest>
+	<latest>2.2.0</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.2.0</strong> - September</h4>
+			<p><strong>Updated</strong>: Sass version</p>
+			<p><strong>Updated</strong>: Deprecate MediumEditor and use CKEditor5</p>
+			<p><strong>Updated</strong>: Remove default margin on paragraph inside a RexSlider</p>
+			<p><strong>Updated</strong>: Style success and error response area for WPCF7 forms</p>
+			<p><strong>Added</strong>: Allow display blocks in a masonry way inside a fixed section, removing empty spaces</p>
+			<p><strong>Added</strong>: Classes to set full image background on block positioning</p>
+			<p><strong>Fixed</strong>: Avoid load useless content on pages withoud builder active</p>
+			<p><strong>Fixed</strong>: Correct section height calculation after a WPCF7 form submission</p>
+			<p><strong>Fixed</strong>: Block only image class</p>
 			<h4><strong>v2.1.1</strong> - January 18, 2023</h4>
 			<p><strong>Updated</strong>: Update license version to GNU GPLv3</p>
 			<p><strong>Updated</strong>: Setting min-height instead of height for sections</p>

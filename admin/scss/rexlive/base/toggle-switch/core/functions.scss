@@ -1,12 +1,14 @@
 /* Functions
  */
 
+@use "sass:math";
+
 @function strip-unit($num) {
-  @return $num / ($num * 0 + 1);
+  @return math.div($num, $num * 0 + 1);
 }
 
 @function convert-to-em($value)  {
-  $value: strip-unit($value) / strip-unit($em-base) * 1em;
+  $value: math.div(strip-unit($value), strip-unit($em-base) * 1em);
   @if ($value == 0em) { $value: 0; }
   @return $value;
 }
@@ -22,7 +24,7 @@
 }
 
 @function convert-to-rem($value)  {
-  $value: strip-unit($value) / strip-unit($em-base) * 1rem;
+  $value: math.div(strip-unit($value), strip-unit($em-base)) * 1rem;
   @if ($value == 0rem) { $value: 0; }
   @return $value;
 }

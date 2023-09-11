@@ -207,6 +207,11 @@ void (function (window, factory) {
 	/* ===== RexGrid Plugin constructor ===== */
 	function RexGrid() {
 		/**
+		 * Setup class constants
+		 * @since 2.2.0
+		 */
+		this.REX_BLOCK_FORCE_MASONRY_CLASSNAME = 'rex-block--force-masonry'
+		/**
 		 * Grid DOM Element.
 		 * It's identified by the class .perfect-grid-gallery
 		 * because we get it from Rexpansive builder.
@@ -284,7 +289,8 @@ void (function (window, factory) {
 			setDesktopPadding: false,
 			editedFromBackend: false,
 			filterRule: false,
-			filterCoords: []
+			filterCoords: [],
+			forceMasonryPositions: false
 		};
 
 		_init.call(this);
@@ -311,6 +317,7 @@ void (function (window, factory) {
 
 		// Finding the blocks in the DOM
 		_getGridBlocks.call(this);
+		_checkForceMasonryPositions.call(this)
 
 		// check full height
 		_checkFullHeight.call(this);
@@ -339,6 +346,26 @@ void (function (window, factory) {
 			this.properties.singleHeight = this.properties.singleWidth;
 		} else if ('masonry' === this.properties.layout) {
 			this.properties.singleHeight = 5;
+		}
+
+	}
+
+	/**
+	 * Check if there is a block with force masonry option, to make sure that blocks fit correctly empty spaces
+	 * 
+	 * @return {void}
+	 * @since 2.2.0
+	 */
+	function _checkForceMasonryPositions() {
+		this.properties.forceMasonryPositions = false
+		// TODO: could add this check with a class on the grid
+		if ('masonry' === this.properties.layout) return
+		for (let i = 0; i < this.gridBlocksTotal; i++) {
+			const blockCustomClasses = this.gridBlocks[i].blockData.getAttribute('data-block_custom_class')
+			if (-1 !== blockCustomClasses.indexOf(this.REX_BLOCK_FORCE_MASONRY_CLASSNAME)) {
+				this.properties.forceMasonryPositions = true
+				break
+			}
 		}
 	}
 
@@ -768,6 +795,9 @@ void (function (window, factory) {
 			blockHasVimeo = -1 !== itemContent.className.indexOf('vimeo-player');
 		}
 
+		const blockCustomClasses = blockData.getAttribute('data-block_custom_class')
+		const isBlockMasonryForced = -1 !== blockCustomClasses.indexOf(this.REX_BLOCK_FORCE_MASONRY_CLASSNAME)
+
 		// Prevents slider growing in height when resizing
 		if (blockHasSlider) {
 			return null;
@@ -840,7 +870,7 @@ void (function (window, factory) {
 			newH = Math.max(startH, backgroundHeight, videoHeight, defaultHeight, currentBlockTextHeight, sliderHeight);
 		}
 
-		var resizeNeeded = true;
+		let resizeNeeded = true;
 		var goToStartH = false;
 
 		// check if resize really needed
@@ -874,6 +904,10 @@ void (function (window, factory) {
 
 		if (goToStartH) {
 			return gridBlockObj.start_h;
+		}
+
+		if (isBlockMasonryForced) {
+			resizeNeeded = true
 		}
 
 		if (!resizeNeeded) {
@@ -1121,8 +1155,8 @@ void (function (window, factory) {
 	 * @since		1.0.0
 	 */
 	RexGrid.prototype.fixAllBlockPositions = function () {
-		switch (this.properties.layout) {
-			case 'masonry':
+		switch (true) {
+			case ('masonry' === this.properties.layout || this.properties.forceMasonryPositions):
 				// If layout is masonry we set all the y and x to 0,
 				// then the normal collision detection function is called
 				_fixAllBlockPositionsMasonry.call(this);
@@ -1210,6 +1244,7 @@ void (function (window, factory) {
 
 		// on change layout, get the blocks
 		_getGridBlocks.call(this)
+		_checkForceMasonryPositions.call(this)
 
 		// remove block properties from eventually no flow blocks
 		_resetNoFlowBlocks.call(this)

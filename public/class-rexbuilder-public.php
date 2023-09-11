@@ -75,6 +75,10 @@ class Rexbuilder_Public {
 	 * @since 2.0.0
 	 */
 	public function rexlive_body_class( $classes ) {
+		if (!$this->builder_active_on_this_post_type()) return $classes;
+
+		$classes[] = 'rexbuilder-editor';
+
 		if( Rexbuilder_Utilities::isBuilderLive() ) {
 			// live builder main body class
 			$classes[] = 'rexbuilder-live-active';
@@ -136,7 +140,8 @@ class Rexbuilder_Public {
 				wp_enqueue_style('custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . $folder_admin . 'css/rex-custom-editor-buttons.css', array(), $ver, 'all');
 
 				wp_enqueue_style('spectrum-style', REXPANSIVE_BUILDER_URL . $folder . 'css/spectrum.css', array(), $ver, 'all');
-				wp_enqueue_style('medium-editor-style', REXPANSIVE_BUILDER_URL . $folder . 'css/medium-editor.css', array(), $ver, 'all');
+				wp_enqueue_style('ckeditor5-style', REXPANSIVE_BUILDER_URL . $folder . 'js/vendor/ckeditor5/dist/ckeditor5-bundle.css', array(), $ver, 'all');
+
 			}
 
 			wp_enqueue_style('photoswipe-skin', REXPANSIVE_BUILDER_URL . $folder . 'Photoswipe/default-skin/default-skin.css', array(), $ver, 'all');
@@ -222,20 +227,15 @@ class Rexbuilder_Public {
 				// TIPPY
 				wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tippy.all.min.js', array( 'jquery' ), null, true );
 
-				// RANGY
-				wp_enqueue_script( 'rangy-core', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-core.js', array( 'jquery' ), null, true );
-				wp_enqueue_script( 'rangy-classapplier', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-classapplier.js', array( 'jquery' ), null, true );
-				wp_enqueue_script( 'rangy-selectionsaverestore', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-selectionsaverestore.js', array( 'jquery' ), null, true );
-				wp_enqueue_script( 'rangy-textrange', REXPANSIVE_BUILDER_URL . 'public/js/vendor/rangy-1.3.0/uncompressed/rangy-textrange.js', array( 'jquery' ), null, true );
-
 				// SPECTRUM COLOR PICKER
 				wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . 'public/js/vendor/spectrum.js', array('jquery'), $ver, true);
 
-				// MEDIUM EDITOR
-				wp_enqueue_script('medium-editor', REXPANSIVE_BUILDER_URL . 'public/js/vendor/medium-editor.js', array('jquery'), $ver, true);
-				wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . 'public/js/vendor/medium-editor-toolbar-states.min.js', array('jquery'), $ver, true);
+				// CKEDITOR5
+				wp_enqueue_script('ckeditor5-inspector', 'https://cdn.jsdelivr.net/npm/@ckeditor/ckeditor5-inspector@4.1.0/build/inspector.min.js', array(), $ver, true);
+				wp_enqueue_script('ckeditor5', REXPANSIVE_BUILDER_URL . 'public/js/vendor/ckeditor5/dist/ckeditor5-bundle.umd.js', array(), $ver, true);
 
 				// Rexbuilder
+				wp_enqueue_script('0-Rexbuilder_Gradient_Utils', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Gradient_Utils.js', array('jquery'), $ver, true);
 				wp_enqueue_script('0-Rexbuilder_Live_Templates', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Templates.js', array('jquery'), $ver, true);
 				wp_enqueue_script('0-Rexbuilder_Live_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Live_Utilities.js', array('jquery'), $ver, true);
 				wp_enqueue_script('0-Rexbuilder_RexEditedData', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_RexEditedData.js', array('jquery'), $ver, true);
@@ -244,7 +244,7 @@ class Rexbuilder_Public {
 				wp_enqueue_script('1-RexColorPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Color_Palette.js', array('jquery'), $ver, true);
 				wp_enqueue_script('1-RexOverlayPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Overlay_Palette.js', array('jquery'), $ver, true);
 
-				wp_enqueue_script('textEditor', REXPANSIVE_BUILDER_URL . 'public/js/live/2-Text_Editor.js', array('jquery'), $ver, true);
+				wp_enqueue_script('ckeditorHandler', REXPANSIVE_BUILDER_URL . 'public/js/live/2-CKEditor_Handler.js', array(), $ver, true);
 
 				wp_enqueue_script('section-js', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Section.js', array('jquery'), $ver, true);
 				wp_enqueue_script('section-editor-js', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Section_Editor.js', array('jquery'), $ver, true);
@@ -561,7 +561,8 @@ class Rexbuilder_Public {
 				'collapse_dimension' => 768,
 			),
 			'slider' => array(
-				'arrowShape' => 'M 71.080084,1.034481 C 71.763642,0.34482599 72.61809,-1.250001e-8 73.557983,-1.250001e-8 c 0.939893,0 1.794341,0.34482600250001 2.477899,1.03448101250001 1.367117,1.37931 1.367117,3.620689 0,5 L 32.459031,49.999998 76.035882,93.965515 c 1.367117,1.379311 1.367117,3.62069 0,5 -1.367117,1.379315 -3.588681,1.379315 -4.955798,0 L 25.025333,52.499998 c -1.367117,-1.37931 -1.367117,-3.62069 0,-5 l 46.054751,-46.465517 0,0 z'
+				'arrowShape' => 'M 71.080084,1.034481 C 71.763642,0.34482599 72.61809,-1.250001e-8 73.557983,-1.250001e-8 c 0.939893,0 1.794341,0.34482600250001 2.477899,1.03448101250001 1.367117,1.37931 1.367117,3.620689 0,5 L 32.459031,49.999998 76.035882,93.965515 c 1.367117,1.379311 1.367117,3.62069 0,5 -1.367117,1.379315 -3.588681,1.379315 -4.955798,0 L 25.025333,52.499998 c -1.367117,-1.37931 -1.367117,-3.62069 0,-5 l 46.054751,-46.465517 0,0 z',
+				'autoPlay' => true
 			),
 			'old_builder' => Rexbuilder_Utilities::postSavedFromBackend()
 		);
@@ -686,7 +687,7 @@ class Rexbuilder_Public {
 		if ( file_exists( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ) )
 		{
 		?>
-		<div style="display:none"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
+		<div style="display:none"><svg id="builder-icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
 		<?php
 		}
 	}
@@ -1681,6 +1682,8 @@ class Rexbuilder_Public {
 	 * @since  2.0.9
 	 */
 	public function rexbuilder_wp_footer() {
+		if ( !$this->builder_active_on_this_post_type() ) return;
+
 		$this->print_photoswipe_template();
 		$this->print_vertical_dots();
 		$this->print_post_id();
@@ -1697,9 +1700,7 @@ class Rexbuilder_Public {
 	 */
 	public function print_photoswipe_template() {
 		global $post;
-		if ( $this->builder_active_on_this_post_type() ) {
-			include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-photoswipe-template.php');
-		}
+		include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-photoswipe-template.php');
 	}
 
 	/**
@@ -1728,15 +1729,14 @@ class Rexbuilder_Public {
 			$buttonsIDs = get_post_meta($post->ID, '_rexbuilder_buttons_ids_in_page', true);
 			$buttonsInPage = json_decode($buttonsIDs, true);
 			$style = "";
-			if ( null !== $buttonsInPage )
-			{
-				foreach ( $buttonsInPage as $index => $id_button ) {
-					$buttonStyle = get_option('_rex_button_'.$id_button.'_css', "");
+			if (null !== $buttonsInPage) {
+				foreach ($buttonsInPage as $index => $id_button) {
+					$buttonStyle = get_option('_rex_button_' . $id_button . '_css', "");
 					$buttonStyle = stripslashes($buttonStyle);
 					$style .= $buttonStyle;
 				}
 			}
-			if($style != ''){
+			if ($style != '') {
 				wp_add_inline_style('rexpansive-builder-rexbutton-style', $style);
 			}
 		}
@@ -1753,8 +1753,6 @@ class Rexbuilder_Public {
 		if (!$dots_active) return;
 
 		global $post;
-
-		if ( ! $this->builder_active_on_this_post_type() ) return;
 
 		$nav = get_post_meta(get_the_ID(), '_rex_navigation_type', true);
 
@@ -1837,8 +1835,6 @@ class Rexbuilder_Public {
 	 */
 	public function print_popup_content_template() {
 		global $post;
-
-		if ( ! $this->builder_active_on_this_post_type() ) return;
 
 		$customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
 		if ( false === strpos( $customEffects, 'popup-content-button' ) ) return;
@@ -1952,9 +1948,16 @@ class Rexbuilder_Public {
 	 * - success_border
 	 * - acceptance_color
 	 * - acceptance_font_size
+	 * - acceptance_font_weight
 	 * - acceptance_letter_spacing
 	 * - acceptance_line_height
 	 * - acceptance_text_align
+	 * - checkbox_color
+	 * - checkbox_font_size
+	 * - checkbox_font_weight
+	 * - checkbox_letter_spacing
+	 * - checkbox_line_height
+	 * - checkbox_text_align
 	 * - checkbox_border
 	 * - checkbox_border_width
 	 * - checkbox_background
@@ -1984,7 +1987,7 @@ class Rexbuilder_Public {
 		}
 		$cclass = 'rxcf7-custom-style-' . ( isset( $atts['id'] ) ? $atts['id'] : '' ) . '-' . $rsuffix;
 
-		if( isset( $atts['input_color'] ) || isset( $atts['input_width'] ) || isset( $atts['input_height'] ) || isset( $atts['input_font_size'] ) || isset( $atts['input_font_weight'] ) || isset( $atts['input_letter_spacing'] ) || isset( $atts['input_padding'] ) || isset( $atts['input_border'] ) || isset( $atts['input_border_width'] ) || isset( $atts['input_border_radius'] ) || isset( $atts['input_background'] ) || isset( $atts['input_required_color'] ) || isset( $atts['input_required_background'] ) || isset( $atts['input_required_border'] ) || isset( $atts['form_background'] ) || isset( $atts['form_padding'] ) || isset( $atts['form_font_size'] ) || isset( $atts['form_text_align'] ) || isset( $atts['form_width'] ) || isset( $atts['placeholder_color'] ) || isset( $atts['placeholder_font_weight'] ) || isset( $atts['placeholder_letter_spacing'] ) || isset( $atts['placeholder_text_transform'] ) || isset( $atts['text_color'] ) || isset( $atts['link_color'] ) || isset( $atts['submit_color'] ) || isset( $atts['submit_background'] ) || isset( $atts['submit_border'] ) || isset( $atts['submit_border_radius'] ) || isset( $atts['submit_padding'] ) || isset( $atts['submit_width'] ) || isset( $atts['submit_font_size'] ) || isset( $atts['submit_font_weight'] ) || isset( $atts['submit_letter_spacing'] ) || isset( $atts['submit_height'] ) || isset( $atts['reset_color'] ) || isset( $atts['reset_background'] ) || isset( $atts['reset_border'] ) || isset( $atts['reset_border_radius'] ) || isset( $atts['reset_padding'] ) || isset( $atts['reset_width'] ) || isset( $atts['reset_font_size'] ) || isset( $atts['reset_height'] ) || isset( $atts['error_color'] ) || isset( $atts['error_background'] ) || isset( $atts['error_border'] ) || isset( $atts['success_color'] ) || isset( $atts['success_background'] ) || isset( $atts['success_border'] ) || isset( $atts['acceptance_color'] ) || isset( $atts['acceptance_line_height'] ) || isset( $atts['acceptance_text_align'] ) || isset( $atts['acceptance_letter_spacing'] ) || isset( $atts['acceptance_font_size'] ) || isset( $atts['checkbox_border'] ) || isset( $atts['checkbox_border_width'] ) || isset( $atts['checkbox_background'] ) || isset( $atts['loader_background'] ) || isset( $atts['loader_color'] ) ) {
+		if( isset( $atts['input_color'] ) || isset( $atts['input_width'] ) || isset( $atts['input_height'] ) || isset( $atts['input_font_size'] ) || isset( $atts['input_font_weight'] ) || isset( $atts['input_letter_spacing'] ) || isset( $atts['input_padding'] ) || isset( $atts['input_border'] ) || isset( $atts['input_border_width'] ) || isset( $atts['input_border_radius'] ) || isset( $atts['input_background'] ) || isset( $atts['input_required_color'] ) || isset( $atts['input_required_background'] ) || isset( $atts['input_required_border'] ) || isset( $atts['form_background'] ) || isset( $atts['form_padding'] ) || isset( $atts['form_font_size'] ) || isset( $atts['form_text_align'] ) || isset( $atts['form_width'] ) || isset( $atts['placeholder_color'] ) || isset( $atts['placeholder_font_weight'] ) || isset( $atts['placeholder_letter_spacing'] ) || isset( $atts['placeholder_text_transform'] ) || isset( $atts['text_color'] ) || isset( $atts['link_color'] ) || isset( $atts['submit_color'] ) || isset( $atts['submit_background'] ) || isset( $atts['submit_border'] ) || isset( $atts['submit_border_radius'] ) || isset( $atts['submit_padding'] ) || isset( $atts['submit_width'] ) || isset( $atts['submit_font_size'] ) || isset( $atts['submit_font_weight'] ) || isset( $atts['submit_letter_spacing'] ) || isset( $atts['submit_height'] ) || isset( $atts['reset_color'] ) || isset( $atts['reset_background'] ) || isset( $atts['reset_border'] ) || isset( $atts['reset_border_radius'] ) || isset( $atts['reset_padding'] ) || isset( $atts['reset_width'] ) || isset( $atts['reset_font_size'] ) || isset( $atts['reset_height'] ) || isset( $atts['error_color'] ) || isset( $atts['error_background'] ) || isset( $atts['error_border'] ) || isset( $atts['success_color'] ) || isset( $atts['success_background'] ) || isset( $atts['success_border'] ) || isset( $atts['acceptance_color'] ) || isset( $atts['acceptance_line_height'] ) || isset( $atts['acceptance_text_align'] ) || isset( $atts['acceptance_letter_spacing'] ) || isset( $atts['acceptance_font_size'] ) || isset( $atts['checkbox_color'] ) || isset( $atts['checkbox_line_height'] ) || isset( $atts['checkbox_text_align'] ) || isset( $atts['checkbox_letter_spacing'] ) || isset( $atts['checkbox_font_size'] ) || isset( $atts['checkbox_border'] ) || isset( $atts['checkbox_border_width'] ) || isset( $atts['checkbox_background'] ) || isset( $atts['loader_background'] ) || isset( $atts['loader_color'] ) ) {
 			ob_start();
 
 			?><style><?php
@@ -2335,42 +2338,42 @@ class Rexbuilder_Public {
 			/* Error color */
 			if( isset( $atts['error_color'] ) && "" !== $atts['error_color'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing { color:<?php echo $atts['error_color']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.invalid .wpcf7-response-output, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.unaccepted .wpcf7-response-output, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.payment-required .wpcf7-response-output { color:<?php echo $atts['error_color']; ?>; }
 			<?php
 			}
 
 			/* Error background */
 			if( isset( $atts['error_background'] ) && "" !== $atts['error_background'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing { background-color:<?php echo $atts['error_background']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.invalid .wpcf7-response-output, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.unaccepted .wpcf7-response-output, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.payment-required .wpcf7-response-output { background-color:<?php echo $atts['error_background']; ?>; }
 			<?php
 			}
 
 			/* Error border */
 			if( isset( $atts['error_border'] ) && "" !== $atts['error_border'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing { border-color:<?php echo $atts['error_border']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.invalid .wpcf7-response-output, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.unaccepted .wpcf7-response-output, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.payment-required .wpcf7-response-output { border-color:<?php echo $atts['error_border']; ?>; }
 			<?php
 			}
 
 			/* Success color */
 			if( isset( $atts['success_color'] ) && "" !== $atts['success_color'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok { color:<?php echo $atts['success_color']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.sent .wpcf7-response-output { color:<?php echo $atts['success_color']; ?>; }
 			<?php
 			}
 
 			/* Success background */
 			if( isset( $atts['success_background'] ) && "" !== $atts['success_background'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok { background-color:<?php echo $atts['success_background']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.sent .wpcf7-response-output { background-color:<?php echo $atts['success_background']; ?>; }
 			<?php
 			}
 
 			/* Success border */
 			if( isset( $atts['success_border'] ) && "" !== $atts['success_border'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok { border-color:<?php echo $atts['success_border']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok, .wpcf7 .wpcf7-form.<?php echo $cclass; ?>.sent .wpcf7-response-output { border-color:<?php echo $atts['success_border']; ?>; }
 			<?php
 			}
 
@@ -2388,14 +2391,21 @@ class Rexbuilder_Public {
 			<?php
 			}
 
-			/* Acceptance text font size */
+			/* Acceptance text font weight */
+			if( isset( $atts['acceptance_font_weight'] ) && "" !== $atts['acceptance_font_weight'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-acceptance .wpcf7-list-item-label { font-weight:<?php echo $atts['acceptance_font_weight']; ?>; }
+			<?php
+			}
+
+			/* Acceptance text letter spacing */
 			if( isset( $atts['acceptance_letter_spacing'] ) && "" !== $atts['acceptance_letter_spacing'] ) {
 			?>
 			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-acceptance .wpcf7-list-item-label { letter-spacing:<?php echo $atts['acceptance_letter_spacing']; ?>; }
 			<?php
 			}
 
-			/* Acceptance text font size */
+			/* Acceptance text line height */
 			if( isset( $atts['acceptance_line_height'] ) && "" !== $atts['acceptance_line_height'] ) {
 			?>
 			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-acceptance .wpcf7-list-item { line-height:<?php echo $atts['acceptance_line_height']; ?>; }
@@ -2406,6 +2416,48 @@ class Rexbuilder_Public {
 			if( isset( $atts['acceptance_text_align'] ) && "" !== $atts['acceptance_text_align'] ) {
 			?>
 			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-acceptance .wpcf7-list-item { text-align:<?php echo $atts['acceptance_text_align']; ?>; }
+			<?php
+			}
+
+			/* Checkbox text color */
+			if( isset( $atts['checkbox_color'] ) && "" !== $atts['checkbox_color'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-checkbox .wpcf7-list-item-label { color:<?php echo $atts['checkbox_color']; ?>; }
+			<?php
+			}
+
+			/* Checkbox text font size */
+			if( isset( $atts['checkbox_font_size'] ) && "" !== $atts['checkbox_font_size'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-checkbox .wpcf7-list-item-label { font-size:<?php echo $atts['checkbox_font_size']; ?>; }
+			<?php
+			}
+
+			/* Checkbox text font weight */
+			if( isset( $atts['checkbox_font_weight'] ) && "" !== $atts['checkbox_font_weight'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-checkbox .wpcf7-list-item-label { font-weight:<?php echo $atts['checkbox_font_weight']; ?>; }
+			<?php
+			}
+
+			/* Checkbox text letter spacing */
+			if( isset( $atts['checkbox_letter_spacing'] ) && "" !== $atts['checkbox_letter_spacing'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-checkbox .wpcf7-list-item-label { letter-spacing:<?php echo $atts['checkbox_letter_spacing']; ?>; }
+			<?php
+			}
+
+			/* Checkbox text line height */
+			if( isset( $atts['checkbox_line_height'] ) && "" !== $atts['checkbox_line_height'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-checkbox .wpcf7-list-item { line-height:<?php echo $atts['checkbox_line_height']; ?>; }
+			<?php
+			}
+
+			/* Checkbox text align */
+			if( isset( $atts['checkbox_text_align'] ) && "" !== $atts['checkbox_text_align'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-checkbox .wpcf7-list-item { text-align:<?php echo $atts['checkbox_text_align']; ?>; }
 			<?php
 			}
 
@@ -2435,7 +2487,7 @@ class Rexbuilder_Public {
 			/* Loader background color */
 			if( isset( $atts['loader_background'] ) && "" !== $atts['loader_background'] ) {
 			?>
-			div.wpcf7 .rxcf7-custom-loader .ajax-loader{background-color:<?php echo $atts['loader_background']; ?>;}
+			div.wpcf7 .rxcf7-custom-loader .ajax-loader, div.wpcf7 .rxcf7-custom-loader .wpcf7-spinner{background-color:<?php echo $atts['loader_background']; ?>;}
 			<?php
 			}
 

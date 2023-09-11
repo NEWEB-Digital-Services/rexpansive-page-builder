@@ -234,7 +234,7 @@ class Rexbuilder_Block {
 
 		if( "" !== $content && "" === $id_image_bg_block ) {
 			$block_custom_class .= ' block--only-content';
-		} else {
+		} else if ( "" === $content && "" !== $id_image_bg_block ) {
 			$block_custom_class .= ' block--only-image';
 		}
 
