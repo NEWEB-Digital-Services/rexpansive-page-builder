@@ -201,6 +201,7 @@ For the more experienced among us: you can insert CSS anywhere.
 == Changelog ==
 
 = 2.2.0 - September 11, 2023 =
+ * Updated: Tested up to Wordpress 6.3
  * Updated: Sass version
  * Updated: Deprecate MediumEditor and use CKEditor5
  * Updated: Remove default margin on paragraph inside a RexSlider
