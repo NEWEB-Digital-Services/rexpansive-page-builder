@@ -4,6 +4,7 @@
 	<changelog>
 		<![CDATA[
 			<h4><strong>v2.2.0<rstrong> - September 11, 2023</h4>
+			<p><strong>Updated</strong>: Tested up to Wordpress 6.3</p>
 			<p><strong>Updated</strong>: Sass version</p>
 			<p><strong>Updated</strong>: Deprecate MediumEditor and use CKEditor5</p>
 			<p><strong>Updated</strong>: Remove default margin on paragraph inside a RexSlider</p>
