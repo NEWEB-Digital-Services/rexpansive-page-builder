@@ -564,7 +564,7 @@ class Rexbuilder_Public {
 				'arrowShape' => 'M 71.080084,1.034481 C 71.763642,0.34482599 72.61809,-1.250001e-8 73.557983,-1.250001e-8 c 0.939893,0 1.794341,0.34482600250001 2.477899,1.03448101250001 1.367117,1.37931 1.367117,3.620689 0,5 L 32.459031,49.999998 76.035882,93.965515 c 1.367117,1.379311 1.367117,3.62069 0,5 -1.367117,1.379315 -3.588681,1.379315 -4.955798,0 L 25.025333,52.499998 c -1.367117,-1.37931 -1.367117,-3.62069 0,-5 l 46.054751,-46.465517 0,0 z',
 				'autoPlay' => true
 			),
-			'old_builder' => Rexbuilder_Utilities::postSavedFromBackend()
+			'old_builder' => Rexbuilder_Utilities::postSavedFromBackend(),
 		);
 
 		if ( Rexbuilder_Utilities::isBuilderLive() ) {
@@ -626,6 +626,53 @@ class Rexbuilder_Public {
 				),
 				'block' => array(
 					'padding' => '5px;5px;5px;5px'		// expected a list of four values (padding-top/right/bottom/left) separated by semicolon
+				)
+			);
+
+			$settings['specialEffects'] = array(
+				array(
+					'condition' => 'rex-num-spin',
+					'active' => false
+				),
+				array(
+					'condition' => 'rex-slideshow',
+					'active' => false
+				),
+				array(
+					'condition' => 'sticky-section',
+					'active' => false
+				),
+				array(
+					'condition' => 'reveal-opacity-on-scroll',
+					'active' => false
+				),
+				array(
+					'condition' => 'distance-accordion-toggle',
+					'active' => false
+				),
+				array(
+					'condition' => 'rex-indicator__',
+					'active' => false
+				),
+				array(
+					'condition' => 'RexIndicator',
+					'active' => false
+				),
+				array(
+					'condition' => 'popup-content-button',
+					'active' => false
+				),
+				array(
+					'condition' => 'popup-video-button',
+					'active' => false
+				),
+				array(
+					'condition' => 'split-scrollable',
+					'active' => false
+				),
+				array(
+					'condition' => 'particle-swarm',
+					'active' => false
 				)
 			);
 		}
