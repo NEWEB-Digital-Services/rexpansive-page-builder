@@ -2030,98 +2030,98 @@ class Rexbuilder_Public {
 			/* Input and textarea text color */
 			if( isset( $atts['input_color'] ) && "" !== $atts['input_color'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { color: <?php echo $atts['input_color']; ?>;	}
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox]), .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { color: <?php echo $atts['input_color']; ?>;	}
 			<?php
 			}
 
 			/* Input and textarea text color */
 			if( isset( $atts['input_width'] ) && "" !== $atts['input_width'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { width: <?php echo $atts['input_width']; ?>;	}
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox]), .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { width: <?php echo $atts['input_width']; ?>;	}
 			<?php
 			}
 
 			/* Input and textarea text color */
 			if( isset( $atts['input_height'] ) && "" !== $atts['input_height'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { min-height: <?php echo $atts['input_height']; ?>;	}
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox]), .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { min-height: <?php echo $atts['input_height']; ?>;	}
 			<?php
 			}
 
 			/* Input and textarea font size */
 			if( isset( $atts['input_font_size'] ) && "" !== $atts['input_font_size'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { font-size: <?php echo $atts['input_font_size']; ?>;	}
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox]), .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { font-size: <?php echo $atts['input_font_size']; ?>;	}
 			<?php
 			}
 
 			/* Input and textarea font size */
 			if( isset( $atts['input_font_weight'] ) && "" !== $atts['input_font_weight'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { font-weight: <?php echo $atts['input_font_weight']; ?>;	}
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox]), .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { font-weight: <?php echo $atts['input_font_weight']; ?>;	}
 			<?php
 			}
 
 			/* Input and textarea letter spacing */
 			if( isset( $atts['input_letter_spacing'] ) && "" !== $atts['input_letter_spacing'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { letter-spacing: <?php echo $atts['input_letter_spacing']; ?>;	}
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox]), .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { letter-spacing: <?php echo $atts['input_letter_spacing']; ?>;	}
 			<?php
 			}
 
 			/* Input and textarea font size */
 			if( isset( $atts['input_padding'] ) && "" !== $atts['input_padding'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { padding: <?php echo $atts['input_padding']; ?>;	}
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox]), .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { padding: <?php echo $atts['input_padding']; ?>;	}
 			<?php
 			}
 
 			/* Input and textarea background */
 			if( isset( $atts['input_background'] ) && "" !== $atts['input_background'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { background-color: <?php echo $atts['input_background']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox]), .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { background-color: <?php echo $atts['input_background']; ?>; }
 			<?php
 			}
 
 			/* Input and textarea border color */
 			if( isset( $atts['input_border'] ) && "" !== $atts['input_border'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { border-color: <?php echo $atts['input_border']; ?>;	}
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox]), .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { border-color: <?php echo $atts['input_border']; ?>;	}
 			<?php
 			}
 
 			/* Input and textarea border color */
 			if( isset( $atts['input_border_width'] ) && "" !== $atts['input_border_width'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { border-width: <?php echo $atts['input_border_width']; ?>px;	}
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox]), .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { border-width: <?php echo $atts['input_border_width']; ?>px;	}
 			<?php
 			}
 
 			/* Input and textarea border color */
 			if( isset( $atts['input_border_radius'] ) && "" !== $atts['input_border_radius'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { border-radius: <?php echo $atts['input_border_radius']; ?>;	}
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox]), .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { border-radius: <?php echo $atts['input_border_radius']; ?>;	}
 			<?php
 			}
 
 			/* Input and textarea required text color */
 			if( isset( $atts['input_required_color'] ) && "" !== $atts['input_required_color'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[aria-required=true], .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea[aria-required=true] { color: <?php echo $atts['input_required_color']; ?>;	}
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox])[aria-required=true], .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea[aria-required=true] { color: <?php echo $atts['input_required_color']; ?>;	}
 			<?php
 			}
 
 			/* Input and textarea required background */
 			if( isset( $atts['input_required_background'] ) && "" !== $atts['input_required_background'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[aria-required=true], .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea[aria-required=true] { background-color: <?php echo $atts['input_required_background']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox])[aria-required=true], .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea[aria-required=true] { background-color: <?php echo $atts['input_required_background']; ?>; }
 			<?php
 			}
 
 			/* Input and textarea required border color */
 			if( isset( $atts['input_required_border'] ) && "" !== $atts['input_required_border'] ) {
 			?>
-			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[aria-required=true], .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea[aria-required=true] { border-color: <?php echo $atts['input_required_border']; ?>;	}
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:not([type=checkbox])[aria-required=true], .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea[aria-required=true] { border-color: <?php echo $atts['input_required_border']; ?>;	}
 			<?php
 			}
 
