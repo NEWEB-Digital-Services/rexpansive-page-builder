@@ -132,7 +132,6 @@ class Rexbuilder_RexSlider {
 			foreach( $slider_gallery as $slide ) {
 			?>
 			<div class="rex-slider-element rex-slider-element--fluid">
-				<!-- <img src="<?php echo esc_url( $slide['_rex_banner_gallery_image']['url'] ); ?>"> -->
 				<?php if ('true' === $photoswipe) { ?>
 				<figure class="pswp-figure" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
 					<a class="pswp-item" href="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" itemprop="contentUrl" data-size="<?php echo $slide['_rex_banner_gallery_image']['width']; ?>x<?php echo $slide['_rex_banner_gallery_image']['height']; ?>">
