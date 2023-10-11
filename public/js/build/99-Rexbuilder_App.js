@@ -769,6 +769,7 @@ var Rexbuilder_App = (function($) {
   	var i, tot_gridsToDisable = gridsToDisable.length;
 
   	for ( i = 0; i < tot_gridsToDisable; i++ ) {
+      const setHeight = !gridsToDisable[i].classList.contains('disable-grid--no-set-height')
 			var grid = gridsToDisable[ i ].querySelector( '.perfect-grid-gallery' );
 
   		var bs = Array.prototype.slice.call( gridsToDisable[ i ].getElementsByClassName( 'grid-stack-item' ) );
@@ -784,9 +785,11 @@ var Rexbuilder_App = (function($) {
   		Rexbuilder_Util.addClass( gridsToDisable[ i ], 'disabled' );
 			$(grid).find('.rex-animate-lazy-loaded-resource .rex-image-wrapper').addClass('rex-image-wrapper--lazy-show');
 
-  		for ( j = 0; j < tot_bs; j++ ) {
-  			bs[ j ].style.height = blocksHeights[ j ];
-  		}
+      if (setHeight) {
+        for ( j = 0; j < tot_bs; j++ ) {
+          bs[ j ].style.height = blocksHeights[ j ];
+        }
+      }
   	}
   }
 
