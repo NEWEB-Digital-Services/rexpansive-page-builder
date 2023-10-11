@@ -1772,60 +1772,7 @@ var Rex_Save_Listeners = (function($) {
     var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section:not(.removing_section)') );
     var layoutData = document.getElementById('rexbuilder-layout-data');
     // effects to check
-    var effects = [
-      {
-        condition: 'rex-effect',
-        active: false
-      },
-      {
-        condition: 'rex-num-spin',
-        active: false
-      },
-      {
-        condition: 'rex-slideshow',
-        active: false
-      },
-      {
-        condition: 'sticky-section',
-        active: false
-      },
-      // {
-      //   condition: 'fadeUpTextCSS',
-      //   active: false
-      // },
-      {
-        condition: 'reveal-opacity-on-scroll',
-        active: false
-      },
-      {
-        condition: 'distance-accordion-toggle',
-        active: false
-      },
-      {
-        condition: 'rex-indicator__',
-        active: false
-      },
-      {
-        condition: 'RexIndicator',
-        active: false
-      },
-      {
-        condition: 'popup-content-button',
-        active: false
-      },
-      {
-        condition: 'popup-video-button',
-        active: false
-      },
-      {
-        condition: 'split-scrollable',
-        active: false
-      },
-      {
-        condition: 'particle-swarm',
-        active: false
-      }
-    ];
+    var effects = _plugin_frontend_settings.specialEffects;
 
     sections.forEach( function( section ) {
       // check all customizations
