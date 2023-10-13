@@ -27,7 +27,14 @@ lineReader.on('line', function (line) {
 	const destPath = `${destRoot}\\${fileInfo}`
 	switch (lineInfo[0]) {
 		case 'A': {
-			// todo: svn add destPath
+			try {
+				// todo: svn add destPath
+				fs.copyFileSync(sourcePath, destPath)
+			} catch (error) {
+				// todo: handle non existing folders
+				// todo: handle file types to not copy
+				console.error(error.message)
+			}
 			break
 		}
 		case 'M': {
