@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <notifier>
-	<latest>2.2.0</latest>
+	<latest>2.2.1</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.2.1<rstrong> - </h4>
 			<h4><strong>v2.2.0<rstrong> - September 11, 2023</h4>
 			<p><strong>Updated</strong>: Tested up to Wordpress 6.3</p>
 			<p><strong>Updated</strong>: Sass version</p>
