@@ -1488,6 +1488,7 @@
       var w, h;
       var internal_i, internal_j;
       var emptyBlocks = [];
+      gridstack.batchUpdate();
       for (j = 1; j <= rows; j++) {
         for (i = 1; i <= cols; i++) {
           if (gridstack.isAreaEmpty(i - 1, j - 1, 1, 1)) {
@@ -1546,6 +1547,8 @@
           }
         }
       }
+      gridstack.commit();
+      gridstack.batchUpdate()
       var width = this.properties.singleWidth;
       var tot_emptyBlocks = emptyBlocks.length;
       for (i = 0; i < tot_emptyBlocks; i++) {
@@ -1560,6 +1563,7 @@
           );
         }
       }
+      gridstack.commit();
       return emptyBlocks;
     },
 
