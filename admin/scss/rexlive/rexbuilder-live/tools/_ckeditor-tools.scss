@@ -162,4 +162,10 @@
 			}
 		}
 	}
+
+	.ck.ck-input {
+		&:focus {
+			color: var(--ck-color-text);
+		}
+	}
 }
