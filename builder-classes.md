@@ -26,6 +26,8 @@
   - Hides the row from being present in the Navigator (currently working only on RexClassic)
 - `.disable-grid`
   - Disables a grid on front end (destroy rex-grid instance, set block heights and launch lazy load)
+- `.disable-grid--no-set-height`
+  - On a disable grid avoid to set the heights of the blocks
 - `.sticky-section`
   - makes a section **_sticky_**, whose background remains attached to the viewport while scrolling the section content
 - `.overflowed-row`
