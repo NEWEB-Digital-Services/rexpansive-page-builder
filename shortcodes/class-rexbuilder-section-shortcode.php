@@ -281,7 +281,7 @@ class Rexbuilder_Section {
 		if ($section_name != '' && $section_name != "undefined") {
 			$section_id_parsed = preg_replace('/[\W\s+]/m', '', $section_name);
 			echo ' data-rexlive-section-name="' . $section_name . '"';
-			echo ' href="#' . $section_id_parsed . '" id="' . $section_id_parsed . '"';
+			echo '" id="' . $section_id_parsed . '"';
 		}
 
 		// echo classes
