@@ -86,7 +86,7 @@
           this.open = false;
           this.close = true;
         } else {
-          this.element.className += this.options.openClassName;
+          this.element.classList.add(this.options.openClassName)
         }
 
         // add class to identify accordion items
