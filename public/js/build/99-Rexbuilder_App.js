@@ -473,6 +473,32 @@ var Rexbuilder_App = (function($) {
   };
 
   /**
+   * @since 2.2.1
+   */
+  var _setupDistanceAccordionTogglers = function() {
+    if ( 'undefined' === typeof DistanceAccordion ) return;
+    const togglersToSetup = Array.prototype.slice.call(document.querySelectorAll('.perfect-grid-item.distance-accordion-toggle'))
+
+    for (let i = 0; i < togglersToSetup.length; i++) {
+      const blockToggler = togglersToSetup[i]
+      const elementLink = blockToggler.querySelector('.element-link')
+
+      elementLink.classList.add('no-smoothing')
+      elementLink.classList.add('distance-accordion-toggle')
+
+      if (blockToggler.classList.contains('open')) {
+        elementLink.classList.add('open')
+        blockToggler.classList.remove('open')
+      } else {
+        elementLink.classList.add('close')
+        blockToggler.classList.remove('close')
+      }
+
+      blockToggler.classList.remove('distance-accordion-toggle')
+    }
+  }
+
+  /**
    * Launch eventually distance accordion (accordion on rows)
    *
    */
@@ -481,7 +507,12 @@ var Rexbuilder_App = (function($) {
     
     var togglers = document.getElementsByClassName('distance-accordion-toggle');
     for ( var j=0, tot = togglers.length; j < tot; j++ ) {
-      var inst = new DistanceAccordion(togglers[j]);
+      let daEle = togglers[j]
+      if (!daEle) {
+        console.warn('[RexbuilderApp/launchDistanceAccordion]: to set the distance accordion, element must exist')
+        continue
+      }
+      var inst = new DistanceAccordion(daEle);
     }
   };
 
@@ -1354,6 +1385,7 @@ var Rexbuilder_App = (function($) {
 
     if (!Rexbuilder_Util.editorMode) {
       _listenSectionAccordionTogglers()
+      _setupDistanceAccordionTogglers()
     }
 
 		_linkDocumentListeners();
