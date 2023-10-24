@@ -27,7 +27,7 @@ class Rexbuilder_Block {
 	 * @var String
 	 * @since 2.0.14
 	 */
-	private $POPUP_CONTENT_BUTTON_CLASSNAME;
+	static private $POPUP_CONTENT_BUTTON_CLASSNAME = 'popup-content-button';
 
 	/**
 	 * Class that identifies that a block is a popup video
@@ -35,7 +35,7 @@ class Rexbuilder_Block {
 	 * @var String
 	 * @since 2.0.14
 	 */
-	private $POPUP_VIDEO_BUTTON_CLASSNAME;
+	static private $POPUP_VIDEO_BUTTON_CLASSNAME = 'popup-video-button';
 
 	/**
 	 * Class that disables lazy load on a block
@@ -53,9 +53,6 @@ class Rexbuilder_Block {
 	public function __construct()
 	{
 		$this->plugin_name = 'rexpansive-builder';
-
-		$this->POPUP_CONTENT_BUTTON_CLASSNAME = 'popup-content-button';
-		$this->POPUP_VIDEO_BUTTON_CLASSNAME = 'popup-video-button';
 	}
 
 	/**
@@ -206,12 +203,12 @@ class Rexbuilder_Block {
 		}
 
 		$has_popup_content = false;
-		if (false !== strpos($block_custom_class, $this->POPUP_CONTENT_BUTTON_CLASSNAME)) {
+		if (false !== strpos($block_custom_class, self::$POPUP_CONTENT_BUTTON_CLASSNAME)) {
 			$has_popup_content = true;
 		}
 
 		$has_popup_video = false;
-		if (false !== strpos($block_custom_class, $this->POPUP_VIDEO_BUTTON_CLASSNAME)) {
+		if (false !== strpos($block_custom_class, self::$POPUP_VIDEO_BUTTON_CLASSNAME)) {
 			$has_popup_video = true;
 		}
 
@@ -235,7 +232,7 @@ class Rexbuilder_Block {
 					$element_link_target = "_{$matches[1]}";
 				}
 
-				$block_link_pre .= '<a class="element-link hovered' . $element_link_cc . ($has_popup_content ? " {$this->POPUP_CONTENT_BUTTON_CLASSNAME}" : '') . ($has_popup_video ? " {$this->POPUP_VIDEO_BUTTON_CLASSNAME}" : '') . '" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '" target="' . $element_link_target . '">';
+				$block_link_pre .= '<a class="element-link hovered' . $element_link_cc . ($has_popup_content ? " {self::$POPUP_CONTENT_BUTTON_CLASSNAME}" : '') . ($has_popup_video ? " {self::$POPUP_VIDEO_BUTTON_CLASSNAME}" : '') . '" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '" target="' . $element_link_target . '">';
 				$block_link_before .= '</a>';
 				$content = strip_tags($content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br><svg><use><font>');
 			}
