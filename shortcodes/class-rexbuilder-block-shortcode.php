@@ -134,10 +134,9 @@ class Rexbuilder_Block {
 		$content = preg_replace('/<p>+$/', '', $content);
 
 		$shortcode_blacklist = Rexbuilder_Utilities::shortcode_black_list();
-		if (!empty($shortcode_blacklist)) {
+		if (!Rexbuilder_Utilities::isBuilderLive() && !empty($shortcode_blacklist)) {
 			foreach ($shortcode_blacklist as $shortcode) {
 				if ( false !== strpos( $content, $shortcode ) ) {
-				// if (has_shortcode($content, $shortcode)) {
 					ob_start();
 					echo do_shortcode($content);
 					return ob_get_clean();
