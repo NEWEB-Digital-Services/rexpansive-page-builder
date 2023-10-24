@@ -38,6 +38,14 @@ class Rexbuilder_Block {
 	private $POPUP_VIDEO_BUTTON_CLASSNAME;
 
 	/**
+	 * Class that disables lazy load on a block
+	 *
+	 * @var string
+	 * @since 2.2.1
+	 */
+	static private $disable_lazy_load_classname = 'disable-fast-load';
+
+	/**
 	 * Initialize the class and set its properties.
 	 *
 	 * @since    1.0.0
@@ -110,7 +118,8 @@ class Rexbuilder_Block {
 		}
 
 		$editor = Rexbuilder_Utilities::isBuilderLive();
-		$fast_load = ( "true" == $fast_load ? true : false );
+		$disable_fast_load = strpos($block_custom_class, self::$disable_lazy_load_classname);
+		$fast_load = ( "true" == $fast_load && false === $disable_fast_load ? true : false );
 
 		global $section_layout;
 
