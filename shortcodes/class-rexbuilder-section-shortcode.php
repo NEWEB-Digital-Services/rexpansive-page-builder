@@ -335,6 +335,11 @@ class Rexbuilder_Section {
 
 		echo '>';
 
+		/**
+		 * @since 2.2.1
+		 */
+		do_action('rexpansive_section_before_section_data', array(&$parsed_atts));
+
 		echo '<div class="section-data" style="display: none;" ';
 		foreach ($atts as $property_name => $value_property) {
 			if ( 'video_bg_width_section' === $property_name && '' == $value_property && '' !== $videoMp4Width ) {
