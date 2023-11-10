@@ -207,6 +207,7 @@ class Rexbuilder_Utilities {
 				break;
 			case 'rxcf7':
 				wp_enqueue_style( 'rxcf7', REXPANSIVE_BUILDER_URL . 'public/css/rxcf7.css', $style_depths, REXCLASSIC_VERSION );
+				wp_enqueue_script( 'rxcf7', REXPANSIVE_BUILDER_URL . 'public/js/rxcf7.js', $script_depths, REXCLASSIC_VERSION, true );
 				break;
 			case 'velocity':
 				wp_enqueue_script('velocity', REXPANSIVE_BUILDER_URL . 'public/js/vendor/3-velocity.min.js', array('jquery'), REXCLASSIC_VERSION, true);

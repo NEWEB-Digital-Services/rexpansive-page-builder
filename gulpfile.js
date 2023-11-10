@@ -547,6 +547,7 @@ var live_file_map = [
 	'public/js/builderlive-editor.js',
 	'public/js/builderlive-public.js',
 	'public/js/rexbuilder-public.js',
+	'public/js/rxcf7.js',
 	'public/partials/**/*',
 	'public/Photoswipe/**/*',
 	'public/templates/**/*',
