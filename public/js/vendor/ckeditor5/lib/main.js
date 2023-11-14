@@ -10,6 +10,7 @@ import { FontColor } from '@ckeditor/ckeditor5-font';
 import { MediaEmbed } from '@ckeditor/ckeditor5-media-embed';
 import { GeneralHtmlSupport } from '@ckeditor/ckeditor5-html-support';
 import { Link } from '@ckeditor/ckeditor5-link';
+import { List, ListProperties } from '@ckeditor/ckeditor5-list';
 import { Image, ImageResize, ImageStyle, ImageToolbar, ImageUtils } from '@ckeditor/ckeditor5-image';
 import { Undo } from '@ckeditor/ckeditor5-undo';
 import { Model, addListToDropdown, ButtonView, DropdownButtonView, createDropdown } from '@ckeditor/ckeditor5-ui'
@@ -28,6 +29,7 @@ export {
 	MediaEmbed,
 	GeneralHtmlSupport,
 	Link,
+	List, ListProperties,
 	Image, ImageResize, ImageStyle, ImageToolbar, ImageUtils,
 	Undo,
 	Plugin, Command,

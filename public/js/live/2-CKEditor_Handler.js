@@ -2535,6 +2535,8 @@ var CKEditor_Handler = (function ($) {
 					CKEDITOR.FontColor,
 					CKEDITOR.GeneralHtmlSupport,
 					CKEDITOR.Link,
+					CKEDITOR.List,
+					CKEDITOR.ListProperties,
 					CKEDITOR.Image,
 					CKEDITOR.ImageResize,
 					CKEDITOR.ImageStyle,
@@ -2563,6 +2565,8 @@ var CKEditor_Handler = (function ($) {
 					'heading',
 					'|',
 					'alignment',
+					'bulletedList',
+					'numberedList',
 					'fontColor',
 					'textGradient',
 					'bold',
@@ -2619,6 +2623,11 @@ var CKEditor_Handler = (function ($) {
 								rel: 'noopener norefferer'
 							}
 						}
+					}
+				},
+				list: {
+					properties: {
+						styles: true
 					}
 				},
 				image: {

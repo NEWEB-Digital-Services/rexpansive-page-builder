@@ -24,6 +24,7 @@
     "@ckeditor/ckeditor5-html-support": "^38.0.1",
     "@ckeditor/ckeditor5-image": "^38.0.1",
     "@ckeditor/ckeditor5-link": "^38.0.1",
+    "@ckeditor/ckeditor5-list": "^38.0.1",
     "@ckeditor/ckeditor5-media-embed": "^38.1.1",
     "@ckeditor/ckeditor5-paragraph": "^38.0.1",
     "@ckeditor/ckeditor5-theme-lark": "^38.0.1",
