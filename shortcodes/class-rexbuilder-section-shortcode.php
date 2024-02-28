@@ -80,6 +80,8 @@ class Rexbuilder_Section {
 
 		$editor = Rexbuilder_Utilities::isBuilderLive();
 
+        if (apply_filters('rexpansive_section_skip_render', false, array(&$parsed_atts))) return '';
+
 		// Applying a filter to the content
 		// Passing all the attributes as reference to edit them based on the content
 		$content = apply_filters('rexpansive_filter_section', $content, array(&$parsed_atts));
