@@ -231,7 +231,7 @@ class Rexbuilder_Block {
 					$element_link_target = "_{$matches[1]}";
 				}
 
-				$block_link_pre .= '<a class="element-link hovered' . $element_link_cc . ($has_popup_content ? " {self::$POPUP_CONTENT_BUTTON_CLASSNAME}" : '') . ($has_popup_video ? " {self::$POPUP_VIDEO_BUTTON_CLASSNAME}" : '') . '" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '" target="' . $element_link_target . '">';
+				$block_link_pre .= '<a class="element-link hovered' . $element_link_cc . ($has_popup_content ? " " . self::$POPUP_CONTENT_BUTTON_CLASSNAME : '') . ($has_popup_video ? " " . self::$POPUP_VIDEO_BUTTON_CLASSNAME : '') . '" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '" target="' . $element_link_target . '">';
 				$block_link_before .= '</a>';
 				$content = strip_tags($content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br><svg><use><font>');
 			}
