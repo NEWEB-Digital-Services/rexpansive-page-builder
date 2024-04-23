@@ -53,7 +53,7 @@ var RexSlider = (function($) {
       settings.pageDots = true;
     }
 
-    var originalLazyLoad = $sliderWrap.attr('dafta-rexlider-lazyload');
+    var originalLazyLoad = $sliderWrap.attr('data-rexlider-lazyload');
     if ('undefined' != typeof originalLazyLoad && '0' !== originalLazyLoad.toString()) {
       settings.bgLazyLoad = parseInt(originalLazyLoad);
       settings.lazyLoad = parseInt(originalLazyLoad);
