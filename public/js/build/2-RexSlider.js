@@ -55,8 +55,8 @@ var RexSlider = (function($) {
 
     var originalLazyLoad = $sliderWrap.attr('data-rexlider-lazyload');
     if ('undefined' != typeof originalLazyLoad && '0' !== originalLazyLoad.toString()) {
-      settings.bgLazyLoad = parseInt(originalLazyLoad);
-      settings.lazyLoad = parseInt(originalLazyLoad);
+      settings.bgLazyLoad = parseInt(_plugin_frontend_settings.slider.bgLazyLoad);
+      settings.lazyLoad = parseInt(_plugin_frontend_settings.slider.lazyLoad);
     }
 
     if ($sliderWrap.hasClass('rex-slider--bottom-interface')) {
