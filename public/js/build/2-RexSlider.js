@@ -1,4 +1,4 @@
-var RexSlider = (function ($) {
+var RexSlider = (function($) {
   'use strict';
 
   var slider_class = '.rex-slider-wrap';
@@ -11,10 +11,10 @@ var RexSlider = (function ($) {
   var box_slider_class = '.rex-box-slider-wrap';
   var box_slider_element_class = '.rex-box-slider-element';
 
-	/**
-	 * @param {JQuery} $sliderWrap
-	 */
-  var _initSlider = function ($sliderWrap) {
+  /**
+   * @param {JQuery} $sliderWrap
+   */
+  var _initSlider = function($sliderWrap) {
     var sliderWrap = $sliderWrap.get(0);
     var settings = {
       cellAlign: 'left',
@@ -29,7 +29,7 @@ var RexSlider = (function ($) {
       // setGallerySize: false,
       // arrowShape: 'M 71.080084,1.034481 C 71.763642,0.34482599 72.61809,-1.250001e-8 73.557983,-1.250001e-8 c 0.939893,0 1.794341,0.34482600250001 2.477899,1.03448101250001 1.367117,1.37931 1.367117,3.620689 0,5 L 32.459031,49.999998 76.035882,93.965515 c 1.367117,1.379311 1.367117,3.62069 0,5 -1.367117,1.379315 -3.588681,1.379315 -4.955798,0 L 25.025333,52.499998 c -1.367117,-1.37931 -1.367117,-3.62069 0,-5 l 46.054751,-46.465517 0,0 z',
       arrowShape: _plugin_frontend_settings.slider.arrowShape
-		};
+    };
 
     var $parentBlock = $sliderWrap.parents('.block-has-slider');
 
@@ -53,7 +53,7 @@ var RexSlider = (function ($) {
       settings.pageDots = true;
     }
 
-		var originalLazyLoad = $sliderWrap.attr('data-rexlider-lazyload');
+    var originalLazyLoad = $sliderWrap.attr('dafta-rexlider-lazyload');
     if ('undefined' != typeof originalLazyLoad && '0' !== originalLazyLoad.toString()) {
       settings.bgLazyLoad = parseInt(originalLazyLoad);
       settings.lazyLoad = parseInt(originalLazyLoad);
@@ -61,10 +61,10 @@ var RexSlider = (function ($) {
 
     if ($sliderWrap.hasClass('rex-slider--bottom-interface')) {
       $parentBlock.addClass('block-has-slider--navigator');
-		}
+    }
 
-    $sliderWrap.find(".rex-slider-element").each(function (i, slide) {
-			var $video = $(slide).find(".rex-slider-video-wrapper");
+    $sliderWrap.find(".rex-slider-element").each(function(i, slide) {
+      var $video = $(slide).find(".rex-slider-video-wrapper");
       Rexbuilder_Util.startVideoPlugin($video);
     });
 
@@ -90,9 +90,9 @@ var RexSlider = (function ($) {
     // }
 
     // var hasCustomAutoplay = $parentBlock.hasClass('custom-autoplay');    // custom autoplay becomes the default
-    var hasCustomAutoplay = ( false !== settings.autoPlay ? true : false );
+    var hasCustomAutoplay = (false !== settings.autoPlay ? true : false);
 
-    if ( settings.prevNextButtons && hasCustomAutoplay ) {
+    if (settings.prevNextButtons && hasCustomAutoplay) {
       settings.pauseAutoPlayOnHover = false;
     }
 
@@ -100,22 +100,22 @@ var RexSlider = (function ($) {
     $sliderWrap.flickity('stopPlayer');
 
     function handleDragStart() {
-      Rexbuilder_Util.addClass( this, 'is-dragging' );
+      Rexbuilder_Util.addClass(this, 'is-dragging');
     }
 
     function handleDragEnd() {
-      Rexbuilder_Util.removeClass( this, 'is-dragging' );
+      Rexbuilder_Util.removeClass(this, 'is-dragging');
     }
 
-    var videoSlides = Array.prototype.slice.call( sliderWrap.getElementsByClassName('rex-slide--video') );
+    var videoSlides = Array.prototype.slice.call(sliderWrap.getElementsByClassName('rex-slide--video'));
 
     function handleSelect(event, index) {
-      for( var i=0; i<videoSlides.length; i++ ) {
+      for (var i = 0; i < videoSlides.length; i++) {
         Rexbuilder_Util.pauseVideo($(videoSlides[i].querySelector('.rex-slider-video-wrapper')));
       }
-      var slideHasVideo = Rexbuilder_Util.hasClass( Flickity.data(event.target).selectedCell.element, 'rex-slide--video' );
-      if ( slideHasVideo ) {
-        Rexbuilder_Util.playVideo( $( event.target.querySelector('.rex-slider-video-wrapper') ) );
+      var slideHasVideo = Rexbuilder_Util.hasClass(Flickity.data(event.target).selectedCell.element, 'rex-slide--video');
+      if (slideHasVideo) {
+        Rexbuilder_Util.playVideo($(event.target.querySelector('.rex-slider-video-wrapper')));
       }
     }
 
@@ -123,7 +123,7 @@ var RexSlider = (function ($) {
     $sliderWrap.on('dragEnd.flickity', handleDragEnd);
 
     //play videos on focus slide
-    if ( 0 !== videoSlides.length ) {
+    if (0 !== videoSlides.length) {
       $sliderWrap.on('select.flickity', handleSelect);
     }
 
@@ -131,20 +131,20 @@ var RexSlider = (function ($) {
       $sliderWrap.flickity('playPlayer');
     }
 
-    if ( hasCustomAutoplay ) {
+    if (hasCustomAutoplay) {
       var sliderInstance = $sliderWrap.data('flickity');
       sliderInstance.customAutoplayInterval = null;
-      if ( settings.prevNextButtons ) {
-        sliderInstance.prevButton.element.addEventListener('click', handleCustomAutoplay.bind( sliderInstance ));
-        sliderInstance.nextButton.element.addEventListener('click', handleCustomAutoplay.bind( sliderInstance ));
+      if (settings.prevNextButtons) {
+        sliderInstance.prevButton.element.addEventListener('click', handleCustomAutoplay.bind(sliderInstance));
+        sliderInstance.nextButton.element.addEventListener('click', handleCustomAutoplay.bind(sliderInstance));
       }
-      if ( settings.pageDots ) {
-        for(var i=0; i < sliderInstance.pageDots.dots.length; i++) {
-          sliderInstance.pageDots.dots[i].addEventListener('click', handleCustomAutoplay.bind( sliderInstance ));
+      if (settings.pageDots) {
+        for (var i = 0; i < sliderInstance.pageDots.dots.length; i++) {
+          sliderInstance.pageDots.dots[i].addEventListener('click', handleCustomAutoplay.bind(sliderInstance));
         }
       }
 
-      sliderInstance.$element.on('dragEnd.flickity', handleCustomAutoplay.bind( sliderInstance ));
+      sliderInstance.$element.on('dragEnd.flickity', handleCustomAutoplay.bind(sliderInstance));
     }
 
     $sliderWrap.attr("data-rex-slider-active", true);
@@ -154,7 +154,7 @@ var RexSlider = (function ($) {
      */
     $sliderWrap.find(slider_custom_nav_class).children().first().addClass('is-selected');
 
-    $sliderWrap.find(slider_custom_nav_class).on('click', '.dot', function (e) {
+    $sliderWrap.find(slider_custom_nav_class).on('click', '.dot', function(e) {
       var $this = $(this);
       var index = $this.index();
       $this.addClass('is-selected').siblings('.dot').removeClass('is-selected');
@@ -167,9 +167,9 @@ var RexSlider = (function ($) {
     $sliderWrap.find(slider_nav_preview_slide).find('.rex-slider__b-label-image--item').hover(
       function(e) {
         var index = parseInt(e.currentTarget.getAttribute('data-nav-index'));
-        $sliderWrap.flickity( 'select', index );
+        $sliderWrap.flickity('select', index);
       }
-		);
+    );
   };
 
   /**
@@ -181,8 +181,8 @@ var RexSlider = (function ($) {
    */
   function handleCustomAutoplay(ev) {
     var slinderInstance = this;
-    var timer = ( this.element.getAttribute('data-custom-autoplay-timer') ? this.element.getAttribute('data-custom-autoplay-timer') : 9000 );
-    if ( slinderInstance.customAutoplayInterval ) {
+    var timer = (this.element.getAttribute('data-custom-autoplay-timer') ? this.element.getAttribute('data-custom-autoplay-timer') : 9000);
+    if (slinderInstance.customAutoplayInterval) {
       slinderInstance.customAutoplayInterval.clear();
     }
 
@@ -193,7 +193,7 @@ var RexSlider = (function ($) {
     slinderInstance.pausePlayer()
   }
 
-  var _initSliderBox = function (el) {
+  var _initSliderBox = function(el) {
     var $el = $(el);
     var settings = {
       cellAlign: 'center',
@@ -219,18 +219,18 @@ var RexSlider = (function ($) {
     $el.flickity(settings);
     $el.flickity('stopPlayer');
 
-    $el.on('dragStart.flickity', function () {
+    $el.on('dragStart.flickity', function() {
       $(this).addClass('is-dragging');
     });
 
-    $el.on('dragEnd.flickity', function () {
+    $el.on('dragEnd.flickity', function() {
       $(this).removeClass('is-dragging');
     });
   }
 
-  var _rexSliderInitAllSliders = function () {
+  var _rexSliderInitAllSliders = function() {
     if ($(slider_class, context).length > 0) {
-      $(slider_class, context).each(function (i, el) {
+      $(slider_class, context).each(function(i, el) {
         RexSlider.initSlider($(el));
         $(el).attr("data-rex-slider-number", i);
         Rexbuilder_Dom_Util.lastSliderNumber = i;
@@ -238,38 +238,38 @@ var RexSlider = (function ($) {
     }
 
     if ($(box_slider_class, context).length > 0) {
-      $(box_slider_class, context).each(function (i, el) {
+      $(box_slider_class, context).each(function(i, el) {
         _initSliderBox(el);
       });
     }
   };
 
-  var _destroySliderPlugins = function ($el) {
+  var _destroySliderPlugins = function($el) {
     if ('undefined' !== typeof $el.data('flickity')) {
       $el.flickity('destroy');
     }
-    $el.find(".rex-slider-video-wrapper").each(function (i, videoEL) {
+    $el.find(".rex-slider-video-wrapper").each(function(i, videoEL) {
       Rexbuilder_Util.destroyVideo($(videoEL), false);
     });
   }
 
-  var _rexSliderDestroyAllSlidersPlugins = function () {
+  var _rexSliderDestroyAllSlidersPlugins = function() {
     if ($(slider_class, context).length > 0) {
-      $(slider_class, context).each(function (i, el) {
+      $(slider_class, context).each(function(i, el) {
         _destroySliderPlugins($(el));
       });
     }
 
     if ($(box_slider_class, context).length > 0) {
-      $(box_slider_class, context).each(function (i, el) {
+      $(box_slider_class, context).each(function(i, el) {
         _destroySliderPlugins($(el));
       });
     }
   };
 
-  var _startSliders = function () {
+  var _startSliders = function() {
     if ($(slider_class, context).length) {
-      $(slider_class, context).each(function (i, el) {
+      $(slider_class, context).each(function(i, el) {
         var flktyInstance = Flickity.data(el);
         if (flktyInstance && flktyInstance.autoPlay) {
           flktyInstance.playPlayer();
@@ -282,9 +282,9 @@ var RexSlider = (function ($) {
         }
       });
     }
-	}
+  }
 
-  var init = function () {
+  var init = function() {
     _rexSliderInitAllSliders();
   };
 
@@ -293,7 +293,7 @@ var RexSlider = (function ($) {
     initSlider: _initSlider,
     startAutoPlay: _startSliders,
     destroy: _rexSliderDestroyAllSlidersPlugins,
-		destroySliderPlugins: _destroySliderPlugins
+    destroySliderPlugins: _destroySliderPlugins
   };
 
 })(jQuery);
