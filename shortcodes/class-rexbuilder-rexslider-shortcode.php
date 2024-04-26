@@ -140,7 +140,8 @@ class Rexbuilder_RexSlider
 									<div class="pswp-item-thumb" data-thumb-image-type="full" data-thumburl="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" itemprop="thumbnail"></div>
 									<div class="rex-custom-scrollbar<?php echo ($natural_blur ? ' natural-slide__wrap' : ''); ?>">
 									<?php } ?>
-									<img <?php echo Rexbuilder_Utilities::isBuilderLive() ? 'src' : 'data-flickity-lazyload' ?>="<?php echo esc_url($slide['_rex_banner_gallery_image']['url']); ?>"> <?php if ('true' === $photoswipe) { ?>
+									<img <?php echo Rexbuilder_Utilities::isBuilderLive() ? 'src' : 'data-flickity-lazyload' ?>="<?php echo esc_url($slide['_rex_banner_gallery_image']['url']); ?>">
+									<?php if ('true' === $photoswipe) { ?>
 									</div>
 								</a>
 								<figcaption class="pswp-item-caption" itemprop="caption description">
