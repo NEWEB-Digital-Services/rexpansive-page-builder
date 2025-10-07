@@ -1,4 +1,4 @@
-;(function() {
+; (function() {
   // DOM elements
   var uploadIcons;
   var removeIcons;
@@ -32,53 +32,53 @@
     var config = {
       full: true,
       plugins: [
-        {cleanupAttrs         : true}, // cleanup attributes from newlines, trailing, and repeating spaces
-        {removeDoctype          : true}, // remove doctype declaration
-        {removeXMLProcInst        : true}, // remove XML processing instructions
-        {removeComments         : true}, // remove comments
-        {removeMetadata         : true}, // remove <metadata>
-        {removeTitle          : true}, // remove <title>
-        {removeDesc           : true}, // remove <desc>
-        {removeUselessDefs        : true}, // remove elements of <defs> without id
-        {removeXMLNS          : true}, // removes xmlns attribute (for inline svg, disabled by default)
-        {removeEditorsNSData      : true}, // remove editors namespaces, elements, and attributes
-        {removeEmptyAttrs       : true}, // remove empty attributes
-        {removeHiddenElems        : true}, // remove hidden elements
-        {removeEmptyText        : true}, // remove empty Text elements
-        {removeEmptyContainers      : true}, // remove empty Container elements
-        {removeViewBox          : false}, // remove viewBox attribute when possible
-        {cleanupEnableBackground    : true}, // remove or cleanup enable-background attribute when possible
-        {minifyStyles         : false}, // minify <style> elements content with CSSO
-        {convertStyleToAttrs      : false}, // convert styles into attributes
+        { cleanupAttrs: true }, // cleanup attributes from newlines, trailing, and repeating spaces
+        { removeDoctype: true }, // remove doctype declaration
+        { removeXMLProcInst: true }, // remove XML processing instructions
+        { removeComments: true }, // remove comments
+        { removeMetadata: true }, // remove <metadata>
+        { removeTitle: true }, // remove <title>
+        { removeDesc: true }, // remove <desc>
+        { removeUselessDefs: true }, // remove elements of <defs> without id
+        { removeXMLNS: true }, // removes xmlns attribute (for inline svg, disabled by default)
+        { removeEditorsNSData: true }, // remove editors namespaces, elements, and attributes
+        { removeEmptyAttrs: true }, // remove empty attributes
+        { removeHiddenElems: true }, // remove hidden elements
+        { removeEmptyText: true }, // remove empty Text elements
+        { removeEmptyContainers: true }, // remove empty Container elements
+        { removeViewBox: false }, // remove viewBox attribute when possible
+        { cleanupEnableBackground: true }, // remove or cleanup enable-background attribute when possible
+        { minifyStyles: false }, // minify <style> elements content with CSSO
+        { convertStyleToAttrs: false }, // convert styles into attributes
         { inlineStyles: false }, // Move <style> definitions to inline style attributes where possible
-        {convertColors          : true}, // convert colors (from rgb() to #rrggbb, from #rrggbb to #rgb)
-        {convertPathData        : true}, // convert Path data to relative or absolute (whichever is shorter), convert one segment to another, trim useless delimiters, smart rounding, and much more
-        {convertTransform       : true}, // collapse multiple transforms into one, convert matrices to the short aliases, and much more
-        {removeUnknownsAndDefaults    : true}, // remove unknown elements content and attributes, remove attrs with default values
-        {removeNonInheritableGroupAttrs : true}, // remove non-inheritable group's "presentation" attributes
-        {removeUselessStrokeAndFill   : true}, // remove useless stroke and fill attrs
-        {removeUnusedNS         : true}, // remove unused namespaces declaration
-        {cleanupIDs           : true}, // remove unused and minify used IDs
-        {cleanupNumericValues     : true}, // round numeric values to the fixed precision, remove default px units
-        {cleanupListOfValues      : true}, // round numeric values in attributes that take a list of numbers (like viewBox or enable-background)
-        {moveElemsAttrsToGroup      : true}, // move elements' attributes to their enclosing group
+        { convertColors: true }, // convert colors (from rgb() to #rrggbb, from #rrggbb to #rgb)
+        { convertPathData: true }, // convert Path data to relative or absolute (whichever is shorter), convert one segment to another, trim useless delimiters, smart rounding, and much more
+        { convertTransform: true }, // collapse multiple transforms into one, convert matrices to the short aliases, and much more
+        { removeUnknownsAndDefaults: true }, // remove unknown elements content and attributes, remove attrs with default values
+        { removeNonInheritableGroupAttrs: true }, // remove non-inheritable group's "presentation" attributes
+        { removeUselessStrokeAndFill: true }, // remove useless stroke and fill attrs
+        { removeUnusedNS: true }, // remove unused namespaces declaration
+        { cleanupIDs: true }, // remove unused and minify used IDs
+        { cleanupNumericValues: true }, // round numeric values to the fixed precision, remove default px units
+        { cleanupListOfValues: true }, // round numeric values in attributes that take a list of numbers (like viewBox or enable-background)
+        { moveElemsAttrsToGroup: true }, // move elements' attributes to their enclosing group
         { moveGroupAttrsToElems: true }, // move some group attributes to the contained elements
-        {collapseGroups         : true}, // collapse useless groups
-        {removeRasterImages       : true}, // remove raster images (disabled by default)
-        {mergePaths           : true}, // merge multiple Paths into one
-        {convertShapeToPath       : true}, // convert some basic shapes to <path>
-        {sortAttrs            : true}, // sort element attributes for epic readability (disabled by default)
-        {removeDimensions       : true}, // remove width/height attributes if viewBox is present (opposite to removeViewBox, disable it first) (disabled by default)
-        {removeAttrs          : true}, // remove attributes by pattern (disabled by default)
-        {removeElementsByAttr     : true}, // remove arbitrary elements by ID or className (disabled by default)
-        {addClassesToSVGElement     : true}, // add classnames to an outer <svg> element (disabled by default)
-        {addAttributesToSVGElement    : true}, // adds attributes to an outer <svg> element (disabled by default)
-        {removeStyleElement       : false}, // remove <style> elements (disabled by default)
-        {removeScriptElement      : true}, // remove <script> elements (disabled by default)
+        { collapseGroups: true }, // collapse useless groups
+        { removeRasterImages: true }, // remove raster images (disabled by default)
+        { mergePaths: true }, // merge multiple Paths into one
+        { convertShapeToPath: true }, // convert some basic shapes to <path>
+        { sortAttrs: true }, // sort element attributes for epic readability (disabled by default)
+        { removeDimensions: true }, // remove width/height attributes if viewBox is present (opposite to removeViewBox, disable it first) (disabled by default)
+        { removeAttrs: true }, // remove attributes by pattern (disabled by default)
+        { removeElementsByAttr: true }, // remove arbitrary elements by ID or className (disabled by default)
+        { addClassesToSVGElement: true }, // add classnames to an outer <svg> element (disabled by default)
+        { addAttributesToSVGElement: true }, // adds attributes to an outer <svg> element (disabled by default)
+        { removeStyleElement: false }, // remove <style> elements (disabled by default)
+        { removeScriptElement: true }, // remove <script> elements (disabled by default)
       ]
     };
 
-    svgoInstance = new SVGO( config );
+    svgoInstance = new SVGO(config);
   }
 
   /**
@@ -111,7 +111,7 @@
   function handleInstallContents(ev) {
     ev.preventDefault();
 
-    startLoading( installSpinner );
+    startLoading(installSpinner);
 
     var data = {
       action: "rexpansive_install_contents",
@@ -131,8 +131,8 @@
         // Success!
         var response = JSON.parse(request.responseText);
 
-        if ( response.install_icons ) {
-          writeMessage( installContentsMsg, '' );
+        if (response.install_icons) {
+          writeMessage(installContentsMsg, '');
         }
 
         setTimeout(function() {
@@ -143,12 +143,12 @@
     // handling error
     request.onerror = function() {
       // There was a connection error of some sort
-      
+
     };
 
     // request end
     request.onloadend = function() {
-      stopLoading( iconsSpinner );
+      stopLoading(iconsSpinner);
     }
     // send request
     request.send(encodedData);
@@ -175,19 +175,19 @@
    */
   function handleRemoveIcons(ev) {
     ev.preventDefault();
-    var previewsSelected = [].slice.call( iconsPreview.querySelectorAll('.preview-wrap.selected') );
-    if ( 0 !== previewsSelected.length ) {
-      startLoading( iconsSpinner );
+    var previewsSelected = [].slice.call(iconsPreview.querySelectorAll('.preview-wrap.selected'));
+    if (0 !== previewsSelected.length) {
+      startLoading(iconsSpinner);
 
       var deleteList = [];
-      previewsSelected.forEach( function(el) {
-        deleteList.push( el.getAttribute( 'data-sprite-id' ) );
-      });     
+      previewsSelected.forEach(function(el) {
+        deleteList.push(el.getAttribute('data-sprite-id'));
+      });
 
       var data = {
         action: "rexpansive_remove_sprite_icons",
         nonce_param: uploadIconsNonce.value,
-        deleteList: JSON.stringify( deleteList )
+        deleteList: JSON.stringify(deleteList)
       };
 
       // encode data to send request
@@ -204,32 +204,32 @@
           var response = JSON.parse(request.responseText);
 
           // remove previews
-          response.data.deleteList.forEach( function(spriteId) {
+          response.data.deleteList.forEach(function(spriteId) {
             var toRemove = iconsPreview.querySelector('.preview-wrap[data-sprite-id="' + spriteId + '"]');
-            if ( toRemove ) {
+            if (toRemove) {
               toRemove.parentNode.removeChild(toRemove);
             }
           });
-          
+
           // successful removed
-          writeMessage( uploadIconsMsgs, response.data.deleteList.length + ' ' + admin_settings_vars.labels.remove_succesfull )
+          writeMessage(uploadIconsMsgs, response.data.deleteList.length + ' ' + admin_settings_vars.labels.remove_succesfull)
         }
       }
       // handling error
       request.onerror = function() {
         // There was a connection error of some sort
-        writeMessage( uploadIconsMsgs, admin_settings_vars.labels.remove_error );
+        writeMessage(uploadIconsMsgs, admin_settings_vars.labels.remove_error);
       };
 
       // request end
       request.onloadend = function() {
-        stopLoading( iconsSpinner );
+        stopLoading(iconsSpinner);
       }
       // send request
       request.send(encodedData);
     }
     else {
-      writeMessage( uploadIconsMsgs, admin_settings_vars.labels.no_selection );
+      writeMessage(uploadIconsMsgs, admin_settings_vars.labels.no_selection);
     }
   }
 
@@ -241,17 +241,17 @@
   function handleSubmitIcons(ev) {
     ev.preventDefault();
 
-    startLoading( iconsSpinner );
+    startLoading(iconsSpinner);
 
     // start timeout to check optimization complete
     checkOptimizationComplete();
 
     var files = uploadIcons.files;
-    for( var i=0, tot = files.length; i < tot; i++ ) {
-      var spriteId = files[i].name.replace('.svg','');
+    for (var i = 0, tot = files.length; i < tot; i++) {
+      var spriteId = files[i].name.replace('.svg', '');
       // check if sprite already exists
-      var previewSprite = [].slice.call( iconsPreview.querySelectorAll('.preview-wrap[data-sprite-id="' + spriteId + '"]') );
-      if ( previewSprite.length === 0 ) {
+      var previewSprite = [].slice.call(iconsPreview.querySelectorAll('.preview-wrap[data-sprite-id="' + spriteId + '"]'));
+      if (previewSprite.length === 0) {
         // update sprite global counter
         totalSprites++;
         var temp = {
@@ -262,14 +262,49 @@
         // to allow multiple files
         var reader = new FileReader();
         reader.addEventListener('load', handleFileLoader.bind(this, temp));
-        
+
         reader.readAsText(files[i]);
       } else {
         // already existing sprite
-        writeMessage( uploadIconsMsgs, spriteId + ' ' + admin_settings_vars.labels.existing_sprite );
+        writeMessage(uploadIconsMsgs, spriteId + ' ' + admin_settings_vars.labels.existing_sprite);
       }
     }
   };
+
+  /**
+  * Safely inserts an SVG (or HTML) into a container.
+  * @param {HTMLElement} container - target element
+  * @param {string} svgString - SVG/HTML string to insert
+  * @since TODO
+  */
+  function insertSafeSVG(container, svgString) {
+    // 1. Sanitize the string using DOMPurify
+    //    Allow only typical SVG tags and attributes (hardcore preset)
+    const cleanSVG = DOMPurify.sanitize(svgString, {
+      ADD_TAGS: [
+        'svg', 'path', 'circle', 'rect', 'line', 'polygon', 'polyline', 'g', 'defs', 'use', 'text', 'title',
+        'tspan', 'clipPath', 'mask', 'pattern', 'linearGradient', 'radialGradient', 'stop', 'symbol', 'view'
+      ],
+      ADD_ATTR: [
+        'xmlns', 'fill', 'stroke', 'stroke-width', 'viewBox', 'd', 'x', 'y', 'width', 'height',
+        'cx', 'cy', 'r', 'points', 'transform', 'id', 'gradientUnits', 'offset', 'stop-color',
+        'stop-opacity', 'mask', 'clip-path'
+      ]
+    });
+
+    // 2. Parse the sanitized content as SVG
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(cleanSVG, 'image/svg+xml');
+    const svgElement = doc.documentElement;
+
+    if (!svgElement || svgElement.nodeName !== 'svg') {
+      console.warn('Invalid or empty SVG');
+      return;
+    }
+
+    // 3. Clear the previous container content and insert the new SVG
+    container.replaceChildren(svgElement);
+  }
 
   /**
    * Handling the load of a file with the FileReader API
@@ -286,7 +321,7 @@
       // wrapper
       var wrap = document.createElement('span');
       wrap.className = 'preview-wrap';
-      wrap.setAttribute( 'data-sprite-id', temp.id );
+      wrap.setAttribute('data-sprite-id', temp.id);
 
       wrap.addEventListener('click', handlePreviewSelect);
 
@@ -298,7 +333,7 @@
       // sprite preview
       var preview = document.createElement('i');
       preview.className = 'icon';
-      preview.innerHTML = optimized.data;
+      insertSafeSVG(preview, optimized.data)
 
       wrap.appendChild(preview);
       wrap.appendChild(label);
@@ -306,17 +341,22 @@
 
       // adding ID to sprite and convert to symbol element
       var tempWrapper = document.createElement('span');
-      tempWrapper.innerHTML = optimized.data;
-      var symbol = document.createElement('symbol');
-      symbol.setAttribute('id', temp.id);
-      symbol.setAttribute('viewBox', tempWrapper.children[0].getAttribute('viewBox'));
-      symbol.setAttribute('xmlns', tempWrapper.children[0].getAttribute('xmlns'));
-      symbol.innerHTML = tempWrapper.children[0].innerHTML;
-      var symbolWrapper = document.createElement('span');
-      symbolWrapper.appendChild(symbol);
+      insertSafeSVG(tempWrapper, optimized.data)
+      const svgElement = tempWrapper.querySelector('svg')
+      if (svgElement) {
+        var symbol = document.createElement('symbol');
+        symbol.setAttribute('id', temp.id);
+        symbol.setAttribute('viewBox', tempWrapper.children[0].getAttribute('viewBox'));
+        symbol.setAttribute('xmlns', tempWrapper.children[0].getAttribute('xmlns'));
+        Array.from(svgElement.childNodes).forEach(child => {
+          symbol.appendChild(child.cloneNode(true))
+        })
+        var symbolWrapper = document.createElement('span');
+        symbolWrapper.appendChild(symbol);
+      }
 
       // succesfull message
-      writeMessage( uploadIconsMsgs, temp.id + ' ' + admin_settings_vars.labels.optimize_correct );
+      writeMessage(uploadIconsMsgs, temp.id + ' ' + admin_settings_vars.labels.optimize_correct);
 
       temp.data = symbolWrapper.innerHTML;
       spritesObj.push(temp);
@@ -334,8 +374,8 @@
     removeIcons.addEventListener('click', handleRemoveIcons);
 
     // icon selection to delete
-    var previews = [].slice.call( iconsPreview.querySelectorAll('.preview-wrap') );
-    previews.forEach( function(el) {
+    var previews = [].slice.call(iconsPreview.querySelectorAll('.preview-wrap'));
+    previews.forEach(function(el) {
       el.addEventListener('click', handlePreviewSelect);
     });
 
@@ -346,16 +386,16 @@
    * Prepare data for a XHR request encoding it
    * @param {Object} data data to encode
    */
-  var encodeData = function( data ) {
+  var encodeData = function(data) {
     var urlEncodedData = "";
     var urlEncodedDataPairs = [];
     var name;
-  
+
     // Turn the data object into an array of URL-encoded key/value pairs.
-    for(name in data) {
+    for (name in data) {
       urlEncodedDataPairs.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
     }
-  
+
     // Combine the pairs into a single string and replace all %-encoded spaces to 
     // the '+' character; matches the behaviour of browser form submissions.
     urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
@@ -375,11 +415,11 @@
     uploadIconsForm.reset();
 
     // if there aren't sprites uploaded, do not call
-    if ( spritesObj.length > 0 ) {
+    if (spritesObj.length > 0) {
       var data = {
         action: "rexpansive_upload_sprite_icons",
         nonce_param: uploadIconsNonce.value,
-        sprites: JSON.stringify( spritesObj )
+        sprites: JSON.stringify(spritesObj)
       };
 
       // clear global sprites
@@ -397,27 +437,26 @@
         if (request.status >= 200 && request.status < 400) {
           // Success!
           var response = JSON.parse(request.responseText);
-          
+
           // successful uploaded
-          writeMessage( uploadIconsMsgs, admin_settings_vars.labels.upload_succesfull );
+          writeMessage(uploadIconsMsgs, admin_settings_vars.labels.upload_succesfull);
         }
       }
       // handling error
       request.onerror = function() {
         // There was a connection error of some sort
-        writeMessage( uploadIconsMsgs, admin_settings_vars.labels.upload_error );
+        writeMessage(uploadIconsMsgs, admin_settings_vars.labels.upload_error);
       };
 
       // end request
       request.onloadend = function() {
-        stopLoading( iconsSpinner );
+        stopLoading(iconsSpinner);
       }
       // send request
       request.send(encodedData);
     }
-    else
-    {
-      stopLoading( iconsSpinner );
+    else {
+      stopLoading(iconsSpinner);
     }
   }
 
@@ -438,8 +477,8 @@
 
       now = Date.now();
       delta = now - then;
-  
-      if (delta > interval && totalSprites === 0 ) {
+
+      if (delta > interval && totalSprites === 0) {
         uploadSprites();
         then = now - (delta % interval);
       }
@@ -453,13 +492,11 @@
    *
    */
   function handlePreviewSelect(ev) {
-    if ( -1 === ev.currentTarget.className.indexOf( 'selected' ) )
-    {
+    if (-1 === ev.currentTarget.className.indexOf('selected')) {
       ev.currentTarget.className += ' selected';
     }
-    else
-    {
-      ev.currentTarget.className = ev.currentTarget.className.replace('selected','').trim();
+    else {
+      ev.currentTarget.className = ev.currentTarget.className.replace('selected', '').trim();
     }
   }
 
@@ -467,18 +504,18 @@
    * Helper function to write messages to the user
    *
    */
-  function writeMessage( el, msg ) {
+  function writeMessage(el, msg) {
     var msgEl = document.createElement('p');
     msgEl.innerText = msg;
-    el.appendChild( msgEl );
+    el.appendChild(msgEl);
   }
 
-  function startLoading( el ) {
+  function startLoading(el) {
     el.style.visibility = 'visible';
   }
 
-  function stopLoading( el ) {
-    el.style.visibility = ''; 
+  function stopLoading(el) {
+    el.style.visibility = '';
   }
 
   /**

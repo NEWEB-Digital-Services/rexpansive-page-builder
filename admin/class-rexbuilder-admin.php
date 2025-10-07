@@ -338,8 +338,9 @@ class Rexbuilder_Admin {
 		// settings page resourcers
 		else if ( 'toplevel_page_' . $this->plugin_name === $page_info->id )
 		{
+			wp_enqueue_script('dompurify', 'https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.7/purify.min.js', [], '3.2.7');
 			wp_enqueue_script( 'svgo-browser', REXPANSIVE_BUILDER_URL . 'admin/js/settings/svgo.js' );
-			wp_enqueue_script( 'admin-settings', REXPANSIVE_BUILDER_URL . 'admin/js/settings/admin-settings.js' );
+			wp_enqueue_script( 'admin-settings', REXPANSIVE_BUILDER_URL . 'admin/js/settings/admin-settings.js', ['svgo-browser','dompurify'] );
 			wp_localize_script( 'admin-settings', 'admin_settings_vars', array(
 				'labels' => array(
 					'optimize_correct' => __( 'correctly optimized', 'rexpansive-builder' ),
@@ -535,8 +536,9 @@ class Rexbuilder_Admin {
 		// settings page resourcers
 		else if ( 'toplevel_page_' . $this->plugin_name === $page_info->id )
 		{
+			wp_enqueue_script('dompurify', 'https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.7/purify.min.js', [], '3.2.7');
 			wp_enqueue_script( 'svgo-browser', REXPANSIVE_BUILDER_URL . 'admin/js/settings/svgo.js' );
-			wp_enqueue_script( 'admin-settings', REXPANSIVE_BUILDER_URL . 'admin/js/settings/admin-settings.js' );
+			wp_enqueue_script( 'admin-settings', REXPANSIVE_BUILDER_URL . 'admin/js/settings/admin-settings.js', ['svgo-browser','dompurify'] );
 			wp_localize_script( 'admin-settings', 'admin_settings_vars', array(
 				'labels' => array(
 					'optimize_correct' => __( 'correctly optimized', 'rexpansive-builder' ),
