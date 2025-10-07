@@ -3,10 +3,10 @@
  * @version 1.0.0
  * @todo manage missing condition (view jQuery version)
  */
-;( function( window, factory ) {
-  'use strict';
-  window.RexIndicator = factory( window );
-} )( 'undefined' !== typeof window ? window : this, function() {
+; (function(window, factory) {
+	'use strict';
+	window.RexIndicator = factory(window);
+})('undefined' !== typeof window ? window : this, function() {
 	let instances = []
 
 	/**
@@ -69,7 +69,7 @@
 
 		init.call(this)
 
-		instances.push( this );
+		instances.push(this);
 	}
 
 	function init() {
@@ -90,166 +90,166 @@
 		this.indicator_moved_parent = this.indicator.parentElement
 	}
 
-    /**
-     * Set indicator dimension
-     * @returns void
-     */
-    function set_indicator_dimension() {
-      if (this.options.to_amount === 'auto') return
+	/**
+	 * Set indicator dimension
+	 * @returns void
+	 */
+	function set_indicator_dimension() {
+		if (this.options.to_amount === 'auto') return
 
-      // todo: refactor
-      switch (this.options.to) {
-        case 'left': {
-          const L = this.element.getBoundingClientRect().x
-          const l = this.indicator_moved_parent.getBoundingClientRect().x
-          this.indicator.style.setProperty('--rex-indicator-wrap-width', `${L - l}px`)
-          break
-        }
-        case 'right': {
-          const info = this.indicator_moved_parent.getBoundingClientRect()
-          const L = this.element.getBoundingClientRect().x
-          const newWidth = info.x + info.width - L
-          this.indicator.style.setProperty('--rex-indicator-wrap-width', `${newWidth}px`)
-          break
-        }
-        case 'bottom': {
-          // const
-		  let parentInfo
-		  if (this.relative_to_element) {
-			parentInfo = this.relative_to_element.getBoundingClientRect()
-		  } else {
-          	parentInfo = this.after_ref.getBoundingClientRect()
-		  }
-          const elementInfo = this.element.getBoundingClientRect()
-          const newHeight = parentInfo.y + parentInfo.height - elementInfo.y - (elementInfo.height / 2)
-          this.indicator.style.setProperty('--rex-indicator-wrap-height', `${newHeight}px`)
-          break
-        }
-        case 'top': {
-		  let parentInfo
-		  if (this.relative_to_element) {
-			parentInfo = this.relative_to_element.getBoundingClientRect()
-		  } else {
-          	parentInfo = this.after_ref.getBoundingClientRect()
-		  }
-          const elementInfo = this.element.getBoundingClientRect()
-          const newHeight = elementInfo.y - parentInfo.y + (elementInfo.height / 2)
-          this.indicator.style.setProperty('--rex-indicator-wrap-height', `${newHeight}px`)
-          break
-        }
-        default:
-          break
-      }
-    }
-
-    /**
-     * moving the indicator in the right place
-     */
-    function place_indicator() {
-      let p = {
-        top: 0,
-        left: 0
-      }
-
-      switch (this.options.relative_to) {
-        case 'block':
-        //   if (viewport().width >= parseInt(_plugin_frontend_settings.rexIndicator.collapse_dimension)) {
-            p = _get_position_desktop_block_relative.call(this)
-        //   } else {
-        //     p = this._get_position_mobile()
-        //   }
-          break
-        case 'start':
-        //   if (viewport().width >= parseInt(_plugin_frontend_settings.rexIndicator.collapse_dimension)) {
-            p = _get_position_desktop_start_relative.call(this)
-        //   } else {
-        //     p = this._get_position_mobile()
-        //   }
-          break
-        case 'parent': {
-        //   if (viewport().width >= parseInt(_plugin_frontend_settings.rexIndicator.collapse_dimension)) {
-            p = _get_position_desktop_parent_relative.call(this)
-        //   } else {
-        //     p = this._get_position_mobile()
-        //   }
-          break
-        }
-        default:
-          break
-      }
-
-	  setOffset(this.indicator, p)
-    }
-
-	function _get_position_desktop_block_relative() {}
-	function _get_position_desktop_start_relative() {}
-
-    /**
-     * Positioning relative to the parent
-     */
-    function _get_position_desktop_parent_relative() {
-      const p = {
-        top: 0,
-        left: 0
-      }
-
-      const b_offset = offset(this.block_ref)
-      const p_offset = offset(this.element.parentElement)
-	  const e_offset = offset(this.element)
-
-      // define top position
-      if (this.options.to == 'left' || this.options.to == 'right') {
-        p.top = e_offset.top + (outerHeight(this.element, true) / 2) - (this.indicator.getBoundingClientRect().height / 2)
-      } else {
-        if (this.options.to == 'top') {
-          if (this.options.to_amount === 'auto') {
-            p.top = b_offset.top - (this.indicator.getBoundingClientRect().height / 2)
-          } else {
-			if (this.relative_to_element) {
-				const r_offset = offset(this.relative_to_element)
-				p.top = r_offset.top
-			} else {
-				const a_offset = offset(this.after_ref)
-            	p.top = a_offset.top
+		// todo: refactor
+		switch (this.options.to) {
+			case 'left': {
+				const L = this.element.getBoundingClientRect().x
+				const l = this.indicator_moved_parent.getBoundingClientRect().x
+				this.indicator.style.setProperty('--rex-indicator-wrap-width', `${L - l}px`)
+				break
 			}
-          }
-        } else if (this.options.to == 'bottom') {
-          if (this.options.to_amount === 'auto') {
-            p.top = b_offset.top + outerHeight(this.block_ref, true) - (this.indicator.getBoundingClientRect().height / 2)
-          } else {
-            p.top = e_offset.top + (this.element.getBoundingClientRect().height / 2)
-          }
-        }
-      }
+			case 'right': {
+				const info = this.indicator_moved_parent.getBoundingClientRect()
+				const L = this.element.getBoundingClientRect().x
+				const newWidth = info.x + info.width - L
+				this.indicator.style.setProperty('--rex-indicator-wrap-width', `${newWidth}px`)
+				break
+			}
+			case 'bottom': {
+				// const
+				let parentInfo
+				if (this.relative_to_element) {
+					parentInfo = this.relative_to_element.getBoundingClientRect()
+				} else {
+					parentInfo = this.after_ref.getBoundingClientRect()
+				}
+				const elementInfo = this.element.getBoundingClientRect()
+				const newHeight = parentInfo.y + parentInfo.height - elementInfo.y - (elementInfo.height / 2)
+				this.indicator.style.setProperty('--rex-indicator-wrap-height', `${newHeight}px`)
+				break
+			}
+			case 'top': {
+				let parentInfo
+				if (this.relative_to_element) {
+					parentInfo = this.relative_to_element.getBoundingClientRect()
+				} else {
+					parentInfo = this.after_ref.getBoundingClientRect()
+				}
+				const elementInfo = this.element.getBoundingClientRect()
+				const newHeight = elementInfo.y - parentInfo.y + (elementInfo.height / 2)
+				this.indicator.style.setProperty('--rex-indicator-wrap-height', `${newHeight}px`)
+				break
+			}
+			default:
+				break
+		}
+	}
 
-      // define left position
-      if (this.options.to == 'top' || this.options.to == 'bottom') {
-        if (this.options.to_amount === 'auto') {
-          p.left = p_offset.left + (this.indicator.getBoundingClientRect().width / 2)
-        } else {
-          p.left = e_offset.left - (this.indicator.getBoundingClientRect().width / 2)
-        }
-      } else {
-        if (this.options.to == 'left') {
-          if (this.options.to_amount === 'auto') {
-            p.left = b_offset.left - (this.indicator.getBoundingClientRect().width / 2)
-          } else {
-            const line_parent_offset = this.indicator_moved_parent.getBoundingClientRect()
-            p.left = line_parent_offset.left
-          }
-        } else if (this.options.to == 'right') {
-          if (this.options.to_amount === 'auto') {
-            p.left = b_offset.left + outerWidth(this.block_ref) - (this.indicator.getBoundingClientRect().width / 2)
-          } else {
-            const line_parent_offset = this.indicator_moved_parent.getBoundingClientRect()
-            // todo: take count of indicator width
-            p.left = line_parent_offset.left + line_parent_offset.width - this.indicator.getBoundingClientRect().width
-          }
-        }
-      }
+	/**
+	 * moving the indicator in the right place
+	 */
+	function place_indicator() {
+		let p = {
+			top: 0,
+			left: 0
+		}
 
-      return p
-    }
+		switch (this.options.relative_to) {
+			case 'block':
+				//   if (viewport().width >= parseInt(_plugin_frontend_settings.rexIndicator.collapse_dimension)) {
+				p = _get_position_desktop_block_relative.call(this)
+				//   } else {
+				//     p = this._get_position_mobile()
+				//   }
+				break
+			case 'start':
+				//   if (viewport().width >= parseInt(_plugin_frontend_settings.rexIndicator.collapse_dimension)) {
+				p = _get_position_desktop_start_relative.call(this)
+				//   } else {
+				//     p = this._get_position_mobile()
+				//   }
+				break
+			case 'parent': {
+				//   if (viewport().width >= parseInt(_plugin_frontend_settings.rexIndicator.collapse_dimension)) {
+				p = _get_position_desktop_parent_relative.call(this)
+				//   } else {
+				//     p = this._get_position_mobile()
+				//   }
+				break
+			}
+			default:
+				break
+		}
+
+		setOffset(this.indicator, p)
+	}
+
+	function _get_position_desktop_block_relative() { }
+	function _get_position_desktop_start_relative() { }
+
+	/**
+	 * Positioning relative to the parent
+	 */
+	function _get_position_desktop_parent_relative() {
+		const p = {
+			top: 0,
+			left: 0
+		}
+
+		const b_offset = offset(this.block_ref)
+		const p_offset = offset(this.element.parentElement)
+		const e_offset = offset(this.element)
+
+		// define top position
+		if (this.options.to == 'left' || this.options.to == 'right') {
+			p.top = e_offset.top + (outerHeight(this.element, true) / 2) - (this.indicator.getBoundingClientRect().height / 2)
+		} else {
+			if (this.options.to == 'top') {
+				if (this.options.to_amount === 'auto') {
+					p.top = b_offset.top - (this.indicator.getBoundingClientRect().height / 2)
+				} else {
+					if (this.relative_to_element) {
+						const r_offset = offset(this.relative_to_element)
+						p.top = r_offset.top
+					} else {
+						const a_offset = offset(this.after_ref)
+						p.top = a_offset.top
+					}
+				}
+			} else if (this.options.to == 'bottom') {
+				if (this.options.to_amount === 'auto') {
+					p.top = b_offset.top + outerHeight(this.block_ref, true) - (this.indicator.getBoundingClientRect().height / 2)
+				} else {
+					p.top = e_offset.top + (this.element.getBoundingClientRect().height / 2)
+				}
+			}
+		}
+
+		// define left position
+		if (this.options.to == 'top' || this.options.to == 'bottom') {
+			if (this.options.to_amount === 'auto') {
+				p.left = p_offset.left + (this.indicator.getBoundingClientRect().width / 2)
+			} else {
+				p.left = e_offset.left - (this.indicator.getBoundingClientRect().width / 2)
+			}
+		} else {
+			if (this.options.to == 'left') {
+				if (this.options.to_amount === 'auto') {
+					p.left = b_offset.left - (this.indicator.getBoundingClientRect().width / 2)
+				} else {
+					const line_parent_offset = this.indicator_moved_parent.getBoundingClientRect()
+					p.left = line_parent_offset.left
+				}
+			} else if (this.options.to == 'right') {
+				if (this.options.to_amount === 'auto') {
+					p.left = b_offset.left + outerWidth(this.block_ref) - (this.indicator.getBoundingClientRect().width / 2)
+				} else {
+					const line_parent_offset = this.indicator_moved_parent.getBoundingClientRect()
+					// todo: take count of indicator width
+					p.left = line_parent_offset.left + line_parent_offset.width - this.indicator.getBoundingClientRect().width
+				}
+			}
+		}
+
+		return p
+	}
 
 	function parents(el, selector) {
 		const parents = [];
@@ -275,7 +275,7 @@
 
 	function outerHeight(el, withMargin = false) {
 		if (!withMargin) return el.offsetHeight
-	
+
 		const style = getComputedStyle(el);
 
 		return (
@@ -326,7 +326,7 @@
 	 * @param  {Element} el dom element
 	 * @return {RexIndicator}    instance of RexGrid
 	 */
-	RexIndicator.data = function (el) {
+	RexIndicator.data = function(el) {
 		var i = 0,
 			tot = instances.length;
 		for (i = 0; i < tot; i++) {
@@ -338,8 +338,8 @@
 		return null;
 	};
 
-	RexIndicator.destroyAll = function () {
-		instances.forEach(function (instance) {
+	RexIndicator.destroyAll = function() {
+		instances.forEach(function(instance) {
 			instance.destroy();
 		});
 	};
