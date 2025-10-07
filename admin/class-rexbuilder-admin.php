@@ -553,6 +553,35 @@ class Rexbuilder_Admin {
 	}
 
 	/**
+	 * Returns the origin (scheme://host[:port]) of the WordPress installation.
+	 *
+	 * @return string safe origin (e.g. https://example.com) or '' if invalid.
+	 * @since TODO
+	 */
+	public function wp_get_origin() {
+		$url = home_url();
+
+		if ( empty( $url ) ) {
+			$url = get_site_url();
+		}
+
+		// use wp_parse_url for WordPress compatibility
+		$parts = wp_parse_url( $url );
+		if ( empty( $parts['scheme'] ) || empty( $parts['host'] ) ) {
+			return '';
+		}
+
+		$origin = $parts['scheme'] . '://' . $parts['host'];
+
+		// append the port if it's set and not the default HTTP/HTTPS ports
+		if ( ! empty( $parts['port'] ) && ! in_array( (int) $parts['port'], array( 80, 443 ), true ) ) {
+			$origin .= ':' . $parts['port'];
+		}
+
+		return esc_url_raw( $origin );
+	}
+
+	/**
 	 * Generate LiveBuilder admin JS settings
 	 * @param String $source post permalink
 	 * @return Array settings
@@ -560,6 +589,7 @@ class Rexbuilder_Admin {
 	 */
 	private function get_plugin_admin_settings( $source ) {
 		return array(
+			'origin' => $this->wp_get_origin(),
 			'source_url' => $source,
 			'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 			'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),

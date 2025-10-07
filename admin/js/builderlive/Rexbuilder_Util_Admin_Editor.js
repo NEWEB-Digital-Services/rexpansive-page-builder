@@ -1,7 +1,7 @@
 /**
  * Live Editing
  */
-var Rexbuilder_Util_Admin_Editor = (function ($) {
+var Rexbuilder_Util_Admin_Editor = (function($) {
 	'use strict';
 
 	var activeLayoutPage;
@@ -45,6 +45,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	var input_selector;
 
 	var hooks = [];
+	const origin = live_editor_obj.origin
 
 	function addAdminAction(action, cb) {
 		if ('undefined' === typeof hooks[action]) hooks[action] = [];
@@ -55,7 +56,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	function doAdminAction(action, args) {
 		if ('undefined' === typeof hooks[action]) return;
 
-		hooks[action].forEach(function (cb) {
+		hooks[action].forEach(function(cb) {
 			cb.call(null, args);
 		});
 	}
@@ -64,7 +65,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	 * Adds a class to Rexcontainer in the iframe
 	 * @param {string} class_name class name to add to rexContainer in the iframe
 	 */
-	var _addClassToLiveFrameRexContainer = function (class_name) {
+	var _addClassToLiveFrameRexContainer = function(class_name) {
 		if (!Rexbuilder_Util_Admin_Editor.$liveFrameRexContainer.hasClass(class_name)) {
 			Rexbuilder_Util_Admin_Editor.$liveFrameRexContainer.addClass(class_name);
 		}
@@ -73,7 +74,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	 * Removes a class to Rexcontainer in the iframe
 	 * @param {string} class_name class name to remove to rexContainer in the iframe
 	 */
-	var _removeClassToLiveFrameRexContainer = function (class_name) {
+	var _removeClassToLiveFrameRexContainer = function(class_name) {
 		if (Rexbuilder_Util_Admin_Editor.$liveFrameRexContainer.hasClass(class_name)) {
 			Rexbuilder_Util_Admin_Editor.$liveFrameRexContainer.removeClass(class_name);
 		}
@@ -92,25 +93,25 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
 	var scrollY;
 
-	var scrollFrame = function (step) {
+	var scrollFrame = function(step) {
 		scrollY = $frameBuilderWindow.scrollTop();
 		$frameBuilderWindow.scrollTop(scrollY + step);
 
 		if (!Rexbuilder_Util_Admin_Editor.stopScrolling) {
-			setTimeout(function () {
+			setTimeout(function() {
 				scrollFrame(step);
 			}, 20);
 		}
 	};
 
-	var _findLayoutType = function (name) {
+	var _findLayoutType = function(name) {
 		if (name == 'default' || name == 'mobile' || name == 'tablet') {
 			return 'standard';
 		}
 		return 'custom';
 	};
 
-	var _receiveMessage = function (event) {
+	var _receiveMessage = function(event) {
 		if (event.data.rexliveEvent) {
 			//do as on live, with the switch on the names of the events
 			var eventData = event.data;
@@ -199,7 +200,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
 			// EVENT MANAGER >>> rexlive:mediumEditor:inlineVideoEditor -A
 			/*  if (event.data.eventName == "rexlive:mediumEditor:inlineVideoEditor") {
-        Change_UpdateVideoInline_Modal.openModal(event.data.modelData);
+	Change_UpdateVideoInline_Modal.openModal(event.data.modelData);
       } */
 
 			if (event.data.eventName == 'rexlive:openModalMenu') {
@@ -445,12 +446,12 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	 * Add listeners on admin toolbar
 	 * @since 2.0.0
 	 */
-	var _addDocumentListeners = function () {
+	var _addDocumentListeners = function() {
 		/**
 		 * Listen to layout change
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.btn-builder-layout', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.btn-builder-layout', function(e) {
 			// var $btn = $(e.target).parents(".btn-builder-layout");
 			var $btn = $(this);
 			var btnName = $btn.attr('data-name');
@@ -476,7 +477,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 					if (!(modelSaved && Rexbuilder_Util_Admin_Editor.pageSaved)) {
 						if (mustOpenSaveOrderWarning()) {
 							// TODO: open section order changed modal, and await user response
-							SectionOrderChanged_Modal.openModal({initiator: 'changeLayout', dataObj: dataObj})
+							SectionOrderChanged_Modal.openModal({ initiator: 'changeLayout', dataObj: dataObj })
 							return
 						}
 						Change_Layout_Modal.openModal(dataObj);
@@ -491,12 +492,12 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 			}
 		});
 
-		$saveBtn.on('click', function () {
+		$saveBtn.on('click', function() {
 			_runSavingProcess()
 		});
 
 		// Save with keyboard
-		Rexlive_Base_Settings.$document.on('keydown', function (e) {
+		Rexlive_Base_Settings.$document.on('keydown', function(e) {
 			if ((window.navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey) && e.keyCode == 83) {
 				e.preventDefault();
 				// Process the event here (such as click on submit button)
@@ -506,7 +507,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		});
 
 		// Undo with keyboard
-		Rexlive_Base_Settings.$document.on('keydown', function (e) {
+		Rexlive_Base_Settings.$document.on('keydown', function(e) {
 			if ((window.navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey) && !e.shiftKey && e.keyCode == 90) {
 				e.preventDefault();
 				// Process the event here (such as click on submit button)
@@ -515,7 +516,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		});
 
 		// Redo with keyboard
-		Rexlive_Base_Settings.$document.on('keydown', function (e) {
+		Rexlive_Base_Settings.$document.on('keydown', function(e) {
 			if (
 				((window.navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey) && e.shiftKey && e.keyCode == 90) ||
 				((window.navigator.platform.match('Mac') ? e.metaKey : e.ctrlKey) && e.keyCode == 89)
@@ -526,7 +527,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 			}
 		});
 
-		Rexlive_Base_Settings.$document.on('click', '.btn-undo', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.btn-undo', function(e) {
 			var data = {
 				eventName: 'rexlive:undo'
 			};
@@ -534,7 +535,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 			_sendIframeBuilderMessage(data);
 		});
 
-		Rexlive_Base_Settings.$document.on('click', '.btn-redo', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.btn-redo', function(e) {
 			var data = {
 				eventName: 'rexlive:redo'
 			};
@@ -542,11 +543,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 			_sendIframeBuilderMessage(data);
 		});
 
-		Rexlive_Base_Settings.$document.on('click', '.btn-models', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.btn-models', function(e) {
 			Model_Lateral_Menu.openModal();
 		});
 
-		Rexlive_Base_Settings.$document.on('click', '.open-distancer-tool', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.open-distancer-tool', function(e) {
 			Rexlive_Page_Settings_Modal.open();
 			// Rexlive_Modals_Utils.openModal($("#rex-page-settings-modal").parent(".rex-modal-wrap"));
 		});
@@ -556,7 +557,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Slide up the label
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('focus', input_selector, function (e) {
+		Rexlive_Base_Settings.$document.on('focus', input_selector, function(e) {
 			if ($(e.target).is(input_selector)) {
 				$(e.target).siblings('label, .prefix').addClass('active');
 			}
@@ -567,7 +568,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Slide down the label
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('blur', input_selector, function (e) {
+		Rexlive_Base_Settings.$document.on('blur', input_selector, function(e) {
 			if ($(e.target).is(input_selector)) {
 				if ('' == e.target.value) {
 					$(e.target).siblings('label, .prefix').removeClass('active');
@@ -580,7 +581,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Send a message to the actual parent window to open the Wordpress Media Uploader
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.toolbox-add-new-block-image', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.toolbox-add-new-block-image', function(e) {
 			e.preventDefault();
 
 			var msg = {
@@ -593,7 +594,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				}
 			};
 
-			window.postMessage(msg, '*');
+			window.postMessage(msg, origin);
 		});
 
 		/**
@@ -601,7 +602,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Send a message to the iframe to insert directly a block on the row
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.toolbox-add-new-block-text', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.toolbox-add-new-block-text', function(e) {
 			e.preventDefault();
 
 			Rexbuilder_Util_Admin_Editor.$frameBuilder.focus();
@@ -624,7 +625,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Send a message to the actual parent window to open the Video Modal
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.toolbox-add-new-block-video', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.toolbox-add-new-block-video', function(e) {
 			e.preventDefault();
 
 			var msg = {
@@ -636,7 +637,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				}
 			};
 
-			window.postMessage(msg, '*');
+			window.postMessage(msg, origin);
 		});
 
 		/**
@@ -644,7 +645,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Send a message to the actual parent window to open the Slider Modal
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.toolbox-add-new-block-slider', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.toolbox-add-new-block-slider', function(e) {
 			e.preventDefault();
 
 			var msg = {
@@ -656,7 +657,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				}
 			};
 
-			window.postMessage(msg, '*');
+			window.postMessage(msg, origin);
 		});
 
 		/**
@@ -664,7 +665,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Send a message to the iframe to insert directly the new row
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.toolbox-add-new-section', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.toolbox-add-new-section', function(e) {
 			e.preventDefault();
 
 			var msg = {
@@ -685,7 +686,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Toggle collapse of the visible row
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.toolbox-collapse-grid', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.toolbox-collapse-grid', function(e) {
 			e.preventDefault();
 
 			if ('true' == hightlightRowInfo.collapse) {
@@ -713,7 +714,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * @since 2.0.0
 		 * @deprecated Now we have the checkbox
 		 */
-		Rexlive_Base_Settings.$document.on('change', '.edit-row-layout-toolbox', function (e) {
+		Rexlive_Base_Settings.$document.on('change', '.edit-row-layout-toolbox', function(e) {
 			Rexbuilder_Util_Admin_Editor.highlightRowSetData({
 				layout: e.target.value
 			});
@@ -736,7 +737,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Change the layout of the visibile row with the checkbox
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('change', '.edit-row-layout-toolbox-checkbox', function (e) {
+		Rexlive_Base_Settings.$document.on('change', '.edit-row-layout-toolbox-checkbox', function(e) {
 			var layout = e.target.checked ? 'fixed' : 'masonry';
 			Rexbuilder_Util_Admin_Editor.highlightRowSetData({
 				layout: layout
@@ -760,7 +761,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Change the dimensions of the visible row
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('change', '.edit-row-width-toolbox', function (e) {
+		Rexlive_Base_Settings.$document.on('change', '.edit-row-width-toolbox', function(e) {
 			var width = '';
 			var type = '';
 			var vals = e.target.value.trim().split(/(\d+)/);
@@ -795,7 +796,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Get the data from the hightlightRowInfo object
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.toolbox-builder-section-config', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.toolbox-builder-section-config', function(e) {
 			e.preventDefault();
 
 			var mousePosition = _getMousePosition(e, { offset: { w: this.offsetWidth, h: this.offsetHeight } });
@@ -837,7 +838,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				mousePosition: mousePosition
 			};
 
-			window.postMessage(msg, '*');
+			window.postMessage(msg, origin);
 		});
 
 		/**
@@ -845,7 +846,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Get the data from the hightlightRowInfo object
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.edit-row-image-background-toolbox', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.edit-row-image-background-toolbox', function(e) {
 			e.preventDefault();
 
 			var msg = {
@@ -864,14 +865,14 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				}
 			};
 
-			window.postMessage(msg, '*');
+			window.postMessage(msg, origin);
 		});
 
 		/**
 		 * Remove a row image background with one click
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.deactivate-row-image-background-toolbox', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.deactivate-row-image-background-toolbox', function(e) {
 			e.preventDefault();
 
 			Rexbuilder_Util_Admin_Editor.highlightRowSetData({
@@ -903,7 +904,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Remove a row color background with one click
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.deactivate-row-color-background-toolbox', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.deactivate-row-color-background-toolbox', function(e) {
 			e.preventDefault();
 
 			Rexbuilder_Util_Admin_Editor.highlightRowSetData({
@@ -931,7 +932,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Remove a row overlay color with one click
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.deactivate-row-overlay-color-toolbox', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.deactivate-row-overlay-color-toolbox', function(e) {
 			e.preventDefault();
 
 			Rexbuilder_Util_Admin_Editor.highlightRowSetData({
@@ -960,7 +961,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Get the data from the hightlightRowInfo object
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.edit-row-video-background-toolbox', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.edit-row-video-background-toolbox', function(e) {
 			e.preventDefault();
 
 			var msg = {
@@ -980,7 +981,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				}
 			};
 
-			window.postMessage(msg, '*');
+			window.postMessage(msg, origin);
 		});
 
 		/**
@@ -988,7 +989,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		 * Get the data from the hightlightRowInfo object
 		 * @since 2.0.0
 		 */
-		Rexlive_Base_Settings.$document.on('click', '.deactivate-row-video-background-toolbox', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.deactivate-row-video-background-toolbox', function(e) {
 			e.preventDefault();
 
 			Rexbuilder_Util_Admin_Editor.highlightRowSetData({
@@ -1024,7 +1025,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 			_sendIframeBuilderMessage(msg);
 		});
 
-		Rexlive_Base_Settings.$document.on('click', '.open-model-toolbox', function (e) {
+		Rexlive_Base_Settings.$document.on('click', '.open-model-toolbox', function(e) {
 			e.preventDefault();
 
 			var msg = {
@@ -1043,7 +1044,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		window.addEventListener('message', _receiveMessage, false);
 	};
 
-	var _updateLayoutPage = function (buttonData) {
+	var _updateLayoutPage = function(buttonData) {
 		modelSaved = true;
 
 		Rexbuilder_Util_Admin_Editor.pageSaved = true;
@@ -1071,11 +1072,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		_updateIframeWidth(buttonData.min);
 	};
 
-	var _updateLayoutActiveData = function (newData) {
+	var _updateLayoutActiveData = function(newData) {
 		updatedLayoutData = newData;
 	};
 
-	var _updateOpenModelsList = function (action, data) {
+	var _updateOpenModelsList = function(action, data) {
 		switch (action) {
 			case 'OPEN':
 				var index = null;
@@ -1142,7 +1143,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
 		if (0 === open_models.length) {
 			if (mustOpenSaveOrderWarning()) {
-				SectionOrderChanged_Modal.openModal({initiator: 'savingProcess'})
+				SectionOrderChanged_Modal.openModal({ initiator: 'savingProcess' })
 				return
 			}
 			_savingProcess();
@@ -1151,7 +1152,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		}
 	}
 
-	var _savingProcess = function () {
+	var _savingProcess = function() {
 		NProgress.start();
 		$(this).addClass('rex-saving');
 		var dataSave = {
@@ -1163,7 +1164,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		_sendIframeBuilderMessage(dataSave);
 	};
 
-	var _updateIframeWidth = function (newWidth) {
+	var _updateIframeWidth = function(newWidth) {
 		if (newWidth != Rexbuilder_Util_Admin_Editor.activeWidth) {
 			if (newWidth == '') {
 				$frameContainer.css('width', '100%');
@@ -1183,16 +1184,16 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	 * @param {Object} data Event information to send
 	 * @since 2.0.0
 	 */
-	var _sendIframeBuilderMessage = function (data) {
+	var _sendIframeBuilderMessage = function(data) {
 		var infos = {
 			rexliveEvent: true
 		};
 		jQuery.extend(infos, data);
 
-		frameBuilderWindow.postMessage(infos, '*');
+		frameBuilderWindow.postMessage(infos, origin);
 	};
 
-	var _createRandomID = function (n) {
+	var _createRandomID = function(n) {
 		var text = '';
 		var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
@@ -1203,7 +1204,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		return text;
 	};
 
-	var _createRandomNumericID = function (n) {
+	var _createRandomNumericID = function(n) {
 		var number = '';
 		var possible = '0123456789';
 
@@ -1214,11 +1215,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		return parseInt(number);
 	};
 
-	var _getActiveLayout = function () {
+	var _getActiveLayout = function() {
 		return activeLayoutPage;
 	};
 
-	var setActiveLayout = function (layout) {
+	var setActiveLayout = function(layout) {
 		activeLayoutPage = layout;
 		this.$responsiveToolbar
 			.find('.btn-builder-layout.active-layout')
@@ -1233,7 +1234,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		this.$rexpansiveContainer.attr('data-active-layout', layout);
 	};
 
-	var _whichTransitionEvent = function () {
+	var _whichTransitionEvent = function() {
 		var t,
 			el = document.createElement('fakeelement');
 
@@ -1251,7 +1252,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		}
 	};
 
-	var _whichAnimationEvent = function () {
+	var _whichAnimationEvent = function() {
 		var t,
 			el = document.createElement('fakeelement');
 
@@ -1269,15 +1270,15 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		}
 	};
 
-	var _updateModelId = function (val) {
+	var _updateModelId = function(val) {
 		$highlightModelId.val(val);
 	};
 
-	var _updateModelEditing = function (val) {
+	var _updateModelEditing = function(val) {
 		$highlightModelEditing.val(val);
 	};
 
-	var _updateModelState = function () {
+	var _updateModelState = function() {
 		if (
 			'' !== $highlightModelId.val() &&
 			'undefined' !== typeof $highlightModelId.val() &&
@@ -1289,7 +1290,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		}
 	};
 
-	var _updateCollapseTool = function () {
+	var _updateCollapseTool = function() {
 		if ('true' == hightlightRowInfo.collapse) {
 			$highlightRowSetCollapse.addClass('active');
 		} else {
@@ -1297,20 +1298,20 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		}
 	};
 
-	var _updateWidthTool = function () {
+	var _updateWidthTool = function() {
 		$highlightRowSetWidth.filter('[data-section_width=' + hightlightRowInfo.dimension + ']').prop('checked', true);
 	};
 
-	var _updateLayoutTool = function () {
+	var _updateLayoutTool = function() {
 		$highlightRowSetLayout.filter('[value=' + hightlightRowInfo.layout + ']').prop('checked', true);
 	};
 
-	var _updateLayoutCheckboxTool = function () {
+	var _updateLayoutCheckboxTool = function() {
 		var checkState = hightlightRowInfo.layout == 'fixed' ? true : false;
 		$highlightRowSetLayoutCheckbox.prop('checked', checkState);
 	};
 
-	var _updateBkgrImgTool = function () {
+	var _updateBkgrImgTool = function() {
 		if (
 			'undefined' !== typeof hightlightRowInfo.id_image_bg_section &&
 			'' !== hightlightRowInfo.id_image_bg_section &&
@@ -1323,7 +1324,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				.css('background-image', 'url(' + hightlightRowInfo.image_bg_section + ')');
 			$configRowSetBkgrImg.addClass('tool-button--hide');
 			// $fastRowSetBkgImg.parent().removeClass('tool-button--hide');
-			setTimeout(function () {
+			setTimeout(function() {
 				$fastRowSetBkgImg.parent().fadeIn();
 			}, 300);
 		} else {
@@ -1331,7 +1332,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 			// $fastRowSetBkgImg.parent().addClass('tool-button--hide');
 			$fastRowSetBkgImg.parent().fadeOut({
 				duration: 300,
-				complete: function () {
+				complete: function() {
 					$highlightRowSetBackgroundImg
 						.removeClass('tool-button--image-preview')
 						.attr('value', '')
@@ -1341,7 +1342,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		}
 	};
 
-	var _updateBkgrColTool = function () {
+	var _updateBkgrColTool = function() {
 		if ('' !== hightlightRowInfo.color_bg_section) {
 			$highlightRowSetBackgroundColor
 				.val(hightlightRowInfo.color_bg_section)
@@ -1352,7 +1353,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				.css('background-color', hightlightRowInfo.color_bg_section);
 			$configRowSetBkgrCol.parent().addClass('tool-button--hide');
 			// $fastRowSetBkgrCol.parent().removeClass('tool-button--hide');
-			setTimeout(function () {
+			setTimeout(function() {
 				$fastRowSetBkgrCol.parent().fadeIn();
 			}, 300);
 		} else {
@@ -1361,7 +1362,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 			// $fastRowSetBkgrCol.parent().addClass('tool-button--hide');
 			$fastRowSetBkgrCol.parent().fadeOut({
 				duration: 300,
-				complete: function () {
+				complete: function() {
 					$highlightRowSetBackgroundColor.parent().removeClass('tool-button--picker-preview');
 					$highlightRowSetBackgroundColor.siblings('.tool-button--color-preview').css('background-color', '');
 				}
@@ -1369,7 +1370,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		}
 	};
 
-	var _updateBkgrOverlayTool = function () {
+	var _updateBkgrOverlayTool = function() {
 		if ('' !== hightlightRowInfo.row_overlay_color && 'undefined' !== typeof hightlightRowInfo.row_overlay_color) {
 			$highlightRowSetOverlay
 				.val(hightlightRowInfo.row_overlay_color)
@@ -1380,7 +1381,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				.css('background-color', hightlightRowInfo.row_overlay_color);
 			$configRowSetOverlay.parent().addClass('tool-button--hide');
 			// $fastRowSetOverlay.parent().removeClass('tool-button--hide');
-			setTimeout(function () {
+			setTimeout(function() {
 				$fastRowSetOverlay.parent().fadeIn();
 			}, 300);
 		} else {
@@ -1389,7 +1390,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 			// $fastRowSetOverlay.parent().addClass('tool-button--hide');
 			$fastRowSetOverlay.parent().fadeOut({
 				duration: 300,
-				complete: function () {
+				complete: function() {
 					$highlightRowSetOverlay.parent().removeClass('tool-button--picker-preview');
 					$highlightRowSetOverlay.siblings('.tool-button--color-preview').css('background-color', '');
 				}
@@ -1397,7 +1398,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		}
 	};
 
-	var _updateBkgrVidTool = function () {
+	var _updateBkgrVidTool = function() {
 		if (
 			('' !== hightlightRowInfo.video_bg_url_section &&
 				'undefined' !== typeof hightlightRowInfo.video_bg_url_section) ||
@@ -1408,7 +1409,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		) {
 			$configRowSetVideo.addClass('tool-button--hide');
 			// $fastRowSetVideo.parent().removeClass('tool-button--hide');
-			setTimeout(function () {
+			setTimeout(function() {
 				$fastRowSetVideo.parent().fadeIn();
 			});
 		} else {
@@ -1424,7 +1425,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	 * Live update of the top toolbar according to the visibile row
 	 * @since 2.0.0
 	 */
-	var _updateTopToolbar = function () {
+	var _updateTopToolbar = function() {
 		// 0. Synch Model
 		_updateModelState();
 
@@ -1451,7 +1452,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		_updateBkgrVidTool();
 	};
 
-	var _blockIframeRows = function () {
+	var _blockIframeRows = function() {
 		var data = {
 			eventName: 'rexlive:lockRows'
 		};
@@ -1459,7 +1460,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		_sendIframeBuilderMessage(data);
 	};
 
-	var _releaseIframeRows = function () {
+	var _releaseIframeRows = function() {
 		var data = {
 			eventName: 'rexlive:unlockRows'
 		};
@@ -1467,7 +1468,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		_sendIframeBuilderMessage(data);
 	};
 
-	var _deactiveSavePageButton = function () {
+	var _deactiveSavePageButton = function() {
 		$saveBtn.addClass('page-edited');
 	};
 
@@ -1481,7 +1482,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	 * - row overlay color picker
 	 * @since 2.0.0
 	 */
-	var _initToolbar = function () {
+	var _initToolbar = function() {
 		_initBackgroundColorPicker();
 		_initOverlayColorPicker();
 	};
@@ -1492,8 +1493,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	 * Get the data from the hightlightRowInfo object
 	 * @since 2.0.0
 	 */
-	var _initBackgroundColorPicker = function () {
-		$highlightRowSetBackgroundColor.each(function (i, el) {
+	var _initBackgroundColorPicker = function() {
+		$highlightRowSetBackgroundColor.each(function(i, el) {
 			var $el = $(el);
 
 			var bgColorPickerUsed = false;
@@ -1518,14 +1519,14 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				showInput: true,
 				showButtons: false,
 				containerClassName: 'sp-draggable sp-meditor',
-				beforeShow: function () {
+				beforeShow: function() {
 					Rexlive_Color_Palette.show({
 						$target: $el,
 						object: 'section',
 						action: 'background'
 					});
 				},
-				show: function () {
+				show: function() {
 					var container = $el.spectrum('container')[0];
 					container.style.top = parseInt(container.style.top) + 10 + 'px';
 
@@ -1534,10 +1535,10 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 					eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
 					bgColorActive = JSON.parse(hightlightRowInfo.color_bg_section_active);
 				},
-				change: function () {
+				change: function() {
 					//
 				},
-				move: function (color) {
+				move: function(color) {
 					eventSettings.data_to_send.active = true;
 					eventSettings.data_to_send.color = color.toRgbString();
 					if (bgColorActive) {
@@ -1550,7 +1551,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
 					bgColorPickerUsed = true;
 				},
-				hide: function (color) {
+				hide: function(color) {
 					Rexlive_Color_Palette.hide();
 					if (bgColorPickerUsed) {
 						// Synch top toolbar tools
@@ -1571,7 +1572,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				}
 			});
 
-			var resetCb = function () {
+			var resetCb = function() {
 				if (null !== hightlightRowInfo.color_bg_section) {
 					$el.spectrum('set', hightlightRowInfo.color_bg_section);
 					$el.spectrum('container').find('.sp-input').trigger('change');
@@ -1589,8 +1590,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	 * Get the data from the hightlightRowInfo object
 	 * @since 2.0.0
 	 */
-	var _initOverlayColorPicker = function () {
-		$highlightRowSetOverlay.each(function (i, el) {
+	var _initOverlayColorPicker = function() {
+		$highlightRowSetOverlay.each(function(i, el) {
 			var $el = $(el);
 			var overlayPickerUsed = false;
 			var overlayColorActive = false;
@@ -1614,14 +1615,14 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				showInput: true,
 				showButtons: false,
 				containerClassName: 'sp-draggable sp-meditor',
-				beforeShow: function () {
+				beforeShow: function() {
 					Rexlive_Overlay_Palette.show({
 						$target: $el,
 						object: 'section',
 						action: 'overlay'
 					});
 				},
-				show: function () {
+				show: function() {
 					var container = $el.spectrum('container')[0];
 					container.style.top = parseInt(container.style.top) + 10 + 'px';
 
@@ -1630,7 +1631,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 					eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
 					overlayColorActive = JSON.parse(hightlightRowInfo.row_overlay_active);
 				},
-				move: function (color) {
+				move: function(color) {
 					eventSettings.data_to_send.active = true;
 					eventSettings.data_to_send.color = color.toRgbString();
 					if (overlayColorActive) {
@@ -1643,7 +1644,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
 					overlayPickerUsed = true;
 				},
-				hide: function (color) {
+				hide: function(color) {
 					Rexlive_Overlay_Palette.hide();
 					if (overlayPickerUsed) {
 						// Synch top toolbar tools
@@ -1664,7 +1665,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 				}
 			});
 
-			var resetCb = function () {
+			var resetCb = function() {
 				if (null !== hightlightRowInfo.row_overlay_color) {
 					$el.spectrum('set', hightlightRowInfo.row_overlay_color);
 					$el.spectrum('container').find('.sp-input').trigger('change');
@@ -1684,7 +1685,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	 * @returns {Object} the x,y coordinates
 	 * @since 2.0.0
 	 */
-	var _getMousePosition = function (mEvent, target_info) {
+	var _getMousePosition = function(mEvent, target_info) {
 		var mousePosition = {};
 		if (
 			'undefined' !== typeof mEvent.clientX &&
@@ -1711,7 +1712,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	 * Setting the value of an attribute of the Highlighted row
 	 * @param {Object} attr attribute name
 	 */
-	var _highlightRowSetData = function (data) {
+	var _highlightRowSetData = function(data) {
 		if ('undefined' !== typeof hightlightRowInfo && '' !== data && 'undefined' !== typeof data) {
 			for (var attr in data) {
 				hightlightRowInfo[attr] = data[attr];
@@ -1719,7 +1720,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		}
 	};
 
-	var _openRowColorPaletteModal = function () {
+	var _openRowColorPaletteModal = function() {
 		var rowData = {
 			gradient: hightlightRowInfo.color_bg_section,
 			sectionTarget: {
@@ -1730,7 +1731,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		Rexlive_Section_Background_Gradient.openModal(rowData);
 	};
 
-	var _openRowOverlayPaletteModal = function () {
+	var _openRowOverlayPaletteModal = function() {
 		var rowData = {
 			gradient: hightlightRowInfo.row_overlay_color,
 			sectionTarget: {
@@ -1745,7 +1746,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	 * Return the valid linear gradient CSS rule for the actual browser
 	 * @param {string} gradient Gradient to safe
 	 */
-	var _getGradientSafeValue = function (gradient) {
+	var _getGradientSafeValue = function(gradient) {
 		var sandEl = document.createElement('div');
 
 		var style = sandEl.style;
@@ -1768,7 +1769,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	 * Add gradient prefix to a linear gradient
 	 * @param {string} value clean linear gradient
 	 */
-	var _getPrefixedValues = function (value) {
+	var _getPrefixedValues = function(value) {
 		var prefs = ['-moz-', '-webkit-', '-o-', '-ms-'];
 		var res = [];
 		for (var i = 0; i < prefs.length; i++) {
@@ -1777,26 +1778,26 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		return res;
 	};
 
-	var _addSpectrumCustomSaveButtonOld = function ($picker) {
+	var _addSpectrumCustomSaveButtonOld = function($picker) {
 		var choose = tmpl('tmpl-tool-simple-save', {});
 		var $choose = $(choose);
 		$picker.spectrum('container').append($choose);
 
-		$choose.on('click', function (e) {
+		$choose.on('click', function(e) {
 			e.stopPropagation();
 			e.preventDefault();
 			$picker.spectrum('container').find('.sp-choose').trigger('click');
 		});
 	};
 
-	var _addSpectrumCustomSaveButton = function ($picker, resetCb) {
+	var _addSpectrumCustomSaveButton = function($picker, resetCb) {
 		var choose = tmpl('tmpl-tool-save', {});
 		var $choose = $(choose);
 		var $option = $choose.find('.rex-modal-option');
 		$picker.spectrum('container').append($choose);
 
 		// @todo distinguish between pickers
-		$option.on('click', function (e) {
+		$option.on('click', function(e) {
 			e.stopPropagation();
 			e.preventDefault();
 			switch (this.getAttribute('data-rex-option')) {
@@ -1814,12 +1815,12 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		});
 	};
 
-	var _addSpectrumCustomCloseButton = function ($picker) {
+	var _addSpectrumCustomCloseButton = function($picker) {
 		var close = tmpl('tmpl-tool-close', {});
 		var $close = $(close);
 		$picker.spectrum('container').append($close);
 
-		$close.on('click', function (e) {
+		$close.on('click', function(e) {
 			e.stopPropagation();
 			e.preventDefault();
 			$picker.attr('data-revert', true);
@@ -1849,7 +1850,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
 	var triggeredLoad;
 
-	var _forceTriggerLoad = function () {
+	var _forceTriggerLoad = function() {
 		var isIE = /*@cc_on!@*/ false || !!document.documentMode;
 		if (isIE) {
 			if (!triggeredLoad) {
@@ -1936,7 +1937,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 	}
 
 	// init the utilities
-	var init = function () {
+	var init = function() {
 		this.$body = $('body');
 		this.$rexpansiveContainer = $('#rexpansive-builder-backend-wrapper');
 		$frameContainer = this.$rexpansiveContainer.find('.rexpansive-live-frame-container');
@@ -2027,13 +2028,13 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 		});
 
 		// Trigger to the Live iframe that the it finished to resize
-		$frameContainer.on(Rexbuilder_Util_Admin_Editor.transitionEvent, function () {
+		$frameContainer.on(Rexbuilder_Util_Admin_Editor.transitionEvent, function() {
 			if (updatedLayoutData !== null && 'undefined' !== typeof updatedLayoutData) {
 				_sendIframeBuilderMessage(updatedLayoutData);
 			}
 		});
 
-		this.$frameBuilder.load(function () {
+		this.$frameBuilder.load(function() {
 			Rexbuilder_Util_Admin_Editor.$liveFrameRexContainer = $(
 				Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow.document
 			)
