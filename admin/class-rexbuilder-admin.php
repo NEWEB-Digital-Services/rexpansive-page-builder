@@ -2425,7 +2425,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			die();
 		endif;
 
-		$slider_id = $_POST['slider_id'];
+		$slider_id = isset($_POST['slider_id']) ? absint($_POST['slider_id']) : 0;
 
 		if( $slider_id && Rexbuilder_Utilities::check_post_exists( (int)$slider_id ) ) {
 			$slider_animation = get_field( '_rex_enable_banner_animation', $slider_id );
@@ -3455,8 +3455,22 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		}
 
 		$model_settings = $_GET['model_data'];
+		// Ensure we have an array
+		if (!is_array($model_settings)) {
+			$decoded = json_decode(wp_unslash($model_settings), true);
+			if (is_array($decoded)) {
+				$model_settings = $decoded;
+			} else {
+				wp_send_json_error(array(
+					'error' => true,
+					'msg'   => 'Invalid model_data'
+				));
+			}
+		}
 
-		if( empty( $model_settings['ID'] ) ) {
+		$model_id   = isset($model_settings['ID']) ? absint($model_settings['ID']) : 0;
+
+		if( empty( $model_id ) ) {
 			$response['error'] = true;
 			$response['msg'] = 'Error. No model!';
 			wp_send_json_error( $response );
@@ -3465,7 +3479,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$args = array(
 			'post_type'		=>	'rex_model',
 			'post_status'	=>	'private',
-			'p'				=>	$model_settings['ID']
+			'p'				=>	$model_id
 		);
 
 		$query = new WP_Query( $args );
@@ -4382,19 +4396,34 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		}
 
 		$model_settings = $_GET['model_data'];
+		// Ensure we have an array
+		if (!is_array($model_settings)) {
+			$decoded = json_decode(wp_unslash($model_settings), true);
+			if (is_array($decoded)) {
+				$model_settings = $decoded;
+			} else {
+				wp_send_json_error(array(
+					'error' => true,
+					'msg'   => 'Invalid model_data'
+				));
+			}
+		}
 
-		if( empty( $model_settings['ID'] ) ) {
+		$model_id   = isset($model_settings['ID']) ? absint($model_settings['ID']) : 0;
+		$section_id = isset($model_settings['section_id']) ? sanitize_text_field($model_settings['section_id']) : '';
+
+		if( empty( $model_id ) ) {
 			$response['error'] = true;
 			$response['msg'] = 'Error. No model!';
 			wp_send_json_error( $response );
 		}
 
-		$checkbox_index = $model_settings['section_id'];
+		$checkbox_index = $section_id;
 
 		$args = array(
 			'post_type'			=>	'rex_model',
 			'post_status'		=>	'private',
-			'p'				=>	$model_settings['ID']
+			'p'				=>	$model_id
 		);
 
 		$query = new WP_Query( $args );
