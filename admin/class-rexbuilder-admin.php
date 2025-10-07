@@ -2968,11 +2968,12 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			// update reponsive layout names for single posts
 			// search posts with this layout
 			$this_customization_posts = $wpdb->get_results(
-				"
-				SELECT DISTINCT post_id
-				FROM {$wpdb->prefix}postmeta
-				WHERE meta_key LIKE '_rex_customization_{$layout['id']}'
-				",
+				$wpdb->prepare(
+					"SELECT DISTINCT post_id
+					FROM {$wpdb->prefix}postmeta
+					WHERE meta_key LIKE %s",
+					"_rex_customization_{$layout['id']}"
+				),
 				ARRAY_A
 			);
 
