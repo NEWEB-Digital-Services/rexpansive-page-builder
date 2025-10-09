@@ -11,12 +11,12 @@ var Rex_Save_Listeners = (function($) {
       var activeLayoutName = Rexbuilder_Util.activeLayout;
 
       // WPCF7 Saving
-      if ( 'undefined' !== typeof Rexbuilder_Rexwpcf7 ) {
+      if ('undefined' !== typeof Rexbuilder_Rexwpcf7) {
         var formIDsInPage = Rexbuilder_Rexwpcf7_Editor.getIDsInPage();
         formIDsInPage.forEach(function(id) {
           Rexbuilder_Rexwpcf7_Editor.updateFormInDB(id);
         });
-        if ( 0 !== formIDsInPage.length ) {
+        if (0 !== formIDsInPage.length) {
           Rexbuilder_Rexwpcf7_Editor.fixBlocksHeight();
         }
       }
@@ -50,8 +50,8 @@ var Rex_Save_Listeners = (function($) {
       Rexbuilder_Util.updatePageAvaiableLayoutsNames(layoutsNames);
       Rexbuilder_Util.updatePageCustomizationsData(newCustomization);
 
-			// Getting the RexButtons IDs in page scanning all the sections
-			var rexButtonsIDsInPage = Rexbuilder_Rexbutton.findIDsInPage(false);
+      // Getting the RexButtons IDs in page scanning all the sections
+      var rexButtonsIDsInPage = Rexbuilder_Rexbutton.findIDsInPage(false);
 
       var ajaxCalls = [];
 
@@ -71,7 +71,7 @@ var Rex_Save_Listeners = (function($) {
               // Rex buttons ids on the page updated!
             }
           },
-          error: function(response) {}
+          error: function(response) { }
         })
       );
 
@@ -92,7 +92,7 @@ var Rex_Save_Listeners = (function($) {
               // Layout names updated!
             }
           },
-          error: function(response) {}
+          error: function(response) { }
         })
       );
 
@@ -113,7 +113,7 @@ var Rex_Save_Listeners = (function($) {
               // Custom css updated!
             }
           },
-          error: function(response) {}
+          error: function(response) { }
         })
       );
 
@@ -134,7 +134,7 @@ var Rex_Save_Listeners = (function($) {
               // Custom css updated!
             }
           },
-          error: function(response) {}
+          error: function(response) { }
         })
       );
 
@@ -201,7 +201,7 @@ var Rex_Save_Listeners = (function($) {
                 ) {
                   if (
                     typeof customizationsArray[i].sections[k].targets ==
-                      "undefined" ||
+                    "undefined" ||
                     customizationsArray[i].sections[k].targets.length == 0
                   ) {
                     customizationsArray[i].sections[k].targets = [];
@@ -248,8 +248,8 @@ var Rex_Save_Listeners = (function($) {
         customizationsArray.push(newCustomization);
 
         for (var i = 0; i < customizationsArray.length; i++) {
-          Rexbuilder_Util.updatePageCustomizationsData( customizationsArray[i] );
-          Rexbuilder_Util.updatePageCustomizationsDomOrder( customizationsArray[i] );
+          Rexbuilder_Util.updatePageCustomizationsData(customizationsArray[i]);
+          Rexbuilder_Util.updatePageCustomizationsDomOrder(customizationsArray[i]);
           ajaxCalls.push(
             $.ajax({
               type: "POST",
@@ -266,7 +266,7 @@ var Rex_Save_Listeners = (function($) {
                 if (response.success) {
                 }
               },
-              error: function(response) {}
+              error: function(response) { }
             })
           );
         }
@@ -291,7 +291,7 @@ var Rex_Save_Listeners = (function($) {
                 Rexbuilder_Util.backendEdited = false;
               }
             },
-            error: function(response) {}
+            error: function(response) { }
           })
         );
 
@@ -313,107 +313,107 @@ var Rex_Save_Listeners = (function($) {
                 // Section names updated!
               }
             },
-            error: function (response, textStatus, errorThrown) {
-							Rexbuilder_Util.displayAjaxError(
-								{
-									response: response,
-									textStatus: textStatus,
-									errorThrown: errorThrown
-								},
-								'Error while saving sections IDs'
-							);
-						}
+            error: function(response, textStatus, errorThrown) {
+              Rexbuilder_Util.displayAjaxError(
+                {
+                  response: response,
+                  textStatus: textStatus,
+                  errorThrown: errorThrown
+                },
+                'Error while saving sections IDs'
+              );
+            }
           })
-				);
+        );
 
-				// Blocks IDs used
-				// (callback hell)
-				ajaxCalls.push(
-					$.ajax({
-						type: 'GET',
-						dataType: 'json',
-						url: _plugin_frontend_settings.rexajax.ajaxurl,
-						data: {
-							action: 'rexlive_get_blocks_rexids',
-							nonce_param: _plugin_frontend_settings.rexajax.rexnonce
-						},
-						success: function (response) {
-							if (!response.success) {
-								this.error(response, response.data[0].message, response.data[0].code);
-								return;
-							}
+        // Blocks IDs used
+        // (callback hell)
+        ajaxCalls.push(
+          $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            data: {
+              action: 'rexlive_get_blocks_rexids',
+              nonce_param: _plugin_frontend_settings.rexajax.rexnonce
+            },
+            success: function(response) {
+              if (!response.success) {
+                this.error(response, response.data[0].message, response.data[0].code);
+                return;
+              }
 
-							// Synchronizing the IDs with the DB Array stored in Rexbuilder_Util
-							Rexbuilder_Util.updateBlocksIDsUsed(JSON.parse(response.data.currentIDsUsed));
+              // Synchronizing the IDs with the DB Array stored in Rexbuilder_Util
+              Rexbuilder_Util.updateBlocksIDsUsed(JSON.parse(response.data.currentIDsUsed));
 
-							// If a block is going to be removed, remove its ID from the used IDs Array.
-							// Looping through all page sections because there could be some "new" sections
-							// created by an undo event, so all sections need to be scanned and all the
-							// blocks' IDs need to be updated according to their status (removing or not)
-							Array.prototype.slice
-								.call(Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section'))
-								.forEach(function (section) {
-									// Looping through all section's blocks
-									Array.prototype.slice
-										.call(section.getElementsByClassName('grid-stack-item'))
-										.forEach(function (block) {
-											if (Rexbuilder_Util.hasClass(section, 'removing_section')) {
-												// Remove all blocks' RexIDs in the current section
-												Rexbuilder_Util.removeBlockID(block.getAttribute('data-rexbuilder-block-id'));
-											} else {
-												var isRemovingBlock = Rexbuilder_Util.hasClass(block, 'removing_block');
+              // If a block is going to be removed, remove its ID from the used IDs Array.
+              // Looping through all page sections because there could be some "new" sections
+              // created by an undo event, so all sections need to be scanned and all the
+              // blocks' IDs need to be updated according to their status (removing or not)
+              Array.prototype.slice
+                .call(Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section'))
+                .forEach(function(section) {
+                  // Looping through all section's blocks
+                  Array.prototype.slice
+                    .call(section.getElementsByClassName('grid-stack-item'))
+                    .forEach(function(block) {
+                      if (Rexbuilder_Util.hasClass(section, 'removing_section')) {
+                        // Remove all blocks' RexIDs in the current section
+                        Rexbuilder_Util.removeBlockID(block.getAttribute('data-rexbuilder-block-id'));
+                      } else {
+                        var isRemovingBlock = Rexbuilder_Util.hasClass(block, 'removing_block');
 
-												// Shorthand for less code nesting (not writing an if)
-												Rexbuilder_Util[isRemovingBlock ? 'removeBlockID' : 'addBlockID'](
-													block.getAttribute('data-rexbuilder-block-id')
-												);
-											}
-										});
-								});
+                        // Shorthand for less code nesting (not writing an if)
+                        Rexbuilder_Util[isRemovingBlock ? 'removeBlockID' : 'addBlockID'](
+                          block.getAttribute('data-rexbuilder-block-id')
+                        );
+                      }
+                    });
+                });
 
-							Rexbuilder_Util.saveBlocksIDsUsed();
+              Rexbuilder_Util.saveBlocksIDsUsed();
 
-							// Saving updated blocks' IDs in the DB
-							$.ajax({
-								type: 'POST',
-								dataType: 'json',
-								url: _plugin_frontend_settings.rexajax.ajaxurl,
-								data: {
-									action: 'rexlive_save_blocks_rexids',
-									nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-									// Retrieving the DB Array stored in Rexbuilder_Util
-									ids_used: JSON.stringify(Rexbuilder_Util.getBlocksIDsUsed())
-								},
-								success: function (response) {
-									if (!response.success) {
-										this.error(response, response.data[0].message, response.data[0].code);
-										return;
-									}
-								},
-								error: function (response, textStatus, errorThrown) {
-									Rexbuilder_Util.displayAjaxError(
-										{
-											response: response,
-											textStatus: textStatus,
-											errorThrown: errorThrown
-										},
-										'Error while saving blocks IDs'
-									);
-								}
-							});
-						},
-						error: function (response, textStatus, errorThrown) {
-							Rexbuilder_Util.displayAjaxError(
-								{
-									response: response,
-									textStatus: textStatus,
-									errorThrown: errorThrown
-								},
-								'Error while getting blocks IDs'
-							);
-						}
-					})
-				);
+              // Saving updated blocks' IDs in the DB
+              $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: _plugin_frontend_settings.rexajax.ajaxurl,
+                data: {
+                  action: 'rexlive_save_blocks_rexids',
+                  nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                  // Retrieving the DB Array stored in Rexbuilder_Util
+                  ids_used: JSON.stringify(Rexbuilder_Util.getBlocksIDsUsed())
+                },
+                success: function(response) {
+                  if (!response.success) {
+                    this.error(response, response.data[0].message, response.data[0].code);
+                    return;
+                  }
+                },
+                error: function(response, textStatus, errorThrown) {
+                  Rexbuilder_Util.displayAjaxError(
+                    {
+                      response: response,
+                      textStatus: textStatus,
+                      errorThrown: errorThrown
+                    },
+                    'Error while saving blocks IDs'
+                  );
+                }
+              });
+            },
+            error: function(response, textStatus, errorThrown) {
+              Rexbuilder_Util.displayAjaxError(
+                {
+                  response: response,
+                  textStatus: textStatus,
+                  errorThrown: errorThrown
+                },
+                'Error while getting blocks IDs'
+              );
+            }
+          })
+        );
       } else {
         //ajax calls
         ajaxCalls.push(
@@ -432,7 +432,7 @@ var Rex_Save_Listeners = (function($) {
               if (response.success) {
               }
             },
-            error: function(response) {}
+            error: function(response) { }
           })
         );
       }
@@ -531,7 +531,7 @@ var Rex_Save_Listeners = (function($) {
               // Model names updated!
             }
           },
-          error: function(response) {}
+          error: function(response) { }
         })
       );
 
@@ -564,7 +564,7 @@ var Rex_Save_Listeners = (function($) {
                     // Custom models updated!
                   }
                 },
-                error: function(response) {}
+                error: function(response) { }
               })
             );
             break;
@@ -602,8 +602,8 @@ var Rex_Save_Listeners = (function($) {
                 Rexbuilder_Section.updateModelsHtmlLive(dataModel);
               }
             },
-            error: function(response) {},
-            complete: function(response) {}
+            error: function(response) { },
+            complete: function(response) { }
           })
         );
 
@@ -629,7 +629,7 @@ var Rex_Save_Listeners = (function($) {
                 if (response.success) {
                 }
               },
-              error: function(response) {}
+              error: function(response) { }
             })
           );
         }
@@ -772,7 +772,7 @@ var Rex_Save_Listeners = (function($) {
     model.customizations = customizations;
 
     return model;
-	};
+  };
 
 
 
@@ -811,12 +811,12 @@ var Rex_Save_Listeners = (function($) {
     var saveBlockDisposition = checkEditsLayoutGrid(gridGallery);
 
     if (layoutName == "default" || checkEditsSection(section)) {
-      section_props.props = createSectionProperties( $section, "customLayout", null );
+      section_props.props = createSectionProperties($section, "customLayout", null);
     }
 
-    if ( section.getAttribute("data-rex-collapse-grid") == "true") {
+    if (section.getAttribute("data-rex-collapse-grid") == "true") {
       section_props.props.collapse_grid = true;
-      if(!saveBlockDisposition && Rexbuilder_Util.isMobile()){
+      if (!saveBlockDisposition && Rexbuilder_Util.isMobile()) {
         section_props.props.pickDefaultSizeCollapse = true;
         saveBlockDisposition = false;
       } else {
@@ -840,8 +840,8 @@ var Rex_Save_Listeners = (function($) {
 
     galleryIstance.updateAllElementsProperties();
 
-    for( i=0; i<tot; i ++ ) {
-      if (! Rexbuilder_Util.hasClass(elementsOrdered[i], 'removing_block')) {
+    for (i = 0; i < tot; i++) {
+      if (!Rexbuilder_Util.hasClass(elementsOrdered[i], 'removing_block')) {
         var blockRexID = elementsOrdered[i].getAttribute("data-rexbuilder-block-id");
         var block_props = {
           name: blockRexID,
@@ -849,8 +849,8 @@ var Rex_Save_Listeners = (function($) {
         };
         var check_edit = checkEditsElement(elementsOrdered[i]);
 
-        if ( layoutName == "default" || saveBlockDisposition || check_edit ) {
-          block_props.props = createBlockProperties( elementsOrdered[i], "customLayout", gridGallery );
+        if (layoutName == "default" || saveBlockDisposition || check_edit) {
+          block_props.props = createBlockProperties(elementsOrdered[i], "customLayout", gridGallery);
         }
 
         if (
@@ -1021,24 +1021,24 @@ var Rex_Save_Listeners = (function($) {
 
     id_image_bg_block = itemData.getAttribute("data-id_image_bg_block") === null ? "" : itemData.getAttribute("data-id_image_bg_block");
     image_bg_block = itemData.getAttribute("data-image_bg_block") === null ? "" : itemData.getAttribute("data-image_bg_block");
-    image_width = isNaN( parseInt( itemContent.getAttribute("data-background_image_width") ) ) ? "" : parseInt( itemContent.getAttribute("data-background_image_width") );
-    image_height = isNaN( parseInt( itemContent.getAttribute("data-background_image_height") ) ) ? "" : parseInt( itemContent.getAttribute("data-background_image_height"));
+    image_width = isNaN(parseInt(itemContent.getAttribute("data-background_image_width"))) ? "" : parseInt(itemContent.getAttribute("data-background_image_width"));
+    image_height = isNaN(parseInt(itemContent.getAttribute("data-background_image_height"))) ? "" : parseInt(itemContent.getAttribute("data-background_image_height"));
     var defaultTypeImage = gridGallery.getAttribute("data-layout") == "fixed" ? "full" : "natural";
     type_bg_block = itemData.getAttribute("data-type_bg_block") == null ? defaultTypeImage : itemData.getAttribute("data-type_bg_block");
     image_size = itemData.getAttribute("data-image_size") == null ? "full" : itemData.getAttribute("data-image_size");
-		photoswipe = itemData.getAttribute("data-photoswipe") === null ? "" : itemData.getAttribute("data-photoswipe");
+    photoswipe = itemData.getAttribute("data-photoswipe") === null ? "" : itemData.getAttribute("data-photoswipe");
     image_bg_elem_active = itemData.getAttribute("data-image_bg_elem_active") != null ? itemData.getAttribute("data-image_bg_elem_active") : true;
 
     video_bg_id = itemData.getAttribute("data-video_bg_id") === null ? "" : itemData.getAttribute("data-video_bg_id");
     // video dimensions fixes (we do not save them, we must save!)
-    if ( videoElem ) {
-      if ( '' == itemData.getAttribute("data-video_bg_width") || itemData.getAttribute("data-video_bg_width") === null ) {
+    if (videoElem) {
+      if ('' == itemData.getAttribute("data-video_bg_width") || itemData.getAttribute("data-video_bg_width") === null) {
         video_bg_width = videoElem.getAttribute('data-rex-video-width');
       } else {
         video_bg_width = itemData.getAttribute("data-video_bg_width");
       }
 
-      if ( '' == itemData.getAttribute("data-video_bg_height") || itemData.getAttribute("data-video_bg_height") === null ) {
+      if ('' == itemData.getAttribute("data-video_bg_height") || itemData.getAttribute("data-video_bg_height") === null) {
         video_bg_height = videoElem.getAttribute('data-rex-video-height');
       } else {
         video_bg_height = itemData.getAttribute("data-video_bg_height");
@@ -1070,7 +1070,7 @@ var Rex_Save_Listeners = (function($) {
 
     block_has_scrollbar = itemData.getAttribute("data-block_has_scrollbar") === null ? "false" : itemData.getAttribute("data-block_has_scrollbar");
 
-    if ( gridGallery.getAttribute("data-layout") == "masonry" ) {
+    if (gridGallery.getAttribute("data-layout") == "masonry") {
       block_dimensions_live_edited = itemData.getAttribute("data-block_dimensions_live_edited") === null ? "" : itemData.getAttribute("data-block_dimensions_live_edited");
     } else {
       block_dimensions_live_edited = "";
@@ -1080,9 +1080,9 @@ var Rex_Save_Listeners = (function($) {
 
     block_flex_img_position = itemData.getAttribute("data-block_flex_img_position") == null ? "" : itemData.getAttribute("data-block_flex_img_position");
 
-    block_ratio = ( elem.offsetHeight / elem.offsetWidth ).toFixed(3);
+    block_ratio = (elem.offsetHeight / elem.offsetWidth).toFixed(3);
 
-    if ( Rexbuilder_Util.hasClass( elem, "block-has-slider") ) {
+    if (Rexbuilder_Util.hasClass(elem, "block-has-slider")) {
       slider_dimension_ratio = block_ratio;
       // $itemData.attr( "data-slider_ratio", ($elem.outerHeight() / $elem.outerWidth()).toFixed(3) );
     } else {
@@ -1095,12 +1095,12 @@ var Rex_Save_Listeners = (function($) {
     // var parsedHeightIncreased = parseInt($itemData.attr("data-element_height_increased"));
     // element_height_increased = isNaN(parsedHeightIncreased) ? 0 : parsedHeightIncreased;
 
-    var parsedElementRealFluid = parseInt( itemData.getAttribute("data-element_real_fluid") );
-    element_real_fluid = ( isNaN( parsedElementRealFluid ) ? 0 : parsedElementRealFluid );
+    var parsedElementRealFluid = parseInt(itemData.getAttribute("data-element_real_fluid"));
+    element_real_fluid = (isNaN(parsedElementRealFluid) ? 0 : parsedElementRealFluid);
 
     if (mode == "shortcode") {
       textWrap = itemContent.querySelector('.text-wrap');
-      if ( ! Rexbuilder_Util.hasClass( elem, "block-has-slider" ) ) {
+      if (!Rexbuilder_Util.hasClass(elem, "block-has-slider")) {
         var savingBlock = textWrap.cloneNode(true);
         var tmpMIB = savingBlock.querySelector('.medium-insert-buttons');
         var tmpTESF = savingBlock.querySelector('.text-editor-span-fix');
@@ -1108,50 +1108,50 @@ var Rex_Save_Listeners = (function($) {
         var tmpUSH = savingBlock.querySelector('.ui-sortable-handle');
         var tmpFIG = savingBlock.querySelector('figure');
 
-        if ( tmpMIB ) { tmpMIB.parentNode.removeChild(tmpMIB); }
-        if ( tmpTESF ) { tmpTESF.parentNode.removeChild(tmpTESF); }
-        if ( tmpUS ) { Rexbuilder_Util.removeClass( tmpUS, 'ui-sortable' ); }
-        if ( tmpUSH ) { Rexbuilder_Util.removeClass( tmpUS, 'ui-sortable-handle' ); }
-        if ( tmpFIG ) {
+        if (tmpMIB) { tmpMIB.parentNode.removeChild(tmpMIB); }
+        if (tmpTESF) { tmpTESF.parentNode.removeChild(tmpTESF); }
+        if (tmpUS) { Rexbuilder_Util.removeClass(tmpUS, 'ui-sortable'); }
+        if (tmpUSH) { Rexbuilder_Util.removeClass(tmpUS, 'ui-sortable-handle'); }
+        if (tmpFIG) {
           tmpFIG.removeAttribute('style');
           tmpFIG.removeAttribute('class');
-				}
+        }
 
-				// Replacing cf7 forms with appropriate shortcodes
-				Array.prototype.slice.call(savingBlock.getElementsByClassName('rex-elements-paragraph')).forEach(function (el) {
-					var formID = el.querySelector('.rex-element-wrapper').getAttribute('data-rex-element-id');
-					var cf7Shortcode = el.querySelector('.string-shortcode').getAttribute('shortcode');
+        // Replacing cf7 forms with appropriate shortcodes
+        Array.prototype.slice.call(savingBlock.getElementsByClassName('rex-elements-paragraph')).forEach(function(el) {
+          var formID = el.querySelector('.rex-element-wrapper').getAttribute('data-rex-element-id');
+          var cf7Shortcode = el.querySelector('.string-shortcode').getAttribute('shortcode');
 
-					// Replacing the outerHTML the HTML element gets entirely deleted
-					el.outerHTML = '[RexFormWrapper id="' + formID + '"]' + cf7Shortcode + '[/RexFormWrapper]';
-				});
+          // Replacing the outerHTML the HTML element gets entirely deleted
+          el.outerHTML = '[RexFormWrapper id="' + formID + '"]' + cf7Shortcode + '[/RexFormWrapper]';
+        });
 
-				// Retrieve the block content
-				if (savingBlock.textContent.trim() == '') {
-					if (
-						savingBlock.getElementsByTagName('iframe').length > 0 ||
-						savingBlock.getElementsByTagName('img').length > 0 ||
-						savingBlock.getElementsByTagName('i').length > 0 ||
-						savingBlock.getElementsByTagName('form').length > 0 ||
-						savingBlock.getElementsByTagName('hr').length > 0
-					) {
+        // Retrieve the block content
+        if (savingBlock.textContent.trim() == '') {
+          if (
+            savingBlock.getElementsByTagName('iframe').length > 0 ||
+            savingBlock.getElementsByTagName('img').length > 0 ||
+            savingBlock.getElementsByTagName('i').length > 0 ||
+            savingBlock.getElementsByTagName('form').length > 0 ||
+            savingBlock.getElementsByTagName('hr').length > 0
+          ) {
             content = getBlockContent(savingBlock)
-					} else {
-						content = '';
-					}
-				} else {
-            content = getBlockContent(savingBlock)
+          } else {
+            content = '';
+          }
+        } else {
+          content = getBlockContent(savingBlock)
 
-					// Why are we doing this after the retrieving of the HTML?
-					Array.prototype.slice.call(savingBlock.getElementsByClassName('rex-button-data')).forEach(function (el) {
-						el.removeAttribute('data-synchronize');
-					});
-				}
+          // Why are we doing this after the retrieving of the HTML?
+          Array.prototype.slice.call(savingBlock.getElementsByClassName('rex-button-data')).forEach(function(el) {
+            el.removeAttribute('data-synchronize');
+          });
+        }
       } else {
         var sliderToSave = textWrap.querySelector('.rex-slider-wrap[data-rex-slider-active="true"]');
 
-        if ( sliderToSave ) {
-          var sliderID = parseInt( sliderToSave.getAttribute("data-slider-id") );
+        if (sliderToSave) {
+          var sliderID = parseInt(sliderToSave.getAttribute("data-slider-id"));
         }
 
         content = '[RexSlider slider_id="' + sliderID + '"]';
@@ -1191,11 +1191,11 @@ var Rex_Save_Listeners = (function($) {
         ' block_padding="' + block_padding + '"' +
         ' overlay_block_color="' + overlay_block_color + '"' +
         ' overlay_block_color_active="' + overlay_block_color_active + '"' +
-        ( '' !== zak_background ? ' zak_background="' + zak_background + '"' : '' ) +
-        ( '' !== zak_side ? ' zak_side="' + zak_side + '"' : '' ) +
-        ( '' !== zak_title ? ' zak_title="' + zak_title + '"' : '' ) +
-        ( '' !== zak_icon ? ' zak_icon="' + zak_icon + '"' : '' ) +
-        ( '' !== zak_foreground ? ' zak_foreground="' + zak_foreground + '"' : '' ) +
+        ('' !== zak_background ? ' zak_background="' + zak_background + '"' : '') +
+        ('' !== zak_side ? ' zak_side="' + zak_side + '"' : '') +
+        ('' !== zak_title ? ' zak_title="' + zak_title + '"' : '') +
+        ('' !== zak_icon ? ' zak_icon="' + zak_icon + '"' : '') +
+        ('' !== zak_foreground ? ' zak_foreground="' + zak_foreground + '"' : '') +
         ' block_animation="' + block_animation + '"' +
         ' video_has_audio="' + (video_has_audio.toString() == "true" ? "1" : "0") + '"' +
         ' block_has_scrollbar="' + block_has_scrollbar + '"' +
@@ -1208,11 +1208,11 @@ var Rex_Save_Listeners = (function($) {
     } else if (mode == "customLayout") {
 
       var sectionId = $(gridGallery).parents('.rexpansive_section').attr('data-rexlive-section-id');
-      var traceBlockData = Rexbuilder_Util.editedDataInfo.getBlockData( sectionId, rex_id );
+      var traceBlockData = Rexbuilder_Util.editedDataInfo.getBlockData(sectionId, rex_id);
 
       var props = {};
 
-			props['hide'] = hide_block;
+      props['hide'] = hide_block;
 
       if (Rexbuilder_Util.activeLayout == "default") {
         props["element_edited"] = false;
@@ -1232,85 +1232,85 @@ var Rex_Save_Listeners = (function($) {
       props["gs_x"] = gs_x;
       // props["element_height_increased"] = element_height_increased;
       props["element_real_fluid"] = element_real_fluid;
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.color_bg_block ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.color_bg_block)) {
         props["color_bg_block"] = color_bg_block;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.color_bg_block_active ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.color_bg_block_active)) {
         props["color_bg_block_active"] = color_bg_block_active;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_bg_url ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_bg_url)) {
         props["image_bg_url"] = image_bg_block;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_width ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_width)) {
         props["image_width"] = image_width;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_height ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_height)) {
         props["image_height"] = image_height;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.id_image_bg ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.id_image_bg)) {
         props["id_image_bg"] = id_image_bg_block;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_size ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_size)) {
         props["image_size"] = image_size;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_bg_elem_active ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.image_bg_elem_active)) {
         props["image_bg_elem_active"] = image_bg_elem_active;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.type_bg_image ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.type_bg_image)) {
         props["type_bg_image"] = type_bg_block;
       }
 
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_id ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_id)) {
         props["video_bg_id"] = video_bg_id;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_width ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_width)) {
         props["video_bg_width"] = video_bg_width;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_height ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_height)) {
         props["video_bg_height"] = video_bg_height;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_mp4_url ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_mp4_url)) {
         props["video_mp4_url"] = video_mp4_url;
       }
 
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_url_youtube ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_url_youtube)) {
         props["video_bg_url_youtube"] = video_bg_url;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_url_vimeo ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.video_bg_url_vimeo)) {
         props["video_bg_url_vimeo"] = video_bg_url_vimeo;
       }
 
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.photoswipe ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.photoswipe)) {
         props["photoswipe"] = photoswipe;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.block_custom_class ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.block_custom_class)) {
         props["block_custom_class"] = block_custom_class;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.block_padding ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.block_padding)) {
         props["block_padding"] = block_padding;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.overlay_block_color ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.overlay_block_color)) {
         props["overlay_block_color"] = overlay_block_color;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.overlay_block_color_active ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.overlay_block_color_active)) {
         props["overlay_block_color_active"] = overlay_block_color_active;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.linkurl ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.linkurl)) {
         props["linkurl"] = linkurl;
       }
-      if ( '' !== zak_background ) props["zak_background"] = zak_background;
-      if ( '' !== zak_side ) props["zak_side"] = zak_side;
-      if ( '' !== zak_title ) props["zak_title"] = zak_title;
-      if ( '' !== zak_icon ) props["zak_icon"] = zak_icon;
-      if ( '' !== zak_foreground ) props["zak_foreground"] = zak_foreground;
+      if ('' !== zak_background) props["zak_background"] = zak_background;
+      if ('' !== zak_side) props["zak_side"] = zak_side;
+      if ('' !== zak_title) props["zak_title"] = zak_title;
+      if ('' !== zak_icon) props["zak_icon"] = zak_icon;
+      if ('' !== zak_foreground) props["zak_foreground"] = zak_foreground;
       props["block_animation"] = block_animation;
       props["video_has_audio"] = video_has_audio;
       props["block_has_scrollbar"] = block_has_scrollbar;
       // props["block_dimensions_live_edited"] = block_dimensions_live_edited;
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.block_flex_position ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.block_flex_position)) {
         props["block_flex_position"] = block_flex_position;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.block_flex_img_position ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceBlockData && traceBlockData.block_flex_img_position)) {
         props["block_flex_img_position"] = block_flex_img_position;
       }
       props["slider_dimension_ratio"] = slider_dimension_ratio;
@@ -1330,7 +1330,7 @@ var Rex_Save_Listeners = (function($) {
       image_bg_section = "",
       image_width = 0,
       image_height = 0,
-      image_size="full",
+      image_size = "full",
       id_image_bg_section = "",
       image_bg_section_active = "",
       video_bg_url_section = "",
@@ -1384,16 +1384,16 @@ var Rex_Save_Listeners = (function($) {
 
     image_bg_section = sectionData.getAttribute("data-image_bg_section") === null ? "" : sectionData.getAttribute("data-image_bg_section");
     image_width = section.getAttribute("data-background_image_width") === null
-        ? ""
-        : isNaN(parseInt(section.getAttribute("data-background_image_width")))
+      ? ""
+      : isNaN(parseInt(section.getAttribute("data-background_image_width")))
         ? ""
         : parseInt(section.getAttribute("data-background_image_width"));
     image_height =
       section.getAttribute("data-background_image_height") === null
         ? ""
         : isNaN(parseInt(section.getAttribute("data-background_image_height")))
-        ? ""
-        : parseInt(section.getAttribute("data-background_image_height"));
+          ? ""
+          : parseInt(section.getAttribute("data-background_image_height"));
     image_size = sectionData.getAttribute("data-image_size") == null ? "full" : sectionData.getAttribute("data-image_size");
     id_image_bg_section = sectionData.getAttribute("data-id_image_bg_section") === null ? "" : sectionData.getAttribute("data-id_image_bg_section");
     image_bg_section_active = sectionData.getAttribute("data-image_bg_section_active") == null ? true : sectionData.getAttribute("data-image_bg_section_active");
@@ -1403,14 +1403,14 @@ var Rex_Save_Listeners = (function($) {
     video_bg_id_section = sectionData.getAttribute("data-video_bg_id_section") === null ? "" : sectionData.getAttribute("data-video_bg_id_section");
 
     // video dimensions fixes (we do not save them, we must save!)
-    if ( videoElem ) {
-      if ( '' == sectionData.getAttribute("data-video_bg_width_section") || sectionData.getAttribute("data-video_bg_width_section") === null ) {
+    if (videoElem) {
+      if ('' == sectionData.getAttribute("data-video_bg_width_section") || sectionData.getAttribute("data-video_bg_width_section") === null) {
         video_bg_width_section = videoElem.getAttribute('data-rex-video-width');
       } else {
         video_bg_width_section = sectionData.getAttribute("data-video_bg_width_section");
       }
 
-      if ( '' == sectionData.getAttribute("data-video_bg_height_section") || sectionData.getAttribute("data-video_bg_height_section") === null ) {
+      if ('' == sectionData.getAttribute("data-video_bg_height_section") || sectionData.getAttribute("data-video_bg_height_section") === null) {
         video_bg_height_section = videoElem.getAttribute('data-rex-video-height');
       } else {
         video_bg_height_section = sectionData.getAttribute("data-video_bg_height_section");
@@ -1428,11 +1428,11 @@ var Rex_Save_Listeners = (function($) {
     section_width = $gridGallery.parent().css("max-width");
     dimension = section_width === "100%" || section_width == "none" ? "full" : "boxed";
 
-    var grid_gutter = parseInt( gridGallery.getAttribute("data-separator") );
-    var grid_separator_top = parseInt( gridGallery.getAttribute("data-row-separator-top") );
-    var grid_separator_right = parseInt( gridGallery.getAttribute("data-row-separator-right") );
-    var grid_separator_bottom = parseInt( gridGallery.getAttribute("data-row-separator-bottom") );
-    var grid_separator_left = parseInt( gridGallery.getAttribute("data-row-separator-left") );
+    var grid_gutter = parseInt(gridGallery.getAttribute("data-separator"));
+    var grid_separator_top = parseInt(gridGallery.getAttribute("data-row-separator-top"));
+    var grid_separator_right = parseInt(gridGallery.getAttribute("data-row-separator-right"));
+    var grid_separator_bottom = parseInt(gridGallery.getAttribute("data-row-separator-bottom"));
+    var grid_separator_left = parseInt(gridGallery.getAttribute("data-row-separator-left"));
 
     var row_distances = {
       gutter: isNaN(grid_gutter) ? "" : grid_gutter,
@@ -1450,10 +1450,10 @@ var Rex_Save_Listeners = (function($) {
 
     var sectionComputedStyle = getComputedStyle(section);
 
-    var section_margin_top = parseInt( sectionComputedStyle["margin-top"].replace("px", "") );
-    var section_margin_right = parseInt( sectionComputedStyle["margin-right"].replace("px", "") );
-    var section_margin_bottom = parseInt( sectionComputedStyle["margin-bottom"].replace("px", "") );
-    var section_margin_left = parseInt( sectionComputedStyle["margin-left"].replace("px", "") );
+    var section_margin_top = parseInt(sectionComputedStyle["margin-top"].replace("px", ""));
+    var section_margin_right = parseInt(sectionComputedStyle["margin-right"].replace("px", ""));
+    var section_margin_bottom = parseInt(sectionComputedStyle["margin-bottom"].replace("px", ""));
+    var section_margin_left = parseInt(sectionComputedStyle["margin-left"].replace("px", ""));
 
     var rowMargins = {
       top: isNaN(section_margin_top) ? "" : section_margin_top,
@@ -1486,7 +1486,7 @@ var Rex_Save_Listeners = (function($) {
 
     rexlive_model_id = section.getAttribute("data-rexlive-model-id") == null ? "" : section.getAttribute("data-rexlive-model-id");
     rexlive_model_name = section.getAttribute("data-rexlive-model-name") == null ? "" : section.getAttribute("data-rexlive-model-name");
-    grid_cell_width = Rexbuilder_Util.getGalleryInstance( $section ).properties.singleWidth;
+    grid_cell_width = Rexbuilder_Util.getGalleryInstance($section).properties.singleWidth;
 
     if (mode == "shortcode") {
       output =
@@ -1535,7 +1535,7 @@ var Rex_Save_Listeners = (function($) {
 
       // create elements shortcode
       elementsOrdered.forEach(function(el) {
-        if ( ! Rexbuilder_Util.hasClass( el, 'removing_block' ) ) {
+        if (!Rexbuilder_Util.hasClass(el, 'removing_block')) {
           output += createBlockProperties(el, "shortcode", gridGallery);
         }
       });
@@ -1546,132 +1546,132 @@ var Rex_Save_Listeners = (function($) {
       return output;
     } else if (mode == "customLayout") {
 
-      var traceSectionData = Rexbuilder_Util.editedDataInfo.getSectionData( rexlive_section_id );
+      var traceSectionData = Rexbuilder_Util.editedDataInfo.getSectionData(rexlive_section_id);
 
       var props = {};
 
       props["collapse_grid"] = collapse_grid;
-			props["grid_cell_width"] = grid_cell_width;
+      props["grid_cell_width"] = grid_cell_width;
 
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.section_name ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.section_name)) {
         props["section_name"] = section_name;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.section_nav_label ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.section_nav_label)) {
         props["section_nav_label"] = section_nav_label;
       }
       props["type"] = type;
       // default always save, otherwise check
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.color_bg_section ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.color_bg_section)) {
         props["color_bg_section"] = color_bg_section;
       }
       // default always save, otherwise check
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.color_bg_section_active ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.color_bg_section_active)) {
         props["color_bg_section_active"] = color_bg_section_active;
-			}
+      }
 
       if (
-				'default' === Rexbuilder_Util.activeLayout ||
-				('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.dimension)
-			) {
-				props['dimension'] = dimension;
-			}
+        'default' === Rexbuilder_Util.activeLayout ||
+        ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.dimension)
+      ) {
+        props['dimension'] = dimension;
+      }
 
       // default always save, otherwise check
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.margin ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.margin)) {
         props["margin"] = margin;
       }
       // default always save, otherwise check
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_bg_section_active ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_bg_section_active)) {
         props["image_bg_section_active"] = image_bg_section_active;
       }
       // default always save, otherwise check
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_bg_section ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_bg_section)) {
         props["image_bg_section"] = image_bg_section;
       }
       // default always save, otherwise check
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_width ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_width)) {
         props["image_width"] = image_width;
       }
       // default always save, otherwise check
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_height ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_height)) {
         props["image_height"] = image_height;
       }
       // default always save, otherwise check
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.id_image_bg_section ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.id_image_bg_section)) {
         props["id_image_bg_section"] = id_image_bg_section;
       }
       // default always save, otherwise check
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_size ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.image_size)) {
         props["image_size"] = image_size;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_id ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_id)) {
         props["video_bg_id"] = video_bg_id_section;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_width_section ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_width_section)) {
         props["video_bg_width_section"] = video_bg_width_section;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_height_section ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_height_section)) {
         props["video_bg_height_section"] = video_bg_height_section;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_mp4_url ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_mp4_url)) {
         props["video_mp4_url"] = video_mp4_url;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_url_section ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_url_section)) {
         props["video_bg_url_section"] = video_bg_url_section;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_url_vimeo_section ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.video_bg_url_vimeo_section)) {
         props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
-			}
+      }
 
-			props['full_height'] = full_height;
+      props['full_height'] = full_height;
 
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.block_distance ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.block_distance)) {
         props["block_distance"] = block_distance;
-			}
+      }
 
-			props["layout"] = layout;
+      props["layout"] = layout;
 
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.custom_classes ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.custom_classes)) {
         props["custom_classes"] = custom_classes;
-			}
+      }
 
-			if (
-				'default' === Rexbuilder_Util.activeLayout ||
-				('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.section_width)
-			) {
-				props['section_width'] = section_width;
-			}
+      if (
+        'default' === Rexbuilder_Util.activeLayout ||
+        ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.section_width)
+      ) {
+        props['section_width'] = section_width;
+      }
 
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_separator_top ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_separator_top)) {
         props["row_separator_top"] = row_separator_top;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_separator_bottom ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_separator_bottom)) {
         props["row_separator_bottom"] = row_separator_bottom;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_separator_right ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_separator_right)) {
         props["row_separator_right"] = row_separator_right;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_separator_left ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_separator_left)) {
         props["row_separator_left"] = row_separator_left;
       }
       // default always save, otherwise check
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_margin_top ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_margin_top)) {
         props["row_margin_top"] = row_margin_top;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_margin_bottom ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_margin_bottom)) {
         props["row_margin_bottom"] = row_margin_bottom;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_margin_right ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_margin_right)) {
         props["row_margin_right"] = row_margin_right;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_margin_left ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_margin_left)) {
         props["row_margin_left"] = row_margin_left;
       }
 
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_overlay_color ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_overlay_color)) {
         props["row_overlay_color"] = row_overlay_color;
       }
-      if ( 'default' === Rexbuilder_Util.activeLayout || ( 'default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_overlay_active ) ) {
+      if ('default' === Rexbuilder_Util.activeLayout || ('default' !== Rexbuilder_Util.activeLayout && traceSectionData && traceSectionData.row_overlay_active)) {
         props["row_overlay_active"] = row_overlay_active;
       }
       props["rexlive_model_id"] = rexlive_model_id;
@@ -1768,8 +1768,8 @@ var Rex_Save_Listeners = (function($) {
   var _checkSpecialEffects = function() {
     var blocks;
     var text, blockData, blockCustomClass, sectionData, sectionCustomClass, sectionRexID, sectionTargets, sectionDef;
-    var i,len,z,l;
-    var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section:not(.removing_section)') );
+    var i, len, z, l;
+    var sections = [].slice.call(Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section:not(.removing_section)'));
     var layoutData = document.getElementById('rexbuilder-layout-data');
     // effects to check
     var effects = [
@@ -1827,23 +1827,23 @@ var Rex_Save_Listeners = (function($) {
       }
     ];
 
-    sections.forEach( function( section ) {
+    sections.forEach(function(section) {
       // check all customizations
-      sectionRexID = section.getAttribute( 'data-rexlive-section-id' );
-      if ( sectionRexID ) {
-        sectionTargets = [].slice.call( layoutData.querySelectorAll('[data-section-rex-id="' + sectionRexID + '"]') );
-        sectionTargets.forEach( function( target ) {
-          if ( '' !== target.innerText ) {
-            sectionDef = JSON.parse( target.innerText );
-            for( i = 0, len = sectionDef.length; i < len; i++ ) {
-              for( z=0,l = effects.length; z < l; z++ ) {
-                if ( 'undefined' !== typeof sectionDef[i].props.custom_classes ) {
-                  if( -1 !== sectionDef[i].props.custom_classes.indexOf( effects[z].condition ) ) {
+      sectionRexID = section.getAttribute('data-rexlive-section-id');
+      if (sectionRexID) {
+        sectionTargets = [].slice.call(layoutData.querySelectorAll('[data-section-rex-id="' + sectionRexID + '"]'));
+        sectionTargets.forEach(function(target) {
+          if ('' !== target.innerText) {
+            sectionDef = JSON.parse(target.innerText);
+            for (i = 0, len = sectionDef.length; i < len; i++) {
+              for (z = 0, l = effects.length; z < l; z++) {
+                if ('undefined' !== typeof sectionDef[i].props.custom_classes) {
+                  if (-1 !== sectionDef[i].props.custom_classes.indexOf(effects[z].condition)) {
                     effects[z].active = true;
                   }
                 }
-                if ( 'undefined' !== typeof sectionDef[i].props.block_custom_class ) {
-                  if( -1 !== sectionDef[i].props.block_custom_class.indexOf( effects[z].condition ) ) {
+                if ('undefined' !== typeof sectionDef[i].props.block_custom_class) {
+                  if (-1 !== sectionDef[i].props.block_custom_class.indexOf(effects[z].condition)) {
                     effects[z].active = true;
                   }
                 }
@@ -1854,27 +1854,27 @@ var Rex_Save_Listeners = (function($) {
       }
 
       // check section class
-      sectionData = section.querySelector( '.section-data' );
-      if ( sectionData ) {
-        sectionCustomClass = sectionData.getAttribute( 'data-custom_classes' );
-        if ( sectionCustomClass ) {
-          for( z=0,l = effects.length; z < l; z++ ) {
-            if( -1 !== sectionCustomClass.indexOf( effects[z].condition ) ) {
+      sectionData = section.querySelector('.section-data');
+      if (sectionData) {
+        sectionCustomClass = sectionData.getAttribute('data-custom_classes');
+        if (sectionCustomClass) {
+          for (z = 0, l = effects.length; z < l; z++) {
+            if (-1 !== sectionCustomClass.indexOf(effects[z].condition)) {
               effects[z].active = true;
             }
           }
         }
       }
 
-      blocks = [].slice.call( section.querySelectorAll('.grid-stack-item:not(.removing_block)') );
-      blocks.forEach( function( block ) {
+      blocks = [].slice.call(section.querySelectorAll('.grid-stack-item:not(.removing_block)'));
+      blocks.forEach(function(block) {
         // check block classes
-        blockData = block.querySelector( '.rexbuilder-block-data' );
-        if ( blockData ) {
-          blockCustomClass = blockData.getAttribute( 'data-block_custom_class' );
-          if ( blockCustomClass ) {
-            for( z=0,l = effects.length; z < l; z++ ) {
-              if( -1 !== blockCustomClass.indexOf( effects[z].condition ) ) {
+        blockData = block.querySelector('.rexbuilder-block-data');
+        if (blockData) {
+          blockCustomClass = blockData.getAttribute('data-block_custom_class');
+          if (blockCustomClass) {
+            for (z = 0, l = effects.length; z < l; z++) {
+              if (-1 !== blockCustomClass.indexOf(effects[z].condition)) {
                 effects[z].active = true;
               }
             }
@@ -1882,10 +1882,10 @@ var Rex_Save_Listeners = (function($) {
         }
 
         // check block content
-        text = block.querySelector( '.text-wrap' );
-        if ( text ) {
-          for( z=0,l = effects.length; z < l; z++ ) {
-            if( -1 !== text.innerHTML.indexOf( effects[z].condition ) ) {
+        text = block.querySelector('.text-wrap');
+        if (text) {
+          for (z = 0, l = effects.length; z < l; z++) {
+            if (-1 !== text.innerHTML.indexOf(effects[z].condition)) {
               effects[z].active = true;
             }
           }

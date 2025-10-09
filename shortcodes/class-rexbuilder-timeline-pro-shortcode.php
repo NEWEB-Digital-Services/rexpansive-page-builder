@@ -29,12 +29,16 @@ class Rexbuilder_Timeline_Pro {
 	public static function render( $atts, $content = null ) {
 		global $title_wrap_start;
 		global $title_wrap_end;
+		global $subtitle_wrap_start;
+		global $subtitle_wrap_end;
 
 		extract( shortcode_atts( array(
 			'id' => '',
 			'classes' => '',
 			'title_tag' => 'h3',
+			'subtitle_tag' => 'p',
 			'title_color' => '',
+			'subtitle_color' => '',
 			'dot_color' => '',
 			'line_color' => '',
 		), $atts ) );
@@ -61,6 +65,13 @@ class Rexbuilder_Timeline_Pro {
 		}
 		$title_wrap_start .= '>';
 		$title_wrap_end = '</' . $title_tag . '>';
+
+		$subtitle_wrap_start = '<' . $subtitle_tag;
+		if ( ! empty( $subtitle_color ) ) {
+			$subtitle_wrap_start .= ' style="color:' . $subtitle_color . ';"';
+		}
+		$subtitle_wrap_start .= '>';
+		$subtitle_wrap_end = '</' . $subtitle_tag . '>';
 
 		ob_start();
 ?>

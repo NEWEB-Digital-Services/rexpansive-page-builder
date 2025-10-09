@@ -26,7 +26,7 @@
  * @property	{string}	position
  */
 
-var dragDropInstances = (function ($) {
+var dragDropInstances = (function($) {
 	/**
 	 * Represent a Drag & Drop helper.
 	 * TODO Make properties private.
@@ -130,7 +130,7 @@ var dragDropInstances = (function ($) {
 	 * @param		{MouseCoords}			mousePos
 	 * @returns	{MousePercentage}
 	 */
-	DragDrop.getMouseBearingsPercentage = function ($element, elementRect, mousePos) {
+	DragDrop.getMouseBearingsPercentage = function($element, elementRect, mousePos) {
 		if (!elementRect) {
 			elementRect = $element.get(0).getBoundingClientRect();
 		}
@@ -146,7 +146,7 @@ var dragDropInstances = (function ($) {
 	 * @param		{JQuery}	$element
 	 * @returns	{boolean}
 	 */
-	DragDrop.checkVoidElement = function ($element) {
+	DragDrop.checkVoidElement = function($element) {
 		return $element.is(voidElementsSelector);
 	};
 
@@ -157,7 +157,7 @@ var dragDropInstances = (function ($) {
 	 * @param 	{number} 			mouseY
 	 * @returns	{number}			Distance
 	 */
-	DragDrop.calculateDistance = function (elementData, mouseX, mouseY) {
+	DragDrop.calculateDistance = function(elementData, mouseX, mouseY) {
 		return Math.sqrt(Math.pow(elementData.x - mouseX, 2) + Math.pow(elementData.y - mouseY, 2));
 	};
 
@@ -168,13 +168,13 @@ var dragDropInstances = (function ($) {
 	 * @param		{number} clientY
 	 * @returns	{{$el: JQuery, position: string}|boolean}
 	 */
-	DragDrop.findNearestElement = function ($container, clientX, clientY) {
+	DragDrop.findNearestElement = function($container, clientX, clientY) {
 		var previousElData = null;
 		var $childrenElement = $container.children(':not(.drop-marker,[data-dragcontext-marker])');
 
 		if ($childrenElement.length <= 0) return;
 
-		$childrenElement.each(function (index, child) {
+		$childrenElement.each(function(index, child) {
 			if ($(child).is('.drop-marker')) return;
 
 			var offset = child.getBoundingClientRect();
@@ -269,7 +269,7 @@ var dragDropInstances = (function ($) {
 	 * @param		{JQuery}	$element
 	 * @returns {string}
 	 */
-	DragDrop.getElementName = function ($element) {
+	DragDrop.getElementName = function($element) {
 		return $element.prop('tagName');
 	};
 
@@ -278,7 +278,7 @@ var dragDropInstances = (function ($) {
 	 * @param		{JQuery}	$targetElement
 	 * @returns {boolean}
 	 */
-	DragDrop.checkIfInline = function ($targetElement) {
+	DragDrop.checkIfInline = function($targetElement) {
 		var targetElementDisplay = $targetElement.css('display');
 
 		// A <br> element has display: inline; but we want to take it as not inline element
@@ -293,17 +293,17 @@ var dragDropInstances = (function ($) {
 	 * @static
 	 * @returns	{JQuery}
 	 */
-	DragDrop.getContextMarker = function () {
+	DragDrop.getContextMarker = function() {
 		return $('<div data-dragcontext-marker><span data-dragcontext-marker-text></span></div>');
 	};
 
 	/**
 	 * @public
 	 */
-	DragDrop.prototype.removeAllPlaceholders = function () {
+	DragDrop.prototype.removeAllPlaceholders = function() {
 		var placeholders = Array.prototype.slice.call(this.context.querySelectorAll('.drop-marker'));
 
-		placeholders.forEach(function (placeholder) {
+		placeholders.forEach(function(placeholder) {
 			placeholder.parentNode.removeChild(placeholder);
 		});
 	};
@@ -313,7 +313,7 @@ var dragDropInstances = (function ($) {
 	 * @param {JQuery}		$element
 	 * @param {string}		position
 	 */
-	DragDrop.prototype.addContainerContextMarker = function ($element, position) {
+	DragDrop.prototype.addContainerContextMarker = function($element, position) {
 		var $contextMarker = DragDrop.getContextMarker();
 
 		this.clearContainerContextMarker();
@@ -336,8 +336,8 @@ var dragDropInstances = (function ($) {
 
 				Array.prototype.slice
 					.call($contextMarker.get(0).querySelectorAll('[data-dragcontext-marker-text]'))
-					.forEach(function (text) {
-						text.innerHTML = name;
+					.forEach(function(text) {
+						text.innerText = name;
 					});
 
 				if (0 !== this.context.querySelectorAll('[data-sh-parent-marker]').length) {
@@ -355,8 +355,8 @@ var dragDropInstances = (function ($) {
 
 				Array.prototype.slice
 					.call($contextMarker.get(0).querySelectorAll('[data-dragcontext-marker-text]'))
-					.forEach(function (text) {
-						text.innerHTML = name;
+					.forEach(function(text) {
+						text.innerText = name;
 					});
 
 				$contextMarker.get(0).setAttribute('data-dragcontext-marker', name.toLowerCase());
@@ -376,7 +376,7 @@ var dragDropInstances = (function ($) {
 	 * @param	{JQuery}		$contextMarker
 	 * @param	{JQuery}		$element
 	 */
-	DragDrop.prototype.positionContextMarker = function ($contextMarker, $element) {
+	DragDrop.prototype.positionContextMarker = function($contextMarker, $element) {
 		var rect = $element.get(0).getBoundingClientRect();
 
 		$contextMarker.css({
@@ -395,10 +395,10 @@ var dragDropInstances = (function ($) {
 	/**
 	 * @deprecated
 	 */
-	DragDrop.prototype.clearContainerContextMarker = function () {
+	DragDrop.prototype.clearContainerContextMarker = function() {
 		var contextMarkers = Array.prototype.slice.call(this.context.querySelectorAll('[data-dragcontext-marker]'));
 
-		contextMarkers.forEach(function (contextMarker) {
+		contextMarkers.forEach(function(contextMarker) {
 			contextMarker.parentNode.removeChild(contextMarker);
 		});
 	};
@@ -408,7 +408,7 @@ var dragDropInstances = (function ($) {
 	 * @param {MousePercentage}	mousePercents
 	 * @param {MouseCoords}			mousePos
 	 */
-	DragDrop.prototype.decideBeforeAfter = function ($targetElement, mousePercents, mousePos) {
+	DragDrop.prototype.decideBeforeAfter = function($targetElement, mousePercents, mousePos) {
 		var elementIsInline = DragDrop.checkIfInline($targetElement);
 		var elementIsTableCell = $targetElement.is('td,th');
 
@@ -441,7 +441,7 @@ var dragDropInstances = (function ($) {
 	/**
 	 * @param {JQuery}		$element
 	 */
-	DragDrop.prototype.appendPlaceholder = function ($element) {
+	DragDrop.prototype.appendPlaceholder = function($element) {
 		var $placeholder = this.getPlaceHolder();
 
 		$placeholder.addClass('horizontal').css('width', $element.width() + 'px');
@@ -451,7 +451,7 @@ var dragDropInstances = (function ($) {
 	/**
 	 * @param {JQuery}		$element
 	 */
-	DragDrop.prototype.prependPlaceholder = function ($element) {
+	DragDrop.prototype.prependPlaceholder = function($element) {
 		var $placeholder = this.getPlaceHolder();
 
 		$placeholder.addClass('horizontal').css('width', $element.width() + 'px');
@@ -461,7 +461,7 @@ var dragDropInstances = (function ($) {
 	/**
 	 * @param {JQuery}		$element	Element where the placeholder will be placed
 	 */
-	DragDrop.prototype.placeBefore = function ($element) {
+	DragDrop.prototype.placeBefore = function($element) {
 		var inlinePlaceholder = DragDrop.checkIfInline($element);
 		var $placeholder = this.getPlaceHolder();
 
@@ -477,7 +477,7 @@ var dragDropInstances = (function ($) {
 	/**
 	 * @param {JQuery}		$element	Element where the placeholder will be placed
 	 */
-	DragDrop.prototype.placeAfter = function ($element) {
+	DragDrop.prototype.placeAfter = function($element) {
 		var $placeholder = this.getPlaceHolder();
 		var inlinePlaceholder = DragDrop.checkIfInline($element);
 
@@ -495,13 +495,13 @@ var dragDropInstances = (function ($) {
 	 * @param {DOMRect}			elementRect
 	 * @param {MouseCoords}	mousePos
 	 */
-	DragDrop.prototype.addEntryToDragOverQueue = function ($element, elementRect, mousePos) {
+	DragDrop.prototype.addEntryToDragOverQueue = function($element, elementRect, mousePos) {
 		var newEvent = [$element, elementRect, mousePos];
 
 		this.dragoverqueue.push(newEvent);
 	};
 
-	DragDrop.prototype.processDragOverQueue = function () {
+	DragDrop.prototype.processDragOverQueue = function() {
 		if (!this.cursorMoving) return;
 
 		var processing = this.dragoverqueue.pop();
@@ -523,7 +523,7 @@ var dragDropInstances = (function ($) {
 	 * @param {number}	currentX
 	 * @param {number}	currentY
 	 */
-	DragDrop.prototype.checkIfCursorMoves = function (previousX, previousY, currentX, currentY) {
+	DragDrop.prototype.checkIfCursorMoves = function(previousX, previousY, currentX, currentY) {
 		this.cursorMoving = !(previousX === currentX && previousY === currentY);
 	};
 
@@ -532,7 +532,7 @@ var dragDropInstances = (function ($) {
 	 * @param {string}		position
 	 * @param {JQuery}		$placeholder
 	 */
-	DragDrop.prototype.addPlaceHolder = function ($element, position, $placeholder) {
+	DragDrop.prototype.addPlaceHolder = function($element, position, $placeholder) {
 		throw new Error('Must be implemented by subclass!');
 	};
 
@@ -541,7 +541,7 @@ var dragDropInstances = (function ($) {
 	 * @param		{string}	direction
 	 * @returns	{JQuery}
 	 */
-	DragDrop.prototype.findValidParent = function ($element, direction) {
+	DragDrop.prototype.findValidParent = function($element, direction) {
 		throw new Error('Must be implemented by subclass!');
 	};
 
@@ -549,7 +549,7 @@ var dragDropInstances = (function ($) {
 	 * @abstract
 	 * @returns		{JQuery}
 	 */
-	DragDrop.prototype.getPlaceHolder = function () {
+	DragDrop.prototype.getPlaceHolder = function() {
 		throw new Error('Must be implemented by subclass!');
 	};
 
@@ -560,7 +560,7 @@ var dragDropInstances = (function ($) {
 	 * @param {DOMRect}			elementRect
 	 * @param {MouseCoords}	mousePos
 	 */
-	DragDrop.prototype.orchestrateDragDrop = function ($element, elementRect, mousePos) {
+	DragDrop.prototype.orchestrateDragDrop = function($element, elementRect, mousePos) {
 		throw new Error('Must be implemented by subclass!');
 	};
 
@@ -572,7 +572,7 @@ var dragDropInstances = (function ($) {
 	 * @param 	{DOMRect}			elementRect
 	 * @param 	{MouseCoords}	mousePos
 	 */
-	DragDrop.prototype.reOrchestrate = function ($element, elementRect, mousePos) {
+	DragDrop.prototype.reOrchestrate = function($element, elementRect, mousePos) {
 		var $gridItem = $element.parents('.grid-stack-item');
 		var $textWrap = $gridItem.find('.text-wrap');
 
@@ -609,7 +609,7 @@ var dragDropInstances = (function ($) {
 	 * @param {string}		position
 	 * @param {JQuery}		$placeholder
 	 */
-	RexButtonDragDrop.prototype.addPlaceHolder = function ($element, position, $placeholder) {
+	RexButtonDragDrop.prototype.addPlaceHolder = function($element, position, $placeholder) {
 		if (!$placeholder) {
 			$placeholder = this.getPlaceHolder();
 		}
@@ -654,7 +654,7 @@ var dragDropInstances = (function ($) {
 		// this.addContainerContextMarker($element, whereAddContainerText);
 	};
 
-	RexButtonDragDrop.prototype.getPlaceHolder = function () {
+	RexButtonDragDrop.prototype.getPlaceHolder = function() {
 		return $('<div class="drop-marker drop-marker--rex-button"></div>');
 	};
 
@@ -663,7 +663,7 @@ var dragDropInstances = (function ($) {
 	 * @param		{string}	direction
 	 * @returns	{JQuery}
 	 */
-	RexButtonDragDrop.prototype.findValidParent = function ($element, direction) {
+	RexButtonDragDrop.prototype.findValidParent = function($element, direction) {
 		switch (direction) {
 			case 'left':
 				while (true) {
@@ -759,7 +759,7 @@ var dragDropInstances = (function ($) {
 		}
 	};
 
-	RexButtonDragDrop.prototype.orchestrateDragDrop = function ($element, elementRect, mousePos) {
+	RexButtonDragDrop.prototype.orchestrateDragDrop = function($element, elementRect, mousePos) {
 		// If no element is hovered or element hovered is the placeholder -> not valid -> return false;
 		if (!$element || $element.length == 0 || !elementRect || !mousePos) return false;
 
@@ -901,7 +901,7 @@ var dragDropInstances = (function ($) {
 	 * @param {string}		position
 	 * @param {JQuery}		$placeholder
 	 */
-	RexModelDragDrop.prototype.addPlaceHolder = function ($element, position, $placeholder) {
+	RexModelDragDrop.prototype.addPlaceHolder = function($element, position, $placeholder) {
 		if ($element.hasClass('rex-container')) {
 			if (position == 'before') {
 				position = 'inside-prepend';
@@ -938,7 +938,7 @@ var dragDropInstances = (function ($) {
 		// this.addContainerContextMarker($element, whereAddContainerText);
 	};
 
-	RexModelDragDrop.prototype.getPlaceHolder = function () {
+	RexModelDragDrop.prototype.getPlaceHolder = function() {
 		return $('<div class="drop-marker drop-marker--view"><div class="drop-marker--ruler"></div></div>');
 	};
 
@@ -947,7 +947,7 @@ var dragDropInstances = (function ($) {
 	 * @param		{string}	direction
 	 * @returns	{JQuery}
 	 */
-	RexModelDragDrop.prototype.findValidParent = function ($element, direction) {
+	RexModelDragDrop.prototype.findValidParent = function($element, direction) {
 		switch (direction) {
 			case 'left':
 				while (true) {
@@ -1043,7 +1043,7 @@ var dragDropInstances = (function ($) {
 		}
 	};
 
-	RexModelDragDrop.prototype.orchestrateDragDrop = function ($element, elementRect, mousePos) {
+	RexModelDragDrop.prototype.orchestrateDragDrop = function($element, elementRect, mousePos) {
 		// If no element is hovered or element hovered is the placeholder -> not valid -> return false;
 		if (!$element || $element.length == 0 || !elementRect || !mousePos) {
 			return false;
@@ -1110,7 +1110,7 @@ var dragDropInstances = (function ($) {
 	 * @public
 	 * @returns		{JQuery}
 	 */
-	RexWpcf7DragDrop.prototype.getPlaceHolder = function () {
+	RexWpcf7DragDrop.prototype.getPlaceHolder = function() {
 		return $('<div class="drop-marker drop-marker--rex-wpcf7"></div>');
 	};
 
@@ -1119,7 +1119,7 @@ var dragDropInstances = (function ($) {
 	 * @param		{string}	direction
 	 * @returns	{JQuery}
 	 */
-	RexWpcf7DragDrop.prototype.findValidParent = function ($element, direction) {
+	RexWpcf7DragDrop.prototype.findValidParent = function($element, direction) {
 		switch (direction) {
 			case 'left':
 				while (true) {
@@ -1213,7 +1213,7 @@ var dragDropInstances = (function ($) {
 		}
 	};
 
-	RexWpcf7DragDrop.prototype.orchestrateDragDrop = function ($element, elementRect, mousePos) {
+	RexWpcf7DragDrop.prototype.orchestrateDragDrop = function($element, elementRect, mousePos) {
 		//If no element is hovered or element hovered is the placeholder -> not valid -> return false;
 		if (!$element || $element.length == 0 || !elementRect || !mousePos) {
 			return false;

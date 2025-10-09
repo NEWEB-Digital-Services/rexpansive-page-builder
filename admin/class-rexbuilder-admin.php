@@ -338,8 +338,9 @@ class Rexbuilder_Admin {
 		// settings page resourcers
 		else if ( 'toplevel_page_' . $this->plugin_name === $page_info->id )
 		{
+			wp_enqueue_script('dompurify', 'https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.7/purify.min.js', [], '3.2.7');
 			wp_enqueue_script( 'svgo-browser', REXPANSIVE_BUILDER_URL . 'admin/js/settings/svgo.js' );
-			wp_enqueue_script( 'admin-settings', REXPANSIVE_BUILDER_URL . 'admin/js/settings/admin-settings.js' );
+			wp_enqueue_script( 'admin-settings', REXPANSIVE_BUILDER_URL . 'admin/js/settings/admin-settings.js', ['svgo-browser','dompurify'] );
 			wp_localize_script( 'admin-settings', 'admin_settings_vars', array(
 				'labels' => array(
 					'optimize_correct' => __( 'correctly optimized', 'rexpansive-builder' ),
@@ -535,8 +536,9 @@ class Rexbuilder_Admin {
 		// settings page resourcers
 		else if ( 'toplevel_page_' . $this->plugin_name === $page_info->id )
 		{
+			wp_enqueue_script('dompurify', 'https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.2.7/purify.min.js', [], '3.2.7');
 			wp_enqueue_script( 'svgo-browser', REXPANSIVE_BUILDER_URL . 'admin/js/settings/svgo.js' );
-			wp_enqueue_script( 'admin-settings', REXPANSIVE_BUILDER_URL . 'admin/js/settings/admin-settings.js' );
+			wp_enqueue_script( 'admin-settings', REXPANSIVE_BUILDER_URL . 'admin/js/settings/admin-settings.js', ['svgo-browser','dompurify'] );
 			wp_localize_script( 'admin-settings', 'admin_settings_vars', array(
 				'labels' => array(
 					'optimize_correct' => __( 'correctly optimized', 'rexpansive-builder' ),
@@ -553,6 +555,35 @@ class Rexbuilder_Admin {
 	}
 
 	/**
+	 * Returns the origin (scheme://host[:port]) of the WordPress installation.
+	 *
+	 * @return string safe origin (e.g. https://example.com) or '' if invalid.
+	 * @since TODO
+	 */
+	public function wp_get_origin() {
+		$url = home_url();
+
+		if ( empty( $url ) ) {
+			$url = get_site_url();
+		}
+
+		// use wp_parse_url for WordPress compatibility
+		$parts = wp_parse_url( $url );
+		if ( empty( $parts['scheme'] ) || empty( $parts['host'] ) ) {
+			return '';
+		}
+
+		$origin = $parts['scheme'] . '://' . $parts['host'];
+
+		// append the port if it's set and not the default HTTP/HTTPS ports
+		if ( ! empty( $parts['port'] ) && ! in_array( (int) $parts['port'], array( 80, 443 ), true ) ) {
+			$origin .= ':' . $parts['port'];
+		}
+
+		return esc_url_raw( $origin );
+	}
+
+	/**
 	 * Generate LiveBuilder admin JS settings
 	 * @param String $source post permalink
 	 * @return Array settings
@@ -560,6 +591,7 @@ class Rexbuilder_Admin {
 	 */
 	private function get_plugin_admin_settings( $source ) {
 		return array(
+			'origin' => $this->wp_get_origin(),
 			'source_url' => $source,
 			'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 			'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
@@ -2393,7 +2425,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			die();
 		endif;
 
-		$slider_id = $_POST['slider_id'];
+		$slider_id = isset($_POST['slider_id']) ? absint($_POST['slider_id']) : 0;
 
 		if( $slider_id && Rexbuilder_Utilities::check_post_exists( (int)$slider_id ) ) {
 			$slider_animation = get_field( '_rex_enable_banner_animation', $slider_id );
@@ -2968,11 +3000,12 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			// update reponsive layout names for single posts
 			// search posts with this layout
 			$this_customization_posts = $wpdb->get_results(
-				"
-				SELECT DISTINCT post_id
-				FROM {$wpdb->prefix}postmeta
-				WHERE meta_key LIKE '_rex_customization_{$layout['id']}'
-				",
+				$wpdb->prepare(
+					"SELECT DISTINCT post_id
+					FROM {$wpdb->prefix}postmeta
+					WHERE meta_key LIKE %s",
+					"_rex_customization_{$layout['id']}"
+				),
 				ARRAY_A
 			);
 
@@ -3422,8 +3455,22 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		}
 
 		$model_settings = $_GET['model_data'];
+		// Ensure we have an array
+		if (!is_array($model_settings)) {
+			$decoded = json_decode(wp_unslash($model_settings), true);
+			if (is_array($decoded)) {
+				$model_settings = $decoded;
+			} else {
+				wp_send_json_error(array(
+					'error' => true,
+					'msg'   => 'Invalid model_data'
+				));
+			}
+		}
 
-		if( empty( $model_settings['ID'] ) ) {
+		$model_id   = isset($model_settings['ID']) ? absint($model_settings['ID']) : 0;
+
+		if( empty( $model_id ) ) {
 			$response['error'] = true;
 			$response['msg'] = 'Error. No model!';
 			wp_send_json_error( $response );
@@ -3432,7 +3479,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$args = array(
 			'post_type'		=>	'rex_model',
 			'post_status'	=>	'private',
-			'p'				=>	$model_settings['ID']
+			'p'				=>	$model_id
 		);
 
 		$query = new WP_Query( $args );
@@ -4349,19 +4396,34 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		}
 
 		$model_settings = $_GET['model_data'];
+		// Ensure we have an array
+		if (!is_array($model_settings)) {
+			$decoded = json_decode(wp_unslash($model_settings), true);
+			if (is_array($decoded)) {
+				$model_settings = $decoded;
+			} else {
+				wp_send_json_error(array(
+					'error' => true,
+					'msg'   => 'Invalid model_data'
+				));
+			}
+		}
 
-		if( empty( $model_settings['ID'] ) ) {
+		$model_id   = isset($model_settings['ID']) ? absint($model_settings['ID']) : 0;
+		$section_id = isset($model_settings['section_id']) ? sanitize_text_field($model_settings['section_id']) : '';
+
+		if( empty( $model_id ) ) {
 			$response['error'] = true;
 			$response['msg'] = 'Error. No model!';
 			wp_send_json_error( $response );
 		}
 
-		$checkbox_index = $model_settings['section_id'];
+		$checkbox_index = $section_id;
 
 		$args = array(
 			'post_type'			=>	'rex_model',
 			'post_status'		=>	'private',
-			'p'				=>	$model_settings['ID']
+			'p'				=>	$model_id
 		);
 
 		$query = new WP_Query( $args );

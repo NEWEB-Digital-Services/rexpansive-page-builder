@@ -382,7 +382,7 @@ var Rexlive_Gradient_Utils = (function($) {
 
       const handler = {
         color: handlersMatch[1],
-        position: handlersMatch[2].replace('%', '')
+        position: handlersMatch[2].replace(/%/g, '')
       }
 
       response.handlers.push(handler)

@@ -4,7 +4,7 @@
  * http://mereskin.github.io/dnd/
  */
 
-var Model_Import_Modal = (function ($) {
+var Model_Import_Modal = (function($) {
 	'use strict';
 	var rexmodel_import_props;
 	var image_uploader_frame_direct; //used for the media library opener
@@ -18,7 +18,7 @@ var Model_Import_Modal = (function ($) {
 	 * @return {null}
 	 * @since  2.0.0
 	 */
-	var _saveModelThumbnail = function (model_selected, selected_image_id, selected_image_size) {
+	var _saveModelThumbnail = function(model_selected, selected_image_id, selected_image_size) {
 		$.ajax({
 			type: 'GET',
 			dataType: 'json',
@@ -32,11 +32,11 @@ var Model_Import_Modal = (function ($) {
 				set_post_thumbnail_result: null,
 				set_post_thumbnail_url_result: null
 			},
-			success: function (response) {
+			success: function(response) {
 				if (response.success) {
 				}
 			},
-			error: function (response) {}
+			error: function(response) { }
 		});
 	};
 
@@ -46,7 +46,7 @@ var Model_Import_Modal = (function ($) {
 	 * @return {null}
 	 * @since  2.0.0
 	 */
-	var _deleteModelThumbnail = function (model_to_delete) {
+	var _deleteModelThumbnail = function(model_to_delete) {
 		$.ajax({
 			type: 'GET',
 			dataType: 'json',
@@ -58,11 +58,11 @@ var Model_Import_Modal = (function ($) {
 				delete_post_thumbnail_result: null,
 				delete_post_thumbnail_url_result: null
 			},
-			success: function (response) {
+			success: function(response) {
 				if (response.success) {
 				}
 			},
-			error: function (response) {}
+			error: function(response) { }
 		});
 	};
 
@@ -72,7 +72,7 @@ var Model_Import_Modal = (function ($) {
 	 * @return {null}
 	 * @since  2.0.0
 	 */
-	var _editModelName = function (modelData) {
+	var _editModelName = function(modelData) {
 		$.ajax({
 			type: 'GET',
 			dataType: 'json',
@@ -82,21 +82,24 @@ var Model_Import_Modal = (function ($) {
 				nonce_param: live_editor_obj.rexnonce,
 				modelData: modelData
 			},
-			success: function (response) {
+			success: function(response) {
 				if (response.success) {
 					if (response.data.update !== 0 && response.data.update === parseInt(response.data.modelData.id)) {
-						rexmodel_import_props.self.querySelector(
+						const modelElement = rexmodel_import_props.self.querySelector(
 							'[data-rex-model-id="' + response.data.modelData.id + '"] .model-name'
-						).innerHTML = '<div>' + response.data.modelData.name + '</div>';
+						)
+						const nameWrap = document.createElement('div')
+						nameWrap.textContent = response.data.modelData.name
+						modelElement.replaceChildren(nameWrap)
 						_sortModelList();
 					}
 				}
 			},
-			error: function (response) {}
+			error: function(response) { }
 		});
 	};
 
-	var _updateModelList = function () {
+	var _updateModelList = function() {
 		$.ajax({
 			type: 'GET',
 			dataType: 'json',
@@ -105,11 +108,11 @@ var Model_Import_Modal = (function ($) {
 				action: 'rex_get_model_list',
 				nonce_param: live_editor_obj.rexnonce
 			},
-			success: function (response) {
+			success: function(response) {
 				if (response.success) {
 					var currentList = [];
 					var listChanged = false;
-					rexmodel_import_props.$self.find('.model__element').each(function (i, model) {
+					rexmodel_import_props.$self.find('.model__element').each(function(i, model) {
 						var modelID = $(model).attr('data-rex-model-id');
 						var modelObj = {
 							id: modelID,
@@ -169,8 +172,8 @@ var Model_Import_Modal = (function ($) {
 					$(document).trigger(event);
 				}
 			},
-			error: function (response) {},
-			complete: function (response) {
+			error: function(response) { },
+			complete: function(response) {
 				rexmodel_import_props.$self.removeClass('rex-modal--loading');
 			}
 		});
@@ -181,10 +184,10 @@ var Model_Import_Modal = (function ($) {
 	 * @return {null} [description]
 	 * @since  2.0.0
 	 */
-	var _sortModelList = function () {
+	var _sortModelList = function() {
 		var modelWrap = rexmodel_import_props.$self.find('.model-list')[0];
 		var models = [].slice.call(modelWrap.getElementsByClassName('model__element'));
-		models.sort(function (a, b) {
+		models.sort(function(a, b) {
 			var a_title = a.querySelector('.model-name').textContent.toUpperCase();
 			var b_title = b.querySelector('.model-name').textContent.toUpperCase();
 
@@ -198,7 +201,7 @@ var Model_Import_Modal = (function ($) {
 			return 0;
 		});
 		modelWrap.innerHTML = '';
-		models.forEach(function (model) {
+		models.forEach(function(model) {
 			modelWrap.appendChild(model);
 		});
 	};
@@ -209,7 +212,7 @@ var Model_Import_Modal = (function ($) {
 	 * @return {null}
 	 * @since  2.0.0
 	 */
-	var _deleteModel = function (model) {
+	var _deleteModel = function(model) {
 		var model_id = model.getAttribute('data-rex-model-id');
 		if (model_id) {
 			var response = confirm(live_editor_obj.labels.models.confirm_delete);
@@ -228,16 +231,16 @@ var Model_Import_Modal = (function ($) {
 				request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 
 				// handle request response
-				request.onloadstart = function () {
+				request.onloadstart = function() {
 					rexmodel_import_props.$self.addClass('rex-modal--loading');
 				};
-				request.onload = function () {
+				request.onload = function() {
 					if (request.status >= 200 && request.status < 400) {
 						model.style.display = 'none';
 					}
 				};
-				request.onerror = function () {};
-				request.onloadend = function () {
+				request.onerror = function() { };
+				request.onloadend = function() {
 					rexmodel_import_props.$self.removeClass('rex-modal--loading');
 				};
 
@@ -254,7 +257,7 @@ var Model_Import_Modal = (function ($) {
 	 * @return media library
 	 * @since  2.0.0
 	 */
-	var _editModelThumbnail = function (model_id, thumbnail_id) {
+	var _editModelThumbnail = function(model_id, thumbnail_id) {
 		// sets default image size
 		setUserSetting('imgsize', 'medium'); // before merge was a comment. beware!
 
@@ -298,19 +301,19 @@ var Model_Import_Modal = (function ($) {
 
 		// prevent attachment size strange selections
 		/*image_uploader_frame_direct.on('selection:toggle', function(e) {
-        var attachmentSizeEl = document.querySelector( 'select[name="size"]' );
-        if ( attachmentSizeEl ) {
-          attachmentSizeEl.value = 'full';
-        }
+	var attachmentSizeEl = document.querySelector( 'select[name="size"]' );
+	if ( attachmentSizeEl ) {
+	  attachmentSizeEl.value = 'full';
+	}
       });*/
 
 		//reset selection in popup, when open the popup
-		image_uploader_frame_direct.on('open', function () {
+		image_uploader_frame_direct.on('open', function() {
 			var attachment;
 			var selection = image_uploader_frame_direct.state('live-image-model').get('selection');
 
 			//remove all the selection first
-			selection.each(function (video) {
+			selection.each(function(video) {
 				attachment = wp.media.attachment(video.attributes.id);
 				attachment.fetch();
 				selection.remove(attachment ? [attachment] : []);
@@ -327,7 +330,7 @@ var Model_Import_Modal = (function ($) {
 			}
 		});
 
-		image_uploader_frame_direct.on('select', function () {
+		image_uploader_frame_direct.on('select', function() {
 			var state = image_uploader_frame_direct.state('live-image-model');
 			var sectionTarget = state.get('liveTarget');
 			var eventName = state.get('eventName');
@@ -351,7 +354,7 @@ var Model_Import_Modal = (function ($) {
 			//org code from /wp-includes/js/media-editor.js, arround `line 603 -- send: { ... attachment: function( props, attachment ) { ... `
 			var display;
 			var obj_attachment;
-			selection.each(function (attachment) {
+			selection.each(function(attachment) {
 				display = state.display(attachment).toJSON();
 				obj_attachment = attachment.toJSON();
 
@@ -368,7 +371,7 @@ var Model_Import_Modal = (function ($) {
 			_updateModelThumbnail(display.src, display.size, obj_attachment.id);
 		});
 
-		image_uploader_frame_direct.on('close', function () {
+		image_uploader_frame_direct.on('close', function() {
 			// resets the option for the image size
 			setUserSetting('imgsize', 'medium'); // before merge was comment. beware!
 		});
@@ -384,7 +387,7 @@ var Model_Import_Modal = (function ($) {
 	 * @param obj_attachment_id
 	 * @return {null}
 	 */
-	var _updateModelThumbnail = function (display_src, display_size, obj_attachment_id) {
+	var _updateModelThumbnail = function(display_src, display_size, obj_attachment_id) {
 		var model_selected = image_uploader_frame_direct.state('live-image-model').get('selected_model');
 		var element = $('.model__element[data-rex-model-id="' + model_selected + '"]');
 
@@ -411,7 +414,7 @@ var Model_Import_Modal = (function ($) {
 	 * @return media library
 	 * @since  2.0.0
 	 */
-	var _resetModelThumbnail = function (model_id) {
+	var _resetModelThumbnail = function(model_id) {
 		var element = $('.model__element[data-rex-model-id="' + model_id + '"]');
 
 		element.attr('data-rex-model-thumbnail-id', '');
@@ -433,7 +436,7 @@ var Model_Import_Modal = (function ($) {
 	 * @return {null}
 	 * @since  x.x.x
 	 */
-	var _updateModelList = function () {
+	var _updateModelList = function() {
 		$.ajax({
 			type: 'GET',
 			dataType: 'json',
@@ -442,10 +445,10 @@ var Model_Import_Modal = (function ($) {
 				action: 'rex_get_model_list',
 				nonce_param: live_editor_obj.rexnonce
 			},
-			success: function (response) {
+			success: function(response) {
 				if (response.success) {
 					var currentList = [];
-					rexmodel_import_props.$self.find('.model__element').each(function (i, model) {
+					rexmodel_import_props.$self.find('.model__element').each(function(i, model) {
 						var modelID = $(model).attr('data-rex-model-id');
 						var modelObj = {
 							id: modelID,
@@ -498,16 +501,16 @@ var Model_Import_Modal = (function ($) {
 					$(document).trigger(event);
 				}
 			},
-			error: function (response) {},
-			complete: function (response) {
+			error: function(response) { },
+			complete: function(response) {
 				rexmodel_import_props.$self.removeClass('rex-modal--loading');
 			}
 		});
 	};
 
-	var _linkDocumentListeners = function () {};
+	var _linkDocumentListeners = function() { };
 
-	var _linkDraggable = function () {
+	var _linkDraggable = function() {
 		var isIE = /*@cc_on!@*/ false || !!document.documentMode;
 		var $currentElement, elementRectangle, dragOverQueueTimer;
 
@@ -653,10 +656,10 @@ var Model_Import_Modal = (function ($) {
 		Rexbuilder_Util_Admin_Editor.$frameBuilder.load(onIFrameLoad);
 	};
 
-	var initPhotoSwipeFromDOM = function (gallerySelector) {
+	var initPhotoSwipeFromDOM = function(gallerySelector) {
 		// parse slide data (url, title, size ...) from DOM elements
 		// (children of gallerySelector)
-		var parseThumbnailElements = function (el) {
+		var parseThumbnailElements = function(el) {
 			var thumbElements = el.childNodes,
 				numNodes = thumbElements.length,
 				items = [],
@@ -707,14 +710,14 @@ var Model_Import_Modal = (function ($) {
 		};
 
 		// triggers when user clicks on thumbnail
-		var onThumbnailsClick = function (e) {
+		var onThumbnailsClick = function(e) {
 			e = e || window.event;
 			e.preventDefault ? e.preventDefault() : (e.returnValue = false);
 
 			var eTarget = e.target;
 
 			// find root element of slide
-			var clickedListItem = closest(eTarget, function (el) {
+			var clickedListItem = closest(eTarget, function(el) {
 				return el.tagName && el.tagName.toUpperCase() === 'LI';
 			});
 
@@ -750,7 +753,7 @@ var Model_Import_Modal = (function ($) {
 		};
 
 		// parse picture index and gallery index from URL (#&pid=1&gid=2)
-		var photoswipeParseHash = function () {
+		var photoswipeParseHash = function() {
 			var hash = window.location.hash.substring(1),
 				params = {};
 
@@ -777,7 +780,7 @@ var Model_Import_Modal = (function ($) {
 			return params;
 		};
 
-		var openPhotoSwipe = function (index, galleryElement, disableAnimation, fromURL) {
+		var openPhotoSwipe = function(index, galleryElement, disableAnimation, fromURL) {
 			var pswpElement = document.querySelectorAll('.pswp')[0],
 				gallery,
 				options,
@@ -849,7 +852,7 @@ var Model_Import_Modal = (function ($) {
 		}
 	};
 
-	var init = function () {
+	var init = function() {
 		Rexbuilder_Util_Admin_Editor.frameBuilder.addEventListener('load', _handleIFrameLoad);
 
 		var self = document.getElementById('rex-models-list');
