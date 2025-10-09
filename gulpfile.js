@@ -34,7 +34,7 @@ fs.readFile(filePath, 'utf8', (err, data) => {
 	const newString = `define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', ${production} );`;
 	const result = data.replace(/define\(\s*\'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS\'\,\s*\w+\s*\)\;/, newString);
 
-	fs.writeFile(filePath, result, 'utf8', function (err) {
+	fs.writeFile(filePath, result, 'utf8', function(err) {
 		if (err) return console.log(err);
 	});
 });
@@ -306,7 +306,7 @@ var builderlive_public_editor = [
 function builderliveEditor(cb) {
 	cb();
 	return src(builderlive_public_editor)
-		.pipe(uglify({ /*preserveComments: 'license'*/output:{comments: saveLicense} }).on('error', gulpUtil.log))
+		.pipe(uglify({ /*preserveComments: 'license'*/output: { comments: saveLicense } }).on('error', gulpUtil.log))
 		.pipe(concat('builderlive-editor.js'))
 		.pipe(size({ title: 'Builderlive Editor' }))
 		.pipe(dest('public/js'));
@@ -357,7 +357,7 @@ var builderlive_public = [
 
 function builderlive(cb) {
 	return src(builderlive_public)
-		.pipe(uglify({ output:{comments:saveLicense} }/*preserveComments: 'license'*/ ).on('error', gulpUtil.log))
+		.pipe(uglify({ output: { comments: saveLicense } }/*preserveComments: 'license'*/).on('error', gulpUtil.log))
 		.pipe(concat('builderlive-public.js'))
 		.pipe(size({ title: 'Builderlive' }))
 		.pipe(dest('public/js'));
@@ -440,15 +440,15 @@ var effects_js_src = [
 	'public/js/vendor/split-scrollable.js',
 	'public/js/vendor/jquery.rexAccordion.js',
 	'public/js/vendor/particle-swarm.js',
- 	'public/js/vendor/rex-indicator.js',
+	'public/js/vendor/rex-indicator.js',
 	'public/js/build/fast-load.js',
 	'public/js/vendor/4-jquery.rexScrolled.js'
 ];
 
 function minifyExternal(cb) {
-	effects_js_src.forEach(function (effect_src) {
+	effects_js_src.forEach(function(effect_src) {
 		return src(effect_src)
-			.pipe(uglify({ /*preserveComments: 'license'*/output:{comments:saveLicense} }).on('error', gulpUtil.log))
+			.pipe(uglify({ /*preserveComments: 'license'*/output: { comments: saveLicense } }).on('error', gulpUtil.log))
 			.pipe(rename({ suffix: '.min' }))
 			.pipe(dest('public/js/vendor'));
 	});
@@ -492,7 +492,7 @@ exports.build = series(
 );
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
-var live_zip_name = 'Premium-220-Rexpansive-Builder.zip';
+var live_zip_name = 'Premium-221-Rexpansive-Builder.zip';
 var live_folder_name = 'rexpansive-page-builder';
 
 var live_file_map = [
@@ -596,7 +596,7 @@ function standardZip(cb) {
  * @param {Function} cb callback
  */
 function macZip(cb) {
-	exec('zip -r ' + live_zip_name + ' ' + live_folder_name + ' -x "*.DS_Store"', function (err, stdout, stderr) {
+	exec('zip -r ' + live_zip_name + ' ' + live_folder_name + ' -x "*.DS_Store"', function(err, stdout, stderr) {
 		console.log(stdout);
 		console.log(stderr);
 		cb(err);
