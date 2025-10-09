@@ -202,7 +202,7 @@ For the more experienced among us: you can insert CSS anywhere.
 
 = 2.2.1 - October 9, 2025 =
  * Updated: Tested up to Wordpress 6.8
- * Updated: Bundled ACF
+ * Updated: Bundled ACF Version
  * Fixed: Security updates
 
 = 2.2.0 - September 11, 2023 =
