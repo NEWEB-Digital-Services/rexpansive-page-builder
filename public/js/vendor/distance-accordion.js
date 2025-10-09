@@ -1,7 +1,7 @@
 /**
  * Accordion at distance plugin
  */
-;(function($, window, document) {
+; (function($, window, document) {
   this.DistanceAccordion = function() {
     this.element = null;
     this.$element = null;
@@ -15,9 +15,9 @@
     this.$wrapToggler = [];
     // this.wrapContent = null;
     this.targetsChildAccordions = null;
-		this.context = document;
+    this.context = document;
 
-		this.lastWindowWidth = window.innerWidth;
+    this.lastWindowWidth = window.innerWidth;
 
     if (arguments[0]) {
       this.element = arguments[0];
@@ -46,31 +46,30 @@
     }
 
     // get eventually data attributes
-    this.options.wrapObjects = ( this.element.getAttribute('data-wrap-objects' ) ? Boolean( this.element.getAttribute('data-wrap-objects' ) ) : this.options.wrapObjects );
-    this.options.wrapperCustomClass = ( this.element.getAttribute('data-wrapper-cc' ) ? this.element.getAttribute('data-wrapper-cc' ) : this.options.wrapperCustomClass );
-    this.options.scrollTo = ( this.element.getAttribute('data-scroll-to' ) ? ( 'true' === this.element.getAttribute('data-scroll-to' ) ) : this.options.scrollTo );
-    this.options.closeChilds = ( this.element.getAttribute('data-close-childs' ) ? ( 'true' === this.element.getAttribute('data-close-childs' ) ) : this.options.closeChilds );
+    this.options.wrapObjects = (this.element.getAttribute('data-wrap-objects') ? Boolean(this.element.getAttribute('data-wrap-objects')) : this.options.wrapObjects);
+    this.options.wrapperCustomClass = (this.element.getAttribute('data-wrapper-cc') ? this.element.getAttribute('data-wrapper-cc') : this.options.wrapperCustomClass);
+    this.options.scrollTo = (this.element.getAttribute('data-scroll-to') ? ('true' === this.element.getAttribute('data-scroll-to')) : this.options.scrollTo);
+    this.options.closeChilds = (this.element.getAttribute('data-close-childs') ? ('true' === this.element.getAttribute('data-close-childs')) : this.options.closeChilds);
 
-    this.context = ( this.options.context ? this.options.context : this.context );
+    this.context = (this.options.context ? this.options.context : this.context);
 
-    if ( this.element ) {
+    if (this.element) {
       this.hashTarget = this.element.hash.substr(1);
-      if ( '' !== this.hashTarget ) {
-        var target = this.context.getElementById( this.hashTarget );
-        if ( target ) {
-          this.targets.push( target );
+      if ('' !== this.hashTarget) {
+        var target = this.context.getElementById(this.hashTarget);
+        if (target) {
+          this.targets.push(target);
         }
       } else {
         this.classTarget = this.element.getAttribute('data-target');
-        this.targets = [].slice.call( this.context.getElementsByClassName( this.classTarget ) );
+        this.targets = [].slice.call(this.context.getElementsByClassName(this.classTarget));
       }
 
-      if ( this.targets.length > 0 ) {
+      if (this.targets.length > 0) {
         // set the wrap, if true
-        if ( this.options.wrapObjects ) {
+        if (this.options.wrapObjects) {
           // find toggler wrap
-          if ( -1 !== this.element.className.indexOf('da-toggle-wrap') )
-          {
+          if (-1 !== this.element.className.indexOf('da-toggle-wrap')) {
             this.$wrapToggler = this.$element;
           } else {
             this.$wrapToggler = this.$element.parents('.da-toggle-wrap');
@@ -79,10 +78,10 @@
 
         this.$targets = $(this.targets);
         // set accordion initial state
-        if ( -1 !== this.element.className.indexOf(this.options.openClassName ) ) {
+        if (-1 !== this.element.className.indexOf(this.options.openClassName)) {
           this.open = true;
           this.close = false;
-        } else if ( -1 !== this.element.className.indexOf(this.options.closeClassName ) ) {
+        } else if (-1 !== this.element.className.indexOf(this.options.closeClassName)) {
           this.open = false;
           this.close = true;
         } else {
@@ -90,17 +89,17 @@
         }
 
         // add class to identify accordion items
-        this.$targets.addClass( this.options.accordionElementClassName );
+        this.$targets.addClass(this.options.accordionElementClassName);
 
         // if close, hide target
-        if ( this.close ) {
-          this.targets.forEach(function( el ) {
+        if (this.close) {
+          this.targets.forEach(function(el) {
             el.style.display = 'none';
           });
         }
 
         // if there is a big toggler, listen to its click and remove the other
-        if ( this.$wrapToggler.length > 0 ) {
+        if (this.$wrapToggler.length > 0) {
           this.$wrapToggler[0].addEventListener('click', handleClick.bind(this));
         } else {
           this.element.addEventListener('click', handleClick.bind(this));
@@ -129,16 +128,16 @@
     // if option to close eventually childs is active
     // and the childs aren't cached ->
     // found theme
-    if ( this.options.closeChilds && ! this.targetsChildAccordions ) {
+    if (this.options.closeChilds && !this.targetsChildAccordions) {
       this.targetsChildAccordions = [];
       this.targets.forEach(function(t) {
-        this.targetsChildAccordions.push( [].slice.call( t.getElementsByClassName(this.options.accordionTogglerClass ) ) );
-      },this);
+        this.targetsChildAccordions.push([].slice.call(t.getElementsByClassName(this.options.accordionTogglerClass)));
+      }, this);
       // flat childs array
       this.targetsChildAccordions = [].concat.apply([], this.targetsChildAccordions);
     }
 
-    if ( this.open ) {
+    if (this.open) {
       closeAccordion.call(this);
     } else {
       openAccordion.call(this);
@@ -151,14 +150,14 @@
     });
     this.$element.addClass('close').removeClass('open');
     this.$targets.addClass('target-close').removeClass('target-open');
-    if ( this.$wrapToggler.length > 0 ) {
+    if (this.$wrapToggler.length > 0) {
       this.$wrapToggler.addClass('close').removeClass('open');
     }
 
     // propagate the close accordion to childs
-    if( this.options.closeChilds ) {
+    if (this.options.closeChilds) {
       this.targetsChildAccordions.forEach(function(child) {
-        if( child.DistanceAccordionInstance.open ) {
+        if (child.DistanceAccordionInstance.open) {
           child.DistanceAccordionInstance.closeAccordion();
         }
       });
@@ -166,18 +165,18 @@
 
     this.open = false;
     this.close = true;
-	}
+  }
 
-	// var lastWindowWidth = window.innerWidth;
+  // var lastWindowWidth = window.innerWidth;
 
   function openAccordion() {
-    if ( this.options.scrollTo ) {
+    if (this.options.scrollTo) {
       var scrollVal = this.$targets.eq(0).offset().top;
       var that = this;
 
       $('html, body').animate({
-          scrollTop: scrollVal
-        },
+        scrollTop: scrollVal
+      },
         function() {
           that.$targets.slideDown({
             duration: 150
@@ -187,45 +186,45 @@
     } else {
       this.$targets.slideDown({
         duration: 150,
-        complete:function() {
+        complete: function() {
           $(this).trigger('da:open_complete');
         }
       });
-		}
+    }
 
     this.$element.addClass('open').removeClass('close');
-		this.$targets.addClass('target-open').removeClass('target-close');
+    this.$targets.addClass('target-open').removeClass('target-close');
 
-    if ( this.$wrapToggler.length > 0 ) {
+    if (this.$wrapToggler.length > 0) {
       this.$wrapToggler.addClass('open').removeClass('close');
-		}
+    }
 
-		this.windowWidthChanged = this.lastWindowWidth !== Rexbuilder_Util.globalViewport.width;
-		this.lastWindowWidth = Rexbuilder_Util.globalViewport.width;
+    this.windowWidthChanged = this.lastWindowWidth !== Rexbuilder_Util.globalViewport.width;
+    this.lastWindowWidth = Rexbuilder_Util.globalViewport.width;
 
-		if (this.windowWidthChanged) {
-			_refreshGridInsideTargets.call(this)
-		}
+    if (this.windowWidthChanged) {
+      _refreshGridInsideTargets.call(this)
+    }
 
     this.open = true;
     this.close = false;
-	}
+  }
 
-	/**
-	 * @since		2.0.9
-	 */
-	function _refreshGridInsideTargets() {
-		this.targets.forEach(function (section) {
-			if (!section.matches('.rexpansive_section')) return;
+  /**
+   * @since		2.0.9
+   */
+  function _refreshGridInsideTargets() {
+    this.targets.forEach(function(section) {
+      if (!section.matches('.rexpansive_section')) return;
 
-			var gridEl = section.querySelector('.perfect-grid-gallery');
-			var gridInstance = RexGrid.data(gridEl);
+      var gridEl = section.querySelector('.perfect-grid-gallery');
+      var gridInstance = RexGrid.data(gridEl);
 
-			// If the accordion was hidden during a resize, the RexGrid calculations were wrong
-			// We need to call the resize cb when the grid and its blocks are visible
-			gridInstance.endResize();
-		});
-	}
+      // If the accordion was hidden during a resize, the RexGrid calculations were wrong
+      // We need to call the resize cb when the grid and its blocks are visible
+      gridInstance.endResize();
+    });
+  }
 
   // Utility method to extend defaults with user options
   function extendDefaults(source, properties) {
