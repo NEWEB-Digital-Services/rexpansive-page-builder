@@ -181,9 +181,6 @@ For the more experienced among us: you can insert CSS anywhere.
 = Website =
 [https://www.neweb.info/](https://www.neweb.info/)
 
-== Bug Submission and Forum Support ==
-[https://neweb.freshdesk.com/support/tickets/new](https://neweb.freshdesk.com/support/tickets/new)
-
 == Screenshots ==
 
 1. Photos & Texts
